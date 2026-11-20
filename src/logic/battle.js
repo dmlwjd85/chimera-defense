@@ -96,6 +96,7 @@ export function moveUnit(state, data, uid, pos) {
   const p = clampPos(pos, data.config);
   if (!isFree(state, p, uid, data.config)) return fail('occupied');
   unit.targetPos = p;
+  if (state.phase === 'prep') unit.pos = p; // nothing fights during prep, so the unit is placed at once
   return { ok: true };
 }
 

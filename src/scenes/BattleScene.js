@@ -5,17 +5,12 @@ import { buildData } from '../logic/data.js';
 import { createBattle, step, summon, skipPrep, deploy, moveUnit, recall, sell, merge } from '../logic/battle.js';
 import { summonCost } from '../logic/economy.js';
 
-export const PATH_Y = 330, X0 = 100, TILE = 90, PATH_H = 120, BENCH_Y = 630, BENCH_X0 = 110, BENCH_GAP = 105, SLOT = 90;
+import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX } from './layout.js';
+export { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX };
 export const ZONE_COLORS = { village: 0x9c8a6b, field: 0x7fb069, forest: 0x3d6b45, plains: 0xc2b280, mountain: 0x8d8d8d, wetland: 0x4f7c6b };
 const ZONE_TILES = 4;
 const STAGE_ID = 'forest-1';
 
-/** Tile position to screen x. */
-export function tileToX(pos) { return X0 + pos * TILE; }
-/** Screen x to tile position. */
-export function xToTile(x) { return (x - X0) / TILE; }
-/** Screen x of a bench slot centre. */
-export function benchSlotX(i) { return BENCH_X0 + i * BENCH_GAP; }
 
 const hexColor = (hex) => Phaser.Display.Color.HexStringToColor(hex ?? '#888888').color;
 const textStyle = (size, color = '#ffffff', extra = {}) => ({ fontSize: `${size}px`, color, fontFamily: FONT, ...extra });

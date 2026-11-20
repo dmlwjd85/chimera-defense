@@ -15,8 +15,8 @@
     "respawn": 8,
     "stageNames": {
       "young": "어린 곰",
-      "teen": "청소년 곰",
-      "adult": "어른 곰",
+      "teen": "성장기 곰",
+      "adult": "성체 곰",
       "spirit": "웅녀"
     },
     "baseSkillDesc": "저지 3기 2.5초, 쿨타임 8초",
@@ -66,8 +66,8 @@
     "respawn": 10,
     "stageNames": {
       "young": "어린 호랑이",
-      "teen": "청소년 호랑이",
-      "adult": "어른 호랑이",
+      "teen": "성장기 호랑이",
+      "adult": "성체 호랑이",
       "spirit": "산군"
     },
     "baseSkillDesc": "높은 단일 피해",
@@ -112,8 +112,8 @@
     "respawn": 6,
     "stageNames": {
       "young": "어린 여우",
-      "teen": "청소년 여우",
-      "adult": "어른 여우",
+      "teen": "성장기 여우",
+      "adult": "성체 여우",
       "spirit": "구미호"
     },
     "baseSkillDesc": "중독 초당 6, 3초",
@@ -165,11 +165,12 @@
     "aoeRadius": 0,
     "respawn": 6,
     "stageNames": {
-      "young": "솜뭉치 토끼",
-      "teen": "청소년 토끼",
-      "adult": "토끼",
-      "spirit": "하체 토끼"
+      "young": "어린 토끼",
+      "teen": "성장기 토끼",
+      "adult": "성체 토끼",
+      "spirit": "옥토끼"
     },
+    "nickname": "솜뭉치 토끼, 하체 토끼",
     "baseSkillDesc": "적중한 적 이동 속도 -20%, 1.5초",
     "baseSkill": [
       {
@@ -216,11 +217,12 @@
     "aoeRadius": 0,
     "respawn": 6,
     "stageNames": {
-      "young": "삐약이",
-      "teen": "청소년 수탉",
-      "adult": "수탉",
-      "spirit": "새벽 네 시 수탉"
+      "young": "어린 수탉",
+      "teen": "성장기 수탉",
+      "adult": "성체 수탉",
+      "spirit": "금계"
     },
+    "nickname": "삐약이, 새벽 네 시 수탉",
     "baseSkillDesc": "기상 나팔: 2타일 안의 아군 공격 간격 -8%",
     "baseSkill": [
       {
@@ -266,11 +268,12 @@
     "aoeRadius": 0,
     "respawn": 8,
     "stageNames": {
-      "young": "깍깍이",
-      "teen": "청소년 까마귀",
-      "adult": "까마귀",
-      "spirit": "발 셋 까마귀"
+      "young": "어린 까마귀",
+      "teen": "성장기 까마귀",
+      "adult": "성체 까마귀",
+      "spirit": "삼족오"
     },
+    "nickname": "깍깍이, 반짝이 수집가 까마귀",
     "baseSkillDesc": "돌 떨어뜨리기: 먼 적에게 높은 단일 피해",
     "baseSkill": [],
     "adultSkill": {
@@ -311,11 +314,12 @@
     "aoeRadius": 0,
     "respawn": 8,
     "stageNames": {
-      "young": "송아지 들소",
-      "teen": "청소년 들소",
-      "adult": "들소",
-      "spirit": "어깨 들소"
+      "young": "어린 들소",
+      "teen": "성장기 들소",
+      "adult": "성체 들소",
+      "spirit": "파란 소 베이브"
     },
+    "nickname": "송아지 들소, 어깨 들소",
     "baseSkillDesc": "저지 3기 2.5초, 쿨타임 8초",
     "baseSkill": [
       {
@@ -362,11 +366,12 @@
     "aoeRadius": 1.0,
     "respawn": 8,
     "stageNames": {
-      "young": "멍멍 늑대",
-      "teen": "청소년 늑대",
-      "adult": "늑대",
-      "spirit": "보름달 늑대"
+      "young": "어린 늑대",
+      "teen": "성장기 늑대",
+      "adult": "성체 늑대",
+      "spirit": "펜리르"
     },
+    "nickname": "멍멍 늑대, 보름달 늑대",
     "baseSkillDesc": "우두머리: 2타일 안의 아군 피해 +10%",
     "baseSkill": [
       {
@@ -412,11 +417,12 @@
     "aoeRadius": 1.5,
     "respawn": 10,
     "stageNames": {
-      "young": "솜털 독수리",
-      "teen": "청소년 독수리",
-      "adult": "독수리",
-      "spirit": "그늘 독수리"
+      "young": "어린 독수리",
+      "teen": "성장기 독수리",
+      "adult": "성체 독수리",
+      "spirit": "아퀼라"
     },
+    "nickname": "솜털 독수리, 그늘 독수리",
     "baseSkillDesc": "급강하: 먼 적에게 광역 피해",
     "baseSkill": [],
     "adultSkill": {
@@ -459,11 +465,12 @@
     "aoeRadius": 0,
     "respawn": 6,
     "stageNames": {
-      "young": "뿔 없는 양",
-      "teen": "청소년 큰뿔양",
-      "adult": "큰뿔양",
-      "spirit": "뿔만 큰 양"
+      "young": "어린 큰뿔양",
+      "teen": "성장기 큰뿔양",
+      "adult": "성체 큰뿔양",
+      "spirit": "황금 양"
     },
+    "nickname": "뿔 없는 양, 뿔만 큰 양",
     "baseSkillDesc": "박치기: 4번째 공격마다 대상을 1타일 밀어냄",
     "baseSkill": [
       {
@@ -511,11 +518,12 @@
     "aoeRadius": 0,
     "respawn": 8,
     "stageNames": {
-      "young": "올챙이",
-      "teen": "청소년 개구리",
-      "adult": "개구리",
-      "spirit": "방석 개구리"
+      "young": "어린 개구리",
+      "teen": "성장기 개구리",
+      "adult": "성체 개구리",
+      "spirit": "금와"
     },
+    "nickname": "올챙이, 방석 개구리",
     "baseSkillDesc": "혀 낚시: 6초마다 3타일 안의 적 1기를 끌어와 붙잡음",
     "baseSkill": [
       {
@@ -561,11 +569,12 @@
     "aoeRadius": 0,
     "respawn": 6,
     "stageNames": {
-      "young": "콧노래 베짱이",
-      "teen": "청소년 베짱이",
-      "adult": "베짱이",
-      "spirit": "전국 투어 베짱이"
+      "young": "어린 베짱이",
+      "teen": "성장기 베짱이",
+      "adult": "성체 베짱이",
+      "spirit": "티토노스"
     },
+    "nickname": "콧노래 베짱이, 전국 투어 베짱이",
     "baseSkillDesc": "노래: 2타일 안의 아군 공격 간격 -8%",
     "baseSkill": [
       {

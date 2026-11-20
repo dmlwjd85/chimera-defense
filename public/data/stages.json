@@ -1,0 +1,140 @@
+[
+  {
+    "id": "forest-1",
+    "name": "숲 1",
+    "mult": 1.0,
+    "zones": [
+      "village",
+      "field",
+      "forest"
+    ],
+    "waves": [
+      {
+        "mix": {
+          "normal": 100
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 100
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 70,
+          "fast": 30
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 60,
+          "swarm": 40
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 70,
+          "tough": 30
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 60,
+          "flying": 40
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 40,
+          "fast": 30,
+          "swarm": 30
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 50,
+          "tough": 30,
+          "healer": 20
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "fast": 30,
+          "flying": 30,
+          "tough": 20,
+          "normal": 20
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 50,
+          "swarm": 50
+        },
+        "extra": [
+          "miniboss"
+        ]
+      },
+      {
+        "mix": {
+          "normal": 40,
+          "fast": 40,
+          "tough": 5,
+          "swarm": 5,
+          "flying": 5,
+          "healer": 5
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 5,
+          "fast": 5,
+          "tough": 40,
+          "swarm": 40,
+          "flying": 5,
+          "healer": 5
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 5,
+          "fast": 5,
+          "tough": 5,
+          "swarm": 5,
+          "flying": 40,
+          "healer": 40
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "normal": 5,
+          "fast": 5,
+          "tough": 40,
+          "swarm": 5,
+          "flying": 40,
+          "healer": 5
+        },
+        "extra": []
+      },
+      {
+        "mix": {
+          "fast": 100
+        },
+        "extra": [
+          "boss_boar"
+        ]
+      }
+    ]
+  }
+]

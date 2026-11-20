@@ -1,0 +1,98 @@
+{
+  "pathLength": 12,
+  "maxDeployed": 6,
+  "benchSize": 5,
+  "life": 20,
+  "startGold": 100,
+  "summon": {
+    "base": 40,
+    "step": 5,
+    "max": 100,
+    "note": "기획서 3장 제안값(2026-11-20 19:55)"
+  },
+  "waveReward": {
+    "base": 30,
+    "perWave": 5
+  },
+  "prep": {
+    "seconds": 15,
+    "skipGoldPerSec": 1,
+    "skipGoldMax": 15
+  },
+  "sell": {
+    "young": 15,
+    "teen": 25,
+    "adult": 40,
+    "spirit": 80,
+    "chimera": 40,
+    "weak": 15
+  },
+  "stageMult": {
+    "young": {
+      "damage": 1.0,
+      "hold": 1.0,
+      "status": 1.0
+    },
+    "teen": {
+      "damage": 1.4,
+      "hold": 1.25,
+      "status": 1.1
+    },
+    "adult": {
+      "damage": 1.8,
+      "hold": 1.5,
+      "status": 1.25
+    },
+    "spirit": {
+      "damage": 3.2,
+      "hold": 2.0,
+      "status": 1.5
+    }
+  },
+  "demoRarity": [
+    {
+      "fromWave": 1,
+      "toWave": 5,
+      "common": 70,
+      "rare": 25,
+      "hero": 5
+    },
+    {
+      "fromWave": 6,
+      "toWave": 10,
+      "common": 60,
+      "rare": 30,
+      "hero": 10
+    },
+    {
+      "fromWave": 11,
+      "toWave": 15,
+      "common": 50,
+      "rare": 33,
+      "hero": 17
+    }
+  ],
+  "pityCount": 10,
+  "unitMoveSpeed": 2,
+  "minSpacing": 0.5,
+  "blockReach": 1,
+  "regen": {
+    "delay": 3,
+    "percentPerSec": 8
+  },
+  "flyingMinRange": 3,
+  "enemyHpGrowth": 0.18,
+  "waveCount": {
+    "base": 8,
+    "perWave": 2
+  },
+  "groupGap": 3,
+  "inGroupGap": 0.4,
+  "groupMin": 3,
+  "groupMax": 6,
+  "chimeraHpRatio": 0.7,
+  "bossBlockedPos": 0.3,
+  "weakNamePrefix": "어설픈 ",
+  "swarmSpacing": 0.15,
+  "bossDelay": 1.0
+}

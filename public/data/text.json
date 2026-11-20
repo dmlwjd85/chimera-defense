@@ -6,5 +6,12 @@
   "title.sub": "브라우저 데모",
   "title.start": "시작",
   "title.dataCount": "데이터: {count}개 파일 로드됨",
-  "battle.placeholder": "전투 화면 준비 중"
+  "battle.placeholder": "전투 화면 준비 중",
+  "merge.evolve": "{name}(으)로 진화",
+  "merge.spirit": "{name}(영물)로 진화",
+  "merge.spiritConfirm": "영물이 되면 키메라 재료로 쓸 수 없어요. 합칠까요?",
+  "merge.chimera": "{name} 탄생",
+  "merge.unknown": "??? (모르는 조합)",
+  "merge.weakKnown": "약체 확정",
+  "merge.swap": "자리 바꾸기"
 }

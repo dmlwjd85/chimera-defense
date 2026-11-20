@@ -91,7 +91,10 @@
   "groupMin": 3,
   "groupMax": 6,
   "chimeraHpRatio": 0.7,
-  "bossBlockedPos": 0.3,
+  "blockedOffset": 0.3,
+  "weakStareSeconds": 1,
+  "weakStareRange": 2,
+  "maxSubStep": 0.05,
   "weakNamePrefix": "어설픈 ",
   "swarmSpacing": 0.15,
   "bossDelay": 1.0

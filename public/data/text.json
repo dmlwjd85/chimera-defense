@@ -1,0 +1,10 @@
+{
+  "title.pageTitle": "키메라 디펜스 데모",
+  "boot.loading": "불러오는 중...",
+  "boot.loadFail": "데이터 로드 실패:",
+  "title.name": "키메라 디펜스",
+  "title.sub": "브라우저 데모",
+  "title.start": "시작",
+  "title.dataCount": "데이터: {count}개 파일 로드됨",
+  "battle.placeholder": "전투 화면 준비 중"
+}

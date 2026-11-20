@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { loadData, mkUnit, mkEnemy, mkState } from './helpers.js';
+import { loadPlanData as loadData, mkUnit, mkEnemy, mkState } from './helpers.js';
 import { combatTick } from '../src/logic/combat.js';
 
 const D = loadData();

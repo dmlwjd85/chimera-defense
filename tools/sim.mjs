@@ -88,6 +88,7 @@ const label = (u) => `${u.kind}:${u.speciesId ?? u.parts.join('+')}:${u.stage}`;
 export function runOne(data, seed, opts = {}) {
   const state = createBattle(data, 'forest-1', seed);
   const waves = [];
+  const made = {};
   let nextTurn = 0, lastWave = 0, lifeAtStart = state.life;
   while (state.phase !== 'ended' && state.time < MAX_TIME) {
     if (state.time >= nextTurn) {
@@ -96,6 +97,8 @@ export function runOne(data, seed, opts = {}) {
       nextTurn += TURN;
     }
     if (state.phase === 'wave' && state.wave !== lastWave) { lastWave = state.wave; lifeAtStart = state.life; }
+    for (const ev of state.events) if (ev.type === 'merge') made[ev.kind] = (made[ev.kind] ?? 0) + 1;
+    state.events.length = 0;
     const before = state.wave;
     step(state, data, DT);
     if (state.wave !== before || state.phase === 'ended') {
@@ -105,34 +108,36 @@ export function runOne(data, seed, opts = {}) {
   return {
     seed, result: state.result ?? 'timeout', wave: state.wave, life: state.life, summons: state.summonCount,
     gold: state.gold, time: Math.round(state.time), field: state.field.map(label), waves,
+    chimeras: made.chimera ?? 0, spirits: made.spirit ?? 0,
   };
 }
 
 /**
- * Summon luck only (no combat): over many runs of `count` summons spread across the stage's waves,
- * how often one species reaches 8 (one spirit) and how often a recipe pair reaches 4 + 4 (one chimera).
+ * Summon luck only (no combat): `count` summons spread over the stage's waves. A greedy player keeps young
+ * counts per species and makes a chimera as soon as a recipe pair has 4 + 4, or a spirit at 8 of one species.
+ * Species still held count as "owned" for the same-species summon rule.
  */
 export function rollStats(data, trials = 2000, count = 24, seed = 1) {
   const rng = makeRng(seed);
   const waves = data.stageById['forest-1'].waves.length;
-  let spirit = 0, chimera = 0, both = 0, maxSum = 0;
+  let chim = 0, spir = 0, anyChim = 0, anySpir = 0;
   for (let t = 0; t < trials; t++) {
     let ctx = newRollCtx();
     const n = {};
+    let c = 0, sp = 0;
     for (let i = 0; i < count; i++) {
       const wave = 1 + Math.floor((i * waves) / count);
-      const r = rollSummon(ctx, wave, data, rng);
+      const owned = new Map(Object.keys(n).filter((k) => n[k] > 0).map((k) => [k, n[k]]));
+      const r = rollSummon(ctx, wave, data, rng, owned);
       n[r.unitId] = (n[r.unitId] ?? 0) + 1;
       ctx = advanceRollCtx(ctx, data.unitById[r.unitId], data.config);
+      const rc = data.recipes.find((x) => (n[x.parts[0]] ?? 0) >= 4 && (n[x.parts[1]] ?? 0) >= 4);
+      if (rc) { n[rc.parts[0]] -= 4; n[rc.parts[1]] -= 4; c++; }
+      else if (n[r.unitId] >= 8) { n[r.unitId] -= 8; sp++; }
     }
-    const max = Math.max(...Object.values(n));
-    maxSum += max;
-    const hasSpirit = max >= 8;
-    const hasChimera = data.recipes.some((rc) => (n[rc.parts[0]] ?? 0) >= 4 && (n[rc.parts[1]] ?? 0) >= 4);
-    const hasBoth = data.recipes.some((rc) => Object.keys(n).some((sp) => !rc.parts.includes(sp) && n[sp] >= 8) && (n[rc.parts[0]] ?? 0) >= 4 && (n[rc.parts[1]] ?? 0) >= 4);
-    spirit += hasSpirit; chimera += hasChimera; both += hasBoth;
+    chim += c; spir += sp; anyChim += c > 0; anySpir += sp > 0;
   }
-  return { trials, count, spiritPct: (100 * spirit) / trials, chimeraPct: (100 * chimera) / trials, bothPct: (100 * both) / trials, avgMaxSame: maxSum / trials };
+  return { trials, count, avgChimera: chim / trials, avgSpirit: spir / trials, chimeraPct: (100 * anyChim) / trials, spiritPct: (100 * anySpir) / trials };
 }
 
 /** Parse --key=value flags into a plain object. */
@@ -150,6 +155,12 @@ export function applyKnobs(data, flags) {
   if (flags.hpGrowth !== undefined) data.config.enemyHpGrowth = flags.hpGrowth;
   if (flags.startGold !== undefined) data.config.startGold = flags.startGold;
   if (flags.enemyHp !== undefined) for (const e of data.enemies) if (!e.boss) e.hp *= flags.enemyHp;
+  for (const r of ['common', 'rare', 'hero']) {
+    const k = flags['dmg' + r[0].toUpperCase() + r.slice(1)];
+    if (k !== undefined) data.config.damageBoost = { ...(data.config.damageBoost ?? {}), [r]: k };
+  }
+  if (flags.same !== undefined) data.config.sameSpecies = { ...(data.config.sameSpecies ?? {}), perUnit: flags.same };
+  if (flags.partner !== undefined) data.config.sameSpecies = { ...(data.config.sameSpecies ?? {}), partnerPerUnit: flags.partner };
   if (flags.bossHp !== undefined) for (const e of data.enemies) if (e.boss) e.hp = flags.bossHp;
   return data;
 }
@@ -162,7 +173,7 @@ export function main(argv) {
   const data = applyKnobs(loadData(), flags);
   if (flags.roll) {
     const r = rollStats(data, runs * 100, flags.summons ?? 24, start);
-    console.log(`roll: ${r.trials} runs x ${r.count} summons -> one species 8+ ${r.spiritPct.toFixed(1)}%, recipe pair 4+4 ${r.chimeraPct.toFixed(1)}%, both ${r.bothPct.toFixed(1)}%, avg max same species ${r.avgMaxSame.toFixed(2)}`);
+    console.log(`roll: ${r.trials} runs x ${r.count} summons -> avg chimera ${r.avgChimera.toFixed(2)}, avg spirit ${r.avgSpirit.toFixed(2)}, at least one chimera ${r.chimeraPct.toFixed(1)}%, at least one spirit ${r.spiritPct.toFixed(1)}%`);
     return [];
   }
   const opts = { mergeWhenCrowded: !!flags.crowded, skip: !!flags.skip };
@@ -175,7 +186,7 @@ export function main(argv) {
   }
   const clear = rs.filter((r) => r.result === 'clear').length;
   const avg = (f) => (rs.reduce((a, r) => a + f(r), 0) / rs.length).toFixed(1);
-  console.log(`clear ${clear}/${rs.length} (${Math.round((clear / rs.length) * 100)}%), avg summons ${avg((r) => r.summons)}, avg life ${avg((r) => r.life)}, avg wave ${avg((r) => r.wave)}`);
+  console.log(`clear ${clear}/${rs.length} (${Math.round((clear / rs.length) * 100)}%), avg summons ${avg((r) => r.summons)}, avg life ${avg((r) => r.life)}, avg wave ${avg((r) => r.wave)}, avg chimeras ${avg((r) => r.chimeras)}, avg spirits ${avg((r) => r.spirits)}`);
   return rs;
 }
 

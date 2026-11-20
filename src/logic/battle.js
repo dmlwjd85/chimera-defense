@@ -1,7 +1,7 @@
 import { makeRng } from './rng.js';
 import { pairKey } from './data.js';
 import { summonCost, waveReward, sellPrice, skipGold } from './economy.js';
-import { newRollCtx, rollSummon, advanceRollCtx } from './roulette.js';
+import { newRollCtx, rollSummon, advanceRollCtx, ownedSpecies } from './roulette.js';
 import { unitStats } from './stats.js';
 import { mergeKind, mergeUnits } from './merge.js';
 import { buildWave, makeEnemy } from './waves.js';
@@ -54,7 +54,7 @@ export function summon(state, data) {
   if (state.gold < cost) return fail('gold');
   const slot = freeSlot(state);
   if (slot < 0) return fail('benchFull');
-  const roll = rollSummon(state.rollCtx, state.wave, data, state.rng);
+  const roll = rollSummon(state.rollCtx, state.wave, data, state.rng, ownedSpecies(state));
   const unit = makeUnit(state, data, { kind: 'base', speciesId: roll.unitId, stage: 'young', parts: null });
   state.bench[slot] = unit;
   state.gold -= cost;

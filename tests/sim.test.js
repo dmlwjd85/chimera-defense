@@ -37,7 +37,8 @@ test('ranged units are placed within reach behind the front blocker', () => {
 test('summon luck numbers are deterministic and in range', () => {
   const r1 = rollStats(D, 200, 24, 7), r2 = rollStats(D, 200, 24, 7);
   assert.deepEqual(r1, r2);
-  for (const k of ['spiritPct', 'chimeraPct', 'bothPct']) assert.ok(r1[k] >= 0 && r1[k] <= 100);
+  for (const k of ['spiritPct', 'chimeraPct']) assert.ok(r1[k] >= 0 && r1[k] <= 100);
+  assert.ok(r1.avgChimera + r1.avgSpirit <= 3, 'at most 24 young = 3 products');
 });
 
 test('what-if knobs change only the in-memory copy', () => {

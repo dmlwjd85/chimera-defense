@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { loadData } from './helpers.js';
+import { loadPlanData as loadData } from './helpers.js';
 import { unitStats } from '../src/logic/stats.js';
 
 const D = loadData();

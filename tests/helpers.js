@@ -8,6 +8,13 @@ export function loadRaw() {
   return raw;
 }
 export function loadData() { return buildData(loadRaw()); }
+/** Data without the 2026-11-20 balance proposals (damageBoost, sameSpecies), for formula tests written against plan numbers. */
+export function loadPlanData() {
+  const raw = loadRaw();
+  delete raw.config.damageBoost;
+  delete raw.config.sameSpecies;
+  return buildData(raw);
+}
 
 /** Field unit for tests (base species). */
 export async function mkUnit(D, uid, speciesId, stage, pos, extra = {}) {

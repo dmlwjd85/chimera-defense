@@ -16,8 +16,34 @@ export function newRollCtx() {
 
 const restrict = (list, pred) => { const r = list.filter(pred); return r.length ? r : list; };
 
-/** Per-unit summon chances (sum 1) after pity and first-summon rules. */
-export function unitChances(ctx, wave, data) {
+const YOUNG_EQUIV = { young: 1, teen: 2, adult: 4 };
+
+/** Species the player can still grow (base young/teen/adult on field or bench) -> count in young units. */
+export function ownedSpecies(state) {
+  const ids = new Map();
+  for (const u of [...state.field, ...state.bench]) {
+    if (u && u.kind === 'base' && u.stage !== 'spirit') ids.set(u.speciesId, (ids.get(u.speciesId) ?? 0) + YOUNG_EQUIV[u.stage]);
+  }
+  return ids;
+}
+
+/**
+ * Same-species summon rule (config.sameSpecies): each young-equivalent the player holds of this species adds
+ * `perUnit` to its weight (1 = normal), and each one held of a chimera partner species adds `partnerPerUnit`.
+ */
+export function sameSpeciesFactor(id, owned, data) {
+  const rule = data.config.sameSpecies;
+  if (!rule || !owned || owned.size === 0) return 1;
+  let partners = 0;
+  for (const r of data.recipes) {
+    if (!r.parts.includes(id)) continue;
+    for (const p of r.parts) if (p !== id) partners += owned.get(p) ?? 0;
+  }
+  return 1 + (rule.perUnit ?? 0) * (owned.get(id) ?? 0) + (rule.partnerPerUnit ?? 0) * partners;
+}
+
+/** Per-unit summon chances (sum 1) after pity, first-summon and same-species rules. */
+export function unitChances(ctx, wave, data, owned = null) {
   const { config, units } = data;
   const table = rarityTable(wave, config);
   const perRarity = {};
@@ -25,7 +51,7 @@ export function unitChances(ctx, wave, data) {
   let pool = units.filter((u) => table[u.rarity] > 0);
   if (ctx.sinceHero >= config.pityCount) pool = restrict(pool, (u) => u.rarity === 'hero');
   if (ctx.summonIndex === 1 && !ctx.firstWasRanged) pool = restrict(pool, (u) => u.range >= config.flyingMinRange);
-  const raw = pool.map((u) => [u.id, table[u.rarity] / perRarity[u.rarity]]);
+  const raw = pool.map((u) => [u.id, (table[u.rarity] / perRarity[u.rarity]) * sameSpeciesFactor(u.id, owned, data)]);
   const sum = raw.reduce((s, [, p]) => s + p, 0);
   return Object.fromEntries(raw.map(([id, p]) => [id, p / sum]));
 }
@@ -33,8 +59,8 @@ export function unitChances(ctx, wave, data) {
 /**
  * Roll one summon and report continent/habitat odds for the roulette.
  */
-export function rollSummon(ctx, wave, data, rng) {
-  const chances = unitChances(ctx, wave, data);
+export function rollSummon(ctx, wave, data, rng, owned = null) {
+  const chances = unitChances(ctx, wave, data, owned);
   
   const entries = Object.entries(chances);
   const unitId = pickWeighted(rng, entries);

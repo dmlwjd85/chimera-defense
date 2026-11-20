@@ -31,6 +31,12 @@ export function applyModifiers(stats) {
   return stats;
 }
 
+/** Damage multiplier for a species from config.damageBoost by rarity (1 when not set). */
+export function damageBoost(sp, config) {
+  const b = config.damageBoost;
+  return b && typeof b[sp.rarity] === 'number' ? b[sp.rarity] : 1;
+}
+
 /** Look up both part species of a chimera or weak chimera. */
 function partsOf(inst, data) {
   const parts = (inst.parts ?? []).map((id) => data.unitById[id]);
@@ -47,7 +53,7 @@ function baseStats(inst, data) {
   const skillLine = (s) => `${s.name}: ${s.desc}`;
   return {
     name: sp.stageNames[inst.stage],
-    hp: Math.round(sp.hp * m.damage), damage: round1(sp.damage * m.damage),
+    hp: Math.round(sp.hp * m.damage), damage: round1(sp.damage * damageBoost(sp, data.config) * m.damage),
     interval: sp.interval, range: sp.range, aoeRadius: sp.aoeRadius, block: sp.block, respawn: sp.respawn,
     effects: [...scaleEffects(sp.baseSkill, m), ...(adult ? copyAll(sp.adultSkill.effects) : []), ...(spirit ? copyAll(sp.spiritSkill.effects) : [])],
     skills: [sp.baseSkillDesc, ...(adult ? [skillLine(sp.adultSkill)] : []), ...(spirit ? [skillLine(sp.spiritSkill)] : [])],
@@ -62,7 +68,8 @@ function chimeraStats(inst, data) {
   const m = data.config.stageMult.adult;
   return {
     name: r.name,
-    hp: Math.round(data.config.chimeraHpRatio * (a.hp + b.hp) * m.damage), damage: round1(r.damage * m.damage),
+    hp: Math.round(data.config.chimeraHpRatio * (a.hp + b.hp) * m.damage),
+    damage: round1(r.damage * ((damageBoost(a, data.config) + damageBoost(b, data.config)) / 2) * m.damage),
     interval: r.interval, range: r.range, aoeRadius: r.aoeRadius,
     block: r.block ?? Math.max(a.block, b.block), respawn: Math.max(a.respawn, b.respawn),
     effects: scaleEffects(r.effects, m), skills: [r.desc],
@@ -74,7 +81,7 @@ function weakStats(inst, data) {
   const [a, b] = partsOf(inst, data);
   return {
     name: data.config.weakNamePrefix + a.name + b.name,
-    hp: Math.min(a.hp, b.hp), damage: Math.min(a.damage, b.damage),
+    hp: Math.min(a.hp, b.hp), damage: round1(Math.min(a.damage * damageBoost(a, data.config), b.damage * damageBoost(b, data.config))),
     interval: Math.max(a.interval, b.interval), range: Math.min(a.range, b.range), aoeRadius: 0,
     block: Math.min(a.block, b.block), respawn: Math.max(a.respawn, b.respawn),
     effects: [], skills: [],

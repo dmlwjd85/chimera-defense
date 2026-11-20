@@ -1,2 +1,12 @@
 node_modules/
 dist/
+.env
+.env.*
+*.local
+*.log
+*.pem
+*.key
+secrets/
+.vscode/
+Thumbs.db
+.DS_Store

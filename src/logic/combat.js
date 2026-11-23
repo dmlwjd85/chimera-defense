@@ -1,4 +1,5 @@
 // One combat tick: movement, blocking, attacks, skills, traits, bonds, bosses, deaths (plan ch.2, 5, 7, 9).
+import { elementProc, addPatch, tickPatches } from './elements.js';
 import { findEffect, effectsOf, tickEnemyTimers, enemyVelocity, tickHealers } from './effects.js';
 import { computeMods, effDamage, effInterval, effRange, effBlock, effAoe, cdMult, statusMult } from './mods.js';
 import { makeEnemy } from './waves.js';
@@ -77,6 +78,7 @@ export function hitDamage(state, u, e) {
   if (ar?.dmg && u.afterRestLeft > 0) dmg *= 1 + ar.dmg / 100;
   if (ar?.firstHit && u.firstHitReady) dmg *= ar.firstHit;
   if (e.markPct) dmg *= 1 + e.markPct / 100;
+  if (e.curseLeft > 0) dmg *= 1 + (state.curseBonus ?? 20) / 100;
   if (crit > 0 && state.rng() < crit / 100) dmg *= 2;
   return Math.max(0, dmg);
 }
@@ -228,7 +230,10 @@ export function tickUnitSkills(state, data, dt) {
       if (!ready(key)) continue;
       const used = timerAction(state, data, u, s);
       u.skillCd[key] = used ? s.every * cm : 0.5;
-      if (used) state.events.push({ type: 'skill', uid: u.uid, name: s.name ?? '', fx: s.action, eids: s.lastEids ?? [], ally: s.lastAlly });
+      if (used) {
+        state.events.push({ type: 'skill', uid: u.uid, name: s.name ?? '', fx: s.action, eids: s.lastEids ?? [], ally: s.lastAlly, big: u.stage === 'spirit' || u.kind === 'chimera' });
+        if (u.stage === 'spirit' || u.kind === 'chimera') { const t = state.enemies.find((e) => e.eid === (s.lastEids ?? [])[0]); addPatch(state, u, t ? t.pos : u.pos + 0.6, cfg); }
+      }
     }
   }
 }
@@ -316,6 +321,8 @@ export function combatTick(state, data, dt) {
   }
 
   tickEnemyTimers(state, dt);
+  tickPatches(state, cfg, dt);
+  for (const e of state.enemies) if (e.sandLeft > 0) e.sandLeft -= dt;
   // boss summons
   for (const e of [...state.enemies]) {
     const p = e.pattern;
@@ -353,7 +360,7 @@ export function combatTick(state, data, dt) {
     if (e.blockedBy === null || e.holdLeft > 0 || e.stunLeft > 0 || e.hp <= 0) continue;
     e.attackCd -= dt;
     if (e.attackCd > 0) continue;
-    e.attackCd += e.interval * (e.intervalMult ?? 1);
+    e.attackCd += e.interval * (e.intervalMult ?? 1) * (e.sandLeft > 0 ? 1 + cfg.patches.defs.sand.enemy.attackSlow / 100 : 1);
     const b = byUid.get(e.blockedBy);
     state.events.push({ type: 'enemyAttack', eid: e.eid });
     hitUnit(state, data, b, e.attack, e);
@@ -382,6 +389,7 @@ export function combatTick(state, data, dt) {
       if (other) { damageEnemy(state, other, hitDamage(state, u, other), false, u.uid); state.events.push({ type: 'splash', uid: u.uid, eid: other.eid }); }
     }
     applyOnHit(state, u, hits, target, cfg);
+    elementProc(state, u, target, hits, cfg);
     state.events.push({ type: 'attack', uid: u.uid, eid: target.eid, aoe: aoe > 0, eids: hits.map((e) => e.eid) });
   }
 

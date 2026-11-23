@@ -10,6 +10,7 @@ export function defaultSave() {
     speciesXp: {},
     stages: {},
     achievements: [],
+    shards: 0, talents: [],
     tutorialDone: false,
     settings: { fastRoulette: false },
   };
@@ -77,6 +78,7 @@ export function battleOptions(save, data, stageId = null) {
   const fallback = idx > 0 && !carry ? data.config.carry?.fallbackGold ?? 0 : 0;
   return {
     carry,
+    talents: [...(save.talents ?? [])],
     startGoldBonus: u.startGold.step * save.unlocks.startGold + fallback,
     benchBonus: u.bench.step * save.unlocks.bench,
     levels: levelsOf(save, data),
@@ -168,7 +170,11 @@ export function settleRun(save, state, data) {
     save.hintShards -= cfg.hintShardsPerReveal;
     hintsMade.push(h);
   }
-  return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade };
+  const sc = data.talents?.shards ?? {};
+  const fromRelics = (state.relics ?? []).reduce((n, id) => n + (sc[data.relicById?.[id]?.rarity] ?? 0), 0);
+  const shards = fromRelics + Math.floor(waves / (sc.perWaves ?? 3));
+  save.shards = (save.shards ?? 0) + shards;
+  return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length };
 }
 
 /** Reveal one material of an undiscovered recipe. Returns { recipe, part } or null. */
@@ -200,4 +206,31 @@ export function buyUnlock(save, data, key) {
   save.essence -= def.costs[lv];
   save.unlocks[key] = lv + 1;
   return { ok: true };
+}
+
+// ---------- 스킬트리(특성): 판이 끝나면 남는 유물 조각으로 가지마다 차례로 찍는다 ----------
+/** Can this talent node be bought now? Returns { ok, reason, cost }. */
+export function talentState(save, data, id) {
+  const n = data.talentById[id];
+  if (!n) return { ok: false, reason: 'unknown', cost: 0 };
+  const cost = data.talents.costs[n.index] ?? 1;
+  const owned = (save.talents ?? []).includes(id);
+  const branch = data.talents.branches.find((b) => b.id === n.branch);
+  const prevOk = n.index === 0 || (save.talents ?? []).includes(branch.nodes[n.index - 1].id);
+  if (owned) return { ok: false, reason: 'owned', cost, owned };
+  if (!prevOk) return { ok: false, reason: 'locked', cost };
+  if ((save.shards ?? 0) < cost) return { ok: false, reason: 'shards', cost };
+  return { ok: true, cost };
+}
+export function buyTalent(save, data, id) {
+  const st = talentState(save, data, id);
+  if (!st.ok) return st;
+  save.shards -= st.cost; (save.talents ??= []).push(id);
+  return st;
+}
+/** Give every spent shard back so the tree can be rebuilt. */
+export function resetTalents(save, data) {
+  const back = (save.talents ?? []).reduce((n, id) => n + (data.talents.costs[data.talentById[id]?.index] ?? 0), 0);
+  save.shards = (save.shards ?? 0) + back; save.talents = [];
+  return back;
 }

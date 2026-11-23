@@ -28,7 +28,7 @@ export function buildData(raw) {
   return {
     config, units, recipes, enemies, stages, recipeByPair,
     traits: raw.traits ?? {}, lore: raw.lore ?? { passives: {}, bonds: [] },
-    relicCfg: raw.relics ?? { offerWaves: [], relics: [] }, relicById: Object.fromEntries((raw.relics?.relics ?? []).map((r) => [r.id, r])),
+    tales: raw.tales ?? {}, talents: raw.talents ?? { branches: [], costs: [] }, talentById: Object.fromEntries((raw.talents?.branches ?? []).flatMap((b) => b.nodes.map((n, i) => [n.id, { ...n, branch: b.id, index: i }]))), relicCfg: raw.relics ?? { offerWaves: [], relics: [] }, relicById: Object.fromEntries((raw.relics?.relics ?? []).map((r) => [r.id, r])),
     unitById: indexById(units), recipeById: indexById(recipes),
     enemyById: indexById(enemies), stageById: indexById(stages),
   };

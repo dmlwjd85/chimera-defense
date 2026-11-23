@@ -1,5 +1,5 @@
 // Roguelite relics (유물): after some waves pick 1 of 3. Unit effects use the same fx lines as traits; economy hooks via eco.
-export function ownedRelics(state, data) { return (state.relics ?? []).map((id) => data.relicById?.[id]).filter(Boolean); }
+export function ownedRelics(state, data) { return [...(state.relics ?? []).map((id) => data.relicById?.[id]), ...(state.talents ?? []).map((id) => data.talentById?.[id])].filter(Boolean); }
 
 /** Sum (numbers), max-merge (arrays first wins), or OR (booleans) of an eco key over owned relics. */
 export function eco(state, data, key) {
@@ -20,6 +20,7 @@ export function whoMatches(who, u, state) {
   if (who.role && u.stats.role !== who.role) return false;
   if (who.flyer !== undefined && !!u.stats.flyer !== who.flyer) return false;
   if (who.kind && u.kind !== who.kind) return false;
+  if (who.melee !== undefined && (u.stats.range <= 1) !== who.melee) return false;
   if (who.stage && !who.stage.includes(u.stage)) return false;
   if (who.pair && !(u.kind === 'base' && state.field.filter((o) => o.kind === 'base' && o.speciesId === u.speciesId).length >= 2)) return false;
   return true;

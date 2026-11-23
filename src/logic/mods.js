@@ -1,9 +1,10 @@
 // Per-tick modifiers for every field unit: traits, legend passives, bonds/clashes, auras, continent synergy,
 // terrain, species level and timed buffs. All abilities are '효과 + 조건' lines (plan ch.12) read from data.
+import { patchAllyMods } from './patchMods.js';
 import { traitView } from './traits.js';
 import { ownedRelics, eco, whoMatches } from './relics.js';
 
-const STATS = ['dmg', 'interval', 'range', 'block', 'hp', 'cd', 'holdDur', 'crit', 'dodge', 'taken', 'buff', 'regen', 'respawn', 'status', 'killGold', 'aoe', 'waveEndGold', 'firstHoldDur', 'auraRadiusAdd'];
+const STATS = ['dmg', 'interval', 'range', 'block', 'hp', 'cd', 'holdDur', 'crit', 'dodge', 'taken', 'buff', 'regen', 'respawn', 'status', 'killGold', 'aoe', 'waveEndGold', 'firstHoldDur', 'auraRadiusAdd', 'elemChance', 'elemDmg'];
 const FLAGS = ['restCycle', 'afterRest', 'restAfterKill', 'restOnMove', 'restOnKnock', 'misTarget', 'variance', 'cantHitBehind', 'cantHitClose',
   'noHit', 'killStack', 'ignoreFirstHits', 'poisonSpread', 'holdBurstMult', 'knockStun', 'perBruiserHp', 'stayStack', 'terrainMult', 'aoeSet',
   'auraRadius', 'downGold', 'heldKillGold', 'surviveOnce', 'splashChance', 'waveStartFlee', 'buffRecv'];
@@ -193,6 +194,7 @@ export function computeMods(state, data) {
       const k = Math.max(m.flags.terrainMult ?? 1, 1);
       for (const [s, v] of Object.entries(cfg.terrain)) m[s] += v * k;
     }
+    if (state.patches?.length && cfg.patches) for (const [s, v] of Object.entries(patchAllyMods(state, u, cfg))) m[s] += v;
     if (m.flags.perBruiserHp) m.hp += m.flags.perBruiserHp * state.field.filter((o) => (o.stats.role ?? '') === 'bruiser').length;
     // max hp follows hp%; keep the current fraction
     const newMax = Math.max(1, Math.round(u.stats.hp * (1 + m.hp / 100)));

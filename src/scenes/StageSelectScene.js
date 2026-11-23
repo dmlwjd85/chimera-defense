@@ -42,5 +42,7 @@ export default class StageSelectScene extends Phaser.Scene {
       b.setEnabled(open);
     });
     button(this, 120, 670, 160, 46, '← 타이틀', () => this.scene.start('Title'));
+    const sv = this.registry.get('save');
+    button(this, 1120, 670, 250, 46, `✨ 별자리 나무  💎${sv.shards ?? 0}`, () => this.scene.start('Talent', { back: 'StageSelect' }), { fill: 0x3a2466, stroke: 0xc77dff, size: 17, tip: '유물 조각으로 특성 찍기' });
   }
 }

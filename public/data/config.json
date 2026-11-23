@@ -212,5 +212,164 @@
     "front": 6.5,
     "rangedGap": 1.2,
     "note": "2026-11-23: 웨이브가 시작되면 배치 간격을 유지한 채 전열이 6.5칸(가운데)까지 전진, 원거리는 전열 1.2칸 뒤, 공중은 제자리 높이. 웨이브가 끝나면 원래 자리로"
+  },
+  "elements": {
+    "chance": {
+      "young": 0,
+      "teen": 9,
+      "adult": 14,
+      "spirit": 20,
+      "chimera": 16
+    },
+    "bonus": 20,
+    "defs": {
+      "fire": {
+        "name": "불",
+        "icon": "🔥",
+        "burnPct": 30,
+        "dur": 3
+      },
+      "water": {
+        "name": "물",
+        "icon": "💧",
+        "slow": 30,
+        "dur": 2,
+        "splash": 0.8,
+        "splashPct": 40
+      },
+      "wind": {
+        "name": "바람",
+        "icon": "🌪",
+        "push": 0.45
+      },
+      "earth": {
+        "name": "땅",
+        "icon": "⛰",
+        "stun": 0.6,
+        "radius": 0.7
+      },
+      "thunder": {
+        "name": "번개",
+        "icon": "⚡",
+        "chain": 2,
+        "range": 1.6,
+        "chainPct": 55
+      },
+      "moon": {
+        "name": "달",
+        "icon": "🌙",
+        "curse": 20,
+        "dur": 3
+      },
+      "grass": {
+        "name": "풀",
+        "icon": "🌿",
+        "root": 0.8
+      },
+      "light": {
+        "name": "빛",
+        "icon": "☀",
+        "delay": 0.7
+      }
+    }
+  },
+  "patches": {
+    "chance": {
+      "adult": 35,
+      "spirit": 100,
+      "chimera": 100
+    },
+    "radius": 1.0,
+    "dur": 6,
+    "max": 6,
+    "bySpecies": {
+      "bison": "sand",
+      "wolf_in_sheep": "frost"
+    },
+    "byElement": {
+      "fire": "scorch",
+      "water": "puddle",
+      "wind": "cloud",
+      "earth": "rock",
+      "thunder": "storm",
+      "moon": "frost",
+      "grass": "thicket",
+      "light": "sunbeam"
+    },
+    "defs": {
+      "scorch": {
+        "name": "불탄 땅",
+        "icon": "🔥",
+        "enemy": {
+          "burn": 25
+        }
+      },
+      "puddle": {
+        "name": "물웅덩이",
+        "icon": "💧",
+        "enemy": {
+          "slow": 25,
+          "wet": 50
+        }
+      },
+      "cloud": {
+        "name": "구름 그늘",
+        "icon": "☁",
+        "enemy": {
+          "flySlow": 40
+        },
+        "ally": {
+          "dodge": 15
+        }
+      },
+      "rock": {
+        "name": "바위 턱",
+        "icon": "⛰",
+        "enemy": {
+          "slow": 20
+        },
+        "ally": {
+          "taken": -20
+        }
+      },
+      "sand": {
+        "name": "모래바람",
+        "icon": "🏜",
+        "enemy": {
+          "attackSlow": 25,
+          "slow": 10
+        }
+      },
+      "storm": {
+        "name": "먹구름",
+        "icon": "⛈",
+        "enemy": {
+          "bolt": 40
+        }
+      },
+      "frost": {
+        "name": "얼음판",
+        "icon": "❄",
+        "enemy": {
+          "slow": 40
+        }
+      },
+      "thicket": {
+        "name": "풀숲",
+        "icon": "🌿",
+        "ally": {
+          "dodge": 20,
+          "regen": 2
+        }
+      },
+      "sunbeam": {
+        "name": "햇살",
+        "icon": "☀",
+        "ally": {
+          "interval": -15,
+          "dmg": 10
+        }
+      }
+    }
   }
 }

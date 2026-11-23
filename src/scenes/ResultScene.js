@@ -20,6 +20,7 @@ export default class ResultScene extends Phaser.Scene {
 
     panel(this, 60, 165, 560, 375);
     this.add.text(85, 180, `에센스 +${r.essence}`, style(24, '#ffd84d'));
+    if (r.shards) this.add.text(595, 184, `💎 유물 조각 +${r.shards}${r.shardRelics ? ` (유물 ${r.shardRelics}개가 조각으로)` : ''}`, style(15, '#e0c3ff')).setOrigin(1, 0);
     r.lines.forEach(([t, v], i) => this.add.text(95, 222 + i * 26, `${t}`, style(16)).setData('v', v) && this.add.text(560, 222 + i * 26, `+${v}`, style(16, '#ffd84d')).setOrigin(1, 0));
     let y = 230 + r.lines.length * 26 + 10;
     const finds = [
@@ -53,7 +54,8 @@ export default class ResultScene extends Phaser.Scene {
     }
     button(this, 440, 650, 200, 56, '다시 하기 (R)', () => this.scene.start('Battle', { stageId: d.stageId }), { size: 20 });
     button(this, 660, 650, 200, 56, '스테이지 선택', () => this.scene.start('StageSelect'), { size: 20, fill: 0x3a7bd5 });
-    button(this, 880, 650, 160, 56, '타이틀 (ESC)', () => this.scene.start('Title'), { size: 18 });
+    button(this, 870, 650, 140, 56, '타이틀 (ESC)', () => this.scene.start('Title'), { size: 16 });
+    button(this, 1050, 650, 200, 56, '✨ 별자리 나무', () => this.scene.start('Talent', { back: 'StageSelect' }), { size: 18, fill: 0x3a2466, stroke: 0xc77dff });
     this.input.keyboard.on('keydown-R', () => this.scene.start('Battle', { stageId: d.stageId }));
     this.input.keyboard.on('keydown-ESC', () => this.scene.start('Title'));
   }

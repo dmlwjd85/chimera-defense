@@ -1,5 +1,5 @@
 // Small shared helpers for unit effects and enemy status timers.
-const TIMERS = ['holdLeft', 'stunLeft', 'slowLeft', 'poisonLeft', 'confuseLeft', 'markLeft', 'shieldLeft'];
+const TIMERS = ['holdLeft', 'stunLeft', 'slowLeft', 'poisonLeft', 'confuseLeft', 'markLeft', 'shieldLeft', 'burnLeft', 'curseLeft'];
 
 /** First effect of a type on a unit, or null. */
 export function findEffect(unit, type) {
@@ -15,6 +15,7 @@ export function effectsOf(unit, type) {
 export function tickEnemyTimers(state, dt) {
   for (const e of state.enemies) {
     if (e.poisonLeft > 0) e.hp -= e.poisonDps * Math.min(dt, e.poisonLeft);
+    if (e.burnLeft > 0) { e.hp -= e.burnDps * Math.min(dt, e.burnLeft); if (e.burnBy != null) e.lastHitBy = e.burnBy; }
     for (const k of TIMERS) e[k] = Math.max(0, (e[k] ?? 0) - dt);
     if (e.slowLeft === 0) e.slowPct = 0;
     if (e.poisonLeft === 0) e.poisonDps = 0;

@@ -23,9 +23,14 @@ const PRESETS = {
 const TINT = { gold: 0xffd84d, purple: 0xb388ff, green: 0x7CFC9A, red: 0xff5252, blue: 0x7fd1ff, white: 0xffffff, orange: 0xffa040, pink: 0xff8fb1 };
 
 const PROJECTILE = {
-  crow: ['fx-stone', 0xffffff, 0.9], eagle: ['fx-feather', 0xffffff, 1.1], fox: ['fx-orb', 0x9cff6b, 0.8], rooster: ['fx-note', 0xffe066, 1],
-  grasshopper: ['fx-note', 0x9cff6b, 1], frog: ['fx-orb', 0xff8fb1, 0.7], cheese_thief: ['fx-orb', 0xb388ff, 0.9], thunderbird: ['fx-bolt', 0xfff6a0, 0.6],
-  phoenix: ['fx-orb', 0xff9800, 1.1], bullfrog: ['fx-orb', 0xff8fb1, 0.8],
+  crow: ['fx-stone', 0xffffff, 0.9], eagle: ['fx-feather', 0xffffff, 1.1], fox: ['fx-orb', 0x7fffd4, 0.9], rooster: ['fx-note', 0xffe066, 1.1],
+  grasshopper: ['fx-note', 0x9cff6b, 1.1], frog: ['fx-bubble', 0x9fe4ff, 1.1], cheese_thief: ['fx-stone', 0xffe9a8, 1], thunderbird: ['fx-bolt', 0xfff6a0, 0.6],
+  phoenix: ['fx-orb', 0xff9800, 1.2], bullfrog: ['fx-bubble', 0x9fe4ff, 1.4],
+};
+/** How each kind of animal lands its blows. */
+export const STRIKE = {
+  bear: 'paw', bear_tiger: 'paw', bison: 'horn', bighorn: 'horn', tiger: 'claw', rabbit: 'kick', jackalope: 'kick', wolf: 'bite', wolf_in_sheep: 'bite',
+  crow: 'drop', cheese_thief: 'drop', eagle: 'dive', thunderbird: 'dive', phoenix: 'dive', fox: 'foxfire', frog: 'bubble', bullfrog: 'bubble', rooster: 'song', grasshopper: 'song',
 };
 
 export class FX {
@@ -80,12 +85,16 @@ export class FX {
       targets: t, k: 1, duration: Math.min(260, 90 + dist * 0.5), ease: 'Sine.in',
       onUpdate: () => {
         const x = x1 + (x2 - x1) * t.k, y = y1 - 20 + (y2 - y1 + 20) * t.k - Math.sin(t.k * Math.PI) * Math.min(70, dist * 0.25);
-        p.setPosition(x, y); p.rotation += 0.3;
-        if (Math.random() < 0.35) { trail.setParticleTint(tint); trail.explode(1, x, y); }
+        p.setPosition(x, y); p.rotation += tex === 'fx-note' ? 0.08 : 0.3;
+        if (Math.random() < 0.6) { trail.setParticleTint(tint); trail.explode(1, x, y); }
+        if (Math.random() < 0.5) { const gh = this.scene.add.image(x, y, tex).setDepth(1594).setTint(tint).setScale(sc * 0.9).setAlpha(0.45).setBlendMode('ADD'); this.scene.tweens.add({ targets: gh, alpha: 0, scale: sc * 0.4, duration: 180, onComplete: () => gh.destroy() }); }
       },
       onComplete: () => {
         p.destroy();
         this.hit(x2, y2, tint, aoe);
+        if (tex === 'fx-bubble') { this.burst('bubble', x2, y2, 8, 0x9fe4ff); this.ring(x2, y2, 0x9fe4ff, 0.7, 260); }
+        if (species === 'fox') this.burst('rise', x2, y2, 8, 0x7fffd4);
+        if (tex === 'fx-note') this.burst('note', x2, y2, 4, tint);
         if (aoe) { this.ring(x2, y2, tint, 1.2); this.groundAoe(x2, y2 + 26, 70, tint); }
       },
     });
@@ -99,6 +108,8 @@ export class FX {
     if (e.slowLeft > 0) this.burst('snow', x, y - 10, 1);
     if (e.stunLeft > 0 || e.holdLeft > 0) this.burst('star', x, y - 26, 1, 0xffe066);
     if (e.confuseLeft > 0) this.burst('note', x, y - 26, 1, 0xc39bd3);
+    if (e.burnLeft > 0) this.burst('rise', x + Phaser.Math.Between(-8, 8), y, 2, 0xff7a1a);
+    if (e.curseLeft > 0) this.burst('star', x, y - 30, 1, 0xb388ff);
   }
 
   kill(x, y, gold, boss) {
@@ -198,6 +209,95 @@ export class FX {
     for (let k = 0; k < 10; k++) this.scene.time.delayedCall(k * 45, () => { const x = 130 + k * 110; this.burst('puff', x, y + 20, 4, 0xc9a26a); this.burst('spark', x, y, 3, 0xffe066); });
   }
 
+  /** Three tearing claw marks raked across the target. */
+  scratch(x, y, color = 0xffffff, dir = 1) {
+    const sc = this.scene;
+    for (let i = 0; i < 3; i++) {
+      const g = sc.add.graphics().setDepth(1606);
+      const ox = (i - 1) * 13 * dir, len = 46 - Math.abs(i - 1) * 6;
+      const x1 = x + ox - dir * len * 0.4, y1 = y - len * 0.55, x2 = x + ox + dir * len * 0.4, y2 = y + len * 0.45;
+      const t = { k: 0 };
+      sc.tweens.add({ targets: t, k: 1, duration: 90, delay: i * 35, onUpdate: () => {
+        g.clear();
+        const ex = x1 + (x2 - x1) * t.k, ey = y1 + (y2 - y1) * t.k;
+        g.lineStyle(7, 0xff5a3c, 0.35).lineBetween(x1, y1, ex, ey);
+        g.lineStyle(4, color, 1).lineBetween(x1 + (ex - x1) * 0.15, y1 + (ey - y1) * 0.15, ex, ey);
+        g.lineStyle(1.5, 0xffffff, 1).lineBetween(x1 + (ex - x1) * 0.3, y1 + (ey - y1) * 0.3, ex - (ex - x1) * 0.1, ey - (ey - y1) * 0.1);
+      }, onComplete: () => sc.tweens.add({ targets: g, alpha: 0, duration: 260, delay: 80, onComplete: () => g.destroy() }) });
+    }
+    this.burst('spark', x, y, 6, 0xffd0a0);
+  }
+
+  /** Jaws snapping shut. */
+  bite(x, y, color = 0xffffff) {
+    const sc = this.scene;
+    const g = sc.add.graphics().setDepth(1606);
+    const t = { k: 0 };
+    sc.tweens.add({ targets: t, k: 1, duration: 130, ease: 'Cubic.in', onUpdate: () => {
+      g.clear();
+      const gap = 26 * (1 - t.k) + 3;
+      for (const sgn of [-1, 1]) {
+        g.lineStyle(5, color, 0.95); g.beginPath(); g.arc(x, y + sgn * gap, 24, sgn < 0 ? 0.25 : Math.PI + 0.25, sgn < 0 ? Math.PI - 0.25 : Math.PI * 2 - 0.25, false); g.strokePath();
+        for (let k = -2; k <= 2; k++) g.fillStyle(0xffffff, 1).fillTriangle(x + k * 9 - 3, y + sgn * (gap - 2), x + k * 9 + 3, y + sgn * (gap - 2), x + k * 9, y + sgn * (gap - 11));
+      }
+    }, onComplete: () => { this.impact(x, y, 0xff8a65, 0.7); sc.tweens.add({ targets: g, alpha: 0, duration: 120, onComplete: () => g.destroy() }); } });
+  }
+
+  /** Heavy paw slamming down: a paw print stamp, dust and a short quake. */
+  paw(x, y, color = 0xffe0b0) {
+    const sc = this.scene;
+    const g = sc.add.graphics().setDepth(1606).setPosition(x, y - 70).setScale(1.4).setAlpha(0.9);
+    g.fillStyle(0x3a2412, 0.85).fillEllipse(0, 8, 34, 26);
+    for (const [dx, dy] of [[-15, -12], [-5, -18], [6, -18], [16, -12]]) g.fillEllipse(dx, dy, 11, 13);
+    g.lineStyle(2.5, color, 1).strokeEllipse(0, 8, 34, 26);
+    sc.tweens.add({ targets: g, y, scale: 1, duration: 110, ease: 'Quad.in', onComplete: () => {
+      this.groundAoe(x, y + 26, 60, 0xd9a35a, { shake: false, dur: 360 });
+      this.impact(x, y - 4, 0xffb35c, 1.1);
+      this.burst('puff', x, y + 20, 6, 0xc9a26a);
+      sc.cameras.main.shake(90, 0.004);
+      sc.tweens.add({ targets: g, alpha: 0, duration: 260, delay: 60, onComplete: () => g.destroy() });
+    } });
+  }
+
+  /** Horn / hoof ram: a horizontal streak that ends in a burst and pushed dust. */
+  horn(x, y, dir = 1) {
+    const sc = this.scene;
+    const streak = sc.add.rectangle(x - dir * 60, y, 70, 10, 0xffffff, 0.85).setDepth(1605).setBlendMode('ADD');
+    sc.tweens.add({ targets: streak, x: x - dir * 8, scaleX: 0.2, duration: 100, ease: 'Quad.in', onComplete: () => {
+      streak.destroy();
+      this.impact(x, y, 0xffd08a, 1.2);
+      this.ring(x, y + 8, 0xffffff, 0.9, 260);
+      for (let i = 0; i < 4; i++) this.burst('puff', x + dir * (10 + i * 12), y + 22, 1, 0xd9c49a);
+    } });
+  }
+
+  /** Quick double kick. */
+  kick(x, y, dir = 1) {
+    this.impact(x - dir * 4, y + 6, 0xffffff, 0.6);
+    this.scene.time.delayedCall(80, () => { this.impact(x + dir * 6, y - 6, 0xffe066, 0.8); this.burst('star', x, y - 10, 3, 0xffe066); });
+  }
+
+  /** A stone or loot dropped straight from the sky onto the target. */
+  drop(x, y, tex = 'fx-stone', tint = 0xffffff) {
+    const sc = this.scene;
+    const p = sc.add.image(x + Phaser.Math.Between(-10, 10), y - 220, tex).setDepth(1595).setTint(tint).setScale(1.1);
+    const sh = sc.add.ellipse(x, y + 28, 10, 4, 0x000000, 0.35).setDepth(35);
+    sc.tweens.add({ targets: sh, scaleX: 3, scaleY: 3, duration: 200 });
+    sc.tweens.add({ targets: p, x, y, angle: 360, duration: 200, ease: 'Quad.in', onComplete: () => { p.destroy(); sh.destroy(); this.impact(x, y, 0xffe066, 0.9); this.burst('shard', x, y + 8, 6, 0x9e9e9e); this.burst('puff', x, y + 22, 3, 0xd9c49a); } });
+  }
+
+  /** Wing gust: curling wind arcs that blow across a spot. */
+  gust(x, y, dir = 1, color = 0xe0f7ff, n = 5) {
+    const sc = this.scene;
+    for (let i = 0; i < n; i++) {
+      const g = sc.add.graphics().setDepth(1604).setBlendMode('ADD').setPosition(x - dir * 50, y - 30 + i * 13);
+      g.lineStyle(3, color, 0.9); g.beginPath(); g.arc(0, 0, 16 + (i % 3) * 5, dir > 0 ? -2.4 : 0.7, dir > 0 ? 0.7 : 3.8); g.strokePath();
+      g.lineStyle(2, color, 0.6).lineBetween(-dir * 30, 6, dir * 4, 6);
+      sc.tweens.add({ targets: g, x: x + dir * 40, alpha: 0, duration: 320, delay: i * 25, onComplete: () => g.destroy() });
+    }
+    this.burst('leaf', x, y, 5, 0xd8f5c8);
+  }
+
   /** Melee swing: a thick crescent sweeping across the target, with speed lines. */
   meleeArc(x1, y1, x2, y2, color = 0xffffff, big = false) {
     const sc = this.scene;
@@ -260,6 +360,98 @@ export class FX {
     });
     for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2; this.scene.time.delayedCall(60, () => this.burst('puff', x + Math.cos(a) * r * 0.85, y + Math.sin(a) * r * 0.85 * flat - 6, 1, opts.dust ?? 0xd9c49a)); }
     if (opts.shake !== false) sc.cameras.main.shake(140, 0.0035 * (r / 90));
+  }
+
+  /** Zigzag bolt between two points. */
+  bolt(x1, y1, x2, y2, color = 0xfff6a0) {
+    const g = this.scene.add.graphics().setDepth(1606).setBlendMode('ADD');
+    const pts = [{ x: x1, y: y1 }];
+    for (let i = 1; i < 7; i++) { const k = i / 7; pts.push({ x: x1 + (x2 - x1) * k + Phaser.Math.Between(-10, 10), y: y1 + (y2 - y1) * k + Phaser.Math.Between(-14, 14) }); }
+    pts.push({ x: x2, y: y2 });
+    g.lineStyle(7, color, 0.35).strokePoints(pts); g.lineStyle(3, 0xffffff, 1).strokePoints(pts);
+    this.scene.tweens.add({ targets: g, alpha: 0, duration: 220, onComplete: () => g.destroy() });
+  }
+
+  /** Elemental proc: each element has its own look. */
+  element(el, [ux, uy], targets) {
+    const sc = this.scene;
+    const [tx, ty] = targets[0] ?? [ux, uy];
+    switch (el) {
+      case 'fire':
+        this.burst('flare', tx, ty, 1, 0xff7a1a); this.burst('rise', tx, ty, 14, 0xff9a3c); this.burst('spark', tx, ty - 6, 8, 0xffd34d);
+        for (let i = 0; i < 3; i++) sc.time.delayedCall(i * 70, () => this.burst('rise', tx + Phaser.Math.Between(-12, 12), ty + 8, 5, 0xff5a1a));
+        break;
+      case 'water':
+        this.groundAoe(tx, ty + 26, 70, 0x4fc3ff, { shake: false, dust: 0xbfe6ff, dur: 420 });
+        this.burst('bubble', tx, ty, 10, 0x8fd8ff); this.burst('orb', tx, ty - 20, 8, 0x7fd1ff);
+        break;
+      case 'wind': {
+        const dir = Math.sign(tx - ux) || 1;
+        for (let i = 0; i < 4; i++) {
+          const g = sc.add.graphics().setDepth(1604).setBlendMode('ADD');
+          const yy = ty - 24 + i * 14;
+          g.lineStyle(3, 0xe0f7ff, 0.9); g.beginPath(); g.arc(tx - dir * 30, yy, 18 + i * 3, dir > 0 ? -2.6 : 0.5, dir > 0 ? 0.5 : 3.6); g.strokePath();
+          sc.tweens.add({ targets: g, x: dir * 46, alpha: 0, duration: 300, delay: i * 30, onComplete: () => g.destroy() });
+        }
+        this.burst('leaf', tx, ty, 8, 0xd8f5c8);
+        break;
+      }
+      case 'earth':
+        this.groundAoe(tx, ty + 26, 90, 0xc08a4a, { shake: true, dust: 0xb89870, dur: 480 });
+        this.burst('shard', tx, ty + 18, 10, 0xb08a5a); this.impact(tx, ty - 4, 0xc08a4a, 1);
+        break;
+      case 'thunder': {
+        this.bolt(tx + Phaser.Math.Between(-20, 20), ty - 160, tx, ty, 0xfff6a0);
+        for (let i = 1; i < targets.length; i++) this.bolt(targets[i - 1][0], targets[i - 1][1], targets[i][0], targets[i][1], 0xc8e6ff);
+        targets.forEach(([x, y]) => { this.burst('flare', x, y, 1, 0xfff6a0); this.burst('spark', x, y, 6, 0xfff6a0); });
+        sc.cameras.main.flash(60, 255, 250, 200);
+        break;
+      }
+      case 'moon': {
+        const m = sc.add.text(tx, ty - 46, '☾', { fontSize: '34px', color: '#d8c8ff' }).setOrigin(0.5).setDepth(1606).setScale(0.4);
+        sc.tweens.add({ targets: m, scale: 1.1, angle: -20, duration: 200, ease: 'Back.out', onComplete: () => sc.tweens.add({ targets: m, alpha: 0, y: ty - 70, duration: 600, onComplete: () => m.destroy() }) });
+        this.ring(tx, ty, 0xb388ff, 1.1); this.burst('star', tx, ty - 10, 5, 0xd8c8ff);
+        break;
+      }
+      case 'grass': {
+        const g = sc.add.graphics().setDepth(1603);
+        const vines = Array.from({ length: 5 }, (_, i) => ({ a: -Math.PI / 2 + (i - 2) * 0.45, h: 30 + Math.random() * 20 }));
+        const t = { k: 0 };
+        sc.tweens.add({ targets: t, k: 1, duration: 260, onUpdate: () => { g.clear(); for (const v of vines) { g.lineStyle(4, 0x4caf50, 1); g.beginPath(); g.moveTo(tx + Math.cos(v.a) * 8, ty + 24); g.lineTo(tx + Math.cos(v.a) * 18 * t.k + Math.sin(t.k * 6) * 4, ty + 24 - v.h * t.k); g.strokePath(); g.fillStyle(0x8bc34a, 1).fillCircle(tx + Math.cos(v.a) * 18 * t.k, ty + 24 - v.h * t.k, 4); } }, onComplete: () => sc.tweens.add({ targets: g, alpha: 0, delay: 500, duration: 300, onComplete: () => g.destroy() }) });
+        this.burst('leaf', tx, ty + 10, 6, 0x9ccc65);
+        break;
+      }
+      case 'light':
+        this.burst('bigFlare', tx, ty - 10, 1, 0xfff1a8); this.pillar(tx, ty + 20, 0xfff1a8); this.burst('star', tx, ty - 20, 6, 0xfff1a8);
+        break;
+      default: break;
+    }
+  }
+
+  /** 무협 RPG풍 기술 컷인: 화면을 가르는 띠, 속도선, 붓글씨 같은 기술 이름. */
+  cutIn(name, color = 0xffe066, sub = '') {
+    const sc = this.scene, now = sc.time.now;
+    if (now - (sc.lastCutIn ?? -9999) < 3500) return false;
+    sc.lastCutIn = now;
+    const c = sc.add.container(0, 0).setDepth(1900);
+    const band = sc.add.graphics();
+    band.fillStyle(0x05080c, 0.82).fillPoints([{ x: -40, y: 150 }, { x: 1320, y: 110 }, { x: 1320, y: 230 }, { x: -40, y: 270 }], true);
+    band.lineStyle(3, color, 1).lineBetween(-40, 150, 1320, 110).lineBetween(-40, 270, 1320, 230);
+    c.add(band);
+    for (let i = 0; i < 16; i++) {
+      const l = sc.add.rectangle(Phaser.Math.Between(0, 1280), Phaser.Math.Between(140, 250), Phaser.Math.Between(80, 260), Phaser.Math.Between(1, 3), 0xffffff, 0.5).setAngle(-1.8);
+      c.add(l); sc.tweens.add({ targets: l, x: l.x - 500, duration: 420, repeat: 1 });
+    }
+    const hex = '#' + color.toString(16).padStart(6, '0');
+    const t = sc.add.text(1500, 186, name, { fontFamily: FONT, fontSize: '54px', fontStyle: 'bold', color: '#ffffff', stroke: hex, strokeThickness: 10 }).setOrigin(0.5).setAngle(-1.8);
+    t.setShadow(4, 5, '#000000', 0, true, true);
+    const s2 = sc.add.text(640, 232, sub, { fontFamily: FONT, fontSize: '17px', color: '#efe3c8', stroke: '#000', strokeThickness: 3 }).setOrigin(0.5).setAngle(-1.8).setAlpha(0);
+    c.add([t, s2]);
+    c.setAlpha(0);
+    sc.tweens.add({ targets: c, alpha: 1, duration: 80 });
+    sc.tweens.add({ targets: t, x: 640, duration: 200, ease: 'Cubic.out', onComplete: () => { sc.cameras.main.shake(120, 0.004); sc.tweens.add({ targets: t, scale: { from: 1.25, to: 1 }, duration: 160, ease: 'Back.out' }); sc.tweens.add({ targets: s2, alpha: 1, duration: 150 }); } });
+    sc.tweens.add({ targets: c, alpha: 0, x: -120, delay: 950, duration: 200, onComplete: () => c.destroy() });
+    return true;
   }
 
   /** Comic shout bubble with the skill name over the caster. */

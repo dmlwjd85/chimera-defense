@@ -12,8 +12,9 @@ export function traitDef(t, data) {
 export function traitView(t, data) {
   const d = traitDef(t, data);
   if (!d) return { name: t.id, desc: '', fx: [], tone: 'str' };
-  if (t.kind === 'weak' && t.flipped) return { name: d.flip.name, desc: d.flip.desc, fx: d.flip.fx, tone: 'flip' };
-  return { name: d.name, desc: d.desc, fx: d.fx, tone: t.kind };
+  const tale = (k) => data.tales?.traits?.[k] ?? '';
+  if (t.kind === 'weak' && t.flipped) return { name: d.flip.name, desc: d.flip.desc, fx: d.flip.fx, tone: 'flip', tale: tale(d.id + '_f') };
+  return { name: d.name, desc: d.desc, fx: d.fx, tone: t.kind, tale: tale(d.id) };
 }
 
 const pickN = (list, n, rng) => {

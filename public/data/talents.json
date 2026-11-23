@@ -1,0 +1,34 @@
+{
+  "costs": [1, 2, 3, 4, 5],
+  "shards": { "common": 1, "rare": 2, "epic": 3, "perWaves": 3 },
+  "branches": [
+    { "id": "gold", "name": "골드 운영", "icon": "🪙", "color": "#ffd84d", "nodes": [
+      { "id": "g1", "icon": "🌰", "name": "씨앗 주머니", "tale": "길 떠나는 날, 할머니가 도토리 한 줌을 쥐여 주셨대요.", "desc": "시작 골드 +15", "eco": { "startGold": 15 } },
+      { "id": "g2", "icon": "🏷", "name": "장터 단골", "tale": "얼굴만 보고도 장꾼이 값을 깎아 주었지요.", "desc": "소환 비용 -3", "eco": { "summonDiscount": 3 } },
+      { "id": "g3", "icon": "🌾", "name": "풍년", "tale": "그해 들판은 싸움이 끝날 때마다 이삭을 내주었대요.", "desc": "웨이브 보상 +4", "eco": { "waveBonus": 4 } },
+      { "id": "g4", "icon": "🥚", "name": "덤", "tale": "\"하나 더 가져가요\" 하는 인심이 남아 있었지요.", "desc": "소환할 때 6% 확률로 하나 더", "eco": { "twinChance": 6 } },
+      { "id": "g5", "icon": "🏡", "name": "튼튼한 울타리", "tale": "모아 둔 것으로 마을 울타리를 한 겹 더 둘렀대요.", "desc": "생명 +3", "eco": { "life": 3 } }
+    ] },
+    { "id": "kind", "name": "동물 분류", "icon": "🐾", "color": "#9cff6b", "nodes": [
+      { "id": "a1", "icon": "🐻", "name": "든든한 등", "tale": "앞에 서는 이들의 등은 해마다 넓어졌지요.", "desc": "브루저 체력 +10%", "fx": [{ "who": { "role": "bruiser" }, "hp": 10 }] },
+      { "id": "a2", "icon": "🐯", "name": "날랜 발톱", "tale": "사냥꾼들은 밤마다 발톱을 갈았대요.", "desc": "딜러 피해 +8%", "fx": [{ "who": { "role": "dealer" }, "dmg": 8 }] },
+      { "id": "a3", "icon": "🦊", "name": "꾀주머니", "tale": "꾀 많은 이들의 주머니엔 늘 한 수가 더 들어 있었지요.", "desc": "테크니션의 중독·둔화 +20%", "fx": [{ "who": { "role": "technician" }, "status": 20 }] },
+      { "id": "a4", "icon": "🐓", "name": "큰 목청", "tale": "북돋는 소리는 고개 하나를 더 넘어갔대요.", "desc": "버퍼의 버프 +15%", "fx": [{ "who": { "role": "buffer" }, "buff": 15 }] },
+      { "id": "a5", "icon": "🦅", "name": "높은 하늘", "tale": "높이 나는 새가 더 멀리 보았지요.", "desc": "나는 동물 사거리 +1", "fx": [{ "who": { "flyer": true }, "range": 1 }] }
+    ] },
+    { "id": "attack", "name": "공격 유형", "icon": "⚔", "color": "#ff8a65", "nodes": [
+      { "id": "t1", "icon": "🥊", "name": "맞붙기 수련", "tale": "코앞에서 싸우는 법은 맞으면서 배웠대요.", "desc": "근접 동물 피해 +8%", "fx": [{ "who": { "melee": true }, "dmg": 8 }] },
+      { "id": "t2", "icon": "🎯", "name": "명사수", "tale": "멀리서 쏘는 이들은 바람결까지 읽었지요.", "desc": "원거리 동물 치명타 +8%", "fx": [{ "who": { "melee": false }, "crit": 8 }] },
+      { "id": "t3", "icon": "💫", "name": "넓은 품", "tale": "한 번 휘두르면 둘레가 다 휩쓸렸대요.", "desc": "광역 반경 +0.3", "fx": [{ "aoe": 0.3 }] },
+      { "id": "t4", "icon": "✨", "name": "속성 깨달음", "tale": "제 몸에 깃든 기운을 조금 더 자주 불러냈지요.", "desc": "속성 공격 확률 +5%", "fx": [{ "elemChance": 5 }] },
+      { "id": "t5", "icon": "🌋", "name": "속성 폭발", "tale": "한번 터진 기운은 산을 흔들었대요.", "desc": "속성 추가 피해 +15%", "fx": [{ "elemDmg": 15 }] }
+    ] },
+    { "id": "growth", "name": "승급 유형", "icon": "🌱", "color": "#b388ff", "nodes": [
+      { "id": "e1", "icon": "🐣", "name": "어린 용사", "tale": "어려도 겁 없이 앞장서는 아이들이 있었지요.", "desc": "어린·성장기 피해 +10%", "fx": [{ "who": { "stage": ["young", "teen"] }, "dmg": 10 }] },
+      { "id": "e2", "icon": "🦌", "name": "어른의 무게", "tale": "다 자란 짐승은 쉬이 물러서지 않았대요.", "desc": "성체 체력 +10%", "fx": [{ "who": { "stage": ["adult"] }, "hp": 10 }] },
+      { "id": "e3", "icon": "🌟", "name": "영물의 숨결", "tale": "오래 산 짐승의 숨에는 신령한 기운이 서렸지요.", "desc": "영물 피해 +12%", "fx": [{ "who": { "stage": ["spirit"] }, "dmg": 12 }] },
+      { "id": "e4", "icon": "🧪", "name": "합성의 묘", "tale": "둘을 섞는 솜씨가 날로 늘었대요.", "desc": "키메라 피해·체력 +10%", "fx": [{ "who": { "kind": "chimera" }, "dmg": 10, "hp": 10 }] },
+      { "id": "e5", "icon": "🧲", "name": "끼리끼리", "tale": "같은 짐승끼리는 서로를 불러 모았지요.", "desc": "가진 종이 다시 나올 확률 증가", "eco": { "sameSpeciesExtra": 2 } }
+    ] }
+  ]
+}

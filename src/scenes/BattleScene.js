@@ -9,7 +9,8 @@ import { terrainMatch, effRange, effBlock, effDamage, effInterval } from '../log
 import { isResting } from '../logic/combat.js';
 import { makeEnemy } from '../logic/waves.js';
 import { unitRig, enemyRig } from './rigs.js';
-import { FX, ambient } from './fx.js';
+import { FX, ambient, STRIKE } from './fx.js';
+import { Globe, HAB_SPOT } from './globe.js';
 import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
 import { button, panel, style, unitToken, silhouette, hex, COLORS, chip, showTip, hideTip } from './ui.js';
 
@@ -135,7 +136,7 @@ export default class BattleScene extends Phaser.Scene {
     this.chipObjs.forEach((c) => c.destroy()); this.chipObjs = [];
     let x = 18;
     for (const c of syn) { const o = chip(this, x, 76, `${CONT_ICON[c]} ${CONT_NAME[c]}`, SYN_TEXT[c], { stroke: 0x7fd1ff, size: 12 }); this.chipObjs.push(o); x += o.w + 6; }
-    for (const b of bonds) { const clash = b.bond.kind === 'clash'; const o = chip(this, x, 76, `${clash ? '⚡' : '♥'} ${b.bond.name}`, `${clash ? '상극' : '인연'} · ${b.bond.desc}`, { stroke: clash ? 0xf0883e : 0xff9fbf, size: 12 }); this.chipObjs.push(o); x += o.w + 6; if (x > 900) break; }
+    for (const b of bonds) { const clash = b.bond.kind === 'clash'; const o = chip(this, x, 76, `${clash ? '⚡' : '♥'} ${b.bond.name}`, `${b.bond.name} · ${clash ? '상극' : '인연'}\n${this.data2.tales?.bonds?.[b.bond.id] ?? ''}\n· ${b.bond.desc}`, { stroke: clash ? 0xf0883e : 0xff9fbf, size: 12 }); this.chipObjs.push(o); x += o.w + 6; if (x > 900) break; }
   }
 
   /** Owned relics as icon chips at the top right. */
@@ -147,10 +148,11 @@ export default class BattleScene extends Phaser.Scene {
     this.relicObjs.forEach((c) => c.destroy()); this.relicObjs = [];
     let x = 1262;
     for (const r of [...owned].reverse()) {
-      const o = chip(this, 0, 0, r.icon, `${r.name} (${RARITY_NAME[r.rarity]})\n${r.desc}`, { stroke: RARITY_COL[r.rarity], size: 16 });
+      const tip = `${r.name} · ${RARITY_NAME[r.rarity]}\n${this.data2.tales?.relics?.[r.id] ?? ''}\n· ${r.desc}`;
+      const o = chip(this, 0, 0, r.icon, tip, { stroke: RARITY_COL[r.rarity], size: 16 });
       o.destroy();
       x -= o.w + 4;
-      this.relicObjs.push(chip(this, x, 60, r.icon, `${r.name} (${RARITY_NAME[r.rarity]})\n${r.desc}`, { stroke: RARITY_COL[r.rarity], size: 16 }));
+      this.relicObjs.push(chip(this, x, 60, r.icon, tip, { stroke: RARITY_COL[r.rarity], size: 16 }));
     }
     this.relicLabel.setText(owned.length ? '' : '');
   }
@@ -185,7 +187,10 @@ export default class BattleScene extends Phaser.Scene {
       const icon = this.add.text(x + W / 2, y + 78, r.icon, style(48)).setOrigin(0.5).setDepth(4002);
       const nm = this.add.text(x + W / 2, y + 150, r.name, style(20, '#ffffff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(4002);
       const rr = this.add.text(x + W / 2, y + 176, RARITY_NAME[r.rarity], style(13, '#' + col.toString(16).padStart(6, '0'))).setOrigin(0.5).setDepth(4002);
-      const ds = this.add.text(x + W / 2, y + 200, r.desc, style(14, '#dfe6ea', { align: 'center', wordWrap: { width: W - 30 } })).setOrigin(0.5, 0).setDepth(4002);
+      const tl = this.data2.tales?.relics?.[r.id] ?? '';
+      const ds = this.add.text(x + W / 2, y + 198, tl, style(14, '#efe3c8', { align: 'center', wordWrap: { width: W - 34 }, lineSpacing: 3 })).setOrigin(0.5, 0).setDepth(4002);
+      const mech = this.add.text(x + W / 2, y + H - 18, r.desc, style(12, '#9fb3c8', { align: 'center', wordWrap: { width: W - 30 } })).setOrigin(0.5, 1).setDepth(4002);
+      objs.push(mech);
       const z = this.add.zone(x + W / 2, y + H / 2, W, H).setInteractive({ useHandCursor: true }).setDepth(4003);
       z.on('pointerover', () => { draw(true); this.tweens.add({ targets: icon, scale: 1.15, duration: 120 }); });
       z.on('pointerout', () => { draw(false); this.tweens.add({ targets: icon, scale: 1, duration: 120 }); });
@@ -249,19 +254,13 @@ export default class BattleScene extends Phaser.Scene {
 
   drawSummonPanel() {
     panel(this, 895, 395, 375, 185, { depth: 1 });
-    // globe
-    const gx = 960, gy = 462, R = 56;
-    this.globe = { x: gx, y: gy, R };
-    this.add.circle(gx, gy, R + 4, 0x0c1a2b).setDepth(2);
-    this.globeLayer = this.add.container(0, 0).setDepth(3);
-    const maskG = this.make.graphics({}, false); maskG.fillStyle(0xffffff).fillCircle(gx, gy, R);
-    this.globeLayer.setMask(maskG.createGeometryMask());
-    this.globeRing = this.add.circle(gx, gy, R).setStrokeStyle(3, 0x86c5ff).setDepth(5);
-    this.scanLine = this.add.rectangle(gx, gy, R * 2, 3, 0xffe066).setDepth(6).setVisible(false);
-    this.scope = this.add.circle(1170, 462, 44, 0x0b0e12).setStrokeStyle(4, 0xb0bec5).setDepth(5);
+    // real globe (Natural Earth outlines), telescope and caption
+    this.globe = new Globe(this, 972, 480, 68, this.registry.get('raw').globe);
+    this.scopeAt = [1178, 450];
+    this.add.circle(...this.scopeAt, 47, 0x6b4a2e).setDepth(4);
+    this.scope = this.add.circle(...this.scopeAt, 42, 0x0b0e12).setStrokeStyle(4, 0xd4b06a).setDepth(5);
     this.scopeLayer = this.add.container(0, 0).setDepth(6);
-    this.globeText = this.add.text(1082, 526, '지구본 소환', style(13, '#ddeeff', { align: 'center', wordWrap: { width: 360 } })).setOrigin(0.5, 0).setDepth(6);
-    this.paintGlobe(0);
+    this.globeText = this.add.text(1165, 500, '지구본을 돌려 보세요', style(12, '#ddeeff', { align: 'center', wordWrap: { width: 200 } })).setOrigin(0.5, 0).setDepth(6);
     const zone = this.add.zone(1082, 487, 375, 185).setInteractive().setDepth(7);
     zone.on('pointerdown', () => this.finishReveal());
     // designation
@@ -274,51 +273,44 @@ export default class BattleScene extends Phaser.Scene {
   // ---------- globe presentation ----------
   continentList() { return [...new Set(this.data2.units.map((u) => u.continent))]; }
 
-  paintGlobe(offset) {
-    const { x, y, R } = this.globe;
-    this.globeLayer.removeAll(true);
-    const conts = this.continentList();
-    const colors = { eurasia: 0x6aa84f, america: 0xc9a227, africa: 0xb85c38 };
-    const w = R * 1.4;
-    for (let k = -2; k <= conts.length + 1; k++) {
-      const c = conts[((k % conts.length) + conts.length) % conts.length];
-      const cx = x + k * w - offset;
-      const r = this.add.rectangle(cx, y, w - 6, R * 2, colors[c] ?? 0x777777, 0.85);
-      const t = this.add.text(cx, y, CONT_NAME[c], style(14, '#0b0e12', { fontStyle: 'bold' })).setOrigin(0.5);
-      this.globeLayer.add([r, t]);
-    }
-    for (let i = 1; i < 3; i++) this.globeLayer.add(this.add.rectangle(x, y - R + (i * 2 * R) / 3, R * 2, 1, 0x0c1a2b, 0.6));
-  }
-
   playGlobe(r) {
-    const roll = r.roll, conts = this.continentList(), R = this.globe.R, w = R * 1.4, data = this.data2;
-    const target = conts.indexOf(roll.continent) * w;
-    const habs = [...new Set(data.units.filter((u) => u.continent === roll.continent).map((u) => u.habitat))];
-    const hi = habs.indexOf(roll.habitat);
+    const roll = r.roll, data = this.data2;
     const fast = this.save.settings.fastRoulette;
     const D = fast ? 200 : 600;
+    const pct = (v) => Math.round(v * 100);
     this.hidden.add(r.unit.uid);
     this.reveal?.timers?.forEach((t) => t.remove());
     this.scopeLayer.removeAll(true);
-    this.scanLine.setVisible(false);
-    const pct = (v) => Math.round(v * 100);
     this.reveal = { r, timers: [] };
-    const spin = { v: 0 };
-    this.tweens.add({ targets: spin, v: target + w * conts.length * 2, duration: D, ease: 'Cubic.out', onUpdate: () => this.paintGlobe(spin.v % (w * conts.length)) });
-    this.globeText.setText(`경도 → ${CONT_NAME[roll.continent]} ${pct(roll.continentChances[roll.continent])}%`);
-    this.reveal.timers.push(this.time.delayedCall(D + 60, () => {
-      this.scanLine.setVisible(true).setY(this.globe.y - R);
-      const lbl = habs.map((h) => `${ZONE_NAME[h] ?? h} ${pct(roll.habitatChances[h] ?? 0)}%`).join(' · ');
-      this.globeText.setText(`위도 스캔: ${lbl}`);
-      this.tweens.add({ targets: this.scanLine, y: this.globe.y - R + (2 * R) * (hi + 0.5) / habs.length, duration: D, ease: 'Back.out' });
-    }));
-    this.reveal.timers.push(this.time.delayedCall(D * 2 + 120, () => {
-      this.globeText.setText(`${CONT_NAME[roll.continent]} · ${ZONE_NAME[roll.habitat]} — 망원경으로 보는 중…`);
-      const s = silhouette(this, 1170, 462, 44); s.setScale(0.4);
+    const G = this.globe, T = this.reveal.timers;
+    this.globeText.setColor('#ddeeff').setText('빙글빙글… 어디에 멈출까?');
+    // roulette ticks that slow down with the globe, sparks flying off the rim
+    for (let i = 1; i <= 9; i++) T.push(this.time.delayedCall(D * (i / 9) ** 2, () => { sfx('click'); const a = Math.random() * Math.PI * 2; this.fx.burst('spark', G.x + Math.cos(a) * G.R, G.y + Math.sin(a) * G.R, 3, 0xcfe8ff); }));
+    G.spinTo(roll.continent, HAB_SPOT[`${roll.continent}:${roll.habitat}`], D, { cont: CONT_NAME[roll.continent], hab: ZONE_NAME[roll.habitat] }, {
+      onStop: () => {
+        if (this.reveal?.r !== r || this.reveal.done) return;
+        this.globeText.setText(`${CONT_ICON[roll.continent]} ${CONT_NAME[roll.continent]}에 멈췄다! (${pct(roll.continentChances[roll.continent])}%)`);
+        this.fx.ring(G.x, G.y, 0x9fd8ff, 1.5, 420); this.fx.burst('star', G.x, G.y - G.R, 8, 0xfff6a0); sfx('hold');
+        this.tweens.add({ targets: G.g, scale: { from: 1.08, to: 1 }, duration: 260, ease: 'Back.out' });
+      },
+      onPin: () => {
+        if (this.reveal?.r !== r || this.reveal.done) return;
+        const [px, py] = G.pinXY();
+        this.globeText.setText(`📍 ${ZONE_NAME[roll.habitat]}에 핀이 꽂혔다 (${pct(roll.habitatChances[roll.habitat] ?? 0)}%)`);
+        this.fx.burst('spark', px, py + 14, 8, 0xffe066); sfx('coin');
+      },
+    });
+    T.push(this.time.delayedCall(D * 2 + 120, () => {
+      const [px, py] = G.pinXY();
+      this.fx.line(px, py, this.scopeAt[0] - 40, this.scopeAt[1], 0xffe066, 5, 320);
+      this.globeText.setText('망원경에 뭔가 잡혔다…!');
+      const s = silhouette(this, ...this.scopeAt, 42); s.setScale(0.3);
       this.scopeLayer.add(s);
       this.tweens.add({ targets: s, scale: 1, duration: D, ease: 'Sine.out' });
+      this.tweens.add({ targets: s, x: { from: -3, to: 3 }, duration: 60, yoyo: true, repeat: Math.floor(D / 120) });
+      sfx('tongue');
     }));
-    this.reveal.timers.push(this.time.delayedCall(D * 3 + 180, () => this.finishReveal()));
+    T.push(this.time.delayedCall(D * 3 + 180, () => this.finishReveal()));
   }
 
   finishReveal() {
@@ -329,12 +321,14 @@ export default class BattleScene extends Phaser.Scene {
     const { r } = rv, u = r.unit, data = this.data2;
     this.hidden.delete(u.uid);
     this.scopeLayer.removeAll(true);
-    const tok = unitToken(this, u, data); tok.setPosition(1170, 462);
+    const tok = unitToken(this, u, data); tok.setPosition(...this.scopeAt);
     this.scopeLayer.add(tok);
     this.tweens.add({ targets: tok, scale: { from: 0.3, to: 1 }, duration: 250, ease: 'Back.out' });
     const traits = u.traits.map((t) => { const v = traitView(t, data); return `${v.tone === 'str' ? '＋' : '－'}${v.name}`; }).join('  ');
     this.globeText.setText(`${u.white ? '✨ 흰 ' : ''}${u.stats.name} (${(r.roll.chances[r.roll.unitId] * 100).toFixed(1)}%)\n${traits}`);
-    sfx('reveal'); if (u.white) this.fx.burst('rise', 1170, 462, 16, 0xffffff);
+    sfx('reveal'); if (u.white) this.fx.burst('rise', ...this.scopeAt, 16, 0xffffff);
+    this.startEntrance(u.uid);
+    this.time.delayedCall(1400, () => { if (this.reveal === rv) { this.globe.reset(); this.refreshDesignate(); } });
     this.globeText.setColor(u.traits.every((t) => t.kind === 'str') ? '#7CFC9A' : u.traits.every((t) => t.kind === 'weak') ? '#ffb27a' : '#ddeeff');
   }
 
@@ -357,6 +351,8 @@ export default class BattleScene extends Phaser.Scene {
     const d = this.designate, c = this.data2.config.designate;
     this.contBtn.set(d.continent ? `대륙: ${CONT_NAME[d.continent]} (+${c.continent})` : '대륙 지정 안 함');
     this.habBtn.set(d.habitat ? `서식: ${ZONE_NAME[d.habitat]} (+${c.habitat})` : '서식환경 지정 안 함');
+    const cont = d.continent ?? (d.habitat ? this.data2.units.find((u) => u.habitat === d.habitat)?.continent : null);
+    if (this.globe && (!this.reveal || this.reveal.done)) { this.globe.face(cont); if (cont) this.globe.highlight = cont; }
   }
 
   // ---------- actions ----------
@@ -417,6 +413,12 @@ export default class BattleScene extends Phaser.Scene {
     y += 24;
     add(this.add.text(x + 12, y, sub, style(12, '#d4b06a')));
     add(this.add.text(x + w - 12, y, `${u.stats.continents.map((c) => CONT_ICON[c]).join('')}`, style(12))).setOrigin(1, 0);
+    const ed = u.stats.element ? data.config.elements.defs[u.stats.element] : null;
+    if (ed) {
+      const ch = u.kind === 'chimera' ? data.config.elements.chance.chimera : data.config.elements.chance[u.stage] ?? 0;
+      const et = add(this.add.text(x + w - 34, y, ed.icon, style(13))).setOrigin(1, 0).setInteractive();
+      et.on('pointerover', () => showTip(this, `${ed.name} 속성\n${ELEM_TALE[u.stats.element]}\n· ${ch ? `공격의 ${ch}%가 ${ed.name} 속성으로 터짐` : '성장기부터 속성 공격이 나옴'}`, x + w - 40, y)).on('pointerout', () => hideTip(this));
+    }
     y += 20;
     const stat = (ix, iy, ic, val, tip) => {
       const t = add(this.add.text(ix, iy, `${ic} ${val}`, style(13, '#ffffff')));
@@ -435,8 +437,8 @@ export default class BattleScene extends Phaser.Scene {
     u.traits.forEach((t, i) => {
       const v = traitView(t, data);
       const col = v.tone === 'str' ? 0x7CFC9A : v.tone === 'flip' ? 0x7fd1ff : 0xffb27a;
-      const c = chip(this, cx, y, `${t.locked ? '🔒' : ''}${v.name}`, `${v.name}: ${v.desc}\n(누르면 ${t.locked ? '고정 해제' : '고정'})`, { stroke: col, color: '#' + col.toString(16).padStart(6, '0'), size: 12, depth: 1803, onClick: () => { toggleLock(this.state, uid, i); this.cardSig = ''; this.showUnitCard(uid); } });
-      if (cx + c.w > x + w - 10 && cx > x + 10) { c.destroy(); cx = x + 10; y += 26; const c2 = chip(this, cx, y, `${t.locked ? '🔒' : ''}${v.name}`, `${v.name}: ${v.desc}`, { stroke: col, color: '#' + col.toString(16).padStart(6, '0'), size: 12, depth: 1803, onClick: () => { toggleLock(this.state, uid, i); this.cardSig = ''; this.showUnitCard(uid); } }); objs.push(...c2.objs); cx += c2.w + 5; }
+      const c = chip(this, cx, y, `${t.locked ? '🔒' : ''}${v.name}`, `${v.tale || v.name}\n· ${v.desc}\n(누르면 ${t.locked ? '고정 풀기' : '고정'})`, { stroke: col, color: '#' + col.toString(16).padStart(6, '0'), size: 12, depth: 1803, onClick: () => { toggleLock(this.state, uid, i); this.cardSig = ''; this.showUnitCard(uid); } });
+      if (cx + c.w > x + w - 10 && cx > x + 10) { c.destroy(); cx = x + 10; y += 26; const c2 = chip(this, cx, y, `${t.locked ? '🔒' : ''}${v.name}`, `${v.tale || v.name}\n· ${v.desc}`, { stroke: col, color: '#' + col.toString(16).padStart(6, '0'), size: 12, depth: 1803, onClick: () => { toggleLock(this.state, uid, i); this.cardSig = ''; this.showUnitCard(uid); } }); objs.push(...c2.objs); cx += c2.w + 5; }
       else { objs.push(...c.objs); cx += c.w + 5; }
     });
     if (u.traits.length) y += 28;
@@ -444,9 +446,9 @@ export default class BattleScene extends Phaser.Scene {
     cx = x + 10;
     const pas = sp ? data.lore.passives[sp.id] : null;
     const extra = [
-      ...u.stats.skills.map((sk) => ['✦ ' + sk.split(/[:：(]/)[0].trim(), sk, 0xcfd8dc]),
-      ...(pas ? [['📜 ' + pas.name, `설화: ${pas.name} — ${pas.desc}`, 0xe8c3ff]] : []),
-      ...bonds.map((b) => [`${b.bond.kind === 'clash' ? '⚡' : '♥'} ${b.bond.name}`, b.bond.desc, b.bond.kind === 'clash' ? 0xf0883e : 0xff9fbf]),
+      ...(u.stats.skillTales ?? []).map((k) => ['✦ ' + k.name, `${k.tale || k.name}\n· ${k.desc}`, 0xcfd8dc]),
+      ...(pas ? [['📜 ' + pas.name, `${data.tales?.passives?.[sp.id] ?? pas.name}\n· ${pas.desc}`, 0xe8c3ff]] : []),
+      ...bonds.map((b) => [`${b.bond.kind === 'clash' ? '⚡' : '♥'} ${b.bond.name}`, `${data.tales?.bonds?.[b.bond.id] ?? b.bond.name}\n· ${b.bond.desc}`, b.bond.kind === 'clash' ? 0xf0883e : 0xff9fbf]),
     ];
     for (const [lab, tip, col] of extra) {
       let c = chip(this, cx, y, lab, tip, { stroke: col, size: 12, depth: 1803 });
@@ -455,10 +457,11 @@ export default class BattleScene extends Phaser.Scene {
     }
     if (extra.length) y += 28;
     if (this.cardExpanded) {
-      const line = (t, col) => { const o = add(this.add.text(x + 12, y, t, style(12, col, { wordWrap: { width: w - 24 } }))); y += o.height + 3; };
-      u.traits.forEach((t) => { const v = traitView(t, data); line(`${v.name}: ${v.desc}`, v.tone === 'str' ? '#7CFC9A' : v.tone === 'flip' ? '#7fd1ff' : '#ffb27a'); });
-      for (const sk of u.stats.skills) line('✦ ' + sk, '#cfd8dc');
-      if (pas) line(`📜 ${pas.name} — ${pas.desc}`, '#e8c3ff');
+      const line = (t, col, size = 12) => { const o = add(this.add.text(x + 12, y, t, style(size, col, { wordWrap: { width: w - 24 } }))); y += o.height + 2; };
+      const pair = (head, col, tale, mech) => { line(head, col, 12); if (tale) line(tale, '#efe3c8', 12); line('· ' + mech, '#8fa1b3', 11); y += 3; };
+      u.traits.forEach((t) => { const v = traitView(t, data); pair(v.name, v.tone === 'str' ? '#7CFC9A' : v.tone === 'flip' ? '#7fd1ff' : '#ffb27a', v.tale, v.desc); });
+      for (const k of u.stats.skillTales ?? []) pair('✦ ' + k.name, '#cfd8dc', k.tale, k.desc);
+      if (pas) pair('📜 ' + pas.name, '#e8c3ff', data.tales?.passives?.[sp.id], pas.desc);
       if (sp) line(`"${u.stage === 'spirit' ? sp.spiritCodex : sp.codex}"`, '#8899aa');
     }
     const more = add(this.add.text(x + w / 2, y + 2, this.cardExpanded ? '접기 ▴' : '자세히 ▾', style(12, '#d4b06a'))).setOrigin(0.5, 0).setInteractive({ useHandCursor: true });
@@ -481,11 +484,13 @@ export default class BattleScene extends Phaser.Scene {
     this.enemyHits = new Set(this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid));
     if (live && !stop) step(this.state, this.data2, this.frameDt);
     this.enemyHits = new Set([...this.enemyHits, ...this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid)]);
+    this.globe?.update(this.realDt);
     this.preAnimate();
     this.syncUnits();
     this.syncEnemies();
     this.drawBonds();
     this.persistentFx();
+    this.syncPatches();
     this.drainEvents();
     this.updateHud();
     this.updateTutorial();
@@ -563,7 +568,15 @@ export default class BattleScene extends Phaser.Scene {
       if (this.dragUid !== u.uid) {
         if (onField && u.stats.flyer) {
           v.skyCur ??= y; v.skyCur += (y - v.skyCur) * Math.min(1, this.frameDt * 4 || 0.1);
-          v.container.setPosition(x, v.skyCur + Math.sin(this.time.now / 380 + u.uid) * 6);
+          let px = x, py = v.skyCur + Math.sin(this.time.now / 380 + u.uid) * 6;
+          if (v.dive) {
+            v.dive.t += this.realDt || 0.016;
+            const k = v.dive.t / 0.42;
+            if (k >= 1) v.dive = null;
+            else { const e = k < 0.4 ? Phaser.Math.Easing.Quadratic.In(k / 0.4) : 1 - Phaser.Math.Easing.Quadratic.Out((k - 0.4) / 0.6); px = x + (v.dive.tx - x) * e; py = py + (v.dive.ty - py) * e; v.container.setAngle((v.dive.tx > x ? 1 : -1) * 35 * (k < 0.4 ? e : -e * 0.6)); if (Math.random() < 0.5) this.fx.burst('leaf', px, py, 1, 0xffffff); }
+            if (!v.dive) v.container.setAngle(0);
+          }
+          v.container.setPosition(px, py);
         } else if (onField) {
           v.curX ??= x; v.curY ??= y;
           const k = 1 - Math.exp(-5 * (this.realDt || 0.016) * (this.paused ? 0 : this.speed));
@@ -576,7 +589,7 @@ export default class BattleScene extends Phaser.Scene {
           if (v.lungeT != null) { v.lungeT += this.realDt || 0.016; const k = v.lungeT / 0.2; lx = k < 1 ? Math.sin(k * Math.PI) * 26 * v.lungeDir : 0; if (k >= 1) v.lungeT = null; }
           if (v.shakeT > 0) { v.shakeT -= this.realDt || 0.016; lx += Math.sin(this.time.now / 18) * 4 * Math.max(0, v.shakeT / 0.18); }
           v.container.setPosition(v.curX + lx, v.curY);
-        } else { v.curX = x; v.curY = y; v.walking = false; v.container.setPosition(x, y); }
+        } else { v.curX = x; v.curY = y; v.walking = false; v.container.setPosition(x, y); if (this.pendingEnt?.has(u.uid) && !this.hidden.has(u.uid)) this.startEntrance(u.uid); if (v.ent) this.tickEntrance(u, v, x, y); }
       } else { v.curX = undefined; v.curY = undefined; }
       v.container.setDepth(onField ? (u.stats.flyer ? 900 + y : 50 + y) : 60);
       if (v.shadow) { v.shadow.setVisible(onField && u.stats.flyer && !u.down); v.shadow.setPosition(x, LANE_Y[1] + 34); }
@@ -706,11 +719,115 @@ export default class BattleScene extends Phaser.Scene {
     }
   }
 
+  /** Terrain patches on the road: a soft coloured field with drifting bits of its element, fading as it runs out. */
+  syncPatches() {
+    this.patchViews ??= new Map();
+    const live = new Set();
+    const defs = this.data2.config.patches?.defs ?? {};
+    for (const p of this.state.patches ?? []) {
+      live.add(p.id);
+      let v = this.patchViews.get(p.id);
+      const x = tileToX(p.pos), w = p.r * 2 * TILE, sky = p.kind === 'cloud' || p.kind === 'storm' || p.kind === 'sunbeam';
+      if (!v) {
+        const g = this.add.graphics().setDepth(sky ? 880 : 9);
+        const col = PATCH_COL[p.kind];
+        if (sky) {
+          const cy = PATH_Y - PATH_H / 2 - 70;
+          if (p.kind === 'sunbeam') { g.fillStyle(col, 0.16).fillPoints([{ x: x - 30, y: cy - 60 }, { x: x + 30, y: cy - 60 }, { x: x + w / 2, y: PATH_Y + PATH_H / 2 }, { x: x - w / 2, y: PATH_Y + PATH_H / 2 }], true); g.fillStyle(col, 0.22).fillEllipse(x, PATH_Y + 30, w, PATH_H * 0.5); }
+          else { g.fillStyle(0x000000, 0.18).fillEllipse(x, PATH_Y + 30, w, PATH_H * 0.55); for (const [dx, dy, r] of [[-50, 6, 30], [-18, -8, 38], [22, -4, 34], [54, 8, 26], [0, 12, 40]]) g.fillStyle(col, 0.92).fillCircle(x + dx, cy + dy, r); for (const [dx, dy, r] of [[-30, 16, 26], [20, 18, 28]]) g.fillStyle(0x000000, p.kind === 'storm' ? 0.25 : 0.08).fillCircle(x + dx, cy + dy, r); }
+        } else {
+          g.fillStyle(col, 0.3).fillEllipse(x, PATH_Y + 10, w * 1.05, PATH_H * 0.86);
+          g.fillStyle(col, 0.34).fillEllipse(x - 8, PATH_Y + 6, w * 0.8, PATH_H * 0.6);
+          g.lineStyle(2.5, col, 0.85).strokeEllipse(x, PATH_Y + 10, w * 1.05, PATH_H * 0.86);
+          const r = new Phaser.Math.RandomDataGenerator([String(p.id)]);
+          for (let i = 0; i < 9; i++) {
+            const px = x + r.between(-w * 0.4, w * 0.4), py = PATH_Y + 10 + r.between(-PATH_H * 0.3, PATH_H * 0.3);
+            if (p.kind === 'frost') { g.lineStyle(2, 0xffffff, 0.8); for (let a = 0; a < 3; a++) g.lineBetween(px - Math.cos(a * 1.05) * 9, py - Math.sin(a * 1.05) * 5, px + Math.cos(a * 1.05) * 9, py + Math.sin(a * 1.05) * 5); }
+            else if (p.kind === 'rock') g.fillStyle(0x6d6258, 0.9).fillTriangle(px - 10, py + 6, px + 10, py + 6, px + r.between(-4, 4), py - 12);
+            else if (p.kind === 'thicket') { g.lineStyle(3, 0x2e7d32, 0.9); g.lineBetween(px, py + 6, px - 5, py - 10).lineBetween(px, py + 6, px + 1, py - 13).lineBetween(px, py + 6, px + 6, py - 9); }
+            else if (p.kind === 'puddle') g.lineStyle(1.5, 0xffffff, 0.6).strokeEllipse(px, py, 22, 7);
+            else if (p.kind === 'sand') { g.lineStyle(2, 0xfff0c0, 0.6); g.beginPath(); g.arc(px, py + 8, 14, -2.6, -0.5); g.strokePath(); }
+            else g.fillStyle(0x2a1208, 0.5).fillEllipse(px, py, 16, 6);
+          }
+        }
+        const lab = this.add.text(x, PATH_Y + PATH_H / 2 - 12, defs[p.kind].icon, style(15)).setOrigin(0.5).setDepth(10).setInteractive();
+        const d = defs[p.kind];
+        lab.on('pointerover', () => showTip(this, `${d.name}\n· ${PATCH_TIP[p.kind]}`, x, PATH_Y + PATH_H / 2 - 24)).on('pointerout', () => hideTip(this));
+        g.setAlpha(0); this.tweens.add({ targets: g, alpha: 1, duration: 260 });
+        v = { g, lab, at: 0 };
+        this.patchViews.set(p.id, v);
+      }
+      const a = Math.min(1, p.left / 1.2);
+      if (a < 1) v.g.setAlpha(a); v.lab.setAlpha(a);
+      if (this.time.now > v.at) {
+        v.at = this.time.now + 260;
+        const px = x + Phaser.Math.Between(-w * 0.4, w * 0.4), py = PATH_Y + Phaser.Math.Between(-PATH_H * 0.3, PATH_H * 0.35);
+        const pt = { scorch: ['rise', 0xff7a1a], puddle: ['bubble', 0x9fe4ff], frost: ['snow', 0xffffff], sand: ['puff', 0xe2c078], thicket: ['leaf', 0x9ccc65], sunbeam: ['rise', 0xfff1a8], rock: ['puff', 0xb0a090], cloud: ['snow', 0xffffff], storm: ['orb', 0x9fb8ff] }[p.kind];
+        this.fx.burst(pt[0], px, sky && p.kind !== 'sunbeam' ? PATH_Y - PATH_H / 2 - 50 : py, 1, pt[1]);
+      }
+    }
+    for (const [id, v] of this.patchViews) if (!live.has(id)) { v.g.destroy(); v.lab.destroy(); this.patchViews.delete(id); }
+  }
+
+  /** 연타 표시: 짧은 시간 안에 이어진 타격 수를 크게 보여 준다. */
+  combo() {
+    const now = this.time.now;
+    this.comboN = now - (this.comboAt ?? 0) < 900 ? (this.comboN ?? 0) + 1 : 1;
+    this.comboAt = now;
+    if (this.comboN < 3) return;
+    this.comboText ??= this.add.text(860, 150, '', style(30, '#ffe066', { stroke: '#7a2a00', strokeThickness: 7, fontStyle: 'bold' })).setOrigin(1, 0.5).setDepth(1700).setAngle(-6);
+    this.comboText.setText(`${this.comboN}연타!`).setAlpha(1).setScale(1.5);
+    this.tweens.killTweensOf(this.comboText);
+    this.tweens.add({ targets: this.comboText, scale: 1, duration: 140, ease: 'Back.out' });
+    this.tweens.add({ targets: this.comboText, alpha: 0, delay: 900, duration: 300 });
+  }
+
+  /** Bench entrance: the animal bursts out of its slot as a silhouette, lands, then its colours pop in. */
+  startEntrance(uid) {
+    const v = this.unitViews.get(uid);
+    if (!v) { (this.pendingEnt ??= new Set()).add(uid); return; }
+    this.pendingEnt?.delete(uid);
+    const x = v.container.x, y = v.container.y;
+    v.ent = { t: 0, landed: false };
+    if (v.rig) v.rig.inst.silhouette = true;
+    v.name.setVisible(false);
+    const hole = this.add.ellipse(x, y + 36, 20, 8, 0x05080c, 0.85).setDepth(59);
+    this.tweens.add({ targets: hole, scaleX: 3.6, scaleY: 2.2, duration: 140, ease: 'Back.out' });
+    v.ent.hole = hole;
+    this.fx.burst('puff', x, y + 34, 6, 0xbfae8a); this.fx.burst('shard', x, y + 30, 5, 0x8d7a5a);
+    sfx('dodge');
+  }
+
+  tickEntrance(u, v, x, y) {
+    const e = v.ent, dt = this.realDt || 0.016;
+    e.t += dt;
+    const k = Math.min(1, e.t / 0.4);
+    if (!e.landed) {
+      const yo = 44 * (1 - k) ** 2 - Math.sin(Math.PI * k) * 62;
+      v.container.setPosition(x, y + yo).setScale(0.3 + 0.7 * Math.min(1, k * 1.7)).setAngle(Math.sin(k * Math.PI * 2) * 8);
+      if (k >= 1) {
+        e.landed = true;
+        v.container.setAngle(0);
+        if (v.rig) { v.rig.inst.silhouette = false; v.rig.inst.hitFlash(0.2); v.rig.inst.play('merge_in'); }
+        v.name.setVisible(true).setScale(0.3); this.tweens.add({ targets: v.name, scale: 1, duration: 200, ease: 'Back.out' });
+        this.tweens.add({ targets: v.container, scaleX: { from: 1.28, to: 1 }, scaleY: { from: 0.74, to: 1 }, duration: 260, ease: 'Back.out' });
+        const col = u.white ? 0xffffff : u.traits?.every((t) => t.kind === 'str') ? 0x7CFC9A : 0xfff6a0;
+        this.fx.ring(x, y + 30, col, 1.1, 420); this.fx.burst('star', x, y, 10, col); this.fx.burst('rise', x, y + 10, 10, col); this.fx.burst('puff', x, y + 34, 4, 0xbfae8a);
+        const ed = u.stats.element ? this.data2.config.elements.defs[u.stats.element] : null;
+        if (ed) this.floatText(x + 30, y - 44, ed.icon, '#ffffff', 18);
+        this.tweens.add({ targets: e.hole, alpha: 0, scaleX: 0.5, duration: 300, onComplete: () => e.hole.destroy() });
+        sfx('respawn');
+      }
+    } else if (e.t > 0.7) v.ent = null;
+  }
+
   dmgNumber(x, y, d, heavy) {
     const t = this.add.text(x + Phaser.Math.Between(-10, 10), y, String(Math.round(d)), style(heavy ? 26 : 17, heavy ? '#ffe066' : '#ffffff', { stroke: heavy ? '#7a2a00' : '#000000', strokeThickness: heavy ? 6 : 4, fontStyle: 'bold' })).setOrigin(0.5).setDepth(1700).setScale(heavy ? 1.6 : 1.2);
     this.tweens.add({ targets: t, scale: 1, duration: 120, ease: 'Back.out' });
     this.tweens.add({ targets: t, y: y - (heavy ? 42 : 30), alpha: 0, delay: heavy ? 380 : 220, duration: 420, onComplete: () => t.destroy() });
   }
+
+  kick2(ev, fromX) { this.kick(ev.eids?.length ? ev.eids : [ev.eid], fromX, 9); }
 
   /** Hit-stop: freeze the simulation for a few frames on heavy hits. */
   stopFor(sec) { const now = this.time.now; if (now - (this.lastStopAt ?? 0) < 220) return; this.lastStopAt = now; this.hitStop = Math.max(this.hitStop ?? 0, sec); }
@@ -740,6 +857,7 @@ export default class BattleScene extends Phaser.Scene {
       if (ev.type === 'skill' && v?.rig && ev.name) v.rig.inst.play('skill');
       if (ev.type === 'merge') this.pendingBirth.set(ev.uid, ev.kind === 'evolve' || ev.kind === 'spirit' ? 'evolve' : 'merge_in');
       if (ev.type === 'summon') this.pendingBirth.set(ev.uid, 'merge_in');
+      if (ev.type === 'twin') this.hidden.add(ev.uid);
     }
   }
 
@@ -753,16 +871,30 @@ export default class BattleScene extends Phaser.Scene {
         case 'leak': this.floatText(tileToX(0) + 30, PATH_Y - 40, `-${ev.leak}`, '#ff5252', 22); this.fx.leak(tileToX(0), PATH_Y); this.cameras.main.shake(100, 0.005); sfx('leak'); break;
         case 'attack': {
           this.lastAttack.set(ev.uid, time());
+          this.combo();
           const u = this.state.field.find((x) => x.uid === ev.uid);
           const ve = this.enemyViews.get(ev.eid) ?? this.goneViews?.get(ev.eid);
           if (!u || !ve) break;
           const [ux, uy] = unitPos(ev.uid);
-          if (u.stats.range >= 3) { this.fx.projectile(u.speciesId, ux, uy, ve.lastX, ve.lastY, ev.aoe); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); }
+          const kind = STRIKE[u.speciesId] ?? (u.stats.range >= 3 ? 'shot' : 'swing');
+          if (kind === 'dive') {
+            const v = this.unitViews.get(ev.uid);
+            if (v) v.dive = { t: 0, tx: ve.lastX, ty: ve.lastY - 30 };
+            this.time.delayedCall(170, () => { this.fx.gust(ve.lastX, ve.lastY, 1, u.speciesId === 'phoenix' ? 0xffb35c : 0xe0f7ff); this.fx.hit(ve.lastX, ve.lastY, u.speciesId === 'phoenix' ? 'orange' : 'white', true); if (ev.aoe) this.fx.groundAoe(ve.lastX, ve.lastY + 26, 80, u.speciesId === 'thunderbird' ? 0xfff6a0 : u.speciesId === 'phoenix' ? 0xff8a3c : 0xcfefff, { shake: false }); if (u.speciesId === 'thunderbird') this.fx.bolt(ve.lastX, ve.lastY - 150, ve.lastX, ve.lastY); this.kick2(ev, ux); });
+            sfx('slash');
+          } else if (kind === 'drop') { this.fx.drop(ve.lastX, ve.lastY, 'fx-stone', u.speciesId === 'cheese_thief' ? 0xffe9a8 : 0xffffff); this.time.delayedCall(200, () => this.kick2(ev, ux)); sfx('shoot'); }
+          else if (u.stats.range >= 3) { this.fx.projectile(u.speciesId, ux, uy, ve.lastX, ve.lastY, ev.aoe); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); }
           else {
             const v = this.unitViews.get(ev.uid);
             if (v) { v.lungeT = 0; v.lungeDir = Math.sign(ve.lastX - ux) || 1; }
             const big = ev.aoe || u.stats.role === 'bruiser';
-            this.fx.meleeArc(ux, uy, ve.lastX, ve.lastY, ev.aoe ? 0xffe066 : 0xffffff, big);
+            const dir = Math.sign(ve.lastX - ux) || 1;
+            if (kind === 'claw') this.fx.scratch(ve.lastX, ve.lastY - 4, 0xffffff, dir);
+            else if (kind === 'bite') this.fx.bite(ve.lastX, ve.lastY - 6);
+            else if (kind === 'paw') { this.fx.paw(ve.lastX, ve.lastY); if (u.speciesId === 'bear_tiger') this.fx.scratch(ve.lastX, ve.lastY - 4, 0xffd08a, dir); }
+            else if (kind === 'horn') this.fx.horn(ve.lastX, ve.lastY - 4, dir);
+            else if (kind === 'kick') this.fx.kick(ve.lastX, ve.lastY, dir);
+            if (kind === 'swing' || ev.aoe) this.fx.meleeArc(ux, uy, ve.lastX, ve.lastY, ev.aoe ? 0xffe066 : 0xffffff, big);
             this.fx.hit(ve.lastX, ve.lastY, ev.aoe ? 'gold' : 'white', ev.aoe);
             if (big) this.fx.impact(ve.lastX + 6, ve.lastY - 8, ev.aoe ? 0xffb35c : 0xffe066, ev.aoe ? 1.1 : 0.8);
             if (ev.aoe) { this.fx.groundAoe(ve.lastX, ve.lastY + 26, 75, 0xffd84d, { shake: false }); this.stopFor(0.045); }
@@ -779,6 +911,7 @@ export default class BattleScene extends Phaser.Scene {
           const u = this.state.field.find((x) => x.uid === ev.uid);
           const extra = { color: u?.speciesId === 'wolf' ? 0xff7043 : 0xffd84d, allies: this.state.field.filter((o) => !o.down).map((o) => unitPos(o.uid)), allyAt: ev.ally != null ? unitPos(ev.ally) : null };
           this.fx.skillFx(ev.fx, at, targets, extra);
+          if (ev.big && ev.name) { const k = (u?.stats.skillTales ?? []).find((q) => q.name === ev.name) ?? u?.stats.skillTales?.at(-1); if (this.fx.cutIn(ev.name, SHOUT_COL[ev.fx] ?? 0xffe066, k?.tale ?? '')) this.stopFor(0.12); }
           if (ev.name) this.fx.shout(at[0], at[1] - 92, ev.name, SHOUT_COL[ev.fx] ?? 0xffe066);
           if (targets.length && ['damageHeld', 'pushHeld', 'damageAll', 'stunRadius', 'flee'].includes(ev.fx)) { this.stopFor(0.07); this.kick(ev.eids ?? [], at[0], 16); }
           sfx(ev.fx === 'allyBuff' ? (u?.speciesId === 'wolf' ? 'howl' : 'note') : SKILL_SFX[ev.fx] ?? 'magic');
@@ -789,15 +922,26 @@ export default class BattleScene extends Phaser.Scene {
         case 'shieldUp': { const v = this.enemyViews.get(ev.eid); if (v) this.fx.ring(v.lastX, v.lastY, 'purple', 1.4); sfx('shield'); break; }
         case 'splash': { const v = this.enemyViews.get(ev.eid); if (v) { this.fx.burst('orb', v.lastX, v.lastY, 1); this.fx.hit(v.lastX, v.lastY, 'green'); this.floatText(v.lastX, v.lastY - 30, '배 떨어짐!', '#c5e1a5', 12); } break; }
         case 'bait': sfx('bait'); break;
+        case 'patch': { const d = data.config.patches.defs[ev.kind]; this.floatText(tileToX(ev.pos), PATH_Y - PATH_H / 2 - 4, `${d.icon} ${d.name}`, '#ffffff', 15); this.fx.ring(tileToX(ev.pos), PATH_Y, PATCH_COL[ev.kind], 2.2, 500); break; }
+        case 'patchBolt': { const v = this.enemyViews.get(ev.eid); if (v) { this.fx.bolt(v.lastX + Phaser.Math.Between(-16, 16), v.lastY - 170, v.lastX, v.lastY); this.fx.hit(v.lastX, v.lastY, 'gold'); sfx('bolt'); } break; }
+        case 'element': {
+          const targets = (ev.eids ?? []).map((id) => this.enemyViews.get(id) ?? this.goneViews?.get(id)).filter(Boolean).map((v) => [v.lastX, v.lastY]);
+          if (!targets.length) break;
+          this.fx.element(ev.el, unitPos(ev.uid), targets);
+          const d = data.config.elements.defs[ev.el];
+          this.floatText(targets[0][0] + 18, targets[0][1] - 52, d.icon, '#ffffff', 20);
+          sfx(ELEM_SFX[ev.el] ?? 'magic');
+          break;
+        }
         case 'relic': { const r = data.relicById[ev.id]; this.toast(`${r.icon} ${r.name} 획득`, '#e0c3ff'); this.cameras.main.flash(250, 200, 160, 255); sfx('evolve'); break; }
-        case 'twin': this.time.delayedCall(this.save.settings.fastRoulette ? 700 : 1950, () => { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 40, '🥚 쌍둥이!', '#fff6a0', 16); this.fx.burst('rise', x, y, 10, 0xfff6a0); }); break;
+        case 'twin': this.time.delayedCall(this.save.settings.fastRoulette ? 1000 : 2300, () => { this.hidden.delete(ev.uid); this.startEntrance(ev.uid); this.time.delayedCall(450, () => { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 60, '🥚 쌍둥이!', '#fff6a0', 16); }); }); break;
         case 'interest': if (ev.gold > 0) { this.floatText(220, 52, `+${ev.gold} 이자`, '#ffd84d', 15); sfx('coin'); } break;
         case 'knock': { const ve = this.enemyViews.get(ev.eid); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY + 10, 4, 0xd9c49a); this.fx.hit(ve.lastX, ve.lastY, 'orange'); } break; }
         case 'heal': { const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.heal(ve.lastX, ve.lastY); sfx('heal'); break; }
         case 'down': { const [x, y] = unitPos(ev.uid); this.fx.down(x, y); sfx('down'); break; }
         case 'dodge': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 30, '회피', '#7fd1ff', 13); this.fx.burst('leaf', x, y, 3, 0x7fd1ff); sfx('dodge'); break; }
         case 'survive': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 50, '간을 두고 왔다!', '#ffb3c6', 16); this.fx.evolve(x, y, false); sfx('evolve'); break; }
-        case 'summon': sfx('summon'); this.time.delayedCall(this.save.settings.fastRoulette ? 700 : 1950, () => { const [x, y] = unitPos(ev.uid); this.fx.burst('rise', x, y, 12, 0xfff6a0); this.fx.ring(x, y + 20, 'gold', 0.8); }); break;
+        case 'summon': sfx('summon'); break;
         case 'gold': this.floatText(...unitPos(ev.uid), `+${ev.gold}`, '#ffd84d'); break;
         case 'bondNew': {
           const b = data.lore.bonds.find((x) => x.id === ev.id);
@@ -877,5 +1021,18 @@ export default class BattleScene extends Phaser.Scene {
 
 const time = () => performance.now();
 const SHOT_SFX = { crow: 'shoot', eagle: 'slash', fox: 'magic', rooster: 'note', grasshopper: 'note', frog: 'magic', cheese_thief: 'magic', thunderbird: 'bolt', phoenix: 'fire', bullfrog: 'magic' };
+const PATCH_TIP = { scorch: '밟은 적이 불에 덴다', puddle: '적이 느려지고 번개에 더 아파한다', cloud: '나는 적이 느려지고 우리 편은 잘 피한다', rock: '적이 느려지고 우리 편은 덜 다친다', sand: '적의 공격이 굼떠진다', storm: '번개가 적을 때린다', frost: '적이 크게 느려진다', thicket: '우리 편이 잘 피하고 기운을 차린다', sunbeam: '우리 편 손발이 빨라진다' };
+const PATCH_COL = { scorch: 0xff6a2a, puddle: 0x4fc3ff, cloud: 0xdfe9f2, rock: 0x9a8a78, sand: 0xe2c078, storm: 0x6b6fa8, frost: 0xbfeaff, thicket: 0x5fbf5a, sunbeam: 0xfff1a8 };
+const ELEM_TALE = {
+  fire: '여우불이 옮겨붙으면 한동안 타올랐대요.',
+  water: '물벼락을 맞은 녀석들은 발이 무거워졌지요.',
+  wind: '휙 부는 바람에 적들이 뒤로 밀려났대요.',
+  earth: '땅이 쿵 울리면 둘레가 다 비틀거렸지요.',
+  thunder: '번개는 한 번에 그치지 않고 옆으로 튀었대요.',
+  moon: '달빛 낙인이 찍힌 녀석은 더 아프게 맞았지요.',
+  grass: '땅에서 덩굴이 솟아 발목을 휘감았대요.',
+  light: '새벽빛에 눈이 부셔 적이 손을 멈칫했지요.',
+};
+const ELEM_SFX = { fire: 'fire', water: 'heal', wind: 'dodge', earth: 'slam', thunder: 'bolt', moon: 'magic', grass: 'note', light: 'evolve' };
 const SHOUT_COL = { damageHeld: 0xffb35c, pushHeld: 0xffd08a, damageAll: 0xffb35c, flee: 0xff8a65, stunRadius: 0xb8ff8a, allyBuff: 0xffe066, stance: 0xa8e1ff, charm: 0xffb3d1, tongue: 0xffb3d1, hundred: 0xffe066, crowCall: 0xfff1a8, roosterFlee: 0xfff1a8, halveRespawn: 0xfff1a8 };
 const SKILL_SFX = { damageHeld: 'slash', flee: 'roar', pushHeld: 'slam', damageAll: 'stampede', stunRadius: 'slam', halveRespawn: 'crow', stance: 'stance', charm: 'charm', tongue: 'tongue', hundred: 'hundred', crowCall: 'crow', roosterFlee: 'crow' };

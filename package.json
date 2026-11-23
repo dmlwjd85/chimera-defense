@@ -11,7 +11,10 @@
     "art": "python3 tools/gen_art.py && python3 tools/gen_rig_art.py && node tools/pack-art.mjs"
   },
   "dependencies": {
-    "phaser": "3.90.0"
+    "d3-geo": "^3.1.2",
+    "phaser": "3.90.0",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
   },
   "devDependencies": {
     "vite": "7.3.8"

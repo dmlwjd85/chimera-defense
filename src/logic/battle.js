@@ -18,16 +18,19 @@ export function createBattle(data, stageId, seed = 1, opts = {}) {
   const stage = data.stageById[stageId];
   if (!stage) throw new Error('createBattle: unknown stage ' + stageId);
   const cfg = data.config;
-  return {
+  const state = {
     stage, rng: makeRng(seed), phase: 'prep', result: null,
     wave: 1, waveTime: 0, prepLeft: cfg.prep.seconds, time: 0,
     life: cfg.life, gold: cfg.startGold + (opts.startGoldBonus ?? 0), summonCount: 0, rollCtx: newRollCtx(),
     field: [], bench: Array(cfg.benchSize + (opts.benchBonus ?? 0)).fill(null), enemies: [], queue: [],
     nextUid: 1, nextEid: 1, events: [],
     known: { recipes: new Set(opts.known?.recipes ?? []), failed: new Set(opts.known?.failed ?? []) },
-    levels: { ...(opts.levels ?? {}) }, allyBuffs: [], bait: null, kills: 0, relics: [], relicOffer: null,
+    levels: { ...(opts.levels ?? {}) }, allyBuffs: [], bait: null, kills: 0, relics: [], relicOffer: null, talents: [...(opts.talents ?? [])],
     finds: { recipes: [], flops: [], species: [], bonds: [] }, seenSpecies: new Set(opts.seenSpecies ?? []), seenBonds: new Set(opts.seenBonds ?? []),
   };
+  state.gold += eco(state, data, 'startGold') ?? 0;
+  state.life += eco(state, data, 'life') ?? 0;
+  return state;
 }
 
 /** Put the companion brought from the previous stage on the bench (see meta.carryInstance). */

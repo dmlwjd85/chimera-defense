@@ -79,7 +79,8 @@ export class RigView {
         const a = this.artScale(o.texture.key);
         o.setPosition(d.x, d.y); o.rotation = Phaser.Math.DegToRad(d.rot); o.setScale(d.sx * a, d.sy * a);
       }
-      if (d.rope) o.tintFill = flash; else if (flash) o.setTintFill(0xffffff); else o.clearTint();
+      const sil = this.inst.silhouette;
+      if (d.rope) { if (sil !== o._sil) { o.setColors(sil ? 0x0b0e12 : 0xffffff); o._sil = sil; } o.tintFill = !!sil || flash; } else if (sil) o.setTintFill(0x0b0e12); else if (flash) o.setTintFill(0xffffff); else o.clearTint();
       this.container.moveTo(o, i);
     });
     for (const [k, o] of Object.entries(this.objs)) if (!seen.has(k)) o.setVisible(false);

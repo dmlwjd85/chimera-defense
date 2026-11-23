@@ -39,6 +39,13 @@ export default class TitleScene extends Phaser.Scene {
     this.add.text(20, 700, '조작: 스페이스 소환 · 1/2 배속 · P 일시정지', style(13, '#778899')).setOrigin(0, 0.5);
     this.input.keyboard.once('keydown-SPACE', () => { unlockAudio(); go(); });
     this.input.on('pointerdown', unlockAudio);
+    // 최근 오류 기록(멈춤 점검용): 누르면 지움
+    let errs = []; try { errs = JSON.parse(localStorage.getItem('chimera-defense-errors') || '[]'); } catch { /* */ }
+    if (errs.length) {
+      const e = errs[0];
+      const t = this.add.text(20, 668, `⚠ 최근 오류 ${errs.length}건 · ${e.at.slice(5, 16).replace('T', ' ')} · ${e.where} · ${e.msg}`, style(12, '#ff9f9f', { wordWrap: { width: 900 } })).setOrigin(0, 0.5).setInteractive({ useHandCursor: true });
+      t.on('pointerdown', () => { localStorage.removeItem('chimera-defense-errors'); t.destroy(); });
+    }
   }
 
   drawBackdrop() {

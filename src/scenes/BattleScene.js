@@ -106,14 +106,19 @@ export default class BattleScene extends Phaser.Scene {
     if (score <= (this.bestShot ?? 0)) return;
     this.bestShot = score;
     const wave = this.state.wave;
-    this.time.delayedCall(260, () => this.game.renderer.snapshot((img) => {
-      const keep = () => {
-        if (!img.width || !this.sys.isActive()) return;
+    if (this.time.now - (this.lastShotAt ?? -1e9) < 8000) return; // 사진은 8초에 한 장까지
+    this.lastShotAt = this.time.now;
+    // 화면 전체를 PNG로 뽑지 않고, 그려진 직후의 화면을 작은 캔버스(384x216)에 옮겨 담는다(가볍고 빠름)
+    this.time.delayedCall(260, () => this.game.events.once('postrender', () => {
+      try {
+        if (!this.sys.isActive()) return;
+        const c = (this.shotCanvas ??= document.createElement('canvas'));
+        c.width = 384; c.height = 216;
+        c.getContext('2d').drawImage(this.game.canvas, 0, 0, 384, 216);
         if (this.textures.exists('highlight')) this.textures.remove('highlight');
-        this.textures.addImage('highlight', img);
+        this.textures.addCanvas('highlight', c);
         this.registry.set('highlight', { caption, wave });
-      };
-      if (img.complete && img.width) keep(); else img.onload = keep;
+      } catch (e) { /* 사진을 못 찍어도 게임은 계속 */ }
     }));
   }
 

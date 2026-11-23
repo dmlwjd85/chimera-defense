@@ -21,3 +21,10 @@ const config = {
 
 const game = new Phaser.Game(config);
 window.__game = game;
+
+// 설치형 앱(PWA): 크롬 '앱 설치'와 오프라인 실행. 개발 서버에서는 켜지 않는다.
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); window.__installPrompt = e; game.events.emit('installable'); });
+window.addEventListener('appinstalled', () => { window.__installPrompt = null; game.events.emit('installed'); });

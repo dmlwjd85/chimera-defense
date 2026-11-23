@@ -17,6 +17,18 @@ export default class TitleScene extends Phaser.Scene {
     button(this, 640, 350, 260, 64, '시작', () => this.scene.start('StageSelect'), { size: 26, fill: 0x3a7bd5 });
     button(this, 640, 430, 260, 54, '도감', () => this.scene.start('Codex'), { size: 20 });
     button(this, 640, 500, 260, 54, '해금', () => this.scene.start('Unlock'), { size: 20 });
+    // 크롬에서 설치할 수 있을 때만 보이는 '앱으로 설치' 버튼
+    const inst = button(this, 640, 570, 260, 48, '📲 앱으로 설치', async () => {
+      const p = window.__installPrompt; if (!p) return;
+      p.prompt(); const r = await p.userChoice.catch(() => null);
+      if (r?.outcome === 'accepted') inst.setVisible(false);
+    }, { size: 18, fill: 0x2e5d3a, stroke: 0x9cff6b, tip: '바탕화면·홈 화면에 아이콘이 생기고 인터넷 없이도 실행돼요' });
+    const standalone = window.matchMedia?.('(display-mode: standalone)').matches || window.matchMedia?.('(display-mode: fullscreen)').matches;
+    inst.setVisible(!!window.__installPrompt && !standalone);
+    const onAble = () => inst.setVisible(!standalone);
+    const onDone = () => inst.setVisible(false);
+    this.game.events.on('installable', onAble); this.game.events.on('installed', onDone);
+    this.events.once('shutdown', () => { this.game.events.off('installable', onAble); this.game.events.off('installed', onDone); });
     this.add.text(640, 575, `에센스 ${save.essence}   업적 ${save.achievements.length}/5`, style(18, '#ffd84d')).setOrigin(0.5);
     const reset = button(this, 1180, 690, 160, 36, '진행 초기화', () => {
       if (this.confirmReset) { this.registry.set('save', defaultSave()); writeSave(this.registry.get('storage'), this.registry.get('save')); this.scene.restart(); }

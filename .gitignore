@@ -10,3 +10,4 @@ secrets/
 .vscode/
 Thumbs.db
 .DS_Store
+public/assets/art-pack.json

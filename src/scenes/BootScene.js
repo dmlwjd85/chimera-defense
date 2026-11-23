@@ -13,10 +13,14 @@ export default class BootScene extends Phaser.Scene {
     this.load.json('text', 'data/text.json');
     for (const k of DATA_KEYS) this.load.json(k, `data/${k}.json`);
     // Optional art: everything listed in the manifest replaces the placeholder shapes.
-    this.load.json('manifest', 'assets/manifest.json');
-    this.load.once('filecomplete-json-manifest', (key, type, m) => {
-      for (const [k, path] of Object.entries(m?.images ?? {})) this.load.image(k, path);
-    });
+    // Art comes bundled (assets/art-pack.json, built by tools/pack-art.mjs); the manifest is the fallback.
+    this.load.json('artpack', 'assets/art-pack.json');
+    const useArt = (pack) => {
+      this.load.json('manifest', 'assets/manifest.json');
+      this.load.once('filecomplete-json-manifest', (k, t, m) => { for (const [key, path] of Object.entries(m?.images ?? {})) this.load.image(key, pack?.[key] ?? path); });
+    };
+    this.load.once('filecomplete-json-artpack', (k, t, pack) => useArt(pack));
+    this.load.once('loaderror', (f) => { if (f.key === 'artpack') useArt(null); });
     preloadRigs(this);
     this.load.on('loaderror', (f) => console.warn('load failed:', f.key));
   }

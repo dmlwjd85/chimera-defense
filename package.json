@@ -4,10 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node tools/pack-art.mjs && vite build",
     "preview": "vite preview",
     "test": "node --test \"tests/*.test.js\"",
-    "sim": "node tools/sim.mjs"
+    "sim": "node tools/sim.mjs",
+    "art": "python3 tools/gen_art.py && python3 tools/gen_rig_art.py && node tools/pack-art.mjs"
   },
   "dependencies": {
     "phaser": "3.90.0"

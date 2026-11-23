@@ -32,11 +32,20 @@
 
 규칙을 모두 켠 뒤 동물 피해 등급 배율을 ×0.8로 낮춤(일반 5.2·희귀 3.6·영웅 2.4). 자동 플레이 봇 40판 기준 클리어율은 스테이지 1 85%, 2 53%, 3 28%. `npm run sim -- 40 1 --stage=2`로 다시 잴 수 있습니다.
 
+## 그림과 움직임 (2026-11-23)
+
+- 동물 12종과 키메라 7종은 부위별로 나눠 그린 그림(머리·몸·다리 위아래·귀·꼬리·눈·턱 등)을 움직임 엔진 뼈대에 붙여 움직입니다. 뼈대는 네발·새·개구리·곤충 4종이고 모두 같은 뼈 이름을 써서 모션 10종(`quadruped.anims.json`)을 함께 씁니다.
+- 전투에서 대기·이동·공격·스킬·피격(번쩍)·쓰러짐·부활·승리·합성 등장·진화 동작이 게임 사건에 맞춰 나옵니다. 숨쉬기·눈 깜빡임·꼬리와 귀·날개 흔들림은 엔진이 자동으로 더합니다.
+- 적과 보스는 한 장 그림을 `sprite` 뼈대로 움직입니다(걷기 출렁임, 공격 돌진, 쓰러짐).
+- 그림 다시 만들기: `npm run art` (tools/gen_art.py, tools/gen_rig_art.py, tools/pack-art.mjs). 빌드할 때 그림 전부가 `assets/art-pack.json` 한 파일로 묶입니다.
+- `rig.html`의 '전체 보기'에서 19종을 한꺼번에 움직여 볼 수 있습니다.
+
 ## 그림 교체(그록)
 
 `public/assets/manifest.json`의 `images`에 키와 경로를 넣고 파일을 `public/assets/units/`에 두면 임시 도형 대신 그 그림이 나옵니다.
 
-- 동물: `unit-<종id>` (모든 단계) 또는 `unit-<종id>-<young|teen|adult|spirit>`
+- 움직이는 동물: 부위 그림 `rig-<종id>-<부위>` (예: `rig-fox-head`). 부위 목록과 크기는 `public/data/rig/<종id>.rig.json`과 템플릿의 slots, 그림은 부위의 가운데가 이미지 가운데, 뼈 방향이 오른쪽(+x), 1 단위 = 2픽셀.
+- 한 장짜리 동물: `unit-<종id>` (모든 단계) 또는 `unit-<종id>-<young|teen|adult|spirit>`
 - 키메라: `unit-<레시피id>` (예: `unit-cheese_thief`)
 - 적: `enemy-<적id>` (예: `enemy-boss_bat`)
 

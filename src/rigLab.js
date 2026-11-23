@@ -11,8 +11,13 @@ const log = (s) => { const el = $('log'); el.textContent = (s + '\n' + el.textCo
 class RigLabScene extends Phaser.Scene {
   constructor() { super('RigLab'); this.views = []; this.mode = 'stages'; this.speed = 1; this.paused = false; }
   preload() {
-    this.load.json('manifest', 'assets/manifest.json');
-    this.load.once('filecomplete-json-manifest', (k, t, m) => { for (const [key, path] of Object.entries(m?.images ?? {})) if (key.startsWith('rig-')) this.load.image(key, path); });
+    this.load.json('artpack', 'assets/art-pack.json');
+    const useArt = (pack) => {
+      this.load.json('manifest', 'assets/manifest.json');
+      this.load.once('filecomplete-json-manifest', (k, t, m) => { for (const [key, path] of Object.entries(m?.images ?? {})) if (key.startsWith('rig-')) this.load.image(key, pack?.[key] ?? path); });
+    };
+    this.load.once('filecomplete-json-artpack', (k, t, pack) => useArt(pack));
+    this.load.once('loaderror', (f) => { if (f.key === 'artpack') useArt(null); });
   }
   async create() {
     this.cameras.main.setBackgroundColor('#20262e');

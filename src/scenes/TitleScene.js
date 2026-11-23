@@ -13,8 +13,10 @@ export default class TitleScene extends Phaser.Scene {
     else this.drawBackdrop();
     if (this.textures.exists('fx-leaf')) this.add.particles(0, 0, 'fx-leaf', { x: { min: 0, max: 1280 }, y: -10, speedY: { min: 30, max: 70 }, speedX: { min: -20, max: 20 }, lifespan: 12000, frequency: 350, scale: { min: 0.3, max: 0.6 }, rotate: { start: 0, end: 360 }, tint: [0xffb3c6, 0x9ccc65, 0xffd36b], alpha: 0.8 });
     title(this, 640, 170, '키메라 디펜스', 68);
-    this.add.text(640, 240, '동물을 뽑아 길 위에 세우고, 합쳐서 전설을 만든다', style(22, '#aabbcc')).setOrigin(0.5);
-    button(this, 640, 350, 260, 64, '시작', () => this.scene.start('StageSelect'), { size: 26, fill: 0x3a7bd5 });
+    this.add.text(640, 240, '지구의 심장을 지켜라 — 동화와 신화 속 짐승들의 대연합', style(22, '#e8d9b8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5);
+    const go = () => this.scene.start(save.openingSeen ? 'StageSelect' : 'Opening', { next: 'StageSelect' });
+    button(this, 640, 350, 260, 64, '시작', go, { size: 26, fill: 0x3a7bd5 });
+    button(this, 900, 350, 150, 48, '📖 이야기', () => this.scene.start('Opening', { next: 'Title' }), { size: 16, tip: '오프닝 다시 보기' });
     button(this, 640, 430, 260, 54, '도감', () => this.scene.start('Codex'), { size: 20 });
     button(this, 640, 500, 260, 54, '해금', () => this.scene.start('Unlock'), { size: 20 });
     // 크롬에서 설치할 수 있을 때만 보이는 '앱으로 설치' 버튼
@@ -35,7 +37,7 @@ export default class TitleScene extends Phaser.Scene {
       else { this.confirmReset = true; reset.set('한 번 더 누르면 초기화'); }
     }, { size: 13, fill: 0x5c1f1f });
     this.add.text(20, 700, '조작: 스페이스 소환 · 1/2 배속 · P 일시정지', style(13, '#778899')).setOrigin(0, 0.5);
-    this.input.keyboard.once('keydown-SPACE', () => { unlockAudio(); this.scene.start('StageSelect'); });
+    this.input.keyboard.once('keydown-SPACE', () => { unlockAudio(); go(); });
     this.input.on('pointerdown', unlockAudio);
   }
 

@@ -491,6 +491,9 @@ def main():
     for i, st in enumerate(stages):
         ai = os.path.join(ROOT, 'art-src', 'recos', f'{st["id"]}.png')
         fin = os.path.join(ROOT, 'art-src', 'recos', f'{st["id"]}_final.png')
+        if os.path.exists(ai):
+            Image.open(ai).convert('RGB').resize((1280, 720), Image.LANCZOS).save(os.path.join(OUT, f'story-{st["id"]}.jpg'), quality=84, optimize=True)
+            images['story-' + st['id']] = f'assets/bg/story-{st["id"]}.jpg'
         if os.path.exists(fin): im = ai_composite(seams_svg(st['id'], st['zones']), fin, 'bg-' + st['id'], light=False)
         elif os.path.exists(ai): im = ai_composite(scene(st['id'], st['zones'], 100 + i, overlay=True), ai, 'bg-' + st['id'], night=bool(SKY[st['id']]['tint']))
         else: im = to_jpg(scene(st['id'], st['zones'], 100 + i), 'bg-' + st['id'])

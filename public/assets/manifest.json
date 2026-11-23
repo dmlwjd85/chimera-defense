@@ -378,6 +378,9 @@
     "rig-bullfrog-head": "assets/rig/bullfrog/head.png",
     "rig-bullfrog-horn": "assets/rig/bullfrog/horn.png",
     "rig-bullfrog-ear_n": "assets/rig/bullfrog/ear_n.png",
-    "rig-bullfrog-eye": "assets/rig/bullfrog/eye.png"
+    "rig-bullfrog-eye": "assets/rig/bullfrog/eye.png",
+    "story-forest-1": "assets/bg/story-forest-1.jpg",
+    "story-forest-2": "assets/bg/story-forest-2.jpg",
+    "story-forest-3": "assets/bg/story-forest-3.jpg"
   }
 }

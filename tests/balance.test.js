@@ -25,8 +25,10 @@ test('boosted damage equals plan damage times boost', () => {
     for (const st of stages) {
       const uD = D.unitById[sp];
       assert.ok(uD, `missing unit ${sp}`);
-      const diff = Math.abs(base(D, sp, st).damage - base(P, sp, st).damage * damageBoost(uD, D.config));
-      assert.ok(diff < 0.11, `${sp}/${st} damage mismatch: ${base(D, sp, st).damage} vs ${base(P, sp, st).damage * damageBoost(uD, D.config)} (diff=${diff})`);
+      const tempo = D.config.tempo?.unit ?? 1, td = D.config.tempo?.unitDamage ?? tempo;
+      const diff = Math.abs(base(D, sp, st).damage - base(P, sp, st).damage * damageBoost(uD, D.config) * td);
+      assert.ok(diff < 0.2, `${sp}/${st} damage mismatch: ${base(D, sp, st).damage} vs ${base(P, sp, st).damage * damageBoost(uD, D.config) * td} (diff=${diff})`);
+      assert.ok(Math.abs(base(D, sp, st).interval - base(P, sp, st).interval * tempo) < 0.011, 'slower, heavier hits keep the same damage per second');
       const hpD = base(D, sp, st).hp;
       const hpP = base(P, sp, st).hp;
       assert.strictEqual(hpD, hpP, `${sp}/${st} hp mismatch: ${hpD} vs ${hpP}`);

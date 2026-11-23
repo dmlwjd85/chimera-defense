@@ -46,19 +46,29 @@ export default class DeckScene extends Phaser.Scene {
     add(this.add.text(180, 156, open ? u.baseSkillDesc : `⭐ ${cfg.roster.unlocks.find((x) => x.id === u.id)?.stars ?? 0}개에 합류`, style(12, '#aabbcc', { wordWrap: { width: 265 } })));
     let y = 222;
     add(this.add.text(50, y, `🔥 소울 기술 · ${sig.name}`, style(18, '#ffb27a'))); y += 28;
-    add(this.add.text(50, y, `“${sig.tale}”`, style(12, '#9fb3c8', { fontStyle: 'italic', wordWrap: { width: 390 } }))); y += 40;
-    add(this.add.text(50, y, `· ${sig.desc}`, style(14, '#ffffff', { wordWrap: { width: 390 } }))); y += 42;
-    add(this.add.text(50, y, `▶ ${sig.feel}`, style(14, '#9cff6b'))); y += 30;
+    add(this.add.text(50, y, `“${sig.tale}”`, style(12, '#9fb3c8', { fontStyle: 'italic', wordWrap: { width: 390 } }))); y += 38;
+    add(this.add.text(50, y, `· ${sig.desc}`, style(14, '#ffffff', { wordWrap: { width: 390 } }))); y += 40;
+    add(this.add.text(50, y, `▶ ${sig.feel}`, style(14, '#9cff6b'))); y += 26;
     const aw = sc.awaken.defs[u.element];
     add(this.add.text(50, y, `✨ 각성기 · ${aw.name} ${E[u.element]?.icon ?? ''}`, style(16, lv >= sc.awakenAt ? '#ffd84d' : '#8a8f96'))); y += 24;
-    add(this.add.text(50, y, `영물이 되면 ${sc.awaken.every}초마다 화면의 적 전부를 휩쓺 (정 ${sc.awakenAt}단계부터)`, style(12, '#aabbcc', { wordWrap: { width: 390 } }))); y += 34;
-    add(this.add.text(50, y, '⚠ 혼자서는 힘든 것', style(15, '#ff9f9f'))); y += 24;
-    for (const gp of soulGaps(D, u.id, stage).slice(0, 4)) { add(this.add.text(58, y, `· ${gp.text}  →  ${gp.need}`, style(12, '#ffd0c0', { wordWrap: { width: 385 } }))); y += 20; }
-    add(this.add.text(50, 528, `💗 정 ${'♥'.repeat(lv)}${'♡'.repeat(cfg.favor.max - lv)}   소울펫일 때 단계마다 피해·체력 +${sc.favorDmg}%, 소울 기술 +${sc.favorSig}%`, style(12, '#ff9fbf', { wordWrap: { width: 395 } })));
+    add(this.add.text(50, y, `영물이 되면 ${sc.awaken.every}초마다 화면의 적 전부를 휩쓺 (정 ${sc.awakenAt}단계부터)`, style(12, '#aabbcc', { wordWrap: { width: 390 } }))); y += 22;
+    add(this.add.text(50, y, '⚠ 혼자서는 힘든 것', style(14, '#ff9f9f'))); y += 21;
+    for (const gp of soulGaps(D, u.id, stage).slice(0, 3)) { add(this.add.text(58, y, `· ${gp.text}  →  ${gp.need}`, style(12, '#ffd0c0', { wordWrap: { width: 385 } }))); y += 19; }
+    // 갈림길: 정 2단계부터 둘 중 하나
+    const forkOpen = lv >= sc.pathAt && open, cur = S.soulPath?.[u.id] ?? null;
+    add(this.add.text(50, 486, `🔀 갈림길${forkOpen ? '' : `  (정 ${sc.pathAt}단계에 열림)`}`, style(14, forkOpen ? '#7fd1ff' : '#667788')));
+    ['a', 'b'].forEach((k, i) => {
+      const p = sig.paths[k], on = cur === k;
+      const pb = button(this, 145 + i * 200, 524, 192, 36, `${on ? '✔ ' : ''}${p.name}`, () => { (S.soulPath ??= {})[u.id] = k; this.save(); this.paint(); }, { size: 14, fill: on ? 0x1f4d6b : 0x1a2636, stroke: on ? 0x7fd1ff : 0x55657a, tip: p.desc });
+      pb.setEnabled(forkOpen);
+      this.btns.push(pb);
+      add(this.add.text(145 + i * 200, 552, p.desc, style(10, on ? '#cfe8ff' : '#8899aa', { wordWrap: { width: 190 }, align: 'center' })).setOrigin(0.5, 0));
+    });
+    add(this.add.text(50, 584, `💗 정 ${'♥'.repeat(lv)}${'♡'.repeat(cfg.favor.max - lv)}   소울펫일 때 단계마다 피해·체력 +${sc.favorDmg}%, 소울 기술 +${sc.favorSig}%`, style(11, '#ff9fbf', { wordWrap: { width: 395 } })));
     const st = favorState(S, D, u.id);
-    const fb = button(this, 135, 588, 180, 40, st.reason === 'max' ? '정 가득 참' : `정 붙이기 · 💠${st.cost ?? cfg.favor.costs[lv] ?? '-'}`, () => { if (buyFavor(S, D, u.id).ok) { this.save(); this.paint(); } }, { size: 14, fill: 0x5a2a4a, stroke: 0xff9fbf, tip: `가진 에센스 ${S.essence}` });
+    const fb = button(this, 135, 624, 180, 34, st.reason === 'max' ? '정 가득 참' : `정 붙이기 · 💠${st.cost ?? cfg.favor.costs[lv] ?? '-'}`, () => { if (buyFavor(S, D, u.id).ok) { this.save(); this.paint(); } }, { size: 14, fill: 0x5a2a4a, stroke: 0xff9fbf, tip: `가진 에센스 ${S.essence}` });
     fb.setEnabled(st.ok && open);
-    const sb = button(this, 345, 588, 200, 40, isSoul ? '👑 지금 소울펫' : '소울펫으로 삼기', () => { S.soulPet = u.id; if (!deck.includes(u.id)) S.deck = [u.id, ...deck.filter((x) => x !== u.id)].slice(0, sc.deckSize); else S.deck = deck; this.save(); this.paint(); }, { size: 15, fill: isSoul ? 0x6b5a1a : 0x2e5a3a, stroke: 0xffd84d });
+    const sb = button(this, 345, 624, 200, 34, isSoul ? '👑 지금 소울펫' : '소울펫으로 삼기', () => { S.soulPet = u.id; if (!deck.includes(u.id)) S.deck = [u.id, ...deck.filter((x) => x !== u.id)].slice(0, sc.deckSize); else S.deck = deck; this.save(); this.paint(); }, { size: 15, fill: isSoul ? 0x6b5a1a : 0x2e5a3a, stroke: 0xffd84d });
     sb.setEnabled(open && !isSoul);
     this.btns.push(fb, sb);
 

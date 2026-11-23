@@ -6,7 +6,13 @@ import { effDamage } from './mods.js';
 export const soulCfg = (data) => data.config.soul ?? null;
 export const soulSig = (data, id) => soulCfg(data)?.sig?.[id] ?? null;
 /** Species whose soul rules a unit follows (a chimera made from the soul pet keeps them). */
-const sigOf = (state, data, u) => (u?.soul && state.soul ? soulSig(data, state.soul.id) : null);
+const sigOf = (state, data, u) => {
+  if (!u?.soul || !state.soul) return null;
+  if (state.soulSigEff) return state.soulSigEff;
+  const sig = soulSig(data, state.soul.id);
+  const path = (state.soul.favor ?? 0) >= (soulCfg(data).pathAt ?? 99) ? sig?.paths?.[state.soul.path] : null;
+  return (state.soulSigEff = sig && path ? { ...sig, mods: { ...sig.mods, ...(path.mods ?? {}) }, p: { ...sig.p, ...(path.p ?? {}) }, pathName: path.name } : sig);
+};
 const fav = (state) => state.soul?.favor ?? 0;
 /** Signature numbers grow a little with favor. */
 const grow = (state, data) => 1 + (soulCfg(data).favorSig ?? 0) * fav(state) / 100;
@@ -133,4 +139,11 @@ export function soulGaps(data, id, stage = null) {
   const c = stage ? data.config.climates?.[stage.climate] : null;
   if (c?.weak?.includes(u.element)) out.push({ key: 'climate', text: `${c.icon} ${c.name}에 ${E[u.element]?.icon ?? ''} 약해짐`, need: `${(c.strong ?? []).map((e) => E[e]?.icon ?? '').join('')} 속성 동료` });
   return out;
+}
+
+/** Extra mana regen (%) from a singing soul pet. */
+export function soulMana(state, data) {
+  const u = state.field?.find((x) => x.soul && !x.down);
+  const sig = u ? sigOf(state, data, u) : null;
+  return sig?.type === 'mana' ? sig.p.regen : 0;
 }

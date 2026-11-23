@@ -19,7 +19,8 @@ test('every animal has its own soul signature and every element an awakening', (
 test('the soul pet is the first summon, gains momentum from kills and keeps its crown through merges', () => {
   const save = defaultSave(); save.soulPet = 'rabbit'; save.favor = { rabbit: 2 };
   const o = battleOptions(save, D, 'forest-1');
-  assert.deepEqual(o.soul, { id: 'rabbit', favor: 2 });
+  assert.deepEqual(o.soul, { id: 'rabbit', favor: 2, path: null });
+  for (const u of D.units) { const p = D.config.soul.sig[u.id].paths; assert.ok(p?.a?.name && p.a.desc && p?.b?.name && p.b.desc, u.id); }
   assert.ok(o.pool.includes('rabbit') && o.pool.length === D.config.soul.deckSize);
   const s = createBattle(D, 'forest-1', 7, o); s.gold = 999;
   summon(s, D);

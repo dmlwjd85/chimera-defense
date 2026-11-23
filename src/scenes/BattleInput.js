@@ -51,7 +51,7 @@ export function attachInput(scene) {
   scene.input.on('pointerdown', (pointer, objs) => {
     if (scene.modalOpen || objs.length > 0) return;
     const u = scene.selectedUid == null ? null : st().field.find((f) => f.uid === scene.selectedUid);
-    if (u) { const plan = planDrop(st(), data, u.uid, pointer.x, pointer.y, { positions: new Map(), inSell: false }); if (plan.action === 'move') { say(moveUnit(st(), data, u.uid, plan.pos, plan.opts)); return; } if (plan.reason) { say({ ok: false, reason: plan.reason }); return; } }
+    if (u) { const plan = planDrop(st(), data, u.uid, pointer.worldX, pointer.worldY, { positions: new Map(), inSell: false }); if (plan.action === 'move') { say(moveUnit(st(), data, u.uid, plan.pos, plan.opts)); return; } if (plan.reason) { say({ ok: false, reason: plan.reason }); return; } }
     deselect();
   });
 
@@ -60,7 +60,7 @@ export function attachInput(scene) {
     const me = unitOf(st(), refOf(st(), obj.unitUid));
     if (!me) return;
     scene.dragUid = obj.unitUid;
-    dragStart = { x: pointer.downX, y: pointer.downY };
+    dragStart = { x: pointer.worldX, y: pointer.worldY };
     obj.setDepth(1000);
     for (const [uid, v] of scene.unitViews) {
       if (uid === obj.unitUid) continue;
@@ -73,7 +73,7 @@ export function attachInput(scene) {
   scene.input.on('drag', (pointer, obj, dragX, dragY) => {
     if (scene.dragUid !== obj.unitUid) return;
     obj.setPosition(dragX, dragY);
-    scene.hoverCell?.(pointer.x, pointer.y, obj.unitUid);
+    scene.hoverCell?.(pointer.worldX, pointer.worldY, obj.unitUid);
   });
 
   scene.input.on('dragend', (pointer, obj) => {
@@ -83,11 +83,11 @@ export function attachInput(scene) {
     obj.setDepth(0);
     const uid = scene.dragUid;
     scene.dragUid = null;
-    if (!dragStart || Math.hypot(pointer.x - dragStart.x, pointer.y - dragStart.y) < DRAG_MIN) return;
+    if (!dragStart || Math.hypot(pointer.worldX - dragStart.x, pointer.worldY - dragStart.y) < DRAG_MIN) return;
     const positions = new Map();
     for (const [vuid, v] of scene.unitViews) if (vuid !== uid) positions.set(vuid, { x: v.container.x, y: v.container.y });
-    const inSell = scene.sellZone.getBounds().contains(pointer.x, pointer.y);
-    const plan = planDrop(st(), data, uid, pointer.x, pointer.y, { positions, inSell });
+    const inSell = scene.sellZone.getBounds().contains(pointer.worldX, pointer.worldY);
+    const plan = planDrop(st(), data, uid, pointer.worldX, pointer.worldY, { positions, inSell });
     runPlan(plan);
   });
 

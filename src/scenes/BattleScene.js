@@ -45,6 +45,7 @@ export default class BattleScene extends Phaser.Scene {
     this.stageId = d?.stageId ?? 'forest-1';
     const seedParam = Number(new URLSearchParams(window.location.search).get('seed'));
     const bopts = battleOptions(this.save, this.data2, this.stageId);
+    this.registry.set('highlight', null); this.bestShot = 0;
     this.state = createBattle(this.data2, this.stageId, seedParam > 0 ? seedParam : Date.now() % 100000, bopts);
     this.carried = addCarry(this.state, this.data2, bopts.carry);
     this.fallbackGold = !bopts.carry && this.data2.stages.findIndex((x) => x.id === this.stageId) > 0 ? this.data2.config.carry.fallbackGold : 0;
@@ -100,12 +101,29 @@ export default class BattleScene extends Phaser.Scene {
     if (k >= 0.5 && Math.random() < 0.15) this.fx.burst('rise', x + Phaser.Math.Between(-18, 18), y + 20, 1, k >= 1 ? 0xff8a3c : 0xffd84d);
   }
 
+  /** Keep a picture of the run's best moment for the result screen. */
+  grabHighlight(score, caption) {
+    if (score <= (this.bestShot ?? 0)) return;
+    this.bestShot = score;
+    const wave = this.state.wave;
+    this.time.delayedCall(260, () => this.game.renderer.snapshot((img) => {
+      const keep = () => {
+        if (!img.width || !this.sys.isActive()) return;
+        if (this.textures.exists('highlight')) this.textures.remove('highlight');
+        this.textures.addImage('highlight', img);
+        this.registry.set('highlight', { caption, wave });
+      };
+      if (img.complete && img.width) keep(); else img.onload = keep;
+    }));
+  }
+
   /** Slow motion and a small push-in for the big moments. */
   spotlight(dur = 0.5, zoom = 1.05) {
     this.slowMo = Math.max(this.slowMo ?? 0, dur);
     const cam = this.cameras.main;
-    cam.zoomTo(zoom, 140, 'Sine.easeOut', true);
-    this.time.delayedCall(dur * 1000 + 160, () => cam.zoomTo(1, 260, 'Sine.easeInOut', true));
+    const K = window.__K ?? 1;
+    cam.zoomTo(zoom * K, 140, 'Sine.easeOut', true);
+    this.time.delayedCall(dur * 1000 + 160, () => cam.zoomTo(K, 260, 'Sine.easeInOut', true));
   }
 
   soulEvent(ev) {
@@ -116,11 +134,12 @@ export default class BattleScene extends Phaser.Scene {
       const t = this.add.text(x, y - 90, `${ev.n}연속!${word ? ' ' + word : ''}`, style(big ? 34 : 24, big ? '#ff8a3c' : '#ffd84d', { stroke: '#000', strokeThickness: 6 })).setOrigin(0.5).setDepth(3000).setScale(0.3);
       this.tweens.add({ targets: t, scale: 1, duration: 200, ease: 'Back.out' });
       this.tweens.add({ targets: t, alpha: 0, y: t.y - 30, delay: 800, duration: 350, onComplete: () => t.destroy() });
-      if (big) { this.spotlight(0.45, 1.06); this.fx.shockwave(x, y + 20, 0xff8a3c, 2, 2.2); sfx('spirit'); } else sfx('bond');
+      if (big) { this.grabHighlight(ev.n, `${this.state.field.find((q) => q.uid === ev.uid)?.stats.name ?? '소울펫'} ${ev.n}연속 처치`); this.spotlight(0.45, 1.06); this.fx.shockwave(x, y + 20, 0xff8a3c, 2, 2.2); sfx('spirit'); } else sfx('bond');
       return;
     }
     if (ev.type === 'awaken') {
       const el = d.config.elements.defs[ev.el], COL = { fire: 0xff7a1a, water: 0x4aa3ff, wind: 0xbfefff, earth: 0xc9a26a, thunder: 0xfff27a, moon: 0xb388ff, grass: 0x58c070, light: 0xfff3b0 }[ev.el] ?? 0xffd84d;
+      this.grabHighlight(8 + ev.eids.length / 2, `각성기 ${ev.name} — 적 ${ev.eids.length}기를 휩쓺`);
       this.fx.cutIn(`${el?.icon ?? ''} ${ev.name}`, COL, '소울펫 각성기');
       this.spotlight(0.7, 1.07);
       this.cameras.main.flash(220, (COL >> 16) & 255, (COL >> 8) & 255, COL & 255);
@@ -865,7 +884,7 @@ export default class BattleScene extends Phaser.Scene {
       } else { v.curX = undefined; v.curY = undefined; }
       v.container.setDepth(onField ? (u.stats.flyer ? 900 + y : 50 + y) : 60);
       if (v.ent && (onField || this.dragUid === u.uid)) this.endEntrance(v);
-      if (!v.ent && this.dragUid !== u.uid) { const k = onField ? (u.stats.flyer ? LANE_SCALE[u.cell?.r ?? 1] * 0.96 : LANE_SCALE[u.lane ?? 1]) : 1; if (Math.abs((v.persp ?? 1) - k) > 0.001) { v.persp = k; v.container.setScale(k); } }
+      if (!v.ent && this.dragUid !== u.uid) { const k = (onField ? (u.stats.flyer ? LANE_SCALE[u.cell?.r ?? 1] * 0.96 : LANE_SCALE[u.lane ?? 1]) : 1) * (u.soul && onField ? 1 + 0.3 * Math.min(1, (u.soulKills ?? 0) / this.data2.config.soul.maxKills) : 1); if (Math.abs((v.persp ?? 1) - k) > 0.001) { v.persp = k; v.container.setScale(k); } }
       if (v.foot2) v.foot2.setVisible(!u.stats.flyer || !onField);
       if (v.shadow) { v.shadow.setVisible(onField && u.stats.flyer && !u.down); v.shadow.setPosition(v.container.x, this.laneY(u.cell?.r ?? 1) + 34); }
       if (onField && u.hp < (v.hpSeen ?? u.hp) - 0.4 && !u.down) {

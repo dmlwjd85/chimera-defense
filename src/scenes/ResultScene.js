@@ -43,7 +43,14 @@ export default class ResultScene extends Phaser.Scene {
       ...r.hintsMade.map((h) => `힌트 공개: ${D.unitById[h.part].name}이(가) 들어가는 레시피`),
       ...r.achievements.map((a) => `업적 달성: ${ACH[a]}`),
     ];
-    finds.slice(0, 6).forEach((t, i) => this.add.text(95, y + i * 24, t, style(15, '#d7bde2')));
+    const hl = this.registry.get('highlight');
+    finds.slice(0, hl ? 3 : 6).forEach((t, i) => this.add.text(95, y + i * 24, t, style(15, '#d7bde2')));
+    if (hl && this.textures.exists('highlight')) {
+      this.add.text(85, 372, `📸 명장면 · 웨이브 ${hl.wave}`, style(14, '#ffd84d'));
+      this.add.rectangle(215, 462, 248, 142, 0x000000).setStrokeStyle(2, 0xd4b06a);
+      this.add.image(215, 462, 'highlight').setDisplaySize(244, 138);
+      this.add.text(350, 420, hl.caption, style(14, '#ffffff', { wordWrap: { width: 250 } }));
+    }
 
     panel(this, 660, 165, 560, 375);
     this.add.text(685, 180, r.clear ? '종 경험치' : '패배한 판은 경험치 없음', style(22, '#ffe2b8'));

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { FONT, makeT } from '../text.js';
 import { loadSave } from '../logic/meta.js';
+import { preloadRigs } from './rigs.js';
 
 const DATA_KEYS = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore'];
 
@@ -16,6 +17,7 @@ export default class BootScene extends Phaser.Scene {
     this.load.once('filecomplete-json-manifest', (key, type, m) => {
       for (const [k, path] of Object.entries(m?.images ?? {})) this.load.image(k, path);
     });
+    preloadRigs(this);
     this.load.on('loaderror', (f) => console.warn('load failed:', f.key));
   }
 

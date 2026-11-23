@@ -7,6 +7,7 @@ import { traitView } from '../logic/traits.js';
 import { terrainMatch, effRange, effBlock, effDamage, effInterval } from '../logic/mods.js';
 import { isResting } from '../logic/combat.js';
 import { makeEnemy } from '../logic/waves.js';
+import { unitRig, enemyRig } from './rigs.js';
 import { button, panel, style, unitToken, silhouette, hex, COLORS } from './ui.js';
 
 import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX } from './layout.js';
@@ -296,7 +297,12 @@ export default class BattleScene extends Phaser.Scene {
 
   // ---------- frame ----------
   update(time, delta) {
-    if (!this.paused && !this.modalOpen) step(this.state, this.data2, Math.min(delta / 1000, 0.1) * this.speed);
+    const live = !this.paused && !this.modalOpen;
+    this.frameDt = live ? Math.min(delta / 1000, 0.1) * this.speed : 0;
+    this.enemyHits = new Set(this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid));
+    if (live) step(this.state, this.data2, this.frameDt);
+    this.enemyHits = new Set([...this.enemyHits, ...this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid)]);
+    this.preAnimate();
     this.syncUnits();
     this.syncEnemies();
     this.drawBonds();
@@ -318,17 +324,44 @@ export default class BattleScene extends Phaser.Scene {
 
   makeUnitView(unit) {
     const c = this.add.container(0, 0);
-    const tok = unitToken(this, unit, this.data2);
-    const name = this.add.text(0, 36, unit.stats.name, style(12, '#ffffff', { stroke: '#000000', strokeThickness: 3 })).setOrigin(0.5);
-    const barBg = this.add.rectangle(0, -38, 50, 6, 0x000000).setOrigin(0.5);
-    const bar = this.add.rectangle(-25, -38, 50, 6, 0x2ecc71).setOrigin(0, 0.5);
-    const downText = this.add.text(0, 0, '', style(20, '#ffffff', { stroke: '#000000', strokeThickness: 4 })).setOrigin(0.5);
-    const icon = this.add.text(20, -30, '', style(15)).setOrigin(0.5);
-    const foot = this.add.circle(0, 30, 4, 0x7CFC9A).setVisible(false);
-    c.add([foot, tok, name, barBg, bar, downText, icon]);
+    const sub = this.add.container(0, 30);
+    const rig = unitRig(this, unit, sub, 0.22);
+    const tok = rig ? sub : unitToken(this, unit, this.data2);
+    const top = rig ? -70 : -38;
+    const glow = unit.stage === 'spirit' ? this.add.ellipse(0, 30, 90, 22, COLORS.gold, 0.45) : unit.white ? this.add.ellipse(0, 30, 80, 20, 0xffffff, 0.4) : null;
+    const name = this.add.text(0, 40, unit.stats.name, style(12, '#ffffff', { stroke: '#000000', strokeThickness: 3 })).setOrigin(0.5);
+    const barBg = this.add.rectangle(0, top, 50, 6, 0x000000).setOrigin(0.5);
+    const bar = this.add.rectangle(-25, top, 50, 6, 0x2ecc71).setOrigin(0, 0.5);
+    const downText = this.add.text(0, -10, '', style(20, '#ffffff', { stroke: '#000000', strokeThickness: 4 })).setOrigin(0.5);
+    const icon = this.add.text(22, top + 8, '', style(15)).setOrigin(0.5);
+    const foot = this.add.circle(0, 34, 4, 0x7CFC9A).setVisible(false);
+    c.add([glow, foot, tok, name, barBg, bar, downText, icon].filter(Boolean));
     c.unitUid = unit.uid;
-    c.setSize(60, 60).setInteractive({ draggable: true, useHandCursor: true });
-    return { container: c, tok, bar, barBg, downText, name, icon, foot, key: `${unit.kind}:${unit.speciesId}:${unit.stage}` };
+    c.setSize(64, 80).setInteractive({ draggable: true, useHandCursor: true });
+    const v = { container: c, tok, rig, bar, barBg, downText, name, icon, foot, lastHp: unit.hp, wasDown: unit.down, key: `${unit.kind}:${unit.speciesId}:${unit.stage}` };
+    if (rig && this.state.time > 0) {
+      const born = this.pendingBirth?.get(unit.uid);
+      if (born) rig.inst.play(born);
+    }
+    return v;
+  }
+
+  /** Drive a unit's rig from what happened this frame. */
+  animateUnit(u, v, onField, dt) {
+    const r = v.rig;
+    if (!r) return;
+    const m = r.inst.motion;
+    const busy = ['attack', 'skill', 'hit', 'merge_in', 'evolve', 'respawn'].includes(m) && !r.inst.finished;
+    if (this.state.result === 'clear') { if (m !== 'victory') r.inst.play('victory', { loop: true }); }
+    else if (u.down) { if (m !== 'down') r.inst.play('down'); }
+    else if (v.wasDown) r.inst.play('respawn');
+    else if (onField && u.moving) { if (m !== 'move') r.inst.play('move', { loop: true }); r.inst.moveVelocity = Math.sign(u.targetPos - u.pos) * 180; }
+    else if (!busy && m !== 'idle') r.inst.play('idle', { loop: true });
+    if (!u.moving) r.inst.moveVelocity = 0;
+    r.inst.setFacing(onField && u.moving && u.targetPos < u.pos ? -1 : 1);
+    if (u.hp < v.lastHp - 0.5 && !u.down) { r.inst.hitFlash(0.1); if (!busy && !u.moving) r.inst.play('hit'); }
+    v.lastHp = u.hp; v.wasDown = u.down;
+    r.view.update(dt);
   }
 
   syncUnits() {
@@ -348,14 +381,15 @@ export default class BattleScene extends Phaser.Scene {
       v.bar.width = 50 * Math.max(0, u.hp) / max;
       v.bar.setFillStyle(u.hp / max < 0.3 ? 0xe74c3c : 0x2ecc71);
       v.bar.setVisible(onField); v.barBg.setVisible(onField);
-      v.container.setAlpha(this.hidden.has(u.uid) ? 0 : u.down ? 0.35 : 1);
+      v.container.setAlpha(this.hidden.has(u.uid) ? 0 : u.down && !v.rig ? 0.35 : 1);
+      this.animateUnit(u, v, onField, this.frameDt);
       v.downText.setText(u.down ? String(Math.ceil(u.respawnLeft)) : '');
       const clash = onField && (s.view?.bonds ?? []).some((b) => b.bond.kind === 'clash' && Object.values(b.units).includes(u));
       v.icon.setText(onField && !u.down && isResting(u) ? 'Zz' : clash ? '⚡' : '');
       v.foot.setVisible(onField && terrainMatch(u, s, this.data2.config));
-      if (onField && !u.down && !u.moving && this.lastAttack?.get(u.uid) > time() - 120) v.tok.setScale(1.12); else v.tok.setScale(1);
+      if (!v.rig) { if (onField && !u.down && !u.moving && this.lastAttack?.get(u.uid) > time() - 120) v.tok.setScale(1.12); else v.tok.setScale(1); }
     }
-    for (const [uid, v] of this.unitViews) if (!seen.has(uid)) { v.container.destroy(); this.unitViews.delete(uid); }
+    for (const [uid, v] of this.unitViews) if (!seen.has(uid)) { v.rig?.view.destroy(); v.container.destroy(); this.unitViews.delete(uid); }
   }
 
   drawBonds() {
@@ -374,14 +408,15 @@ export default class BattleScene extends Phaser.Scene {
   makeEnemyView(e) {
     const def = this.data2.enemyById[e.id];
     const size = e.boss ? 52 : e.id === 'swarm' ? 16 : e.id === 'bat' ? 20 : 28;
-    const key = this.textures.exists('enemy-' + e.id) ? 'enemy-' + e.id : null;
-    const body = key ? this.add.image(0, 0, key).setDisplaySize(size * 2, size * 2) : e.flying ? this.add.triangle(0, 0, 0, size, size / 2, 0, size, size, hex(def.color)) : this.add.rectangle(0, 0, size, size, hex(def.color));
-    body.setDepth(70);
+    const holder = this.add.container(0, 0).setDepth(70);
+    const px = size * 2.2;
+    const rig = enemyRig(this, e, holder, px);
+    const body = rig ? holder : e.flying ? this.add.triangle(0, 0, 0, size, size / 2, 0, size, size, hex(def.color)).setDepth(70) : this.add.rectangle(0, 0, size, size, hex(def.color)).setDepth(70);
     const barW = e.boss ? 70 : 30;
     const bar = this.add.rectangle(0, 0, barW, 4, 0xff5252).setOrigin(0, 0.5).setDepth(71);
     const label = e.boss ? this.add.text(0, 0, def.name, style(13, '#ffcccc', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(71) : null;
     const shield = e.pattern?.type === 'shield' ? this.add.circle(0, 0, size, 0x9b59b6, 0.25).setStrokeStyle(3, 0xd2b4ff).setDepth(72).setVisible(false) : null;
-    return { body, bar, barW, size, label, shield };
+    return { body, rig, holder, bar, barW, size, px, label, shield, lastHp: e.hp };
   }
 
   syncEnemies() {
@@ -393,19 +428,37 @@ export default class BattleScene extends Phaser.Scene {
       const x = tileToX(Math.min(e.pos, this.data2.config.pathLength + 0.3));
       const bob = e.flying ? Math.sin((this.time.now / 300) + e.eid) * 5 : 0;
       const y = e.flying ? PATH_Y - 72 + bob : PATH_Y + ((e.eid % 3) - 1) * 16 + (e.boss ? -6 : 0);
-      v.body.setPosition(x, y);
-      v.bar.setPosition(x - v.barW / 2, y - v.size / 2 - 7);
+      if (v.rig) {
+        v.holder.setPosition(x, y + v.px * 0.42);
+        const r = v.rig.inst, m = r.motion;
+        const still = e.blockedBy !== null || e.holdLeft > 0 || e.stunLeft > 0;
+        if (this.enemyHits?.has(e.eid)) r.play('attack');
+        else if (!(m === 'attack' && !r.finished) && !(m === 'hit' && !r.finished)) { if (still && m !== 'idle') r.play('idle', { loop: true }); else if (!still && m !== 'move') r.play('move', { loop: true }); }
+        if (e.hp < v.lastHp - 0.01) r.hitFlash(0.08);
+        v.lastHp = e.hp;
+        r.setFacing(e.confuseLeft > 0 ? 1 : -1);
+        v.rig.view.update(e.stunLeft > 0 || e.holdLeft > 0 ? 0 : this.frameDt);
+        v.holder.setDepth(70 + y / 10);
+      } else v.body.setPosition(x, y);
+      v.bar.setPosition(x - v.barW / 2, y - v.size / 2 - (v.rig ? 22 : 7));
       v.bar.width = v.barW * Math.max(0, e.hp) / e.maxHp;
       v.label?.setPosition(x, y + v.size / 2 + 12);
       v.shield?.setPosition(x, y).setVisible(e.shieldLeft > 0);
       const stroke = e.holdLeft > 0 || e.stunLeft > 0 ? 0xffffff : e.confuseLeft > 0 ? 0xc39bd3 : e.poisonLeft > 0 ? 0x58d68d : e.slowLeft > 0 ? 0x5dade2 : null;
-      if (v.body.setStrokeStyle) { if (stroke === null) v.body.setStrokeStyle(); else v.body.setStrokeStyle(3, stroke); }
+      if (!v.rig && v.body.setStrokeStyle) { if (stroke === null) v.body.setStrokeStyle(); else v.body.setStrokeStyle(3, stroke); }
+      if (v.rig) { v.statusTint ??= null; const tint = stroke; if (tint !== v.statusTint) { v.statusTint = tint; for (const o of v.holder.list) if (o.setTint) { if (tint === null) o.clearTint(); else o.setTint(tint === 0xffffff ? 0xbbbbff : tint); } } }
       v.lastX = x; v.lastY = y;
     }
     for (const [eid, v] of this.enemyViews) {
       if (seen.has(eid)) continue;
-      v.body.destroy(); v.bar.destroy(); v.label?.destroy(); v.shield?.destroy();
+      v.bar.destroy(); v.label?.destroy(); v.shield?.destroy();
       this.enemyViews.delete(eid);
+      if (v.rig) {
+        v.rig.inst.play('down');
+        const r = v.rig, h = v.holder, born = time();
+        const tick = () => { r.view.update(this.frameDt || 0.016); if (time() - born < 650) this.time.delayedCall(16, tick); else { r.view.destroy(); h.destroy(); } };
+        tick();
+      } else v.body.destroy();
       (this.goneViews ??= new Map()).set(eid, v);
     }
   }
@@ -413,6 +466,18 @@ export default class BattleScene extends Phaser.Scene {
   floatText(x, y, msg, color, size = 16) {
     const t = this.add.text(x, y, msg, style(size, color, { stroke: '#000000', strokeThickness: 3 })).setOrigin(0.5).setDepth(1500);
     this.tweens.add({ targets: t, y: y - 34, alpha: 0, duration: 900, onComplete: () => t.destroy() });
+  }
+
+  /** Unit rig reactions to this frame's events (before views sync). */
+  preAnimate() {
+    this.pendingBirth ??= new Map();
+    for (const ev of this.state.events) {
+      const v = ev.uid != null ? this.unitViews.get(ev.uid) : null;
+      if (ev.type === 'attack' && v?.rig) v.rig.inst.play('attack');
+      if (ev.type === 'skill' && v?.rig && ev.name) v.rig.inst.play('skill');
+      if (ev.type === 'merge') this.pendingBirth.set(ev.uid, ev.kind === 'evolve' || ev.kind === 'spirit' ? 'evolve' : 'merge_in');
+      if (ev.type === 'summon') this.pendingBirth.set(ev.uid, 'merge_in');
+    }
   }
 
   drainEvents() {

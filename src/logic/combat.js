@@ -352,6 +352,7 @@ export function combatTick(state, data, dt) {
     if (e.attackCd > 0) continue;
     e.attackCd += e.interval * (e.intervalMult ?? 1);
     const b = byUid.get(e.blockedBy);
+    state.events.push({ type: 'enemyAttack', eid: e.eid });
     hitUnit(state, data, b, e.attack, e);
     if (e.boss) for (const o of state.field) if (o !== b && !o.down && Math.abs(o.pos - b.pos) <= 1) hitUnit(state, data, o, e.attack, e);
   }

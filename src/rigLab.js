@@ -10,19 +10,27 @@ const log = (s) => { const el = $('log'); el.textContent = (s + '\n' + el.textCo
 
 class RigLabScene extends Phaser.Scene {
   constructor() { super('RigLab'); this.views = []; this.mode = 'stages'; this.speed = 1; this.paused = false; }
+  preload() {
+    this.load.json('manifest', 'assets/manifest.json');
+    this.load.once('filecomplete-json-manifest', (k, t, m) => { for (const [key, path] of Object.entries(m?.images ?? {})) if (key.startsWith('rig-')) this.load.image(key, path); });
+  }
   async create() {
     this.cameras.main.setBackgroundColor('#20262e');
     this.add.rectangle(640, 640, 1280, 160, 0x2f3a2c).setDepth(-2000);
     this.add.rectangle(640, 560, 1280, 4, 0x56704a).setDepth(-1999);
     this.title = this.add.text(20, 16, '', { fontSize: '20px', color: '#ffd59a' }).setDepth(20000);
     this.fx = this.add.group();
-    try { this.fox = await loadRig('fox'); } catch (e) { this.title.setText(String(e.message)); console.error(e); return; }
-    this.buildUI(); this.setMode('stages');
+    try {
+      this.fox = await loadRig('fox');
+      const idx = await fetch('data/rig/index.json').then((r) => r.json());
+      this.all = await Promise.all(idx.rigs.map((id) => loadRig(id)));
+    } catch (e) { this.title.setText(String(e.message)); console.error(e); return; }
+    this.buildUI(); this.setMode(new URLSearchParams(location.search).get('mode') ?? 'gallery');
     window.__rigLab = this;
   }
   clear() { this.views.forEach((v) => v.destroy()); this.views = []; this.labels?.forEach((t) => t.destroy()); this.labels = []; }
   addFox(stage, x, opts = {}) {
-    const inst = this.fox.make({ stage, x, y: 560, scale: opts.scale ?? 0.3, seed: this.views.length + 1 });
+    const inst = (this.pick ?? this.fox).make({ stage, x, y: 560, scale: opts.scale ?? 0.3, seed: this.views.length + 1 });
     if (opts.facing) inst.setFacing(opts.facing);
     const v = new RigView(this, inst); v.showBones = $('bones').checked;
     inst.on('*', (e) => { if (e.name !== 'complete') log(`${stage} · ${inst.motion} → ${e.name}`); });
@@ -32,7 +40,16 @@ class RigLabScene extends Phaser.Scene {
     this.mode = mode; this.clear();
     document.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('on', b.dataset.mode === mode));
     const st = this.fox.rig.stages;
-    if (mode === 'stages') {
+    if (mode === 'gallery') {
+      this.title.setText('전체 동물·키메라 — 부위 그림을 뼈대에 붙여 움직임');
+      this.all.forEach((r, i) => {
+        const x = 90 + (i % 7) * 175, y = 200 + Math.floor(i / 7) * 205;
+        const inst = r.make({ stage: 'adult', x, y, scale: 0.3, seed: i + 1 });
+        const v = new RigView(this, inst); v.showBones = $('bones').checked;
+        this.views.push(v);
+        this.labels.push(this.add.text(x, y + 14, r.rig.species, { fontSize: '13px', color: '#ccc' }).setOrigin(0.5).setDepth(20000));
+      });
+    } else if (mode === 'stages') {
       this.title.setText('단계 비교 — 같은 모션, 단계별 비율·속도·과장 차이');
       STAGES.forEach((s, i) => { this.addFox(s, 260 + i * 360); this.labels.push(this.add.text(260 + i * 360, 600, st[s].label, { fontSize: '22px', color: '#fff' }).setOrigin(0.5).setDepth(20000)); });
     } else if (mode === 'battle') {

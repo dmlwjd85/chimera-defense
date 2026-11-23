@@ -1,0 +1,100 @@
+{
+ "species": "cheese_thief",
+ "skin": "cheese_thief",
+ "template": "quadruped",
+ "anims": "quadruped",
+ "artRes": 2,
+ "palette": {
+  "fur": "#e8823a",
+  "furDark": "#a75d29",
+  "belly": "#f6e7cf",
+  "ink": "#2b1d16",
+  "accent": "#ffd36b"
+ },
+ "slotOverrides": {
+  "deco": {
+   "x": 165,
+   "y": -82,
+   "ph": {
+    "shape": "ellipse",
+    "w": 70,
+    "h": 62
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "label": "어린",
+   "scale": 0.62,
+   "speed": 1.15,
+   "amp": 1.2,
+   "boneScale": {
+    "head": 1.3,
+    "eye": 1.2,
+    "ear_n": 1.1,
+    "ear_r": 1.1,
+    "tail_1": 0.85,
+    "leg_fr_up": 0.82,
+    "leg_fr_lo": 0.82,
+    "leg_fn_up": 0.82,
+    "leg_fn_lo": 0.82,
+    "leg_br_up": 0.82,
+    "leg_br_lo": 0.82,
+    "leg_bn_up": 0.82,
+    "leg_bn_lo": 0.82
+   },
+   "parts": {
+    "wing": "wing",
+    "nose": null,
+    "deco": "deco"
+   }
+  },
+  "teen": {
+   "label": "성장기",
+   "scale": 0.82,
+   "speed": 1.05,
+   "amp": 1.08,
+   "boneScale": {
+    "head": 1.12,
+    "eye": 1.08,
+    "tail_1": 0.95
+   },
+   "parts": {
+    "wing": "wing",
+    "nose": null,
+    "deco": "deco"
+   }
+  },
+  "adult": {
+   "label": "성체",
+   "scale": 1.0,
+   "speed": 1.0,
+   "amp": 1.0,
+   "boneScale": {},
+   "parts": {
+    "wing": "wing",
+    "nose": null,
+    "deco": "deco"
+   }
+  },
+  "spirit": {
+   "label": "영물",
+   "scale": 1.12,
+   "speed": 1.0,
+   "amp": 1.0,
+   "boneScale": {
+    "head": 1.02
+   },
+   "parts": {
+    "wing": "wing",
+    "nose": null,
+    "deco": "deco"
+   }
+  }
+ },
+ "skins": {
+  "default": {
+   "parts": {}
+  }
+ }
+}

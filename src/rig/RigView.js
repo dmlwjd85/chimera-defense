@@ -34,18 +34,22 @@ export function ensurePlaceholders(scene, template, rig) {
 }
 
 export class RigView {
-  constructor(scene, inst) {
-    this.scene = scene; this.inst = inst;
+  constructor(scene, inst, opts = {}) {
+    this.scene = scene; this.inst = inst; this.opts = opts;
     ensurePlaceholders(scene, inst.template, inst.rig);
-    this.container = scene.add.container(0, 0);
+    this.container = opts.parent ?? scene.add.container(0, 0);
     this.objs = {};
     this.bonesG = scene.add.graphics(); this.bonesG.setDepth(10000); this.showBones = false;
     this.sync();
   }
   textureFor(slot, part) {
-    const real = `${this.inst.rig.species}_${this.inst.stage}_${part}`;
-    return this.scene.textures.exists(real) ? real : `ph_${this.inst.rig.species}_${slot}`;
+    const given = this.inst.rig.textures?.[slot];
+    if (given && this.scene.textures.exists(given)) return given;
+    const skin = this.inst.rig.skin ?? this.inst.rig.species;
+    for (const k of [`rig-${skin}-${this.inst.stage}-${slot}`, `rig-${skin}-${slot}`, `${this.inst.rig.species}_${this.inst.stage}_${part}`]) if (this.scene.textures.exists(k)) return k;
+    return `ph_${this.inst.rig.species}_${slot}`;
   }
+  artScale(key) { return key.startsWith('rig-') ? 1 / (this.inst.rig.artRes ?? 2) : (this.inst.rig.artScale ?? 1); }
   objFor(d) {
     let o = this.objs[d.slot];
     const key = this.textureFor(d.slot, d.part);
@@ -53,9 +57,8 @@ export class RigView {
     if (o && o.texture.key !== key) { o.destroy(); o = null; }
     if (!o) {
       if (d.rope) {
-        const n = d.rope.length;
-        o = this.scene.add.rope(0, 0, key, null, n); // WebGL only; Canvas falls back to nothing
-      } else o = this.scene.add.image(0, 0, key);
+        o = this.scene.add.rope(0, 0, key, null, d.rope.length); // WebGL only; Canvas falls back to nothing
+      } else { o = this.scene.add.image(0, 0, key); if (this.inst.rig.flipArt) o.setFlipX(true); }
       this.container.add(o); this.objs[d.slot] = o;
     }
     return o;
@@ -68,18 +71,19 @@ export class RigView {
       o.setVisible(true).setAlpha(d.alpha);
       if (d.rope) {
         // points are screen space; scale the rope so its thickness matches the body, and divide the points back
-        const k = Math.hypot(d.m[0], d.m[1]) || 1;
+        const k = (Math.hypot(d.m[0], d.m[1]) || 1) * this.artScale(o.texture.key);
         o.setScale(k);
         d.rope.forEach(([x, y], j) => { if (o.points[j]) { o.points[j].x = x / k; o.points[j].y = y / k; } });
         o.setDirty();
       } else {
-        o.setPosition(d.x, d.y); o.rotation = Phaser.Math.DegToRad(d.rot); o.setScale(d.sx, d.sy);
+        const a = this.artScale(o.texture.key);
+        o.setPosition(d.x, d.y); o.rotation = Phaser.Math.DegToRad(d.rot); o.setScale(d.sx * a, d.sy * a);
       }
       if (d.rope) o.tintFill = flash; else if (flash) o.setTintFill(0xffffff); else o.clearTint();
       this.container.moveTo(o, i);
     });
     for (const [k, o] of Object.entries(this.objs)) if (!seen.has(k)) o.setVisible(false);
-    this.container.setDepth(this.inst.y);
+    if (!this.opts?.parent) this.container.setDepth(this.inst.y);
     this.bonesG.clear();
     if (this.showBones) {
       for (const b of this.inst.getBoneLines()) {
@@ -89,5 +93,5 @@ export class RigView {
     }
   }
   update(dt) { const ev = this.inst.update(dt); this.sync(); return ev; }
-  destroy() { this.container.destroy(); this.bonesG.destroy(); }
+  destroy() { if (!this.opts?.parent) this.container.destroy(); else Object.values(this.objs).forEach((o) => o.destroy()); this.bonesG.destroy(); }
 }

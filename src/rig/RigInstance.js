@@ -147,7 +147,9 @@ export class RigInstance {
     const parts = this.rig.stages[this.stage].parts || {};
     const skinParts = this.rig.skins?.[this.skin]?.parts || {};
     const out = [];
-    for (const slot of this.template.slots) {
+    const over = this.rig.slotOverrides ?? {};
+    for (const base of this.template.slots) {
+      const slot = over[base.name] ? { ...base, ...over[base.name] } : base;
       const fallback = 'part' in slot ? slot.part : slot.name;
       const part = slot.name in skinParts ? skinParts[slot.name] : slot.name in parts ? parts[slot.name] : fallback;
       if (part === null || part === false) continue;
@@ -156,7 +158,7 @@ export class RigInstance {
       if (slot.name === this.blink.slot) local = mul(local, fromTRS(0, 0, 0, 1, this.blink.value()));
       if (this.breath.slots.includes(slot.name)) local = mul(local, fromTRS(0, 0, 0, 1, this.breath.value(this.cur.clip.breath ?? 1)));
       const m = mul(P, mul(bw, local));
-      const entry = { slot: slot.name, part, z: slot.z ?? 0, m, ...decompose(m), alpha: this.alphaOf[slot.bone], ph: slot.ph, color: slot.color };
+      const entry = { slot: slot.name, part, z: slot.z ?? 0, m, ...decompose(m), alpha: this.alphaOf[slot.bone], ph: slot.ph, color: slot.color, flipY: !!slot.flipY };
       if (slot.rope) {
         entry.rope = chainPoints(slot.rope, this.worlds, this.lengths, slot.ropeSegments || 4).map(([x, y]) => apply(P, x, y));
       }

@@ -2,7 +2,7 @@
  "id": "quadruped",
  "canvas": 1024,
  "baseline": 922,
- "notes": "Rig space: feet on y=0, facing right, degrees clockwise positive. Child x/y are in the parent's local space.",
+ "notes": "Rig space: feet on y=0, facing right, degrees clockwise positive. Child x/y are in the parent local space.",
  "bones": [
   {
    "name": "root",
@@ -66,8 +66,14 @@
   {
    "name": "eye",
    "parent": "head",
-   "x": 45,
-   "y": -12
+   "x": 48,
+   "y": -14
+  },
+  {
+   "name": "horn",
+   "parent": "head",
+   "x": -5,
+   "y": -40
   },
   {
    "name": "tail_1",
@@ -158,6 +164,14 @@
    "foot": true
   },
   {
+   "name": "wing",
+   "parent": "chest",
+   "x": -40,
+   "y": -10,
+   "rot": 200,
+   "length": 90
+  },
+  {
    "name": "deco",
    "parent": "chest",
    "x": 20,
@@ -166,27 +180,40 @@
  ],
  "slots": [
   {
+   "name": "leg_fr_lo",
+   "bone": "leg_fr_lo",
+   "x": 59,
+   "y": 0,
+   "z": 0,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 152,
+    "h": 34
+   }
+  },
+  {
    "name": "leg_fr_up",
    "bone": "leg_fr_up",
-   "x": 52.5,
+   "x": 52,
    "y": 0,
    "z": 1,
-   "color": "furDark",
+   "color": "fur",
    "ph": {
-    "shape": "capsule",
+    "shape": "ellipse",
     "w": 151,
     "h": 46
    }
   },
   {
-   "name": "leg_fr_lo",
-   "bone": "leg_fr_lo",
-   "x": 59.0,
+   "name": "leg_br_lo",
+   "bone": "leg_br_lo",
+   "x": 59,
    "y": 0,
    "z": 0,
-   "color": "furDark",
+   "color": "fur",
    "ph": {
-    "shape": "capsule",
+    "shape": "ellipse",
     "w": 152,
     "h": 34
    }
@@ -194,27 +221,14 @@
   {
    "name": "leg_br_up",
    "bone": "leg_br_up",
-   "x": 52.5,
+   "x": 52,
    "y": 0,
    "z": 1,
-   "color": "furDark",
+   "color": "fur",
    "ph": {
-    "shape": "capsule",
+    "shape": "ellipse",
     "w": 163,
     "h": 58
-   }
-  },
-  {
-   "name": "leg_br_lo",
-   "bone": "leg_br_lo",
-   "x": 59.0,
-   "y": 0,
-   "z": 0,
-   "color": "furDark",
-   "ph": {
-    "shape": "capsule",
-    "w": 152,
-    "h": 34
    }
   },
   {
@@ -240,12 +254,26 @@
    "x": 35,
    "y": 0,
    "z": 3,
-   "color": "furDark",
+   "color": "fur",
    "ph": {
-    "shape": "tri",
+    "shape": "ellipse",
     "w": 80,
     "h": 48
    }
+  },
+  {
+   "name": "wing",
+   "bone": "wing",
+   "x": 45,
+   "y": 0,
+   "z": 3.5,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 120,
+    "h": 70
+   },
+   "part": null
   },
   {
    "name": "body",
@@ -266,7 +294,7 @@
    "x": 120,
    "y": 35,
    "z": 5,
-   "color": "belly",
+   "color": "fur",
    "ph": {
     "shape": "ellipse",
     "w": 210,
@@ -279,7 +307,7 @@
    "x": 15,
    "y": 10,
    "z": 6,
-   "color": "belly",
+   "color": "fur",
    "ph": {
     "shape": "ellipse",
     "w": 120,
@@ -289,12 +317,12 @@
   {
    "name": "leg_bn_up",
    "bone": "leg_bn_up",
-   "x": 52.5,
+   "x": 52,
    "y": 0,
    "z": 7,
    "color": "fur",
    "ph": {
-    "shape": "capsule",
+    "shape": "ellipse",
     "w": 167,
     "h": 62
    }
@@ -302,12 +330,12 @@
   {
    "name": "leg_bn_lo",
    "bone": "leg_bn_lo",
-   "x": 59.0,
+   "x": 59,
    "y": 0,
    "z": 7,
    "color": "fur",
    "ph": {
-    "shape": "capsule",
+    "shape": "ellipse",
     "w": 156,
     "h": 38
    }
@@ -315,12 +343,12 @@
   {
    "name": "leg_fn_up",
    "bone": "leg_fn_up",
-   "x": 52.5,
+   "x": 52,
    "y": 0,
    "z": 8,
    "color": "fur",
    "ph": {
-    "shape": "capsule",
+    "shape": "ellipse",
     "w": 155,
     "h": 50
    }
@@ -328,12 +356,12 @@
   {
    "name": "leg_fn_lo",
    "bone": "leg_fn_lo",
-   "x": 59.0,
+   "x": 59,
    "y": 0,
    "z": 8,
    "color": "fur",
    "ph": {
-    "shape": "capsule",
+    "shape": "ellipse",
     "w": 156,
     "h": 38
    }
@@ -357,7 +385,7 @@
    "x": 28,
    "y": 0,
    "z": 10,
-   "color": "belly",
+   "color": "fur",
    "ph": {
     "shape": "ellipse",
     "w": 70,
@@ -378,12 +406,26 @@
    }
   },
   {
+   "name": "horn",
+   "bone": "horn",
+   "x": 0,
+   "y": 0,
+   "z": 11.5,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 120,
+    "h": 80
+   },
+   "part": null
+  },
+  {
    "name": "muzzle",
    "bone": "head",
    "x": 85,
    "y": 15,
    "z": 12,
-   "color": "belly",
+   "color": "fur",
    "ph": {
     "shape": "ellipse",
     "w": 85,
@@ -397,7 +439,7 @@
    "x": 125,
    "y": 10,
    "z": 13,
-   "color": "ink",
+   "color": "fur",
    "ph": {
     "shape": "ellipse",
     "w": 22,
@@ -412,7 +454,7 @@
    "z": 12,
    "color": "fur",
    "ph": {
-    "shape": "tri",
+    "shape": "ellipse",
     "w": 85,
     "h": 52
    }
@@ -423,11 +465,11 @@
    "x": 0,
    "y": 0,
    "z": 14,
-   "color": "ink",
+   "color": "fur",
    "ph": {
     "shape": "ellipse",
-    "w": 22,
-    "h": 26
+    "w": 34,
+    "h": 40
    }
   },
   {
@@ -436,11 +478,11 @@
    "x": 0,
    "y": 0,
    "z": 15,
-   "color": "accent",
+   "color": "fur",
    "ph": {
     "shape": "ellipse",
-    "w": 0,
-    "h": 0
+    "w": 10,
+    "h": 10
    },
    "part": null
   }
@@ -482,6 +524,15 @@
     "damping": 12,
     "limit": 20,
     "sway": 0.05
+   },
+   {
+    "bones": [
+     "wing"
+    ],
+    "stiffness": 90,
+    "damping": 9,
+    "limit": 25,
+    "sway": 0.08
    }
   ]
  }

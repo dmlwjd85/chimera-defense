@@ -100,9 +100,9 @@ test('mix blends instead of snapping', () => {
 
 test('facing mirrors the draw list around x', () => {
   const r = mk({ x: 500 }); r.update(0);
-  const a = r.getDrawList().find((d) => d.slot === 'nose').x;
+  const a = r.getDrawList().find((d) => d.slot === 'muzzle').x;
   r.setFacing(-1);
-  const b = r.getDrawList().find((d) => d.slot === 'nose').x;
+  const b = r.getDrawList().find((d) => d.slot === 'muzzle').x;
   assert.ok(a > 500 && b < 500 && Math.abs((a - 500) + (b - 500)) < 1e-6);
 });
 
@@ -142,4 +142,26 @@ test('every motion runs at every stage without NaN', () => {
     const r = mk({ stage: st }); r.play(m); run(r, A[m].duration + 0.1);
     for (const d of r.getDrawList()) assert.ok(Number.isFinite(d.x) && Number.isFinite(d.y) && Number.isFinite(d.rot), `${st}/${m}/${d.slot}`);
   }
+});
+
+test('every drawn rig (animals, chimeras) validates and runs all motions at every stage', () => {
+  const idx = read('index');
+  for (const id of idx.rigs) {
+    const rig = read(id + '.rig'), tpl = read(rig.template + '.template'), an = read((rig.anims ?? rig.template) + '.anims');
+    assert.deepEqual([...validateTemplate(tpl), ...validateAnims(an, tpl), ...validateRig(rig, tpl)], [], id);
+    for (const st of [...STAGES, 'spirit']) for (const m of MOTIONS) {
+      const r = new RigInstance(tpl, an, rig, { stage: st }); r.play(m); run(r, an[m].duration + 0.05, 1 / 30);
+      for (const d of r.getDrawList()) assert.ok(Number.isFinite(d.x) && Number.isFinite(d.y), `${id}/${st}/${m}/${d.slot}`);
+    }
+    const r = new RigInstance(tpl, an, rig, { stage: 'young' }); r.update(0);
+    const feet = tpl.bones.filter((b) => b.foot).map((b) => apply(r.worlds[b.name], b.length, 0)[1]);
+    assert.ok(Math.abs(Math.max(...feet)) < 1e-6, id + ' feet on the ground');
+  }
+});
+
+test('sprite template (one-image enemies) runs every motion', () => {
+  const tpl = read('sprite.template'), an = read('sprite.anims');
+  assert.deepEqual(validateAnims(an, tpl), []);
+  const rig = { species: 'normal', stages: { adult: { scale: 1 } } };
+  for (const m of MOTIONS) { const r = new RigInstance(tpl, an, rig, { stage: 'adult' }); r.play(m); run(r, an[m].duration); }
 });

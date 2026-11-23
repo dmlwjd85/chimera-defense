@@ -1,0 +1,120 @@
+{
+ "species": "jackalope",
+ "skin": "jackalope",
+ "template": "quadruped",
+ "anims": "quadruped",
+ "artRes": 2,
+ "palette": {
+  "fur": "#c9a27e",
+  "furDark": "#90745a",
+  "belly": "#f6e7cf",
+  "ink": "#2b1d16",
+  "accent": "#ffd36b"
+ },
+ "slotOverrides": {
+  "ear_n": {
+   "x": 60,
+   "ph": {
+    "shape": "ellipse",
+    "w": 125,
+    "h": 44
+   }
+  },
+  "ear_r": {
+   "x": 55,
+   "ph": {
+    "shape": "ellipse",
+    "w": 115,
+    "h": 40
+   }
+  },
+  "horn": {
+   "y": -30,
+   "ph": {
+    "shape": "ellipse",
+    "w": 120,
+    "h": 100
+   }
+  },
+  "muzzle": {
+   "x": 80,
+   "y": 20,
+   "ph": {
+    "shape": "ellipse",
+    "w": 60,
+    "h": 46
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "label": "어린",
+   "scale": 0.62,
+   "speed": 1.15,
+   "amp": 1.2,
+   "boneScale": {
+    "head": 1.3,
+    "eye": 1.2,
+    "ear_n": 1.1,
+    "ear_r": 1.1,
+    "tail_1": 0.85,
+    "leg_fr_up": 0.82,
+    "leg_fr_lo": 0.82,
+    "leg_fn_up": 0.82,
+    "leg_fn_lo": 0.82,
+    "leg_br_up": 0.82,
+    "leg_br_lo": 0.82,
+    "leg_bn_up": 0.82,
+    "leg_bn_lo": 0.82
+   },
+   "parts": {
+    "horn": "horn",
+    "nose": null
+   }
+  },
+  "teen": {
+   "label": "성장기",
+   "scale": 0.82,
+   "speed": 1.05,
+   "amp": 1.08,
+   "boneScale": {
+    "head": 1.12,
+    "eye": 1.08,
+    "tail_1": 0.95
+   },
+   "parts": {
+    "horn": "horn",
+    "nose": null
+   }
+  },
+  "adult": {
+   "label": "성체",
+   "scale": 1.0,
+   "speed": 1.0,
+   "amp": 1.0,
+   "boneScale": {},
+   "parts": {
+    "horn": "horn",
+    "nose": null
+   }
+  },
+  "spirit": {
+   "label": "영물",
+   "scale": 1.12,
+   "speed": 1.0,
+   "amp": 1.0,
+   "boneScale": {
+    "head": 1.02
+   },
+   "parts": {
+    "horn": "horn",
+    "nose": null
+   }
+  }
+ },
+ "skins": {
+  "default": {
+   "parts": {}
+  }
+ }
+}

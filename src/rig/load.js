@@ -12,7 +12,7 @@ async function getJson(base, name) {
 export async function loadRig(species, base = 'data/rig/') {
   const rig = await getJson(base, `${species}.rig`);
   const template = await getJson(base, `${rig.template}.template`);
-  const anims = await getJson(base, `${rig.template}.anims`);
+  const anims = await getJson(base, `${rig.anims ?? rig.template}.anims`);
   const errs = [...validateTemplate(template), ...validateAnims(anims, template), ...validateRig(rig, template)];
   if (errs.length) throw new Error(`rig ${species}:\n` + errs.join('\n'));
   return { template, anims, rig, make: (opts) => new RigInstance(template, anims, rig, opts) };

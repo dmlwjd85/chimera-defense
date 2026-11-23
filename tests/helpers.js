@@ -14,6 +14,7 @@ export function loadPlanData() {
   delete raw.config.damageBoost;
   delete raw.config.sameSpecies;
   delete raw.config.tempo;
+  delete raw.config.difficulty;
   return buildData(raw);
 }
 

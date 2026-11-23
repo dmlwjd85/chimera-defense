@@ -527,13 +527,15 @@ export class FX {
   /** Big text that slides in, holds and fades. */
   banner(text, color = '#ffffff', sub = '') {
     const s = this.scene;
+    this._banner?.forEach((o) => { s.tweens.killTweensOf(o); o.destroy(); });
     const bg = s.add.rectangle(640, 200, 1280, 92, 0x000000, 0.45).setDepth(2400).setScale(1, 0);
     const t = s.add.text(640, 194, text, { fontFamily: FONT, fontSize: '46px', color, stroke: '#000000', strokeThickness: 8 }).setOrigin(0.5).setDepth(2401).setAlpha(0).setX(500);
     const st = sub ? s.add.text(640, 232, sub, { fontFamily: FONT, fontSize: '18px', color: '#dddddd' }).setOrigin(0.5).setDepth(2401).setAlpha(0) : null;
     s.tweens.add({ targets: bg, scaleY: 1, duration: 180, ease: 'Back.out' });
     s.tweens.add({ targets: t, x: 640, alpha: 1, duration: 260, ease: 'Cubic.out' });
     if (st) s.tweens.add({ targets: st, alpha: 1, duration: 300, delay: 150 });
-    s.time.delayedCall(1300, () => s.tweens.add({ targets: [bg, t, st].filter(Boolean), alpha: 0, duration: 300, onComplete: () => [bg, t, st].forEach((o) => o?.destroy()) }));
+    const mine = this._banner = [bg, t, st].filter(Boolean);
+    s.time.delayedCall(1300, () => { if (this._banner !== mine) return; s.tweens.add({ targets: mine, alpha: 0, duration: 300, onComplete: () => { mine.forEach((o) => o.destroy()); if (this._banner === mine) this._banner = null; } }); });
   }
 }
 

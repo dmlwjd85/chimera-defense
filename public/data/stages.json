@@ -92,7 +92,8 @@
      "flying": 5,
      "healer": 5
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -125,7 +126,8 @@
      "flying": 40,
      "healer": 5
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -233,7 +235,8 @@
      "flying": 5,
      "healer": 5
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -266,7 +269,8 @@
      "flying": 40,
      "healer": 5
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -375,7 +379,8 @@
      "flying": 5,
      "healer": 5
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -408,7 +413,8 @@
      "flying": 40,
      "healer": 5
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -525,7 +531,8 @@
      "flying": 5,
      "healer": 5
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -550,7 +557,8 @@
      "tough": 20,
      "flying": 40
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -662,7 +670,8 @@
      "wisp": 20,
      "healer": 10
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -686,7 +695,8 @@
      "tough": 30,
      "wisp": 35
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -804,7 +814,8 @@
      "fast": 20,
      "healer": 10
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {
@@ -828,7 +839,8 @@
      "wisp": 35,
      "skeleton": 35
     },
-    "extra": []
+    "extra": [],
+    "horde": true
    },
    {
     "mix": {

@@ -92,7 +92,7 @@ const label = (u) => `${u.kind}:${u.speciesId ?? u.parts.join('+')}:${u.stage}`;
 
 /** Play one full stage with the bot; returns a summary (and per-wave log). */
 export function runOne(data, seed, opts = {}) {
-  const state = createBattle(data, opts.stage ?? 'forest-1', seed, { startGoldBonus: opts.extraGold ?? 0, benchBonus: opts.benchBonus ?? 0, talents: opts.talents ?? [], pool: opts.pool ?? null });
+  const state = createBattle(data, opts.stage ?? 'forest-1', seed, { startGoldBonus: opts.extraGold ?? 0, benchBonus: opts.benchBonus ?? 0, talents: opts.talents ?? [], pool: opts.pool ?? null, soul: opts.soul ?? null });
   if (opts.carry) addCarry(state, data, { speciesId: opts.carry, stage: opts.carryStage ?? 'teen', traits: [] });
   const waves = [];
   const made = {};

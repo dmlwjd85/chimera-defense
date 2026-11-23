@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { button, title, style, panel, showTip, hideTip } from './ui.js';
 import { buildData } from '../logic/data.js';
 import { stageUnlocked, starsOf, totalStars, nextUnlock } from '../logic/meta.js';
+import { soulGaps, soulSig } from '../logic/soul.js';
 
 const ZONE_NAME = { village: '마을', field: '들판', forest: '숲', plains: '대평원', mountain: '산', wetland: '습지' };
 const BOSS_ROLE = {
@@ -89,6 +90,8 @@ export default class StageSelectScene extends Phaser.Scene {
     this.pick(lastOpen, cards[lastOpen]);
 
     button(this, 120, 672, 160, 46, '← 타이틀', () => this.scene.start('Title'));
+    const sp = data.unitById[save.soulPet];
+    button(this, 640, 672, 420, 46, sp ? `👑 소울펫 ${sp.name} · ${soulSig(data, sp.id).name}   |   덱 짜기` : '👑 소울펫을 정하고 덱 짜기', () => this.scene.start('Deck', { stageId: this.picked ?? null }), { fill: sp ? 0x4a3d14 : 0x2e5a3a, stroke: 0xffd84d, size: 16, tip: '주인공 한 마리와 약점을 메울 동료 고르기' });
     button(this, 1120, 672, 250, 46, `✨ 별자리 나무  💎${save.shards ?? 0}`, () => this.scene.start('Talent', { back: 'StageSelect' }), { fill: 0x3a2466, stroke: 0xc77dff, size: 17, tip: '유물 조각으로 특성 찍기' });
   }
 
@@ -97,6 +100,7 @@ export default class StageSelectScene extends Phaser.Scene {
     const data = this.D, save = this.S, cfg = data.config, p = this.cardPos[i];
     this.sel.clear().lineStyle(3, 0xffd84d, 1).strokeRoundedRect(p.x - 2, p.y - 2, p.W + 4, p.H + 4, 12);
     this.detail.removeAll(true);
+    this.picked = c.st?.id ?? null;
     this.goBtn?.destroy(); this.goBtn = null;
     const add = (o) => { this.detail.add(o); return o; };
     const x = 60, y = 504;
@@ -114,7 +118,8 @@ export default class StageSelectScene extends Phaser.Scene {
     const st = c.st, open = stageUnlocked(save, data, st.id), rec = save.stages[st.id], boss = data.enemyById[st.boss];
     const kinds = [...new Set(st.waves.flatMap((w) => Object.keys(w.mix)))].filter((id) => data.enemyById[id]?.resist || data.enemyById[id]?.revive).map((id) => data.enemyById[id].name);
     add(this.add.text(x, y + 84, `땅: ${st.zones.map((z) => ZONE_NAME[z]).join(' → ')}    적 체력 ×${st.mult}${kinds.length ? `    조심: ${kinds.join('·')}` : ''}`, style(13, '#aabbcc')));
-    add(this.add.text(x, y + 104, `보스 ${boss?.name ?? '-'} — ${BOSS_ROLE[st.boss] ?? ''}`, style(13, '#f0883e')));
+    const gaps = save.soulPet ? soulGaps(data, save.soulPet, st).map((g) => g.text) : [];
+    add(this.add.text(x, y + 104, `보스 ${boss?.name ?? '-'} — ${BOSS_ROLE[st.boss] ?? ''}${gaps.length ? `     👑 ${data.unitById[save.soulPet].name}: ${gaps.slice(0, 2).join(' · ')}` : ''}`, style(13, '#f0883e')));
     const carry = save.carry?.[st.id];
     const mid = 760;
     add(this.add.text(mid, y + 4, `${stars(starsOf(rec))}`, style(26, '#ffd84d', { stroke: '#000', strokeThickness: 4 })));

@@ -1,6 +1,7 @@
 // 플레이어 마법: 마력을 모아 위기를 넘기는 공격·방어·서포트 주문. 대상은 스스로 고른다(한 번 누르면 끝).
 import { damageEnemy } from './combat.js';
 import { eco } from './relics.js';
+import { soulMana } from './soul.js';
 
 /** Mana a spell costs after the magic talents. */
 export const spellCost = (state, data, def) => Math.max(1, Math.round(def.cost * (1 - (eco(state, data, 'spellCost') ?? 0) / 100)));
@@ -18,7 +19,7 @@ export const spellDef = (data, id) => (data.config.spells?.list ?? []).find((s) 
 export function tickMana(state, data, dt) {
   const m = data.config.spells;
   if (!m || !state.spells?.length) return;
-  state.mana = Math.min(m.max, (state.mana ?? 0) + m.regen * (1 + ((eco(state, data, 'manaRegen') ?? 0) + (state.field?.some((u) => u.soul && !u.down) && data.config.soul?.sig?.[state.soul?.id]?.type === 'mana' ? data.config.soul.sig[state.soul.id].p.regen : 0)) / 100) * dt);
+  state.mana = Math.min(m.max, (state.mana ?? 0) + m.regen * (1 + ((eco(state, data, 'manaRegen') ?? 0) + soulMana(state, data)) / 100) * dt);
   if (state.spellCd > 0) state.spellCd -= dt;
 }
 

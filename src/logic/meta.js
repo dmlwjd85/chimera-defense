@@ -88,7 +88,7 @@ export function battleOptions(save, data, stageId = null) {
     known: { recipes: save.codex.recipes, failed: save.codex.failedPairs },
     seenSpecies: save.codex.units, seenBonds: save.codex.bonds,
     pool: deckOf(save, data, rosterPool(save, data) ?? data.units.map((u) => u.id)),
-    soul: save.soulPet && (rosterPool(save, data) ?? []).includes(save.soulPet) ? { id: save.soulPet, favor: save.favor?.[save.soulPet] ?? 0 } : null,
+    soul: save.soulPet && (rosterPool(save, data) ?? []).includes(save.soulPet) ? { id: save.soulPet, favor: save.favor?.[save.soulPet] ?? 0, path: save.soulPath?.[save.soulPet] ?? null } : null,
     spells: spellsUnlocked(save, data),
   };
 }

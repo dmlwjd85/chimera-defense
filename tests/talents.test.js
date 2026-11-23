@@ -33,7 +33,7 @@ test('talents change the run: gold, summon price, unit stats', async () => {
   assert.equal(summonPrice(st, D, {}), summonPrice(base, D, {}) - 3);
   const bear = await mkUnit(D, 1, 'bear', 'adult', 3);
   st.field = [bear]; computeMods(st, D);
-  assert.equal(bear.mods.hp, 10); assert.equal(bear.mods.dmg >= 8, true);
+  assert.equal(bear.mods.hp, 10 + D.config.roles.bruiser.mods.hp); // 특성 +10, 브루저 기본 +15 assert.equal(bear.mods.dmg >= 8, true);
 });
 
 test('a finished run leaves shards: relics by rarity plus waves', () => {

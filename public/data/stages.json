@@ -145,7 +145,7 @@
  {
   "id": "forest-2",
   "name": "2 · 비 오는 습지",
-  "mult": 1.25,
+  "mult": 1.4,
   "zones": [
    "plains",
    "wetland",

@@ -11,7 +11,7 @@ const near = (a, b) => Math.abs(a - b) < 1e-9;
 test('aura reaches nearby living units only', async () => {
   const w = await mkUnit(D, 1, 'wolf', 'young', 3), a = await mkUnit(D, 2, 'fox', 'young', 4.5), b = await mkUnit(D, 3, 'fox', 'young', 6);
   computeMods(mkState(D, [w, a, b], []), D);
-  assert.ok(near(a.mods.dmg - b.mods.dmg, 10), 'wolf aura +10 reaches 1.5 tiles, not 3');
+  assert.ok(near(a.mods.dmg - b.mods.dmg, 10 + D.config.roles.buffer.aura.dmg), 'wolf aura +10 and the buffer role aura reach 1.5 tiles, not 3');
   w.down = true;
   computeMods(mkState(D, [w, a, b], []), D);
   assert.ok(near(a.mods.dmg, b.mods.dmg));

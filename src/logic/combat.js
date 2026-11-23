@@ -4,6 +4,7 @@ import { findEffect, effectsOf, tickEnemyTimers, enemyVelocity, tickHealers } fr
 import { computeMods, effDamage, effInterval, effRange, effBlock, effAoe, cdMult, statusMult } from './mods.js';
 import { makeEnemy } from './waves.js';
 import { soulOnHit, soulOnKill } from './soul.js';
+import { guardShare, moveMult, dealerCombo, tickRoles } from './roles.js';
 
 const standing = (u) => !u.down && !u.moving;
 const usedSlots = (state, uid) => state.enemies.reduce((s, e) => s + (e.blockedBy === uid ? e.blockSlots : 0), 0);
@@ -137,7 +138,7 @@ export function hitUnit(state, data, u, amount, attacker = null) {
   }
   if (f.ignoreFirstHits && (u.ignoredHits ?? 0) < f.ignoreFirstHits) { u.ignoredHits = (u.ignoredHits ?? 0) + 1; return; }
   const cut = findEffect(u, 'damageTakenDown');
-  let amt = amount * (1 + (u.mods?.taken ?? 0) / 100);
+  let amt = guardShare(state, data, u, amount, attacker) * (1 + (u.mods?.taken ?? 0) / 100);
   if (cut) amt *= 1 - cut.percent / 100;
   u.hp -= Math.max(0, amt);
   u.lastHitAt = state.time;
@@ -312,7 +313,7 @@ export function combatTick(state, data, dt) {
   for (const u of state.field) {
     if (u.down) continue;
     const gap = u.targetPos - u.pos;
-    const speed = cfg.unitMoveSpeed * (findEffect(u, 'moveSpeed')?.mult ?? 1);
+    const speed = cfg.unitMoveSpeed * (findEffect(u, 'moveSpeed')?.mult ?? 1) * moveMult(data, u);
     const stepLen = speed * dt;
     const was = u.moving;
     u.moving = Math.abs(gap) > 1e-9;
@@ -332,6 +333,7 @@ export function combatTick(state, data, dt) {
 
   tickEnemyTimers(state, dt);
   tickPatches(state, cfg, dt);
+  tickRoles(state, data, dt);
   for (const e of state.enemies) if (e.sandLeft > 0) e.sandLeft -= dt;
   // boss summons
   for (const e of [...state.enemies]) {
@@ -401,6 +403,7 @@ export function combatTick(state, data, dt) {
     applyOnHit(state, u, hits, target, cfg);
     elementProc(state, u, target, hits, cfg);
     soulOnHit(state, data, u, target, hits);
+    dealerCombo(state, data, u, target, hits);
     state.events.push({ type: 'attack', uid: u.uid, eid: target.eid, aoe: aoe > 0, eids: hits.map((e) => e.eid) });
   }
 

@@ -30,7 +30,7 @@ export default class UnlockScene extends Phaser.Scene {
       button(this, 920, y, 180, 50, done ? '최대' : `${costs[lv]} 에센스`, () => {
         const r = buyUnlock(save, D, key);
         if (r.ok) { writeSave(this.registry.get('storage'), save); this.scene.restart({ msg: `${name} 해금!` }); }
-        else this.scene.restart({ msg: r.reason === 'essence' ? '에센스가 모자라요' : '더 살 수 없어요' });
+        else this.scene.restart({ msg: r.reason === 'essence' ? '에센스 부족' : '더 살 수 없음' });
       }, { fill: done ? 0x333333 : 0x2e8b57 }).setEnabled(!done && save.essence >= costs[lv]);
     });
     const y = 420;
@@ -40,7 +40,7 @@ export default class UnlockScene extends Phaser.Scene {
     button(this, 920, y, 180, 50, `${U.hint.cost} 에센스`, () => {
       const r = buyUnlock(save, D, 'hint');
       if (r.ok) { writeSave(this.registry.get('storage'), save); const rc = D.recipeById[r.hint.recipe]; this.scene.restart({ msg: `힌트: ??? 의 재료에 ${D.unitById[r.hint.part].name}이(가) 들어간다 (출처: ${rc.source})` }); }
-      else this.scene.restart({ msg: r.reason === 'essence' ? '에센스가 모자라요' : '공개할 힌트가 없어요' });
+      else this.scene.restart({ msg: r.reason === 'essence' ? '에센스 부족' : '공개할 힌트 없음' });
     }).setEnabled(save.essence >= U.hint.cost);
     this.add.text(240, 500, '업적', style(20, '#ffe2b8'));
     Object.entries(ACH).forEach(([id, name], i) => {

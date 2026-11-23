@@ -26,7 +26,7 @@ export default class ResultScene extends Phaser.Scene {
         this.add.text(640, 172, `🔮 새 마법을 배웠어요: ${sp.map((x) => `${x.icon} ${x.name}`).join(', ')} — ${sp[0].desc}`, style(15, '#d7bde2', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
       }
       if (r.joined?.length) {
-        const t = this.add.text(640, 548, `🎉 새 친구 합류: ${r.joined.map((id) => D.unitById[id]?.name).join(', ')} — 이제 지구본에서 만날 수 있어요`, style(17, '#9cff6b', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
+        const t = this.add.text(640, 548, `🎉 새 친구 합류: ${r.joined.map((id) => D.unitById[id]?.name).join(', ')} — 이제 지구본에서 만남`, style(17, '#9cff6b', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
         this.tweens.add({ targets: t, scale: { from: 1, to: 1.06 }, yoyo: true, repeat: -1, duration: 700 });
       }
     }
@@ -46,7 +46,7 @@ export default class ResultScene extends Phaser.Scene {
     finds.slice(0, 6).forEach((t, i) => this.add.text(95, y + i * 24, t, style(15, '#d7bde2')));
 
     panel(this, 660, 165, 560, 375);
-    this.add.text(685, 180, r.clear ? '종 경험치' : '패배한 판은 경험치가 없습니다', style(22, '#ffe2b8'));
+    this.add.text(685, 180, r.clear ? '종 경험치' : '패배한 판은 경험치 없음', style(22, '#ffe2b8'));
     r.xp.slice(0, 10).forEach((x, i) => {
       const up = x.after > x.before;
       this.add.text(700, 222 + i * 28, `${D.unitById[x.id].name}  +${x.gain}`, style(16));

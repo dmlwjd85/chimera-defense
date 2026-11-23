@@ -112,7 +112,7 @@ export function attachInput(scene) {
           else if (p.kind === 'weak' && p.textKey === 'merge.weakKnown') line = `${T(p.textKey, p.vars)}\n약점만 남아요: ${names(inheritWeak(to.traits, from.traits, data, makeRng(1)).traits)}`;
           opts.unshift({ icon: '🧪', label: p.textKey === 'merge.chimera' ? '합성' : '합성 (모험)', sub: line, color: p.textKey === 'merge.chimera' ? 0xb388ff : 0xaaaaaa, onPick: doMerge });
         }
-        choiceBox(scene, `${from.stats.name} → ${to.stats.name}`, [[kind === 'swap' ? '두 동물의 자리를 바꿀 수 있어요.' : '합치면 되돌릴 수 없어요. 어떻게 할까요?', kind === 'swap' ? '#cfd8dc' : '#ffcf8a']], opts);
+        choiceBox(scene, `${from.stats.name} → ${to.stats.name}`, [[kind === 'swap' ? '두 동물의 자리를 바꿈.' : '합치면 되돌릴 수 없음. 무엇을 할지 선택.', kind === 'swap' ? '#cfd8dc' : '#ffcf8a']], opts);
         break;
       }
       case 'sell': {

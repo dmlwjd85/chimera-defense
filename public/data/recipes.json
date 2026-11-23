@@ -27,7 +27,7 @@
   "source": "이솝 우화",
   "color": "#c27c3a",
   "image": null,
-  "codex": "노래를 부르다 치즈를 떨어뜨린 적이 있다. 이번에는 입을 다물고 있다.",
+  "codex": "노래를 부르다 치즈를 떨어뜨린 적 있음. 이번에는 입을 다물고 있음.",
   "flyer": true,
   "element": "fire"
  },
@@ -61,7 +61,7 @@
   "source": "단군 신화",
   "color": "#a0522d",
   "image": null,
-  "codex": "쑥과 마늘만 먹었다.",
+  "codex": "쑥과 마늘만 먹었음.",
   "flyer": false,
   "element": "earth"
  },
@@ -95,7 +95,7 @@
   "source": "이솝 우화",
   "color": "#7f8c8d",
   "image": null,
-  "codex": "양털이 조금 작다.",
+  "codex": "양털이 조금 작음.",
   "flyer": false,
   "element": "moon"
  },
@@ -129,7 +129,7 @@
   "source": "이솝 우화",
   "color": "#556b2f",
   "image": null,
-  "codex": "배를 부풀리다 멈췄다. 이번에는.",
+  "codex": "배를 부풀리다 멈춤. 이번에는.",
   "flyer": false,
   "element": "water"
  },
@@ -167,7 +167,7 @@
   "source": "미국 민담",
   "color": "#d2b48c",
   "image": null,
-  "codex": "모닥불 앞에서 카우보이 노래를 따라 부른다.",
+  "codex": "모닥불 앞에서 카우보이 노래를 따라 부름.",
   "flyer": false,
   "element": "moon"
  },
@@ -230,7 +230,7 @@
   "source": "동아시아 신화",
   "color": "#c0392b",
   "image": null,
-  "codex": "오동나무가 아니면 앉지 않는다. 길 위에는 오동나무가 없다.",
+  "codex": "오동나무가 아니면 안 앉음. 길 위에는 오동나무가 없음.",
   "flyer": true,
   "element": "fire"
  }

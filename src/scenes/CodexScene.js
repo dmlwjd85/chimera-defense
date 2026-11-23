@@ -64,7 +64,7 @@ export default class CodexScene extends Phaser.Scene {
     row('🏡', '사는 곳', u.eco.home); row('🍽', '먹이', u.eco.diet); row('⚠', '천적', u.eco.foes); row('💡', '한마디', u.eco.fact);
     y += 6; add(this.add.text(230, y, '🔗 먹이사슬과 인연', style(15, '#ffe6b0'))); y += 26;
     const rel = D.lore.bonds.filter((b) => b.pair.includes(u.id));
-    if (!rel.length) { add(this.add.text(240, y, '아직 알려진 인연이 없어요.', style(13, '#8fa1b3'))); y += 22; }
+    if (!rel.length) { add(this.add.text(240, y, '아직 알려진 인연 없음.', style(13, '#8fa1b3'))); y += 22; }
     for (const b of rel.slice(0, 5)) {
       const other = D.unitById[b.pair.find((p) => p !== u.id)]?.name ?? '';
       const clash = b.kind === 'clash';
@@ -81,7 +81,7 @@ export default class CodexScene extends Phaser.Scene {
     const lv = st.level ?? 0;
     add(this.add.text(230, 596, `💗 정 붙이기 ${'♥'.repeat(lv)}${'♡'.repeat(f.max - lv)}  — ${u.name} 소환 확률 무게 +${lv * f.perLevel}%`, style(14, '#ff9fbf')));
     const close = () => { objs.forEach((o) => o.destroy()); fb.destroy(); cb.destroy(); this.detail = null; };
-    const fb = button(this, 880, 606, 230, 40, st.reason === 'max' ? '가득 찼어요' : `정 붙이기 · 에센스 ${st.cost ?? f.costs[lv]}`, () => {
+    const fb = button(this, 880, 606, 230, 40, st.reason === 'max' ? '가득 참' : `정 붙이기 · 에센스 ${st.cost ?? f.costs[lv]}`, () => {
       const r = buyFavor(S, D, u.id);
       if (!r.ok) return;
       writeSave(this.registry.get('storage'), S); close(); this.scene.restart({ tab: 'units', open: u.id });
@@ -138,7 +138,7 @@ export default class CodexScene extends Phaser.Scene {
 
   flops() {
     const D = this.data2, S = this.save;
-    if (!S.codex.failedPairs.length) this.add.text(640, 380, '아직 실패한 합성이 없습니다. 언젠가는 생깁니다.', style(18, '#888888')).setOrigin(0.5);
+    if (!S.codex.failedPairs.length) this.add.text(640, 380, '아직 실패한 합성 없음. 언젠가는 생김.', style(18, '#888888')).setOrigin(0.5);
     S.codex.failedPairs.forEach((k, i) => {
       const [a, b] = k.split('+');
       const c = this.cell(i, 4, 290, 80);

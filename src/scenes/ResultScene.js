@@ -47,11 +47,21 @@ export default class ResultScene extends Phaser.Scene {
 
     panel(this, 660, 165, 560, 375);
     this.add.text(685, 180, r.clear ? '종 경험치' : '패배한 판은 경험치 없음', style(22, '#ffe2b8'));
-    r.xp.slice(0, 10).forEach((x, i) => {
+    r.xp.slice(0, r.mvp?.length ? 6 : 10).forEach((x, i) => {
       const up = x.after > x.before;
       this.add.text(700, 222 + i * 28, `${D.unitById[x.id].name}  +${x.gain}`, style(16));
       this.add.text(1190, 222 + i * 28, up ? `Lv.${x.before} → Lv.${x.after} ▲` : `Lv.${x.after}`, style(16, up ? '#58d68d' : '#aaaaaa')).setOrigin(1, 0);
     });
+    if (r.mvp?.length) {
+      const top = r.mvp[0].dmg || 1;
+      this.add.text(700, 418, '🏆 이번 판 주인공', style(15, '#ffd84d'));
+      r.mvp.forEach((m, i) => {
+        const y = 444 + i * 22;
+        this.add.text(700, y, `${i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'} ${m.soul ? '👑' : ''}${m.name}`, style(13, m.soul ? '#ffd84d' : '#ffffff'));
+        this.add.rectangle(880, y + 8, 220 * m.dmg / top, 10, m.soul ? 0xffd84d : 0x7fd1ff).setOrigin(0, 0.5);
+        this.add.text(1190, y, `${m.dmg.toLocaleString()}`, style(12, '#cfe8ff')).setOrigin(1, 0);
+      });
+    }
     if (r.clear) this.add.text(700, 512, '레벨마다 그 종의 피해 +2%, 레벨 5부터 10%로 성장기 등장', style(13, '#8899aa'));
 
     const next = D.stages[D.stages.findIndex((x) => x.id === d.stageId) + 1];

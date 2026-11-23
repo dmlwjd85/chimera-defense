@@ -1,6 +1,7 @@
 // Per-tick modifiers for every field unit: traits, legend passives, bonds/clashes, auras, continent synergy,
 // terrain, species level and timed buffs. All abilities are '효과 + 조건' lines (plan ch.12) read from data.
 import { patchAllyMods } from './patchMods.js';
+import { applySoulMods } from './soul.js';
 import { traitView } from './traits.js';
 import { ownedRelics, eco, whoMatches } from './relics.js';
 
@@ -187,6 +188,7 @@ export function computeMods(state, data) {
   const fewOn = few && state.field.length <= few[0];
   const clim = cfg.climates?.[state.stage.climate];
   const climSide = (el, c, a, b, n) => (c.strong?.includes(el) ? a : c.weak?.includes(el) ? b : n);
+  applySoulMods(state, data);
   for (const u of state.field) {
     const m = u.mods;
     u.wasBuffed = Object.keys(m.auraIn).length > 0 || (state.allyBuffs ?? []).length > 0;

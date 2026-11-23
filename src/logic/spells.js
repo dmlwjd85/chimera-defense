@@ -18,7 +18,7 @@ export const spellDef = (data, id) => (data.config.spells?.list ?? []).find((s) 
 export function tickMana(state, data, dt) {
   const m = data.config.spells;
   if (!m || !state.spells?.length) return;
-  state.mana = Math.min(m.max, (state.mana ?? 0) + m.regen * (1 + (eco(state, data, 'manaRegen') ?? 0) / 100) * dt);
+  state.mana = Math.min(m.max, (state.mana ?? 0) + m.regen * (1 + ((eco(state, data, 'manaRegen') ?? 0) + (state.field?.some((u) => u.soul && !u.down) && data.config.soul?.sig?.[state.soul?.id]?.type === 'mana' ? data.config.soul.sig[state.soul.id].p.regen : 0)) / 100) * dt);
   if (state.spellCd > 0) state.spellCd -= dt;
 }
 

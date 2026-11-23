@@ -1,4 +1,5 @@
 import { spellsUnlocked } from './spells.js';
+import { deckOf } from './soul.js';
 // Outside-the-run progress (plan ch.10): essence, unlocks, species levels, codex, hints, achievements, local save.
 export const SAVE_KEY = 'chimera-defense-save-v1';
 
@@ -86,7 +87,8 @@ export function battleOptions(save, data, stageId = null) {
     levels: levelsOf(save, data),
     known: { recipes: save.codex.recipes, failed: save.codex.failedPairs },
     seenSpecies: save.codex.units, seenBonds: save.codex.bonds,
-    pool: rosterPool(save, data),
+    pool: deckOf(save, data, rosterPool(save, data) ?? data.units.map((u) => u.id)),
+    soul: save.soulPet && (rosterPool(save, data) ?? []).includes(save.soulPet) ? { id: save.soulPet, favor: save.favor?.[save.soulPet] ?? 0 } : null,
     spells: spellsUnlocked(save, data),
   };
 }
@@ -209,6 +211,7 @@ export function settleRun(save, state, data) {
   const shards = fromRelics + Math.floor(waves / (sc.perWaves ?? 3));
   save.shards = (save.shards ?? 0) + shards;
   return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
+    mvp: Object.values(state.dmgRun ?? {}).sort((a, b) => b.dmg - a.dmg).slice(0, 3).map((r) => ({ ...r, dmg: Math.round(r.dmg) })),
     stars, goals, totalStars: starsAfter, joined, newSpells: spellsUnlocked(save, data).filter((id) => !spellsBefore.includes(id)), time: Math.round(state.time) };
 }
 
@@ -274,7 +277,7 @@ export function resetTalents(save, data) {
 export function favorState(save, data, id) {
   const f = data.config.favor, lv = save.favor?.[id] ?? 0;
   if (!f || !data.unitById[id]) return { ok: false, reason: 'unknown', level: lv };
-  if (!save.codex.units.includes(id)) return { ok: false, reason: 'unseen', level: lv };
+  if (!save.codex.units.includes(id) && save.soulPet !== id) return { ok: false, reason: 'unseen', level: lv };
   if (lv >= f.max) return { ok: false, reason: 'max', level: lv };
   const cost = f.costs[lv];
   if (save.essence < cost) return { ok: false, reason: 'essence', level: lv, cost };

@@ -45,8 +45,9 @@ export function buildWave(stage, wave, data, rng) {
     for (let j = 0; j < size; j++, i++) {
       const def = data.enemyById[slots[i]];
       if (!def) throw new Error('buildWave: unknown enemy ' + slots[i]);
-      const n = def.spawnCount > 1 ? def.spawnCount : 1;
-      for (let k = 0; k < n; k++) out.push({ at: t, enemyId: def.id, offset: k * cfg.swarmSpacing });
+      const horde = spec.horde && cfg.horde && !def.boss ? cfg.horde.count : 1;
+      const n = (def.spawnCount > 1 ? def.spawnCount : 1) * horde;
+      for (let k = 0; k < n; k++) out.push({ at: t, enemyId: def.id, offset: k * (horde > 1 ? cfg.horde.spacing : cfg.swarmSpacing), horde: horde > 1 });
       lastSlotAt = t;
       t += cfg.inGroupGap;
     }

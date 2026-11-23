@@ -81,6 +81,87 @@ export default class BattleScene extends Phaser.Scene {
     this.stanceFx = new Map();
   }
 
+  // ---------- soul pet: the star of the run ----------
+  /** Golden ground ring, crown and momentum counter that follow the soul pet. */
+  drawSoul() {
+    const s = this.state;
+    if (!s.soul) return;
+    this.soulGfx ??= this.add.graphics().setDepth(48);
+    this.soulTag ??= this.add.text(0, 0, '', style(13, '#ffd84d', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(1500);
+    const u = [...s.field, ...s.bench].find((x) => x && x.soul), v = u && this.unitViews.get(u.uid);
+    this.soulGfx.clear();
+    if (!v || this.hidden.has(u.uid)) { this.soulTag.setVisible(false); return; }
+    const sc = this.data2.config.soul, k = Math.min(1, (u.soulKills ?? 0) / sc.maxKills), x = v.container.x, y = v.container.y;
+    const pulse = 1 + Math.sin(this.time.now / 260) * 0.06, r = (30 + 22 * k) * pulse;
+    this.soulGfx.fillStyle(0xffd84d, 0.10 + 0.14 * k).fillEllipse(x, y + 30, r * 2.2, r * 0.8);
+    this.soulGfx.lineStyle(2 + 2 * k, 0xffd84d, 0.85).strokeEllipse(x, y + 30, r * 2.2, r * 0.8);
+    if (k > 0.5) this.soulGfx.lineStyle(1.5, 0xff8a3c, 0.7).strokeEllipse(x, y + 30, r * 2.7, r);
+    this.soulTag.setVisible(true).setPosition(x, y - 62).setText(`👑${(u.soulKills ?? 0) > 0 ? ` 기세 ${Math.min(sc.maxKills, u.soulKills)}` : ''}`);
+    if (k >= 0.5 && Math.random() < 0.15) this.fx.burst('rise', x + Phaser.Math.Between(-18, 18), y + 20, 1, k >= 1 ? 0xff8a3c : 0xffd84d);
+  }
+
+  /** Slow motion and a small push-in for the big moments. */
+  spotlight(dur = 0.5, zoom = 1.05) {
+    this.slowMo = Math.max(this.slowMo ?? 0, dur);
+    const cam = this.cameras.main;
+    cam.zoomTo(zoom, 140, 'Sine.easeOut', true);
+    this.time.delayedCall(dur * 1000 + 160, () => cam.zoomTo(1, 260, 'Sine.easeInOut', true));
+  }
+
+  soulEvent(ev) {
+    const s = this.state, d = this.data2, v = this.unitViews.get(ev.uid), x = v?.container.x ?? 640, y = v?.container.y ?? PATH_Y;
+    const at = (eid) => this.enemyViews.get(eid) ?? this.goneViews?.get(eid);
+    if (ev.type === 'streak') {
+      const big = ev.n >= 10, word = ev.n >= 30 ? '천하무적!' : ev.n >= 20 ? '일기당천!' : ev.n >= 10 ? '무쌍!' : '';
+      const t = this.add.text(x, y - 90, `${ev.n}연속!${word ? ' ' + word : ''}`, style(big ? 34 : 24, big ? '#ff8a3c' : '#ffd84d', { stroke: '#000', strokeThickness: 6 })).setOrigin(0.5).setDepth(3000).setScale(0.3);
+      this.tweens.add({ targets: t, scale: 1, duration: 200, ease: 'Back.out' });
+      this.tweens.add({ targets: t, alpha: 0, y: t.y - 30, delay: 800, duration: 350, onComplete: () => t.destroy() });
+      if (big) { this.spotlight(0.45, 1.06); this.fx.shockwave(x, y + 20, 0xff8a3c, 2, 2.2); sfx('spirit'); } else sfx('bond');
+      return;
+    }
+    if (ev.type === 'awaken') {
+      const el = d.config.elements.defs[ev.el], COL = { fire: 0xff7a1a, water: 0x4aa3ff, wind: 0xbfefff, earth: 0xc9a26a, thunder: 0xfff27a, moon: 0xb388ff, grass: 0x58c070, light: 0xfff3b0 }[ev.el] ?? 0xffd84d;
+      this.fx.cutIn(`${el?.icon ?? ''} ${ev.name}`, COL, '소울펫 각성기');
+      this.spotlight(0.7, 1.07);
+      this.cameras.main.flash(220, (COL >> 16) & 255, (COL >> 8) & 255, COL & 255);
+      this.time.delayedCall(120, () => {
+        for (let k = 0; k < 9; k++) this.time.delayedCall(k * 45, () => { const px = tileToX(1 + k * 1.3); this.fx.pillar?.(px, PATH_Y + 30, COL); this.fx.burst('bigFlare', px, PATH_Y, 1, COL); });
+        for (const eid of ev.eids) { const e = at(eid); if (e) this.fx.hit(e.lastX, e.lastY, COL, true); }
+        this.cameras.main.shake(380, 0.012);
+      });
+      sfx('spirit');
+      return;
+    }
+    // signature moves
+    const e = ev.eid != null ? at(ev.eid) : null, ex = e?.lastX ?? x, ey = e?.lastY ?? y;
+    switch (ev.sig) {
+      case 'flurry': this.fx.scratch?.(ex, ey, 0xffffff, 1); this.fx.scratch?.(ex, ey, 0xffe0f0, -1); break;
+      case 'pierce': this.fx.line(x, y - 10, ex, ey, 0xffd84d, 5, 180); this.fx.hit(ex, ey, 0xffd84d); break;
+      case 'execute': this.fx.bite?.(ex, ey, 0x9cff6b); this.floatText(ex, ey - 30, '꿀꺽!', '#9cff6b'); break;
+      case 'killBurst': this.fx.ring(ex, ey, 0x7fffd4, 1.6, 420); this.fx.burst('rise', ex, ey, 10, 0x7fffd4); break;
+      case 'killRally': this.fx.ring(x, y + 20, 0xb388ff, 2.4, 500); this.floatText(x, y - 80, '아우우—!', '#d2b4ff'); break;
+      case 'killReset': this.fx.claws?.(ex, ey, 0xffb347); break;
+      case 'charge': this.fx.stampede?.(PATH_Y); this.cameras.main.shake(420, 0.012); this.spotlight(0.4, 1.04); this.fx.banner('🦬 대평원 돌진!', '#ffb27a'); sfx('bigKill'); break;
+      default: break;
+    }
+  }
+
+  /** Small scoreboard after a wave: who did the work. */
+  showMvp(ev) {
+    this.mvpObjs?.forEach((o) => o.destroy());
+    const objs = this.mvpObjs = [], top = ev.top[0].dmg || 1, X = 500, Y = 86;
+    const g = this.add.graphics().setDepth(2500); objs.push(g);
+    g.fillStyle(0x0d141d, 0.9).fillRoundedRect(X, Y, 280, 26 + ev.top.length * 22, 10).lineStyle(1.5, 0xd4b06a, 0.9).strokeRoundedRect(X, Y, 280, 26 + ev.top.length * 22, 10);
+    objs.push(this.add.text(X + 140, Y + 4, `🏆 웨이브 ${ev.wave} 주인공`, style(13, '#ffd84d')).setOrigin(0.5, 0).setDepth(2501));
+    ev.top.forEach((m, i) => {
+      const y = Y + 26 + i * 22;
+      objs.push(this.add.text(X + 10, y, `${m.soul ? '👑' : ['🥇', '🥈', '🥉'][i]} ${m.name}`, style(12, m.soul ? '#ffd84d' : '#ffffff')).setDepth(2501));
+      objs.push(this.add.rectangle(X + 130, y + 8, 100 * m.dmg / top, 8, m.soul ? 0xffd84d : 0x7fd1ff).setOrigin(0, 0.5).setDepth(2501));
+      objs.push(this.add.text(X + 272, y, `${Math.round(m.dmg).toLocaleString()}`, style(11, '#cfe8ff')).setOrigin(1, 0).setDepth(2501));
+    });
+    this.time.delayedCall(3200, () => { if (this.mvpObjs === objs) { objs.forEach((o) => o.destroy()); this.mvpObjs = null; } });
+  }
+
   // ---------- player spells ----------
   /** Mana bar and one round button per learned spell (keys Q W E R T Y U). */
   buildSpellBar() {
@@ -108,6 +189,7 @@ export default class BattleScene extends Phaser.Scene {
       return { id, d, x, y, ring, icon, cost, need: spellCost(this.state, this.data2, d), col: KIND[d.kind] };
     });
     this.drawSpellBar();
+    this.drawSoul();
   }
 
   drawSpellBar() {
@@ -663,7 +745,8 @@ export default class BattleScene extends Phaser.Scene {
     this.realDt = Math.min(delta / 1000, 0.1);
     const stop = (this.hitStop ?? 0) > 0;
     if (stop) this.hitStop -= this.realDt;
-    this.frameDt = live && !stop ? Math.min(delta / 1000, 0.1) * this.speed : 0;
+    if ((this.slowMo ?? 0) > 0) this.slowMo -= this.realDt;
+    this.frameDt = live && !stop ? Math.min(delta / 1000, 0.1) * this.speed * ((this.slowMo ?? 0) > 0 ? 0.3 : 1) : 0;
     this.enemyHits = new Set(this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid));
     if (live && !stop) step(this.state, this.data2, this.frameDt);
     this.enemyHits = new Set([...this.enemyHits, ...this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid)]);
@@ -1210,7 +1293,7 @@ export default class BattleScene extends Phaser.Scene {
         case 'down': { const [x, y] = unitPos(ev.uid); this.fx.down(x, y); sfx('down'); break; }
         case 'dodge': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 30, '회피', '#7fd1ff', 13); this.fx.burst('leaf', x, y, 3, 0x7fd1ff); sfx('dodge'); break; }
         case 'survive': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 50, '간을 두고 왔다!', '#ffb3c6', 16); this.fx.evolve(x, y, false); sfx('evolve'); break; }
-        case 'summon': sfx('summon'); break;
+        case 'summon': { sfx('summon'); const su = this.state.bench.find((x) => x && x.uid === ev.uid); if (su?.soul) this.fx.banner(`👑 소울펫 ${su.stats.name} 등장!`, '#ffd84d', this.data2.config.soul.sig[this.state.soul.id]?.feel ?? ''); break; }
         case 'gold': this.floatText(...unitPos(ev.uid), `+${ev.gold}`, '#ffd84d'); break;
         case 'bondNew': {
           const b = data.lore.bonds.find((x) => x.id === ev.id);
@@ -1219,6 +1302,8 @@ export default class BattleScene extends Phaser.Scene {
           this.toast(`${b.kind === 'clash' ? '⚡ 상극' : '♥ 인연'} 발견: ${b.name} — ${b.desc}`, b.kind === 'clash' ? '#f0883e' : '#ff9fbf'); break; }
         case 'shieldBreak': { this.toast('보호막이 깨졌다!', '#d2b4ff'); const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.shieldBreak(ve.lastX, ve.lastY); sfx('shatter'); break; }
         case 'spell': this.spellFx(ev); break;
+        case 'streak': case 'awaken': case 'soulSig': this.soulEvent(ev); break;
+        case 'mvp': this.showMvp(ev); break;
         case 'revive': { const ve = this.enemyViews.get(ev.eid); if (ve) { this.floatText(ve.lastX, ve.lastY - 40, '벌떡!', '#9cff6b'); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.2); this.fx.burst('puff', ve.lastX, ve.lastY, 8, 0x6f8f5a); } sfx('bossSummon'); break; }
         case 'bossSummon': { const ve = this.enemyViews.get(ev.eid); this.floatText(640, PATH_Y - 110, `${data.enemyById[this.state.enemies.find((x) => x.eid === ev.eid)?.id]?.name ?? '보스'}이(가) 졸개를 불렀다`, '#aab7b8'); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY, 10, 0x6c5a8a); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.5); } sfx('bossSummon'); break; }
         case 'merge': {
@@ -1238,6 +1323,7 @@ export default class BattleScene extends Phaser.Scene {
           sfx(boss ? 'boss' : 'wave');
           if (boss) { this.fx.banner(`보스 등장 · ${boss.name}`, '#ff6b6b', boss.desc); this.cameras.main.shake(400, 0.006); }
           else if (mini) this.fx.banner(`웨이브 ${ev.wave} · 덤불멧돼지`, '#ffb27a', '미니보스가 온다');
+          else if (w?.horde) { this.fx.banner(`🌊 웨이브 ${ev.wave} · 무쌍 타임!`, '#ff8a3c', '약한 놈들이 떼로 몰려옴 — 쓸어 담을 시간'); this.cameras.main.shake(300, 0.005); }
           else this.fx.banner(`웨이브 ${ev.wave}`, '#ffffff', Object.keys(w?.mix ?? {}).map((id) => data.enemyById[id].name).join(' · '));
         }
           if (this.tutorialStep === 3 && ev.wave >= 6) this.endTutorial(); break;

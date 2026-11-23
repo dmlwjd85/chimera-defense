@@ -3,6 +3,7 @@ import { elementProc, addPatch, tickPatches } from './elements.js';
 import { findEffect, effectsOf, tickEnemyTimers, enemyVelocity, tickHealers } from './effects.js';
 import { computeMods, effDamage, effInterval, effRange, effBlock, effAoe, cdMult, statusMult } from './mods.js';
 import { makeEnemy } from './waves.js';
+import { soulOnHit, soulOnKill } from './soul.js';
 
 const standing = (u) => !u.down && !u.moving;
 const usedSlots = (state, uid) => state.enemies.reduce((s, e) => s + (e.blockedBy === uid ? e.blockSlots : 0), 0);
@@ -94,7 +95,11 @@ export function damageEnemy(state, e, amount, aoe, srcUid = null) {
     return 0;
   }
   e.hp -= amount;
-  if (srcUid !== null) e.lastHitBy = srcUid;
+  if (srcUid !== null) {
+    e.lastHitBy = srcUid;
+    const src = state.field?.find((x) => x.uid === srcUid);
+    if (src && state.dmgRun) for (const book of [state.dmgWave, state.dmgRun]) { const r = (book[srcUid] ??= { name: src.stats.name, speciesId: src.speciesId, soul: !!src.soul, dmg: 0 }); r.dmg += Math.min(amount, e.hp + amount); r.name = src.stats.name; }
+  }
   return amount;
 }
 
@@ -395,6 +400,7 @@ export function combatTick(state, data, dt) {
     }
     applyOnHit(state, u, hits, target, cfg);
     elementProc(state, u, target, hits, cfg);
+    soulOnHit(state, data, u, target, hits);
     state.events.push({ type: 'attack', uid: u.uid, eid: target.eid, aoe: aoe > 0, eids: hits.map((e) => e.eid) });
   }
 
@@ -419,6 +425,7 @@ export function combatTick(state, data, dt) {
         const fk = flags(killer);
         if (fk.restAfterKill) killer.restLeft = Math.max(killer.restLeft ?? 0, fk.restAfterKill);
         if (fk.killStack) killer.killStacks = (killer.killStacks ?? 0) + 1;
+        gold += soulOnKill(state, data, killer, e);
       }
       const holder = e.blockedBy === null ? null : byUid.get(e.blockedBy);
       if (holder && holder !== killer && flags(holder).heldKillGold) gold += flags(holder).heldKillGold;

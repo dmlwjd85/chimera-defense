@@ -1,5 +1,6 @@
 import { makeRng } from './rng.js';
 import { tickMana, castSpell } from './spells.js';
+import { tickSoul } from './soul.js';
 import { pairKey } from './data.js';
 import { summonCost, waveReward, sellPrice, skipGold } from './economy.js';
 import { newRollCtx, rollSummon, advanceRollCtx, ownedSpecies } from './roulette.js';
@@ -32,6 +33,8 @@ export function createBattle(data, stageId, seed = 1, opts = {}) {
   state.favor = { ...(opts.favor ?? {}) };
   state.pool = opts.pool ? [...opts.pool] : null;
   state.spells = [...(opts.spells ?? [])];
+  state.soul = opts.soul && data.unitById[opts.soul.id] ? { ...opts.soul } : null;
+  state.dmgWave = {}; state.dmgRun = {};
   state.mana = cfg.spells?.start ?? 0;
   state.spellCd = 0;
   state.weakBonus = cfg.weakBonus ?? 30;
@@ -112,8 +115,9 @@ export function summon(state, data, opts = {}) {
   if (state.gold < cost) return fail('gold');
   const slot = freeSlot(state);
   if (slot < 0) return fail('benchFull');
+  const soulFirst = !!state.soul && !state.soulOut;
   const roll = rollSummon(state.rollCtx, state.wave, data, state.rng, ownedSpecies(state),
-    { continent: opts.habitat ? data.units.find((u) => u.habitat === opts.habitat)?.continent : opts.continent, habitat: opts.habitat, bait: state.bait?.type, favor: state.favor, pool: state.pool, heroMult: eco(state, data, 'heroMult') ?? 1, sameExtra: eco(state, data, 'sameSpeciesExtra') ?? 0 });
+    { continent: opts.habitat ? data.units.find((u) => u.habitat === opts.habitat)?.continent : opts.continent, habitat: opts.habitat, bait: state.bait?.type, favor: state.favor, pool: soulFirst ? [state.soul.id] : state.pool, heroMult: eco(state, data, 'heroMult') ?? 1, sameExtra: eco(state, data, 'sameSpeciesExtra') ?? 0 });
   if (state.bait) { state.bait.left -= 1; if (state.bait.left <= 0) state.bait = null; }
   const lvCfg = data.config.speciesLevel;
   const lv = state.levels?.[roll.unitId] ?? 1;
@@ -126,6 +130,7 @@ export function summon(state, data, opts = {}) {
     const slot2 = state.bench.indexOf(null, slot + 1) >= 0 ? state.bench.indexOf(null, slot + 1) : state.bench.findIndex((x, i) => !x && i !== slot);
     if (slot2 >= 0) { state.bench[slot2] = makeUnit(state, data, { kind: 'base', speciesId: roll.unitId, stage: 'young', parts: null, traits: rollTraits(roll.unitId, data, state.rng) }); state.events.push({ type: 'twin', uid: state.bench[slot2].uid }); }
   }
+  if (soulFirst) { unit.soul = true; unit.soulKills = 0; state.soulOut = true; }
   state.bench[slot] = unit;
   state.gold -= cost;
   state.summonCount += 1;
@@ -308,6 +313,7 @@ export function merge(state, data, fromRef, toRef) {
   else if (kind === 'weak') { const w = inheritWeak(to.traits, from.traits, data, state.rng); const always = eco(state, data, 'alwaysReversal'); inst.traits = always ? w.traits.map((t) => ({ ...t, flipped: true })) : w.traits; inst.reversal = w.reversal || !!always; }
   if (kind === 'evolve' || kind === 'spirit') inst.white = !!to.white;
   const unit = makeUnit(state, data, inst);
+  if ((from.soul || to.soul) && kind !== 'weak') { unit.soul = true; unit.soulKills = (from.soulKills ?? 0) + (to.soulKills ?? 0); }
   const onField = toRef.where === 'field';
   if (onField) { Object.assign(unit, { pos: to.pos, targetPos: to.targetPos, lane: unit.stats.flyer ? null : (to.lane ?? 1), skyY: to.skyY ?? 200, cell: to.cell, home: to.home }); if (unit.cell && state.cfgGrid) { if (unit.stats.flyer) { unit.lane = null; unit.skyY = state.cfgGrid.skyY[unit.cell.r]; } else unit.lane = unit.cell.r; } }
   removeUnit(state, fromRef);
@@ -413,6 +419,7 @@ function endWave(state, data) {
   if (intr) { const g = Math.min(intr[1], Math.floor(state.gold / intr[0])); state.gold += g; state.events.push({ type: 'interest', gold: g }); }
   if ((data.relicCfg?.offerWaves ?? []).includes(state.wave) && state.wave < state.stage.waves.length) { state.relicOffer = rollOffer(state, data); state.events.push({ type: 'relicOffer' }); }
   state.wavesCleared = state.wave;
+  { const top = Object.entries(state.dmgWave ?? {}).map(([uid, d]) => ({ uid: +uid, ...d })).sort((a, b) => b.dmg - a.dmg).slice(0, 3); if (top.length) state.events.push({ type: 'mvp', wave: state.wave, top }); state.dmgWave = {}; }
   for (const u of state.field) Object.assign(u, { down: false, hp: u.maxHp ?? u.stats.hp, respawnLeft: 0 });
   state.events.push({ type: 'waveEnd', wave: state.wave });
   if (state.wave >= state.stage.waves.length) {
@@ -436,10 +443,11 @@ function subStep(state, data, d) {
   state.waveTime += d;
   let n = 0;
   while (n < state.queue.length && state.queue[n].at <= state.waveTime) n++;
-  for (const q of state.queue.slice(0, n)) { state.enemies.push(makeEnemy(q.enemyId, state.wave, state.stage, data, state.nextEid++, q.offset)); (state.seenEnemies ??= new Set()).add(q.enemyId); }
+  for (const q of state.queue.slice(0, n)) { { const en = makeEnemy(q.enemyId, state.wave, state.stage, data, state.nextEid++, q.offset); if (q.horde) { const h = data.config.horde; en.hp = en.maxHp = Math.max(1, Math.round(en.hp * h.hp)); en.attack = Math.round(en.attack * h.attack); en.gold = Math.max(1, Math.round(en.gold * h.gold)); en.horde = true; } state.enemies.push(en); } (state.seenEnemies ??= new Set()).add(q.enemyId); }
   state.queue = state.queue.slice(n);
   combatTick(state, data, d);
   tickMana(state, data, d);
+  tickSoul(state, data, d);
   if (state.life <= 0) {
     state.life = 0;
     state.phase = 'ended';

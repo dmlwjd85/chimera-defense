@@ -55,7 +55,7 @@ export function unitChances(ctx, wave, data, owned = null, opts = {}) {
   let pool = units.filter((u) => table[u.rarity] > 0);
   if (ctx.sinceHero >= config.pityCount) pool = restrict(pool, (u) => u.rarity === 'hero');
   if (ctx.summonIndex === 1 && !ctx.firstWasRanged) pool = restrict(pool, (u) => u.range >= config.flyingMinRange);
-  const raw = pool.map((u) => [u.id, (table[u.rarity] / perRarity[u.rarity]) * (sameSpeciesFactor(u.id, owned, data) + (opts.sameExtra ?? 0) * (owned?.get(u.id) ?? 0)) * (baitRole && u.role === baitRole ? config.bait.mult : 1) * (u.rarity === 'hero' ? opts.heroMult ?? 1 : 1)]);
+  const raw = pool.map((u) => [u.id, (table[u.rarity] / perRarity[u.rarity]) * (sameSpeciesFactor(u.id, owned, data) + (opts.sameExtra ?? 0) * (owned?.get(u.id) ?? 0)) * (baitRole && u.role === baitRole ? config.bait.mult : 1) * (u.rarity === 'hero' ? opts.heroMult ?? 1 : 1) * (1 + (opts.favor?.[u.id] ?? 0) * (config.favor?.perLevel ?? 0) / 100)]);
   const sum = raw.reduce((s, [, p]) => s + p, 0);
   return Object.fromEntries(raw.map(([id, p]) => [id, p / sum]));
 }

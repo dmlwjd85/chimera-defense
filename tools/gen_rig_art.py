@@ -191,7 +191,7 @@ def fur(w, h, c, n=7, seed=1):
         out += f'<path d="M{x:.1f} {y:.1f} q{4:.1f} {6:.1f} {1:.1f} {12:.1f}" fill="none" stroke="{shade(c,0.72)}" stroke-width="3" stroke-linecap="round" opacity="0.8"/>'
     return out
 
-FURRY = {'fox', 'wolf', 'bear', 'rabbit', 'bison', 'bighorn', 'cheese_thief', 'wolf_in_sheep', 'bear_tiger', 'jackalope', 'tiger'}
+FURRY = {'dog', 'monkey', 'dog_spirit', 'monkey_spirit', 'fox_spirit', 'wolf_spirit', 'bear_spirit', 'rabbit_spirit', 'bison_spirit', 'bighorn_spirit', 'tiger_spirit', 'fox', 'wolf', 'bear', 'rabbit', 'bison', 'bighorn', 'cheese_thief', 'wolf_in_sheep', 'bear_tiger', 'jackalope', 'tiger'}
 
 # ------------------------------------------------------------------ slot painters (local frame, centred)
 def eye_art(w, h, iris='#3a2414', angry=False, lash=False):
@@ -432,6 +432,7 @@ def paint_bug(sp, s, w, h):
     if s == 'belly':
         return f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="{shade(c,1.3)}" opacity="0.8"/>', ''
     if s == 'wing':
+        if sp.get('noWing'): return '', ''
         return f'<path d="M{-w/2+4} 0 C {-w*0.2} {-h/2} {w*0.3} {-h/2} {w/2-4} {-h*0.1} C {w*0.3} {h*0.3} {-w*0.2} {h/2-4} {-w/2+4} 0 Z" fill="#cfe9a8" opacity="0.9" {st(5)}/><path d="M{-w*0.4} 0 L{w*0.4} {-h*0.1}" stroke="#9cc27a" stroke-width="4"/>', ''
     if s == 'head':
         out = cel(f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}"/>', c, w, h)
@@ -447,6 +448,7 @@ def paint_bug(sp, s, w, h):
     if s == 'jaw':
         return '', ''
     if s == 'deco':
+        if sp.get('decoArt'): return sp['decoArt'], ''
         return (f'<g transform="rotate(-35)"><ellipse cx="-10" cy="10" rx="{w*0.3}" ry="{h*0.3}" fill="#c8833f" {st(5)}/><circle cx="-10" cy="10" r="10" fill="{INK}"/>'
                 f'<rect x="{w*0.15}" y="2" width="{w*0.35}" height="14" fill="#8b5a2b" {st(4)}/></g>'), ''
     return '', ''
@@ -474,6 +476,12 @@ SKINS = {
  'eagle': dict(t='bird', c='#7a4a2a', headCol='#fbfbf7', belly='#9a6a45', beak='#f2b134', hook=True, angry=True, tailCol='#fbfbf7', wingCol='#5b361e', crest='#fbfbf7'),
  'frog': dict(t='frog', c='#5fae4a', belly='#e6f2b0'),
  'grasshopper': dict(t='bug', c='#7ccf4f'),
+ 'ant': dict(t='bug', c='#8a4b32', noWing=True, eyeCol='#2b1d16',
+             decoArt='<g transform="rotate(-20)"><rect x="-28" y="-26" width="56" height="52" rx="10" fill="#fff6dd" stroke="#2b1d16" stroke-width="5"/><path d="M-14 -10 h28 M-14 6 h20" stroke="#e3d2a4" stroke-width="5"/></g>'),
+ 'dog': dict(t='quadruped', c='#e0a868', dark='#b8834a', belly='#fff6e6', ears='point', snout='round', tail='fluffy', tailTip='#fff6e6', snoutCol='#fff6e6', earIn='#f2c9a0', sock='#fff6e6', fluff='#fff6e6',
+             over={'head': {'w': 158, 'h': 134}}),
+ 'monkey': dict(t='quadruped', c='#a8744a', dark='#7d5433', belly='#f2d3b0', ears='round', snout='round', tail='thin', snoutCol='#f2d3b0', earIn='#f2d3b0', faceMask=True, fluff='#c79a6e',
+                over={'ear_n': {'x': 10, 'w': 60, 'h': 60}, 'ear_r': {'x': 10, 'w': 56, 'h': 56}, 'body': {'w': 260, 'h': 150}}),
  # chimeras (all born adult)
  'cheese_thief': dict(t='quadruped', c='#e8823a', ears='point', snout='long', tail='fluffy', tailTip='#2f3542', faceMask=True, sock='#2f3542', fluff='#fff4e6', wingCol='#2f3542', eyeCol='#222',
                       decoArt='<path d="M-40 -20 L40 -40 L30 30 Z" fill="#ffd54f" stroke="#2b1d16" stroke-width="5"/><circle cx="10" cy="-10" r="7" fill="#e6b800"/>', parts={'wing': 'wing', 'deco': 'deco'},
@@ -488,6 +496,27 @@ SKINS = {
  'phoenix': dict(t='bird', c='#e53935', belly='#ffb74d', comb=True, beak='#ffd54f', hook=True, tailCol='#ff9800', tailCol2='#ffe082', wingCol='#ff7043', crest='#ffd54f'),
  'bullfrog': dict(t='frog', c='#7c8b3a', belly='#e8dfb0', horns=True, hump='#5a6528'),
 }
+# 신화급 전용 모습: 같은 뼈대에 신화 속 빛깔과 장식
+SPIRIT = {
+ 'fox': dict(c='#fbf6ee', tailTip='#ff8fb1', sock='#c62828', earIn='#ff8fb1', fluff='#ffffff', eyeCol='#c2185b'),
+ 'tiger': dict(c='#f6f3ea', earIn='#ffe9ef', snoutCol='#ffffff', fluff='#ffffff', eyeCol='#2e86de'),
+ 'bear': dict(c='#a9785a', headband=True, snoutCol='#f2dcb8', earIn='#f2dcb8', fluff='#d9b38c'),
+ 'rabbit': dict(c='#cdeee0', dark='#9fd6c0', belly='#f4fffa', earIn='#8fd9c0', tailCol='#f4fffa', fluff='#f4fffa', eyeCol='#00897b'),
+ 'rooster': dict(c='#ffd54f', belly='#fff3b0', tailCol='#ff9800', tailCol2='#fff59d', wingCol='#ffb300', beak='#ff7043'),
+ 'crow': dict(c='#1c1c28', belly='#c62828', beak='#ffd54f', tailCol='#3a1a1a', wingCol='#3a1a1a', crest='#ffb300'),
+ 'bison': dict(c='#4a86c0', dark='#2e5c8a', hump='#2e5c8a', snoutCol='#1d3c5c', fluff='#2e5c8a', mane='#2e5c8a'),
+ 'wolf': dict(c='#3c4452', dark='#1f232c', tailTip='#9fb3c8', eyeCol='#ff5252', angry=True, earIn='#5d6773', fluff='#9fb3c8'),
+ 'eagle': dict(c='#c9a227', headCol='#fffbe6', belly='#e6c65a', wingCol='#8a6d1a', tailCol='#fffbe6', crest='#ffe94d',
+               wingArt='<path d="M-20 -25 L10 -25 L-5 0 L20 0 L-25 40 L-12 8 L-32 8 Z" fill="#ffe94d" stroke="#2b1d16" stroke-width="4"/>'),
+ 'bighorn': dict(c='#f2c94c', dark='#c99a1e', snoutCol='#fff6d6', tailCol='#fff6d6', fluff='#fff6d6'),
+ 'frog': dict(c='#e6b422', belly='#fff3b0'),
+ 'grasshopper': dict(c='#b9a36a'),
+ 'ant': dict(c='#b87333'),
+ 'dog': dict(c='#e2522b', dark='#a8321a', tailTip='#ffd54f', sock='#ffb300', eyeCol='#ffd54f', earIn='#ffb300', fluff='#ffb300', snoutCol='#ffe0b2'),
+ 'monkey': dict(c='#d4a017', dark='#a67c00', headband=True, snoutCol='#ffe8c2', earIn='#ffe8c2', fluff='#ffe08a'),
+}
+for _k, _v in SPIRIT.items(): SKINS[_k + '_spirit'] = {**SKINS[_k], **_v}
+
 STAGE_OF = {'young': ('어린', 0.62, 1.15, 1.2, YOUNG), 'teen': ('성장기', 0.82, 1.05, 1.08, TEEN), 'adult': ('성체', 1.0, 1.0, 1.0, {'head': 1.32, 'eye': 1.08}), 'spirit': ('영물', 1.12, 1.0, 1.0, {'head': 1.34, 'eye': 1.08})}
 
 def main():

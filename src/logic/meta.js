@@ -10,7 +10,7 @@ export function defaultSave() {
     speciesXp: {},
     stages: {},
     achievements: [],
-    shards: 0, talents: [],
+    shards: 0, talents: [], favor: {},
     tutorialDone: false,
     settings: { fastRoulette: false },
   };
@@ -79,6 +79,7 @@ export function battleOptions(save, data, stageId = null) {
   return {
     carry,
     talents: [...(save.talents ?? [])],
+    favor: { ...(save.favor ?? {}) },
     startGoldBonus: u.startGold.step * save.unlocks.startGold + fallback,
     benchBonus: u.bench.step * save.unlocks.bench + (save.talents ?? []).reduce((n, id) => n + (data.talentById?.[id]?.eco?.bench ?? 0), 0),
     levels: levelsOf(save, data),
@@ -234,4 +235,21 @@ export function resetTalents(save, data) {
   const back = (save.talents ?? []).reduce((n, id) => n + (data.talents.costs[data.talentById[id]?.index] ?? 0), 0);
   save.shards = (save.shards ?? 0) + back; save.talents = [];
   return back;
+}
+
+// ---------- 정 붙이기: 도감에서 에센스를 써서 특정 동물이 조금 더 잘 나오게 한다 ----------
+export function favorState(save, data, id) {
+  const f = data.config.favor, lv = save.favor?.[id] ?? 0;
+  if (!f || !data.unitById[id]) return { ok: false, reason: 'unknown', level: lv };
+  if (!save.codex.units.includes(id)) return { ok: false, reason: 'unseen', level: lv };
+  if (lv >= f.max) return { ok: false, reason: 'max', level: lv };
+  const cost = f.costs[lv];
+  if (save.essence < cost) return { ok: false, reason: 'essence', level: lv, cost };
+  return { ok: true, level: lv, cost };
+}
+export function buyFavor(save, data, id) {
+  const st = favorState(save, data, id);
+  if (!st.ok) return st;
+  save.essence -= st.cost; (save.favor ??= {})[id] = st.level + 1;
+  return { ...st, level: st.level + 1 };
 }

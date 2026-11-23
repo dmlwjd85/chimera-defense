@@ -88,7 +88,11 @@ export function activeBonds(state, data) {
     else {
       for (const x of as) for (const y of cs) if (!pick && Math.abs(x.pos - y.pos) <= b.tiles) pick = [x, y];
     }
-    if (pick && !(b.kind === 'clash' && eco(state, data, 'noClash'))) out.push({ bond: b, units: { [a]: pick[0], [c]: pick[1] } });
+    if (!pick) continue;
+    const units = { [a]: pick[0], [c]: pick[1] };
+    // 신화급이 되면 악연이 뒤집힌다: flip.by 에 든 종이 영물이면 뒤집힌 효과로 바뀜
+    if (b.flip && (b.flip.by ?? b.pair).some((sp) => units[sp]?.stage === 'spirit')) { out.push({ bond: { ...b, ...b.flip, kind: 'flip', id: b.id, flipped: true }, units }); continue; }
+    if (!(b.kind === 'clash' && eco(state, data, 'noClash'))) out.push({ bond: b, units });
   }
   return out;
 }

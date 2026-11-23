@@ -65,7 +65,13 @@
   "codex": "쑥과 마늘은 사람이 되려고 먹은 것이다. 맛있어서가 아니다.",
   "spiritCodex": "단군 신화에서 백 일을 견디고 사람이 된 곰.",
   "flyer": false,
-  "element": "earth"
+  "element": "earth",
+  "eco": {
+   "home": "숲과 산",
+   "diet": "열매·꿀·물고기·풀뿌리 (잡식)",
+   "foes": "다 자라면 천적이 거의 없어요",
+   "fact": "겨울엔 굴에서 겨울잠을 자요."
+  }
  },
  {
   "id": "tiger",
@@ -121,7 +127,13 @@
   "codex": "제 말 하면 온다.",
   "spiritCodex": "산을 다스린다는 산신의 호랑이.",
   "flyer": false,
-  "element": "thunder"
+  "element": "thunder",
+  "eco": {
+   "home": "깊은 숲과 산",
+   "diet": "사슴·멧돼지 (육식)",
+   "foes": "먹이사슬 꼭대기라 천적이 없어요",
+   "fact": "줄무늬는 사람 지문처럼 저마다 달라요."
+  }
  },
  {
   "id": "fox",
@@ -180,7 +192,13 @@
   "codex": "포도가 시다고 했다. 먹어 보지는 않았다.",
   "spiritCodex": "꼬리가 아홉인 여우. 천 년을 살았다고 한다.",
   "flyer": false,
-  "element": "fire"
+  "element": "fire",
+  "eco": {
+   "home": "숲 가장자리와 들",
+   "diet": "들쥐·토끼·새알·열매",
+   "foes": "늑대·독수리",
+   "fact": "귀가 밝아 눈 밑 쥐 소리도 들어요."
+  }
  },
  {
   "id": "rabbit",
@@ -244,7 +262,13 @@
   "codex": "달에서 떡방아를 찧다 내려왔다.",
   "spiritCodex": "달에서 방아를 찧는 토끼.",
   "flyer": false,
-  "element": "moon"
+  "element": "moon",
+  "eco": {
+   "home": "풀밭과 들",
+   "diet": "풀·나뭇잎·뿌리 (초식)",
+   "foes": "여우·늑대·독수리·호랑이",
+   "fact": "큰 귀로 열을 식히고 먼 소리를 들어요."
+  }
  },
  {
   "id": "rooster",
@@ -305,7 +329,13 @@
   "codex": "새벽 네 시에 운다. 아무도 부탁하지 않았다.",
   "spiritCodex": "하늘에 산다는 금빛 닭. 새벽을 연다.",
   "flyer": false,
-  "element": "light"
+  "element": "light",
+  "eco": {
+   "home": "사람 곁, 마을",
+   "diet": "낟알·풀씨·베짱이 같은 벌레",
+   "foes": "여우·족제비·매",
+   "fact": "새벽빛을 느끼면 울어요."
+  }
  },
  {
   "id": "crow",
@@ -357,7 +387,13 @@
   "codex": "물병에 돌을 넣어 물을 마신 적이 있다. 돌은 아직 가지고 있다.",
   "spiritCodex": "해 속에 산다는 세 발 까마귀.",
   "flyer": true,
-  "element": "wind"
+  "element": "wind",
+  "eco": {
+   "home": "숲·들·마을 어디든",
+   "diet": "벌레·열매·낟알 (잡식)",
+   "foes": "매·수리부엉이",
+   "fact": "도구를 쓸 줄 아는 똑똑한 새예요."
+  }
  },
  {
   "id": "bison",
@@ -419,7 +455,13 @@
   "codex": "앞만 본다. 뒤에 무엇이 있는지는 관심이 없다.",
   "spiritCodex": "폴 버니언의 파란 소. 발자국이 호수가 되었다.",
   "flyer": false,
-  "element": "earth"
+  "element": "earth",
+  "eco": {
+   "home": "북아메리카 대평원",
+   "diet": "풀 (초식)",
+   "foes": "늑대 무리",
+   "fact": "큰 무리를 지어 풀을 따라 옮겨 다녀요."
+  }
  },
  {
   "id": "wolf",
@@ -482,7 +524,13 @@
   "codex": "배에 돌이 든 적이 있다.",
   "spiritCodex": "북유럽 신화의 거대한 늑대.",
   "flyer": false,
-  "element": "moon"
+  "element": "moon",
+  "eco": {
+   "home": "숲·초원·눈밭",
+   "diet": "사슴·토끼·산양 (육식)",
+   "foes": "곰·호랑이와 먹이를 두고 다퉈요",
+   "fact": "무리 지어 사냥하고 울음으로 이야기해요."
+  }
  },
  {
   "id": "eagle",
@@ -534,7 +582,13 @@
   "codex": "파리는 잡지 않는다.",
   "spiritCodex": "제우스의 번개를 나르는 독수리.",
   "flyer": true,
-  "element": "wind"
+  "element": "wind",
+  "eco": {
+   "home": "높은 산과 강가",
+   "diet": "물고기·토끼·작은 새",
+   "foes": "하늘의 꼭대기라 천적이 없어요",
+   "fact": "사람보다 몇 배 멀리 봐요."
+  }
  },
  {
   "id": "bighorn",
@@ -596,7 +650,13 @@
   "codex": "외나무다리에서 비켜 준 적이 없다.",
   "spiritCodex": "황금 양털의 주인.",
   "flyer": false,
-  "element": "earth"
+  "element": "earth",
+  "eco": {
+   "home": "가파른 바위산",
+   "diet": "풀·이끼 (초식)",
+   "foes": "늑대·퓨마, 새끼는 독수리",
+   "fact": "수컷은 뿔을 맞부딪쳐 힘을 겨뤄요."
+  }
  },
  {
   "id": "frog",
@@ -664,18 +724,24 @@
   "codex": "너무 커서 뛰지 않는다. 앉아 있다.",
   "spiritCodex": "금빛 개구리 모습으로 발견된 부여의 왕.",
   "flyer": false,
-  "element": "water"
+  "element": "water",
+  "eco": {
+   "home": "연못과 습지",
+   "diet": "파리·개미·베짱이 같은 벌레",
+   "foes": "뱀·왜가리·수리",
+   "fact": "올챙이 때는 물속에서 아가미로 숨 쉬어요."
+  }
  },
  {
   "id": "grasshopper",
   "name": "베짱이",
   "continent": "america",
-  "habitat": "wetland",
+  "habitat": "plains",
   "rarity": "common",
   "role": "buffer",
   "hp": 45,
   "block": 1,
-  "damage": 5,
+  "damage": 3,
   "interval": 1.0,
   "range": 3,
   "aoeRadius": 0,
@@ -687,11 +753,11 @@
    "spirit": "티토노스"
   },
   "nickname": "콧노래 베짱이, 전국 투어 베짱이",
-  "baseSkillDesc": "노래: 2타일 안의 아군 공격 간격 -8%",
+  "baseSkillDesc": "노래: 2타일 안의 아군 공격 간격 -10%",
   "baseSkill": [
    {
     "type": "haste",
-    "percent": 8,
+    "percent": 10,
     "radius": 2
    }
   ],
@@ -728,9 +794,219 @@
   "color": "#9bd770",
   "image": null,
   "inDemo": true,
-  "codex": "이름은 베를 짠다는 뜻이다. 짠 적은 없다.",
+  "codex": "풀잎 위에 앉아 날개를 비벼 노래한다. 베를 짠 적은 없다.",
   "spiritCodex": "영원히 사는 대신 매미가 된 티토노스.",
-  "flyer": true,
-  "element": "grass"
+  "flyer": false,
+  "element": "grass",
+  "eco": {
+   "home": "풀밭, 풀잎 위",
+   "diet": "풀잎 (초식)",
+   "foes": "닭·까마귀 같은 새, 개구리",
+   "fact": "날개를 비벼서 노랫소리를 내요."
+  }
+ },
+ {
+  "aoeRadius": 0,
+  "image": null,
+  "inDemo": true,
+  "flyer": false,
+  "id": "ant",
+  "name": "개미",
+  "continent": "america",
+  "habitat": "plains",
+  "rarity": "common",
+  "role": "bruiser",
+  "hp": 95,
+  "block": 2,
+  "damage": 5,
+  "interval": 0.9,
+  "range": 1,
+  "respawn": 5,
+  "stageNames": {
+   "young": "어린 개미",
+   "teen": "성장기 개미",
+   "adult": "성체 개미",
+   "spirit": "미르미돈"
+  },
+  "nickname": "일개미, 곳간지기",
+  "baseSkillDesc": "영차: 저지 2기 2초, 쿨타임 8초",
+  "baseSkill": [
+   {
+    "type": "hold",
+    "count": 2,
+    "duration": 2,
+    "cooldown": 8
+   }
+  ],
+  "adultSkill": {
+   "name": "곳간 채우기",
+   "desc": "처치 골드 +1",
+   "effects": [
+    {
+     "type": "goldBonus",
+     "amount": 1
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "개미 군단",
+   "desc": "18초마다 길 위의 일반 적 전부에게 30 피해",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 18,
+     "action": "damageAll",
+     "amount": 30,
+     "normalOnly": true,
+     "name": "개미 군단"
+    }
+   ]
+  },
+  "color": "#8a4b32",
+  "codex": "제 몸무게의 수십 배를 든다. 여름에 일한 걸 겨울 내내 자랑한다.",
+  "spiritCodex": "제우스가 개미를 사람으로 바꿔 만든 용맹한 병사들, 미르미돈.",
+  "element": "earth",
+  "eco": {
+   "home": "땅속 굴과 풀밭",
+   "diet": "씨앗·죽은 벌레·단물",
+   "foes": "개구리·새",
+   "fact": "제 몸무게의 수십 배를 들어요."
+  }
+ },
+ {
+  "aoeRadius": 0,
+  "image": null,
+  "inDemo": true,
+  "flyer": false,
+  "id": "dog",
+  "name": "개",
+  "continent": "eurasia",
+  "habitat": "village",
+  "rarity": "common",
+  "role": "bruiser",
+  "hp": 150,
+  "block": 2,
+  "damage": 9,
+  "interval": 1.0,
+  "range": 1,
+  "respawn": 7,
+  "stageNames": {
+   "young": "강아지",
+   "teen": "성장기 개",
+   "adult": "성체 개",
+   "spirit": "불개"
+  },
+  "nickname": "마을 지킴이, 황구",
+  "baseSkillDesc": "물고 늘어지기: 저지 2기 2.5초, 쿨타임 8초",
+  "baseSkill": [
+   {
+    "type": "hold",
+    "count": 2,
+    "duration": 2.5,
+    "cooldown": 8
+   }
+  ],
+  "adultSkill": {
+   "name": "으르렁",
+   "desc": "3번째 공격마다 대상을 1타일 밀어냄",
+   "effects": [
+    {
+     "type": "knockback",
+     "every": 3,
+     "tiles": 1,
+     "stun": 0
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "해 물기",
+   "desc": "12초마다 3타일 안의 일반 적을 2초간 뒤로 달아나게 함",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 12,
+     "action": "flee",
+     "radius": 3,
+     "dur": 2,
+     "name": "해 물기"
+    }
+   ]
+  },
+  "color": "#e0a868",
+  "codex": "늑대에서 갈라져 사람 곁에 살게 됐다. 꼬리는 거짓말을 못 한다.",
+  "spiritCodex": "까막나라 임금이 해와 달을 물어 오라고 보낸 불개. 물 때마다 일식과 월식이 된다.",
+  "element": "fire",
+  "eco": {
+   "home": "사람 곁, 마을",
+   "diet": "본래 육식, 지금은 사람이 주는 먹이",
+   "foes": "늑대·호랑이",
+   "fact": "늑대에서 갈라져 사람과 살게 됐어요."
+  }
+ },
+ {
+  "aoeRadius": 0,
+  "image": null,
+  "inDemo": true,
+  "flyer": false,
+  "id": "monkey",
+  "name": "원숭이",
+  "continent": "eurasia",
+  "habitat": "forest",
+  "rarity": "rare",
+  "role": "technician",
+  "hp": 80,
+  "block": 1,
+  "damage": 6,
+  "interval": 1.0,
+  "range": 3,
+  "respawn": 7,
+  "stageNames": {
+   "young": "어린 원숭이",
+   "teen": "성장기 원숭이",
+   "adult": "성체 원숭이",
+   "spirit": "손오공"
+  },
+  "nickname": "재주꾼, 나무 타기 선수",
+  "baseSkillDesc": "두 손 던지기: 열매를 한 번에 두 개 던짐",
+  "baseSkill": [
+   {
+    "type": "multiShot",
+    "count": 2
+   }
+  ],
+  "adultSkill": {
+   "name": "나무 타기",
+   "desc": "받는 공격의 20%를 피함",
+   "effects": [
+    {
+     "type": "evade",
+     "percent": 20
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "여의봉",
+   "desc": "12초마다 반경 2의 적을 1.5초 기절",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 12,
+     "action": "stunRadius",
+     "radius": 2,
+     "dur": 1.5,
+     "name": "여의봉"
+    }
+   ]
+  },
+  "color": "#a8744a",
+  "codex": "손처럼 쓰는 발과 꼬리로 나무를 탄다. 흉내 내기는 따라올 자가 없다.",
+  "spiritCodex": "돌에서 태어나 하늘 궁전을 뒤집어 놓은 원숭이 왕, 서유기의 손오공.",
+  "element": "wind",
+  "eco": {
+   "home": "숲, 나무 위",
+   "diet": "열매·나뭇잎·벌레",
+   "foes": "호랑이·독수리·뱀",
+   "fact": "손처럼 쓰는 발과 꼬리로 나무를 타요."
+  }
  }
 ]

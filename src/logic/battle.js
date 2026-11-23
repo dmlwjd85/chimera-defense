@@ -28,6 +28,7 @@ export function createBattle(data, stageId, seed = 1, opts = {}) {
     levels: { ...(opts.levels ?? {}) }, allyBuffs: [], bait: null, kills: 0, relics: [], relicOffer: null, talents: [...(opts.talents ?? [])],
     finds: { recipes: [], flops: [], species: [], bonds: [] }, seenSpecies: new Set(opts.seenSpecies ?? []), seenBonds: new Set(opts.seenBonds ?? []),
   };
+  state.favor = { ...(opts.favor ?? {}) };
   state.cfgGrid = data.config.grid ?? null;
   state.meleeReach = data.config.meleeReach ?? 1;
   state.gold += eco(state, data, 'startGold') ?? 0;
@@ -104,7 +105,7 @@ export function summon(state, data, opts = {}) {
   const slot = freeSlot(state);
   if (slot < 0) return fail('benchFull');
   const roll = rollSummon(state.rollCtx, state.wave, data, state.rng, ownedSpecies(state),
-    { continent: opts.habitat ? data.units.find((u) => u.habitat === opts.habitat)?.continent : opts.continent, habitat: opts.habitat, bait: state.bait?.type, heroMult: eco(state, data, 'heroMult') ?? 1, sameExtra: eco(state, data, 'sameSpeciesExtra') ?? 0 });
+    { continent: opts.habitat ? data.units.find((u) => u.habitat === opts.habitat)?.continent : opts.continent, habitat: opts.habitat, bait: state.bait?.type, favor: state.favor, heroMult: eco(state, data, 'heroMult') ?? 1, sameExtra: eco(state, data, 'sameSpeciesExtra') ?? 0 });
   if (state.bait) { state.bait.left -= 1; if (state.bait.left <= 0) state.bait = null; }
   const lvCfg = data.config.speciesLevel;
   const lv = state.levels?.[roll.unitId] ?? 1;

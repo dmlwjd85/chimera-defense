@@ -143,6 +143,49 @@
      "dodge": 30
     }
    ]
+  },
+  "ant": {
+   "name": "개미 구멍에 둑 무너진다",
+   "source": "한국 속담",
+   "desc": "보스와 미니보스에게 피해 +40%",
+   "fx": [
+    {
+     "vs": {
+      "target": "boss",
+      "dmg": 40
+     }
+    }
+   ]
+  },
+  "dog": {
+   "name": "서당 개 삼 년이면 풍월을 읊는다",
+   "source": "한국 속담",
+   "desc": "같은 자리에서 웨이브를 넘길 때마다 피해 +3% (최대 +30%)",
+   "fx": [
+    {
+     "stayStack": {
+      "stat": "dmg",
+      "per": 3,
+      "max": 30
+     }
+    }
+   ]
+  },
+  "monkey": {
+   "name": "원숭이도 나무에서 떨어진다",
+   "source": "한국 속담",
+   "desc": "치명타 확률 +15%, 대신 12초마다 1초 쉼",
+   "fx": [
+    {
+     "crit": 15
+    },
+    {
+     "restCycle": [
+      12,
+      1
+     ]
+    }
+   ]
   }
  },
  "bonds": [
@@ -406,6 +449,35 @@
       "dodge": -15
      }
     ]
+   },
+   "prey": "rabbit",
+   "kick": "fear",
+   "barks": {
+    "pred": [
+     "꿀꺽…",
+     "어흥?"
+    ],
+    "prey": [
+     "덜덜…",
+     "히익!"
+    ]
+   },
+   "flip": {
+    "name": "달에서 내려다본다",
+    "desc": "옥토끼는 호랑이가 무섭지 않아요: 토끼 회피 +20%, 피해 +20%",
+    "by": [
+     "rabbit"
+    ],
+    "fx": {
+     "rabbit": [
+      {
+       "dodge": 20
+      },
+      {
+       "dmg": 20
+      }
+     ]
+    }
    }
   },
   {
@@ -423,6 +495,380 @@
     "rooster": [
      {
       "auraRadiusAdd": -1
+     }
+    ]
+   },
+   "prey": "rooster",
+   "kick": "fear",
+   "barks": {
+    "pred": [
+     "쩝…",
+     "흐흐"
+    ],
+    "prey": [
+     "꼬…꼭?",
+     "덜덜"
+    ]
+   },
+   "flip": {
+    "name": "하늘 닭은 못 건드려",
+    "desc": "금계 앞에선 여우가 꼬리를 내려요: 수탉 버프 +30%",
+    "by": [
+     "rooster"
+    ],
+    "fx": {
+     "rooster": [
+      {
+       "buff": 30
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "ant_grasshopper",
+   "name": "개미와 베짱이",
+   "kind": "bond",
+   "pair": [
+    "ant",
+    "grasshopper"
+   ],
+   "source": "이솝 우화",
+   "tiles": 3,
+   "desc": "베짱이 버프 +25%, 개미 공격 간격 -10% (노동요)",
+   "fx": {
+    "grasshopper": [
+     {
+      "buff": 25
+     }
+    ],
+    "ant": [
+     {
+      "interval": -10
+     }
+    ]
+   },
+   "barks": {
+    "pred": [
+     "영차!",
+     "영차영차"
+    ],
+    "prey": [
+     "♪라라~",
+     "♪찌르르"
+    ]
+   },
+   "kick": "cheer"
+  },
+  {
+   "id": "rooster_grasshopper",
+   "name": "모이 시간",
+   "kind": "clash",
+   "pair": [
+    "rooster",
+    "grasshopper"
+   ],
+   "source": "먹이사슬: 닭은 풀벌레를 쪼아 먹어요",
+   "tiles": 2,
+   "desc": "베짱이가 떨려서 버프 -20%",
+   "fx": {
+    "grasshopper": [
+     {
+      "buff": -20
+     }
+    ]
+   },
+   "prey": "grasshopper",
+   "kick": "fear",
+   "barks": {
+    "pred": [
+     "콕콕?",
+     "쩝쩝"
+    ],
+    "prey": [
+     "삐끗…",
+     "덜덜덜"
+    ]
+   },
+   "flip": {
+    "name": "영원한 노래",
+    "desc": "티토노스의 노래엔 수탉도 귀를 기울여요: 베짱이 버프 +30%, 수탉 공격 간격 -10%",
+    "by": [
+     "grasshopper"
+    ],
+    "fx": {
+     "grasshopper": [
+      {
+       "buff": 30
+      }
+     ],
+     "rooster": [
+      {
+       "interval": -10
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "frog_grasshopper",
+   "name": "혀 닿는 거리",
+   "kind": "clash",
+   "pair": [
+    "frog",
+    "grasshopper"
+   ],
+   "source": "먹이사슬: 개구리는 풀벌레를 잡아먹어요",
+   "tiles": 2,
+   "desc": "베짱이 공격 간격 +15%",
+   "fx": {
+    "grasshopper": [
+     {
+      "interval": 15
+     }
+    ]
+   },
+   "prey": "grasshopper",
+   "kick": "fear",
+   "barks": {
+    "pred": [
+     "날름…",
+     "개굴?"
+    ],
+    "prey": [
+     "찍!",
+     "움찔"
+    ]
+   },
+   "flip": {
+    "name": "잡을 수 없는 노래",
+    "desc": "티토노스는 혀보다 빨라요: 베짱이 회피 +25%",
+    "by": [
+     "grasshopper"
+    ],
+    "fx": {
+     "grasshopper": [
+      {
+       "dodge": 25
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "frog_ant",
+   "name": "연못가 개미길",
+   "kind": "clash",
+   "pair": [
+    "frog",
+    "ant"
+   ],
+   "source": "먹이사슬: 개구리는 개미도 먹어요",
+   "tiles": 2,
+   "desc": "개미 공격 간격 +10%",
+   "fx": {
+    "ant": [
+     {
+      "interval": 10
+     }
+    ]
+   },
+   "prey": "ant",
+   "kick": "fear",
+   "barks": {
+    "pred": [
+     "날름?",
+     "꿀꺽"
+    ],
+    "prey": [
+     "후다닥",
+     "덜덜"
+    ]
+   },
+   "flip": {
+    "name": "미르미돈 앞에서",
+    "desc": "병사가 된 개미는 물러서지 않아요: 개미 피해 +20%, 막기 수 +1",
+    "by": [
+     "ant"
+    ],
+    "fx": {
+     "ant": [
+      {
+       "dmg": 20
+      },
+      {
+       "block": 1
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "eagle_rabbit",
+   "name": "하늘의 그림자",
+   "kind": "clash",
+   "pair": [
+    "eagle",
+    "rabbit"
+   ],
+   "source": "먹이사슬: 독수리는 토끼를 사냥해요",
+   "tiles": 3,
+   "desc": "토끼가 움츠러들어 공격 간격 +15%",
+   "fx": {
+    "rabbit": [
+     {
+      "interval": 15
+     }
+    ]
+   },
+   "prey": "rabbit",
+   "kick": "fear",
+   "barks": {
+    "pred": [
+     "끼이익",
+     "휘익?"
+    ],
+    "prey": [
+     "히익!",
+     "납작…"
+    ]
+   },
+   "flip": {
+    "name": "달은 더 높다",
+    "desc": "옥토끼는 독수리보다 높은 데 살아요: 토끼 회피 +20%",
+    "by": [
+     "rabbit"
+    ],
+    "fx": {
+     "rabbit": [
+      {
+       "dodge": 20
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "dog_monkey",
+   "name": "견원지간",
+   "kind": "clash",
+   "pair": [
+    "dog",
+    "monkey"
+   ],
+   "source": "한자 성어 犬猿之間",
+   "tiles": 2,
+   "desc": "말다툼하느라 둘 다 공격 간격 +10%",
+   "fx": {
+    "dog": [
+     {
+      "interval": 10
+     }
+    ],
+    "monkey": [
+     {
+      "interval": 10
+     }
+    ]
+   },
+   "kick": "bicker",
+   "barks": {
+    "pred": [
+     "왈왈!",
+     "으르르…",
+     "컹!"
+    ],
+    "prey": [
+     "끼끼!",
+     "우끼끼?!",
+     "메롱"
+    ]
+   },
+   "flip": {
+    "name": "싸우다 정든 사이",
+    "desc": "신화급이 되면 둘도 없는 단짝: 둘 다 피해 +20%",
+    "by": [
+     "dog",
+     "monkey"
+    ],
+    "fx": {
+     "dog": [
+      {
+       "dmg": 20
+      }
+     ],
+     "monkey": [
+      {
+       "dmg": 20
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "dog_rooster",
+   "name": "닭 쫓던 개",
+   "kind": "clash",
+   "pair": [
+    "dog",
+    "rooster"
+   ],
+   "source": "한국 속담",
+   "tiles": 2,
+   "desc": "개가 지붕만 쳐다봐서 공격 간격 +10%",
+   "fx": {
+    "dog": [
+     {
+      "interval": 10
+     }
+    ]
+   },
+   "kick": "bicker",
+   "barks": {
+    "pred": [
+     "멍…",
+     "왈?"
+    ],
+    "prey": [
+     "꼬꼬댁~",
+     "꼬끼오!"
+    ]
+   },
+   "flip": {
+    "name": "해를 문 개",
+    "desc": "불개는 지붕 대신 해를 쳐다봐요: 개 피해 +20%",
+    "by": [
+     "dog"
+    ],
+    "fx": {
+     "dog": [
+      {
+       "dmg": 20
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "wolf_dog",
+   "name": "늑대와 개",
+   "kind": "bond",
+   "pair": [
+    "wolf",
+    "dog"
+   ],
+   "source": "이솝 우화",
+   "tiles": 2,
+   "desc": "먼 친척끼리 호흡이 맞아 둘 다 피해 +10%",
+   "fx": {
+    "wolf": [
+     {
+      "dmg": 10
+     }
+    ],
+    "dog": [
+     {
+      "dmg": 10
      }
     ]
    }

@@ -4,7 +4,7 @@ import { buildData } from '../logic/data.js';
 import { talentState, buyTalent, resetTalents, writeSave } from '../logic/meta.js';
 import { sfx } from './sfx.js';
 
-/** 스킬트리: 판이 끝나면 남는 유물 조각으로 네 갈래의 특성을 차례로 찍는다. */
+/** 스킬트리: 판이 끝나면 남는 유물 조각으로 여러 갈래의 특성을 차례로 찍는다. */
 export default class TalentScene extends Phaser.Scene {
   constructor() { super('Talent'); }
 
@@ -46,11 +46,11 @@ export default class TalentScene extends Phaser.Scene {
         g.fillStyle(owned ? col : 0x0b1016, owned ? 0.9 : 1).fillCircle(x - nw + 38, y, 24);
         g.lineStyle(2.5, owned || open ? col : 0x3b4b5e, 1).strokeCircle(x - nw + 38, y, 24);
         const icon = this.add.text(x - nw + 38, y, owned || open ? n.icon : '🔒', style(22)).setOrigin(0.5).setAlpha(owned || open ? 1 : 0.6);
-        const nm = this.add.text(x - nw + 70, y - 22, n.name, style(15, owned ? '#ffffff' : open ? '#e8eef2' : '#7f8c99')).setOrigin(0, 0);
-        const ds = this.add.text(x - nw + 70, y - 1, n.desc, style(11, owned ? '#dfe6ea' : '#8fa1b3', { wordWrap: { width: nw * 2 - 80 } })).setOrigin(0, 0);
-        const cost = this.add.text(x + nw - 8, y - 26, owned ? '✔' : `💎${st.cost}`, style(12, owned ? '#7CFC9A' : st.ok ? '#e0c3ff' : '#7f8c99')).setOrigin(1, 0);
+        const nm = this.add.text(x - nw + 70, y - 24, n.name, style(N > 5 ? 14 : 15, owned ? '#ffffff' : open ? '#e8eef2' : '#7f8c99')).setOrigin(0, 0);
+        const ds = this.add.text(x - nw + 70, y - 1, n.desc, style(11, owned ? '#dfe6ea' : '#8fa1b3', { wordWrap: { width: nw * 2 - 76 } })).setOrigin(0, 0);
+        const cost = this.add.text(x - nw + 38, y + 24, owned ? '✔' : `💎${st.cost}`, style(11, owned ? '#7CFC9A' : st.ok ? '#e0c3ff' : '#9aa7b3', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5);
         const z = this.add.zone(x, y, nw * 2, 68).setInteractive({ useHandCursor: st.ok });
-        z.on('pointerover', () => showTip(this, `${n.name}\n${n.tale}\n· ${n.desc}${owned ? '' : st.ok ? '\n(누르면 밝히기)' : st.reason === 'locked' ? '\n(아래 별부터 밝혀야 해요)' : '\n(조각이 모자라요)'}`, x, y - 40));
+        z.on('pointerover', () => showTip(this, `${n.name}\n${n.tale}\n· ${n.desc}${owned ? '' : st.ok ? '\n(누르면 밝히기)' : st.reason === 'locked' ? '\n(아래 별부터 밝혀야 함)' : '\n(조각 부족)'}`, x, y - 40));
         z.on('pointerout', () => hideTip(this));
         z.on('pointerdown', () => {
           const r = buyTalent(save, D, n.id);

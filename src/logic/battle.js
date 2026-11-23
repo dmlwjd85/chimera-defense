@@ -39,6 +39,7 @@ export function createBattle(data, stageId, seed = 1, opts = {}) {
   state.meleeReach = data.config.meleeReach ?? 1;
   state.gold += eco(state, data, 'startGold') ?? 0;
   state.life += eco(state, data, 'life') ?? 0;
+  state.mana = Math.min(cfg.spells?.max ?? 0, state.mana + (eco(state, data, 'manaStart') ?? 0));
   state.maxLife = state.life;
   return state;
 }

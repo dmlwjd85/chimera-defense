@@ -8,7 +8,7 @@ import { computeMods } from '../src/logic/mods.js';
 const D = loadData();
 
 test('five branches of five nodes (cage included), each with a tale and an effect', () => {
-  assert.equal(D.talents.branches.length, 5);
+  assert.equal(D.talents.branches.length, 6);
   for (const b of D.talents.branches) { assert.equal(b.nodes.length, 5); for (const n of b.nodes) assert.ok(n.tale && n.desc && (n.fx || n.eco), n.id); }
 });
 

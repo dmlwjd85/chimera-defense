@@ -43,15 +43,19 @@ export function sameSpeciesFactor(id, owned, data) {
 }
 
 /** Per-unit summon chances (sum 1) after pity, first-summon and same-species rules. */
-export function unitChances(ctx, wave, data, owned = null) {
-  const { config, units } = data;
+export function unitChances(ctx, wave, data, owned = null, opts = {}) {
+  const { config } = data;
+  let units = data.units.filter((u) => !opts.pool || opts.pool.includes(u.id));
+  if (opts.continent) units = restrict(units, (u) => u.continent === opts.continent);
+  if (opts.habitat) units = restrict(units, (u) => u.habitat === opts.habitat);
+  const baitRole = opts.bait ? config.bait?.types?.[opts.bait]?.role : null;
   const table = rarityTable(wave, config);
   const perRarity = {};
   for (const u of units) perRarity[u.rarity] = (perRarity[u.rarity] ?? 0) + 1;
   let pool = units.filter((u) => table[u.rarity] > 0);
   if (ctx.sinceHero >= config.pityCount) pool = restrict(pool, (u) => u.rarity === 'hero');
   if (ctx.summonIndex === 1 && !ctx.firstWasRanged) pool = restrict(pool, (u) => u.range >= config.flyingMinRange);
-  const raw = pool.map((u) => [u.id, (table[u.rarity] / perRarity[u.rarity]) * sameSpeciesFactor(u.id, owned, data)]);
+  const raw = pool.map((u) => [u.id, (table[u.rarity] / perRarity[u.rarity]) * sameSpeciesFactor(u.id, owned, data) * (baitRole && u.role === baitRole ? config.bait.mult : 1)]);
   const sum = raw.reduce((s, [, p]) => s + p, 0);
   return Object.fromEntries(raw.map(([id, p]) => [id, p / sum]));
 }
@@ -59,8 +63,8 @@ export function unitChances(ctx, wave, data, owned = null) {
 /**
  * Roll one summon and report continent/habitat odds for the roulette.
  */
-export function rollSummon(ctx, wave, data, rng, owned = null) {
-  const chances = unitChances(ctx, wave, data, owned);
+export function rollSummon(ctx, wave, data, rng, owned = null, opts = {}) {
+  const chances = unitChances(ctx, wave, data, owned, opts);
   
   const entries = Object.entries(chances);
   const unitId = pickWeighted(rng, entries);

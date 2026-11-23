@@ -1,0 +1,1287 @@
+{
+ "bear": {
+  "str": [
+   {
+    "name": "두꺼운 가죽",
+    "desc": "체력 +15%",
+    "fx": [
+     {
+      "hp": 15
+     }
+    ],
+    "id": "bear_s1"
+   },
+   {
+    "name": "묵직한 앞발",
+    "desc": "피해 +15%",
+    "fx": [
+     {
+      "dmg": 15
+     }
+    ],
+    "id": "bear_s2"
+   },
+   {
+    "name": "버티기",
+    "desc": "저지 시간 +20%",
+    "fx": [
+     {
+      "holdDur": 20
+     }
+    ],
+    "id": "bear_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "꿀에 약하다",
+    "desc": "8초마다 1초 쉼",
+    "fx": [
+     {
+      "restCycle": [
+       8,
+       1
+      ]
+     }
+    ],
+    "flip": {
+     "name": "꿀 먹은 힘",
+     "desc": "쉬고 난 뒤 5초간 피해 +50%",
+     "fx": [
+      {
+       "restCycle": [
+        8,
+        1
+       ]
+      },
+      {
+       "afterRest": {
+        "dur": 5,
+        "dmg": 50
+       }
+      }
+     ]
+    },
+    "id": "bear_w1"
+   },
+   {
+    "name": "겨울잠이 온다",
+    "desc": "11웨이브부터 공격 간격 +15%",
+    "fx": [
+     {
+      "if": {
+       "waveFrom": 11
+      },
+      "interval": 15
+     }
+    ],
+    "flip": {
+     "name": "푹 자고 왔다",
+     "desc": "웨이브마다 처음 받는 공격 3번을 무시",
+     "fx": [
+      {
+       "ignoreFirstHits": 3
+      }
+     ]
+    },
+    "id": "bear_w2"
+   },
+   {
+    "name": "미련하다",
+    "desc": "스킬 쿨타임 +20%",
+    "fx": [
+     {
+      "cd": 20
+     }
+    ],
+    "flip": {
+     "name": "우직하다",
+     "desc": "막기 수 +2",
+     "fx": [
+      {
+       "block": 2
+      }
+     ]
+    },
+    "id": "bear_w3"
+   }
+  ]
+ },
+ "tiger": {
+  "str": [
+   {
+    "name": "날카로운 발톱",
+    "desc": "피해 +15%",
+    "fx": [
+     {
+      "dmg": 15
+     }
+    ],
+    "id": "tiger_s1"
+   },
+   {
+    "name": "숨죽이기",
+    "desc": "치명타 확률 15%",
+    "fx": [
+     {
+      "crit": 15
+     }
+    ],
+    "id": "tiger_s2"
+   },
+   {
+    "name": "날랜 몸",
+    "desc": "회피 10%",
+    "fx": [
+     {
+      "dodge": 10
+     }
+    ],
+    "id": "tiger_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "곶감을 무서워한다",
+    "desc": "보스가 길 위에 있으면 피해 -15%",
+    "fx": [
+     {
+      "if": {
+       "bossOnPath": true
+      },
+      "dmg": -15
+     }
+    ],
+    "flip": {
+     "name": "곶감을 이겨냈다",
+     "desc": "보스와 미니보스에게 피해 +40%",
+     "fx": [
+      {
+       "vs": {
+        "target": "boss",
+        "dmg": 40
+       }
+      }
+     ]
+    },
+    "id": "tiger_w1"
+   },
+   {
+    "name": "혼자가 편하다",
+    "desc": "2타일 안에 아군이 있으면 공격 간격 +15%",
+    "fx": [
+     {
+      "if": {
+       "near": {
+        "tiles": 2,
+        "present": true
+       }
+      },
+      "interval": 15
+     }
+    ],
+    "flip": {
+     "name": "고독한 사냥꾼",
+     "desc": "2타일 안에 아군이 없으면 피해 +40%",
+     "fx": [
+      {
+       "if": {
+        "near": {
+         "tiles": 2,
+         "present": false
+        }
+       },
+       "dmg": 40
+      }
+     ]
+    },
+    "id": "tiger_w2"
+   },
+   {
+    "name": "떡에 약하다",
+    "desc": "처치 골드 -1",
+    "fx": [
+     {
+      "killGold": -1
+     }
+    ],
+    "flip": {
+     "name": "떡 하나 주면",
+     "desc": "처치 골드 +2",
+     "fx": [
+      {
+       "killGold": 2
+      }
+     ]
+    },
+    "id": "tiger_w3"
+   }
+  ]
+ },
+ "fox": {
+  "str": [
+   {
+    "name": "꾀",
+    "desc": "스킬 쿨타임 -15%",
+    "fx": [
+     {
+      "cd": -15
+     }
+    ],
+    "id": "fox_s1"
+   },
+   {
+    "name": "독한 이빨",
+    "desc": "중독 효과 +20%",
+    "fx": [
+     {
+      "status": 20
+     }
+    ],
+    "id": "fox_s2"
+   },
+   {
+    "name": "밝은 귀",
+    "desc": "사거리 +1",
+    "fx": [
+     {
+      "range": 1
+     }
+    ],
+    "id": "fox_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "의심이 많다",
+    "desc": "피해 -15%",
+    "fx": [
+     {
+      "dmg": -15
+     }
+    ],
+    "flip": {
+     "name": "빈틈이 없다",
+     "desc": "중독된 적이 죽으면 가까운 적에게 중독이 옮음",
+     "fx": [
+      {
+       "poisonSpread": true
+      }
+     ]
+    },
+    "id": "fox_w1"
+   },
+   {
+    "name": "변덕스럽다",
+    "desc": "공격마다 피해가 -30%에서 +10% 사이",
+    "fx": [
+     {
+      "variance": [
+       -30,
+       10
+      ]
+     }
+    ],
+    "flip": {
+     "name": "예측 불가",
+     "desc": "공격마다 피해가 -30%에서 +80% 사이",
+     "fx": [
+      {
+       "variance": [
+        -30,
+        80
+       ]
+      }
+     ]
+    },
+    "id": "fox_w2"
+   },
+   {
+    "name": "신 포도",
+    "desc": "사거리 -1",
+    "fx": [
+     {
+      "range": -1
+     }
+    ],
+    "flip": {
+     "name": "어차피 실 거야",
+     "desc": "체력이 50% 아래인 적에게 피해 +40%",
+     "fx": [
+      {
+       "vs": {
+        "target": "lowHp",
+        "dmg": 40
+       }
+      }
+     ]
+    },
+    "id": "fox_w3"
+   }
+  ]
+ },
+ "rabbit": {
+  "str": [
+   {
+    "name": "큰 귀",
+    "desc": "회피 10%",
+    "fx": [
+     {
+      "dodge": 10
+     }
+    ],
+    "id": "rabbit_s1"
+   },
+   {
+    "name": "잰 발",
+    "desc": "공격 간격 -10%",
+    "fx": [
+     {
+      "interval": -10
+     }
+    ],
+    "id": "rabbit_s2"
+   },
+   {
+    "name": "발 구르기",
+    "desc": "둔화 효과 +20%",
+    "fx": [
+     {
+      "status": 20
+     }
+    ],
+    "id": "rabbit_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "겁이 많다",
+    "desc": "체력이 30% 아래면 웅크려 공격을 멈춤",
+    "fx": [
+     {
+      "if": {
+       "hpBelow": 30
+      },
+      "rest": true
+     }
+    ],
+    "flip": {
+     "name": "눈치가 빠르다",
+     "desc": "받는 공격의 25%를 피함",
+     "fx": [
+      {
+       "dodge": 25
+      }
+     ]
+    },
+    "id": "rabbit_w1"
+   },
+   {
+    "name": "낮잠을 잔다",
+    "desc": "8초마다 1초 쉼",
+    "fx": [
+     {
+      "restCycle": [
+       8,
+       1
+      ]
+     }
+    ],
+    "flip": {
+     "name": "푹 잤다",
+     "desc": "쉬고 난 뒤 첫 공격 피해 3배",
+     "fx": [
+      {
+       "restCycle": [
+        8,
+        1
+       ]
+      },
+      {
+       "afterRest": {
+        "firstHit": 3
+       }
+      }
+     ]
+    },
+    "id": "rabbit_w2"
+   },
+   {
+    "name": "외로움을 탄다",
+    "desc": "2타일 안에 아군이 없으면 피해 -20%",
+    "fx": [
+     {
+      "if": {
+       "near": {
+        "tiles": 2,
+        "present": false
+       }
+      },
+      "dmg": -20
+     }
+    ],
+    "flip": {
+     "name": "정이 많다",
+     "desc": "2타일 안의 아군과 서로 피해 +15%",
+     "fx": [
+      {
+       "if": {
+        "near": {
+         "tiles": 2,
+         "present": true
+        }
+       },
+       "dmg": 15
+      },
+      {
+       "aura": {
+        "radius": 2,
+        "dmg": 15
+       }
+      }
+     ]
+    },
+    "id": "rabbit_w3"
+   }
+  ]
+ },
+ "rooster": {
+  "str": [
+   {
+    "name": "큰 목청",
+    "desc": "버프 효과 +20%",
+    "fx": [
+     {
+      "buff": 20
+     }
+    ],
+    "id": "rooster_s1"
+   },
+   {
+    "name": "일찍 일어남",
+    "desc": "재등장 시간 -20%",
+    "fx": [
+     {
+      "respawn": -20
+     }
+    ],
+    "id": "rooster_s2"
+   },
+   {
+    "name": "벼 세우기",
+    "desc": "체력 +15%",
+    "fx": [
+     {
+      "hp": 15
+     }
+    ],
+    "id": "rooster_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "시끄럽다",
+    "desc": "2타일 안 아군의 스킬 쿨타임 +10%",
+    "fx": [
+     {
+      "aura": {
+       "radius": 2,
+       "cd": 10
+      }
+     }
+    ],
+    "flip": {
+     "name": "모닝콜",
+     "desc": "2타일 안 아군의 스킬 쿨타임 -15%",
+     "fx": [
+      {
+       "aura": {
+        "radius": 2,
+        "cd": -15
+       }
+      }
+     ]
+    },
+    "id": "rooster_w1"
+   },
+   {
+    "name": "싸움닭 기질",
+    "desc": "20% 확률로 엉뚱한 적을 공격",
+    "fx": [
+     {
+      "misTarget": 20
+     }
+    ],
+    "flip": {
+     "name": "투계",
+     "desc": "막고 있는 적에게 피해 +50%",
+     "fx": [
+      {
+       "vs": {
+        "target": "held",
+        "dmg": 50
+       }
+      }
+     ]
+    },
+    "id": "rooster_w2"
+   },
+   {
+    "name": "밤눈이 어둡다",
+    "desc": "짝수 웨이브에 사거리 -1",
+    "fx": [
+     {
+      "if": {
+       "even": true
+      },
+      "range": -1
+     }
+    ],
+    "flip": {
+     "name": "새벽형",
+     "desc": "웨이브 시작 15초간 버프 효과 2배",
+     "fx": [
+      {
+       "if": {
+        "waveTimeLt": 15
+       },
+       "buff": 100
+      }
+     ]
+    },
+    "id": "rooster_w3"
+   }
+  ]
+ },
+ "crow": {
+  "str": [
+   {
+    "name": "밝은 눈",
+    "desc": "사거리 +1",
+    "fx": [
+     {
+      "range": 1
+     }
+    ],
+    "id": "crow_s1"
+   },
+   {
+    "name": "영리함",
+    "desc": "치명타 확률 15%",
+    "fx": [
+     {
+      "crit": 15
+     }
+    ],
+    "id": "crow_s2"
+   },
+   {
+    "name": "반짝이 사랑",
+    "desc": "처치 골드 +1",
+    "fx": [
+     {
+      "killGold": 1
+     }
+    ],
+    "id": "crow_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "반짝이에 한눈판다",
+    "desc": "적을 처치하면 1초 쉼",
+    "fx": [
+     {
+      "restAfterKill": 1
+     }
+    ],
+    "flip": {
+     "name": "수집가",
+     "desc": "처치할 때마다 그 스테이지 동안 피해 +2% (최대 +40%)",
+     "fx": [
+      {
+       "killStack": [
+        2,
+        40
+       ]
+      }
+     ]
+    },
+    "id": "crow_w1"
+   },
+   {
+    "name": "칭찬에 약하다",
+    "desc": "아군 버프를 받는 동안 공격 간격 +15%",
+    "fx": [
+     {
+      "if": {
+       "buffed": true
+      },
+      "interval": 15
+     }
+    ],
+    "flip": {
+     "name": "칭찬을 먹고 자란다",
+     "desc": "받는 버프 효과 2배",
+     "fx": [
+      {
+       "buffRecv": 2
+      }
+     ]
+    },
+    "id": "crow_w2"
+   },
+   {
+    "name": "불길하다",
+    "desc": "2타일 안 아군의 피해 -5%",
+    "fx": [
+     {
+      "aura": {
+       "radius": 2,
+       "dmg": -5
+      }
+     }
+    ],
+    "flip": {
+     "name": "길조였다",
+     "desc": "2타일 안 아군의 치명타 확률 +10%",
+     "fx": [
+      {
+       "aura": {
+        "radius": 2,
+        "crit": 10
+       }
+      }
+     ]
+    },
+    "id": "crow_w3"
+   }
+  ]
+ },
+ "bison": {
+  "str": [
+   {
+    "name": "넓은 어깨",
+    "desc": "막기 수 +1",
+    "fx": [
+     {
+      "block": 1
+     }
+    ],
+    "id": "bison_s1"
+   },
+   {
+    "name": "두꺼운 털",
+    "desc": "받는 피해 -10%",
+    "fx": [
+     {
+      "taken": -10
+     }
+    ],
+    "id": "bison_s2"
+   },
+   {
+    "name": "굳센 다리",
+    "desc": "저지 시간 +20%",
+    "fx": [
+     {
+      "holdDur": 20
+     }
+    ],
+    "id": "bison_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "앞만 본다",
+    "desc": "자기보다 방어선 쪽에 있는 적을 공격하지 못함",
+    "fx": [
+     {
+      "cantHitBehind": true
+     }
+    ],
+    "flip": {
+     "name": "한 길만 판다",
+     "desc": "적 등장 쪽 적에게 피해와 저지 시간 +30%",
+     "fx": [
+      {
+       "vs": {
+        "target": "ahead",
+        "dmg": 30
+       }
+      },
+      {
+       "holdDur": 30
+      }
+     ]
+    },
+    "id": "bison_w1"
+   },
+   {
+    "name": "성질이 급하다",
+    "desc": "스킬 쿨타임 +20%",
+    "fx": [
+     {
+      "cd": 20
+     }
+    ],
+    "flip": {
+     "name": "화끈하다",
+     "desc": "저지를 시작할 때 주는 피해 2배",
+     "fx": [
+      {
+       "holdBurstMult": 2
+      }
+     ]
+    },
+    "id": "bison_w2"
+   },
+   {
+    "name": "무리 생각이 난다",
+    "desc": "2타일 안에 아군이 없으면 피해 -20%",
+    "fx": [
+     {
+      "if": {
+       "near": {
+        "tiles": 2,
+        "present": false
+       }
+      },
+      "dmg": -20
+     }
+    ],
+    "flip": {
+     "name": "떼의 기억",
+     "desc": "출전한 브루저 1마리당 체력 +10%",
+     "fx": [
+      {
+       "perBruiserHp": 10
+      }
+     ]
+    },
+    "id": "bison_w3"
+   }
+  ]
+ },
+ "wolf": {
+  "str": [
+   {
+    "name": "강한 턱",
+    "desc": "피해 +15%",
+    "fx": [
+     {
+      "dmg": 15
+     }
+    ],
+    "id": "wolf_s1"
+   },
+   {
+    "name": "끈기",
+    "desc": "공격 간격 -10%",
+    "fx": [
+     {
+      "interval": -10
+     }
+    ],
+    "id": "wolf_s2"
+   },
+   {
+    "name": "우렁찬 울음",
+    "desc": "버프 효과 +20%",
+    "fx": [
+     {
+      "buff": 20
+     }
+    ],
+    "id": "wolf_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "혼자면 시무룩하다",
+    "desc": "2타일 안에 아군이 없으면 피해 -20%",
+    "fx": [
+     {
+      "if": {
+       "near": {
+        "tiles": 2,
+        "present": false
+       }
+      },
+      "dmg": -20
+     }
+    ],
+    "flip": {
+     "name": "무리의 힘",
+     "desc": "2타일 안에 아군이 있으면 피해 +25%",
+     "fx": [
+      {
+       "if": {
+        "near": {
+         "tiles": 2,
+         "present": true
+        }
+       },
+       "dmg": 25
+      }
+     ]
+    },
+    "id": "wolf_w1"
+   },
+   {
+    "name": "보름달만 기다린다",
+    "desc": "피해 -15%",
+    "fx": [
+     {
+      "dmg": -15
+     }
+    ],
+    "flip": {
+     "name": "보름달이 떴다",
+     "desc": "5, 10, 15웨이브에 피해 +50%",
+     "fx": [
+      {
+       "if": {
+        "waves": [
+         5,
+         10,
+         15
+        ]
+       },
+       "dmg": 50
+      }
+     ]
+    },
+    "id": "wolf_w2"
+   },
+   {
+    "name": "양치기 소년 탓",
+    "desc": "우두머리 버프가 1타일 안에만 닿음",
+    "fx": [
+     {
+      "auraRadius": 1
+     }
+    ],
+    "flip": {
+     "name": "진짜 늑대가 나타났다",
+     "desc": "우두머리 버프가 모든 아군에게 닿음",
+     "fx": [
+      {
+       "auraRadius": 99
+      }
+     ]
+    },
+    "id": "wolf_w3"
+   }
+  ]
+ },
+ "eagle": {
+  "str": [
+   {
+    "name": "매의 눈",
+    "desc": "사거리 +1",
+    "fx": [
+     {
+      "range": 1
+     }
+    ],
+    "id": "eagle_s1"
+   },
+   {
+    "name": "큰 발톱",
+    "desc": "피해 +15%",
+    "fx": [
+     {
+      "dmg": 15
+     }
+    ],
+    "id": "eagle_s2"
+   },
+   {
+    "name": "상승기류",
+    "desc": "광역 반경 +0.5",
+    "fx": [
+     {
+      "aoe": 0.5
+     }
+    ],
+    "id": "eagle_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "높은 데서만 멋있다",
+    "desc": "지상 적에게 피해 -15%",
+    "fx": [
+     {
+      "vs": {
+       "target": "ground",
+       "dmg": -15
+      }
+     }
+    ],
+    "flip": {
+     "name": "하늘의 왕",
+     "desc": "비행 적에게 피해 +100%",
+     "fx": [
+      {
+       "vs": {
+        "target": "flying",
+        "dmg": 100
+       }
+      }
+     ]
+    },
+    "id": "eagle_w1"
+   },
+   {
+    "name": "목이 뻣뻣하다",
+    "desc": "1타일 안의 가까운 적을 공격하지 못함",
+    "fx": [
+     {
+      "cantHitClose": 1
+     }
+    ],
+    "flip": {
+     "name": "멀리 본다",
+     "desc": "사거리 +2",
+     "fx": [
+      {
+       "range": 2
+      }
+     ]
+    },
+    "id": "eagle_w2"
+   },
+   {
+    "name": "눈이 높다",
+    "desc": "일반 적에게 피해 -15%",
+    "fx": [
+     {
+      "vs": {
+       "target": "normal",
+       "dmg": -15
+      }
+     }
+    ],
+    "flip": {
+     "name": "큰 사냥감 전문",
+     "desc": "보스와 미니보스에게 피해 +40%",
+     "fx": [
+      {
+       "vs": {
+        "target": "boss",
+        "dmg": 40
+       }
+      }
+     ]
+    },
+    "id": "eagle_w3"
+   }
+  ]
+ },
+ "bighorn": {
+  "str": [
+   {
+    "name": "단단한 뿔",
+    "desc": "피해 +15%",
+    "fx": [
+     {
+      "dmg": 15
+     }
+    ],
+    "id": "bighorn_s1"
+   },
+   {
+    "name": "균형 감각",
+    "desc": "회피 10%",
+    "fx": [
+     {
+      "dodge": 10
+     }
+    ],
+    "id": "bighorn_s2"
+   },
+   {
+    "name": "근성",
+    "desc": "스킬 쿨타임 -15%",
+    "fx": [
+     {
+      "cd": -15
+     }
+    ],
+    "id": "bighorn_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "고집이 세다",
+    "desc": "자리를 옮기면 5초간 쉼",
+    "fx": [
+     {
+      "restOnMove": 5
+     }
+    ],
+    "flip": {
+     "name": "뚝심 있다",
+     "desc": "같은 자리에서 웨이브를 넘길 때마다 피해 +5% (최대 +30%)",
+     "fx": [
+      {
+       "stayStack": {
+        "stat": "dmg",
+        "per": 5,
+        "max": 30
+       }
+      }
+     ]
+    },
+    "id": "bighorn_w1"
+   },
+   {
+    "name": "머리가 울린다",
+    "desc": "박치기를 하면 1초 쉼",
+    "fx": [
+     {
+      "restOnKnock": 1
+     }
+    ],
+    "flip": {
+     "name": "돌머리",
+     "desc": "박치기에 맞은 적은 2초간 기절",
+     "fx": [
+      {
+       "knockStun": 2
+      }
+     ]
+    },
+    "id": "bighorn_w2"
+   },
+   {
+    "name": "높은 데만 좋아한다",
+    "desc": "지형이 안 맞는 구간에서 피해 -15%",
+    "fx": [
+     {
+      "if": {
+       "terrain": false
+      },
+      "dmg": -15
+     }
+    ],
+    "flip": {
+     "name": "절벽 타기",
+     "desc": "지형이 맞는 구간에서 지형 보너스 3배",
+     "fx": [
+      {
+       "terrainMult": 3
+      }
+     ]
+    },
+    "id": "bighorn_w3"
+   }
+  ]
+ },
+ "frog": {
+  "str": [
+   {
+    "name": "긴 혀",
+    "desc": "사거리 +1",
+    "fx": [
+     {
+      "range": 1
+     }
+    ],
+    "id": "frog_s1"
+   },
+   {
+    "name": "미끈한 피부",
+    "desc": "받는 피해 -10%",
+    "fx": [
+     {
+      "taken": -10
+     }
+    ],
+    "id": "frog_s2"
+   },
+   {
+    "name": "큰 울음주머니",
+    "desc": "체력 +15%",
+    "fx": [
+     {
+      "hp": 15
+     }
+    ],
+    "id": "frog_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "건조하면 의욕이 없다",
+    "desc": "지형이 안 맞는 구간에서 체력 -15%",
+    "fx": [
+     {
+      "if": {
+       "terrain": false
+      },
+      "hp": -15
+     }
+    ],
+    "flip": {
+     "name": "물 만났다",
+     "desc": "지형이 맞는 구간에서 막기 수 +2",
+     "fx": [
+      {
+       "if": {
+        "terrain": true
+       },
+       "block": 2
+      }
+     ]
+    },
+    "id": "frog_w1"
+   },
+   {
+    "name": "우물 안 개구리",
+    "desc": "사거리 -1",
+    "fx": [
+     {
+      "range": -1
+     }
+    ],
+    "flip": {
+     "name": "우물을 나왔다",
+     "desc": "사거리 +2",
+     "fx": [
+      {
+       "range": 2
+      }
+     ]
+    },
+    "id": "frog_w2"
+   },
+   {
+    "name": "황소를 부러워한다",
+    "desc": "체력 -10%",
+    "fx": [
+     {
+      "hp": -10
+     }
+    ],
+    "flip": {
+     "name": "진짜 커졌다",
+     "desc": "체력 +40%",
+     "fx": [
+      {
+       "hp": 40
+      }
+     ]
+    },
+    "id": "frog_w3"
+   }
+  ]
+ },
+ "grasshopper": {
+  "str": [
+   {
+    "name": "고운 목소리",
+    "desc": "버프 효과 +20%",
+    "fx": [
+     {
+      "buff": 20
+     }
+    ],
+    "id": "grasshopper_s1"
+   },
+   {
+    "name": "가벼운 몸",
+    "desc": "회피 10%",
+    "fx": [
+     {
+      "dodge": 10
+     }
+    ],
+    "id": "grasshopper_s2"
+   },
+   {
+    "name": "흥",
+    "desc": "스킬 쿨타임 -15%",
+    "fx": [
+     {
+      "cd": -15
+     }
+    ],
+    "id": "grasshopper_s3"
+   }
+  ],
+  "weak": [
+   {
+    "name": "일하기 싫다",
+    "desc": "웨이브 시작 후 3초간 쉼",
+    "fx": [
+     {
+      "if": {
+       "waveTimeLt": 3
+      },
+      "rest": true
+     }
+    ],
+    "flip": {
+     "name": "무대 체질",
+     "desc": "웨이브 시작 10초간 버프 효과 2배",
+     "fx": [
+      {
+       "if": {
+        "waveTimeLt": 10
+       },
+       "buff": 100
+      }
+     ]
+    },
+    "id": "grasshopper_w1"
+   },
+   {
+    "name": "겨울 대비를 안 했다",
+    "desc": "11웨이브부터 체력 -20%",
+    "fx": [
+     {
+      "if": {
+       "waveFrom": 11
+      },
+      "hp": -20
+     }
+    ],
+    "flip": {
+     "name": "개미와 화해했다",
+     "desc": "웨이브가 끝날 때마다 골드 +3",
+     "fx": [
+      {
+       "waveEndGold": 3
+      }
+     ]
+    },
+    "id": "grasshopper_w2"
+   },
+   {
+    "name": "음치다",
+    "desc": "버프 효과 -20%",
+    "fx": [
+     {
+      "buff": -20
+     }
+    ],
+    "flip": {
+     "name": "개성 있는 목소리",
+     "desc": "3타일 안의 적 공격 간격 +15%",
+     "fx": [
+      {
+       "enemyAura": {
+        "radius": 3,
+        "interval": 15
+       }
+      }
+     ]
+    },
+    "id": "grasshopper_w3"
+   }
+  ]
+ }
+}

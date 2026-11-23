@@ -1,5 +1,5 @@
 const STATUS_FIELD = { slow: 'percent', aura: 'percent', haste: 'percent', poison: 'dps' };
-const MODIFIERS = new Set(['confuseTargets', 'aoeRadiusSet', 'knockbackStun', 'respawnHalf', 'text']);
+const MODIFIERS = new Set(['confuseTargets', 'aoeRadiusSet', 'knockbackStun', 'respawnHalf', 'hasteRadiusSet', 'text']);
 
 /** Round to one decimal place. */
 export const round1 = (x) => Math.round(x * 10) / 10;
@@ -26,6 +26,7 @@ export function applyModifiers(stats) {
     else if (m.type === 'knockbackStun' && find('knockback')) find('knockback').stun = m.stun;
     else if (m.type === 'aoeRadiusSet') stats.aoeRadius = m.radius;
     else if (m.type === 'respawnHalf') stats.respawn /= 2;
+    else if (m.type === 'hasteRadiusSet' && find('haste')) find('haste').radius = m.radius;
   }
   stats.effects = stats.effects.filter((e) => !MODIFIERS.has(e.type));
   return stats;
@@ -57,7 +58,7 @@ function baseStats(inst, data) {
     interval: sp.interval, range: sp.range, aoeRadius: sp.aoeRadius, block: sp.block, respawn: sp.respawn,
     effects: [...scaleEffects(sp.baseSkill, m), ...(adult ? copyAll(sp.adultSkill.effects) : []), ...(spirit ? copyAll(sp.spiritSkill.effects) : [])],
     skills: [sp.baseSkillDesc, ...(adult ? [skillLine(sp.adultSkill)] : []), ...(spirit ? [skillLine(sp.spiritSkill)] : [])],
-    continents: [sp.continent], habitats: [sp.habitat], color: sp.color, image: sp.image ?? null,
+    continents: [sp.continent], habitats: [sp.habitat], color: sp.color, image: sp.image ?? null, role: sp.role,
   };
 }
 
@@ -73,19 +74,19 @@ function chimeraStats(inst, data) {
     interval: r.interval, range: r.range, aoeRadius: r.aoeRadius,
     block: r.block ?? Math.max(a.block, b.block), respawn: Math.max(a.respawn, b.respawn),
     effects: scaleEffects(r.effects, m), skills: [r.desc],
-    continents: uniq([a.continent, b.continent]), habitats: uniq([a.habitat, b.habitat]), color: r.color, image: r.image ?? null,
+    continents: uniq([a.continent, b.continent]), habitats: uniq([a.habitat, b.habitat]), color: r.color, image: r.image ?? null, role: r.role,
   };
 }
 
 function weakStats(inst, data) {
   const [a, b] = partsOf(inst, data);
   return {
-    name: data.config.weakNamePrefix + a.name + b.name,
+    name: (inst.reversal ? '역전의 ' : data.config.weakNamePrefix) + a.name + b.name,
     hp: Math.min(a.hp, b.hp), damage: round1(Math.min(a.damage * damageBoost(a, data.config), b.damage * damageBoost(b, data.config))),
     interval: Math.max(a.interval, b.interval), range: Math.min(a.range, b.range), aoeRadius: 0,
     block: Math.min(a.block, b.block), respawn: Math.max(a.respawn, b.respawn),
     effects: [], skills: [],
-    continents: uniq([a.continent, b.continent]), habitats: uniq([a.habitat, b.habitat]), color: '#777777', image: null,
+    continents: uniq([a.continent, b.continent]), habitats: uniq([a.habitat, b.habitat]), color: '#777777', image: null, role: 'weak',
   };
 }
 

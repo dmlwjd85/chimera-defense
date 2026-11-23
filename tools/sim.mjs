@@ -8,7 +8,7 @@ import { summonCost } from '../src/logic/economy.js';
 import { newRollCtx, rollSummon, advanceRollCtx } from '../src/logic/roulette.js';
 import { makeRng } from '../src/logic/rng.js';
 
-const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages'];
+const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore'];
 const SPOTS = [3, 4.5, 6, 7.5, 2, 9];
 const PRIORITY = ['chimera', 'evolve', 'spirit'];
 const DT = 0.05, TURN = 0.5, MAX_TIME = 3600;
@@ -86,7 +86,7 @@ const label = (u) => `${u.kind}:${u.speciesId ?? u.parts.join('+')}:${u.stage}`;
 
 /** Play one full stage with the bot; returns a summary (and per-wave log). */
 export function runOne(data, seed, opts = {}) {
-  const state = createBattle(data, 'forest-1', seed);
+  const state = createBattle(data, opts.stage ?? 'forest-1', seed);
   const waves = [];
   const made = {};
   let nextTurn = 0, lastWave = 0, lifeAtStart = state.life;
@@ -162,6 +162,7 @@ export function applyKnobs(data, flags) {
   if (flags.same !== undefined) data.config.sameSpecies = { ...(data.config.sameSpecies ?? {}), perUnit: flags.same };
   if (flags.partner !== undefined) data.config.sameSpecies = { ...(data.config.sameSpecies ?? {}), partnerPerUnit: flags.partner };
   if (flags.bossHp !== undefined) for (const e of data.enemies) if (e.boss) e.hp = flags.bossHp;
+  if (flags.dmgAll !== undefined) for (const r of ['common', 'rare', 'hero']) data.config.damageBoost[r] *= flags.dmgAll;
   return data;
 }
 
@@ -176,7 +177,7 @@ export function main(argv) {
     console.log(`roll: ${r.trials} runs x ${r.count} summons -> avg chimera ${r.avgChimera.toFixed(2)}, avg spirit ${r.avgSpirit.toFixed(2)}, at least one chimera ${r.chimeraPct.toFixed(1)}%, at least one spirit ${r.spiritPct.toFixed(1)}%`);
     return [];
   }
-  const opts = { mergeWhenCrowded: !!flags.crowded, skip: !!flags.skip };
+  const opts = { mergeWhenCrowded: !!flags.crowded, skip: !!flags.skip, stage: flags.stage ? 'forest-' + flags.stage : 'forest-1' };
   const rs = [];
   for (let s = start; s < start + runs; s++) {
     const r = runOne(data, s, opts);

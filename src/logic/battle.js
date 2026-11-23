@@ -5,31 +5,61 @@ import { newRollCtx, rollSummon, advanceRollCtx, ownedSpecies } from './roulette
 import { unitStats } from './stats.js';
 import { mergeKind, mergeUnits } from './merge.js';
 import { buildWave, makeEnemy } from './waves.js';
-import { combatTick } from './combat.js';
+import { combatTick, onWaveStart, onWaveEnd } from './combat.js';
+import { rollTraits, inheritEvolve, inheritSpirit, inheritChimera, inheritWeak } from './traits.js';
 
 const fail = (reason) => ({ ok: false, reason });
 const freeSlot = (state) => state.bench.indexOf(null);
 const releaseBlocked = (state, uid) => { for (const e of state.enemies) if (e.blockedBy === uid) e.blockedBy = null; };
 
 /** New battle state for a stage. */
-export function createBattle(data, stageId, seed = 1) {
+export function createBattle(data, stageId, seed = 1, opts = {}) {
   const stage = data.stageById[stageId];
   if (!stage) throw new Error('createBattle: unknown stage ' + stageId);
   const cfg = data.config;
   return {
     stage, rng: makeRng(seed), phase: 'prep', result: null,
     wave: 1, waveTime: 0, prepLeft: cfg.prep.seconds, time: 0,
-    life: cfg.life, gold: cfg.startGold, summonCount: 0, rollCtx: newRollCtx(),
-    field: [], bench: Array(cfg.benchSize).fill(null), enemies: [], queue: [],
-    nextUid: 1, nextEid: 1, known: { recipes: new Set(), failed: new Set() }, events: [],
+    life: cfg.life, gold: cfg.startGold + (opts.startGoldBonus ?? 0), summonCount: 0, rollCtx: newRollCtx(),
+    field: [], bench: Array(cfg.benchSize + (opts.benchBonus ?? 0)).fill(null), enemies: [], queue: [],
+    nextUid: 1, nextEid: 1, events: [],
+    known: { recipes: new Set(opts.known?.recipes ?? []), failed: new Set(opts.known?.failed ?? []) },
+    levels: { ...(opts.levels ?? {}) }, allyBuffs: [], bait: null, kills: 0,
+    finds: { recipes: [], flops: [], species: [], bonds: [] }, seenSpecies: new Set(opts.seenSpecies ?? []), seenBonds: new Set(opts.seenBonds ?? []),
   };
 }
 
 /** Wrap an instance into a live unit with a fresh uid. */
 export function makeUnit(state, data, inst) {
   const stats = unitStats(inst, data);
-  return { ...inst, uid: state.nextUid++, stats, pos: 0, targetPos: 0, hp: stats.hp, down: false, respawnLeft: 0,
-    lastHitAt: -99, attackCd: 0, skillCd: {}, attackCount: 0, moving: false };
+  return { traits: [], ...inst, uid: state.nextUid++, stats, pos: 0, targetPos: 0, hp: stats.hp, maxHp: stats.hp, down: false, respawnLeft: 0,
+    lastHitAt: -99, attackCd: 0, skillCd: {}, attackCount: 0, moving: false, temp: [] };
+}
+
+/** Total gold for one summon with optional continent / habitat designation. */
+export function summonPrice(state, data, opts = {}) {
+  const d = data.config.designate ?? { continent: 0, habitat: 0 };
+  return summonCost(state.summonCount, data.config) + (opts.habitat ? d.habitat : opts.continent ? d.continent : 0);
+}
+
+/** Buy bait in the prep phase: the next N summons weigh that role ×mult. */
+export function buyBait(state, data, type) {
+  const b = data.config.bait;
+  if (!b?.types?.[type]) return fail('notFound');
+  if (b.prepOnly && state.phase !== 'prep') return fail('notPrep');
+  if (state.gold < b.cost) return fail('gold');
+  state.gold -= b.cost;
+  state.bait = { type, left: b.summons };
+  state.events.push({ type: 'bait', bait: type });
+  return { ok: true };
+}
+
+/** Lock or unlock one trait so evolution does not overwrite it. */
+export function toggleLock(state, uid, index) {
+  const u = [...state.field, ...state.bench].find((x) => x && x.uid === uid);
+  if (!u || !u.traits?.[index]) return fail('notFound');
+  u.traits[index].locked = !u.traits[index].locked;
+  return { ok: true, locked: u.traits[index].locked };
 }
 
 /** Resolve { where: 'bench', index } or { where: 'field', uid } to a unit. */
@@ -48,14 +78,21 @@ function removeUnit(state, ref) {
 }
 
 /** Pay for one roulette summon into the first free bench slot. */
-export function summon(state, data) {
+export function summon(state, data, opts = {}) {
   if (state.phase === 'ended') return fail('ended');
-  const cost = summonCost(state.summonCount, data.config);
+  const cost = summonPrice(state, data, opts);
   if (state.gold < cost) return fail('gold');
   const slot = freeSlot(state);
   if (slot < 0) return fail('benchFull');
-  const roll = rollSummon(state.rollCtx, state.wave, data, state.rng, ownedSpecies(state));
-  const unit = makeUnit(state, data, { kind: 'base', speciesId: roll.unitId, stage: 'young', parts: null });
+  const roll = rollSummon(state.rollCtx, state.wave, data, state.rng, ownedSpecies(state),
+    { continent: opts.habitat ? data.units.find((u) => u.habitat === opts.habitat)?.continent : opts.continent, habitat: opts.habitat, bait: state.bait?.type });
+  if (state.bait) { state.bait.left -= 1; if (state.bait.left <= 0) state.bait = null; }
+  const lvCfg = data.config.speciesLevel;
+  const lv = state.levels?.[roll.unitId] ?? 1;
+  const stage = lvCfg && lv >= 5 && state.rng() < lvCfg.teenChanceAt5 / 100 ? 'teen' : 'young';
+  const white = (data.lore?.passives?.[roll.unitId]?.fx ?? []).some((f) => f.whiteChance && state.rng() < f.whiteChance / 100);
+  const unit = makeUnit(state, data, { kind: 'base', speciesId: roll.unitId, stage, parts: null, white, traits: rollTraits(roll.unitId, data, state.rng, white) });
+  if (!state.seenSpecies.has(roll.unitId)) { state.seenSpecies.add(roll.unitId); state.finds.species.push(roll.unitId); }
   state.bench[slot] = unit;
   state.gold -= cost;
   state.summonCount += 1;
@@ -148,15 +185,26 @@ export function merge(state, data, fromRef, toRef) {
   if (from.down || to.down) return fail('down');
   const kind = mergeKind(from, to, data);
   if (kind === 'swap') return swapUnits(state, fromRef, toRef, from, to);
-  const unit = makeUnit(state, data, mergeUnits(from, to, data, 0));
+  const inst = mergeUnits(from, to, data, 0);
+  if (kind === 'evolve') inst.traits = inheritEvolve(to.traits, from.traits);
+  else if (kind === 'spirit') inst.traits = inheritSpirit(to.traits, from.traits);
+  else if (kind === 'chimera') inst.traits = inheritChimera(to.traits, from.traits);
+  else if (kind === 'weak') { const w = inheritWeak(to.traits, from.traits, data, state.rng); inst.traits = w.traits; inst.reversal = w.reversal; }
+  if (kind === 'evolve' || kind === 'spirit') inst.white = !!to.white;
+  const unit = makeUnit(state, data, inst);
   const onField = toRef.where === 'field';
   if (onField) Object.assign(unit, { pos: to.pos, targetPos: to.targetPos });
   removeUnit(state, fromRef);
   removeUnit(state, toRef);
   if (onField) state.field.push(unit);
   else state.bench[toRef.index] = unit;
-  if (kind === 'chimera') state.known.recipes.add(unit.speciesId);
+  if (kind === 'chimera') {
+    if (!state.known.recipes.has(unit.speciesId)) state.finds.recipes.push(unit.speciesId);
+    state.known.recipes.add(unit.speciesId);
+  }
+  if (kind === 'spirit') state.madeSpirit = true;
   if (kind === 'weak') {
+    if (!state.known.failed.has(pairKey(...unit.parts))) state.finds.flops.push(pairKey(...unit.parts));
     state.known.failed.add(pairKey(...unit.parts));
     if (onField) {
       for (const e of state.enemies) {
@@ -173,6 +221,7 @@ export function startWave(state, data) {
   state.queue = buildWave(state.stage, state.wave, data, state.rng);
   state.waveTime = 0;
   state.phase = 'wave';
+  onWaveStart(state, data);
   state.events.push({ type: 'waveStart', wave: state.wave });
 }
 
@@ -186,8 +235,10 @@ export function skipPrep(state, data) {
 }
 
 function endWave(state, data) {
+  onWaveEnd(state, data);
   state.gold += waveReward(state.wave, data.config);
-  for (const u of state.field) Object.assign(u, { down: false, hp: u.stats.hp, respawnLeft: 0 });
+  state.wavesCleared = state.wave;
+  for (const u of state.field) Object.assign(u, { down: false, hp: u.maxHp ?? u.stats.hp, respawnLeft: 0 });
   state.events.push({ type: 'waveEnd', wave: state.wave });
   if (state.wave >= state.stage.waves.length) {
     state.phase = 'ended';
@@ -209,7 +260,7 @@ function subStep(state, data, d) {
   state.waveTime += d;
   let n = 0;
   while (n < state.queue.length && state.queue[n].at <= state.waveTime) n++;
-  for (const q of state.queue.slice(0, n)) state.enemies.push(makeEnemy(q.enemyId, state.wave, state.stage, data, state.nextEid++, q.offset));
+  for (const q of state.queue.slice(0, n)) { state.enemies.push(makeEnemy(q.enemyId, state.wave, state.stage, data, state.nextEid++, q.offset)); (state.seenEnemies ??= new Set()).add(q.enemyId); }
   state.queue = state.queue.slice(n);
   combatTick(state, data, d);
   if (state.life <= 0) {

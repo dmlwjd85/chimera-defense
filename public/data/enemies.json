@@ -17,7 +17,8 @@
     "holdFactor": 1,
     "slowFactor": 1,
     "color": "#c0392b",
-    "desc": "기준"
+    "desc": "기준",
+    "codex": "그냥 지나가는 중이었다고 한다."
   },
   {
     "id": "fast",
@@ -37,7 +38,8 @@
     "holdFactor": 1,
     "slowFactor": 1,
     "color": "#e67e22",
-    "desc": "둔화가 없으면 막기 전에 빠져나감"
+    "desc": "둔화가 없으면 막기 전에 빠져나감",
+    "codex": "늘 바쁘다. 어디 가는지는 모른다."
   },
   {
     "id": "tough",
@@ -57,7 +59,8 @@
     "holdFactor": 1,
     "slowFactor": 1,
     "color": "#7d3c98",
-    "desc": "막는 동물을 오래 두들김, 단일 피해 집중 필요"
+    "desc": "막는 동물을 오래 두들김, 단일 피해 집중 필요",
+    "codex": "맷집이 자랑이다."
   },
   {
     "id": "swarm",
@@ -77,7 +80,8 @@
     "holdFactor": 1,
     "slowFactor": 1,
     "color": "#a93226",
-    "desc": "1기 자리에 6기씩 등장. 막기 수를 넘쳐 뒤로 새어 나감, 광역이 유리"
+    "desc": "1기 자리에 6기씩 등장. 막기 수를 넘쳐 뒤로 새어 나감, 광역이 유리",
+    "codex": "혼자서는 아무것도 못 한다. 그래서 혼자 다니지 않는다."
   },
   {
     "id": "flying",
@@ -97,7 +101,8 @@
     "holdFactor": 1,
     "slowFactor": 1,
     "color": "#5dade2",
-    "desc": "막기와 저지 무시, 공격하지 않음, 사거리 3 이상만 공격 가능"
+    "desc": "막기와 저지 무시, 공격하지 않음, 사거리 3 이상만 공격 가능",
+    "codex": "길이 막혀도 상관없다."
   },
   {
     "id": "healer",
@@ -121,7 +126,8 @@
     "holdFactor": 1,
     "slowFactor": 1,
     "color": "#48c9b0",
-    "desc": "3초마다 반경 1.5 안의 적 체력 8% 회복"
+    "desc": "3초마다 반경 1.5 안의 적 체력 8% 회복",
+    "codex": "남을 고쳐 준다. 자기는 못 고친다."
   },
   {
     "id": "miniboss",
@@ -142,7 +148,8 @@
     "holdFactor": 1,
     "slowFactor": 0.5,
     "color": "#6e2c00",
-    "desc": "10웨이브 미니보스"
+    "desc": "10웨이브 미니보스",
+    "codex": "우람멧돼지의 사촌. 덜 우람하다."
   },
   {
     "id": "boss_boar",
@@ -170,6 +177,85 @@
       "every": 8,
       "duration": 3,
       "speed": 1.6
-    }
+    },
+    "codex": "사자와 물 한 모금을 두고 싸운 적이 있다. 독수리들이 지켜보고 있어서 그만뒀다."
+  },
+  {
+    "id": "bat",
+    "name": "박쥐",
+    "hp": 80,
+    "attack": 0,
+    "interval": 0,
+    "speed": 1.4,
+    "gold": 1,
+    "leak": 1,
+    "flying": true,
+    "spawnCount": 1,
+    "blockSlots": 1,
+    "heal": null,
+    "boss": false,
+    "scaleWithWave": false,
+    "stageMultHp": false,
+    "holdFactor": 1,
+    "slowFactor": 1,
+    "color": "#34495e",
+    "desc": "박쥐왕이 부르는 졸개",
+    "codex": "박쥐왕의 부하. 월급은 없다."
+  },
+  {
+    "id": "boss_bat",
+    "name": "박쥐왕",
+    "hp": 6500,
+    "attack": 0,
+    "interval": 1.5,
+    "speed": 0.5,
+    "gold": 100,
+    "leak": 10,
+    "flying": true,
+    "spawnCount": 1,
+    "blockSlots": 2,
+    "heal": null,
+    "boss": true,
+    "scaleWithWave": false,
+    "stageMultHp": false,
+    "holdFactor": 0,
+    "slowFactor": 0.5,
+    "color": "#1b2631",
+    "desc": "비행. 6초마다 박쥐 4기를 부름",
+    "pattern": {
+      "type": "summon",
+      "every": 6,
+      "enemy": "bat",
+      "count": 4
+    },
+    "codex": "새 편도 짐승 편도 아니었던 그 박쥐의 후손이다."
+  },
+  {
+    "id": "boss_shadow",
+    "name": "숲의 그림자",
+    "hp": 12000,
+    "attack": 60,
+    "interval": 1.5,
+    "speed": 0.5,
+    "gold": 100,
+    "leak": 10,
+    "flying": false,
+    "spawnCount": 1,
+    "blockSlots": 2,
+    "heal": null,
+    "boss": true,
+    "scaleWithWave": false,
+    "stageMultHp": false,
+    "holdFactor": 1,
+    "slowFactor": 0.5,
+    "color": "#17202a",
+    "desc": "10초마다 4초간 보호막. 단일 공격 무시, 광역 5회에 깨짐",
+    "pattern": {
+      "type": "shield",
+      "every": 10,
+      "duration": 4,
+      "breakHits": 5
+    },
+    "codex": "숲이 어두운 이유다."
   }
 ]

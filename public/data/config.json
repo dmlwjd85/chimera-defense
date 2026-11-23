@@ -104,9 +104,101 @@
     "note": "확정(2026-11-20, 선생님 결정 '같은 종이 나올 확률을 올려'): 가진 동물 1마리(어린 기준, 성장기 2·성체 4)마다 그 종과 키메라 짝 종의 소환 무게 +4 (기본 1)"
   },
   "damageBoost": {
-    "common": 6.5,
-    "rare": 4.5,
-    "hero": 3,
-    "note": "확정(2026-11-20, 선생님 결정 '동물 피해량을 올려'): 기획서 피해량 × 등급 배율. 키메라는 두 재료 배율의 평균, 약체 키메라는 배율 적용 후 작은 쪽. 스킬 피해(중독 등)는 그대로. npm run sim 400판 클리어 66%"
-  }
+    "common": 5.2,
+    "rare": 3.6,
+    "hero": 2.4,
+    "note": "2026-11-23 전체 규칙(특성·인연·지형·시너지) 적용 뒤 ×0.8 재조정. 봇 시뮬 40판: 스테이지1 85%, 2 53%, 3 28%"
+  },
+  "synergy": {
+    "min": 3,
+    "effects": {
+      "eurasia": {
+        "interval": -10
+      },
+      "america": {
+        "range": 1
+      },
+      "africa": {
+        "dmg": 15
+      }
+    },
+    "note": "기획서 4장 대륙 시너지"
+  },
+  "terrain": {
+    "dmg": 20,
+    "hp": 20,
+    "holdDur": 20
+  },
+  "designate": {
+    "continent": 20,
+    "habitat": 40
+  },
+  "bait": {
+    "cost": 20,
+    "summons": 3,
+    "mult": 2,
+    "prepOnly": true,
+    "types": {
+      "meat": {
+        "name": "고기",
+        "role": "dealer",
+        "desc": "딜러가 잘 나옴"
+      },
+      "honey": {
+        "name": "꿀",
+        "role": "bruiser",
+        "desc": "브루저가 잘 나옴"
+      },
+      "berry": {
+        "name": "열매",
+        "role": "technician",
+        "desc": "테크니션이 잘 나옴"
+      },
+      "seed": {
+        "name": "씨앗",
+        "role": "buffer",
+        "desc": "버퍼가 잘 나옴"
+      }
+    },
+    "note": "2026-11-23 결정: 먹이는 준비 단계에서 사서 다음 3회 소환에서 그 역할 무게 2배"
+  },
+  "speciesLevel": {
+    "dmgPerLevel": 2,
+    "max": 10,
+    "xpPerLevel": 20,
+    "stageXp": [
+      30,
+      45,
+      60
+    ],
+    "spiritBonus": 50,
+    "teenChanceAt5": 10
+  },
+  "essence": {
+    "perWave": 1,
+    "clear": 20,
+    "firstClear": 30,
+    "newRecipe": 10,
+    "newSpecies": 3,
+    "weakFirst": 1
+  },
+  "unlocks": {
+    "startGold": {
+      "step": 20,
+      "costs": [
+        30,
+        60
+      ]
+    },
+    "bench": {
+      "step": 1,
+      "costs": [
+        40
+      ]
+    },
+    "hint": {
+      "cost": 25
+    }
+  },
+  "hintShardsPerReveal": 3
 }

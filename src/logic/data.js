@@ -27,6 +27,7 @@ export function buildData(raw) {
   }
   return {
     config, units, recipes, enemies, stages, recipeByPair,
+    traits: raw.traits ?? {}, lore: raw.lore ?? { passives: {}, bonds: [] },
     unitById: indexById(units), recipeById: indexById(recipes),
     enemyById: indexById(enemies), stageById: indexById(stages),
   };

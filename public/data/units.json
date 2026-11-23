@@ -33,7 +33,11 @@
       "desc": "6초마다 막고 있는 적 전부에게 20 피해",
       "effects": [
         {
-          "type": "text"
+          "type": "timerSkill",
+          "every": 6,
+          "action": "damageHeld",
+          "amount": 20,
+          "name": "앞발 후려치기"
         }
       ]
     },
@@ -42,7 +46,15 @@
       "desc": "체력이 30% 아래면 5초간 받는 피해 -50%, 초당 체력 5% 회복 (쿨타임 30초)",
       "effects": [
         {
-          "type": "text"
+          "type": "hpTrigger",
+          "below": 30,
+          "dur": 5,
+          "cooldown": 30,
+          "mods": {
+            "taken": -50
+          },
+          "regenPct": 5,
+          "name": "겨울잠 직전"
         }
       ]
     },
@@ -88,7 +100,12 @@
       "desc": "12초마다 3타일 안의 일반 적을 2초간 뒤로 달아나게 함",
       "effects": [
         {
-          "type": "text"
+          "type": "timerSkill",
+          "every": 12,
+          "action": "flee",
+          "radius": 3,
+          "dur": 2,
+          "name": "어흥"
         }
       ]
     },
@@ -186,6 +203,9 @@
         {
           "type": "evade",
           "percent": 20
+        },
+        {
+          "type": "counter"
         }
       ]
     },
@@ -194,7 +214,12 @@
       "desc": "10초마다 막고 있는 적 1기를 2타일 밀어냄",
       "effects": [
         {
-          "type": "text"
+          "type": "timerSkill",
+          "every": 10,
+          "action": "pushHeld",
+          "tiles": 2,
+          "count": 1,
+          "name": "뒷발 강타"
         }
       ]
     },
@@ -236,7 +261,10 @@
       "desc": "웨이브 시작 10초간 모든 아군 공격 간격 -20%",
       "effects": [
         {
-          "type": "text"
+          "type": "waveStartBuff",
+          "stat": "interval",
+          "percent": -20,
+          "dur": 10
         }
       ]
     },
@@ -245,7 +273,10 @@
       "desc": "20초마다 쓰러진 아군 1마리의 남은 재등장 시간을 절반으로",
       "effects": [
         {
-          "type": "text"
+          "type": "timerSkill",
+          "every": 20,
+          "action": "halveRespawn",
+          "name": "새벽 네 시"
         }
       ]
     },
@@ -291,7 +322,9 @@
       "desc": "같은 적을 때릴수록 피해 +10%씩 (최대 +50%)",
       "effects": [
         {
-          "type": "text"
+          "type": "sameTargetStack",
+          "per": 10,
+          "max": 50
         }
       ]
     },
@@ -334,7 +367,8 @@
       "desc": "저지를 시작할 때 대상에게 25 피해",
       "effects": [
         {
-          "type": "text"
+          "type": "holdBurst",
+          "amount": 25
         }
       ]
     },
@@ -343,7 +377,12 @@
       "desc": "20초마다 길 위의 일반 적 전부에게 40 피해",
       "effects": [
         {
-          "type": "text"
+          "type": "timerSkill",
+          "every": 20,
+          "action": "damageAll",
+          "amount": 40,
+          "normalOnly": true,
+          "name": "떼 지어 달리기"
         }
       ]
     },
@@ -385,7 +424,9 @@
       "desc": "늑대가 때린 적은 3초간 받는 피해 +15%",
       "effects": [
         {
-          "type": "text"
+          "type": "mark",
+          "percent": 15,
+          "dur": 3
         }
       ]
     },
@@ -394,7 +435,13 @@
       "desc": "15초마다 4초간 모든 아군 공격 간격 -20%",
       "effects": [
         {
-          "type": "text"
+          "type": "timerSkill",
+          "every": 15,
+          "action": "allyBuff",
+          "stat": "interval",
+          "percent": -20,
+          "dur": 4,
+          "name": "하울링"
         }
       ]
     },
@@ -495,7 +542,12 @@
       "desc": "12초마다 막고 있는 적 전부를 2타일 밀어냄",
       "effects": [
         {
-          "type": "text"
+          "type": "timerSkill",
+          "every": 12,
+          "action": "pushHeld",
+          "tiles": 2,
+          "count": 99,
+          "name": "뿔 자랑"
         }
       ]
     },
@@ -537,7 +589,15 @@
       "desc": "체력이 50% 아래면 8초간 막기 수 +2, 받는 피해 -30% (쿨타임 20초)",
       "effects": [
         {
-          "type": "text"
+          "type": "hpTrigger",
+          "below": 50,
+          "dur": 8,
+          "cooldown": 20,
+          "mods": {
+            "block": 2,
+            "taken": -30
+          },
+          "name": "몸 부풀리기"
         }
       ]
     },
@@ -546,7 +606,12 @@
       "desc": "12초마다 반경 2의 적을 1.5초 기절",
       "effects": [
         {
-          "type": "text"
+          "type": "timerSkill",
+          "every": 12,
+          "action": "stunRadius",
+          "radius": 2,
+          "dur": 1.5,
+          "name": "방석 착지"
         }
       ]
     },
@@ -588,7 +653,13 @@
       "desc": "노래가 3타일까지 닿고 스킬 쿨타임도 -10%",
       "effects": [
         {
-          "type": "text"
+          "type": "hasteRadiusSet",
+          "radius": 3
+        },
+        {
+          "type": "songCd",
+          "percent": -10,
+          "radius": 3
         }
       ]
     },
@@ -597,7 +668,13 @@
       "desc": "15초마다 5초간 모든 아군 피해 +20%",
       "effects": [
         {
-          "type": "text"
+          "type": "timerSkill",
+          "every": 15,
+          "action": "allyBuff",
+          "stat": "dmg",
+          "percent": 20,
+          "dur": 5,
+          "name": "전국 투어"
         }
       ]
     },

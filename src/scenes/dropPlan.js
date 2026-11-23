@@ -1,4 +1,4 @@
-import { PATH_Y, PATH_H, BENCH_Y, SLOT, xToTile, benchSlotX } from './layout.js';
+import { PATH_Y, PATH_H, BENCH_Y, SLOT, xToTile, benchSlotX, laneAt, SKY_TOP, SKY_BOTTOM } from './layout.js';
 import { mergeKind, mergePreview } from '../logic/merge.js';
 import { sellPrice } from '../logic/economy.js';
 
@@ -60,9 +60,11 @@ export function planDrop(state, data, uid, x, y, ctx) {
     const price = sellPrice(from, data.config);
     return { action: 'sell', ref: fromRef, price, name: from.stats.name, confirm: from.kind === 'chimera' || from.stage === 'spirit' };
   }
-  if (onPath(y)) {
+  const flyer = !!from.stats?.flyer;
+  if (flyer ? y >= SKY_TOP && y <= SKY_BOTTOM : onPath(y)) {
     const pos = xToTile(x);
-    return fromRef.where === 'bench' ? { action: 'deploy', index: fromRef.index, pos } : { action: 'move', uid, pos };
+    const opts = flyer ? { skyY: Math.round(y) } : { lane: laneAt(y) };
+    return fromRef.where === 'bench' ? { action: 'deploy', index: fromRef.index, pos, opts } : { action: 'move', uid, pos, opts };
   }
   if (fromRef.where === 'field' && benchSlotAt(x, y, state.bench.length) >= 0) return { action: 'recall', uid };
   return { action: 'none' };

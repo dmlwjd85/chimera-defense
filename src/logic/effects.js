@@ -27,7 +27,7 @@ export function tickEnemyTimers(state, dt) {
     }
     if (p?.type === 'shield') {
       e.patternCd -= dt;
-      if (e.patternCd <= 0) { e.patternCd = p.every; e.shieldLeft = p.duration; e.shieldHits = 0; }
+      if (e.patternCd <= 0) { e.patternCd = p.every; e.shieldLeft = p.duration; e.shieldHits = 0; state.events?.push({ type: 'shieldUp', eid: e.eid }); }
     }
   }
 }

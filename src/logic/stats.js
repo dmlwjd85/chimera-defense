@@ -58,7 +58,7 @@ function baseStats(inst, data) {
     interval: sp.interval, range: sp.range, aoeRadius: sp.aoeRadius, block: sp.block, respawn: sp.respawn,
     effects: [...scaleEffects(sp.baseSkill, m), ...(adult ? copyAll(sp.adultSkill.effects) : []), ...(spirit ? copyAll(sp.spiritSkill.effects) : [])],
     skills: [sp.baseSkillDesc, ...(adult ? [skillLine(sp.adultSkill)] : []), ...(spirit ? [skillLine(sp.spiritSkill)] : [])],
-    continents: [sp.continent], habitats: [sp.habitat], color: sp.color, image: sp.image ?? null, role: sp.role,
+    continents: [sp.continent], habitats: [sp.habitat], color: sp.color, image: sp.image ?? null, role: sp.role, flyer: !!sp.flyer,
   };
 }
 
@@ -74,7 +74,7 @@ function chimeraStats(inst, data) {
     interval: r.interval, range: r.range, aoeRadius: r.aoeRadius,
     block: r.block ?? Math.max(a.block, b.block), respawn: Math.max(a.respawn, b.respawn),
     effects: scaleEffects(r.effects, m), skills: [r.desc],
-    continents: uniq([a.continent, b.continent]), habitats: uniq([a.habitat, b.habitat]), color: r.color, image: r.image ?? null, role: r.role,
+    continents: uniq([a.continent, b.continent]), habitats: uniq([a.habitat, b.habitat]), color: r.color, image: r.image ?? null, role: r.role, flyer: !!r.flyer,
   };
 }
 

@@ -7,3 +7,10 @@ export function tileToX(pos) { return X0 + pos * TILE; }
 export function xToTile(x) { return (x - X0) / TILE; }
 /** Screen x of a bench slot centre. */
 export function benchSlotX(i) { return BENCH_X0 + i * BENCH_GAP; }
+
+/** Container y for each ground lane (0 top, 1 middle, 2 bottom); the unit's feet sit ~30px lower. */
+export const LANE_Y = [PATH_Y - 38, PATH_Y - 10, PATH_Y + 18];
+/** Flyers can hover anywhere between these screen heights. */
+export const SKY_TOP = 130, SKY_BOTTOM = PATH_Y + 40;
+/** Nearest lane for a screen y. */
+export function laneAt(y) { const t = (y - (PATH_Y - PATH_H / 2)) / (PATH_H / 3); return Math.max(0, Math.min(2, Math.floor(t))); }

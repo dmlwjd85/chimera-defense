@@ -101,9 +101,30 @@ export function summon(state, data, opts = {}) {
   return { ok: true, unit, roll, cost };
 }
 
-/** True when pos keeps minSpacing from every other field unit. */
-export function isFree(state, pos, ignoreUid, config) {
-  return state.field.every((u) => u.uid === ignoreUid || Math.abs(u.targetPos - pos) >= config.minSpacing);
+const isFlyer = (u) => !!u?.stats?.flyer;
+
+/** Lanes (rows) already taken by ground units standing within minSpacing of pos. */
+export function lanesUsed(state, pos, ignoreUid, config) {
+  return state.field.filter((u) => u.uid !== ignoreUid && !isFlyer(u) && Math.abs(u.targetPos - pos) < config.minSpacing).map((u) => u.lane ?? 0);
+}
+
+/** A ground spot is free while fewer than config.lanes (3) animals share the column. Flyers can go anywhere. */
+export function isFree(state, pos, ignoreUid, config, unit = null) {
+  if (isFlyer(unit)) return true;
+  return lanesUsed(state, pos, ignoreUid, config).length < (config.lanes ?? 1);
+}
+
+/** Free lane nearest to the preferred one (0 top, 1 middle, 2 bottom). */
+export function pickLane(state, pos, ignoreUid, config, pref = 1) {
+  const used = new Set(lanesUsed(state, pos, ignoreUid, config));
+  const n = config.lanes ?? 1;
+  const order = [...Array(n).keys()].sort((a, b) => Math.abs(a - pref) - Math.abs(b - pref));
+  return order.find((l) => !used.has(l)) ?? 0;
+}
+
+function place(state, cfg, unit, p, opts) {
+  if (isFlyer(unit)) { unit.lane = null; if (opts.skyY !== undefined) unit.skyY = opts.skyY; else unit.skyY ??= 200; }
+  else unit.lane = pickLane(state, p, unit.uid, cfg, opts.lane ?? unit.lane ?? 1);
 }
 
 /** Keep a position half a tile inside the path. */
@@ -112,13 +133,14 @@ export function clampPos(pos, config) {
 }
 
 /** Move a bench unit onto the path. */
-export function deploy(state, data, benchIndex, pos) {
+export function deploy(state, data, benchIndex, pos, opts = {}) {
   const cfg = data.config;
   const unit = state.bench[benchIndex];
   if (!unit) return fail('empty');
   if (state.field.length >= cfg.maxDeployed) return fail('fieldFull');
   const p = clampPos(pos, cfg);
-  if (!isFree(state, p, null, cfg)) return fail('occupied');
+  if (!isFree(state, p, null, cfg, unit)) return fail('occupied');
+  place(state, cfg, unit, p, opts);
   state.bench[benchIndex] = null;
   Object.assign(unit, { pos: p, targetPos: p, moving: false });
   state.field.push(unit);
@@ -126,12 +148,13 @@ export function deploy(state, data, benchIndex, pos) {
 }
 
 /** Send a field unit walking to a new spot. */
-export function moveUnit(state, data, uid, pos) {
+export function moveUnit(state, data, uid, pos, opts = {}) {
   const unit = findUnit(state, { where: 'field', uid });
   if (!unit) return fail('notFound');
   if (unit.down) return fail('down');
   const p = clampPos(pos, data.config);
-  if (!isFree(state, p, uid, data.config)) return fail('occupied');
+  if (!isFree(state, p, uid, data.config, unit)) return fail('occupied');
+  place(state, data.config, unit, p, opts);
   unit.targetPos = p;
   if (state.phase === 'prep') unit.pos = p; // nothing fights during prep, so the unit is placed at once
   return { ok: true };
@@ -166,10 +189,11 @@ function swapUnits(state, fromRef, toRef, from, to) {
     [state.bench[fromRef.index], state.bench[toRef.index]] = [to, from];
   } else if (fromRef.where === 'field' && toRef.where === 'field') {
     [from.pos, to.pos, from.targetPos, to.targetPos] = [to.pos, from.pos, to.targetPos, from.targetPos];
+    [from.lane, to.lane, from.skyY, to.skyY] = [to.lane, from.lane, to.skyY, from.skyY];
   } else {
     const [benchRef, benchUnit, fieldUnit] = fromRef.where === 'bench' ? [fromRef, from, to] : [toRef, to, from];
     removeUnit(state, { where: 'field', uid: fieldUnit.uid });
-    Object.assign(benchUnit, { pos: fieldUnit.pos, targetPos: fieldUnit.targetPos, moving: false });
+    Object.assign(benchUnit, { pos: fieldUnit.pos, targetPos: fieldUnit.targetPos, moving: false, lane: fieldUnit.lane ?? 1, skyY: fieldUnit.skyY ?? 200 });
     fieldUnit.moving = false;
     state.bench[benchRef.index] = fieldUnit;
     state.field.push(benchUnit);
@@ -193,7 +217,7 @@ export function merge(state, data, fromRef, toRef) {
   if (kind === 'evolve' || kind === 'spirit') inst.white = !!to.white;
   const unit = makeUnit(state, data, inst);
   const onField = toRef.where === 'field';
-  if (onField) Object.assign(unit, { pos: to.pos, targetPos: to.targetPos });
+  if (onField) Object.assign(unit, { pos: to.pos, targetPos: to.targetPos, lane: unit.stats.flyer ? null : (to.lane ?? 1), skyY: to.skyY ?? 200 });
   removeUnit(state, fromRef);
   removeUnit(state, toRef);
   if (onField) state.field.push(unit);

@@ -21,8 +21,8 @@ test('bench to path deploys, field to path moves, field to bench recalls', () =>
   const f = base(s, 'bear', 'young');
   Object.assign(f, { pos: 3, targetPos: 3 });
   s.field.push(f);
-  assert.deepEqual(plan(s, s.bench[0].uid, tileToX(6), PATH_Y), { action: 'deploy', index: 0, pos: 6 });
-  assert.deepEqual(plan(s, f.uid, tileToX(8), PATH_Y + 40), { action: 'move', uid: f.uid, pos: 8 });
+  assert.deepEqual(plan(s, s.bench[0].uid, tileToX(6), PATH_Y), { action: 'deploy', index: 0, pos: 6, opts: { lane: 1 } });
+  assert.deepEqual(plan(s, f.uid, tileToX(8), PATH_Y + 40), { action: 'move', uid: f.uid, pos: 8, opts: { lane: 2 } });
   assert.deepEqual(plan(s, f.uid, benchSlotX(3), BENCH_Y), { action: 'recall', uid: f.uid });
   assert.equal(plan(s, f.uid, 640, 480).action, 'none');
   assert.deepEqual(refOf(s, f.uid), { where: 'field', uid: f.uid });

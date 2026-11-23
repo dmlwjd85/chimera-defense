@@ -27,7 +27,8 @@
     "source": "이솝 우화",
     "color": "#c27c3a",
     "image": null,
-    "codex": "노래를 부르다 치즈를 떨어뜨린 적이 있다. 이번에는 입을 다물고 있다."
+    "codex": "노래를 부르다 치즈를 떨어뜨린 적이 있다. 이번에는 입을 다물고 있다.",
+    "flyer": true
   },
   {
     "id": "bear_tiger",
@@ -59,7 +60,8 @@
     "source": "단군 신화",
     "color": "#a0522d",
     "image": null,
-    "codex": "쑥과 마늘만 먹었다."
+    "codex": "쑥과 마늘만 먹었다.",
+    "flyer": false
   },
   {
     "id": "wolf_in_sheep",
@@ -91,7 +93,8 @@
     "source": "이솝 우화",
     "color": "#7f8c8d",
     "image": null,
-    "codex": "양털이 조금 작다."
+    "codex": "양털이 조금 작다.",
+    "flyer": false
   },
   {
     "id": "bullfrog",
@@ -123,7 +126,8 @@
     "source": "이솝 우화",
     "color": "#556b2f",
     "image": null,
-    "codex": "배를 부풀리다 멈췄다. 이번에는."
+    "codex": "배를 부풀리다 멈췄다. 이번에는.",
+    "flyer": false
   },
   {
     "id": "jackalope",
@@ -159,7 +163,8 @@
     "source": "미국 민담",
     "color": "#d2b48c",
     "image": null,
-    "codex": "모닥불 앞에서 카우보이 노래를 따라 부른다."
+    "codex": "모닥불 앞에서 카우보이 노래를 따라 부른다.",
+    "flyer": false
   },
   {
     "id": "thunderbird",
@@ -189,7 +194,8 @@
     "source": "북미 원주민 전설",
     "color": "#2e86c1",
     "image": null,
-    "codex": "북미 원주민 전설에서 날갯짓으로 천둥을 일으키는 큰 새."
+    "codex": "북미 원주민 전설에서 날갯짓으로 천둥을 일으키는 큰 새.",
+    "flyer": true
   },
   {
     "id": "phoenix",
@@ -218,6 +224,7 @@
     "source": "동아시아 신화",
     "color": "#c0392b",
     "image": null,
-    "codex": "오동나무가 아니면 앉지 않는다. 길 위에는 오동나무가 없다."
+    "codex": "오동나무가 아니면 앉지 않는다. 길 위에는 오동나무가 없다.",
+    "flyer": true
   }
 ]

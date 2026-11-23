@@ -105,14 +105,14 @@
    "x": -30,
    "y": 40,
    "rot": 90,
-   "length": 105
+   "length": 82
   },
   {
    "name": "leg_fr_lo",
    "parent": "leg_fr_up",
-   "x": 105,
+   "x": 82,
    "y": 0,
-   "length": 118,
+   "length": 92,
    "foot": true
   },
   {
@@ -121,14 +121,14 @@
    "x": 15,
    "y": 40,
    "rot": 90,
-   "length": 105
+   "length": 82
   },
   {
    "name": "leg_fn_lo",
    "parent": "leg_fn_up",
-   "x": 105,
+   "x": 82,
    "y": 0,
-   "length": 118,
+   "length": 92,
    "foot": true
   },
   {
@@ -137,14 +137,14 @@
    "x": -20,
    "y": 45,
    "rot": 90,
-   "length": 105
+   "length": 82
   },
   {
    "name": "leg_br_lo",
    "parent": "leg_br_up",
-   "x": 105,
+   "x": 82,
    "y": 0,
-   "length": 118,
+   "length": 92,
    "foot": true
   },
   {
@@ -153,14 +153,14 @@
    "x": 15,
    "y": 45,
    "rot": 90,
-   "length": 105
+   "length": 82
   },
   {
    "name": "leg_bn_lo",
    "parent": "leg_bn_up",
-   "x": 105,
+   "x": 82,
    "y": 0,
-   "length": 118,
+   "length": 92,
    "foot": true
   },
   {
@@ -182,53 +182,53 @@
   {
    "name": "leg_fr_lo",
    "bone": "leg_fr_lo",
-   "x": 59,
+   "x": 46,
    "y": 0,
    "z": 0,
    "color": "fur",
    "ph": {
     "shape": "ellipse",
-    "w": 152,
-    "h": 34
+    "w": 124,
+    "h": 38
    }
   },
   {
    "name": "leg_fr_up",
    "bone": "leg_fr_up",
-   "x": 52,
+   "x": 41,
    "y": 0,
    "z": 1,
    "color": "fur",
    "ph": {
     "shape": "ellipse",
-    "w": 151,
-    "h": 46
+    "w": 128,
+    "h": 50
    }
   },
   {
    "name": "leg_br_lo",
    "bone": "leg_br_lo",
-   "x": 59,
+   "x": 46,
    "y": 0,
    "z": 0,
    "color": "fur",
    "ph": {
     "shape": "ellipse",
-    "w": 152,
-    "h": 34
+    "w": 124,
+    "h": 38
    }
   },
   {
    "name": "leg_br_up",
    "bone": "leg_br_up",
-   "x": 52,
+   "x": 41,
    "y": 0,
    "z": 1,
    "color": "fur",
    "ph": {
     "shape": "ellipse",
-    "w": 163,
-    "h": 58
+    "w": 140,
+    "h": 62
    }
   },
   {
@@ -317,53 +317,53 @@
   {
    "name": "leg_bn_up",
    "bone": "leg_bn_up",
-   "x": 52,
+   "x": 41,
    "y": 0,
    "z": 7,
    "color": "fur",
    "ph": {
     "shape": "ellipse",
-    "w": 167,
-    "h": 62
+    "w": 144,
+    "h": 66
    }
   },
   {
    "name": "leg_bn_lo",
    "bone": "leg_bn_lo",
-   "x": 59,
+   "x": 46,
    "y": 0,
    "z": 7,
    "color": "fur",
    "ph": {
     "shape": "ellipse",
-    "w": 156,
-    "h": 38
+    "w": 128,
+    "h": 42
    }
   },
   {
    "name": "leg_fn_up",
    "bone": "leg_fn_up",
-   "x": 52,
+   "x": 41,
    "y": 0,
    "z": 8,
    "color": "fur",
    "ph": {
     "shape": "ellipse",
-    "w": 155,
-    "h": 50
+    "w": 132,
+    "h": 54
    }
   },
   {
    "name": "leg_fn_lo",
    "bone": "leg_fn_lo",
-   "x": 59,
+   "x": 46,
    "y": 0,
    "z": 8,
    "color": "fur",
    "ph": {
     "shape": "ellipse",
-    "w": 156,
-    "h": 38
+    "w": 128,
+    "h": 42
    }
   },
   {

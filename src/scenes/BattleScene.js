@@ -9,9 +9,10 @@ import { isResting } from '../logic/combat.js';
 import { makeEnemy } from '../logic/waves.js';
 import { unitRig, enemyRig } from './rigs.js';
 import { FX, ambient } from './fx.js';
+import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
 import { button, panel, style, unitToken, silhouette, hex, COLORS } from './ui.js';
 
-import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX } from './layout.js';
+import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX, LANE_Y } from './layout.js';
 export { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX };
 export const ZONE_COLORS = { village: 0x9c8a6b, field: 0x7fb069, forest: 0x3d6b45, plains: 0xc2b280, mountain: 0x8d8d8d, wetland: 0x4f7c6b };
 const ZONE_NAME = { village: '마을', field: '들판', forest: '숲', plains: '대평원', mountain: '산', wetland: '습지' };
@@ -60,6 +61,9 @@ export default class BattleScene extends Phaser.Scene {
       actions: { summon, deploy, moveUnit, recall, sell, merge, skipPrep, buyBait, toggleLock },
       spawn: (id, pos = 9) => { const st = this.state; const e = makeEnemy(id, st.wave, st.stage, this.data2, st.nextEid++); e.pos = pos; st.enemies.push(e); return e; } };
     attachInput(this);
+    this.input.on('pointerdown', unlockAudio);
+    this.input.keyboard.on('keydown', unlockAudio);
+    this.stanceFx = new Map();
   }
 
   // ---------- static layout ----------
@@ -99,8 +103,9 @@ export default class BattleScene extends Phaser.Scene {
     this.bondText = this.add.text(24, 418, '', style(13, '#ff9fbf', { wordWrap: { width: 840 } }));
     this.skipBtn = button(this, 790, 30, 120, 40, '바로 시작', () => this.doSkip());
     this.speedBtn = button(this, 920, 30, 100, 40, '', () => { this.speed = this.speed === 1 ? 2 : 1; });
-    this.pauseBtn = button(this, 1035, 30, 100, 40, '', () => { this.paused = !this.paused; });
-    button(this, 1160, 30, 110, 40, '나가기', () => this.confirmLeave(), { fill: 0x5c1f1f, size: 14 });
+    this.pauseBtn = button(this, 1030, 30, 100, 40, '', () => { this.paused = !this.paused; });
+    button(this, 1175, 30, 90, 40, '나가기', () => this.confirmLeave(), { fill: 0x5c1f1f, size: 14 });
+    this.muteBtn = button(this, 1150, 78, 140, 30, isMuted() ? '🔇 소리 꺼짐' : '🔊 소리 켜짐', () => { setMuted(!isMuted()); unlockAudio(); this.muteBtn.set(isMuted() ? '🔇 소리 꺼짐' : '🔊 소리 켜짐'); sfx('click'); }, { size: 12, fill: 0x2b3f55 });
   }
 
   drawBench() {
@@ -206,6 +211,7 @@ export default class BattleScene extends Phaser.Scene {
     this.tweens.add({ targets: tok, scale: { from: 0.3, to: 1 }, duration: 250, ease: 'Back.out' });
     const traits = u.traits.map((t) => { const v = traitView(t, data); return `${v.tone === 'str' ? '＋' : '－'}${v.name}`; }).join('  ');
     this.globeText.setText(`${u.white ? '✨ 흰 ' : ''}${u.stats.name} (${(r.roll.chances[r.roll.unitId] * 100).toFixed(1)}%)\n${traits}`);
+    sfx('reveal'); if (u.white) this.fx.burst('rise', 1170, 462, 16, 0xffffff);
     this.globeText.setColor(u.traits.every((t) => t.kind === 'str') ? '#7CFC9A' : u.traits.every((t) => t.kind === 'weak') ? '#ffb27a' : '#ddeeff');
   }
 
@@ -318,6 +324,7 @@ export default class BattleScene extends Phaser.Scene {
     this.syncUnits();
     this.syncEnemies();
     this.drawBonds();
+    this.persistentFx();
     this.drainEvents();
     this.updateHud();
     this.updateTutorial();
@@ -328,7 +335,7 @@ export default class BattleScene extends Phaser.Scene {
   finish() {
     this.leaving = true;
     const s = this.state;
-    if (s.result === 'clear') { this.fx.confetti(); this.fx.banner('스테이지 클리어!', '#7CFC9A'); }
+    if (s.result === 'clear') { this.fx.confetti(); this.fx.banner('스테이지 클리어!', '#7CFC9A'); sfx('clear'); } else sfx('lose');
     const report = settleRun(this.save, s, this.data2);
     if (this.tutorialStep >= 0) this.save.tutorialDone = true;
     writeSave(this.registry.get('storage'), this.save);
@@ -351,7 +358,8 @@ export default class BattleScene extends Phaser.Scene {
     c.add([glow, foot, tok, name, barBg, bar, downText, icon].filter(Boolean));
     c.unitUid = unit.uid;
     c.setSize(64, 80).setInteractive({ draggable: true, useHandCursor: true });
-    const v = { container: c, tok, rig, bar, barBg, downText, name, icon, foot, lastHp: unit.hp, wasDown: unit.down, key: `${unit.kind}:${unit.speciesId}:${unit.stage}` };
+    const shadow = unit.stats.flyer ? this.add.ellipse(0, 0, 54, 14, 0x000000, 0.3).setDepth(45).setVisible(false) : null;
+    const v = { container: c, tok, rig, shadow, bar, barBg, downText, name, icon, foot, lastHp: unit.hp, wasDown: unit.down, key: `${unit.kind}:${unit.speciesId}:${unit.stage}` };
     if (rig && this.state.time > 0) {
       const born = this.pendingBirth?.get(unit.uid);
       if (born) rig.inst.play(born);
@@ -367,8 +375,9 @@ export default class BattleScene extends Phaser.Scene {
     const busy = ['attack', 'skill', 'hit', 'merge_in', 'evolve', 'respawn'].includes(m) && !r.inst.finished;
     if (this.state.result === 'clear') { if (m !== 'victory') r.inst.play('victory', { loop: true }); }
     else if (u.down) { if (m !== 'down') r.inst.play('down'); }
-    else if (v.wasDown) { r.inst.play('respawn'); this.fx.respawn(v.container.x, v.container.y); }
+    else if (v.wasDown) { r.inst.play('respawn'); this.fx.respawn(v.container.x, v.container.y); sfx('respawn'); }
     else if (onField && u.moving) { if (m !== 'move') r.inst.play('move', { loop: true }); r.inst.moveVelocity = Math.sign(u.targetPos - u.pos) * 180; }
+    else if (!busy && onField && u.stats.flyer) { if (m !== 'move') r.inst.play('move', { loop: true }); }
     else if (!busy && m !== 'idle') r.inst.play('idle', { loop: true });
     if (!u.moving) r.inst.moveVelocity = 0;
     r.inst.setFacing(onField && u.moving && u.targetPos < u.pos ? -1 : 1);
@@ -380,7 +389,7 @@ export default class BattleScene extends Phaser.Scene {
   syncUnits() {
     const s = this.state;
     const live = [
-      ...s.field.map((u) => [u, tileToX(u.pos), PATH_Y + (u.stats.range >= 3 ? 22 : -8), true]),
+      ...s.field.map((u) => [u, tileToX(u.pos) + (u.stats.flyer ? 0 : [-16, 0, 16][u.lane ?? 1]), u.stats.flyer ? (u.skyY ?? 200) - 30 : LANE_Y[u.lane ?? 1], true]),
       ...s.bench.map((u, i) => (u ? [u, benchSlotX(i), BENCH_Y, false] : null)).filter(Boolean),
     ];
     const seen = new Set();
@@ -388,8 +397,14 @@ export default class BattleScene extends Phaser.Scene {
       seen.add(u.uid);
       let v = this.unitViews.get(u.uid);
       if (!v) this.unitViews.set(u.uid, (v = this.makeUnitView(u)));
-      if (this.dragUid !== u.uid) v.container.setPosition(x, y);
-      v.container.setDepth(onField ? 50 + y : 60);
+      if (this.dragUid !== u.uid) {
+        if (onField && u.stats.flyer) {
+          v.skyCur ??= y; v.skyCur += (y - v.skyCur) * Math.min(1, this.frameDt * 4 || 0.1);
+          v.container.setPosition(x, v.skyCur + Math.sin(this.time.now / 380 + u.uid) * 6);
+        } else v.container.setPosition(x, y);
+      }
+      v.container.setDepth(onField ? (u.stats.flyer ? 900 + y : 50 + y) : 60);
+      if (v.shadow) { v.shadow.setVisible(onField && u.stats.flyer && !u.down); v.shadow.setPosition(x, LANE_Y[1] + 34); }
       const max = u.maxHp ?? u.stats.hp;
       v.bar.width = 50 * Math.max(0, u.hp) / max;
       v.bar.setFillStyle(u.hp / max < 0.3 ? 0xe74c3c : 0x2ecc71);
@@ -402,7 +417,29 @@ export default class BattleScene extends Phaser.Scene {
       v.foot.setVisible(onField && terrainMatch(u, s, this.data2.config));
       if (!v.rig) { if (onField && !u.down && !u.moving && this.lastAttack?.get(u.uid) > time() - 120) v.tok.setScale(1.12); else v.tok.setScale(1); }
     }
-    for (const [uid, v] of this.unitViews) if (!seen.has(uid)) { v.rig?.view.destroy(); v.container.destroy(); this.unitViews.delete(uid); }
+    for (const [uid, v] of this.unitViews) if (!seen.has(uid)) { v.rig?.view.destroy(); v.shadow?.destroy(); v.container.destroy(); this.unitViews.delete(uid); }
+  }
+
+  /** Effects that last while a state lasts: stance bubbles, all-ally buffs, singing/leader auras, boss charge dust. */
+  persistentFx() {
+    const s = this.state, now = this.time.now;
+    for (const u of s.field) {
+      const v = this.unitViews.get(u.uid);
+      if (!v) continue;
+      const stance = (u.temp ?? []).length > 0 && !u.down;
+      let b = this.stanceFx.get(u.uid);
+      if (stance && !b) { b = this.fx.bubbleShield(v.container.x, v.container.y); if (b) this.stanceFx.set(u.uid, b); }
+      if (b) { if (!stance) { b.destroy(); this.stanceFx.delete(u.uid); } else b.setPosition(v.container.x, v.container.y); }
+      if (u.down || (v.auraAt ?? 0) > now) continue;
+      v.auraAt = now + 1400 + (u.uid % 5) * 90;
+      const types = u.stats.effects.map((e) => e.type);
+      if (types.includes('haste')) this.fx.burst('note', v.container.x, v.container.y - 40, 2, 0xfff6a0);
+      if (types.includes('aura')) this.fx.ring(v.container.x, v.container.y + 24, 0xff7043, 0.9, 600);
+      if (s.allyBuffs?.length) this.fx.burst('rise', v.container.x, v.container.y + 10, 2, s.allyBuffs[0].stat === 'dmg' ? 0xff8a65 : 0xffe066);
+      if (u.hundredDone) this.fx.burst('rise', v.container.x, v.container.y, 2, 0xffd84d);
+    }
+    for (const [uid, b] of this.stanceFx) if (!s.field.some((u) => u.uid === uid)) { b.destroy(); this.stanceFx.delete(uid); }
+    for (const e of s.enemies) if (e.chargeLeft > 0 && Math.random() < 0.3) { const v = this.enemyViews.get(e.eid); if (v) this.fx.burst('puff', v.lastX + 20, v.lastY + 20, 1, 0xc9a26a); }
   }
 
   drawBonds() {
@@ -500,40 +537,54 @@ export default class BattleScene extends Phaser.Scene {
     this.lastAttack ??= new Map();
     for (const ev of this.state.events) {
       switch (ev.type) {
-        case 'kill': { const v = this.goneViews?.get(ev.eid); if (v) { if (ev.gold) this.floatText(v.lastX, v.lastY - 10, `+${ev.gold}`, '#ffd84d'); this.fx.kill(v.lastX, v.lastY, ev.gold, ev.boss); } if (ev.boss) { this.cameras.main.flash(300, 255, 255, 255); this.fx.banner(`${data.enemyById[ev.id].name} 처치!`, '#ffd84d'); } break; }
-        case 'leak': this.floatText(tileToX(0) + 30, PATH_Y - 40, `-${ev.leak}`, '#ff5252', 22); this.fx.leak(tileToX(0), PATH_Y); this.cameras.main.shake(100, 0.005); break;
+        case 'kill': { const v = this.goneViews?.get(ev.eid); if (v) { if (ev.gold) this.floatText(v.lastX, v.lastY - 10, `+${ev.gold}`, '#ffd84d'); this.fx.kill(v.lastX, v.lastY, ev.gold, ev.boss); } sfx(ev.boss ? 'bigKill' : 'kill'); if (ev.gold) sfx('coin'); if (ev.boss) { this.cameras.main.flash(300, 255, 255, 255); this.fx.banner(`${data.enemyById[ev.id].name} 처치!`, '#ffd84d'); } break; }
+        case 'leak': this.floatText(tileToX(0) + 30, PATH_Y - 40, `-${ev.leak}`, '#ff5252', 22); this.fx.leak(tileToX(0), PATH_Y); this.cameras.main.shake(100, 0.005); sfx('leak'); break;
         case 'attack': {
           this.lastAttack.set(ev.uid, time());
           const u = this.state.field.find((x) => x.uid === ev.uid);
           const ve = this.enemyViews.get(ev.eid) ?? this.goneViews?.get(ev.eid);
           if (!u || !ve) break;
           const [ux, uy] = unitPos(ev.uid);
-          if (u.stats.range >= 3) this.fx.projectile(u.speciesId, ux, uy, ve.lastX, ve.lastY, ev.aoe);
-          else { this.fx.slash(ve.lastX, ve.lastY, ev.aoe ? 0xffe066 : 0xffffff); this.fx.hit(ve.lastX, ve.lastY, ev.aoe ? 'gold' : 'white', ev.aoe); if (ev.aoe) this.fx.ring(ve.lastX, ve.lastY + 10, 'gold', 1); }
+          if (u.stats.range >= 3) { this.fx.projectile(u.speciesId, ux, uy, ve.lastX, ve.lastY, ev.aoe); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); }
+          else { this.fx.slash(ve.lastX, ve.lastY, ev.aoe ? 0xffe066 : 0xffffff); this.fx.hit(ve.lastX, ve.lastY, ev.aoe ? 'gold' : 'white', ev.aoe); if (ev.aoe) this.fx.ring(ve.lastX, ve.lastY + 10, 'gold', 1); sfx('slash'); sfx('hit'); }
+          this.fx.onHitFlavor(u.stats.effects, ve.lastX, ve.lastY);
           break;
         }
-        case 'skill': if (ev.name) { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 50, ev.name, '#e8c3ff', 15); this.fx.skill(x, y, 'purple'); } break;
-        case 'hold': { const [x, y] = unitPos(ev.uid); this.fx.ring(x + 30, y + 10, 'white', 0.8, 300); break; }
+        case 'skill': {
+          const at = unitPos(ev.uid);
+          const targets = (ev.eids ?? []).map((id) => this.enemyViews.get(id)).filter(Boolean).map((v) => [v.lastX, v.lastY]);
+          const u = this.state.field.find((x) => x.uid === ev.uid);
+          const extra = { color: u?.speciesId === 'wolf' ? 0xff7043 : 0xffd84d, allies: this.state.field.filter((o) => !o.down).map((o) => unitPos(o.uid)), allyAt: ev.ally != null ? unitPos(ev.ally) : null };
+          this.fx.skillFx(ev.fx, at, targets, extra);
+          if (ev.name && ev.fx !== 'roosterFlee') this.floatText(at[0], at[1] - 55, ev.name, '#e8c3ff', 15);
+          sfx(ev.fx === 'allyBuff' ? (u?.speciesId === 'wolf' ? 'howl' : 'note') : SKILL_SFX[ev.fx] ?? 'magic');
+          break;
+        }
+        case 'hold': { const targets = (ev.eids ?? []).map((id) => this.enemyViews.get(id)).filter(Boolean).map((v) => [v.lastX, v.lastY]); this.fx.skillFx('hold', unitPos(ev.uid), targets, { burst: ev.burst }); sfx(ev.burst ? 'slam' : 'hold'); break; }
+        case 'counter': { const v = this.enemyViews.get(ev.eid); if (v) this.fx.skillFx('counter', unitPos(ev.uid), [[v.lastX, v.lastY]]); sfx('slash'); break; }
+        case 'shieldUp': { const v = this.enemyViews.get(ev.eid); if (v) this.fx.ring(v.lastX, v.lastY, 'purple', 1.4); sfx('shield'); break; }
+        case 'splash': { const v = this.enemyViews.get(ev.eid); if (v) { this.fx.burst('orb', v.lastX, v.lastY, 1); this.fx.hit(v.lastX, v.lastY, 'green'); this.floatText(v.lastX, v.lastY - 30, '배 떨어짐!', '#c5e1a5', 12); } break; }
+        case 'bait': sfx('bait'); break;
         case 'knock': { const ve = this.enemyViews.get(ev.eid); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY + 10, 4, 0xd9c49a); this.fx.hit(ve.lastX, ve.lastY, 'orange'); } break; }
-        case 'heal': { const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.heal(ve.lastX, ve.lastY); break; }
-        case 'down': { const [x, y] = unitPos(ev.uid); this.fx.down(x, y); break; }
-        case 'dodge': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 30, '회피', '#7fd1ff', 13); this.fx.burst('leaf', x, y, 3, 0x7fd1ff); break; }
-        case 'survive': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 50, '간을 두고 왔다!', '#ffb3c6', 16); this.fx.evolve(x, y, false); break; }
-        case 'summon': this.time.delayedCall(this.save.settings.fastRoulette ? 700 : 1950, () => { const [x, y] = unitPos(ev.uid); this.fx.burst('rise', x, y, 12, 0xfff6a0); this.fx.ring(x, y + 20, 'gold', 0.8); }); break;
+        case 'heal': { const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.heal(ve.lastX, ve.lastY); sfx('heal'); break; }
+        case 'down': { const [x, y] = unitPos(ev.uid); this.fx.down(x, y); sfx('down'); break; }
+        case 'dodge': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 30, '회피', '#7fd1ff', 13); this.fx.burst('leaf', x, y, 3, 0x7fd1ff); sfx('dodge'); break; }
+        case 'survive': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 50, '간을 두고 왔다!', '#ffb3c6', 16); this.fx.evolve(x, y, false); sfx('evolve'); break; }
+        case 'summon': sfx('summon'); this.time.delayedCall(this.save.settings.fastRoulette ? 700 : 1950, () => { const [x, y] = unitPos(ev.uid); this.fx.burst('rise', x, y, 12, 0xfff6a0); this.fx.ring(x, y + 20, 'gold', 0.8); }); break;
         case 'gold': this.floatText(...unitPos(ev.uid), `+${ev.gold}`, '#ffd84d'); break;
         case 'bondNew': {
           const b = data.lore.bonds.find((x) => x.id === ev.id);
           const pair = (this.state.view?.bonds ?? []).find((x) => x.bond.id === ev.id);
-          if (pair) { const [a, c] = Object.values(pair.units).map((u) => unitPos(u.uid)); if (b.kind === 'clash') { this.fx.clash(...a); this.fx.clash(...c); } else this.fx.hearts(...a, ...c); }
+          if (pair) { const [a, c] = Object.values(pair.units).map((u) => unitPos(u.uid)); if (b.kind === 'clash') { this.fx.clash(...a); this.fx.clash(...c); } else this.fx.hearts(...a, ...c); } sfx(b.kind === 'clash' ? 'clash' : 'bond');
           this.toast(`${b.kind === 'clash' ? '⚡ 상극' : '♥ 인연'} 발견: ${b.name} — ${b.desc}`, b.kind === 'clash' ? '#f0883e' : '#ff9fbf'); break; }
-        case 'shieldBreak': { this.toast('보호막이 깨졌다!', '#d2b4ff'); const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.shieldBreak(ve.lastX, ve.lastY); break; }
-        case 'bossSummon': { this.floatText(640, PATH_Y - 110, '박쥐왕이 졸개를 불렀다', '#aab7b8'); const ve = this.enemyViews.get(ev.eid); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY, 10, 0x6c5a8a); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.5); } break; }
+        case 'shieldBreak': { this.toast('보호막이 깨졌다!', '#d2b4ff'); const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.shieldBreak(ve.lastX, ve.lastY); sfx('shatter'); break; }
+        case 'bossSummon': { this.floatText(640, PATH_Y - 110, '박쥐왕이 졸개를 불렀다', '#aab7b8'); const ve = this.enemyViews.get(ev.eid); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY, 10, 0x6c5a8a); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.5); } sfx('bossSummon'); break; }
         case 'merge': {
           const [mx, my] = unitPos(ev.uid);
-          if (ev.kind === 'weak') { this.toast('합성 실패… 적들이 멈춰서 구경한다', '#cccccc'); this.fx.weak(mx, my); }
-          if (ev.kind === 'chimera') { this.cameras.main.flash(250, 180, 120, 255); this.fx.chimera(mx, my); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '키메라'} 탄생!`, '#d7bde2', '키메라 합성 성공'); }
-          if (ev.kind === 'evolve') this.fx.evolve(mx, my, false);
-          if (ev.kind === 'spirit') { this.fx.evolve(mx, my, true); this.cameras.main.flash(300, 255, 230, 140); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '영물'}`, '#ffd84d', '영물 각성'); }
+          if (ev.kind === 'weak') { this.toast('합성 실패… 적들이 멈춰서 구경한다', '#cccccc'); this.fx.weak(mx, my); sfx('weak'); }
+          if (ev.kind === 'chimera') { this.cameras.main.flash(250, 180, 120, 255); sfx('chimera'); this.fx.chimera(mx, my); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '키메라'} 탄생!`, '#d7bde2', '키메라 합성 성공'); }
+          if (ev.kind === 'evolve') { this.fx.evolve(mx, my, false); sfx('evolve'); }
+          if (ev.kind === 'spirit') { sfx('spirit'); this.fx.evolve(mx, my, true); this.cameras.main.flash(300, 255, 230, 140); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '영물'}`, '#ffd84d', '영물 각성'); }
           if (this.tutorialStep === 2 && (ev.kind === 'evolve' || ev.kind === 'spirit')) this.tutorialStep = 3;
           if (this.tutorialStep === 3 && (ev.kind === 'chimera' || ev.kind === 'weak')) this.endTutorial();
           break;
@@ -542,6 +593,7 @@ export default class BattleScene extends Phaser.Scene {
           const w = this.state.stage.waves[ev.wave - 1];
           const boss = (w?.extra ?? []).map((id) => data.enemyById[id]).find((e) => e && e.boss && e.id !== 'miniboss');
           const mini = (w?.extra ?? []).includes('miniboss');
+          sfx(boss ? 'boss' : 'wave');
           if (boss) { this.fx.banner(`보스 등장 · ${boss.name}`, '#ff6b6b', boss.desc); this.cameras.main.shake(400, 0.006); }
           else if (mini) this.fx.banner(`웨이브 ${ev.wave} · 덤불멧돼지`, '#ffb27a', '미니보스가 온다');
           else this.fx.banner(`웨이브 ${ev.wave}`, '#ffffff', Object.keys(w?.mix ?? {}).map((id) => data.enemyById[id].name).join(' · '));
@@ -591,3 +643,5 @@ export default class BattleScene extends Phaser.Scene {
 }
 
 const time = () => performance.now();
+const SHOT_SFX = { crow: 'shoot', eagle: 'slash', fox: 'magic', rooster: 'note', grasshopper: 'note', frog: 'magic', cheese_thief: 'magic', thunderbird: 'bolt', phoenix: 'fire', bullfrog: 'magic' };
+const SKILL_SFX = { damageHeld: 'slash', flee: 'roar', pushHeld: 'slam', damageAll: 'stampede', stunRadius: 'slam', halveRespawn: 'crow', stance: 'stance', charm: 'charm', tongue: 'tongue', hundred: 'hundred', crowCall: 'crow', roosterFlee: 'crow' };

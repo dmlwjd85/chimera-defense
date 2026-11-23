@@ -123,7 +123,7 @@ export function hitUnit(state, data, u, amount, attacker = null) {
   const evade = effectsOf(u, 'evade').reduce((s, e) => s + e.percent, 0) + (u.mods?.dodge ?? 0);
   if (evade > 0 && state.rng() < Math.min(75, evade) / 100) {
     state.events.push({ type: 'dodge', uid: u.uid });
-    if (attacker && findEffect(u, 'counter') && !u.down) damageEnemy(state, attacker, effDamage(u), false, u.uid);
+    if (attacker && findEffect(u, 'counter') && !u.down) { damageEnemy(state, attacker, effDamage(u), false, u.uid); state.events.push({ type: 'counter', uid: u.uid, eid: attacker.eid }); }
     return;
   }
   if (f.ignoreFirstHits && (u.ignoredHits ?? 0) < f.ignoreFirstHits) { u.ignoredHits = (u.ignoredHits ?? 0) + 1; return; }
@@ -145,18 +145,19 @@ export function hitUnit(state, data, u, amount, attacker = null) {
 function timerAction(state, data, u, s) {
   const cfg = data.config;
   const near = (r) => state.enemies.filter((e) => e.hp > 0 && Math.abs(e.pos - u.pos) <= r);
+  const hit = (hs) => { s.lastEids = hs.map((e) => e.eid); return hs.length > 0; };
   switch (s.action) {
-    case 'damageHeld': { const hs = state.enemies.filter((e) => e.blockedBy === u.uid); hs.forEach((e) => damageEnemy(state, e, s.amount, true, u.uid)); return hs.length > 0; }
-    case 'flee': { const hs = near(s.radius).filter((e) => !e.boss && !e.flying); hs.forEach((e) => Object.assign(e, { confuseLeft: Math.max(e.confuseLeft, s.dur), blockedBy: null })); return hs.length > 0; }
+    case 'damageHeld': { const hs = state.enemies.filter((e) => e.blockedBy === u.uid); hs.forEach((e) => damageEnemy(state, e, s.amount, true, u.uid)); return hit(hs); }
+    case 'flee': { const hs = near(s.radius).filter((e) => !e.boss && !e.flying); hs.forEach((e) => Object.assign(e, { confuseLeft: Math.max(e.confuseLeft, s.dur), blockedBy: null })); return hit(hs); }
     case 'pushHeld': {
       const hs = state.enemies.filter((e) => e.blockedBy === u.uid && !e.boss).slice(0, s.count ?? 99);
       for (const e of hs) { e.pos = Math.min(cfg.pathLength, e.pos + s.tiles); e.blockedBy = null; }
-      return hs.length > 0;
+      return hit(hs);
     }
-    case 'damageAll': { const hs = state.enemies.filter((e) => e.hp > 0 && !(s.normalOnly && e.boss)); hs.forEach((e) => damageEnemy(state, e, s.amount, true, u.uid)); return hs.length > 0; }
-    case 'stunRadius': { const hs = near(s.radius); hs.forEach((e) => { e.stunLeft = Math.max(e.stunLeft, s.dur * (e.boss ? 0.5 : 1)); }); return hs.length > 0; }
-    case 'allyBuff': state.allyBuffs.push({ stat: s.stat, percent: s.percent, left: s.dur, src: u.uid }); return true;
-    case 'halveRespawn': { const d = state.field.find((o) => o.down && o.respawnLeft > 1); if (d) d.respawnLeft /= 2; return !!d; }
+    case 'damageAll': { const hs = state.enemies.filter((e) => e.hp > 0 && !(s.normalOnly && e.boss)); hs.forEach((e) => damageEnemy(state, e, s.amount, true, u.uid)); return hit(hs); }
+    case 'stunRadius': { const hs = near(s.radius); hs.forEach((e) => { e.stunLeft = Math.max(e.stunLeft, s.dur * (e.boss ? 0.5 : 1)); }); return hit(hs); }
+    case 'allyBuff': state.allyBuffs.push({ stat: s.stat, percent: s.percent, left: s.dur, src: u.uid }); s.lastEids = []; return true;
+    case 'halveRespawn': { const d = state.field.find((o) => o.down && o.respawnLeft > 1); if (d) d.respawnLeft /= 2; s.lastEids = []; s.lastAlly = d?.uid; return !!d; }
     default: return false;
   }
 }
@@ -172,7 +173,7 @@ export function tickUnitSkills(state, data, dt) {
       if ((u.skillCd[key] ?? 0) <= 0 && u.hp < (u.maxHp ?? u.stats.hp) * h.below / 100) {
         u.temp.push({ left: h.dur, mods: h.mods, regen: h.regenPct ?? 0, name: h.name });
         u.skillCd[key] = h.cooldown * cdMult(u);
-        state.events.push({ type: 'skill', uid: u.uid, name: h.name });
+        state.events.push({ type: 'skill', uid: u.uid, name: h.name, fx: 'stance' });
       }
     }
     if (u.moving || isResting(u)) continue;
@@ -194,7 +195,7 @@ export function tickUnitSkills(state, data, dt) {
           if (burstDmg > 0) damageEnemy(state, e, burstDmg, true, u.uid);
         }
         u.skillCd.hold = hold.cooldown * cm;
-        state.events.push({ type: 'hold', uid: u.uid });
+        state.events.push({ type: 'hold', uid: u.uid, eids: held.map((e) => e.eid), burst: burstDmg > 0 });
       }
     }
 
@@ -204,7 +205,7 @@ export function tickUnitSkills(state, data, dt) {
       const picks = state.enemies.filter((e) => !e.boss && e.confuseLeft === 0 && e.hp > 0 && Math.abs(e.pos - u.pos) <= range)
         .sort((a, b) => a.pos - b.pos).slice(0, confuse.targets);
       for (const e of picks) Object.assign(e, { confuseLeft: confuse.duration, blockedBy: null });
-      if (picks.length) { u.skillCd.confuse = confuse.cooldown * cm; state.events.push({ type: 'skill', uid: u.uid, name: '홀리기' }); }
+      if (picks.length) { u.skillCd.confuse = confuse.cooldown * cm; state.events.push({ type: 'skill', uid: u.uid, name: '홀리기', fx: 'charm', eids: picks.map((e) => e.eid) }); }
     }
 
     const pull = findEffect(u, 'pull');
@@ -217,7 +218,7 @@ export function tickUnitSkills(state, data, dt) {
         Object.assign(target, { pos: u.pos + cfg.blockedOffset, blockedBy: u.uid });
         if (pull.stun) target.stunLeft = Math.max(target.stunLeft, pull.stun);
         u.skillCd.pull = (pull.cooldown + (u.mods?.pullCdAdd ?? 0)) * cm;
-        state.events.push({ type: 'skill', uid: u.uid, name: '혀 낚시' });
+        state.events.push({ type: 'skill', uid: u.uid, name: '혀 낚시', fx: 'tongue', eids: [target.eid] });
       }
     }
 
@@ -227,7 +228,7 @@ export function tickUnitSkills(state, data, dt) {
       if (!ready(key)) continue;
       const used = timerAction(state, data, u, s);
       u.skillCd[key] = used ? s.every * cm : 0.5;
-      if (used) state.events.push({ type: 'skill', uid: u.uid, name: s.name ?? '' });
+      if (used) state.events.push({ type: 'skill', uid: u.uid, name: s.name ?? '', fx: s.action, eids: s.lastEids ?? [], ally: s.lastAlly });
     }
   }
 }
@@ -236,7 +237,7 @@ export function tickUnitSkills(state, data, dt) {
 export function onWaveStart(state, data) {
   for (const u of state.field) {
     u.ignoredHits = 0; u.heldThisWave = false; u.waveStartPos = u.pos;
-    for (const s of effectsOf(u, 'waveStartBuff')) state.allyBuffs.push({ stat: s.stat, percent: s.percent, left: s.dur, src: u.uid });
+    for (const s of effectsOf(u, 'waveStartBuff')) { state.allyBuffs.push({ stat: s.stat, percent: s.percent, left: s.dur, src: u.uid }); state.events.push({ type: 'skill', uid: u.uid, name: '꼬끼오', fx: 'crowCall' }); }
   }
   for (const u of state.bench) if (u) { u.ignoredHits = 0; u.heldThisWave = false; }
 }
@@ -270,6 +271,7 @@ export function combatTick(state, data, dt) {
     for (const e of state.enemies) {
       if (e.boss || e.flying || e.fled || Math.abs(e.pos - u.pos) > f.radius) continue;
       Object.assign(e, { fled: true, confuseLeft: Math.max(e.confuseLeft, f.dur), blockedBy: null });
+      state.events.push({ type: 'skill', uid: u.uid, name: '닭이 울면', fx: 'roosterFlee', eids: [e.eid] });
     }
   }
 
@@ -285,7 +287,7 @@ export function combatTick(state, data, dt) {
     if (!u.down) {
       u.aliveTime = (u.aliveTime ?? 0) + (state.phase === 'wave' ? dt : 0);
       const hd = findEffect(u, 'hundredDays');
-      if (hd && !u.hundredDone && u.aliveTime >= hd.seconds) { u.hundredDone = true; state.events.push({ type: 'skill', uid: u.uid, name: '백일 수행' }); }
+      if (hd && !u.hundredDone && u.aliveTime >= hd.seconds) { u.hundredDone = true; state.events.push({ type: 'skill', uid: u.uid, name: '백일 수행', fx: 'hundred' }); }
     }
   }
   for (const b of state.allyBuffs) b.left -= dt;
@@ -354,7 +356,7 @@ export function combatTick(state, data, dt) {
     const b = byUid.get(e.blockedBy);
     state.events.push({ type: 'enemyAttack', eid: e.eid });
     hitUnit(state, data, b, e.attack, e);
-    if (e.boss) for (const o of state.field) if (o !== b && !o.down && Math.abs(o.pos - b.pos) <= 1) hitUnit(state, data, o, e.attack, e);
+    if (e.boss) for (const o of state.field) if (o !== b && !o.down && !o.stats.flyer && Math.abs(o.pos - b.pos) <= 1) hitUnit(state, data, o, e.attack, e);
   }
 
   // unit attacks
@@ -379,7 +381,7 @@ export function combatTick(state, data, dt) {
       if (other) { damageEnemy(state, other, hitDamage(state, u, other), false, u.uid); state.events.push({ type: 'splash', uid: u.uid, eid: other.eid }); }
     }
     applyOnHit(state, u, hits, target, cfg);
-    state.events.push({ type: 'attack', uid: u.uid, eid: target.eid, aoe: aoe > 0 });
+    state.events.push({ type: 'attack', uid: u.uid, eid: target.eid, aoe: aoe > 0, eids: hits.map((e) => e.eid) });
   }
 
   tickUnitSkills(state, data, dt);

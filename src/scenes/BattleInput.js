@@ -1,4 +1,4 @@
-import { PATH_Y, PATH_H, tileToX, xToTile } from './layout.js';
+import { PATH_Y, PATH_H, tileToX, xToTile, laneAt, SKY_TOP, SKY_BOTTOM } from './layout.js';
 import { deploy, moveUnit, recall, sell, merge } from '../logic/battle.js';
 import { confirmBox, showRange, hideRange, highlightRing } from './widgets.js';
 import { inheritEvolve, inheritSpirit, inheritChimera, inheritWeak, traitView } from '../logic/traits.js';
@@ -49,7 +49,8 @@ export function attachInput(scene) {
   scene.input.on('pointerdown', (pointer, objs) => {
     if (scene.modalOpen || objs.length > 0) return;
     const u = scene.selectedUid == null ? null : st().field.find((f) => f.uid === scene.selectedUid);
-    if (u && onPath(pointer.y)) { say(moveUnit(st(), data, u.uid, xToTile(pointer.x))); return; }
+    if (u && u.stats.flyer && pointer.y >= SKY_TOP && pointer.y <= SKY_BOTTOM && pointer.x < 1000) { say(moveUnit(st(), data, u.uid, xToTile(pointer.x), { skyY: Math.round(pointer.y) })); return; }
+    if (u && onPath(pointer.y)) { say(moveUnit(st(), data, u.uid, xToTile(pointer.x), { lane: laneAt(pointer.y) })); return; }
     deselect();
   });
 
@@ -114,8 +115,8 @@ export function attachInput(scene) {
         else doSell();
         break;
       }
-      case 'deploy': say(deploy(s, data, plan.index, plan.pos)); break;
-      case 'move': say(moveUnit(s, data, plan.uid, plan.pos)); break;
+      case 'deploy': say(deploy(s, data, plan.index, plan.pos, plan.opts)); break;
+      case 'move': say(moveUnit(s, data, plan.uid, plan.pos, plan.opts)); break;
       case 'recall': say(recall(s, data, plan.uid)); break;
       default: break;
     }

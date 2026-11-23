@@ -66,15 +66,15 @@ def quad_template():
          b('ear_n', 'head', 5, -60, rot=-80, length=75), b('eye', 'head', 48, -14), b('horn', 'head', -5, -40),
          b('tail_1', 'hips', -45, -15, rot=195, length=75), b('tail_2', 'tail_1', 75, 0, rot=-12, length=75),
          b('tail_3', 'tail_2', 75, 0, rot=-14, length=70)]
-    B += legs('chest', 'hips', 40, 45)
+    B += legs('chest', 'hips', 40, 45, up=82, lo=92)
     B += [b('wing', 'chest', -40, -10, rot=200, length=90), b('deco', 'chest', 20, 10)]
-    S = [slot('leg_fr_lo', 'leg_fr_lo', 59, 0, 0, 152, 34), slot('leg_fr_up', 'leg_fr_up', 52, 0, 1, 151, 46),
-         slot('leg_br_lo', 'leg_br_lo', 59, 0, 0, 152, 34), slot('leg_br_up', 'leg_br_up', 52, 0, 1, 163, 58),
+    S = [slot('leg_fr_lo', 'leg_fr_lo', 46, 0, 0, 124, 38), slot('leg_fr_up', 'leg_fr_up', 41, 0, 1, 128, 50),
+         slot('leg_br_lo', 'leg_br_lo', 46, 0, 0, 124, 38), slot('leg_br_up', 'leg_br_up', 41, 0, 1, 140, 62),
          {'name': 'tail', 'bone': 'tail_1', 'z': 2, 'color': 'fur', 'rope': ['tail_1', 'tail_2', 'tail_3'], 'ropeSegments': 5, 'ph': {'shape': 'tail', 'w': 220, 'h': 90}},
          slot('ear_r', 'ear_r', 35, 0, 3, 80, 48), slot('wing', 'wing', 45, 0, 3.5, 120, 70, part=None),
          slot('body', 'hips', 105, -5, 4, 300, 165), slot('belly', 'hips', 120, 35, 5, 210, 70), slot('chest_fluff', 'chest', 15, 10, 6, 120, 140),
-         slot('leg_bn_up', 'leg_bn_up', 52, 0, 7, 167, 62), slot('leg_bn_lo', 'leg_bn_lo', 59, 0, 7, 156, 38),
-         slot('leg_fn_up', 'leg_fn_up', 52, 0, 8, 155, 50), slot('leg_fn_lo', 'leg_fn_lo', 59, 0, 8, 156, 38),
+         slot('leg_bn_up', 'leg_bn_up', 41, 0, 7, 144, 66), slot('leg_bn_lo', 'leg_bn_lo', 46, 0, 7, 128, 42),
+         slot('leg_fn_up', 'leg_fn_up', 41, 0, 8, 132, 54), slot('leg_fn_lo', 'leg_fn_lo', 46, 0, 8, 128, 42),
          slot('neck', 'neck', 35, 0, 9, 95, 85), slot('jaw', 'jaw', 28, 0, 10, 70, 30), slot('head', 'head', 30, -5, 11, 150, 120),
          slot('horn', 'horn', 0, 0, 11.5, 120, 80, part=None), slot('muzzle', 'head', 85, 15, 12, 85, 48, rot=10), slot('nose', 'head', 125, 10, 13, 22, 18),
          slot('ear_n', 'ear_n', 38, 0, 12, 85, 52), slot('eye', 'eye', 0, 0, 14, 34, 40), slot('deco', 'deco', 0, 0, 15, 10, 10, part=None)]
@@ -171,12 +171,36 @@ def bug_template():
         if s['name'] == 'deco': s.pop('part', None); s['ph'] = {'shape': 'ellipse', 'w': 120, 'h': 110}
     return T
 
+# ------------------------------------------------------------------ shading helpers (cel shade + rim light + fur)
+_cid = [0]
+def cel(shape, c, w, h, fill='url(#g)', light=True, sw=6):
+    """shape: an SVG element string WITHOUT fill/stroke (e.g. '<ellipse cx=.. />'). Adds cel shadow, highlight and outline."""
+    _cid[0] += 1; cid = f'c{_cid[0]}'
+    base = shape.replace('/>', f' fill="{fill}"/>')
+    out = f'<clipPath id="{cid}">{shape}</clipPath>' + base
+    out += f'<g clip-path="url(#{cid})"><ellipse cx="{w*0.12}" cy="{h*0.38}" rx="{w*0.62}" ry="{h*0.42}" fill="{shade(c,0.7)}" opacity="0.55"/>'
+    if light: out += f'<ellipse cx="{-w*0.18}" cy="{-h*0.26}" rx="{w*0.26}" ry="{h*0.16}" fill="#ffffff" opacity="0.32"/>'
+    out += '</g>' + shape.replace('/>', f' fill="none" {st(sw)}/>')
+    return out
+
+def fur(w, h, c, n=7, seed=1):
+    import random as _r
+    r = _r.Random(seed); out = ''
+    for _ in range(n):
+        x, y = r.uniform(-w*0.38, w*0.3), r.uniform(-h*0.38, h*0.1)
+        out += f'<path d="M{x:.1f} {y:.1f} q{4:.1f} {6:.1f} {1:.1f} {12:.1f}" fill="none" stroke="{shade(c,0.72)}" stroke-width="3" stroke-linecap="round" opacity="0.8"/>'
+    return out
+
+FURRY = {'fox', 'wolf', 'bear', 'rabbit', 'bison', 'bighorn', 'cheese_thief', 'wolf_in_sheep', 'bear_tiger', 'jackalope', 'tiger'}
+
 # ------------------------------------------------------------------ slot painters (local frame, centred)
 def eye_art(w, h, iris='#3a2414', angry=False, lash=False):
     r = h / 2
     out = f'<ellipse cx="0" cy="0" rx="{w/2-2}" ry="{h/2-2}" fill="#fff" {st(5)}/>'
     out += f'<ellipse cx="{w*0.08}" cy="{h*0.05}" rx="{w*0.32}" ry="{h*0.36}" fill="{iris}"/><ellipse cx="{w*0.12}" cy="{h*0.1}" rx="{w*0.17}" ry="{h*0.2}" fill="#111"/>'
+    out += f'<ellipse cx="{w*0.08}" cy="{h*0.2}" rx="{w*0.22}" ry="{h*0.1}" fill="#ffffff" opacity="0.25"/>'
     out += f'<circle cx="{-w*0.08}" cy="{-h*0.14}" r="{w*0.13}" fill="#fff"/><circle cx="{w*0.2}" cy="{h*0.22}" r="{w*0.06}" fill="#fff"/>'
+    out += f'<path d="M{-w*0.42} {-h*0.3} Q0 {-h*0.62} {w*0.44} {-h*0.34}" fill="none" stroke="{INK}" stroke-width="{max(3,w*0.09)}" stroke-linecap="round"/>'
     if angry: out += f'<path d="M{-w/2} {-h/2-2} L{w/2} {-h/2+8}" {st(7)} fill="none"/>'
     if lash: out += f'<path d="M{w*0.3} {-h*0.42} l10 -8" {st(4)}/>'
     return out
@@ -186,8 +210,11 @@ def capsule(w, h, c, end=None, taper=1.0):
     r0, r1 = h / 2, h / 2 * taper
     x0, x1 = -w / 2 + r0, w / 2 - r1
     d = f'M{x0} {-r0} L{x1} {-r1} A{r1} {r1} 0 0 1 {x1} {r1} L{x0} {r0} A{r0} {r0} 0 0 1 {x0} {-r0} Z'
-    out = f'<path d="{d}" fill="url(#g)" {st()}/>'
-    if end: out += f'<ellipse cx="{w/2-r1*0.9}" cy="0" rx="{r1*0.95}" ry="{r1*1.15}" fill="{end}" {st(5)}/>'
+    out = cel(f'<path d="{d}"/>', c, w, h)
+    if end:
+        px = w / 2 - r1 * 0.9
+        out += f'<ellipse cx="{px}" cy="0" rx="{r1*0.95}" ry="{r1*1.15}" fill="{end}" {st(5)}/>'
+        out += f'<path d="M{px+r1*0.2} {-r1*0.45} l{r1*0.55} 0 M{px+r1*0.25} {r1*0.4} l{r1*0.5} 0" stroke="{shade(end,0.6)}" stroke-width="3" stroke-linecap="round"/>'
     return out, grad(c, vertical=False)
 
 def paint_quad(sp, s, w, h):
@@ -202,7 +229,8 @@ def paint_quad(sp, s, w, h):
         if sp.get('sock') and lo: body += f'<ellipse cx="{w*0.25}" cy="0" rx="{w*0.22}" ry="{h*0.45}" fill="{sp["sock"]}" opacity="0.9"/>'
         return body, g
     if n == 'body':
-        out = f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/>'
+        out = cel(f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}"/>', c, w, h)
+        if sp.get('id') in FURRY: out += fur(w, h, c, 9, len(sp.get('id', '')))
         if sp.get('hump'): out += f'<path d="M{-w*0.05} {-h*0.3} C {w*0.05} {-h*0.75} {w*0.4} {-h*0.7} {w*0.42} {-h*0.2} Z" fill="{sp["hump"]}" {st()}/>'
         for i in range(4 if sp.get('stripes') else 0):
             x = -w * 0.3 + i * w * 0.17
@@ -216,9 +244,13 @@ def paint_quad(sp, s, w, h):
         pts = ' '.join(f'{(w/2-4)*math.cos(a/12*math.pi*2):.1f},{(h/2-4)*math.sin(a/12*math.pi*2)*(1 if a%2 else 0.86):.1f}' for a in range(12))
         return f'<polygon points="{pts}" fill="{sp.get("fluff", belly)}" {st(5)}/>', ''
     if n == 'neck':
-        return f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/>' + (f'<path d="M{-w*0.45} {-h*0.2} C {-w*0.6} {-h*0.9} {w*0.2} {-h*0.9} {w*0.35} {-h*0.4}" fill="none" stroke="{sp["mane"]}" stroke-width="26" stroke-linecap="round"/>' if sp.get('mane') else ''), grad(c)
+        return cel(f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}"/>', c, w, h, light=False) + (f'<path d="M{-w*0.45} {-h*0.2} C {-w*0.6} {-h*0.9} {w*0.2} {-h*0.9} {w*0.35} {-h*0.4}" fill="none" stroke="{sp["mane"]}" stroke-width="26" stroke-linecap="round"/>' if sp.get('mane') else ''), grad(c)
     if n == 'head':
-        out = f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/>'
+        out = ''
+        if sp.get('id') in FURRY and sp.get('ears') != 'long':
+            out += f'<path d="M{-w*0.42} {h*0.05} L{-w*0.56} {h*0.22} L{-w*0.4} {h*0.2} L{-w*0.5} {h*0.36} L{-w*0.28} {h*0.3} Z" fill="{shade(c,0.9)}" {st(5)}/>'
+        out += cel(f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}"/>', c, w, h)
+        out += f'<path d="M{w*0.02} {-h*0.34} q{w*0.08} {-h*0.06} {w*0.16} {-h*0.01}" fill="none" stroke="{shade(c,0.55)}" stroke-width="4" stroke-linecap="round"/>'
         if sp.get('faceMask'): out += f'<path d="M{w*0.05} {h*0.02} C {w*0.3} {-h*0.1} {w*0.5} {h*0.05} {w*0.48} {h*0.2} C {w*0.3} {h*0.48} {w*0.0} {h*0.45} {w*0.05} {h*0.02} Z" fill="{belly}"/>'
         for i in range(3 if sp.get('stripes') else 0):
             x = -w * 0.15 + i * w * 0.14
@@ -264,6 +296,7 @@ def paint_quad(sp, s, w, h):
             pts_bot = ' '.join(f'L{x:.1f} {(h/2-6)*math.sin(math.pi*min(1, 0.22 + (x+w/2)/w*0.85))+4:.1f}' for x in [(w/2 - i * w / 20) for i in range(21)])
             d = f'M{-w/2} 0 {pts_top} {pts_bot} Z'
             out = f'<path d="{d}" fill="url(#g)" {st()}/>'
+            out += ''.join(f'<path d="M{x:.0f} {-h*0.18:.0f} q8 6 18 2" fill="none" stroke="{shade(c,0.7)}" stroke-width="3" opacity="0.7"/>' for x in (-w*0.25, -w*0.05, w*0.15))
             if tip: out += f'<clipPath id="tc"><path d="{d}"/></clipPath><rect x="{w*0.25}" y="{-h/2}" width="{w*0.3}" height="{h}" fill="{tip}" clip-path="url(#tc)"/><path d="{d}" fill="none" {st()}/>'
             return out, grad(c)
         if kind == 'thin':
@@ -301,7 +334,8 @@ def paint_bird(sp, s, w, h):
         if lo: out += f'<path d="M{w/2-8} 0 l14 -16 M{w/2-8} 0 l18 0 M{w/2-8} 0 l14 16" stroke="{INK}" stroke-width="9" stroke-linecap="round"/><path d="M{w/2-8} 0 l14 -16 M{w/2-8} 0 l18 0 M{w/2-8} 0 l14 16" stroke="#f2b134" stroke-width="4" stroke-linecap="round"/>'
         return out, ''
     if s == 'body':
-        return f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/>' + sp.get('bodyArt', ''), grad(c)
+        sc = ''.join(f'<path d="M{x:.0f} {y:.0f} q8 10 16 0" fill="none" stroke="{shade(c,0.75)}" stroke-width="3" stroke-linecap="round" opacity="0.8"/>' for x in (-w*0.2, 0, w*0.2, -w*0.1, w*0.1) for y in ((-h*0.15,) if x in (-w*0.2, 0, w*0.2) else (h*0.05,)))
+        return cel(f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}"/>', c, w, h) + sc + sp.get('bodyArt', ''), grad(c)
     if s == 'belly':
         return f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="{sp.get("belly", shade(c,1.25))}" opacity="0.9"/>', ''
     if s == 'wing':
@@ -311,7 +345,7 @@ def paint_bird(sp, s, w, h):
         return out + sp.get('wingArt', ''), ''
     if s == 'head':
         hc = sp.get('headCol', c)
-        out = f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/>'
+        out = cel(f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}"/>', hc, w, h)
         out += f'<g transform="translate({-w*0.02} {-h*0.08}) scale(0.7)">{eye_art(36, 42)}</g>'
         out += f'<ellipse cx="{w*0.12}" cy="{h*0.22}" rx="14" ry="8" fill="#ff7b8a" opacity="0.55"/>'
         if sp.get('crestArt'): out += sp['crestArt']
@@ -357,14 +391,14 @@ def paint_frog(sp, s, w, h):
             return out, ''
         return f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/>', grad(col)
     if s == 'body':
-        out = f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/>'
+        out = cel(f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}"/>', c, w, h)
         out += ''.join(f'<ellipse cx="{x}" cy="{y}" rx="13" ry="9" fill="{shade(c,0.8)}"/>' for x, y in ((-w*0.2, -h*0.25), (-w*0.32, 0), (0, -h*0.33)))
         if sp.get('hump'): out += f'<path d="M{-w*0.3} {-h*0.25} C {-w*0.2} {-h*0.65} {w*0.15} {-h*0.62} {w*0.2} {-h*0.25} Z" fill="{sp["hump"]}" {st()}/>'
         return out, grad(c)
     if s == 'belly':
         return f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="{belly}"/>', ''
     if s == 'head':
-        out = f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/>'
+        out = cel(f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}"/>', c, w, h)
         out += f'<path d="M{-w*0.3} {h*0.18} C {-w*0.05} {h*0.42} {w*0.25} {h*0.4} {w*0.42} {h*0.1}" fill="none" {st(7)}/>'
         out += f'<ellipse cx="{-w*0.2}" cy="{h*0.05}" rx="15" ry="8" fill="#ff7b8a" opacity="0.55"/><ellipse cx="{w*0.3}" cy="{h*0.05}" rx="15" ry="8" fill="#ff7b8a" opacity="0.55"/>'
         out += f'<circle cx="{w*0.4}" cy="{-h*0.1}" r="4" fill="{INK}"/><circle cx="{w*0.44}" cy="{-h*0.14}" r="4" fill="{INK}"/>'
@@ -392,7 +426,7 @@ def paint_bug(sp, s, w, h):
             return f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/><path d="M{-w*0.3} 0 L{w*0.3} 0" stroke="{shade(c,0.7)}" stroke-width="5"/>', grad(c)
         return f'<path d="M{-w/2+4} 0 L{w/2-4} 0" stroke="{INK}" stroke-width="{h}" stroke-linecap="round"/><path d="M{-w/2+4} 0 L{w/2-4} 0" stroke="{col}" stroke-width="{max(3,h-9)}" stroke-linecap="round"/>', ''
     if s == 'body':
-        out = f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/>'
+        out = cel(f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}"/>', c, w, h)
         out += ''.join(f'<path d="M{x} {-h*0.4} q6 {h*0.4} 0 {h*0.8}" fill="none" stroke="{shade(c,0.75)}" stroke-width="5"/>' for x in (-w*0.3, -w*0.15, 0))
         return out, grad(c)
     if s == 'belly':
@@ -400,7 +434,7 @@ def paint_bug(sp, s, w, h):
     if s == 'wing':
         return f'<path d="M{-w/2+4} 0 C {-w*0.2} {-h/2} {w*0.3} {-h/2} {w/2-4} {-h*0.1} C {w*0.3} {h*0.3} {-w*0.2} {h/2-4} {-w/2+4} 0 Z" fill="#cfe9a8" opacity="0.9" {st(5)}/><path d="M{-w*0.4} 0 L{w*0.4} {-h*0.1}" stroke="#9cc27a" stroke-width="4"/>', ''
     if s == 'head':
-        out = f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}" fill="url(#g)" {st()}/>'
+        out = cel(f'<ellipse cx="0" cy="0" rx="{w/2-3}" ry="{h/2-3}"/>', c, w, h)
         out += f'<g transform="translate({-w*0.05} {-h*0.08}) scale(0.75)">{eye_art(40, 48)}</g>'
         out += f'<path d="M{w*0.05} {h*0.28} C {w*0.15} {h*0.38} {w*0.28} {h*0.35} {w*0.33} {h*0.25}" fill="none" {st(5)}/><ellipse cx="{w*0.1}" cy="{h*0.18}" rx="13" ry="7" fill="#ff7b8a" opacity="0.55"/>'
         return out, grad(c)
@@ -420,8 +454,8 @@ def paint_bug(sp, s, w, h):
 PAINT = {'quadruped': paint_quad, 'bird': paint_bird, 'frog': paint_frog, 'bug': paint_bug}
 
 # ------------------------------------------------------------------ skins
-YOUNG = {'head': 1.3, 'eye': 1.2, 'ear_n': 1.1, 'ear_r': 1.1, 'tail_1': 0.85, **{f'leg_{s}_{p}': 0.82 for s in ('fr', 'fn', 'br', 'bn') for p in ('up', 'lo')}}
-TEEN = {'head': 1.12, 'eye': 1.08, 'tail_1': 0.95}
+YOUNG = {'head': 1.6, 'eye': 1.25, 'ear_n': 1.1, 'ear_r': 1.1, 'tail_1': 0.85, **{f'leg_{s}_{p}': 0.82 for s in ('fr', 'fn', 'br', 'bn') for p in ('up', 'lo')}}
+TEEN = {'head': 1.45, 'eye': 1.14, 'tail_1': 0.95}
 
 SKINS = {
  'fox': dict(t='quadruped', c='#e8823a', ears='point', snout='long', tail='fluffy', tailTip='#fff4e6', faceMask=True, sock='#3a2a20', fluff='#fff4e6'),
@@ -454,7 +488,7 @@ SKINS = {
  'phoenix': dict(t='bird', c='#e53935', belly='#ffb74d', comb=True, beak='#ffd54f', hook=True, tailCol='#ff9800', tailCol2='#ffe082', wingCol='#ff7043', crest='#ffd54f'),
  'bullfrog': dict(t='frog', c='#7c8b3a', belly='#e8dfb0', horns=True, hump='#5a6528'),
 }
-STAGE_OF = {'young': ('어린', 0.62, 1.15, 1.2, YOUNG), 'teen': ('성장기', 0.82, 1.05, 1.08, TEEN), 'adult': ('성체', 1.0, 1.0, 1.0, {}), 'spirit': ('영물', 1.12, 1.0, 1.0, {'head': 1.02})}
+STAGE_OF = {'young': ('어린', 0.62, 1.15, 1.2, YOUNG), 'teen': ('성장기', 0.82, 1.05, 1.08, TEEN), 'adult': ('성체', 1.0, 1.0, 1.0, {'head': 1.32, 'eye': 1.08}), 'spirit': ('영물', 1.12, 1.0, 1.0, {'head': 1.34, 'eye': 1.08})}
 
 def main():
     templates = {'quadruped': quad_template(), 'bird': bird_template(), 'frog': frog_template(), 'bug': bug_template()}
@@ -465,6 +499,7 @@ def main():
     images = {k: v for k, v in manifest['images'].items() if not k.startswith('rig-')}
     index = []
     for sid, sp in SKINS.items():
+        sp = {**sp, 'id': sid}
         T = templates[sp['t']]
         over = sp.get('over', {})
         parts = {}

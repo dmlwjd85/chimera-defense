@@ -20,8 +20,16 @@ test('bench and field limits', () => {
   s.gold = 9999;
   for (let i = 0; i < D.config.benchSize; i++) B.summon(s, D);
   assert.equal(B.summon(s, D).reason, 'benchFull');
-  assert.ok(B.deploy(s, D, 0, 3).ok);
-  assert.equal(B.deploy(s, D, 1, 3.2).reason, 'occupied');
+  // three ground animals may share a column in three lanes; the fourth is refused. Flyers go anywhere.
+  const ground = (u) => u && !u.stats.flyer;
+  for (let i = 0; i < s.bench.length; i++) if (s.bench[i] && !ground(s.bench[i])) s.bench[i] = null;
+  const mk = (sp) => B.makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'young', parts: null });
+  s.bench = [mk('bear'), mk('fox'), mk('wolf'), mk('bison'), mk('crow')];
+  assert.ok(B.deploy(s, D, 0, 3).ok && B.deploy(s, D, 1, 3.2).ok && B.deploy(s, D, 2, 3.1).ok);
+  assert.deepEqual(s.field.map((u) => u.lane).sort(), [0, 1, 2]);
+  assert.equal(B.deploy(s, D, 3, 3.2).reason, 'occupied');
+  assert.ok(B.deploy(s, D, 4, 3.0, { skyY: 150 }).ok, 'crow flies over the full column');
+  assert.equal(s.field.find((u) => u.speciesId === 'crow').skyY, 150);
 });
 
 test('merges update bench and discoveries', () => {

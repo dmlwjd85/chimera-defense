@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { button, title, style, panel } from './ui.js';
 import { defaultSave, writeSave } from '../logic/meta.js';
+import { unlockAudio } from './sfx.js';
 
 export default class TitleScene extends Phaser.Scene {
   constructor() { super('Title'); }
@@ -22,7 +23,8 @@ export default class TitleScene extends Phaser.Scene {
       else { this.confirmReset = true; reset.set('한 번 더 누르면 초기화'); }
     }, { size: 13, fill: 0x5c1f1f });
     this.add.text(20, 700, '조작: 스페이스 소환 · 1/2 배속 · P 일시정지', style(13, '#778899')).setOrigin(0, 0.5);
-    this.input.keyboard.once('keydown-SPACE', () => this.scene.start('StageSelect'));
+    this.input.keyboard.once('keydown-SPACE', () => { unlockAudio(); this.scene.start('StageSelect'); });
+    this.input.on('pointerdown', unlockAudio);
   }
 
   drawBackdrop() {

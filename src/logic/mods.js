@@ -203,7 +203,7 @@ export function computeMods(state, data) {
 export const effDamage = (u) => u.stats.damage * Math.max(0.1, 1 + (u.mods?.dmg ?? 0) / 100);
 export const effInterval = (u) => u.stats.interval * Math.max(0.25, 1 + (u.mods?.interval ?? 0) / 100);
 export const effRange = (u) => Math.max(1, u.stats.range + (u.mods?.range ?? 0));
-export const effBlock = (u) => Math.max(0, u.stats.block + (u.mods?.block ?? 0));
+export const effBlock = (u) => (u.stats.flyer ? 0 : Math.max(0, u.stats.block + (u.mods?.block ?? 0)));
 export const effAoe = (u) => {
   const set = u.mods?.flags?.aoeSet;
   const base = set !== undefined && set > u.stats.aoeRadius ? set : u.stats.aoeRadius;

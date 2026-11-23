@@ -67,7 +67,7 @@ export function makeEnemy(enemyId, wave, stage, data, eid, offset = 0) {
 
   const cfg = data.config;
   const s = def.scaleWithWave ? enemyScale(wave, stage, cfg) : (def.stageMultHp ? stage.mult : 1);
-  const hp = Math.round(def.hp * s);
+  const hp = Math.round(def.hp * s * (cfg.difficulty?.enemyHp ?? 1));
 
   return {
     eid: eid,
@@ -75,7 +75,7 @@ export function makeEnemy(enemyId, wave, stage, data, eid, offset = 0) {
     pos: cfg.pathLength + offset,
     hp,
     maxHp: hp,
-    attack: Math.round(def.attack * s * (cfg.tempo?.enemy ?? 1)),
+    attack: Math.round(def.attack * s * (cfg.tempo?.enemy ?? 1) * (cfg.difficulty?.enemyAttack ?? 1)),
     interval: def.interval * (cfg.tempo?.enemy ?? 1),
     speed: def.speed,
     gold: def.gold,

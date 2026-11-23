@@ -1,0 +1,33 @@
+{
+ "rigs": [
+  "fox",
+  "wolf",
+  "bear",
+  "tiger",
+  "rabbit",
+  "bison",
+  "bighorn",
+  "rooster",
+  "crow",
+  "eagle",
+  "frog",
+  "grasshopper",
+  "cheese_thief",
+  "bear_tiger",
+  "wolf_in_sheep",
+  "jackalope",
+  "thunderbird",
+  "phoenix",
+  "bullfrog"
+ ],
+ "templates": [
+  "quadruped",
+  "bird",
+  "frog",
+  "bug"
+ ],
+ "anims": [
+  "quadruped",
+  "sprite"
+ ]
+}

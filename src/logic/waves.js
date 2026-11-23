@@ -99,7 +99,14 @@ export function makeEnemy(enemyId, wave, stage, data, eid, offset = 0) {
     attackCd: 0,
     healCd: def.heal ? def.heal.every : 0,
     chargeLeft: 0,
-    chargeCd: 0
+    chargeCd: 0,
+    patternCd: def.pattern?.every ?? 0,
+    shieldLeft: 0,
+    shieldHits: 0,
+    markPct: 0,
+    markLeft: 0,
+    intervalMult: 1,
+    poisonBy: null
   };
 }
 

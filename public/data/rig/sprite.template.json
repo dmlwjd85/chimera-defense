@@ -1,0 +1,43 @@
+{
+ "id": "sprite",
+ "canvas": 256,
+ "baseline": 0,
+ "notes": "한 장짜리 그림을 움직이는 템플릿. 발이 y=0, 그림 중심 아래. 부위 분리 그림이 오면 quadruped 템플릿으로 옮김.",
+ "bones": [
+  {
+   "name": "root",
+   "x": 0,
+   "y": 0
+  },
+  {
+   "name": "body",
+   "parent": "root",
+   "x": 0,
+   "y": 0,
+   "length": 10,
+   "foot": true
+  }
+ ],
+ "slots": [
+  {
+   "name": "body",
+   "bone": "body",
+   "x": 0,
+   "y": -104,
+   "z": 1
+  }
+ ],
+ "procedural": {
+  "breath": {
+   "slots": [
+    "body"
+   ],
+   "period": 2.6,
+   "scaleY": 0.035
+  },
+  "blink": {
+   "slot": "none"
+  },
+  "springs": []
+ }
+}

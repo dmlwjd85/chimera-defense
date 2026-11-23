@@ -1,608 +1,736 @@
 [
-  {
-    "id": "bear",
-    "name": "곰",
-    "continent": "eurasia",
-    "habitat": "forest",
-    "rarity": "rare",
-    "role": "bruiser",
-    "hp": 240,
-    "block": 3,
-    "damage": 14,
-    "interval": 1.2,
-    "range": 1,
-    "aoeRadius": 0,
-    "respawn": 8,
-    "stageNames": {
-      "young": "어린 곰",
-      "teen": "성장기 곰",
-      "adult": "성체 곰",
-      "spirit": "웅녀"
-    },
-    "baseSkillDesc": "저지 3기 2.5초, 쿨타임 8초",
-    "baseSkill": [
-      {
-        "type": "hold",
-        "count": 3,
-        "duration": 2.5,
-        "cooldown": 8
-      }
-    ],
-    "adultSkill": {
-      "name": "앞발 후려치기",
-      "desc": "6초마다 막고 있는 적 전부에게 20 피해",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "겨울잠 직전",
-      "desc": "체력이 30% 아래면 5초간 받는 피해 -50%, 초당 체력 5% 회복 (쿨타임 30초)",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "color": "#8b5a2b",
-    "image": null,
-    "inDemo": true
+ {
+  "id": "bear",
+  "name": "곰",
+  "continent": "eurasia",
+  "habitat": "forest",
+  "rarity": "rare",
+  "role": "bruiser",
+  "hp": 240,
+  "block": 3,
+  "damage": 14,
+  "interval": 1.2,
+  "range": 1,
+  "aoeRadius": 0,
+  "respawn": 8,
+  "stageNames": {
+   "young": "어린 곰",
+   "teen": "성장기 곰",
+   "adult": "성체 곰",
+   "spirit": "웅녀"
   },
-  {
-    "id": "tiger",
-    "name": "호랑이",
-    "continent": "eurasia",
-    "habitat": "forest",
-    "rarity": "hero",
-    "role": "dealer",
-    "hp": 170,
-    "block": 1,
-    "damage": 46,
-    "interval": 1.0,
-    "range": 1,
-    "aoeRadius": 0,
-    "respawn": 10,
-    "stageNames": {
-      "young": "어린 호랑이",
-      "teen": "성장기 호랑이",
-      "adult": "성체 호랑이",
-      "spirit": "산군"
-    },
-    "baseSkillDesc": "높은 단일 피해",
-    "baseSkill": [],
-    "adultSkill": {
-      "name": "급습",
-      "desc": "체력이 가득한 적에게 첫 타 피해 2배",
-      "effects": [
-        {
-          "type": "bonusVs",
-          "target": "fullHp",
-          "percent": 100
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "어흥",
-      "desc": "12초마다 3타일 안의 일반 적을 2초간 뒤로 달아나게 함",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "color": "#f39c12",
-    "image": null,
-    "inDemo": true
+  "baseSkillDesc": "저지 3기 2.5초, 쿨타임 8초",
+  "baseSkill": [
+   {
+    "type": "hold",
+    "count": 3,
+    "duration": 2.5,
+    "cooldown": 8
+   }
+  ],
+  "adultSkill": {
+   "name": "앞발 후려치기",
+   "desc": "6초마다 막고 있는 적 전부에게 20 피해",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 6,
+     "action": "damageHeld",
+     "amount": 20,
+     "name": "앞발 후려치기"
+    }
+   ]
   },
-  {
-    "id": "fox",
-    "name": "여우",
-    "continent": "eurasia",
-    "habitat": "field",
-    "rarity": "common",
-    "role": "technician",
-    "hp": 55,
-    "block": 1,
-    "damage": 7,
-    "interval": 1.0,
-    "range": 3,
-    "aoeRadius": 0,
-    "respawn": 6,
-    "stageNames": {
-      "young": "어린 여우",
-      "teen": "성장기 여우",
-      "adult": "성체 여우",
-      "spirit": "구미호"
-    },
-    "baseSkillDesc": "중독 초당 6, 3초",
-    "baseSkill": [
-      {
-        "type": "poison",
-        "dps": 6,
-        "duration": 3
-      }
-    ],
-    "adultSkill": {
-      "name": "홀리기",
-      "desc": "10초마다 적 1기를 2초간 뒤로 걷게 함",
-      "effects": [
-        {
-          "type": "confuse",
-          "targets": 1,
-          "duration": 2,
-          "cooldown": 10
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "꼬리 부자",
-      "desc": "홀리기 대상이 3기로 늘어남",
-      "effects": [
-        {
-          "type": "confuseTargets",
-          "targets": 3
-        }
-      ]
-    },
-    "color": "#e8823a",
-    "image": "assets/temp/fox_grok_v1.jpg",
-    "inDemo": true
+  "spiritSkill": {
+   "name": "겨울잠 직전",
+   "desc": "체력이 30% 아래면 5초간 받는 피해 -50%, 초당 체력 5% 회복 (쿨타임 30초)",
+   "effects": [
+    {
+     "type": "hpTrigger",
+     "below": 30,
+     "dur": 5,
+     "cooldown": 30,
+     "mods": {
+      "taken": -50
+     },
+     "regenPct": 5,
+     "name": "겨울잠 직전"
+    }
+   ]
   },
-  {
-    "id": "rabbit",
-    "name": "토끼",
-    "continent": "eurasia",
-    "habitat": "field",
-    "rarity": "common",
-    "role": "technician",
-    "hp": 70,
-    "block": 1,
-    "damage": 4,
-    "interval": 0.5,
-    "range": 1,
-    "aoeRadius": 0,
-    "respawn": 6,
-    "stageNames": {
-      "young": "어린 토끼",
-      "teen": "성장기 토끼",
-      "adult": "성체 토끼",
-      "spirit": "옥토끼"
-    },
-    "nickname": "솜뭉치 토끼, 하체 토끼",
-    "baseSkillDesc": "적중한 적 이동 속도 -20%, 1.5초",
-    "baseSkill": [
-      {
-        "type": "slow",
-        "percent": 20,
-        "duration": 1.5
-      }
-    ],
-    "adultSkill": {
-      "name": "약 올리기",
-      "desc": "받는 공격의 20%를 피하고, 피할 때마다 한 번 반격",
-      "effects": [
-        {
-          "type": "evade",
-          "percent": 20
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "뒷발 강타",
-      "desc": "10초마다 막고 있는 적 1기를 2타일 밀어냄",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "color": "#f5f0e6",
-    "image": null,
-    "inDemo": true
+  "color": "#8b5a2b",
+  "image": null,
+  "inDemo": true,
+  "nickname": "없음",
+  "codex": "쑥과 마늘은 사람이 되려고 먹은 것이다. 맛있어서가 아니다.",
+  "spiritCodex": "단군 신화에서 백 일을 견디고 사람이 된 곰.",
+  "flyer": false,
+  "element": "earth"
+ },
+ {
+  "id": "tiger",
+  "name": "호랑이",
+  "continent": "eurasia",
+  "habitat": "forest",
+  "rarity": "hero",
+  "role": "dealer",
+  "hp": 170,
+  "block": 1,
+  "damage": 46,
+  "interval": 1.0,
+  "range": 1,
+  "aoeRadius": 0,
+  "respawn": 10,
+  "stageNames": {
+   "young": "어린 호랑이",
+   "teen": "성장기 호랑이",
+   "adult": "성체 호랑이",
+   "spirit": "산군"
   },
-  {
-    "id": "rooster",
-    "name": "수탉",
-    "continent": "eurasia",
-    "habitat": "village",
-    "rarity": "common",
-    "role": "buffer",
-    "hp": 60,
-    "block": 1,
-    "damage": 6,
-    "interval": 1.0,
-    "range": 3,
-    "aoeRadius": 0,
-    "respawn": 6,
-    "stageNames": {
-      "young": "어린 수탉",
-      "teen": "성장기 수탉",
-      "adult": "성체 수탉",
-      "spirit": "금계"
-    },
-    "nickname": "삐약이, 새벽 네 시 수탉",
-    "baseSkillDesc": "기상 나팔: 2타일 안의 아군 공격 간격 -8%",
-    "baseSkill": [
-      {
-        "type": "haste",
-        "percent": 8,
-        "radius": 2
-      }
-    ],
-    "adultSkill": {
-      "name": "꼬끼오",
-      "desc": "웨이브 시작 10초간 모든 아군 공격 간격 -20%",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "새벽 네 시",
-      "desc": "20초마다 쓰러진 아군 1마리의 남은 재등장 시간을 절반으로",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "color": "#e74c3c",
-    "image": null,
-    "inDemo": true
+  "baseSkillDesc": "높은 단일 피해",
+  "baseSkill": [],
+  "adultSkill": {
+   "name": "급습",
+   "desc": "체력이 가득한 적에게 첫 타 피해 2배",
+   "effects": [
+    {
+     "type": "bonusVs",
+     "target": "fullHp",
+     "percent": 100
+    }
+   ]
   },
-  {
-    "id": "crow",
-    "name": "까마귀",
-    "continent": "eurasia",
-    "habitat": "village",
-    "rarity": "rare",
-    "role": "dealer",
-    "hp": 70,
-    "block": 1,
-    "damage": 26,
-    "interval": 1.2,
-    "range": 4,
-    "aoeRadius": 0,
-    "respawn": 8,
-    "stageNames": {
-      "young": "어린 까마귀",
-      "teen": "성장기 까마귀",
-      "adult": "성체 까마귀",
-      "spirit": "삼족오"
-    },
-    "nickname": "깍깍이, 반짝이 수집가 까마귀",
-    "baseSkillDesc": "돌 떨어뜨리기: 먼 적에게 높은 단일 피해",
-    "baseSkill": [],
-    "adultSkill": {
-      "name": "반짝이 줍기",
-      "desc": "처치 골드 +1",
-      "effects": [
-        {
-          "type": "goldBonus",
-          "amount": 1
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "물병 채우기",
-      "desc": "같은 적을 때릴수록 피해 +10%씩 (최대 +50%)",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "color": "#34495e",
-    "image": null,
-    "inDemo": true
+  "spiritSkill": {
+   "name": "어흥",
+   "desc": "12초마다 3타일 안의 일반 적을 2초간 뒤로 달아나게 함",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 12,
+     "action": "flee",
+     "radius": 3,
+     "dur": 2,
+     "name": "어흥"
+    }
+   ]
   },
-  {
-    "id": "bison",
-    "name": "들소",
-    "continent": "america",
-    "habitat": "plains",
-    "rarity": "rare",
-    "role": "bruiser",
-    "hp": 260,
-    "block": 3,
-    "damage": 12,
-    "interval": 1.2,
-    "range": 1,
-    "aoeRadius": 0,
-    "respawn": 8,
-    "stageNames": {
-      "young": "어린 들소",
-      "teen": "성장기 들소",
-      "adult": "성체 들소",
-      "spirit": "파란 소 베이브"
-    },
-    "nickname": "송아지 들소, 어깨 들소",
-    "baseSkillDesc": "저지 3기 2.5초, 쿨타임 8초",
-    "baseSkill": [
-      {
-        "type": "hold",
-        "count": 3,
-        "duration": 2.5,
-        "cooldown": 8
-      }
-    ],
-    "adultSkill": {
-      "name": "들이받기",
-      "desc": "저지를 시작할 때 대상에게 25 피해",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "떼 지어 달리기",
-      "desc": "20초마다 길 위의 일반 적 전부에게 40 피해",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "color": "#6d4c41",
-    "image": null,
-    "inDemo": true
+  "color": "#f39c12",
+  "image": null,
+  "inDemo": true,
+  "nickname": "없음",
+  "codex": "제 말 하면 온다.",
+  "spiritCodex": "산을 다스린다는 산신의 호랑이.",
+  "flyer": false,
+  "element": "thunder"
+ },
+ {
+  "id": "fox",
+  "name": "여우",
+  "continent": "eurasia",
+  "habitat": "field",
+  "rarity": "common",
+  "role": "technician",
+  "hp": 55,
+  "block": 1,
+  "damage": 7,
+  "interval": 1.0,
+  "range": 3,
+  "aoeRadius": 0,
+  "respawn": 6,
+  "stageNames": {
+   "young": "어린 여우",
+   "teen": "성장기 여우",
+   "adult": "성체 여우",
+   "spirit": "구미호"
   },
-  {
-    "id": "wolf",
-    "name": "늑대",
-    "continent": "america",
-    "habitat": "plains",
-    "rarity": "rare",
-    "role": "buffer",
-    "hp": 130,
-    "block": 2,
-    "damage": 14,
-    "interval": 1.0,
-    "range": 1,
-    "aoeRadius": 1.0,
-    "respawn": 8,
-    "stageNames": {
-      "young": "어린 늑대",
-      "teen": "성장기 늑대",
-      "adult": "성체 늑대",
-      "spirit": "펜리르"
-    },
-    "nickname": "멍멍 늑대, 보름달 늑대",
-    "baseSkillDesc": "우두머리: 2타일 안의 아군 피해 +10%",
-    "baseSkill": [
-      {
-        "type": "aura",
-        "percent": 10,
-        "radius": 2
-      }
-    ],
-    "adultSkill": {
-      "name": "사냥 신호",
-      "desc": "늑대가 때린 적은 3초간 받는 피해 +15%",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "하울링",
-      "desc": "15초마다 4초간 모든 아군 공격 간격 -20%",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "color": "#95a5a6",
-    "image": null,
-    "inDemo": true
+  "baseSkillDesc": "중독 초당 6, 3초",
+  "baseSkill": [
+   {
+    "type": "poison",
+    "dps": 6,
+    "duration": 3
+   }
+  ],
+  "adultSkill": {
+   "name": "홀리기",
+   "desc": "10초마다 적 1기를 2초간 뒤로 걷게 함",
+   "effects": [
+    {
+     "type": "confuse",
+     "targets": 1,
+     "duration": 2,
+     "cooldown": 10
+    }
+   ]
   },
-  {
-    "id": "eagle",
-    "name": "독수리",
-    "continent": "america",
-    "habitat": "mountain",
-    "rarity": "hero",
-    "role": "dealer",
-    "hp": 120,
-    "block": 1,
-    "damage": 40,
-    "interval": 2.0,
-    "range": 4,
-    "aoeRadius": 1.5,
-    "respawn": 10,
-    "stageNames": {
-      "young": "어린 독수리",
-      "teen": "성장기 독수리",
-      "adult": "성체 독수리",
-      "spirit": "아퀼라"
-    },
-    "nickname": "솜털 독수리, 그늘 독수리",
-    "baseSkillDesc": "급강하: 먼 적에게 광역 피해",
-    "baseSkill": [],
-    "adultSkill": {
-      "name": "사냥꾼",
-      "desc": "비행 적에게 피해 +50%",
-      "effects": [
-        {
-          "type": "bonusVs",
-          "target": "flying",
-          "percent": 50
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "큰 날개",
-      "desc": "공격 범위가 반경 2.5로 늘어남",
-      "effects": [
-        {
-          "type": "aoeRadiusSet",
-          "radius": 2.5
-        }
-      ]
-    },
-    "color": "#d4ac0d",
-    "image": null,
-    "inDemo": true
+  "spiritSkill": {
+   "name": "꼬리 부자",
+   "desc": "홀리기 대상이 3기로 늘어남",
+   "effects": [
+    {
+     "type": "confuseTargets",
+     "targets": 3
+    }
+   ]
   },
-  {
-    "id": "bighorn",
-    "name": "큰뿔양",
-    "continent": "america",
-    "habitat": "mountain",
-    "rarity": "common",
-    "role": "technician",
-    "hp": 100,
-    "block": 2,
-    "damage": 8,
-    "interval": 1.5,
-    "range": 1,
-    "aoeRadius": 0,
-    "respawn": 6,
-    "stageNames": {
-      "young": "어린 큰뿔양",
-      "teen": "성장기 큰뿔양",
-      "adult": "성체 큰뿔양",
-      "spirit": "황금 양"
-    },
-    "nickname": "뿔 없는 양, 뿔만 큰 양",
-    "baseSkillDesc": "박치기: 4번째 공격마다 대상을 1타일 밀어냄",
-    "baseSkill": [
-      {
-        "type": "knockback",
-        "every": 4,
-        "tiles": 1,
-        "stun": 0
-      }
-    ],
-    "adultSkill": {
-      "name": "정면충돌",
-      "desc": "밀려난 적은 1초간 기절",
-      "effects": [
-        {
-          "type": "knockbackStun",
-          "stun": 1
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "뿔 자랑",
-      "desc": "12초마다 막고 있는 적 전부를 2타일 밀어냄",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "color": "#bfa27a",
-    "image": null,
-    "inDemo": true
+  "color": "#e8823a",
+  "image": "assets/temp/fox_grok_v1.jpg",
+  "inDemo": true,
+  "nickname": "없음",
+  "codex": "포도가 시다고 했다. 먹어 보지는 않았다.",
+  "spiritCodex": "꼬리가 아홉인 여우. 천 년을 살았다고 한다.",
+  "flyer": false,
+  "element": "fire"
+ },
+ {
+  "id": "rabbit",
+  "name": "토끼",
+  "continent": "eurasia",
+  "habitat": "field",
+  "rarity": "common",
+  "role": "technician",
+  "hp": 70,
+  "block": 1,
+  "damage": 4,
+  "interval": 0.5,
+  "range": 1,
+  "aoeRadius": 0,
+  "respawn": 6,
+  "stageNames": {
+   "young": "어린 토끼",
+   "teen": "성장기 토끼",
+   "adult": "성체 토끼",
+   "spirit": "옥토끼"
   },
-  {
-    "id": "frog",
-    "name": "개구리",
-    "continent": "america",
-    "habitat": "wetland",
-    "rarity": "rare",
-    "role": "bruiser",
-    "hp": 190,
-    "block": 2,
-    "damage": 8,
-    "interval": 1.5,
-    "range": 3,
-    "aoeRadius": 0,
-    "respawn": 8,
-    "stageNames": {
-      "young": "어린 개구리",
-      "teen": "성장기 개구리",
-      "adult": "성체 개구리",
-      "spirit": "금와"
+  "nickname": "솜뭉치 토끼, 하체 토끼",
+  "baseSkillDesc": "적중한 적 이동 속도 -20%, 1.5초",
+  "baseSkill": [
+   {
+    "type": "slow",
+    "percent": 20,
+    "duration": 1.5
+   }
+  ],
+  "adultSkill": {
+   "name": "약 올리기",
+   "desc": "받는 공격의 20%를 피하고, 피할 때마다 한 번 반격",
+   "effects": [
+    {
+     "type": "evade",
+     "percent": 20
     },
-    "nickname": "올챙이, 방석 개구리",
-    "baseSkillDesc": "혀 낚시: 6초마다 3타일 안의 적 1기를 끌어와 붙잡음",
-    "baseSkill": [
-      {
-        "type": "pull",
-        "cooldown": 6,
-        "range": 3
-      }
-    ],
-    "adultSkill": {
-      "name": "몸 부풀리기",
-      "desc": "체력이 50% 아래면 8초간 막기 수 +2, 받는 피해 -30% (쿨타임 20초)",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "방석 착지",
-      "desc": "12초마다 반경 2의 적을 1.5초 기절",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "color": "#27ae60",
-    "image": null,
-    "inDemo": true
+    {
+     "type": "counter"
+    }
+   ]
   },
-  {
-    "id": "grasshopper",
-    "name": "베짱이",
-    "continent": "america",
-    "habitat": "wetland",
-    "rarity": "common",
-    "role": "buffer",
-    "hp": 45,
-    "block": 1,
-    "damage": 5,
-    "interval": 1.0,
-    "range": 3,
-    "aoeRadius": 0,
-    "respawn": 6,
-    "stageNames": {
-      "young": "어린 베짱이",
-      "teen": "성장기 베짱이",
-      "adult": "성체 베짱이",
-      "spirit": "티토노스"
+  "spiritSkill": {
+   "name": "뒷발 강타",
+   "desc": "10초마다 막고 있는 적 1기를 2타일 밀어냄",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 10,
+     "action": "pushHeld",
+     "tiles": 2,
+     "count": 1,
+     "name": "뒷발 강타"
+    }
+   ]
+  },
+  "color": "#f5f0e6",
+  "image": null,
+  "inDemo": true,
+  "codex": "달에서 떡방아를 찧다 내려왔다.",
+  "spiritCodex": "달에서 방아를 찧는 토끼.",
+  "flyer": false,
+  "element": "moon"
+ },
+ {
+  "id": "rooster",
+  "name": "수탉",
+  "continent": "eurasia",
+  "habitat": "village",
+  "rarity": "common",
+  "role": "buffer",
+  "hp": 60,
+  "block": 1,
+  "damage": 6,
+  "interval": 1.0,
+  "range": 3,
+  "aoeRadius": 0,
+  "respawn": 6,
+  "stageNames": {
+   "young": "어린 수탉",
+   "teen": "성장기 수탉",
+   "adult": "성체 수탉",
+   "spirit": "금계"
+  },
+  "nickname": "삐약이, 새벽 네 시 수탉",
+  "baseSkillDesc": "기상 나팔: 2타일 안의 아군 공격 간격 -8%",
+  "baseSkill": [
+   {
+    "type": "haste",
+    "percent": 8,
+    "radius": 2
+   }
+  ],
+  "adultSkill": {
+   "name": "꼬끼오",
+   "desc": "웨이브 시작 10초간 모든 아군 공격 간격 -20%",
+   "effects": [
+    {
+     "type": "waveStartBuff",
+     "stat": "interval",
+     "percent": -20,
+     "dur": 10
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "새벽 네 시",
+   "desc": "20초마다 쓰러진 아군 1마리의 남은 재등장 시간을 절반으로",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 20,
+     "action": "halveRespawn",
+     "name": "새벽 네 시"
+    }
+   ]
+  },
+  "color": "#e74c3c",
+  "image": null,
+  "inDemo": true,
+  "codex": "새벽 네 시에 운다. 아무도 부탁하지 않았다.",
+  "spiritCodex": "하늘에 산다는 금빛 닭. 새벽을 연다.",
+  "flyer": false,
+  "element": "light"
+ },
+ {
+  "id": "crow",
+  "name": "까마귀",
+  "continent": "eurasia",
+  "habitat": "village",
+  "rarity": "rare",
+  "role": "dealer",
+  "hp": 70,
+  "block": 1,
+  "damage": 26,
+  "interval": 1.2,
+  "range": 4,
+  "aoeRadius": 0,
+  "respawn": 8,
+  "stageNames": {
+   "young": "어린 까마귀",
+   "teen": "성장기 까마귀",
+   "adult": "성체 까마귀",
+   "spirit": "삼족오"
+  },
+  "nickname": "깍깍이, 반짝이 수집가 까마귀",
+  "baseSkillDesc": "돌 떨어뜨리기: 먼 적에게 높은 단일 피해",
+  "baseSkill": [],
+  "adultSkill": {
+   "name": "반짝이 줍기",
+   "desc": "처치 골드 +1",
+   "effects": [
+    {
+     "type": "goldBonus",
+     "amount": 1
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "물병 채우기",
+   "desc": "같은 적을 때릴수록 피해 +10%씩 (최대 +50%)",
+   "effects": [
+    {
+     "type": "sameTargetStack",
+     "per": 10,
+     "max": 50
+    }
+   ]
+  },
+  "color": "#34495e",
+  "image": null,
+  "inDemo": true,
+  "codex": "물병에 돌을 넣어 물을 마신 적이 있다. 돌은 아직 가지고 있다.",
+  "spiritCodex": "해 속에 산다는 세 발 까마귀.",
+  "flyer": true,
+  "element": "wind"
+ },
+ {
+  "id": "bison",
+  "name": "들소",
+  "continent": "america",
+  "habitat": "plains",
+  "rarity": "rare",
+  "role": "bruiser",
+  "hp": 260,
+  "block": 3,
+  "damage": 12,
+  "interval": 1.2,
+  "range": 1,
+  "aoeRadius": 0,
+  "respawn": 8,
+  "stageNames": {
+   "young": "어린 들소",
+   "teen": "성장기 들소",
+   "adult": "성체 들소",
+   "spirit": "파란 소 베이브"
+  },
+  "nickname": "송아지 들소, 어깨 들소",
+  "baseSkillDesc": "저지 3기 2.5초, 쿨타임 8초",
+  "baseSkill": [
+   {
+    "type": "hold",
+    "count": 3,
+    "duration": 2.5,
+    "cooldown": 8
+   }
+  ],
+  "adultSkill": {
+   "name": "들이받기",
+   "desc": "저지를 시작할 때 대상에게 25 피해",
+   "effects": [
+    {
+     "type": "holdBurst",
+     "amount": 25
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "떼 지어 달리기",
+   "desc": "20초마다 길 위의 일반 적 전부에게 40 피해",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 20,
+     "action": "damageAll",
+     "amount": 40,
+     "normalOnly": true,
+     "name": "떼 지어 달리기"
+    }
+   ]
+  },
+  "color": "#6d4c41",
+  "image": null,
+  "inDemo": true,
+  "codex": "앞만 본다. 뒤에 무엇이 있는지는 관심이 없다.",
+  "spiritCodex": "폴 버니언의 파란 소. 발자국이 호수가 되었다.",
+  "flyer": false,
+  "element": "earth"
+ },
+ {
+  "id": "wolf",
+  "name": "늑대",
+  "continent": "america",
+  "habitat": "plains",
+  "rarity": "rare",
+  "role": "buffer",
+  "hp": 130,
+  "block": 2,
+  "damage": 14,
+  "interval": 1.0,
+  "range": 1,
+  "aoeRadius": 1.0,
+  "respawn": 8,
+  "stageNames": {
+   "young": "어린 늑대",
+   "teen": "성장기 늑대",
+   "adult": "성체 늑대",
+   "spirit": "펜리르"
+  },
+  "nickname": "멍멍 늑대, 보름달 늑대",
+  "baseSkillDesc": "우두머리: 2타일 안의 아군 피해 +10%",
+  "baseSkill": [
+   {
+    "type": "aura",
+    "percent": 10,
+    "radius": 2
+   }
+  ],
+  "adultSkill": {
+   "name": "사냥 신호",
+   "desc": "늑대가 때린 적은 3초간 받는 피해 +15%",
+   "effects": [
+    {
+     "type": "mark",
+     "percent": 15,
+     "dur": 3
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "하울링",
+   "desc": "15초마다 4초간 모든 아군 공격 간격 -20%",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 15,
+     "action": "allyBuff",
+     "stat": "interval",
+     "percent": -20,
+     "dur": 4,
+     "name": "하울링"
+    }
+   ]
+  },
+  "color": "#95a5a6",
+  "image": null,
+  "inDemo": true,
+  "codex": "배에 돌이 든 적이 있다.",
+  "spiritCodex": "북유럽 신화의 거대한 늑대.",
+  "flyer": false,
+  "element": "moon"
+ },
+ {
+  "id": "eagle",
+  "name": "독수리",
+  "continent": "america",
+  "habitat": "mountain",
+  "rarity": "hero",
+  "role": "dealer",
+  "hp": 120,
+  "block": 1,
+  "damage": 40,
+  "interval": 2.0,
+  "range": 4,
+  "aoeRadius": 1.5,
+  "respawn": 10,
+  "stageNames": {
+   "young": "어린 독수리",
+   "teen": "성장기 독수리",
+   "adult": "성체 독수리",
+   "spirit": "아퀼라"
+  },
+  "nickname": "솜털 독수리, 그늘 독수리",
+  "baseSkillDesc": "급강하: 먼 적에게 광역 피해",
+  "baseSkill": [],
+  "adultSkill": {
+   "name": "사냥꾼",
+   "desc": "비행 적에게 피해 +50%",
+   "effects": [
+    {
+     "type": "bonusVs",
+     "target": "flying",
+     "percent": 50
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "큰 날개",
+   "desc": "공격 범위가 반경 2.5로 늘어남",
+   "effects": [
+    {
+     "type": "aoeRadiusSet",
+     "radius": 2.5
+    }
+   ]
+  },
+  "color": "#d4ac0d",
+  "image": null,
+  "inDemo": true,
+  "codex": "파리는 잡지 않는다.",
+  "spiritCodex": "제우스의 번개를 나르는 독수리.",
+  "flyer": true,
+  "element": "wind"
+ },
+ {
+  "id": "bighorn",
+  "name": "큰뿔양",
+  "continent": "america",
+  "habitat": "mountain",
+  "rarity": "common",
+  "role": "technician",
+  "hp": 100,
+  "block": 2,
+  "damage": 8,
+  "interval": 1.5,
+  "range": 1,
+  "aoeRadius": 0,
+  "respawn": 6,
+  "stageNames": {
+   "young": "어린 큰뿔양",
+   "teen": "성장기 큰뿔양",
+   "adult": "성체 큰뿔양",
+   "spirit": "황금 양"
+  },
+  "nickname": "뿔 없는 양, 뿔만 큰 양",
+  "baseSkillDesc": "박치기: 4번째 공격마다 대상을 1타일 밀어냄",
+  "baseSkill": [
+   {
+    "type": "knockback",
+    "every": 4,
+    "tiles": 1,
+    "stun": 0
+   }
+  ],
+  "adultSkill": {
+   "name": "정면충돌",
+   "desc": "밀려난 적은 1초간 기절",
+   "effects": [
+    {
+     "type": "knockbackStun",
+     "stun": 1
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "뿔 자랑",
+   "desc": "12초마다 막고 있는 적 전부를 2타일 밀어냄",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 12,
+     "action": "pushHeld",
+     "tiles": 2,
+     "count": 99,
+     "name": "뿔 자랑"
+    }
+   ]
+  },
+  "color": "#bfa27a",
+  "image": null,
+  "inDemo": true,
+  "codex": "외나무다리에서 비켜 준 적이 없다.",
+  "spiritCodex": "황금 양털의 주인.",
+  "flyer": false,
+  "element": "earth"
+ },
+ {
+  "id": "frog",
+  "name": "개구리",
+  "continent": "america",
+  "habitat": "wetland",
+  "rarity": "rare",
+  "role": "bruiser",
+  "hp": 190,
+  "block": 2,
+  "damage": 8,
+  "interval": 1.5,
+  "range": 3,
+  "aoeRadius": 0,
+  "respawn": 8,
+  "stageNames": {
+   "young": "어린 개구리",
+   "teen": "성장기 개구리",
+   "adult": "성체 개구리",
+   "spirit": "금와"
+  },
+  "nickname": "올챙이, 방석 개구리",
+  "baseSkillDesc": "혀 낚시: 6초마다 3타일 안의 적 1기를 끌어와 붙잡음",
+  "baseSkill": [
+   {
+    "type": "pull",
+    "cooldown": 6,
+    "range": 3
+   }
+  ],
+  "adultSkill": {
+   "name": "몸 부풀리기",
+   "desc": "체력이 50% 아래면 8초간 막기 수 +2, 받는 피해 -30% (쿨타임 20초)",
+   "effects": [
+    {
+     "type": "hpTrigger",
+     "below": 50,
+     "dur": 8,
+     "cooldown": 20,
+     "mods": {
+      "block": 2,
+      "taken": -30
+     },
+     "name": "몸 부풀리기"
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "방석 착지",
+   "desc": "12초마다 반경 2의 적을 1.5초 기절",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 12,
+     "action": "stunRadius",
+     "radius": 2,
+     "dur": 1.5,
+     "name": "방석 착지"
+    }
+   ]
+  },
+  "color": "#27ae60",
+  "image": null,
+  "inDemo": true,
+  "codex": "너무 커서 뛰지 않는다. 앉아 있다.",
+  "spiritCodex": "금빛 개구리 모습으로 발견된 부여의 왕.",
+  "flyer": false,
+  "element": "water"
+ },
+ {
+  "id": "grasshopper",
+  "name": "베짱이",
+  "continent": "america",
+  "habitat": "wetland",
+  "rarity": "common",
+  "role": "buffer",
+  "hp": 45,
+  "block": 1,
+  "damage": 5,
+  "interval": 1.0,
+  "range": 3,
+  "aoeRadius": 0,
+  "respawn": 6,
+  "stageNames": {
+   "young": "어린 베짱이",
+   "teen": "성장기 베짱이",
+   "adult": "성체 베짱이",
+   "spirit": "티토노스"
+  },
+  "nickname": "콧노래 베짱이, 전국 투어 베짱이",
+  "baseSkillDesc": "노래: 2타일 안의 아군 공격 간격 -8%",
+  "baseSkill": [
+   {
+    "type": "haste",
+    "percent": 8,
+    "radius": 2
+   }
+  ],
+  "adultSkill": {
+   "name": "앙코르",
+   "desc": "노래가 3타일까지 닿고 스킬 쿨타임도 -10%",
+   "effects": [
+    {
+     "type": "hasteRadiusSet",
+     "radius": 3
     },
-    "nickname": "콧노래 베짱이, 전국 투어 베짱이",
-    "baseSkillDesc": "노래: 2타일 안의 아군 공격 간격 -8%",
-    "baseSkill": [
-      {
-        "type": "haste",
-        "percent": 8,
-        "radius": 2
-      }
-    ],
-    "adultSkill": {
-      "name": "앙코르",
-      "desc": "노래가 3타일까지 닿고 스킬 쿨타임도 -10%",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "spiritSkill": {
-      "name": "전국 투어",
-      "desc": "15초마다 5초간 모든 아군 피해 +20%",
-      "effects": [
-        {
-          "type": "text"
-        }
-      ]
-    },
-    "color": "#9bd770",
-    "image": null,
-    "inDemo": true
-  }
+    {
+     "type": "songCd",
+     "percent": -10,
+     "radius": 3
+    }
+   ]
+  },
+  "spiritSkill": {
+   "name": "전국 투어",
+   "desc": "15초마다 5초간 모든 아군 피해 +20%",
+   "effects": [
+    {
+     "type": "timerSkill",
+     "every": 15,
+     "action": "allyBuff",
+     "stat": "dmg",
+     "percent": 20,
+     "dur": 5,
+     "name": "전국 투어"
+    }
+   ]
+  },
+  "color": "#9bd770",
+  "image": null,
+  "inDemo": true,
+  "codex": "이름은 베를 짠다는 뜻이다. 짠 적은 없다.",
+  "spiritCodex": "영원히 사는 대신 매미가 된 티토노스.",
+  "flyer": true,
+  "element": "grass"
+ }
 ]

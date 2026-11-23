@@ -1,214 +1,237 @@
 [
-  {
-    "id": "cheese_thief",
-    "name": "치즈 도둑",
-    "parts": [
-      "fox",
-      "crow"
-    ],
-    "role": "technician",
-    "damage": 24,
-    "interval": 1.0,
-    "range": 4,
-    "aoeRadius": 0,
-    "block": null,
-    "effects": [
-      {
-        "type": "poison",
-        "dps": 8,
-        "duration": 3
-      },
-      {
-        "type": "goldBonus",
-        "amount": 2
-      }
-    ],
-    "desc": "중독 초당 8, 3초. 처치 골드 +2",
-    "source": "이솝 우화",
-    "color": "#c27c3a",
-    "image": null
-  },
-  {
-    "id": "bear_tiger",
-    "name": "곰범",
-    "parts": [
-      "bear",
-      "tiger"
-    ],
-    "role": "bruiser",
-    "damage": 40,
-    "interval": 1.0,
-    "range": 1,
-    "aoeRadius": 0,
-    "block": 3,
-    "effects": [
-      {
-        "type": "hold",
-        "count": 3,
-        "duration": 3,
-        "cooldown": 8
-      },
-      {
-        "type": "text"
-      }
-    ],
-    "desc": "막기 수 3. 저지 3기 3초, 쿨타임 8초. 백일 수행: 쓰러지지 않고 100초를 버티면 그 스테이지 동안 피해와 체력 +30%",
-    "source": "단군 신화",
-    "color": "#a0522d",
-    "image": null
-  },
-  {
-    "id": "wolf_in_sheep",
-    "name": "양의 탈을 쓴 늑대",
-    "parts": [
-      "wolf",
-      "bighorn"
-    ],
-    "role": "technician",
-    "damage": 22,
-    "interval": 1.0,
-    "range": 1,
-    "aoeRadius": 1.0,
-    "block": null,
-    "effects": [
-      {
-        "type": "aura",
-        "percent": 10,
-        "radius": 2
-      },
-      {
-        "type": "knockback",
-        "every": 4,
-        "tiles": 1,
-        "stun": 1
-      }
-    ],
-    "desc": "반경 1 광역. 2타일 안의 아군 피해 +10%. 4번째 공격마다 대상을 1타일 밀어내고 1초 기절",
-    "source": "이솝 우화",
-    "color": "#7f8c8d",
-    "image": null
-  },
-  {
-    "id": "bullfrog",
-    "name": "황소개구리",
-    "parts": [
-      "bison",
-      "frog"
-    ],
-    "role": "bruiser",
-    "damage": 14,
-    "interval": 1.5,
-    "range": 3,
-    "aoeRadius": 0,
-    "block": 4,
-    "effects": [
-      {
-        "type": "pull",
-        "cooldown": 5,
-        "range": 3
-      },
-      {
-        "type": "hold",
-        "count": 4,
-        "duration": 3,
-        "cooldown": 8
-      }
-    ],
-    "desc": "막기 수 4. 5초마다 3타일 안의 적 1기를 끌어와 붙잡음. 저지 4기 3초, 쿨타임 8초",
-    "source": "이솝 우화",
-    "color": "#556b2f",
-    "image": null
-  },
-  {
-    "id": "jackalope",
-    "name": "재칼로프",
-    "parts": [
-      "rabbit",
-      "bighorn"
-    ],
-    "role": "technician",
-    "damage": 10,
-    "interval": 0.5,
-    "range": 1,
-    "aoeRadius": 0,
-    "block": null,
-    "effects": [
-      {
-        "type": "slow",
-        "percent": 25,
-        "duration": 1.5
-      },
-      {
-        "type": "evade",
-        "percent": 20
-      },
-      {
-        "type": "knockback",
-        "every": 4,
-        "tiles": 1,
-        "stun": 0
-      }
-    ],
-    "desc": "이동 속도 -25%, 1.5초. 회피 20%. 4번째 공격마다 대상을 1타일 밀어냄",
-    "source": "미국 민담",
-    "color": "#d2b48c",
-    "image": null
-  },
-  {
-    "id": "thunderbird",
-    "name": "썬더버드",
-    "parts": [
-      "crow",
-      "eagle"
-    ],
-    "role": "dealer",
-    "damage": 60,
-    "interval": 1.5,
-    "range": 4,
-    "aoeRadius": 1.5,
-    "block": null,
-    "effects": [
-      {
-        "type": "bonusVs",
-        "target": "flying",
-        "percent": 50
-      },
-      {
-        "type": "stunOnHit",
-        "duration": 0.5
-      }
-    ],
-    "desc": "반경 1.5 광역. 비행 적 피해 +50%. 맞은 적은 0.5초 감전",
-    "source": "북미 원주민 전설",
-    "color": "#2e86c1",
-    "image": null
-  },
-  {
-    "id": "phoenix",
-    "name": "봉황",
-    "parts": [
-      "rooster",
-      "eagle"
-    ],
-    "role": "buffer",
-    "damage": 45,
-    "interval": 1.5,
-    "range": 4,
-    "aoeRadius": 1.5,
-    "block": null,
-    "effects": [
-      {
-        "type": "haste",
-        "percent": 15,
-        "radius": 2
-      },
-      {
-        "type": "respawnHalf"
-      }
-    ],
-    "desc": "반경 1.5 광역. 2타일 안의 아군 공격 간격 -15%. 자신의 재등장 시간 절반",
-    "source": "동아시아 신화",
-    "color": "#c0392b",
-    "image": null
-  }
+ {
+  "id": "cheese_thief",
+  "name": "치즈 도둑",
+  "parts": [
+   "fox",
+   "crow"
+  ],
+  "role": "technician",
+  "damage": 24,
+  "interval": 1.0,
+  "range": 4,
+  "aoeRadius": 0,
+  "block": null,
+  "effects": [
+   {
+    "type": "poison",
+    "dps": 8,
+    "duration": 3
+   },
+   {
+    "type": "goldBonus",
+    "amount": 2
+   }
+  ],
+  "desc": "중독 초당 8, 3초. 처치 골드 +2",
+  "source": "이솝 우화",
+  "color": "#c27c3a",
+  "image": null,
+  "codex": "노래를 부르다 치즈를 떨어뜨린 적이 있다. 이번에는 입을 다물고 있다.",
+  "flyer": true,
+  "element": "fire"
+ },
+ {
+  "id": "bear_tiger",
+  "name": "곰범",
+  "parts": [
+   "bear",
+   "tiger"
+  ],
+  "role": "bruiser",
+  "damage": 40,
+  "interval": 1.0,
+  "range": 1,
+  "aoeRadius": 0,
+  "block": 3,
+  "effects": [
+   {
+    "type": "hold",
+    "count": 3,
+    "duration": 3,
+    "cooldown": 8
+   },
+   {
+    "type": "hundredDays",
+    "seconds": 100,
+    "percent": 30
+   }
+  ],
+  "desc": "막기 수 3. 저지 3기 3초, 쿨타임 8초. 백일 수행: 쓰러지지 않고 100초를 버티면 그 스테이지 동안 피해와 체력 +30%",
+  "source": "단군 신화",
+  "color": "#a0522d",
+  "image": null,
+  "codex": "쑥과 마늘만 먹었다.",
+  "flyer": false,
+  "element": "earth"
+ },
+ {
+  "id": "wolf_in_sheep",
+  "name": "양의 탈을 쓴 늑대",
+  "parts": [
+   "wolf",
+   "bighorn"
+  ],
+  "role": "technician",
+  "damage": 22,
+  "interval": 1.0,
+  "range": 1,
+  "aoeRadius": 1.0,
+  "block": null,
+  "effects": [
+   {
+    "type": "aura",
+    "percent": 10,
+    "radius": 2
+   },
+   {
+    "type": "knockback",
+    "every": 4,
+    "tiles": 1,
+    "stun": 1
+   }
+  ],
+  "desc": "반경 1 광역. 2타일 안의 아군 피해 +10%. 4번째 공격마다 대상을 1타일 밀어내고 1초 기절",
+  "source": "이솝 우화",
+  "color": "#7f8c8d",
+  "image": null,
+  "codex": "양털이 조금 작다.",
+  "flyer": false,
+  "element": "moon"
+ },
+ {
+  "id": "bullfrog",
+  "name": "황소개구리",
+  "parts": [
+   "bison",
+   "frog"
+  ],
+  "role": "bruiser",
+  "damage": 14,
+  "interval": 1.5,
+  "range": 3,
+  "aoeRadius": 0,
+  "block": 4,
+  "effects": [
+   {
+    "type": "pull",
+    "cooldown": 5,
+    "range": 3
+   },
+   {
+    "type": "hold",
+    "count": 4,
+    "duration": 3,
+    "cooldown": 8
+   }
+  ],
+  "desc": "막기 수 4. 5초마다 3타일 안의 적 1기를 끌어와 붙잡음. 저지 4기 3초, 쿨타임 8초",
+  "source": "이솝 우화",
+  "color": "#556b2f",
+  "image": null,
+  "codex": "배를 부풀리다 멈췄다. 이번에는.",
+  "flyer": false,
+  "element": "water"
+ },
+ {
+  "id": "jackalope",
+  "name": "재칼로프",
+  "parts": [
+   "rabbit",
+   "bighorn"
+  ],
+  "role": "technician",
+  "damage": 10,
+  "interval": 0.5,
+  "range": 1,
+  "aoeRadius": 0,
+  "block": null,
+  "effects": [
+   {
+    "type": "slow",
+    "percent": 25,
+    "duration": 1.5
+   },
+   {
+    "type": "evade",
+    "percent": 20
+   },
+   {
+    "type": "knockback",
+    "every": 4,
+    "tiles": 1,
+    "stun": 0
+   }
+  ],
+  "desc": "이동 속도 -25%, 1.5초. 회피 20%. 4번째 공격마다 대상을 1타일 밀어냄",
+  "source": "미국 민담",
+  "color": "#d2b48c",
+  "image": null,
+  "codex": "모닥불 앞에서 카우보이 노래를 따라 부른다.",
+  "flyer": false,
+  "element": "moon"
+ },
+ {
+  "id": "thunderbird",
+  "name": "썬더버드",
+  "parts": [
+   "crow",
+   "eagle"
+  ],
+  "role": "dealer",
+  "damage": 60,
+  "interval": 1.5,
+  "range": 4,
+  "aoeRadius": 1.5,
+  "block": null,
+  "effects": [
+   {
+    "type": "bonusVs",
+    "target": "flying",
+    "percent": 50
+   },
+   {
+    "type": "stunOnHit",
+    "duration": 0.5
+   }
+  ],
+  "desc": "반경 1.5 광역. 비행 적 피해 +50%. 맞은 적은 0.5초 감전",
+  "source": "북미 원주민 전설",
+  "color": "#2e86c1",
+  "image": null,
+  "codex": "북미 원주민 전설에서 날갯짓으로 천둥을 일으키는 큰 새.",
+  "flyer": true,
+  "element": "thunder"
+ },
+ {
+  "id": "phoenix",
+  "name": "봉황",
+  "parts": [
+   "rooster",
+   "eagle"
+  ],
+  "role": "buffer",
+  "damage": 45,
+  "interval": 1.5,
+  "range": 4,
+  "aoeRadius": 1.5,
+  "block": null,
+  "effects": [
+   {
+    "type": "haste",
+    "percent": 15,
+    "radius": 2
+   },
+   {
+    "type": "respawnHalf"
+   }
+  ],
+  "desc": "반경 1.5 광역. 2타일 안의 아군 공격 간격 -15%. 자신의 재등장 시간 절반",
+  "source": "동아시아 신화",
+  "color": "#c0392b",
+  "image": null,
+  "codex": "오동나무가 아니면 앉지 않는다. 길 위에는 오동나무가 없다.",
+  "flyer": true,
+  "element": "fire"
+ }
 ]

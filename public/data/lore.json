@@ -1,0 +1,431 @@
+{
+ "passives": {
+  "tiger": {
+   "name": "죽어서 가죽을 남긴다",
+   "source": "한국 속담",
+   "desc": "쓰러질 때마다 골드 +3",
+   "fx": [
+    {
+     "downGold": 3
+    }
+   ]
+  },
+  "bear": {
+   "name": "재주는 곰이 넘고",
+   "source": "한국 속담",
+   "desc": "곰이 막고 있는 적을 다른 아군이 처치하면 골드 +1",
+   "fx": [
+    {
+     "heldKillGold": 1
+    }
+   ]
+  },
+  "rabbit": {
+   "name": "간을 두고 왔다",
+   "source": "별주부전",
+   "desc": "스테이지마다 한 번, 쓰러질 피해를 받아도 체력 1로 버팀",
+   "fx": [
+    {
+     "surviveOnce": true
+    }
+   ]
+  },
+  "crow": {
+   "name": "까마귀 날자 배 떨어진다",
+   "source": "한국 속담",
+   "desc": "공격할 때 10% 확률로 다른 적 1기도 같은 피해를 받음",
+   "fx": [
+    {
+     "splashChance": 10
+    }
+   ]
+  },
+  "rooster": {
+   "name": "닭이 울면 귀신이 물러간다",
+   "source": "한국 민간 신앙",
+   "desc": "웨이브가 시작될 때 3타일 안의 일반 적이 1초간 달아남",
+   "fx": [
+    {
+     "waveStartFlee": {
+      "radius": 3,
+      "dur": 1
+     }
+    }
+   ]
+  },
+  "bison": {
+   "name": "신성한 흰 들소",
+   "source": "라코타 전승",
+   "desc": "소환될 때 3% 확률로 흰 들소로 태어나 강점 2개를 가짐",
+   "fx": [
+    {
+     "whiteChance": 3
+    }
+   ]
+  },
+  "wolf": {
+   "name": "늑대가 키운 쌍둥이",
+   "source": "로마 건국 신화",
+   "desc": "2타일 안의 어린 단계 아군이 받는 피해 -15%",
+   "fx": [
+    {
+     "aura": {
+      "radius": 2,
+      "taken": -15,
+      "stage": [
+       "young"
+      ]
+     }
+    }
+   ]
+  },
+  "bighorn": {
+   "name": "외나무다리",
+   "source": "이솝 우화 '두 염소', 한국 속담",
+   "desc": "막고 있는 적이 1기뿐이면 그 적에게 피해 +30%",
+   "fx": [
+    {
+     "vs": {
+      "target": "lone",
+      "dmg": 30
+     }
+    }
+   ]
+  },
+  "frog": {
+   "name": "청개구리",
+   "source": "한국 전래동화",
+   "desc": "지형이 맞지 않는 구간에서 피해 +20%",
+   "fx": [
+    {
+     "if": {
+      "terrain": false
+     },
+     "dmg": 20
+    }
+   ]
+  },
+  "eagle": {
+   "name": "독수리는 파리를 잡지 않는다",
+   "source": "라틴 속담",
+   "desc": "군집 적을 공격하지 않는 대신 다른 적에게 피해 +20%",
+   "fx": [
+    {
+     "noHit": "swarm"
+    },
+    {
+     "dmg": 20
+    }
+   ]
+  },
+  "grasshopper": {
+   "name": "여름 내내 노래했다",
+   "source": "이솝 우화 '개미와 베짱이'",
+   "desc": "1~10웨이브 동안 노래가 닿는 범위 +1타일",
+   "fx": [
+    {
+     "if": {
+      "waveTo": 10
+     },
+     "auraRadiusAdd": 1
+    }
+   ]
+  },
+  "fox": {
+   "name": "둔갑",
+   "source": "한국 구미호 설화, 일본 여우 민담",
+   "desc": "웨이브 시작 10초간 받는 공격의 30%를 피함",
+   "fx": [
+    {
+     "if": {
+      "waveTimeLt": 10
+     },
+     "dodge": 30
+    }
+   ]
+  }
+ },
+ "bonds": [
+  {
+   "id": "hogahowi",
+   "name": "호가호위",
+   "kind": "bond",
+   "pair": [
+    "fox",
+    "tiger"
+   ],
+   "source": "중국 고사",
+   "tiles": 2,
+   "desc": "여우 피해 +30%",
+   "fx": {
+    "fox": [
+     {
+      "dmg": 30
+     }
+    ]
+   }
+  },
+  {
+   "id": "rabbit_trial",
+   "name": "토끼의 재판",
+   "kind": "bond",
+   "pair": [
+    "rabbit",
+    "tiger"
+   ],
+   "source": "한국 전래동화",
+   "tiles": 2,
+   "desc": "토끼 회피 +15%",
+   "fx": {
+    "rabbit": [
+     {
+      "dodge": 15
+     }
+    ]
+   }
+  },
+  {
+   "id": "shepherd",
+   "name": "양치기",
+   "kind": "bond",
+   "pair": [
+    "wolf",
+    "bighorn"
+   ],
+   "source": "이솝 우화",
+   "tiles": 2,
+   "desc": "늑대 피해 +20%, 큰뿔양은 겁을 먹어 공격 간격 +10%",
+   "fx": {
+    "wolf": [
+     {
+      "dmg": 20
+     }
+    ],
+    "bighorn": [
+     {
+      "interval": 10
+     }
+    ]
+   }
+  },
+  {
+   "id": "eagle_mimic",
+   "name": "독수리 흉내",
+   "kind": "bond",
+   "pair": [
+    "crow",
+    "eagle"
+   ],
+   "source": "이솝 우화",
+   "sameTeam": true,
+   "desc": "까마귀 공격이 반경 1 광역, 공격 간격 +10%",
+   "fx": {
+    "crow": [
+     {
+      "aoeSet": 1
+     },
+     {
+      "interval": 10
+     }
+    ]
+   }
+  },
+  {
+   "id": "honey_log",
+   "name": "꿀 통나무",
+   "kind": "bond",
+   "pair": [
+    "fox",
+    "bear"
+   ],
+   "source": "유럽 민담(여우 르나르)",
+   "tiles": 2,
+   "desc": "여우 피해 +20%, 곰 공격 간격 +10%",
+   "fx": {
+    "fox": [
+     {
+      "dmg": 20
+     }
+    ],
+    "bear": [
+     {
+      "interval": 10
+     }
+    ]
+   }
+  },
+  {
+   "id": "eyes_closed",
+   "name": "눈 감고 부르는 노래",
+   "kind": "bond",
+   "pair": [
+    "rooster",
+    "fox"
+   ],
+   "source": "유럽 우화(수탉과 여우)",
+   "tiles": 2,
+   "desc": "수탉 회피 +15%, 여우 피해 -10%",
+   "fx": {
+    "rooster": [
+     {
+      "dodge": 15
+     }
+    ],
+    "fox": [
+     {
+      "dmg": -10
+     }
+    ]
+   }
+  },
+  {
+   "id": "cow_chicken",
+   "name": "소 닭 보듯",
+   "kind": "bond",
+   "pair": [
+    "bison",
+    "rooster"
+   ],
+   "source": "한국 속담",
+   "tiles": 2,
+   "desc": "아무 효과 없음",
+   "fx": {}
+  },
+  {
+   "id": "sheepdog",
+   "name": "양치기 개 흉내",
+   "kind": "bond",
+   "pair": [
+    "wolf",
+    "bighorn"
+   ],
+   "source": "2026-11-23 궁합",
+   "tiles": 2,
+   "desc": "큰뿔양 막기 수 +1, 늑대 피해 +10%",
+   "fx": {
+    "bighorn": [
+     {
+      "block": 1
+     }
+    ],
+    "wolf": [
+     {
+      "dmg": 10
+     }
+    ]
+   }
+  },
+  {
+   "id": "hunt_guide",
+   "name": "사냥 길잡이",
+   "kind": "bond",
+   "pair": [
+    "crow",
+    "wolf"
+   ],
+   "source": "2026-11-23 궁합",
+   "tiles": 2,
+   "desc": "늑대가 공격 중인 적에게 까마귀 치명타 +15%",
+   "fx": {
+    "crow": [
+     {
+      "vs": {
+       "target": "wolfMarked",
+       "crit": 15
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": "dawn_ranch",
+   "name": "새벽 목장",
+   "kind": "bond",
+   "pair": [
+    "bison",
+    "rooster"
+   ],
+   "source": "2026-11-23 궁합",
+   "tiles": 2,
+   "desc": "웨이브 첫 저지 시간 +30%",
+   "fx": {
+    "bison": [
+     {
+      "firstHoldDur": 30
+     }
+    ]
+   }
+  },
+  {
+   "id": "share_honey",
+   "name": "꿀 나눠 먹기",
+   "kind": "bond",
+   "pair": [
+    "bear",
+    "rabbit"
+   ],
+   "source": "2026-11-23 궁합",
+   "tiles": 2,
+   "desc": "둘 다 체력 회복 속도 +20%",
+   "fx": {
+    "bear": [
+     {
+      "regen": 20
+     }
+    ],
+    "rabbit": [
+     {
+      "regen": 20
+     }
+    ]
+   }
+  },
+  {
+   "id": "scared_rabbit",
+   "name": "겁먹은 토끼",
+   "kind": "clash",
+   "pair": [
+    "tiger",
+    "rabbit"
+   ],
+   "source": "2026-11-23 상극",
+   "tiles": 2,
+   "desc": "토끼 회피 -15% ('눈치가 빠르다'면 +15%)",
+   "fx": {
+    "rabbit": [
+     {
+      "if": {
+       "hasTrait": "rabbit_w1_flip"
+      },
+      "dodge": 15
+     },
+     {
+      "if": {
+       "notTrait": "rabbit_w1_flip"
+      },
+      "dodge": -15
+     }
+    ]
+   }
+  },
+  {
+   "id": "fox_coop",
+   "name": "닭장 앞 여우",
+   "kind": "clash",
+   "pair": [
+    "fox",
+    "rooster"
+   ],
+   "source": "2026-11-23 상극",
+   "tiles": 2,
+   "desc": "수탉 울음 버프 범위 -1타일",
+   "fx": {
+    "rooster": [
+     {
+      "auraRadiusAdd": -1
+     }
+    ]
+   }
+  }
+ ]
+}

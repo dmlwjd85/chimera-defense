@@ -2,13 +2,13 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { buildData } from '../src/logic/data.js';
-import { createBattle, step, summon, deploy, merge, skipPrep } from '../src/logic/battle.js';
+import { createBattle, step, summon, deploy, merge, skipPrep, addCarry, chooseRelic } from '../src/logic/battle.js';
 import { mergeKind } from '../src/logic/merge.js';
 import { summonCost } from '../src/logic/economy.js';
 import { newRollCtx, rollSummon, advanceRollCtx } from '../src/logic/roulette.js';
 import { makeRng } from '../src/logic/rng.js';
 
-const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages'];
+const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'talents'];
 const SPOTS = [3, 4.5, 6, 7.5, 2, 9];
 const PRIORITY = ['chimera', 'evolve', 'spirit'];
 const DT = 0.05, TURN = 0.5, MAX_TIME = 3600;
@@ -42,6 +42,11 @@ export function findMergePair(state, data, kind) {
 
 /** Deploy spots in order: melee hold the middle, ranged stand just behind the front blocker within reach. */
 export function deploySpots(state, unit) {
+  if (state.cfgGrid) {
+    const g = state.cfgGrid, cols = [...Array(g.cols).keys()].map((c) => g.x0 + c * g.step);
+    if (unit.stats.flyer) return [...cols];
+    return unit.stats.range <= 1 ? [...cols].reverse() : [cols[1], cols[2], cols[0]].filter((v) => v !== undefined);
+  }
   const melee = unit.stats.range <= 1;
   if (melee) return [...SPOTS].sort((x, y) => Math.abs(x - 6) - Math.abs(y - 6) || y - x);
   const blockers = state.field.filter((u) => u.stats.block >= 2 || u.stats.range <= 1);
@@ -62,6 +67,7 @@ function deployFirst(state, data) {
 
 /** One bot decision round: merge, summon, deploy. */
 export function botTurn(state, data, opts = {}) {
+  if (state.relicOffer) chooseRelic(state, data, opts.noRelics ? state.relicOffer[0] : state.relicOffer[Math.floor(state.rng() * state.relicOffer.length)]);
   const crowded = () => state.field.length + state.bench.filter(Boolean).length > data.config.maxDeployed || !state.bench.includes(null);
   for (let i = 0; i < 3; i++) {
     if (opts.mergeWhenCrowded && !crowded()) break;
@@ -86,7 +92,8 @@ const label = (u) => `${u.kind}:${u.speciesId ?? u.parts.join('+')}:${u.stage}`;
 
 /** Play one full stage with the bot; returns a summary (and per-wave log). */
 export function runOne(data, seed, opts = {}) {
-  const state = createBattle(data, 'forest-1', seed);
+  const state = createBattle(data, opts.stage ?? 'forest-1', seed, { startGoldBonus: opts.extraGold ?? 0, benchBonus: opts.benchBonus ?? 0, talents: opts.talents ?? [] });
+  if (opts.carry) addCarry(state, data, { speciesId: opts.carry, stage: opts.carryStage ?? 'teen', traits: [] });
   const waves = [];
   const made = {};
   let nextTurn = 0, lastWave = 0, lifeAtStart = state.life;
@@ -162,6 +169,7 @@ export function applyKnobs(data, flags) {
   if (flags.same !== undefined) data.config.sameSpecies = { ...(data.config.sameSpecies ?? {}), perUnit: flags.same };
   if (flags.partner !== undefined) data.config.sameSpecies = { ...(data.config.sameSpecies ?? {}), partnerPerUnit: flags.partner };
   if (flags.bossHp !== undefined) for (const e of data.enemies) if (e.boss) e.hp = flags.bossHp;
+  if (flags.dmgAll !== undefined) for (const r of ['common', 'rare', 'hero']) data.config.damageBoost[r] *= flags.dmgAll;
   return data;
 }
 
@@ -176,7 +184,7 @@ export function main(argv) {
     console.log(`roll: ${r.trials} runs x ${r.count} summons -> avg chimera ${r.avgChimera.toFixed(2)}, avg spirit ${r.avgSpirit.toFixed(2)}, at least one chimera ${r.chimeraPct.toFixed(1)}%, at least one spirit ${r.spiritPct.toFixed(1)}%`);
     return [];
   }
-  const opts = { mergeWhenCrowded: !!flags.crowded, skip: !!flags.skip };
+  const opts = { mergeWhenCrowded: !!flags.crowded, skip: !!flags.skip, stage: flags.stage ? 'forest-' + flags.stage : 'forest-1' };
   const rs = [];
   for (let s = start; s < start + runs; s++) {
     const r = runOne(data, s, opts);

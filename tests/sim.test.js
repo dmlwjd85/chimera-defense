@@ -31,7 +31,9 @@ test('ranged units are placed within reach behind the front blocker', () => {
   s.field.push(bear);
   const crow = makeUnit(s, D, { kind: 'base', speciesId: 'crow', stage: 'young', parts: null });
   const first = deploySpots(s, crow)[0];
-  assert.ok(first < 6 && 6 - first <= crow.stats.range);
+  assert.ok(first >= 0.5 && first <= 2.5, 'inside the camp');
+  const bearSpots = deploySpots(s, bear);
+  assert.equal(bearSpots[0], 2.5, 'melee goes to the front column');
 });
 
 test('summon luck numbers are deterministic and in range', () => {

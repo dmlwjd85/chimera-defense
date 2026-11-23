@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { attachInput } from './BattleInput.js';
 import { buildData } from '../logic/data.js';
-import { spellBlock, spellDef } from '../logic/spells.js';
+import { spellBlock, spellDef, spellCost } from '../logic/spells.js';
 import { createBattle, castSpell, step, summon, skipPrep, deploy, moveUnit, recall, sell, merge, buyBait, toggleLock, summonPrice, addCarry, chooseRelic, makeUnit } from '../logic/battle.js';
 import { ownedRelics } from '../logic/relics.js';
 import { battleOptions, settleRun, writeSave, carryCandidates, setCarry } from '../logic/meta.js';
@@ -98,14 +98,14 @@ export default class BattleScene extends Phaser.Scene {
       const d = spellDef(this.data2, id), x = X + W / 2 - (ids.length - 1) * step / 2 + i * step, y = Y + 84;
       const ring = this.add.graphics().setDepth(2);
       const icon = this.add.text(x, y - 4, d.icon, style(26)).setOrigin(0.5).setDepth(3);
-      const cost = this.add.text(x, y + 26, `${d.cost}`, style(11, '#9fd8ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
+      const cost = this.add.text(x, y + 26, `${spellCost(this.state, this.data2, d)}`, style(11, '#9fd8ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
       this.add.text(x - 20, y - 26, KEYS[i], style(10, '#8899aa')).setDepth(3);
       const z = this.add.zone(x, y, step - 4, 62).setInteractive({ useHandCursor: true }).setDepth(4);
-      z.on('pointerover', () => showTip(this, `${d.icon} ${d.name} · ${KIND_NAME[d.kind]} · 마력 ${d.cost}\n“${d.tale}”\n· ${d.desc}`, x, y - 36));
+      z.on('pointerover', () => showTip(this, `${d.icon} ${d.name} · ${KIND_NAME[d.kind]} · 마력 ${spellCost(this.state, this.data2, d)}\n“${d.tale}”\n· ${d.desc}`, x, y - 36));
       z.on('pointerout', () => hideTip(this));
       z.on('pointerdown', () => this.doSpell(id));
       this.input.keyboard.on('keydown-' + KEYS[i], () => this.doSpell(id));
-      return { id, d, x, y, ring, icon, cost, col: KIND[d.kind] };
+      return { id, d, x, y, ring, icon, cost, need: spellCost(this.state, this.data2, d), col: KIND[d.kind] };
     });
     this.drawSpellBar();
   }
@@ -117,9 +117,9 @@ export default class BattleScene extends Phaser.Scene {
     this.manaBar.clear().fillStyle(0x0b1220, 1).fillRoundedRect(X + 14, Y + 32, W - 28, 12, 6).fillStyle(0x4aa3ff, 1).fillRoundedRect(X + 14, Y + 32, Math.max(8, (W - 28) * k), 12, 6).lineStyle(1, 0x9fd8ff, 0.7).strokeRoundedRect(X + 14, Y + 32, W - 28, 12, 6);
     this.manaText.setText(`마력 ${Math.floor(s.mana ?? 0)} / ${sp.max}${s.phase !== 'wave' ? '  (전투 중에 참)' : ''}`);
     for (const b of this.spellBtns) {
-      const ok = !spellBlock(s, this.data2, b.id), has = (s.mana ?? 0) >= b.d.cost;
+      const ok = !spellBlock(s, this.data2, b.id), has = (s.mana ?? 0) >= b.need;
       b.ring.clear().fillStyle(0x0d141d, 0.95).fillCircle(b.x, b.y, 25).lineStyle(3, b.col, ok ? 1 : 0.35).strokeCircle(b.x, b.y, 25);
-      if (!has) b.ring.fillStyle(0x4aa3ff, 0.25).slice(b.x, b.y, 25, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, (s.mana ?? 0) / b.d.cost), false).fillPath();
+      if (!has) b.ring.fillStyle(0x4aa3ff, 0.25).slice(b.x, b.y, 25, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, (s.mana ?? 0) / b.need), false).fillPath();
       b.icon.setAlpha(ok ? 1 : 0.4); b.cost.setColor(has ? '#9fd8ff' : '#667788');
       if (ok && !b.ready) this.tweens.add({ targets: b.icon, scale: { from: 1.35, to: 1 }, duration: 260 });
       b.ready = ok;

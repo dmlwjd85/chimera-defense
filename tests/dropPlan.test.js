@@ -90,5 +90,5 @@ test('moving a unit during prep places it at once; during a wave it walks', asyn
   assert.equal(moveUnit(s, D, f.uid, 7).reason, 'outsideCamp');
   s.phase = 'wave'; s.formationDelta = 4;
   assert.ok(moveUnit(s, D, f.uid, 1.5).ok);
-  assert.deepEqual([f.pos, f.targetPos], [0.5, 5.5]);
+  assert.deepEqual([f.pos, f.targetPos], [0.5, D.config.formation.front - D.config.formation.colGap]);
 });

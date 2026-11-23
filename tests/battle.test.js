@@ -62,8 +62,8 @@ test('the camp marches to the middle as one block and walks back after the wave'
   s.bench = [mk('bear'), mk('fox'), mk('crow')];
   B.deploy(s, D, 0, 2.5, { row: 1 }); B.deploy(s, D, 1, 0.5, { row: 2 }); B.deploy(s, D, 2, 1.5, { row: 0 });
   B.skipPrep(s, D);
-  const d = D.config.formation.front - 2.5;
-  assert.deepEqual(s.field.map((u) => u.targetPos), [2.5 + d, 0.5 + d, 1.5 + d]);
+  const f = D.config.formation, g = f.colGap;
+  assert.deepEqual(s.field.map((u) => u.targetPos), [f.front, f.front - 2 * g, f.front - g], 'columns close up a little in battle');
   B.standDown(s);
   assert.deepEqual(s.field.map((u) => u.pos), [2.5, 0.5, 1.5]);
 });
@@ -79,4 +79,26 @@ test('swap exchanges cells without merging', () => {
   assert.equal(s.field.length, 2);
   assert.ok(B.swap(s, D, { where: 'bench', index: 2 }, { where: 'field', uid: a.uid }).ok);
   assert.equal(s.field.find((u) => u.speciesId === 'fox').cell.c, 0);
+});
+
+test('brawl: a free melee animal joins an ally holding an enemy; a leaker gets cut off', async () => {
+  const { brawl } = await import('../src/logic/combat.js');
+  const { makeEnemy } = await import('../src/logic/waves.js');
+  const s = B.createBattle(D, STAGE, 6);
+  const mk = (sp) => B.makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'young', parts: null });
+  s.bench = [mk('bear'), mk('tiger'), mk('bison')];
+  B.deploy(s, D, 0, 2.5, { row: 1 }); B.deploy(s, D, 1, 1.5, { row: 0 }); B.deploy(s, D, 2, 0.5, { row: 2 });
+  B.skipPrep(s, D);
+  const [bear, tiger, bison] = s.field;
+  for (const u of s.field) u.pos = u.targetPos;
+  const held = makeEnemy('normal', 1, s.stage, D, 900); held.pos = bear.pos + D.config.blockedOffset; held.blockedBy = bear.uid;
+  s.enemies = [held];
+  brawl(s, D.config, 1);
+  assert.ok(Math.abs(tiger.targetPos - (held.pos - D.config.blockedOffset)) < 1e-9, 'tiger walks up to help the bear');
+  const leak = makeEnemy('normal', 1, s.stage, D, 901); leak.pos = bison.slot - 1.5;
+  s.enemies = [held, leak]; for (const u of s.field) u.engageCd = 0;
+  brawl(s, D.config, 1);
+  const chaser = s.field.find((u) => u.intercept === leak.eid);
+  assert.ok(chaser && chaser !== bear, 'someone free runs back to cut the leaker off');
+  assert.ok(chaser.targetPos < leak.pos, 'and stands in front of it');
 });

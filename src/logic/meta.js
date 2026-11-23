@@ -5,7 +5,7 @@ export function defaultSave() {
   return {
     version: 1, essence: 0,
     unlocks: { startGold: 0, bench: 0 },
-    codex: { units: [], recipes: [], failedPairs: [], enemies: [], bonds: [] },
+    codex: { units: [], recipes: [], failedPairs: [], enemies: [], bonds: [], spirits: [] },
     hintShards: 0, hints: {},
     speciesXp: {},
     stages: {},
@@ -150,6 +150,7 @@ export function settleRun(save, state, data) {
   addUniq(save.codex.failedPairs, newFlops);
   addUniq(save.codex.bonds, state.finds.bonds);
   addUniq(save.codex.enemies, [...(state.seenEnemies ?? [])]);
+  addUniq((save.codex.spirits ??= []), state.finds.spirits ?? []);
   const ach = [];
   const give = (id) => { if (!save.achievements.includes(id)) { save.achievements.push(id); ach.push(id); } };
   if (state.summonCount > 0) give('firstSummon');

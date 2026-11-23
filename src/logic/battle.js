@@ -150,14 +150,16 @@ export function freeRow(state, c, cfg, pref = 1, ignoreUid = null) {
 }
 /** How far the whole camp marches when a wave starts. */
 export const campDelta = (cfg) => (cfg.formation?.front ?? 0) - gridPos(cfg.grid.cols - 1, cfg);
+/** Where column c stands while a wave runs: front column at formation.front, the others colGap apart (a bit tighter than the camp). */
+export const battleSpot = (c, cfg) => (cfg.formation?.front ?? 0) - (cfg.grid.cols - 1 - c) * (cfg.formation?.colGap ?? cfg.grid.step);
 /** Put a unit into a cell: lane / sky height follow the row; pos follows the column (shifted while a wave runs). */
 function seat(state, cfg, unit, c, r) {
   unit.cell = { c, r };
   const home = gridPos(c, cfg);
   if (isFlyer(unit)) { unit.lane = null; unit.skyY = cfg.grid.skyY?.[r] ?? 190; } else unit.lane = r;
-  const d = state.phase === 'wave' ? state.formationDelta ?? campDelta(cfg) : 0;
   unit.home = state.phase === 'wave' ? { pos: home, lane: unit.lane, skyY: unit.skyY } : null;
-  return { home, target: clampPos(home + d, cfg) };
+  unit.slot = battleSpot(c, cfg);
+  return { home, target: state.phase === 'wave' ? clampPos(unit.slot, cfg) : home };
 }
 
 /** A ground spot is free while fewer than config.lanes (3) animals share the column. Flyers can go anywhere. */
@@ -307,7 +309,7 @@ export function merge(state, data, fromRef, toRef) {
     if (!state.known.recipes.has(unit.speciesId)) state.finds.recipes.push(unit.speciesId);
     state.known.recipes.add(unit.speciesId);
   }
-  if (kind === 'spirit') state.madeSpirit = true;
+  if (kind === 'spirit') { state.madeSpirit = true; (state.finds.spirits ??= []).push(unit.speciesId); }
   if (kind === 'weak') {
     if (!state.known.failed.has(pairKey(...unit.parts))) state.finds.flops.push(pairKey(...unit.parts));
     state.known.failed.add(pairKey(...unit.parts));
@@ -343,7 +345,8 @@ export function formUp(state, data) {
       const c = u.cell?.c ?? gridCol(u.targetPos, data.config);
       const home = gridPos(Math.max(0, c), data.config);
       u.home = { pos: home, lane: u.lane, skyY: u.skyY };
-      u.targetPos = clampPos(home + d, data.config);
+      u.slot = battleSpot(Math.max(0, c), data.config);
+      u.targetPos = clampPos(u.slot, data.config);
       u.formationMove = true;
     }
     return;
@@ -368,7 +371,7 @@ export function standDown(state) {
   for (const u of state.field) {
     if (!u.home) continue;
     Object.assign(u, { pos: u.home.pos, targetPos: u.home.pos, lane: u.home.lane ?? u.lane, skyY: u.home.skyY ?? u.skyY, moving: false, formationMove: false });
-    u.home = null;
+    u.home = null; u.slot = null; u.engageCd = 0;
   }
   state.formationDelta = 0;
 }

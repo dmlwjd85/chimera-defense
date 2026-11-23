@@ -298,6 +298,9 @@ export function combatTick(state, data, dt) {
   for (const b of state.allyBuffs) b.left -= dt;
   state.allyBuffs = state.allyBuffs.filter((b) => b.left > 0);
 
+  // 패싸움: 근접은 가까운 적(동료가 붙잡은 적 포함)에게 다가가 붙고, 원거리는 사거리 안으로 따라붙는다
+  if (state.phase === 'wave' && cfg.brawl) brawl(state, cfg, dt);
+
   // movement
   for (const u of state.field) {
     if (u.down) continue;
@@ -437,3 +440,46 @@ export function combatTick(state, data, dt) {
     if (state.time - u.lastHitAt >= cfg.regen.delay) u.hp = Math.min(max, u.hp + max * cfg.regen.percentPerSec * (1 + (u.mods?.regen ?? 0) / 100) / 100 * dt);
   }
 }
+
+/** Pick where each animal should stand this moment of the brawl (kept near its battle slot, never stacked in a row). */
+export function brawl(state, cfg, dt) {
+  const B = cfg.brawl, off = cfg.blockedOffset ?? 0.5, reach = state.meleeReach ?? 1;
+  const plans = [];
+  // 가로막기: 대형 뒤로 빠져나간 적은 손이 빈 근접 동물이 쫓아가 앞을 막는다 (적 하나에 한 마리)
+  const melee = state.field.filter((u) => !u.down && u.slot != null && !u.stats.flyer && u.stats.range <= 1 && effBlock(u) > 0);
+  const line = melee.length ? Math.min(...melee.map((u) => u.slot)) : 0;
+  const leakers = state.enemies.filter((e) => e.hp > 0 && !e.flying && e.blockedBy == null && e.pos < line - 0.4).sort((a, b) => a.pos - b.pos);
+  const busy = new Set(state.enemies.filter((e) => e.hp > 0 && e.blockedBy != null).map((e) => e.blockedBy));
+  const taken = new Set();
+  for (const e of leakers) {
+    const free = melee.filter((u) => !busy.has(u.uid) && !taken.has(u.uid)).sort((a, b) => Math.abs(a.pos - e.pos) - Math.abs(b.pos - e.pos))[0];
+    if (!free) break;
+    taken.add(free.uid);
+    const t = clampTo(Math.max(0.5, e.pos - 0.7), cfg);
+    if (Math.abs(t - free.targetPos) > 0.05) { free.targetPos = t; free.formationMove = true; }
+    free.engageCd = B.retarget;
+    free.intercept = e.eid;
+  }
+  for (const u of state.field) {
+    if (u.down || u.slot == null || u.stats.flyer || u.stats.range > 1 || taken.has(u.uid)) continue;
+    u.intercept = null;
+    u.engageCd = (u.engageCd ?? 0) - dt;
+    if (u.engageCd > 0) continue;
+    u.engageCd = B.retarget;
+    const inReach = state.enemies.some((e) => e.hp > 0 && !e.flying && Math.abs(e.pos - u.pos) <= reach && (e.blockedBy === u.uid || e.blockedBy == null || Math.abs(e.pos - u.pos) <= reach * 0.8));
+    if (inReach && !u.moving) continue; // already swinging: stay put
+    // gang up: go stand next to an enemy an ally is already holding
+    const held = state.enemies.filter((e) => e.hp > 0 && !e.flying && e.blockedBy != null && e.blockedBy !== u.uid && e.pos >= u.slot - 0.6 && e.pos <= u.slot + B.leash);
+    const pick = held.reduce((b, e) => (!b || Math.abs(e.pos - u.slot) < Math.abs(b.pos - u.slot) ? e : b), null);
+    plans.push([u, pick ? Math.min(u.slot + B.leash, Math.max(u.slot - 0.5, pick.pos - off)) : u.slot]);
+  }
+  // keep animals of the same row apart: anyone already standing in that row counts as an obstacle
+  for (const [u, t0] of plans) {
+    let t = t0;
+    const row = state.field.filter((o) => o !== u && !o.down && !o.stats.flyer && (o.lane ?? 1) === (u.lane ?? 1));
+    for (let k = 0; k < 4; k++) { const hit = row.find((o) => Math.abs(o.targetPos - t) < B.spacing); if (!hit) break; t = hit.targetPos - B.spacing; }
+    const nt = clampTo(t, cfg);
+    if (Math.abs(nt - u.targetPos) > 0.05) { u.targetPos = nt; u.formationMove = true; }
+  }
+}
+const clampTo = (p, cfg) => Math.min(cfg.pathLength - 0.5, Math.max(0.5, p));

@@ -3,7 +3,7 @@ import { FONT, makeT } from '../text.js';
 import { loadSave } from '../logic/meta.js';
 import { preloadRigs } from './rigs.js';
 
-const DATA_KEYS = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'globe', 'talents'];
+const DATA_KEYS = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'globe', 'talents', 'story'];
 
 export default class BootScene extends Phaser.Scene {
   constructor() { super('Boot'); }

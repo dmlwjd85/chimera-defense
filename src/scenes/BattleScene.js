@@ -580,6 +580,7 @@ export default class BattleScene extends Phaser.Scene {
     if (live && !stop) step(this.state, this.data2, this.frameDt);
     this.enemyHits = new Set([...this.enemyHits, ...this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid)]);
     this.globe?.update(this.realDt);
+    { const want = this.state.phase === 'wave' ? this.data2.config.formation?.squeeze ?? 1 : 1; this.squeezeK = (this.squeezeK ?? 1) + (want - (this.squeezeK ?? 1)) * Math.min(1, this.realDt * 3); }
     this.preAnimate();
     this.syncUnits();
     this.syncEnemies();
@@ -653,7 +654,7 @@ export default class BattleScene extends Phaser.Scene {
   syncUnits() {
     const s = this.state;
     const live = [
-      ...s.field.map((u) => [u, tileToX(u.pos), u.stats.flyer ? (u.skyY ?? 200) - 30 : LANE_Y[u.lane ?? 1], true]),
+      ...s.field.map((u) => [u, tileToX(u.pos), u.stats.flyer ? (u.skyY ?? 200) - 30 : this.laneY(u.lane ?? 1), true]),
       ...s.bench.map((u, i) => (u ? [u, benchSlotX(i), BENCH_Y, false] : null)).filter(Boolean),
     ];
     const seen = new Set();
@@ -682,7 +683,7 @@ export default class BattleScene extends Phaser.Scene {
           v.walking = Math.abs(x - v.curX) > 6;
           v.walkDir = Math.sign(dx);
           let lx = 0;
-          if (v.lungeT != null) { v.lungeT += this.realDt || 0.016; const k = v.lungeT / 0.2; lx = k < 1 ? Math.sin(k * Math.PI) * 26 * v.lungeDir : 0; if (k >= 1) v.lungeT = null; }
+          if (v.lungeT != null) { v.lungeT += this.realDt || 0.016; const k = v.lungeT / 0.3; lx = k < 0.35 ? -10 * (k / 0.35) * v.lungeDir : k < 1 ? (-10 + 40 * Math.sin(((k - 0.35) / 0.65) * Math.PI)) * v.lungeDir * (k < 0.55 ? 1 : 1) : 0; if (k >= 1) v.lungeT = null; }
           if (v.shakeT > 0) { v.shakeT -= this.realDt || 0.016; lx += Math.sin(this.time.now / 18) * 4 * Math.max(0, v.shakeT / 0.18); }
           v.container.setPosition(v.curX + lx, v.curY);
         } else { v.curX = x; v.curY = y; v.walking = false; v.container.setPosition(x, y); if (this.pendingEnt?.has(u.uid) && !this.hidden.has(u.uid)) this.startEntrance(u.uid); if (v.ent) this.tickEntrance(u, v, x, y); }
@@ -691,7 +692,7 @@ export default class BattleScene extends Phaser.Scene {
       if (v.ent && (onField || this.dragUid === u.uid)) this.endEntrance(v);
       if (!v.ent && this.dragUid !== u.uid) { const k = onField ? (u.stats.flyer ? LANE_SCALE[u.cell?.r ?? 1] * 0.96 : LANE_SCALE[u.lane ?? 1]) : 1; if (Math.abs((v.persp ?? 1) - k) > 0.001) { v.persp = k; v.container.setScale(k); } }
       if (v.foot2) v.foot2.setVisible(!u.stats.flyer || !onField);
-      if (v.shadow) { v.shadow.setVisible(onField && u.stats.flyer && !u.down); v.shadow.setPosition(v.container.x, LANE_Y[u.cell?.r ?? 1] + 34); }
+      if (v.shadow) { v.shadow.setVisible(onField && u.stats.flyer && !u.down); v.shadow.setPosition(v.container.x, this.laneY(u.cell?.r ?? 1) + 34); }
       if (onField && u.hp < (v.hpSeen ?? u.hp) - 0.4 && !u.down) {
         const d = v.hpSeen - u.hp; v.shakeT = 0.18;
         this.floatText(v.container.x + Phaser.Math.Between(-8, 8), v.container.y - 60, `-${Math.round(d)}`, '#ff6b6b', d >= (u.maxHp ?? u.stats.hp) * 0.2 ? 22 : 15);
@@ -776,7 +777,7 @@ export default class BattleScene extends Phaser.Scene {
       const blk = e.blockedBy != null ? this.state.field.find((u) => u.uid === e.blockedBy) : null;
       const queue = blk ? this.state.enemies.filter((o) => o.blockedBy === e.blockedBy && !o.flying) : [];
       const qi = Math.max(0, queue.indexOf(e));
-      const laneY = LANE_Y[blk && !blk.stats.flyer ? blk.lane ?? 1 : e.eid % 3] + 22;
+      const laneY = this.laneY(blk && !blk.stats.flyer ? blk.lane ?? 1 : e.eid % 3) + 22;
       v.laneY = v.laneY == null ? laneY : v.laneY + (laneY - v.laneY) * Math.min(1, (this.realDt || 0.016) * 6);
       const y = e.flying ? PATH_Y - 110 + bob : v.laneY + (e.boss ? -6 : 0);
       if (v.kb) { v.kb *= Math.pow(0.0005, this.realDt || 0.016); if (Math.abs(v.kb) < 0.3) v.kb = 0; }
@@ -937,12 +938,19 @@ export default class BattleScene extends Phaser.Scene {
   }
 
   dmgNumber(x, y, d, heavy) {
+    if (heavy) { this.stopFor(0.05); this.cameras.main.shake(80, 0.003); }
     const t = this.add.text(x + Phaser.Math.Between(-10, 10), y, String(Math.round(d)), style(heavy ? 26 : 17, heavy ? '#ffe066' : '#ffffff', { stroke: heavy ? '#7a2a00' : '#000000', strokeThickness: heavy ? 6 : 4, fontStyle: 'bold' })).setOrigin(0.5).setDepth(1700).setScale(heavy ? 1.6 : 1.2);
     this.tweens.add({ targets: t, scale: 1, duration: 120, ease: 'Back.out' });
     this.tweens.add({ targets: t, y: y - (heavy ? 42 : 30), alpha: 0, delay: heavy ? 380 : 220, duration: 420, onComplete: () => t.destroy() });
   }
 
   kick2(ev, fromX) { this.kick(ev.eids?.length ? ev.eids : [ev.eid], fromX, 9); }
+
+  /** Row height on the road; rows close in a little toward the middle while a wave runs (패싸움 느낌). */
+  laneY(r) {
+    const mid = LANE_Y[1];
+    return mid + (LANE_Y[r] - mid) * (this.squeezeK ?? 1);
+  }
 
   /** Hit-stop: freeze the simulation for a few frames on heavy hits. */
   stopFor(sec) { const now = this.time.now; if (now - (this.lastStopAt ?? 0) < 220) return; this.lastStopAt = now; this.hitStop = Math.max(this.hitStop ?? 0, sec); }

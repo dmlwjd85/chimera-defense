@@ -7,6 +7,7 @@ import StageSelectScene from './scenes/StageSelectScene.js';
 import CodexScene from './scenes/CodexScene.js';
 import UnlockScene from './scenes/UnlockScene.js';
 import TalentScene from './scenes/TalentScene.js';
+import OpeningScene from './scenes/OpeningScene.js';
 import { FONT } from './text.js';
 
 const config = {
@@ -16,7 +17,7 @@ const config = {
   height: 720,
   backgroundColor: '#1b1f24',
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-  scene: [BootScene, TitleScene, StageSelectScene, BattleScene, ResultScene, CodexScene, UnlockScene, TalentScene]
+  scene: [BootScene, TitleScene, StageSelectScene, BattleScene, ResultScene, CodexScene, UnlockScene, TalentScene, OpeningScene]
 };
 
 const game = new Phaser.Game(config);

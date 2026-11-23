@@ -15,7 +15,7 @@ export default class TalentScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#0e141b');
     if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.3);
     title(this, 640, 52, '별자리 나무', 40);
-    this.add.text(640, 92, '쓰러진 판에 남은 유물이 조각이 되어 돌아와요. 가지마다 아래에서 위로 하나씩 밝혀 보세요.', style(14, '#cfd8dc')).setOrigin(0.5);
+    this.add.text(640, 92, '쓰러진 판에 남은 유물이 조각으로 돌아옴. 가지마다 아래에서 위로 하나씩 밝힘.', style(14, '#cfd8dc')).setOrigin(0.5);
     panel(this, 1040, 28, 200, 44, { r: 22, plain: true });
     this.shardText = this.add.text(1140, 50, '', style(20, '#e0c3ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5);
     this.layer = this.add.container(0, 0);

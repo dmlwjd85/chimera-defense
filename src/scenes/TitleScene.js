@@ -24,7 +24,7 @@ export default class TitleScene extends Phaser.Scene {
       const p = window.__installPrompt; if (!p) return;
       p.prompt(); const r = await p.userChoice.catch(() => null);
       if (r?.outcome === 'accepted') inst.setVisible(false);
-    }, { size: 18, fill: 0x2e5d3a, stroke: 0x9cff6b, tip: '바탕화면·홈 화면에 아이콘이 생기고 인터넷 없이도 실행돼요' });
+    }, { size: 18, fill: 0x2e5d3a, stroke: 0x9cff6b, tip: '바탕화면·홈 화면에 아이콘이 생기고 인터넷 없이도 실행됨' });
     const standalone = window.matchMedia?.('(display-mode: standalone)').matches || window.matchMedia?.('(display-mode: fullscreen)').matches;
     inst.setVisible(!!window.__installPrompt && !standalone);
     const onAble = () => inst.setVisible(!standalone);

@@ -214,7 +214,7 @@ export function choiceBox(scene, titleText, lines, options) {
   for (const [t, col] of lines) { const o = scene.add.text(640, y, t, { fontFamily: FONT, fontSize: '14px', color: col ?? '#cfd8dc', align: 'center', wordWrap: { width: W - 40 } }).setOrigin(0.5, 0).setDepth(D + 2); objs.push(o); y += o.height + 6; }
   y += 6;
   const close = () => { objs.forEach((o) => o.destroy()); scene.modalOpen = false; scene.paused = savedPaused; };
-  const all = [...options, { icon: '✕', label: '취소', sub: '아무것도 하지 않아요', color: 0x7f8c8d, onPick: () => {} }];
+  const all = [...options, { icon: '✕', label: '취소', sub: '아무것도 안 함', color: 0x7f8c8d, onPick: () => {} }];
   all.forEach((o, i) => {
     const by = y + i * (rowH + 8);
     const bg = scene.add.graphics().setDepth(D + 2);

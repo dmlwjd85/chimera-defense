@@ -37,10 +37,10 @@ export default class StageSelectScene extends Phaser.Scene {
       else this.add.text(x, 40, got ? unit.name[0] : '?', style(18)).setOrigin(0.5);
       this.add.text(x, 73, got ? '합류' : `⭐${u.stars}`, style(11, got ? '#58d68d' : nx?.id === u.id ? '#9cff6b' : '#8899aa')).setOrigin(0.5);
       const z = this.add.zone(x, 44, 56, 66).setInteractive();
-      z.on('pointerover', () => showTip(this, got ? `${unit.name} · 합류했어요` : `별 ${u.stars}개를 모으면 ${nx?.id === u.id ? unit.name : '새 친구'}이(가) 와요`, x, 14));
+      z.on('pointerover', () => showTip(this, got ? `${unit.name} · 합류함` : `별 ${u.stars}개를 모으면 ${nx?.id === u.id ? unit.name : '새 친구'} 합류`, x, 14));
       z.on('pointerout', () => hideTip(this));
     });
-    this.add.text(420 + track.length * 62 - 10, 30, nx ? `다음 친구까지 ⭐${nx.stars - total}` : '모두 모였어요', style(14, '#9cff6b'));
+    this.add.text(420 + track.length * 62 - 10, 30, nx ? `다음 친구까지 ⭐${nx.stars - total}` : '모두 모임', style(14, '#9cff6b'));
     this.add.text(420 + track.length * 62 - 10, 52, '★ 클리어  ★ 생명 ' + (cfg.stars?.life ?? 60) + '% 이상  ★ 제한 시간', style(11, '#aabbcc'));
 
     // 12 cards, 4 x 3
@@ -73,7 +73,7 @@ export default class StageSelectScene extends Phaser.Scene {
       if (c.st) {
         const rec = save.stages[c.st.id], n = starsOf(rec);
         this.add.text(x + 124, y + 72, stars(n), style(20, n ? '#ffd84d' : '#55606c', { stroke: '#000', strokeThickness: 3 }));
-        this.add.text(x + 12, y + 90, open ? `보스 ${data.enemyById[c.st.boss]?.name ?? '-'}` : '앞 스테이지를 깨면 열려요', style(12, open ? '#ffb4a8' : '#667788'));
+        this.add.text(x + 12, y + 90, open ? `보스 ${data.enemyById[c.st.boss]?.name ?? '-'}` : '앞 스테이지를 깨면 열림', style(12, open ? '#ffb4a8' : '#667788'));
       } else {
         this.add.text(x + 124, y + 74, `보스 ${c.road.boss}`, style(12, '#8a6f6f'));
         this.add.text(x + 12, y + 90, c.road.theme, style(11, '#667788', { wordWrap: { width: W - 24 } }));

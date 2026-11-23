@@ -115,7 +115,7 @@ export default class BattleScene extends Phaser.Scene {
     const sp = this.data2.config.spells, s = this.state, X = 492, Y = 556, W = 392;
     const k = Math.max(0, Math.min(1, (s.mana ?? 0) / sp.max));
     this.manaBar.clear().fillStyle(0x0b1220, 1).fillRoundedRect(X + 14, Y + 32, W - 28, 12, 6).fillStyle(0x4aa3ff, 1).fillRoundedRect(X + 14, Y + 32, Math.max(8, (W - 28) * k), 12, 6).lineStyle(1, 0x9fd8ff, 0.7).strokeRoundedRect(X + 14, Y + 32, W - 28, 12, 6);
-    this.manaText.setText(`마력 ${Math.floor(s.mana ?? 0)} / ${sp.max}${s.phase !== 'wave' ? '  (전투 중에 차올라요)' : ''}`);
+    this.manaText.setText(`마력 ${Math.floor(s.mana ?? 0)} / ${sp.max}${s.phase !== 'wave' ? '  (전투 중에 참)' : ''}`);
     for (const b of this.spellBtns) {
       const ok = !spellBlock(s, this.data2, b.id), has = (s.mana ?? 0) >= b.d.cost;
       b.ring.clear().fillStyle(0x0d141d, 0.95).fillCircle(b.x, b.y, 25).lineStyle(3, b.col, ok ? 1 : 0.35).strokeCircle(b.x, b.y, 25);
@@ -129,7 +129,7 @@ export default class BattleScene extends Phaser.Scene {
   doSpell(id) {
     if (this.paused || this.modalOpen) return;
     const r = castSpell(this.state, this.data2, id);
-    if (!r.ok) { const why = { mana: '마력이 모자라요', noWave: '전투 중에만 쓸 수 있어요', cooldown: '조금만 기다려요', noTarget: '적이 없어요' }[r.reason]; if (why) this.toast(why, '#9fd8ff'); return; }
+    if (!r.ok) { const why = { mana: '마력 부족', noWave: '전투 중에만 사용', cooldown: '잠시 대기', noTarget: '적 없음' }[r.reason]; if (why) this.toast(why, '#9fd8ff'); return; }
     this.drawSpellBar();
   }
 
@@ -160,7 +160,7 @@ export default class BattleScene extends Phaser.Scene {
     if (!c) return;
     weather(this, c);
     const icons = (ids) => ids.map((e) => cfg.elements.defs[e]?.icon ?? '').join('');
-    const tip = `${c.name}\n“${c.tale}”${c.strong?.length ? `\n${icons(c.strong)} 속성 동물: 피해 +${cfg.climateEffect.dmg}%, 속성 공격이 자주 터져요` : ''}${c.weak?.length ? `\n${icons(c.weak)} 속성 동물: 피해 -${cfg.climateEffect.dmg}%, 속성 공격이 뜸해져요` : ''}${c.enemy?.speed ? '\n적이 조금 빨라져요' : ''}${c.enemy?.flySpeed ? `\n나는 적이 ${c.enemy.flySpeed < 1 ? '느려져요' : '빨라져요'}` : ''}`;
+    const tip = `${c.name}\n“${c.tale}”${c.strong?.length ? `\n${icons(c.strong)} 속성 동물: 피해 +${cfg.climateEffect.dmg}%, 속성 공격 잦아짐` : ''}${c.weak?.length ? `\n${icons(c.weak)} 속성 동물: 피해 -${cfg.climateEffect.dmg}%, 속성 공격 뜸해짐` : ''}${c.enemy?.speed ? '\n적이 조금 빨라짐' : ''}${c.enemy?.flySpeed ? `\n나는 적 ${c.enemy.flySpeed < 1 ? '느려짐' : '빨라짐'}` : ''}`;
     chip(this, 1090, 100, `${c.icon} ${c.name}  ${c.strong?.length ? icons(c.strong) + '▲' : ''} ${c.weak?.length ? icons(c.weak) + '▼' : ''}`, tip, { stroke: 0x7fd1ff, size: 13, depth: 30 });
     this.time.delayedCall(700, () => this.fx.banner(`${c.icon} ${c.name}`, '#cfe8ff', c.tale));
   }
@@ -257,7 +257,7 @@ export default class BattleScene extends Phaser.Scene {
     const dim = this.add.rectangle(640, 360, 1280, 720, 0x05080c, 0.72).setInteractive().setDepth(4000);
     objs.push(dim);
     const t = this.add.text(640, 150, '💎 유물 선택', style(32, '#ffe6b0', { stroke: '#2a1a08', strokeThickness: 6 })).setOrigin(0.5).setDepth(4002);
-    const sub = this.add.text(640, 190, '하나를 골라 이번 판의 빌드를 바꾸세요', style(15, '#cfd8dc')).setOrigin(0.5).setDepth(4002);
+    const sub = this.add.text(640, 190, '하나를 골라 이번 판의 빌드를 바꿈', style(15, '#cfd8dc')).setOrigin(0.5).setDepth(4002);
     objs.push(t, sub);
     const W = 250, H = 300, gap = 30, x0 = 640 - (offer.length * W + (offer.length - 1) * gap) / 2;
     offer.forEach((id, i) => {
@@ -307,12 +307,12 @@ export default class BattleScene extends Phaser.Scene {
     objs.push(this.add.rectangle(640, 360, 1280, 720, 0x05080c, 0.7).setInteractive().setDepth(4000));
     objs.push(panel(this, 300, 110, 680, 500, { depth: 4001 }));
     objs.push(this.add.text(640, 145, '도움말', style(26, '#ffe6b0', { stroke: '#2a1a08', strokeThickness: 5 })).setOrigin(0.5).setDepth(4002));
-    const sym = [['♥', '생명 — 적이 방어선을 넘으면 줄어요'], ['●', '골드 — 소환·먹이에 사용'], ['⚔', '피해'], ['⏱', '공격 간격(초)'], ['◎', '사거리'], ['🛡', '막는 적 수'], ['♥ 칩', '인연 — 함께 있으면 강해져요'], ['⚡ 칩', '상극 — 함께 있으면 약해져요'], ['🌏', '대륙 시너지'], ['💎', '유물 — 3·6·9·12 웨이브 뒤 선택'], ['🔒', '특성 고정 — 합쳐도 유지'], ['📜', '설화 능력'], ['Zz', '쉬는 중 (이동 직후)']];
+    const sym = [['♥', '생명 — 적이 방어선을 넘으면 줄어듦'], ['●', '골드 — 소환·먹이에 사용'], ['⚔', '피해'], ['⏱', '공격 간격(초)'], ['◎', '사거리'], ['🛡', '막는 적 수'], ['♥ 칩', '인연 — 함께 있으면 강해짐'], ['⚡ 칩', '상극 — 함께 있으면 약해짐'], ['🌏', '대륙 시너지'], ['💎', '유물 — 3·6·9·12 웨이브 뒤 선택'], ['🔒', '특성 고정 — 합쳐도 유지'], ['📜', '설화 능력'], ['Zz', '쉬는 중 (이동 직후)']];
     sym.forEach(([k, v], i) => {
       const x = 340 + (i % 2) * 320, y = 190 + Math.floor(i / 2) * 34;
       objs.push(this.add.text(x, y, k, style(17, '#ffd84d')).setDepth(4002), this.add.text(x + 56, y + 2, v, style(14, '#dfe6ea')).setDepth(4002));
     });
-    const more = ['소환: 지구본이 대륙 → 서식지 → 동물 순으로 돌아요. 대륙/서식지를 지정하면 비싸지만 원하는 쪽이 나와요.', '출전: 대기석 동물을 길로 끌어 놓아요. 한 칸에 셋까지, 나는 동물은 하늘 어디든.', '진화: 같은 동물·같은 단계 둘 → 다음 단계. 성체 다른 종 둘 → 키메라.', '전투: 웨이브가 시작되면 전열은 앞으로, 후열은 뒤에서, 공중은 위에서 대형을 유지하며 전장 가운데로 나가요.', '로그라이트: 유물과 데려가는 동료로 판마다 빌드가 달라져요.'];
+    const more = ['소환: 지구본이 대륙 → 서식지 → 동물 순으로 돎. 대륙/서식지를 지정하면 비싸지만 원하는 쪽이 나옴.', '출전: 대기석 동물을 길로 끌어 놓음. 한 칸에 셋까지, 나는 동물은 하늘 어디든.', '진화: 같은 동물·같은 단계 둘 → 다음 단계. 성체 다른 종 둘 → 키메라.', '전투: 웨이브가 시작되면 전열은 앞으로, 후열은 뒤에서, 공중은 위에서 대형을 유지하며 전장 가운데로 나감.', '로그라이트: 유물과 데려가는 동료로 판마다 빌드가 달라짐.'];
     let detail = null;
     const toggle = button(this, 640, 440, 180, 34, '자세히 ▾', () => {
       if (detail) { detail.forEach((o) => o.destroy()); detail = null; toggle.set('자세히 ▾'); return; }
@@ -334,7 +334,7 @@ export default class BattleScene extends Phaser.Scene {
     for (let i = n; i < shown; i++) {
       const r = this.add.rectangle(benchSlotX(i), BENCH_Y, SLOT, SLOT, 0x05080c, 0.55).setStrokeStyle(1.5, 0x3b4b5e, 0.8).setDepth(1).setInteractive();
       this.add.text(benchSlotX(i), BENCH_Y, '🔒', style(22)).setOrigin(0.5).setAlpha(0.6).setDepth(2);
-      r.on('pointerover', () => showTip(this, '잠긴 케이지\n· 별자리 나무의 케이지 갈래에서 열 수 있어요', benchSlotX(i), BENCH_Y - 50)).on('pointerout', () => hideTip(this));
+      r.on('pointerover', () => showTip(this, '잠긴 케이지\n· 별자리 나무의 케이지 갈래에서 엶', benchSlotX(i), BENCH_Y - 50)).on('pointerout', () => hideTip(this));
     }
     const sx = 765, sy = 505;
     this.sellZone = this.add.rectangle(sx, sy, 150, 70, 0x3a1414, 0.85).setStrokeStyle(2, 0xc0392b, 0.9);
@@ -365,7 +365,7 @@ export default class BattleScene extends Phaser.Scene {
     gh.lineStyle(2, 0xff8a65, 0.6);
     for (let k = gx0; k < gx1; k += 16) { gh.lineBetween(k, top, Math.min(k + 8, gx1), top); gh.lineBetween(k, top + PATH_H, Math.min(k + 8, gx1), top + PATH_H); }
     for (let k = top; k < top + PATH_H; k += 16) { gh.lineBetween(gx0, k, gx0, Math.min(k + 8, top + PATH_H)); gh.lineBetween(gx1, k, gx1, Math.min(k + 8, top + PATH_H)); }
-    this.ghostLabel = this.add.text((gx0 + gx1) / 2, top + PATH_H + 12, '⚔ 웨이브가 오면 이 자리에서 싸워요', style(12, '#ffb199', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(7);
+    this.ghostLabel = this.add.text((gx0 + gx1) / 2, top + PATH_H + 12, '⚔ 웨이브가 오면 이 자리에서 싸움', style(12, '#ffb199', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(7);
   }
 
   /** Light the cell under the pointer while dragging: green free, purple someone to merge/swap, red outside. */
@@ -408,7 +408,7 @@ export default class BattleScene extends Phaser.Scene {
     this.scope = this.add.circle(...this.scopeAt, 37, 0x0b0e12).setStrokeStyle(4, 0xd4b06a).setDepth(5);
     this.scopeLayer = this.add.container(0, 0).setDepth(6);
     this.ribbon = this.add.text(1082, 452, '', style(18, '#ffffff', { stroke: '#000', strokeThickness: 4, backgroundColor: '#101820f0', padding: { x: 14, y: 5 }, fontStyle: 'bold' })).setOrigin(0.5).setDepth(20).setVisible(false);
-    this.globeText = this.add.text(1090, 460, '지구본을 돌려 보세요', style(12, '#ddeeff', { align: 'center', wordWrap: { width: 150 } })).setOrigin(0.5, 0).setDepth(6);
+    this.globeText = this.add.text(1090, 460, '지구본을 돌려 소환', style(12, '#ddeeff', { align: 'center', wordWrap: { width: 150 } })).setOrigin(0.5, 0).setDepth(6);
     const zone = this.add.zone(1082, 523, 375, 150).setInteractive().setDepth(7);
     zone.on('pointerdown', () => this.finishReveal());
     // designation
@@ -549,8 +549,8 @@ export default class BattleScene extends Phaser.Scene {
 
   doBait(id) {
     const r = buyBait(this.state, this.data2, id);
-    if (!r.ok) return this.toast(r.reason === 'notPrep' ? '먹이는 준비 시간에만 살 수 있어요' : this.T('reason.' + r.reason));
-    this.toast(`${this.data2.config.bait.types[id].name}을(를) 놓았어요 — 다음 3회 소환`);
+    if (!r.ok) return this.toast(r.reason === 'notPrep' ? '먹이는 준비 시간에만 구매' : this.T('reason.' + r.reason));
+    this.toast(`${this.data2.config.bait.types[id].name} 놓음 — 다음 3회 소환`);
   }
 
   doSkip() {
@@ -1223,7 +1223,7 @@ export default class BattleScene extends Phaser.Scene {
         case 'bossSummon': { const ve = this.enemyViews.get(ev.eid); this.floatText(640, PATH_Y - 110, `${data.enemyById[this.state.enemies.find((x) => x.eid === ev.eid)?.id]?.name ?? '보스'}이(가) 졸개를 불렀다`, '#aab7b8'); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY, 10, 0x6c5a8a); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.5); } sfx('bossSummon'); break; }
         case 'merge': {
           const [mx, my] = unitPos(ev.uid);
-          if (ev.kind === 'weak') { this.toast('합성 실패… 적들이 멈춰서 구경한다', '#cccccc'); this.fx.weak(mx, my); sfx('weak'); }
+          if (ev.kind === 'weak') { this.toast('합성 실패… 적들이 멈춰서 구경함', '#cccccc'); this.fx.weak(mx, my); sfx('weak'); }
           if (ev.kind === 'chimera') { this.cameras.main.flash(250, 180, 120, 255); sfx('chimera'); this.fx.chimera(mx, my); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '키메라'} 탄생!`, '#d7bde2', '키메라 합성 성공'); }
           if (ev.kind === 'evolve') { this.fx.evolve(mx, my, false); sfx('evolve'); }
           if (ev.kind === 'spirit') { this.spiritDrama(ev.uid); sfx('spirit'); this.fx.evolve(mx, my, true); this.cameras.main.flash(300, 255, 230, 140);  }
@@ -1293,7 +1293,7 @@ export default class BattleScene extends Phaser.Scene {
 
 const time = () => performance.now();
 const SHOT_SFX = { monkey: 'shoot', crow: 'shoot', eagle: 'slash', fox: 'magic', rooster: 'note', grasshopper: 'note', frog: 'magic', cheese_thief: 'magic', thunderbird: 'bolt', phoenix: 'fire', bullfrog: 'magic' };
-const PATCH_TIP = { scorch: '밟은 적이 불에 덴다', puddle: '적이 느려지고 번개에 더 아파한다', cloud: '나는 적이 느려지고 우리 편은 잘 피한다', rock: '적이 느려지고 우리 편은 덜 다친다', sand: '적의 공격이 굼떠진다', storm: '번개가 적을 때린다', frost: '적이 크게 느려진다', thicket: '우리 편이 잘 피하고 기운을 차린다', sunbeam: '우리 편 손발이 빨라진다' };
+const PATCH_TIP = { scorch: '밟은 적이 불에 뎀', puddle: '적이 느려지고 번개에 더 아파함', cloud: '나는 적이 느려지고 우리 편은 잘 피함', rock: '적이 느려지고 우리 편은 덜 다침', sand: '적의 공격이 굼떠짐', storm: '번개가 적을 때림', frost: '적이 크게 느려짐', thicket: '우리 편이 잘 피하고 기운을 차림', sunbeam: '우리 편 손발이 빨라짐' };
 const PATCH_COL = { scorch: 0xff6a2a, puddle: 0x4fc3ff, cloud: 0xdfe9f2, rock: 0x9a8a78, sand: 0xe2c078, storm: 0x6b6fa8, frost: 0xbfeaff, thicket: 0x5fbf5a, sunbeam: 0xfff1a8 };
 const ELEM_TALE = {
   fire: '여우불이 옮겨붙으면 한동안 타올랐대요.',

@@ -140,11 +140,14 @@ export function hideInfoCard(scene) {
  * @param {number} y - Vertical position (center).
  * @param {number} h - Height of the highlighted area.
  */
-export function showRange(scene, x1, x2, y, h) {
+export function showRange(scene, x1, x2, y, h, melee = false) {
   hideRange(scene);
 
   const gfx = scene.add.graphics();
-  gfx.fillStyle(0xffeb3b, 0.25).fillRect(x1, y - h / 2, x2 - x1, h);
+  const col = melee ? 0xff8a65 : 0xffeb3b;
+  gfx.fillStyle(col, 0.22).fillRoundedRect(x1, y - h / 2, x2 - x1, h, 10);
+  gfx.lineStyle(2, col, 0.9).strokeRoundedRect(x1, y - h / 2, x2 - x1, h, 10);
+  for (let k = x1 + 10; k < x2 - 6; k += 14) gfx.fillStyle(col, 0.5).fillCircle(k, y + h / 2 - 6, 1.5);
   scene.rangeGfx = gfx;
   gfx.setDepth(5);
 }
@@ -184,4 +187,47 @@ export function highlightRing(scene, x, y, color, question) {
   circle.setDepth(900);
 
   return [circle, questionMark].filter(Boolean);
+}
+
+/**
+ * 고르기 창: 겹쳐 놓았을 때 할 수 있는 일만 버튼으로 보여 준다 (되돌릴 수 없는 일은 꼭 확인).
+ * options: [{ icon, label, sub, color, onPick }]; '취소' is added automatically.
+ */
+export function choiceBox(scene, titleText, lines, options) {
+  if (scene.modalOpen) return false;
+  scene.modalOpen = true;
+  const savedPaused = scene.paused;
+  scene.paused = true;
+  const objs = [];
+  const D = 3000;
+  const W = 600, rowH = 64, H = 120 + lines.length * 24 + (options.length + 1) * (rowH + 8);
+  const x0 = 640 - W / 2, y0 = Math.max(40, 360 - H / 2);
+  objs.push(scene.add.rectangle(640, 360, 1280, 720, 0x05080c, 0.62).setInteractive().setDepth(D));
+  const g = scene.add.graphics().setDepth(D + 1);
+  g.fillStyle(0x000000, 0.35).fillRoundedRect(x0 + 4, y0 + 6, W, H, 16);
+  g.fillGradientStyle(0x1a2636, 0x1a2636, 0x0d141d, 0x0d141d, 1).fillRoundedRect(x0, y0, W, H, 16);
+  g.lineStyle(2, 0xd4b06a, 0.9).strokeRoundedRect(x0, y0, W, H, 16);
+  objs.push(g);
+  const tt = scene.add.text(640, y0 + 30, titleText, { fontFamily: FONT, fontSize: '22px', fontStyle: 'bold', color: '#ffe6b0', stroke: '#2a1a08', strokeThickness: 4 }).setOrigin(0.5).setDepth(D + 2);
+  objs.push(tt);
+  let y = y0 + 62;
+  for (const [t, col] of lines) { const o = scene.add.text(640, y, t, { fontFamily: FONT, fontSize: '14px', color: col ?? '#cfd8dc', align: 'center', wordWrap: { width: W - 40 } }).setOrigin(0.5, 0).setDepth(D + 2); objs.push(o); y += o.height + 6; }
+  y += 6;
+  const close = () => { objs.forEach((o) => o.destroy()); scene.modalOpen = false; scene.paused = savedPaused; };
+  const all = [...options, { icon: '✕', label: '취소', sub: '아무것도 하지 않아요', color: 0x7f8c8d, onPick: () => {} }];
+  all.forEach((o, i) => {
+    const by = y + i * (rowH + 8);
+    const bg = scene.add.graphics().setDepth(D + 2);
+    const draw = (hover) => { bg.clear(); bg.fillStyle(o.color, hover ? 0.38 : 0.2).fillRoundedRect(x0 + 24, by, W - 48, rowH, 12); bg.lineStyle(2, o.color, hover ? 1 : 0.75).strokeRoundedRect(x0 + 24, by, W - 48, rowH, 12); };
+    draw(false);
+    const ic = scene.add.text(x0 + 58, by + rowH / 2, o.icon, { fontFamily: FONT, fontSize: '26px' }).setOrigin(0.5).setDepth(D + 3);
+    const lb = scene.add.text(x0 + 92, by + 10, o.label, { fontFamily: FONT, fontSize: '19px', fontStyle: 'bold', color: '#ffffff' }).setDepth(D + 3);
+    const sb = scene.add.text(x0 + 92, by + 36, o.sub ?? '', { fontFamily: FONT, fontSize: '12px', color: '#cfd8dc', wordWrap: { width: W - 150 } }).setDepth(D + 3);
+    const z = scene.add.zone(640, by + rowH / 2, W - 48, rowH).setInteractive({ useHandCursor: true }).setDepth(D + 4);
+    z.on('pointerover', () => draw(true)); z.on('pointerout', () => draw(false));
+    z.on('pointerdown', (p, a, b, ev) => { ev?.stopPropagation?.(); close(); o.onPick(); });
+    objs.push(bg, ic, lb, sb, z);
+  });
+  scene.input.keyboard?.once('keydown-ESC', () => { if (objs[0].active) close(); });
+  return true;
 }

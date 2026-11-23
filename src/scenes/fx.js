@@ -454,8 +454,17 @@ export class FX {
     return true;
   }
 
+  /** Big comic sound word that slams onto the screen (타격·속성). */
+  sfxWord(x, y, text, color = '#ffe066', size = 24) {
+    const sc = this.scene;
+    const t = sc.add.text(x, y, text, { fontFamily: FONT, fontSize: `${size}px`, fontStyle: 'bold', color, stroke: '#2a1606', strokeThickness: 6 }).setOrigin(0.5).setDepth(1720).setAngle(Phaser.Math.Between(-14, 14)).setScale(1.8).setAlpha(0.2);
+    t.setShadow(3, 3, '#000000', 0, true, true);
+    sc.tweens.add({ targets: t, scale: 1, alpha: 1, duration: 110, ease: 'Back.out' });
+    sc.tweens.add({ targets: t, y: y - 18, alpha: 0, delay: 420, duration: 260, onComplete: () => t.destroy() });
+  }
+
   /** Comic shout bubble with the skill name over the caster. */
-  shout(x, y, text, color = 0xffe066) {
+  shout(x, y, text, color = 0xffe066, opts = {}) {
     const sc = this.scene;
     sc.shoutSlots ??= [];
     const now = sc.time.now;
@@ -464,7 +473,7 @@ export class FX {
     while (sc.shoutSlots.some((s) => Math.abs(s.x - x) < 130 && Math.abs(s.y - yy) < 32)) yy -= 34;
     sc.shoutSlots.push({ x, y: yy, until: now + 900 });
     const c = sc.add.container(x, yy).setDepth(1750);
-    const t = sc.add.text(0, 0, text + '!', { fontFamily: FONT, fontSize: '19px', fontStyle: 'bold', color: '#2a1606', stroke: '#ffffff', strokeThickness: 4 }).setOrigin(0.5);
+    const t = sc.add.text(0, 0, text, { fontFamily: FONT, fontSize: `${opts.size ?? 22}px`, fontStyle: 'bold', color: opts.ink ?? '#2a1606', stroke: '#ffffff', strokeThickness: 5 }).setOrigin(0.5);
     const w = t.width + 28, h = t.height + 14;
     const g = sc.add.graphics();
     const pts = [];
@@ -474,9 +483,11 @@ export class FX {
     g.lineStyle(3, 0x2a1606, 1).strokePoints(pts, true, true);
     g.fillStyle(color, 1).fillTriangle(-8, h / 2 - 2, 8, h / 2 - 2, -2, h / 2 + 14);
     g.lineStyle(3, 0x2a1606, 1).lineBetween(-8, h / 2 + 1, -2, h / 2 + 14).lineBetween(8, h / 2 + 1, -2, h / 2 + 14);
-    c.add([g, t]).setScale(0.2).setAngle(Phaser.Math.Between(-6, 6));
-    sc.tweens.add({ targets: c, scale: 1, duration: 160, ease: 'Back.out' });
-    sc.tweens.add({ targets: c, y: yy - 16, alpha: 0, delay: 780, duration: 260, onComplete: () => c.destroy() });
+    c.add([g, t]).setScale(0.2).setAngle(Phaser.Math.Between(-10, 10));
+    if (opts.label) { const lb = sc.add.text(0, h / 2 + 18, opts.label, { fontFamily: FONT, fontSize: '12px', color: '#ffffff', stroke: '#000', strokeThickness: 3 }).setOrigin(0.5); c.add(lb); }
+    sc.tweens.add({ targets: c, scale: 1.12, duration: 130, ease: 'Back.out', onComplete: () => sc.tweens.add({ targets: c, scale: 1, duration: 90 }) });
+    sc.tweens.add({ targets: c, x: { from: x - 2, to: x + 2 }, duration: 40, yoyo: true, repeat: 3 });
+    sc.tweens.add({ targets: c, y: yy - 16, alpha: 0, delay: opts.hold ?? 720, duration: 240, onComplete: () => c.destroy() });
   }
 
   /** Dispatch a skill event to its effect. at = [x,y] of the caster; targets = [[x,y]...]. */

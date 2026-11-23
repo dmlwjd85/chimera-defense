@@ -20,7 +20,7 @@ export class Globe {
     const mg = scene.make.graphics({}, false); mg.fillStyle(0xffffff).fillCircle(x, y, R);
     this.g.setMask(mg.createGeometryMask());
     this.over = scene.add.graphics().setDepth(5);
-    this.label = scene.add.text(x, y + R - 16, '', { fontFamily: 'sans-serif', fontSize: '15px', fontStyle: 'bold', color: '#ffffff', stroke: '#0b1a2b', strokeThickness: 4 }).setOrigin(0.5).setDepth(7).setAlpha(0);
+    this.label = scene.add.text(x, y + R - 14, '', { fontFamily: 'sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#ffffff', stroke: '#0b1a2b', strokeThickness: 4, backgroundColor: '#0b1a2bcc', padding: { x: 8, y: 3 } }).setOrigin(0.5).setDepth(8).setAlpha(0);
     // stand
     const st = scene.add.graphics().setDepth(2);
     st.lineStyle(4, 0xd4b06a, 0.9); st.beginPath(); st.arc(x, y, R + 9, 0.35, Math.PI - 0.35); st.strokePath();
@@ -68,6 +68,7 @@ export class Globe {
     g.fillStyle(0xffffff, 0.22).fillEllipse(x - R * 0.38, y - R * 0.46, R * 0.7, R * 0.36);
     // pin and rim
     const o = this.over; o.clear();
+    if (this.highlight) { const k = 0.55 + 0.45 * Math.sin(this.scene.time.now / 140); o.lineStyle(9, LAND[this.highlight] ?? 0xffffff, 0.35 * k).strokeCircle(x, y, R + 7); o.lineStyle(4, LAND[this.highlight] ?? 0xffffff, 0.9).strokeCircle(x, y, R + 2); }
     o.lineStyle(3, 0x9fd8ff, 0.95).strokeCircle(x, y, R);
     o.lineStyle(1, 0xffffff, 0.5).strokeCircle(x, y, R - 2);
     if (this.pin) {
@@ -75,7 +76,7 @@ export class Globe {
       if (z > 0) {
         const sx = x + px * R, sy = y - py * R - (this.pin.drop ?? 0);
         const pr = this.pin.ring ?? 0;
-        if (pr > 0) o.lineStyle(2.5, 0xffe066, 1 - pr).strokeEllipse(x + px * R, y - py * R, 46 * pr, 22 * pr);
+        if (pr > 0) { o.lineStyle(3, 0xffe066, 1 - pr).strokeEllipse(x + px * R, y - py * R, 50 * pr, 24 * pr); o.fillStyle(0xfff6a0, 0.25 * (1 - pr)).fillRect(sx - 3, sy - 60, 6, 46); }
         o.fillStyle(0x000000, 0.35).fillEllipse(x + px * R, y - py * R + 2, 10, 4);
         o.fillStyle(0xff4d4d, 1).fillCircle(sx, sy - 14, 7); o.fillTriangle(sx - 5, sy - 10, sx + 5, sy - 10, sx, sy);
         o.fillStyle(0xffffff, 1).fillCircle(sx, sy - 14, 2.6);

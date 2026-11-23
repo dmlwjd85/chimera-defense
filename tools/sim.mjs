@@ -42,6 +42,11 @@ export function findMergePair(state, data, kind) {
 
 /** Deploy spots in order: melee hold the middle, ranged stand just behind the front blocker within reach. */
 export function deploySpots(state, unit) {
+  if (state.cfgGrid) {
+    const g = state.cfgGrid, cols = [...Array(g.cols).keys()].map((c) => g.x0 + c * g.step);
+    if (unit.stats.flyer) return [...cols];
+    return unit.stats.range <= 1 ? [...cols].reverse() : [cols[1], cols[2], cols[0]].filter((v) => v !== undefined);
+  }
   const melee = unit.stats.range <= 1;
   if (melee) return [...SPOTS].sort((x, y) => Math.abs(x - 6) - Math.abs(y - 6) || y - x);
   const blockers = state.field.filter((u) => u.stats.block >= 2 || u.stats.range <= 1);
@@ -87,7 +92,7 @@ const label = (u) => `${u.kind}:${u.speciesId ?? u.parts.join('+')}:${u.stage}`;
 
 /** Play one full stage with the bot; returns a summary (and per-wave log). */
 export function runOne(data, seed, opts = {}) {
-  const state = createBattle(data, opts.stage ?? 'forest-1', seed, { startGoldBonus: opts.extraGold ?? 0 });
+  const state = createBattle(data, opts.stage ?? 'forest-1', seed, { startGoldBonus: opts.extraGold ?? 0, benchBonus: opts.benchBonus ?? 0, talents: opts.talents ?? [] });
   if (opts.carry) addCarry(state, data, { speciesId: opts.carry, stage: opts.carryStage ?? 'teen', traits: [] });
   const waves = [];
   const made = {};

@@ -1,7 +1,7 @@
 {
   "pathLength": 12,
   "maxDeployed": 6,
-  "benchSize": 5,
+  "benchSize": 3,
   "life": 20,
   "startGold": 100,
   "summon": {
@@ -75,7 +75,7 @@
   "pityCount": 10,
   "unitMoveSpeed": 2,
   "minSpacing": 0.5,
-  "blockReach": 1,
+  "blockReach": 0.7,
   "regen": {
     "delay": 3,
     "percentPerSec": 8
@@ -91,7 +91,7 @@
   "groupMin": 3,
   "groupMax": 6,
   "chimeraHpRatio": 0.7,
-  "blockedOffset": 0.3,
+  "blockedOffset": 0.5,
   "weakStareSeconds": 1,
   "weakStareRange": 2,
   "maxSubStep": 0.05,
@@ -371,5 +371,18 @@
         }
       }
     }
-  }
+  },
+  "grid": {
+    "cols": 3,
+    "rows": 3,
+    "x0": 0.5,
+    "step": 1.0,
+    "skyY": [
+      150,
+      190,
+      230
+    ],
+    "note": "2026-11-23: 내 진영 3×3 아홉 칸. 칸 하나에 한 마리. 웨이브가 시작되면 아홉 칸 대형 그대로 formation.front 까지 이동"
+  },
+  "meleeReach": 0.7
 }

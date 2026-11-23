@@ -20,16 +20,16 @@ test('bench and field limits', () => {
   s.gold = 9999;
   for (let i = 0; i < D.config.benchSize; i++) B.summon(s, D);
   assert.equal(B.summon(s, D).reason, 'benchFull');
-  // three ground animals may share a column in three lanes; the fourth is refused. Flyers go anywhere.
-  const ground = (u) => u && !u.stats.flyer;
-  for (let i = 0; i < s.bench.length; i++) if (s.bench[i] && !ground(s.bench[i])) s.bench[i] = null;
+  // the camp is a 3×3 grid: one animal per cell, outside the camp is refused
   const mk = (sp) => B.makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'young', parts: null });
   s.bench = [mk('bear'), mk('fox'), mk('wolf'), mk('bison'), mk('crow')];
-  assert.ok(B.deploy(s, D, 0, 3).ok && B.deploy(s, D, 1, 3.2).ok && B.deploy(s, D, 2, 3.1).ok);
-  assert.deepEqual(s.field.map((u) => u.lane).sort(), [0, 1, 2]);
-  assert.equal(B.deploy(s, D, 3, 3.2).reason, 'occupied');
-  assert.ok(B.deploy(s, D, 4, 3.0, { skyY: 150 }).ok, 'crow flies over the full column');
-  assert.equal(s.field.find((u) => u.speciesId === 'crow').skyY, 150);
+  assert.ok(B.deploy(s, D, 0, 2.5).ok && B.deploy(s, D, 1, 2.4).ok && B.deploy(s, D, 2, 2.6).ok);
+  assert.deepEqual(s.field.map((u) => u.cell.r).sort(), [0, 1, 2]);
+  assert.ok(s.field.every((u) => u.pos === 2.5 && u.cell.c === 2));
+  assert.equal(B.deploy(s, D, 3, 2.5).reason, 'occupied');
+  assert.equal(B.deploy(s, D, 3, 6).reason, 'outsideCamp');
+  assert.ok(B.deploy(s, D, 4, 0.5, { row: 0 }).ok, 'crow takes a cell too and hovers above it');
+  assert.equal(s.field.find((u) => u.speciesId === 'crow').skyY, D.config.grid.skyY[0]);
 });
 
 test('merges update bench and discoveries', () => {
@@ -54,4 +54,29 @@ test('empty field leaks wave 1, then lose at low life', () => {
   t.life = 1;
   for (let i = 0; i < 2000 && t.phase !== 'ended'; i++) B.step(t, D, 0.1);
   assert.deepEqual([t.result, t.life], ['lose', 0]);
+});
+
+test('the camp marches to the middle as one block and walks back after the wave', () => {
+  const s = B.createBattle(D, STAGE, 4);
+  const mk = (sp) => B.makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'young', parts: null });
+  s.bench = [mk('bear'), mk('fox'), mk('crow')];
+  B.deploy(s, D, 0, 2.5, { row: 1 }); B.deploy(s, D, 1, 0.5, { row: 2 }); B.deploy(s, D, 2, 1.5, { row: 0 });
+  B.skipPrep(s, D);
+  const d = D.config.formation.front - 2.5;
+  assert.deepEqual(s.field.map((u) => u.targetPos), [2.5 + d, 0.5 + d, 1.5 + d]);
+  B.standDown(s);
+  assert.deepEqual(s.field.map((u) => u.pos), [2.5, 0.5, 1.5]);
+});
+
+test('swap exchanges cells without merging', () => {
+  const s = B.createBattle(D, STAGE, 5);
+  const mk = (sp) => B.makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'young', parts: null });
+  s.bench = [mk('bear'), mk('bear'), mk('fox')];
+  B.deploy(s, D, 0, 2.5, { row: 1 }); B.deploy(s, D, 1, 0.5, { row: 0 });
+  const [a, b] = s.field;
+  assert.ok(B.swap(s, D, { where: 'field', uid: a.uid }, { where: 'field', uid: b.uid }).ok);
+  assert.deepEqual([a.cell, b.cell], [{ c: 0, r: 0 }, { c: 2, r: 1 }]);
+  assert.equal(s.field.length, 2);
+  assert.ok(B.swap(s, D, { where: 'bench', index: 2 }, { where: 'field', uid: a.uid }).ok);
+  assert.equal(s.field.find((u) => u.speciesId === 'fox').cell.c, 0);
 });

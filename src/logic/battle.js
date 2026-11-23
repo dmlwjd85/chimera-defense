@@ -28,6 +28,8 @@ export function createBattle(data, stageId, seed = 1, opts = {}) {
     levels: { ...(opts.levels ?? {}) }, allyBuffs: [], bait: null, kills: 0, relics: [], relicOffer: null, talents: [...(opts.talents ?? [])],
     finds: { recipes: [], flops: [], species: [], bonds: [] }, seenSpecies: new Set(opts.seenSpecies ?? []), seenBonds: new Set(opts.seenBonds ?? []),
   };
+  state.cfgGrid = data.config.grid ?? null;
+  state.meleeReach = data.config.meleeReach ?? 1;
   state.gold += eco(state, data, 'startGold') ?? 0;
   state.life += eco(state, data, 'life') ?? 0;
   return state;
@@ -130,6 +132,34 @@ export function lanesUsed(state, pos, ignoreUid, config) {
   return state.field.filter((u) => u.uid !== ignoreUid && !isFlyer(u) && Math.abs(u.targetPos - pos) < config.minSpacing).map((u) => u.lane ?? 0);
 }
 
+// ---------- 내 진영 아홉 칸 (config.grid) ----------
+/** Column index (0 back … cols-1 front) for a tile position, or -1 outside the camp. */
+export function gridCol(pos, cfg) {
+  const g = cfg.grid; if (!g) return -1;
+  const c = Math.round((pos - g.x0) / g.step);
+  if (pos < g.x0 - g.step / 2 - 0.01 || pos > g.x0 + (g.cols - 0.5) * g.step + 0.01) return -1;
+  return Math.max(0, Math.min(g.cols - 1, c));
+}
+export const gridPos = (c, cfg) => cfg.grid.x0 + c * cfg.grid.step;
+/** Who sits in cell (c, r), ignoring one uid. */
+export function cellUnit(state, c, r, ignoreUid = null) { return state.field.find((u) => u.uid !== ignoreUid && u.cell && u.cell.c === c && u.cell.r === r) ?? null; }
+/** Free row in a column nearest to the preferred one, or -1. */
+export function freeRow(state, c, cfg, pref = 1, ignoreUid = null) {
+  const rows = [...Array(cfg.grid.rows).keys()].sort((a, b) => Math.abs(a - pref) - Math.abs(b - pref));
+  return rows.find((r) => !cellUnit(state, c, r, ignoreUid)) ?? -1;
+}
+/** How far the whole camp marches when a wave starts. */
+export const campDelta = (cfg) => (cfg.formation?.front ?? 0) - gridPos(cfg.grid.cols - 1, cfg);
+/** Put a unit into a cell: lane / sky height follow the row; pos follows the column (shifted while a wave runs). */
+function seat(state, cfg, unit, c, r) {
+  unit.cell = { c, r };
+  const home = gridPos(c, cfg);
+  if (isFlyer(unit)) { unit.lane = null; unit.skyY = cfg.grid.skyY?.[r] ?? 190; } else unit.lane = r;
+  const d = state.phase === 'wave' ? state.formationDelta ?? campDelta(cfg) : 0;
+  unit.home = state.phase === 'wave' ? { pos: home, lane: unit.lane, skyY: unit.skyY } : null;
+  return { home, target: clampPos(home + d, cfg) };
+}
+
 /** A ground spot is free while fewer than config.lanes (3) animals share the column. Flyers can go anywhere. */
 export function isFree(state, pos, ignoreUid, config, unit = null) {
   if (isFlyer(unit)) return true;
@@ -160,6 +190,17 @@ export function deploy(state, data, benchIndex, pos, opts = {}) {
   const unit = state.bench[benchIndex];
   if (!unit) return fail('empty');
   if (state.field.length >= cfg.maxDeployed) return fail('fieldFull');
+  if (cfg.grid) {
+    const c = gridCol(pos, cfg);
+    if (c < 0) return fail('outsideCamp');
+    const r = opts.row ?? (opts.lane !== undefined ? opts.lane : freeRow(state, c, cfg));
+    if (r < 0 || cellUnit(state, c, r)) return fail('occupied');
+    state.bench[benchIndex] = null;
+    const { home, target } = seat(state, cfg, unit, c, r);
+    Object.assign(unit, { pos: home, targetPos: target, moving: false, formationMove: state.phase === 'wave' });
+    state.field.push(unit);
+    return { ok: true, unit };
+  }
   const p = clampPos(pos, cfg);
   if (!isFree(state, p, null, cfg, unit)) return fail('occupied');
   place(state, cfg, unit, p, opts);
@@ -175,6 +216,17 @@ export function moveUnit(state, data, uid, pos, opts = {}) {
   const unit = findUnit(state, { where: 'field', uid });
   if (!unit) return fail('notFound');
   if (unit.down) return fail('down');
+  const cfg = data.config;
+  if (cfg.grid) {
+    const c = gridCol(pos, cfg);
+    if (c < 0) return fail('outsideCamp');
+    const r = opts.row ?? (opts.lane !== undefined ? opts.lane : freeRow(state, c, cfg, unit.cell?.r ?? 1, uid));
+    if (r < 0 || cellUnit(state, c, r, uid)) return fail('occupied');
+    const { home, target } = seat(state, cfg, unit, c, r);
+    unit.targetPos = target; unit.formationMove = state.phase === 'wave';
+    if (state.phase === 'prep') unit.pos = home;
+    return { ok: true };
+  }
   const p = clampPos(pos, data.config);
   if (!isFree(state, p, uid, data.config, unit)) return fail('occupied');
   place(state, data.config, unit, p, opts);
@@ -215,10 +267,14 @@ function swapUnits(state, fromRef, toRef, from, to) {
   } else if (fromRef.where === 'field' && toRef.where === 'field') {
     [from.pos, to.pos, from.targetPos, to.targetPos] = [to.pos, from.pos, to.targetPos, from.targetPos];
     [from.lane, to.lane, from.skyY, to.skyY] = [to.lane, from.lane, to.skyY, from.skyY];
+    [from.cell, to.cell, from.home, to.home] = [to.cell, from.cell, to.home, from.home];
+    for (const u of [from, to]) if (u.cell && state.cfgGrid) { if (u.stats.flyer) { u.lane = null; u.skyY = state.cfgGrid.skyY[u.cell.r]; } else u.lane = u.cell.r; }
   } else {
     const [benchRef, benchUnit, fieldUnit] = fromRef.where === 'bench' ? [fromRef, from, to] : [toRef, to, from];
     removeUnit(state, { where: 'field', uid: fieldUnit.uid });
-    Object.assign(benchUnit, { pos: fieldUnit.pos, targetPos: fieldUnit.targetPos, moving: false, lane: fieldUnit.lane ?? 1, skyY: fieldUnit.skyY ?? 200 });
+    Object.assign(benchUnit, { pos: fieldUnit.pos, targetPos: fieldUnit.targetPos, moving: false, lane: fieldUnit.lane ?? 1, skyY: fieldUnit.skyY ?? 200, cell: fieldUnit.cell, home: fieldUnit.home });
+    if (benchUnit.cell && state.cfgGrid) { if (benchUnit.stats.flyer) { benchUnit.lane = null; benchUnit.skyY = state.cfgGrid.skyY[benchUnit.cell.r]; } else benchUnit.lane = benchUnit.cell.r; }
+    fieldUnit.cell = null; fieldUnit.home = null;
     fieldUnit.moving = false;
     state.bench[benchRef.index] = fieldUnit;
     state.field.push(benchUnit);
@@ -242,7 +298,7 @@ export function merge(state, data, fromRef, toRef) {
   if (kind === 'evolve' || kind === 'spirit') inst.white = !!to.white;
   const unit = makeUnit(state, data, inst);
   const onField = toRef.where === 'field';
-  if (onField) Object.assign(unit, { pos: to.pos, targetPos: to.targetPos, lane: unit.stats.flyer ? null : (to.lane ?? 1), skyY: to.skyY ?? 200 });
+  if (onField) { Object.assign(unit, { pos: to.pos, targetPos: to.targetPos, lane: unit.stats.flyer ? null : (to.lane ?? 1), skyY: to.skyY ?? 200, cell: to.cell, home: to.home }); if (unit.cell && state.cfgGrid) { if (unit.stats.flyer) { unit.lane = null; unit.skyY = state.cfgGrid.skyY[unit.cell.r]; } else unit.lane = unit.cell.r; } }
   removeUnit(state, fromRef);
   removeUnit(state, toRef);
   if (onField) state.field.push(unit);
@@ -265,6 +321,14 @@ export function merge(state, data, fromRef, toRef) {
   return { ok: true, kind, unit };
 }
 
+/** Swap two units (bench or field) without merging. */
+export function swap(state, data, fromRef, toRef) {
+  const from = findUnit(state, fromRef), to = findUnit(state, toRef);
+  if (!from || !to) return fail('notFound');
+  if (from === to) return fail('same');
+  return swapUnits(state, fromRef, toRef, from, to);
+}
+
 /**
  * Formation: when a wave starts the whole line marches to the middle of the field, keeping the gaps the player set.
  * Front-liners (melee) lead at config.formation.front, ranged stay at least `rangedGap` behind, flyers keep their sky spot.
@@ -272,6 +336,18 @@ export function merge(state, data, fromRef, toRef) {
 export function formUp(state, data) {
   const f = data.config.formation;
   if (!f || !state.field.length) { state.formationDelta = 0; return; }
+  if (data.config.grid) {
+    const d = campDelta(data.config);
+    state.formationDelta = d;
+    for (const u of state.field) {
+      const c = u.cell?.c ?? gridCol(u.targetPos, data.config);
+      const home = gridPos(Math.max(0, c), data.config);
+      u.home = { pos: home, lane: u.lane, skyY: u.skyY };
+      u.targetPos = clampPos(home + d, data.config);
+      u.formationMove = true;
+    }
+    return;
+  }
   for (const u of state.field) u.home = { pos: u.targetPos, lane: u.lane, skyY: u.skyY };
   const ground = state.field.filter((u) => !u.stats.flyer);
   const melee = ground.filter((u) => u.stats.range <= 1);

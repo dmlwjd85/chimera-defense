@@ -7,8 +7,8 @@ import { computeMods } from '../src/logic/mods.js';
 
 const D = loadData();
 
-test('four branches of five nodes, each with a tale and an effect', () => {
-  assert.equal(D.talents.branches.length, 4);
+test('five branches of five nodes (cage included), each with a tale and an effect', () => {
+  assert.equal(D.talents.branches.length, 5);
   for (const b of D.talents.branches) { assert.equal(b.nodes.length, 5); for (const n of b.nodes) assert.ok(n.tale && n.desc && (n.fx || n.eco), n.id); }
 });
 
@@ -44,4 +44,11 @@ test('a finished run leaves shards: relics by rarity plus waves', () => {
   const sc = D.talents.shards;
   assert.equal(r.shards, sc[D.relicById.pack_howl.rarity] + sc[D.relicById.glass_cannon.rarity] + Math.floor(7 / sc.perWaves));
   assert.equal(save.shards, r.shards);
+});
+
+test('the cage starts at 3 slots and the cage branch adds slots', () => {
+  const s = defaultSave();
+  assert.equal(createBattle(D, 'forest-1', 1, battleOptions(s, D, 'forest-1')).bench.length, 3);
+  s.talents = ['c1', 'c2'];
+  assert.equal(createBattle(D, 'forest-1', 1, battleOptions(s, D, 'forest-1')).bench.length, 5);
 });

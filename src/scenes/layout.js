@@ -9,7 +9,9 @@ export function xToTile(x) { return (x - X0) / TILE; }
 export function benchSlotX(i) { return BENCH_X0 + i * BENCH_GAP; }
 
 /** Container y for each ground lane (0 top, 1 middle, 2 bottom); the unit's feet sit ~30px lower. */
-export const LANE_Y = [PATH_Y - 70, PATH_Y - 28, PATH_Y + 16];
+export const LANE_Y = [PATH_Y - 79, PATH_Y - 16, PATH_Y + 47];
+/** 원근감: 뒷줄은 조금 작게, 앞줄은 조금 크게. */
+export const LANE_SCALE = [0.88, 1, 1.12];
 /** Flyers can hover anywhere between these screen heights. */
 export const SKY_TOP = 130, SKY_BOTTOM = PATH_Y + 20;
 /** Nearest lane for a screen y. */

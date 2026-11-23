@@ -35,7 +35,7 @@ export function pickTarget(state, u) {
   let best = null;
   for (const e of state.enemies) if (e.blockedBy === u.uid && hittable(u, e) && (!best || e.pos < best.pos)) best = e;
   if (best) return best;
-  const range = effRange(u);
+  const range = u.stats.range <= 1 ? (state.meleeReach ?? 1) + Math.max(0, effRange(u) - 1) : effRange(u);
   const inRange = state.enemies.filter((e) => hittable(u, e) && Math.abs(e.pos - u.pos) <= range);
   if (!inRange.length) return null;
   const mis = flags(u).misTarget;

@@ -80,7 +80,7 @@ export function battleOptions(save, data, stageId = null) {
     carry,
     talents: [...(save.talents ?? [])],
     startGoldBonus: u.startGold.step * save.unlocks.startGold + fallback,
-    benchBonus: u.bench.step * save.unlocks.bench,
+    benchBonus: u.bench.step * save.unlocks.bench + (save.talents ?? []).reduce((n, id) => n + (data.talentById?.[id]?.eco?.bench ?? 0), 0),
     levels: levelsOf(save, data),
     known: { recipes: save.codex.recipes, failed: save.codex.failedPairs },
     seenSpecies: save.codex.units, seenBonds: save.codex.bonds,

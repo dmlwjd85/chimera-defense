@@ -1,3 +1,4 @@
+import { spellsUnlocked } from './spells.js';
 // Outside-the-run progress (plan ch.10): essence, unlocks, species levels, codex, hints, achievements, local save.
 export const SAVE_KEY = 'chimera-defense-save-v1';
 
@@ -86,6 +87,7 @@ export function battleOptions(save, data, stageId = null) {
     known: { recipes: save.codex.recipes, failed: save.codex.failedPairs },
     seenSpecies: save.codex.units, seenBonds: save.codex.bonds,
     pool: rosterPool(save, data),
+    spells: spellsUnlocked(save, data),
   };
 }
 
@@ -187,6 +189,7 @@ export function settleRun(save, state, data) {
 
   const starsBefore = totalStars(save);
   const goals = starGoals(state, data), stars = starsFor(state, data);
+  const spellsBefore = spellsUnlocked(save, data);
   if (clear) rec.cleared = true;
   if (clear) { rec.stars = Math.max(starsOf(rec), stars); rec.bestTime = Math.min(rec.bestTime ?? Infinity, Math.round(state.time)); }
   const starsAfter = totalStars(save);
@@ -206,7 +209,7 @@ export function settleRun(save, state, data) {
   const shards = fromRelics + Math.floor(waves / (sc.perWaves ?? 3));
   save.shards = (save.shards ?? 0) + shards;
   return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
-    stars, goals, totalStars: starsAfter, joined, time: Math.round(state.time) };
+    stars, goals, totalStars: starsAfter, joined, newSpells: spellsUnlocked(save, data).filter((id) => !spellsBefore.includes(id)), time: Math.round(state.time) };
 }
 
 /** Reveal one material of an undiscovered recipe. Returns { recipe, part } or null. */

@@ -1,4 +1,5 @@
 import { makeRng } from './rng.js';
+import { tickMana, castSpell } from './spells.js';
 import { pairKey } from './data.js';
 import { summonCost, waveReward, sellPrice, skipGold } from './economy.js';
 import { newRollCtx, rollSummon, advanceRollCtx, ownedSpecies } from './roulette.js';
@@ -30,6 +31,9 @@ export function createBattle(data, stageId, seed = 1, opts = {}) {
   };
   state.favor = { ...(opts.favor ?? {}) };
   state.pool = opts.pool ? [...opts.pool] : null;
+  state.spells = [...(opts.spells ?? [])];
+  state.mana = cfg.spells?.start ?? 0;
+  state.spellCd = 0;
   state.weakBonus = cfg.weakBonus ?? 30;
   state.cfgGrid = data.config.grid ?? null;
   state.meleeReach = data.config.meleeReach ?? 1;
@@ -434,6 +438,7 @@ function subStep(state, data, d) {
   for (const q of state.queue.slice(0, n)) { state.enemies.push(makeEnemy(q.enemyId, state.wave, state.stage, data, state.nextEid++, q.offset)); (state.seenEnemies ??= new Set()).add(q.enemyId); }
   state.queue = state.queue.slice(n);
   combatTick(state, data, d);
+  tickMana(state, data, d);
   if (state.life <= 0) {
     state.life = 0;
     state.phase = 'ended';
@@ -452,4 +457,4 @@ export function step(state, data, dt) {
   }
 }
 
-export { chooseRelic };
+export { chooseRelic, castSpell };

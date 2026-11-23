@@ -728,5 +728,115 @@
    "boss": "굶주린 왕",
    "theme": "마지막 싸움"
   }
- ]
+ ],
+ "spells": {
+  "note": "플레이어 마법. 마력은 웨이브 동안만 참. 처음엔 별똥별 하나, 스테이지를 깰 때마다 하나씩 배움.",
+  "max": 100,
+  "start": 40,
+  "regen": 2,
+  "globalCd": 2,
+  "list": [
+   {
+    "id": "meteor",
+    "name": "별똥별",
+    "icon": "☄",
+    "kind": "attack",
+    "cost": 40,
+    "effect": "meteor",
+    "radius": 1.3,
+    "pct": 45,
+    "bossPct": 5,
+    "needsEnemy": true,
+    "stage": null,
+    "tale": "소원을 빌자 별 하나가 제일 붐비는 곳으로 떨어졌지요.",
+    "desc": "가장 몰린 곳에 큰 광역 피해"
+   },
+   {
+    "id": "wall",
+    "name": "가시덤불",
+    "icon": "🌿",
+    "kind": "defense",
+    "cost": 30,
+    "effect": "wall",
+    "radius": 1.6,
+    "hold": 3.5,
+    "bossStun": 1,
+    "needsEnemy": true,
+    "stage": "forest-1",
+    "tale": "길 한가운데 가시덤불이 솟아 앞장선 무리의 발목을 잡았지요.",
+    "desc": "맨 앞 땅 위 적들을 3.5초 묶음"
+   },
+   {
+    "id": "drum",
+    "name": "응원의 북",
+    "icon": "🥁",
+    "kind": "support",
+    "cost": 40,
+    "effect": "drum",
+    "haste": 25,
+    "dmg": 20,
+    "dur": 8,
+    "stage": "forest-2",
+    "tale": "둥둥 북소리에 모두의 발이 저절로 빨라졌지요.",
+    "desc": "8초간 모든 아군 공격 간격 -25%, 피해 +20%"
+   },
+   {
+    "id": "chain",
+    "name": "벼락 사슬",
+    "icon": "⚡",
+    "kind": "attack",
+    "cost": 40,
+    "effect": "chain",
+    "count": 6,
+    "pct": 35,
+    "bossPct": 4,
+    "needsEnemy": true,
+    "stage": "forest-3",
+    "tale": "벼락이 문에 가까운 놈부터 차례로 건너뛰었지요.",
+    "desc": "문에 가까운 적 6기에게 피해 (나는 적 포함)"
+   },
+   {
+    "id": "guard",
+    "name": "수호의 빛",
+    "icon": "🛡",
+    "kind": "defense",
+    "cost": 45,
+    "effect": "guard",
+    "heal": 40,
+    "shield": 40,
+    "dur": 6,
+    "stage": "stage-4",
+    "tale": "따스한 빛이 내려 쓰러진 벗도 털고 일어났지요.",
+    "desc": "아군 체력 40% 회복, 쓰러진 동물 바로 복귀, 6초간 받는 피해 -40%"
+   },
+   {
+    "id": "hourglass",
+    "name": "느린 모래시계",
+    "icon": "⏳",
+    "kind": "support",
+    "cost": 35,
+    "effect": "hourglass",
+    "slow": 50,
+    "dur": 5,
+    "needsEnemy": true,
+    "stage": "stage-5",
+    "tale": "모래시계를 눕히자 적들의 걸음이 꿈속처럼 느려졌지요.",
+    "desc": "5초간 모든 적 이동 속도 -50%"
+   },
+   {
+    "id": "gust",
+    "name": "되돌이 바람",
+    "icon": "🌬",
+    "kind": "defense",
+    "cost": 50,
+    "effect": "gust",
+    "push": 2,
+    "bossPush": 0.5,
+    "needsEnemy": true,
+    "stage": "stage-6",
+    "tale": "큰 바람이 불어 온 길을 도로 걷게 했지요.",
+    "desc": "모든 적을 2타일 뒤로 밀어냄 (보스는 0.5)"
+   }
+  ]
+ }
 }

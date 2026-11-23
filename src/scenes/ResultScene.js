@@ -21,6 +21,10 @@ export default class ResultScene extends Phaser.Scene {
       const st = this.add.text(640, 112, '★'.repeat(r.stars) + '☆'.repeat(3 - r.stars), style(34, '#ffd84d', { stroke: '#000', strokeThickness: 5 })).setOrigin(0.5).setScale(0.2);
       this.tweens.add({ targets: st, scale: 1, duration: 500, ease: 'Back.out' });
       this.add.text(640, 150, `✔ 클리어    ${g.life ? '✔' : '✘'} 생명 ${g.lifeNeed}% 이상    ${g.time ? '✔' : '✘'} ${mm(g.par)} 안에 (걸린 시간 ${mm(r.time)})    ·    모은 별 ⭐${r.totalStars}`, style(14, '#cfe8ff')).setOrigin(0.5);
+      if (r.newSpells?.length) {
+        const sp = D.config.spells.list.filter((x) => r.newSpells.includes(x.id));
+        this.add.text(640, 172, `🔮 새 마법을 배웠어요: ${sp.map((x) => `${x.icon} ${x.name}`).join(', ')} — ${sp[0].desc}`, style(15, '#d7bde2', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
+      }
       if (r.joined?.length) {
         const t = this.add.text(640, 548, `🎉 새 친구 합류: ${r.joined.map((id) => D.unitById[id]?.name).join(', ')} — 이제 지구본에서 만날 수 있어요`, style(17, '#9cff6b', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
         this.tweens.add({ targets: t, scale: { from: 1, to: 1.06 }, yoyo: true, repeat: -1, duration: 700 });

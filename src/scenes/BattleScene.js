@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import { attachInput } from './BattleInput.js';
 import { buildData } from '../logic/data.js';
-import { createBattle, step, summon, skipPrep, deploy, moveUnit, recall, sell, merge, buyBait, toggleLock, summonPrice, addCarry, chooseRelic, makeUnit } from '../logic/battle.js';
+import { spellBlock, spellDef } from '../logic/spells.js';
+import { createBattle, castSpell, step, summon, skipPrep, deploy, moveUnit, recall, sell, merge, buyBait, toggleLock, summonPrice, addCarry, chooseRelic, makeUnit } from '../logic/battle.js';
 import { ownedRelics } from '../logic/relics.js';
 import { battleOptions, settleRun, writeSave, carryCandidates, setCarry } from '../logic/meta.js';
 import { traitView } from '../logic/traits.js';
@@ -78,6 +79,78 @@ export default class BattleScene extends Phaser.Scene {
     this.input.on('pointerdown', unlockAudio);
     this.input.keyboard.on('keydown', unlockAudio);
     this.stanceFx = new Map();
+  }
+
+  // ---------- player spells ----------
+  /** Mana bar and one round button per learned spell (keys Q W E R T Y U). */
+  buildSpellBar() {
+    const sp = this.data2.config.spells, ids = this.state.spells ?? [];
+    if (!sp || !ids.length) return;
+    const X = 492, Y = 556, W = 392;
+    panel(this, X, Y, W, 132, { alpha: 0.9, plain: true });
+    this.add.text(X + 14, Y + 8, '🔮 마법', style(14, '#d7bde2'));
+    this.manaBar = this.add.graphics().setDepth(2);
+    this.manaText = this.add.text(X + W - 14, Y + 8, '', style(13, '#9fd8ff')).setOrigin(1, 0).setDepth(2);
+    const KIND = { attack: 0xe05a4a, defense: 0x4a9be0, support: 0x58c070 }, KIND_NAME = { attack: '공격', defense: '방어', support: '서포트' };
+    const KEYS = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U'];
+    const step = Math.min(56, (W - 20) / ids.length);
+    this.spellBtns = ids.map((id, i) => {
+      const d = spellDef(this.data2, id), x = X + W / 2 - (ids.length - 1) * step / 2 + i * step, y = Y + 84;
+      const ring = this.add.graphics().setDepth(2);
+      const icon = this.add.text(x, y - 4, d.icon, style(26)).setOrigin(0.5).setDepth(3);
+      const cost = this.add.text(x, y + 26, `${d.cost}`, style(11, '#9fd8ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
+      this.add.text(x - 20, y - 26, KEYS[i], style(10, '#8899aa')).setDepth(3);
+      const z = this.add.zone(x, y, step - 4, 62).setInteractive({ useHandCursor: true }).setDepth(4);
+      z.on('pointerover', () => showTip(this, `${d.icon} ${d.name} · ${KIND_NAME[d.kind]} · 마력 ${d.cost}\n“${d.tale}”\n· ${d.desc}`, x, y - 36));
+      z.on('pointerout', () => hideTip(this));
+      z.on('pointerdown', () => this.doSpell(id));
+      this.input.keyboard.on('keydown-' + KEYS[i], () => this.doSpell(id));
+      return { id, d, x, y, ring, icon, cost, col: KIND[d.kind] };
+    });
+    this.drawSpellBar();
+  }
+
+  drawSpellBar() {
+    if (!this.spellBtns) return;
+    const sp = this.data2.config.spells, s = this.state, X = 492, Y = 556, W = 392;
+    const k = Math.max(0, Math.min(1, (s.mana ?? 0) / sp.max));
+    this.manaBar.clear().fillStyle(0x0b1220, 1).fillRoundedRect(X + 14, Y + 32, W - 28, 12, 6).fillStyle(0x4aa3ff, 1).fillRoundedRect(X + 14, Y + 32, Math.max(8, (W - 28) * k), 12, 6).lineStyle(1, 0x9fd8ff, 0.7).strokeRoundedRect(X + 14, Y + 32, W - 28, 12, 6);
+    this.manaText.setText(`마력 ${Math.floor(s.mana ?? 0)} / ${sp.max}${s.phase !== 'wave' ? '  (전투 중에 차올라요)' : ''}`);
+    for (const b of this.spellBtns) {
+      const ok = !spellBlock(s, this.data2, b.id), has = (s.mana ?? 0) >= b.d.cost;
+      b.ring.clear().fillStyle(0x0d141d, 0.95).fillCircle(b.x, b.y, 25).lineStyle(3, b.col, ok ? 1 : 0.35).strokeCircle(b.x, b.y, 25);
+      if (!has) b.ring.fillStyle(0x4aa3ff, 0.25).slice(b.x, b.y, 25, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, (s.mana ?? 0) / b.d.cost), false).fillPath();
+      b.icon.setAlpha(ok ? 1 : 0.4); b.cost.setColor(has ? '#9fd8ff' : '#667788');
+      if (ok && !b.ready) this.tweens.add({ targets: b.icon, scale: { from: 1.35, to: 1 }, duration: 260 });
+      b.ready = ok;
+    }
+  }
+
+  doSpell(id) {
+    if (this.paused || this.modalOpen) return;
+    const r = castSpell(this.state, this.data2, id);
+    if (!r.ok) { const why = { mana: '마력이 모자라요', noWave: '전투 중에만 쓸 수 있어요', cooldown: '조금만 기다려요', noTarget: '적이 없어요' }[r.reason]; if (why) this.toast(why, '#9fd8ff'); return; }
+    this.drawSpellBar();
+  }
+
+  /** Screen effects for a cast spell. */
+  spellFx(ev) {
+    const d = spellDef(this.data2, ev.id), fx = this.fx, cam = this.cameras.main;
+    const at = (eid) => this.enemyViews.get(eid) ?? this.goneViews?.get(eid);
+    const px = ev.pos != null ? tileToX(ev.pos) : 640;
+    const t = this.add.text(640, PATH_Y - 150, `${d.icon} ${d.name}!`, style(34, { attack: '#ffb27a', defense: '#9fd8ff', support: '#9cff6b' }[d.kind], { stroke: '#000', strokeThickness: 6 })).setOrigin(0.5).setDepth(3000).setScale(0.4);
+    this.tweens.add({ targets: t, scale: 1, duration: 220, ease: 'Back.out' });
+    this.tweens.add({ targets: t, alpha: 0, y: t.y - 24, delay: 900, duration: 350, onComplete: () => t.destroy() });
+    switch (d.effect) {
+      case 'meteor': fx.line(px + 260, -20, px, PATH_Y, 0xffb347, 14, 320); this.time.delayedCall(200, () => { fx.shockwave(px, PATH_Y, 0xff7a1a, 3, 3); fx.burst('bigFlare', px, PATH_Y, 1, 0xffd08a); fx.burst('spark', px, PATH_Y, 30, 0xffb347); cam.shake(320, 0.012); cam.flash(160, 255, 200, 120); }); sfx('bigKill'); break;
+      case 'chain': { let lx = 640, ly = -10; for (const eid of ev.eids) { const v = at(eid); if (!v) continue; fx.line(lx, ly, v.lastX, v.lastY, 0xfff27a, 6, 260); fx.hit(v.lastX, v.lastY, 0xfff27a, true); lx = v.lastX; ly = v.lastY; } cam.flash(140, 255, 255, 200); sfx('bolt'); break; }
+      case 'wall': for (let k = -2; k <= 2; k++) { fx.burst('leaf', px + k * 26, PATH_Y + 10, 8, 0x58c070); fx.pillar?.(px + k * 26, PATH_Y + 30, 0x3d8b4a); } fx.ring(px, PATH_Y, 0x58c070, 2, 500); sfx('skill'); break;
+      case 'guard': for (const [, v] of this.unitViews ?? []) { fx.bubbleShield(v.x ?? v.lastX, (v.y ?? v.lastY) - 10, 0xfff3b0); fx.heal(v.x ?? v.lastX, v.y ?? v.lastY); } cam.flash(200, 255, 245, 190); sfx('evolve'); break;
+      case 'drum': for (const [, v] of this.unitViews ?? []) fx.burst('note', v.x ?? v.lastX, (v.y ?? v.lastY) - 30, 4, 0xffd84d); fx.shockwave(250, PATH_Y, 0xffd84d, 3, 3); cam.shake(200, 0.005); sfx('skill'); break;
+      case 'hourglass': for (const eid of ev.eids) { const v = at(eid); if (v) fx.burst('snow', v.lastX, v.lastY, 6, 0xe8d9a0); } cam.flash(260, 230, 220, 160); sfx('skill'); break;
+      case 'gust': fx.stampede?.(PATH_Y); for (const eid of ev.eids) { const v = at(eid); if (v) fx.burst('puff', v.lastX, v.lastY, 5, 0xdfefff); } cam.shake(260, 0.008); sfx('skill'); break;
+      default: break;
+    }
   }
 
   // ---------- static layout ----------
@@ -266,6 +339,7 @@ export default class BattleScene extends Phaser.Scene {
     const sx = 765, sy = 505;
     this.sellZone = this.add.rectangle(sx, sy, 150, 70, 0x3a1414, 0.85).setStrokeStyle(2, 0xc0392b, 0.9);
     this.add.text(sx, sy, '🪙 판매\n(끌어다 놓기)', style(13, '#ffcdd2', { align: 'center' })).setOrigin(0.5);
+    this.buildSpellBar();
   }
 
   /** 내 진영 아홉 칸 (3열 × 3줄) and, during prep, a ghost of where the camp will fight. */
@@ -594,6 +668,7 @@ export default class BattleScene extends Phaser.Scene {
     if (live && !stop) step(this.state, this.data2, this.frameDt);
     this.enemyHits = new Set([...this.enemyHits, ...this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid)]);
     this.globe?.update(this.realDt);
+    this.drawSpellBar();
     { const want = this.state.phase === 'wave' ? this.data2.config.formation?.squeeze ?? 1 : 1; this.squeezeK = (this.squeezeK ?? 1) + (want - (this.squeezeK ?? 1)) * Math.min(1, this.realDt * 3); }
     this.preAnimate();
     this.syncUnits();
@@ -1143,6 +1218,7 @@ export default class BattleScene extends Phaser.Scene {
           if (pair) { const [a, c] = Object.values(pair.units).map((u) => unitPos(u.uid)); if (b.kind === 'clash') { this.fx.clash(...a); this.fx.clash(...c); } else this.fx.hearts(...a, ...c); } sfx(b.kind === 'clash' ? 'clash' : 'bond');
           this.toast(`${b.kind === 'clash' ? '⚡ 상극' : '♥ 인연'} 발견: ${b.name} — ${b.desc}`, b.kind === 'clash' ? '#f0883e' : '#ff9fbf'); break; }
         case 'shieldBreak': { this.toast('보호막이 깨졌다!', '#d2b4ff'); const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.shieldBreak(ve.lastX, ve.lastY); sfx('shatter'); break; }
+        case 'spell': this.spellFx(ev); break;
         case 'revive': { const ve = this.enemyViews.get(ev.eid); if (ve) { this.floatText(ve.lastX, ve.lastY - 40, '벌떡!', '#9cff6b'); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.2); this.fx.burst('puff', ve.lastX, ve.lastY, 8, 0x6f8f5a); } sfx('bossSummon'); break; }
         case 'bossSummon': { const ve = this.enemyViews.get(ev.eid); this.floatText(640, PATH_Y - 110, `${data.enemyById[this.state.enemies.find((x) => x.eid === ev.eid)?.id]?.name ?? '보스'}이(가) 졸개를 불렀다`, '#aab7b8'); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY, 10, 0x6c5a8a); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.5); } sfx('bossSummon'); break; }
         case 'merge': {

@@ -58,3 +58,26 @@ test('undead resist one attack style and fear an element; climate tilts elements
   for (const stg of D.stages) assert.ok(D.config.climates[stg.climate], stg.id);
   assert.equal(D.stages.length + D.config.roadmap.length, 12);
 });
+
+test('spells: one to start, one more per cleared stage; mana gates the cast', async () => {
+  const { spellsUnlocked, castSpell, spellBlock } = await import('../src/logic/spells.js');
+  const { step } = await import('../src/logic/battle.js');
+  const save = defaultSave(), list = D.config.spells.list;
+  assert.deepEqual(spellsUnlocked(save, D), ['meteor']);
+  assert.deepEqual(new Set(list.map((s) => s.kind)), new Set(['attack', 'defense', 'support']));
+  save.stages['forest-1'] = { cleared: true }; save.stages['forest-2'] = { cleared: true };
+  assert.deepEqual(spellsUnlocked(save, D), ['meteor', 'wall', 'drum']);
+  const s = createBattle(D, 'forest-1', 1, { spells: list.map((x) => x.id) });
+  assert.equal(spellBlock(s, D, 'meteor'), 'noWave');
+  s.phase = 'wave'; s.mana = 100;
+  s.enemies = [makeEnemy('normal', 1, s.stage, D, 1), makeEnemy('normal', 1, s.stage, D, 2), makeEnemy('boss_boar', 1, s.stage, D, 3)];
+  s.enemies[0].pos = 5; s.enemies[1].pos = 5.4; s.enemies[2].pos = 9;
+  assert.ok(castSpell(s, D, 'meteor').ok);
+  assert.ok(s.enemies[0].hp < s.enemies[0].maxHp && s.enemies[2].hp === s.enemies[2].maxHp);
+  assert.equal(s.mana, 60); assert.equal(spellBlock(s, D, 'wall'), 'cooldown');
+  s.spellCd = 0; assert.ok(castSpell(s, D, 'wall').ok); assert.ok(s.enemies[0].holdLeft > 3);
+  s.spellCd = 0; s.mana = 100; const p = s.enemies[1].pos; assert.ok(castSpell(s, D, 'gust').ok); assert.ok(s.enemies[1].pos > p + 1.9);
+  s.spellCd = 0; assert.ok(castSpell(s, D, 'drum').ok); assert.ok(s.allyBuffs.some((b) => b.stat === 'interval'));
+  s.mana = 0; s.spellCd = 0; assert.equal(castSpell(s, D, 'chain').reason, 'mana');
+  step(s, D, 1); assert.ok(s.mana > 1.5);
+});

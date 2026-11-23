@@ -1,0 +1,329 @@
+{
+ "offerWaves": [
+  3,
+  6,
+  9,
+  12
+ ],
+ "choices": 3,
+ "weights": {
+  "common": 60,
+  "rare": 30,
+  "epic": 10
+ },
+ "relics": [
+  {
+   "id": "pack_howl",
+   "icon": "🐺",
+   "name": "무리의 울음",
+   "rarity": "common",
+   "desc": "같은 종이 2마리 이상 출전하면 그 종 피해 +20%",
+   "fx": [
+    {
+     "who": {
+      "pair": true
+     },
+     "dmg": 20
+    }
+   ]
+  },
+  {
+   "id": "iron_hoof",
+   "icon": "🛡️",
+   "name": "강철 발굽",
+   "rarity": "common",
+   "desc": "브루저 막기 +1, 받는 피해 -10%",
+   "fx": [
+    {
+     "who": {
+      "role": "bruiser"
+     },
+     "block": 1,
+     "taken": -10
+    }
+   ]
+  },
+  {
+   "id": "hawk_quill",
+   "icon": "🪶",
+   "name": "매의 깃",
+   "rarity": "common",
+   "desc": "나는 동물 사거리 +1, 피해 +10%",
+   "fx": [
+    {
+     "who": {
+      "flyer": true
+     },
+     "range": 1,
+     "dmg": 10
+    }
+   ]
+  },
+  {
+   "id": "viper_fang",
+   "icon": "🐍",
+   "name": "독사의 이빨",
+   "rarity": "common",
+   "desc": "중독·둔화 효과 +40%",
+   "fx": [
+    {
+     "status": 40
+    }
+   ]
+  },
+  {
+   "id": "earth_bless",
+   "icon": "🌿",
+   "name": "대지의 축복",
+   "rarity": "rare",
+   "desc": "지형 보너스 2배",
+   "fx": [
+    {
+     "terrainMult": 2
+    }
+   ]
+  },
+  {
+   "id": "continent_oath",
+   "icon": "🌏",
+   "name": "대륙의 맹세",
+   "rarity": "rare",
+   "desc": "대륙 시너지가 2마리부터 켜짐",
+   "eco": {
+    "synergyMin": 2
+   }
+  },
+  {
+   "id": "alchemist",
+   "icon": "⚗️",
+   "name": "합성 장인",
+   "rarity": "rare",
+   "desc": "키메라 피해·체력 +25%",
+   "fx": [
+    {
+     "who": {
+      "kind": "chimera"
+     },
+     "dmg": 25,
+     "hp": 25
+    }
+   ]
+  },
+  {
+   "id": "young_king",
+   "icon": "👑",
+   "name": "어린 왕",
+   "rarity": "common",
+   "desc": "어린·성장기 동물 피해 +25%",
+   "fx": [
+    {
+     "who": {
+      "stage": [
+       "young",
+       "teen"
+      ]
+     },
+     "dmg": 25
+    }
+   ]
+  },
+  {
+   "id": "golden_acorn",
+   "icon": "🌰",
+   "name": "황금 도토리",
+   "rarity": "common",
+   "desc": "웨이브 보상 +10",
+   "eco": {
+    "waveBonus": 10
+   }
+  },
+  {
+   "id": "interest",
+   "icon": "💰",
+   "name": "다람쥐 저금통",
+   "rarity": "rare",
+   "desc": "웨이브가 끝날 때 가진 골드 10당 +1 (최대 +12)",
+   "eco": {
+    "interest": [
+     10,
+     12
+    ]
+   }
+  },
+  {
+   "id": "coupon",
+   "icon": "🎟️",
+   "name": "소환 쿠폰",
+   "rarity": "common",
+   "desc": "소환 비용 -6",
+   "eco": {
+    "summonDiscount": 6
+   }
+  },
+  {
+   "id": "feed_bag",
+   "icon": "🎒",
+   "name": "먹이 주머니",
+   "rarity": "common",
+   "desc": "먹이가 반값, 5회 동안",
+   "eco": {
+    "baitCost": 10,
+    "baitSummons": 5
+   }
+  },
+  {
+   "id": "lucky_star",
+   "icon": "⭐",
+   "name": "행운의 별",
+   "rarity": "rare",
+   "desc": "영웅 등급이 나올 확률 2배",
+   "eco": {
+    "heroMult": 2
+   }
+  },
+  {
+   "id": "twin_egg",
+   "icon": "🥚",
+   "name": "쌍둥이 알",
+   "rarity": "rare",
+   "desc": "소환할 때 15% 확률로 같은 동물이 하나 더",
+   "eco": {
+    "twinChance": 15
+   }
+  },
+  {
+   "id": "comrades",
+   "icon": "❤️",
+   "name": "전우애",
+   "rarity": "rare",
+   "desc": "켜진 궁합 하나마다 모든 아군 피해 +5%",
+   "eco": {
+    "bondDmg": 5
+   }
+  },
+  {
+   "id": "harmony",
+   "icon": "☯️",
+   "name": "조화",
+   "rarity": "common",
+   "desc": "상극이 켜지지 않음",
+   "eco": {
+    "noClash": true
+   }
+  },
+  {
+   "id": "reversal_charm",
+   "icon": "🎴",
+   "name": "역전의 부적",
+   "rarity": "epic",
+   "desc": "약체 키메라가 항상 역전의 키메라가 되고 체력 +50%",
+   "eco": {
+    "alwaysReversal": true
+   },
+   "fx": [
+    {
+     "who": {
+      "kind": "weak"
+     },
+     "hp": 50
+    }
+   ]
+  },
+  {
+   "id": "phoenix_down",
+   "icon": "🔥",
+   "name": "불사조 깃털",
+   "rarity": "common",
+   "desc": "재등장 시간 -35%",
+   "fx": [
+    {
+     "respawn": -35
+    }
+   ]
+  },
+  {
+   "id": "sharp_claw",
+   "icon": "🗡️",
+   "name": "날카로운 발톱",
+   "rarity": "common",
+   "desc": "치명타 확률 +12%",
+   "fx": [
+    {
+     "crit": 12
+    }
+   ]
+  },
+  {
+   "id": "rampart",
+   "icon": "🏰",
+   "name": "튼튼한 성벽",
+   "rarity": "common",
+   "desc": "생명 +6",
+   "eco": {
+    "life": 6
+   }
+  },
+  {
+   "id": "herald",
+   "icon": "📯",
+   "name": "전령의 나팔",
+   "rarity": "common",
+   "desc": "웨이브 시작 12초간 공격 간격 -30%",
+   "fx": [
+    {
+     "if": {
+      "waveTimeLt": 12
+     },
+     "interval": -30
+    }
+   ]
+  },
+  {
+   "id": "lone_wolf",
+   "icon": "🌙",
+   "name": "외톨이 별",
+   "rarity": "epic",
+   "desc": "출전 동물이 3마리 이하면 모두 피해 +45%, 체력 +30%",
+   "eco": {
+    "fewBuff": [
+     3,
+     45,
+     30
+    ]
+   }
+  },
+  {
+   "id": "spirit_path",
+   "icon": "✨",
+   "name": "영물의 길",
+   "rarity": "epic",
+   "desc": "영물 피해 +40%, 같은 종 소환 확률 더 증가",
+   "fx": [
+    {
+     "who": {
+      "stage": [
+       "spirit"
+      ]
+     },
+     "dmg": 40
+    }
+   ],
+   "eco": {
+    "sameSpeciesExtra": 4
+   }
+  },
+  {
+   "id": "glass_cannon",
+   "icon": "💥",
+   "name": "유리 대포",
+   "rarity": "epic",
+   "desc": "모든 아군 피해 +35%, 받는 피해 +30%",
+   "fx": [
+    {
+     "dmg": 35,
+     "taken": 30
+    }
+   ]
+  }
+ ]
+}

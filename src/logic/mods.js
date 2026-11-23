@@ -1,6 +1,7 @@
 // Per-tick modifiers for every field unit: traits, legend passives, bonds/clashes, auras, continent synergy,
 // terrain, species level and timed buffs. All abilities are '효과 + 조건' lines (plan ch.12) read from data.
 import { traitView } from './traits.js';
+import { ownedRelics, eco, whoMatches } from './relics.js';
 
 const STATS = ['dmg', 'interval', 'range', 'block', 'hp', 'cd', 'holdDur', 'crit', 'dodge', 'taken', 'buff', 'regen', 'respawn', 'status', 'killGold', 'aoe', 'waveEndGold', 'firstHoldDur', 'auraRadiusAdd'];
 const FLAGS = ['restCycle', 'afterRest', 'restAfterKill', 'restOnMove', 'restOnKnock', 'misTarget', 'variance', 'cantHitBehind', 'cantHitClose',
@@ -86,7 +87,7 @@ export function activeBonds(state, data) {
     else {
       for (const x of as) for (const y of cs) if (!pick && Math.abs(x.pos - y.pos) <= b.tiles) pick = [x, y];
     }
-    if (pick) out.push({ bond: b, units: { [a]: pick[0], [c]: pick[1] } });
+    if (pick && !(b.kind === 'clash' && eco(state, data, 'noClash'))) out.push({ bond: b, units: { [a]: pick[0], [c]: pick[1] } });
   }
   return out;
 }
@@ -97,7 +98,8 @@ export function activeSynergies(state, data) {
   if (!syn) return [];
   const count = {};
   for (const u of state.field) for (const c of u.stats.continents) count[c] = (count[c] ?? 0) + 1;
-  return Object.keys(syn.effects).filter((c) => (count[c] ?? 0) >= syn.min);
+  const min = Math.min(syn.min, eco(state, data, 'synergyMin') ?? syn.min);
+  return Object.keys(syn.effects).filter((c) => (count[c] ?? 0) >= min);
 }
 
 /** Species level map value → damage percent. Chimeras use the average of their parts. */
@@ -132,6 +134,7 @@ export function computeMods(state, data) {
     if (u.killStacks && m.flags.killStack) m.dmg += Math.min(m.flags.killStack[1], m.flags.killStack[0] * u.killStacks);
     if (u.hundredDone) m.dmg += 30, m.hp += 30;
     m.dmg += levelDamage(u, state, data);
+    for (const r of ownedRelics(state, data)) for (const fx of r.fx ?? []) if (whoMatches(fx.who, u, state)) applyFx(m, fx, u, state, data, auras, enemyAuras);
     u.mods = m;
   }
   // bonds (fx per member species)
@@ -172,8 +175,11 @@ export function computeMods(state, data) {
       }
     }
   }
-  // all-ally timed buffs (skills), synergy, terrain
+  // all-ally timed buffs (skills), synergy, terrain, relic economy buffs
   const syns = activeSynergies(state, data);
+  const bondDmg = (eco(state, data, 'bondDmg') ?? 0) * bonds.filter((b) => b.bond.kind !== 'clash').length;
+  const few = eco(state, data, 'fewBuff');
+  const fewOn = few && state.field.length <= few[0];
   for (const u of state.field) {
     const m = u.mods;
     u.wasBuffed = Object.keys(m.auraIn).length > 0 || (state.allyBuffs ?? []).length > 0;
@@ -181,8 +187,10 @@ export function computeMods(state, data) {
     for (const [s, v] of Object.entries(m.auraNeg)) m[s] += v;
     for (const b of state.allyBuffs ?? []) m[b.stat] += b.percent * (b.percent > 0 || b.stat === 'interval' ? m.buffRecv : 1);
     for (const c of syns) for (const [s, v] of Object.entries(cfg.synergy.effects[c])) m[s] += v;
+    m.dmg += bondDmg;
+    if (fewOn) { m.dmg += few[1]; m.hp += few[2]; }
     if (cfg.terrain && terrainMatch(u, state, cfg)) {
-      const k = m.flags.terrainMult ?? 1;
+      const k = Math.max(m.flags.terrainMult ?? 1, 1);
       for (const [s, v] of Object.entries(cfg.terrain)) m[s] += v * k;
     }
     if (m.flags.perBruiserHp) m.hp += m.flags.perBruiserHp * state.field.filter((o) => (o.stats.role ?? '') === 'bruiser').length;

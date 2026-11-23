@@ -6,6 +6,7 @@ import { unitStats } from './stats.js';
 import { mergeKind, mergeUnits } from './merge.js';
 import { buildWave, makeEnemy } from './waves.js';
 import { combatTick, onWaveStart, onWaveEnd } from './combat.js';
+import { eco, rollOffer, chooseRelic } from './relics.js';
 import { rollTraits, inheritEvolve, inheritSpirit, inheritChimera, inheritWeak } from './traits.js';
 
 const fail = (reason) => ({ ok: false, reason });
@@ -24,7 +25,7 @@ export function createBattle(data, stageId, seed = 1, opts = {}) {
     field: [], bench: Array(cfg.benchSize + (opts.benchBonus ?? 0)).fill(null), enemies: [], queue: [],
     nextUid: 1, nextEid: 1, events: [],
     known: { recipes: new Set(opts.known?.recipes ?? []), failed: new Set(opts.known?.failed ?? []) },
-    levels: { ...(opts.levels ?? {}) }, allyBuffs: [], bait: null, kills: 0,
+    levels: { ...(opts.levels ?? {}) }, allyBuffs: [], bait: null, kills: 0, relics: [], relicOffer: null,
     finds: { recipes: [], flops: [], species: [], bonds: [] }, seenSpecies: new Set(opts.seenSpecies ?? []), seenBonds: new Set(opts.seenBonds ?? []),
   };
 }
@@ -50,7 +51,8 @@ export function makeUnit(state, data, inst) {
 /** Total gold for one summon with optional continent / habitat designation. */
 export function summonPrice(state, data, opts = {}) {
   const d = data.config.designate ?? { continent: 0, habitat: 0 };
-  return summonCost(state.summonCount, data.config) + (opts.habitat ? d.habitat : opts.continent ? d.continent : 0);
+  const base = Math.max(10, summonCost(state.summonCount, data.config) - (eco(state, data, 'summonDiscount') ?? 0));
+  return base + (opts.habitat ? d.habitat : opts.continent ? d.continent : 0);
 }
 
 /** Buy bait in the prep phase: the next N summons weigh that role ×mult. */
@@ -58,9 +60,10 @@ export function buyBait(state, data, type) {
   const b = data.config.bait;
   if (!b?.types?.[type]) return fail('notFound');
   if (b.prepOnly && state.phase !== 'prep') return fail('notPrep');
-  if (state.gold < b.cost) return fail('gold');
-  state.gold -= b.cost;
-  state.bait = { type, left: b.summons };
+  const cost = eco(state, data, 'baitCost') ?? b.cost;
+  if (state.gold < cost) return fail('gold');
+  state.gold -= cost;
+  state.bait = { type, left: eco(state, data, 'baitSummons') ?? b.summons };
   state.events.push({ type: 'bait', bait: type });
   return { ok: true };
 }
@@ -96,7 +99,7 @@ export function summon(state, data, opts = {}) {
   const slot = freeSlot(state);
   if (slot < 0) return fail('benchFull');
   const roll = rollSummon(state.rollCtx, state.wave, data, state.rng, ownedSpecies(state),
-    { continent: opts.habitat ? data.units.find((u) => u.habitat === opts.habitat)?.continent : opts.continent, habitat: opts.habitat, bait: state.bait?.type });
+    { continent: opts.habitat ? data.units.find((u) => u.habitat === opts.habitat)?.continent : opts.continent, habitat: opts.habitat, bait: state.bait?.type, heroMult: eco(state, data, 'heroMult') ?? 1, sameExtra: eco(state, data, 'sameSpeciesExtra') ?? 0 });
   if (state.bait) { state.bait.left -= 1; if (state.bait.left <= 0) state.bait = null; }
   const lvCfg = data.config.speciesLevel;
   const lv = state.levels?.[roll.unitId] ?? 1;
@@ -104,6 +107,11 @@ export function summon(state, data, opts = {}) {
   const white = (data.lore?.passives?.[roll.unitId]?.fx ?? []).some((f) => f.whiteChance && state.rng() < f.whiteChance / 100);
   const unit = makeUnit(state, data, { kind: 'base', speciesId: roll.unitId, stage, parts: null, white, traits: rollTraits(roll.unitId, data, state.rng, white) });
   if (!state.seenSpecies.has(roll.unitId)) { state.seenSpecies.add(roll.unitId); state.finds.species.push(roll.unitId); }
+  const twin = eco(state, data, 'twinChance');
+  if (twin && state.rng() < twin / 100) {
+    const slot2 = state.bench.indexOf(null, slot + 1) >= 0 ? state.bench.indexOf(null, slot + 1) : state.bench.findIndex((x, i) => !x && i !== slot);
+    if (slot2 >= 0) { state.bench[slot2] = makeUnit(state, data, { kind: 'base', speciesId: roll.unitId, stage: 'young', parts: null, traits: rollTraits(roll.unitId, data, state.rng) }); state.events.push({ type: 'twin', uid: state.bench[slot2].uid }); }
+  }
   state.bench[slot] = unit;
   state.gold -= cost;
   state.summonCount += 1;
@@ -154,6 +162,7 @@ export function deploy(state, data, benchIndex, pos, opts = {}) {
   place(state, cfg, unit, p, opts);
   state.bench[benchIndex] = null;
   Object.assign(unit, { pos: p, targetPos: p, moving: false });
+  if (state.phase === 'wave') unit.home = { pos: clampPos(p - (state.formationDelta ?? 0), cfg), lane: unit.lane, skyY: unit.skyY };
   state.field.push(unit);
   return { ok: true, unit };
 }
@@ -167,6 +176,8 @@ export function moveUnit(state, data, uid, pos, opts = {}) {
   if (!isFree(state, p, uid, data.config, unit)) return fail('occupied');
   place(state, data.config, unit, p, opts);
   unit.targetPos = p;
+  unit.formationMove = false;
+  if (state.phase === 'wave' && unit.home) unit.home = { pos: clampPos(p - (state.formationDelta ?? 0), data.config), lane: unit.lane, skyY: unit.skyY };
   if (state.phase === 'prep') unit.pos = p; // nothing fights during prep, so the unit is placed at once
   return { ok: true };
 }
@@ -224,7 +235,7 @@ export function merge(state, data, fromRef, toRef) {
   if (kind === 'evolve') inst.traits = inheritEvolve(to.traits, from.traits);
   else if (kind === 'spirit') inst.traits = inheritSpirit(to.traits, from.traits);
   else if (kind === 'chimera') inst.traits = inheritChimera(to.traits, from.traits);
-  else if (kind === 'weak') { const w = inheritWeak(to.traits, from.traits, data, state.rng); inst.traits = w.traits; inst.reversal = w.reversal; }
+  else if (kind === 'weak') { const w = inheritWeak(to.traits, from.traits, data, state.rng); const always = eco(state, data, 'alwaysReversal'); inst.traits = always ? w.traits.map((t) => ({ ...t, flipped: true })) : w.traits; inst.reversal = w.reversal || !!always; }
   if (kind === 'evolve' || kind === 'spirit') inst.white = !!to.white;
   const unit = makeUnit(state, data, inst);
   const onField = toRef.where === 'field';
@@ -251,8 +262,41 @@ export function merge(state, data, fromRef, toRef) {
   return { ok: true, kind, unit };
 }
 
+/**
+ * Formation: when a wave starts the whole line marches to the middle of the field, keeping the gaps the player set.
+ * Front-liners (melee) lead at config.formation.front, ranged stay at least `rangedGap` behind, flyers keep their sky spot.
+ */
+export function formUp(state, data) {
+  const f = data.config.formation;
+  if (!f || !state.field.length) { state.formationDelta = 0; return; }
+  for (const u of state.field) u.home = { pos: u.targetPos, lane: u.lane, skyY: u.skyY };
+  const ground = state.field.filter((u) => !u.stats.flyer);
+  const melee = ground.filter((u) => u.stats.range <= 1);
+  const lead = melee.length ? Math.max(...melee.map((u) => u.home.pos)) : ground.length ? Math.max(...ground.map((u) => u.home.pos)) + f.rangedGap : Math.max(...state.field.map((u) => u.home.pos));
+  const delta = Math.max(0, f.front - lead);
+  state.formationDelta = delta;
+  for (const u of state.field) {
+    let p = u.home.pos + delta;
+    if (!u.stats.flyer && u.stats.range > 1 && melee.length) p = Math.min(p, f.front - f.rangedGap);
+    if (u.stats.flyer) p = Math.min(p, f.front + 0.5);
+    u.targetPos = clampPos(p, data.config);
+    u.formationMove = true;
+  }
+}
+
+/** After a wave everyone goes back to the spot the player chose. */
+export function standDown(state) {
+  for (const u of state.field) {
+    if (!u.home) continue;
+    Object.assign(u, { pos: u.home.pos, targetPos: u.home.pos, lane: u.home.lane ?? u.lane, skyY: u.home.skyY ?? u.skyY, moving: false, formationMove: false });
+    u.home = null;
+  }
+  state.formationDelta = 0;
+}
+
 /** Begin the current wave. */
 export function startWave(state, data) {
+  formUp(state, data);
   state.queue = buildWave(state.stage, state.wave, data, state.rng);
   state.waveTime = 0;
   state.phase = 'wave';
@@ -263,6 +307,7 @@ export function startWave(state, data) {
 /** Skip the rest of the prep timer for bonus gold. */
 export function skipPrep(state, data) {
   if (state.phase !== 'prep') return fail('notPrep');
+  if (state.relicOffer) return fail('relic');
   const gold = skipGold(state.prepLeft, data.config);
   state.gold += gold;
   startWave(state, data);
@@ -271,7 +316,11 @@ export function skipPrep(state, data) {
 
 function endWave(state, data) {
   onWaveEnd(state, data);
-  state.gold += waveReward(state.wave, data.config);
+  standDown(state);
+  state.gold += waveReward(state.wave, data.config) + (eco(state, data, 'waveBonus') ?? 0);
+  const intr = eco(state, data, 'interest');
+  if (intr) { const g = Math.min(intr[1], Math.floor(state.gold / intr[0])); state.gold += g; state.events.push({ type: 'interest', gold: g }); }
+  if ((data.relicCfg?.offerWaves ?? []).includes(state.wave) && state.wave < state.stage.waves.length) { state.relicOffer = rollOffer(state, data); state.events.push({ type: 'relicOffer' }); }
   state.wavesCleared = state.wave;
   for (const u of state.field) Object.assign(u, { down: false, hp: u.maxHp ?? u.stats.hp, respawnLeft: 0 });
   state.events.push({ type: 'waveEnd', wave: state.wave });
@@ -288,6 +337,7 @@ function endWave(state, data) {
 function subStep(state, data, d) {
   state.time += d;
   if (state.phase === 'prep') {
+    if (state.relicOffer) return; // wait for the relic choice
     state.prepLeft -= d;
     if (state.prepLeft <= 0) startWave(state, data);
     return;
@@ -315,3 +365,5 @@ export function step(state, data, dt) {
     left -= d;
   }
 }
+
+export { chooseRelic };

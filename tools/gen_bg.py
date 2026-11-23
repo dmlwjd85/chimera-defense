@@ -2,7 +2,7 @@
 Layout must match src/scenes/layout.js: path centre y=330, height 120, tiles 90px from x=100 (12 tiles).
 Run: python3 tools/gen_bg.py  (needs rsvg-convert and Pillow)"""
 import os, json, math, random, subprocess
-from PIL import Image, ImageFilter, ImageEnhance
+from PIL import ImageDraw, Image, ImageFilter, ImageEnhance
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 OUT = os.path.join(ROOT, 'public', 'assets', 'bg')
@@ -236,9 +236,10 @@ def defs(stage, zones):
         d += f'<mask id="zmask{i}" maskUnits="userSpaceOnUse" x="-100" y="0" width="1500" height="720"><rect x="{(x0-60) if i else -100}" y="0" width="{(480 if 0 < i < 2 else 600)}" height="720" fill="url(#zm{i})"/></mask>'
     return d
 
-def scene(stage, zones, seed):
+def scene(stage, zones, seed, overlay=False, guide=False):
     rng = random.Random(seed)
     sk = SKY[stage]
+    if overlay: return overlay_svg(stage, zones, rng, sk)
     out = f'<rect width="{W}" height="{H}" fill="url(#sky)"/>'
     col, sx, sy, sr = sk['sun']
     out += f'<circle cx="{sx}" cy="{sy}" r="{sr*3}" fill="{col}" opacity="0.35" filter="url(#glow)"/><circle cx="{sx}" cy="{sy}" r="{sr}" fill="{col}"/>'
@@ -282,7 +283,19 @@ def scene(stage, zones, seed):
         if z == 'mountain':
             lay += rock(x0 + 60, BOT + 110, 1.4, '#7d7f8a') + rock(x0 + 250, BOT + 140, 1.1, '#6d6f7a') + pine(x0 + 330, BOT + 170, 1.3, '#2f5b4a', True)
         out += f'<g mask="url(#zmask{i})">{lay}</g>'
-    out += f'<rect x="0" y="{BOT+40}" width="{W}" height="{H-BOT-40}" fill="url(#uiFade)"/>'
+    if not guide: out += f'<rect x="0" y="{BOT+40}" width="{W}" height="{H-BOT-40}" fill="url(#uiFade)"/>'
+    if guide:
+        out += road_svg(zones, rng, seams=False)
+        pl = path_layer(zones, random.Random(5)); out += pl[:pl.index('<!--tiles-->')]
+    else: out += path_layer(zones, rng)
+    if sk['tint']: out += f'<rect width="{W}" height="{H}" fill="{sk["tint"]}" opacity="0.22"/>'
+    if not guide:
+        out += f'<rect width="{W}" height="{H}" fill="url(#vig)"/>'
+        out += f'<rect width="{W}" height="{H}" filter="url(#grain)" fill="#808080"/>'
+    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W*2}" height="{H*2}"><defs>{defs(stage, zones)}</defs>{out}</svg>'
+
+def path_layer(zones, rng):
+    out = ''
     # home gate (left) and enemy portal (right)
     out += f'<rect x="20" y="230" width="70" height="170" rx="8" fill="#6b4a2e"/><path d="M14 236 Q55 196 96 236 Z" fill="#a1442c"/><rect x="34" y="300" width="42" height="100" rx="20" fill="#3a2716"/>'
     out += ''.join(f'<rect x="{12+k*20}" y="{240+(k%2)*6}" width="12" height="160" rx="5" fill="#8a6a44"/>' for k in range(0))
@@ -293,6 +306,7 @@ def scene(stage, zones, seed):
     out += f'<path d="M1196 250 L1206 222 L1218 246 M1262 246 L1274 218 L1280 244" stroke="#4d4a5b" stroke-width="10" stroke-linecap="round"/>'
     out += rock(1200, 410, 1.1, '#5d5a6b') + rock(1262, 400, 0.9, '#4d4a5b')
     # path tiles
+    out += '<!--tiles-->'
     out += f'<rect x="{X0-6}" y="{BOT+DEPTH-4}" width="{12*TILE+12}" height="22" fill="#000" opacity="0.35" filter="url(#soft)"/>'
     for t in range(12):
         z = zones[t // 4]
@@ -306,10 +320,89 @@ def scene(stage, zones, seed):
         if z == 'field': out += flowers(rng, x0, x0 + 360, BOT + 40, BOT + 90, 40, ['#fff', '#ffe066', '#ff8fb1'])
         if z == 'wetland': out += reeds(x0 + 40, BOT + 60, 1.2, rng) + reeds(x0 + 300, BOT + 70, 1.0, rng)
         if z in ('forest', 'mountain'): out += rock(x0 + 80, BOT + 70, 0.8, '#6d7068') + rock(x0 + 280, BOT + 60, 0.6, '#77786f')
-    if sk['tint']: out += f'<rect width="{W}" height="{H}" fill="{sk["tint"]}" opacity="0.22"/>'
+    return out
+
+ROAD = {'village': '#c8a878', 'field': '#b89a62', 'forest': '#8a6a46', 'plains': '#d0b070', 'wetland': '#7f8a64', 'mountain': '#9a9490'}
+GRASS = {'village': '#7fae5a', 'field': '#8bc34a', 'forest': '#3a7d44', 'plains': '#c9a24a', 'wetland': '#5f8f6b', 'mountain': '#6f8a6a'}
+
+def road_svg(zones, rng, alpha=0.92, seams=True, tufts=True):
+    out = f'<filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="4" seed="7"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.4 1.1"/><feComposite in="SourceGraphic" operator="in"/></filter>'
+    out += '<filter id="rough2"><feTurbulence type="fractalNoise" baseFrequency="0.11" numOctaves="2" seed="21"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2 1.2"/><feComposite in="SourceGraphic" operator="in"/></filter>'
+    out += '<filter id="feather"><feGaussianBlur stdDeviation="7"/></filter>'
+    # contact shadow + organic road bed (wobbly edges, painted texture)
+    def edge(y, amp):
+        pts = []
+        for k in range(0, 12 * TILE + 41, 18):
+            pts.append((X0 - 20 + k, y + rng.uniform(-amp, amp) + math.sin(k / 70) * amp * 0.6))
+        return pts
+    topE, botE = edge(TOP + 2, 6), edge(BOT - 2, 6)
+    poly = 'M' + ' L'.join(f'{x:.0f} {y:.0f}' for x, y in topE) + ' L' + ' L'.join(f'{x:.0f} {y:.0f}' for x, y in reversed(botE)) + ' Z'
+    out += f'<path d="{poly}" transform="translate(0 8)" fill="#1a1208" opacity="0.35" filter="url(#feather)"/>'
+    out += '<linearGradient id="roadG" x1="0" y1="0" x2="1" y2="0">' + ''.join(f'<stop offset="{(i*4*TILE + 2*TILE + 20)/(12*TILE+40):.3f}" stop-color="{ROAD[z]}"/>' for i, z in enumerate(zones)) + '</linearGradient>'
+    out += '<linearGradient id="roadV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2d0" stop-opacity="0.35"/><stop offset="0.25" stop-color="#fff2d0" stop-opacity="0"/><stop offset="0.8" stop-color="#2a1a08" stop-opacity="0"/><stop offset="1" stop-color="#2a1a08" stop-opacity="0.35"/></linearGradient>'
+    out += f'<path d="{poly}" fill="url(#roadG)" opacity="{alpha}" filter="url(#feather)"/>'
+    out += '<linearGradient id="roadD" x1="0" y1="0" x2="1" y2="0">' + ''.join(f'<stop offset="{(i*4*TILE + 2*TILE + 20)/(12*TILE+40):.3f}" stop-color="{sh(ROAD[z], 0.68)}"/>' for i, z in enumerate(zones)) + '</linearGradient>'
+    out += '<linearGradient id="roadL" x1="0" y1="0" x2="1" y2="0">' + ''.join(f'<stop offset="{(i*4*TILE + 2*TILE + 20)/(12*TILE+40):.3f}" stop-color="{sh(ROAD[z], 1.22)}"/>' for i, z in enumerate(zones)) + '</linearGradient>'
+    out += f'<clipPath id="roadClip"><path d="{poly}"/></clipPath>'
+    out += f'<g clip-path="url(#roadClip)" opacity="{alpha*0.55:.2f}"><rect x="0" y="{TOP-10}" width="{W}" height="{PH+20}" fill="url(#roadD)" filter="url(#rough)"/></g>'
+    out += f'<g clip-path="url(#roadClip)" opacity="{alpha*0.35:.2f}"><rect x="0" y="{TOP-10}" width="{W}" height="{PH+20}" fill="url(#roadL)" filter="url(#rough2)"/></g>'
+    out += f'<path d="{poly}" fill="url(#roadV)" opacity="{min(1, alpha*1.2)}" filter="url(#feather)"/>'
+    for i, z in enumerate(zones):
+        x0 = X0 + i * 4 * TILE
+        c = ROAD[z]
+        out += f'<path d="M{x0+6} {TOP+38} q{TILE} {rng.uniform(-6,6):.0f} {4*TILE-12} 0 M{x0+6} {BOT-36} q{TILE*2} {rng.uniform(-6,6):.0f} {4*TILE-12} 0" stroke="{sh(c,0.65)}" stroke-width="9" fill="none" opacity="{0.14*alpha:.2f}" filter="url(#feather)"/>'
+    # tile seams (placement grid) and zone borders
+    for t in range(1, 12 if seams else 1):
+        x = X0 + t * TILE
+        zb = t % 4 == 0
+        out += f'<path d="M{x} {TOP+10} V{BOT-10}" stroke="{"#fff3d6" if zb else "#3a2a18"}" stroke-width="{2.5 if zb else 1.5}" stroke-dasharray="{"" if zb else "5 9"}" opacity="{0.35 if zb else 0.2}" stroke-linecap="round"/>'
+    out += f'<path d="M{X0+10} {TOP+4} H{X0+12*TILE-10}" stroke="#fff6dd" stroke-width="3" opacity="0.35" stroke-linecap="round" filter="url(#soft)"/>'
+    # grass lips over both edges
+    for i, z in enumerate(zones if tufts else []):
+        x0 = X0 + i * 4 * TILE
+        out += grass_tufts(rng, x0 - 6, x0 + 4 * TILE + 6, TOP + 6, 22, GRASS[z], 13)
+        out += grass_tufts(rng, x0 - 6, x0 + 4 * TILE + 6, BOT + 4, 26, sh(GRASS[z], 0.82), 16)
+        if z == 'field': out += flowers(rng, x0, x0 + 360, BOT - 2, BOT + 14, 18, ['#fff', '#ffe066', '#ff8fb1'])
+        if z == 'wetland': out += reeds(x0 + 30, BOT + 12, 0.9, rng) + reeds(x0 + 320, BOT + 16, 0.8, rng)
+    return out
+
+def overlay_svg(stage, zones, rng, sk):
+    out = f'<rect x="0" y="{BOT+70}" width="{W}" height="{H-BOT-70}" fill="url(#uiFade)"/>'
+    out += road_svg(zones, rng, alpha=0.88, tufts=False)
+    # gate + portal from the classic layer
+    g = path_layer(zones, random.Random(5))
+    g = g[:g.index('<!--tiles-->')] if '<!--tiles-->' in g else g
+    out += g
+    if sk['tint']: out += f'<rect x="0" y="{TOP-30}" width="{W}" height="{PH+60}" fill="{sk["tint"]}" opacity="0.14"/>'
     out += f'<rect width="{W}" height="{H}" fill="url(#vig)"/>'
-    out += f'<rect width="{W}" height="{H}" filter="url(#grain)" fill="#808080"/>'
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W*2}" height="{H*2}"><defs>{defs(stage, zones)}</defs>{out}</svg>'
+
+def ai_composite(svg, ai_path, name, q=88, night=False):
+    """Fit the AI scenery to 2560x1440 (cover), soften/grade it a touch, then lay the path overlay on top."""
+    tmp = os.path.join(OUT, name + '.svg'); png = os.path.join(OUT, name + '_ov.png')
+    open(tmp, 'w').write(svg)
+    subprocess.run(['rsvg-convert', tmp, '-o', png], check=True)
+    ov = Image.open(png).convert('RGBA')
+    ai = Image.open(ai_path).convert('RGB')
+    sc = max(ov.width / ai.width, ov.height / ai.height)
+    ai = ai.resize((round(ai.width * sc), round(ai.height * sc)), Image.LANCZOS)
+    l, t = (ai.width - ov.width) // 2, (ai.height - ov.height) // 2
+    ai = ai.crop((l, t, l + ov.width, t + ov.height))
+    ai = ImageEnhance.Color(ai).enhance(1.05)
+    # light-match: darken/cool the overlay to the painting's light around the road
+    from PIL import ImageStat
+    band = ai.convert('L')
+    lum = ImageStat.Stat(band).mean[0] / 255
+    k = max(0.5, min(1.0, 0.15 + lum / 0.5 * 0.85)) * (0.8 if night else 1)
+    if k < 0.99:
+        r_, g_, b_, a_ = ov.split()
+        cool = 1 + (1 - k) * 0.35
+        ov = Image.merge('RGBA', (r_.point(lambda v: int(v * k)), g_.point(lambda v: int(v * k)), b_.point(lambda v: min(255, int(v * k * cool))), a_))
+    print(name, 'band lum', round(lum, 2), 'overlay k', round(k, 2))
+    im = Image.alpha_composite(ai.convert('RGBA'), ov).convert('RGB')
+    im.save(os.path.join(OUT, name + '.jpg'), quality=q, optimize=True)
+    os.remove(tmp); os.remove(png)
+    return im
 
 def to_jpg(svg, name, q=88):
     tmp = os.path.join(OUT, name + '.svg'); png = os.path.join(OUT, name + '.png')
@@ -348,11 +441,39 @@ def make_fx():
     fx_png('feather', 32, '<path d="M-14 2 Q0 -10 14 -2 Q0 6 -14 2 Z" fill="#fff"/><path d="M-14 2 L14 -2" stroke="#bbb" stroke-width="1"/>')
     fx_png('beam', 64, '<rect x="-12" y="-32" width="24" height="64" fill="url(#r)"/>')
 
+def make_guides():
+    stages = json.load(open(os.path.join(ROOT, 'public', 'data', 'stages.json')))
+    gd = os.path.join(ROOT, 'art-src', 'guides'); os.makedirs(gd, exist_ok=True)
+    for i, st in enumerate(stages):
+        im = to_jpg(scene(st['id'], st['zones'], 100 + i, guide=True), 'guide_tmp')
+        # read as a ground plane: squeeze the scenery up, lay a receding meadow between it and the road
+        g = im.copy(); Wd = g.width
+        top = im.crop((0, 0, Wd, (TOP - 8) * 2)).resize((Wd, 190 * 2), Image.LANCZOS); g.paste(top, (0, 0))
+        gc = {'forest-1': (120, 176, 84), 'forest-2': (184, 160, 84), 'forest-3': (70, 104, 92)}.get(st['id'], (120, 176, 84))
+        far = tuple(int(c * 0.82 + 255 * 0.12) for c in gc)
+        for y in range(190 * 2, (TOP + 4) * 2):
+            t = (y - 380) / ((TOP + 4) * 2 - 380)
+            g.paste(tuple(int(far[k] * (1 - t) + gc[k] * t) for k in range(3)), (0, y, Wd, y + 1))
+        r = random.Random(3); d = ImageDraw.Draw(g)
+        for _ in range(500):
+            x, y = r.uniform(0, Wd), r.uniform(392, (TOP + 2) * 2); sz = 1 + (y - 380) / 40
+            d.ellipse((x, y, x + sz * 2, y + sz), fill=tuple(int(c * r.uniform(0.75, 1.1)) for c in gc))
+        # textured foreground so the painter keeps adding grass and flowers down to the bottom
+        near = tuple(int(c * 0.8) for c in gc)
+        for _ in range(1600):
+            x, y = r.uniform(0, Wd), r.uniform((BOT + 30) * 2, H * 2); sz = 3 + (y - BOT * 2) / 60
+            col = tuple(int(c * r.uniform(0.7, 1.25)) for c in near) if r.random() > 0.06 else r.choice([(250, 240, 220), (240, 120, 90), (250, 210, 90), (190, 150, 230)])
+            d.line((x, y, x + r.uniform(-sz, sz), y - sz * 2.5), fill=col, width=max(2, int(sz / 2)))
+        g.resize((1344, 768), Image.LANCZOS).save(os.path.join(gd, f'guide_{st["id"]}.png'))
+        os.remove(os.path.join(OUT, 'guide_tmp.jpg'))
+
 def main():
     stages = json.load(open(os.path.join(ROOT, 'public', 'data', 'stages.json')))
     images = {}
     for i, st in enumerate(stages):
-        im = to_jpg(scene(st['id'], st['zones'], 100 + i), 'bg-' + st['id'])
+        ai = os.path.join(ROOT, 'art-src', 'recos', f'{st["id"]}.png')
+        if os.path.exists(ai): im = ai_composite(scene(st['id'], st['zones'], 100 + i, overlay=True), ai, 'bg-' + st['id'], night=bool(SKY[st['id']]['tint']))
+        else: im = to_jpg(scene(st['id'], st['zones'], 100 + i), 'bg-' + st['id'])
         images['bg-' + st['id']] = f'assets/bg/bg-{st["id"]}.jpg'
         if i == 0:
             t = im.filter(ImageFilter.GaussianBlur(6)); t = ImageEnhance.Brightness(t).enhance(0.6)
@@ -368,4 +489,5 @@ def main():
     print('bg + fx images:', len(images))
 
 if __name__ == '__main__':
-    main()
+    import sys
+    make_guides() if 'guides' in sys.argv else main()

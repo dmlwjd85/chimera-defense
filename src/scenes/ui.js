@@ -6,37 +6,81 @@ export const COLORS = { bg: 0x141a21, panel: 0x1f2a36, line: 0x3b4b5e, accent: 0
 export const hex = (h) => Phaser.Display.Color.HexStringToColor(h ?? '#888888').color;
 export const style = (size, color = '#ffffff', extra = {}) => ({ fontSize: `${size}px`, color, fontFamily: FONT, ...extra });
 
-/** Rounded button: returns { bg, text, set(label), setEnabled(b), setVisible(b), destroy() }. */
+/** Premium button: dark glass, gold trim, soft top highlight. Returns { set, setEnabled, setVisible, destroy }. */
 export function button(scene, x, y, w, h, label, onClick, opts = {}) {
-  const g = scene.add.graphics().setDepth(opts.depth ?? 10);
-  const fill = opts.fill ?? 0x2f4f6f;
-  const draw = (f, a = 1) => { g.clear(); g.fillStyle(f, a).fillRoundedRect(x - w / 2, y - h / 2, w, h, 10); g.lineStyle(2, opts.stroke ?? 0xffffff, 0.8).strokeRoundedRect(x - w / 2, y - h / 2, w, h, 10); };
-  draw(fill);
-  const zone = scene.add.zone(x, y, w, h).setInteractive({ useHandCursor: true }).setDepth((opts.depth ?? 10) + 1);
-  const text = scene.add.text(x, y, label, style(opts.size ?? 16, opts.color ?? '#ffffff', { align: 'center' })).setOrigin(0.5).setDepth((opts.depth ?? 10) + 1);
+  const depth = opts.depth ?? 10;
+  const g = scene.add.graphics().setDepth(depth);
+  const base = opts.fill ?? 0x1c2a3a;
+  const trim = opts.stroke ?? 0xd4b06a;
+  const r = Math.min(12, h / 2);
+  const draw = (hover = false, on = true) => {
+    const top = Phaser.Display.Color.ValueToColor(base).brighten(hover ? 28 : 16).color;
+    const bot = Phaser.Display.Color.ValueToColor(base).darken(18).color;
+    g.clear();
+    g.fillStyle(0x000000, 0.35).fillRoundedRect(x - w / 2 + 2, y - h / 2 + 4, w, h, r);
+    g.fillGradientStyle(top, top, bot, bot, on ? 1 : 0.5).fillRoundedRect(x - w / 2, y - h / 2, w, h, r);
+    g.fillStyle(0xffffff, hover ? 0.14 : 0.08).fillRoundedRect(x - w / 2 + 3, y - h / 2 + 3, w - 6, h * 0.42, { tl: r - 2, tr: r - 2, bl: 2, br: 2 });
+    g.lineStyle(2, trim, on ? (hover ? 1 : 0.85) : 0.35).strokeRoundedRect(x - w / 2, y - h / 2, w, h, r);
+    g.lineStyle(1, 0xffffff, 0.08).strokeRoundedRect(x - w / 2 + 3, y - h / 2 + 3, w - 6, h - 6, Math.max(2, r - 3));
+  };
+  draw();
+  const zone = scene.add.zone(x, y, w, h).setInteractive({ useHandCursor: true }).setDepth(depth + 1);
+  const text = scene.add.text(x, y, label, style(opts.size ?? 16, opts.color ?? '#f6ead2', { align: 'center', stroke: '#0b0f14', strokeThickness: 3 })).setOrigin(0.5).setDepth(depth + 1);
   let enabled = true;
-  zone.on('pointerover', () => enabled && draw(Phaser.Display.Color.ValueToColor(fill).brighten(15).color));
-  zone.on('pointerout', () => draw(fill, enabled ? 1 : 0.45));
-  zone.on('pointerdown', (p, lx, ly, ev) => { ev?.stopPropagation?.(); if (enabled) onClick(); });
+  zone.on('pointerover', () => { if (enabled) draw(true); if (opts.tip) showTip(scene, opts.tip, x, y - h / 2 - 8); });
+  zone.on('pointerout', () => { draw(false, enabled); hideTip(scene); });
+  zone.on('pointerdown', (p, lx, ly, ev) => { ev?.stopPropagation?.(); if (enabled) { scene.tweens.add({ targets: text, scale: { from: 0.92, to: 1 }, duration: 120 }); onClick(); } });
   const api = {
     bg: g, text, zone,
     set(label2) { text.setText(label2); return api; },
-    setEnabled(b) { enabled = b; draw(fill, b ? 1 : 0.45); text.setAlpha(b ? 1 : 0.6); return api; },
+    setEnabled(b) { if (b === enabled) return api; enabled = b; draw(false, b); text.setAlpha(b ? 1 : 0.55); return api; },
     setVisible(b) { g.setVisible(b); zone.setVisible(b); text.setVisible(b); if (b) zone.setInteractive(); else zone.disableInteractive(); return api; },
     destroy() { g.destroy(); zone.destroy(); text.destroy(); },
   };
   return api;
 }
 
+/** Small hover tooltip (one at a time). */
+export function showTip(scene, msg, x, y) {
+  hideTip(scene);
+  const t = scene.add.text(0, 0, msg, style(13, '#f6ead2', { wordWrap: { width: 260 }, align: 'left' })).setDepth(5001);
+  const w = t.width + 18, h = t.height + 12;
+  const px = Math.max(8, Math.min(1272 - w, x - w / 2)), py = Math.max(8, y - h);
+  const g = scene.add.graphics().setDepth(5000);
+  g.fillStyle(0x0d141d, 0.95).fillRoundedRect(px, py, w, h, 8).lineStyle(1.5, 0xd4b06a, 0.9).strokeRoundedRect(px, py, w, h, 8);
+  t.setPosition(px + 9, py + 6);
+  scene.tipObjs = [g, t];
+}
+export function hideTip(scene) { scene.tipObjs?.forEach((o) => o.destroy()); scene.tipObjs = null; }
+
+/** Icon chip with a tooltip (for synergies, bonds, relics, traits). */
+export function chip(scene, x, y, label, tip, opts = {}) {
+  const t = scene.add.text(0, 0, label, style(opts.size ?? 13, opts.color ?? '#f6ead2')).setDepth(opts.depth ?? 20);
+  const w = t.width + 14, h = t.height + 6;
+  const g = scene.add.graphics().setDepth((opts.depth ?? 20) - 1);
+  g.fillStyle(opts.fill ?? 0x142131, 0.9).fillRoundedRect(x, y, w, h, h / 2).lineStyle(1.5, opts.stroke ?? 0xd4b06a, 0.8).strokeRoundedRect(x, y, w, h, h / 2);
+  t.setPosition(x + 7, y + 3);
+  const z = scene.add.zone(x + w / 2, y + h / 2, w, h).setInteractive({ useHandCursor: !!opts.onClick }).setDepth((opts.depth ?? 20) + 1);
+  if (tip) { z.on('pointerover', () => showTip(scene, tip, x + w / 2, y - 4)); z.on('pointerout', () => hideTip(scene)); }
+  if (opts.onClick) z.on('pointerdown', (p, a, b, ev) => { ev?.stopPropagation?.(); opts.onClick(); });
+  return { w, h, destroy() { g.destroy(); t.destroy(); z.destroy(); }, objs: [g, t, z] };
+}
+
 export function panel(scene, x, y, w, h, opts = {}) {
   const g = scene.add.graphics().setDepth(opts.depth ?? 0);
-  g.fillStyle(opts.fill ?? COLORS.panel, opts.alpha ?? 0.92).fillRoundedRect(x, y, w, h, opts.r ?? 12);
-  g.lineStyle(2, opts.stroke ?? COLORS.line, 1).strokeRoundedRect(x, y, w, h, opts.r ?? 12);
+  const a = opts.alpha ?? 0.9;
+  g.fillStyle(0x000000, 0.3 * a).fillRoundedRect(x + 3, y + 5, w, h, opts.r ?? 14);
+  g.fillGradientStyle(0x1a2636, 0x1a2636, 0x0d141d, 0x0d141d, a).fillRoundedRect(x, y, w, h, opts.r ?? 14);
+  g.lineStyle(2, opts.stroke ?? 0xd4b06a, 0.75 * Math.min(1, a + 0.1)).strokeRoundedRect(x, y, w, h, opts.r ?? 14);
+  g.lineStyle(1, 0xffffff, 0.06).strokeRoundedRect(x + 4, y + 4, w - 8, h - 8, Math.max(4, (opts.r ?? 14) - 4));
+  if (!opts.plain) for (const [cx, cy] of [[x + 14, y], [x + w - 14, y], [x + 14, y + h], [x + w - 14, y + h]]) g.fillStyle(0xd4b06a, 0.9).fillPoints([{ x: cx, y: cy - 4 }, { x: cx + 4, y: cy }, { x: cx, y: cy + 4 }, { x: cx - 4, y: cy }], true);
   return g;
 }
 
 export function title(scene, x, y, text, size = 40) {
-  return scene.add.text(x, y, text, style(size, '#ffe2b8', { stroke: '#000000', strokeThickness: 6 })).setOrigin(0.5);
+  const t = scene.add.text(x, y, text, style(size, '#ffe6b0', { stroke: '#2a1a08', strokeThickness: Math.max(4, size / 7), fontStyle: 'bold' })).setOrigin(0.5);
+  t.setShadow(0, 4, '#000000', 8, true, true);
+  return t;
 }
 
 /**

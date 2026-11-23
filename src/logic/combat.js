@@ -305,7 +305,8 @@ export function combatTick(state, data, dt) {
     if (u.moving) releaseBy(state, u.uid);
     if (was && Math.abs(u.targetPos - u.pos) < 1e-9) {
       u.moving = false;
-      if (flags(u).restOnMove) u.restLeft = Math.max(u.restLeft, flags(u).restOnMove);
+      if (flags(u).restOnMove && !u.formationMove) u.restLeft = Math.max(u.restLeft, flags(u).restOnMove);
+      u.formationMove = false;
     }
   }
   for (const u of state.field) {

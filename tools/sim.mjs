@@ -2,13 +2,13 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { buildData } from '../src/logic/data.js';
-import { createBattle, step, summon, deploy, merge, skipPrep, addCarry } from '../src/logic/battle.js';
+import { createBattle, step, summon, deploy, merge, skipPrep, addCarry, chooseRelic } from '../src/logic/battle.js';
 import { mergeKind } from '../src/logic/merge.js';
 import { summonCost } from '../src/logic/economy.js';
 import { newRollCtx, rollSummon, advanceRollCtx } from '../src/logic/roulette.js';
 import { makeRng } from '../src/logic/rng.js';
 
-const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore'];
+const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics'];
 const SPOTS = [3, 4.5, 6, 7.5, 2, 9];
 const PRIORITY = ['chimera', 'evolve', 'spirit'];
 const DT = 0.05, TURN = 0.5, MAX_TIME = 3600;
@@ -62,6 +62,7 @@ function deployFirst(state, data) {
 
 /** One bot decision round: merge, summon, deploy. */
 export function botTurn(state, data, opts = {}) {
+  if (state.relicOffer) chooseRelic(state, data, opts.noRelics ? state.relicOffer[0] : state.relicOffer[Math.floor(state.rng() * state.relicOffer.length)]);
   const crowded = () => state.field.length + state.bench.filter(Boolean).length > data.config.maxDeployed || !state.bench.includes(null);
   for (let i = 0; i < 3; i++) {
     if (opts.mergeWhenCrowded && !crowded()) break;

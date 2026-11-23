@@ -1,0 +1,4 @@
+{
+  "note": "그록 그림 교체용: 키를 넣고 파일을 public/assets/units/ 에 두면 임시 도형 대신 그림이 나옵니다. 키 형식 unit-<종id> (모든 단계) 또는 unit-<종id>-<단계 young|teen|adult|spirit>, 키메라는 unit-<레시피id>, 적은 enemy-<적id>.",
+  "images": {}
+}

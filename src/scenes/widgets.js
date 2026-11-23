@@ -20,25 +20,25 @@ export function confirmBox(scene, message, yesLabel, noLabel, onYes) {
   const bg = scene.add.rectangle(640, 360, 1280, 720).setFillStyle(0x000000, 0.55).setInteractive();
 
   // Panel
-  const panel = scene.add.rectangle(640, 360, 560, 220)
+  const panel = scene.add.rectangle(640, 360, 640, 260)
     .setFillStyle(0x22303c)
     .setStrokeStyle(2, 0xffffff);
 
   // Message text
-  const msg = scene.add.text(640, 320, message, {
+  const msg = scene.add.text(640, 315, message, {
     fontFamily: FONT,
     fontSize: '20px',
     color: '#ffffff',
     align: 'center',
-    wordWrap: { width: 500 }
+    wordWrap: { width: 590 }
   }).setOrigin(0.5).setDepth(3002);
 
   // Yes button
-  const yesBtn = scene.add.rectangle(540, 420, 160, 56)
+  const yesBtn = scene.add.rectangle(540, 445, 160, 56)
     .setFillStyle(0x2e8b57)
     .setInteractive({ useHandCursor: true });
 
-  const yesText = scene.add.text(540, 420, yesLabel, {
+  const yesText = scene.add.text(540, 445, yesLabel, {
     fontFamily: FONT,
     fontSize: '22px',
     color: '#ffffff',
@@ -46,11 +46,11 @@ export function confirmBox(scene, message, yesLabel, noLabel, onYes) {
   }).setOrigin(0.5).setDepth(3002);
 
   // No button
-  const noBtn = scene.add.rectangle(740, 420, 160, 56)
+  const noBtn = scene.add.rectangle(740, 445, 160, 56)
     .setFillStyle(0x7f8c8d)
     .setInteractive({ useHandCursor: true });
 
-  const noText = scene.add.text(740, 420, noLabel, {
+  const noText = scene.add.text(740, 445, noLabel, {
     fontFamily: FONT,
     fontSize: '22px',
     color: '#ffffff',

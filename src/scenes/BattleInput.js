@@ -1,6 +1,9 @@
 import { PATH_Y, PATH_H, tileToX, xToTile } from './layout.js';
 import { deploy, moveUnit, recall, sell, merge } from '../logic/battle.js';
-import { confirmBox, showInfoCard, hideInfoCard, showRange, hideRange, highlightRing } from './widgets.js';
+import { confirmBox, showRange, hideRange, highlightRing } from './widgets.js';
+import { inheritEvolve, inheritSpirit, inheritChimera, inheritWeak, traitView } from '../logic/traits.js';
+import { effRange } from '../logic/mods.js';
+import { makeRng } from '../logic/rng.js';
 import { DRAG_MIN, refOf, unitOf, onPath, planDrop, ringFor } from './dropPlan.js';
 
 /** Wire drag, tap, merge, sell and confirm handling onto the battle scene. */
@@ -17,24 +20,20 @@ export function attachInput(scene) {
 
   const clearRings = () => { rings.forEach((o) => o.destroy()); rings = []; };
 
-  const deselect = () => { scene.selectedUid = null; hideInfoCard(scene); hideRange(scene); };
+  const deselect = () => { scene.selectedUid = null; scene.hideUnitCard(); hideRange(scene); };
 
   const select = (uid) => {
     const u = unitOf(st(), refOf(st(), uid));
     if (!u) return deselect();
     scene.selectedUid = uid;
-    const s = u.stats;
-    const sub = u.kind === 'chimera' ? T('kind.chimera') : u.kind === 'weak' ? T('kind.weak')
-      : T('info.stage', { stage: T('stage.' + u.stage), rarity: T('rarity.' + data.unitById[u.speciesId].rarity) });
-    const lines = [T('info.stats', { hp: s.hp, damage: Number(s.damage).toFixed(1), interval: s.interval, range: s.range, block: s.block }), ...s.skills];
-    showInfoCard(scene, s.name, sub, lines);
+    scene.showUnitCard(uid);
     refreshRange();
   };
 
   const refreshRange = () => {
     const u = scene.selectedUid == null ? null : st().field.find((f) => f.uid === scene.selectedUid);
     if (!u) return hideRange(scene);
-    showRange(scene, tileToX(u.pos - u.stats.range), tileToX(u.pos + u.stats.range), PATH_Y, PATH_H);
+    showRange(scene, tileToX(u.pos - effRange(u)), tileToX(u.pos + effRange(u)), PATH_Y, PATH_H);
   };
 
   scene.events.on('postupdate', () => {
@@ -97,8 +96,15 @@ export function attachInput(scene) {
           if (r.ok && r.kind !== 'swap') { scene.toast(r.unit.stats.name); select(r.unit.uid); }
         };
         const p = plan.preview;
-        if (plan.confirm === 'spirit') confirmBox(scene, T('merge.spirit', p.vars) + '\n' + T('merge.spiritConfirm'), T('ui.yes'), T('ui.no'), doMerge);
-        else if (plan.confirm === 'preview') confirmBox(scene, T('merge.previewTitle') + '\n' + T(p.textKey, p.vars), T('ui.ok'), T('ui.cancel'), doMerge);
+        const from = unitOf(s, plan.fromRef), to = unitOf(s, plan.toRef);
+        const names = (list) => list.map((t) => { const v = traitView(t, data); return (v.tone === 'str' ? '＋' : v.tone === 'flip' ? '★' : '－') + v.name; }).join('  ');
+        let traitLine = '';
+        if (p.kind === 'spirit') traitLine = '특성: ' + names(inheritSpirit(to.traits, from.traits)) + '  (약점이 모두 뒤집혀요)';
+        else if (p.kind === 'chimera' && p.textKey === 'merge.chimera') traitLine = '특성: ' + names(inheritChimera(to.traits, from.traits));
+        else if (p.kind === 'weak' && p.textKey === 'merge.weakKnown') traitLine = '약점만 남아요: ' + names(inheritWeak(to.traits, from.traits, data, makeRng(1)).traits);
+        else if (p.kind === 'chimera' || p.kind === 'weak') traitLine = '레시피가 있으면 키메라, 없으면 약체 키메라가 태어나요.';
+        if (plan.confirm === 'spirit') confirmBox(scene, T('merge.spirit', p.vars) + '\n' + T('merge.spiritConfirm') + '\n' + traitLine, T('ui.yes'), T('ui.no'), doMerge);
+        else if (plan.confirm === 'preview') confirmBox(scene, T('merge.previewTitle') + '\n' + T(p.textKey, p.vars) + '\n' + traitLine, T('ui.ok'), T('ui.cancel'), doMerge);
         else doMerge();
         break;
       }

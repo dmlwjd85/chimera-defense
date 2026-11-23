@@ -60,7 +60,10 @@
     },
     "color": "#8b5a2b",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "nickname": "없음",
+    "codex": "쑥과 마늘은 사람이 되려고 먹은 것이다. 맛있어서가 아니다.",
+    "spiritCodex": "단군 신화에서 백 일을 견디고 사람이 된 곰."
   },
   {
     "id": "tiger",
@@ -111,7 +114,10 @@
     },
     "color": "#f39c12",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "nickname": "없음",
+    "codex": "제 말 하면 온다.",
+    "spiritCodex": "산을 다스린다는 산신의 호랑이."
   },
   {
     "id": "fox",
@@ -165,7 +171,10 @@
     },
     "color": "#e8823a",
     "image": "assets/temp/fox_grok_v1.jpg",
-    "inDemo": true
+    "inDemo": true,
+    "nickname": "없음",
+    "codex": "포도가 시다고 했다. 먹어 보지는 않았다.",
+    "spiritCodex": "꼬리가 아홉인 여우. 천 년을 살았다고 한다."
   },
   {
     "id": "rabbit",
@@ -225,7 +234,9 @@
     },
     "color": "#f5f0e6",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "codex": "달에서 떡방아를 찧다 내려왔다.",
+    "spiritCodex": "달에서 방아를 찧는 토끼."
   },
   {
     "id": "rooster",
@@ -282,7 +293,9 @@
     },
     "color": "#e74c3c",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "codex": "새벽 네 시에 운다. 아무도 부탁하지 않았다.",
+    "spiritCodex": "하늘에 산다는 금빛 닭. 새벽을 연다."
   },
   {
     "id": "crow",
@@ -330,7 +343,9 @@
     },
     "color": "#34495e",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "codex": "물병에 돌을 넣어 물을 마신 적이 있다. 돌은 아직 가지고 있다.",
+    "spiritCodex": "해 속에 산다는 세 발 까마귀."
   },
   {
     "id": "bison",
@@ -388,7 +403,9 @@
     },
     "color": "#6d4c41",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "codex": "앞만 본다. 뒤에 무엇이 있는지는 관심이 없다.",
+    "spiritCodex": "폴 버니언의 파란 소. 발자국이 호수가 되었다."
   },
   {
     "id": "wolf",
@@ -447,7 +464,9 @@
     },
     "color": "#95a5a6",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "codex": "배에 돌이 든 적이 있다.",
+    "spiritCodex": "북유럽 신화의 거대한 늑대."
   },
   {
     "id": "eagle",
@@ -495,7 +514,9 @@
     },
     "color": "#d4ac0d",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "codex": "파리는 잡지 않는다.",
+    "spiritCodex": "제우스의 번개를 나르는 독수리."
   },
   {
     "id": "bighorn",
@@ -553,7 +574,9 @@
     },
     "color": "#bfa27a",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "codex": "외나무다리에서 비켜 준 적이 없다.",
+    "spiritCodex": "황금 양털의 주인."
   },
   {
     "id": "frog",
@@ -617,7 +640,9 @@
     },
     "color": "#27ae60",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "codex": "너무 커서 뛰지 않는다. 앉아 있다.",
+    "spiritCodex": "금빛 개구리 모습으로 발견된 부여의 왕."
   },
   {
     "id": "grasshopper",
@@ -680,6 +705,8 @@
     },
     "color": "#9bd770",
     "image": null,
-    "inDemo": true
+    "inDemo": true,
+    "codex": "이름은 베를 짠다는 뜻이다. 짠 적은 없다.",
+    "spiritCodex": "영원히 사는 대신 매미가 된 티토노스."
   }
 ]

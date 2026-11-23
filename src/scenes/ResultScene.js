@@ -1,54 +1,46 @@
 import Phaser from 'phaser';
-import { FONT } from '../text.js';
+import { button, title, style, panel } from './ui.js';
+import { buildData } from '../logic/data.js';
 
-/** Result screen scene (key 'Result'). */
+const ACH = { firstSummon: '첫 소환', firstSpirit: '첫 영물', firstChimera: '첫 키메라', allRecipes: '레시피 7개 모두 발견', flawlessBoss: '무결점 보스 처치' };
+
+/** Result screen: clear/lose, essence lines, species xp and level-ups, new finds. */
 export default class ResultScene extends Phaser.Scene {
   constructor() { super('Result'); }
 
-  /**
-   * Create the result screen with title, stats, and buttons.
-   * @param {object} d - Optional data: { result, wave, total, life }.
-   */
   create(d) {
-    // Default values if data is missing or incomplete
-    d = (d && d.result) ? d : { result: 'lose', wave: 0, total: 15, life: 0 };
+    d = d?.report ? d : { report: { clear: false, essence: 0, lines: [], xp: [], newRecipes: [], newSpecies: [], newFlops: [], achievements: [], hintsMade: [] }, wave: 0, total: 15, life: 0, stageId: 'forest-1' };
+    const D = buildData(this.registry.get('raw'));
+    const r = d.report;
+    this.cameras.main.setBackgroundColor('#141a21');
+    title(this, 640, 70, r.clear ? '스테이지 클리어!' : '패배', 56).setColor(r.clear ? '#7CFC9A' : '#ff6b6b');
+    this.add.text(640, 130, `${D.stageById[d.stageId]?.name ?? ''} · 도달 웨이브 ${d.wave}/${d.total} · 남은 생명 ${d.life}${d.bossLeaked ? ' · 보스가 방어선을 넘음(보스 처치 보상 없음)' : ''}`, style(18, '#dddddd')).setOrigin(0.5);
 
-    const T = this.registry.get('T');
+    panel(this, 60, 165, 560, 430);
+    this.add.text(85, 180, `에센스 +${r.essence}`, style(24, '#ffd84d'));
+    r.lines.forEach(([t, v], i) => this.add.text(95, 222 + i * 26, `${t}`, style(16)).setData('v', v) && this.add.text(560, 222 + i * 26, `+${v}`, style(16, '#ffd84d')).setOrigin(1, 0));
+    let y = 230 + r.lines.length * 26 + 10;
+    const finds = [
+      ...r.newRecipes.map((id) => `새 키메라: ${D.recipeById[id].name}`),
+      ...r.newFlops.map((k) => `흑역사: 어설픈 ${k.split('+').map((p) => D.unitById[p]?.name).join('')}`),
+      ...r.hintsMade.map((h) => `힌트 공개: ${D.unitById[h.part].name}이(가) 들어가는 레시피`),
+      ...r.achievements.map((a) => `업적 달성: ${ACH[a]}`),
+    ];
+    finds.slice(0, 8).forEach((t, i) => this.add.text(95, y + i * 24, t, style(15, '#d7bde2')));
 
-    // Title text based on result type
-    const titleText = (d.result === 'clear') ? T('result.clear') : T('result.lose');
-    const color = (d.result === 'clear') ? '#7CFC9A' : '#ff6b6b';
-    this.add.text(640, 200, titleText, { fontSize: '64px', fontFamily: FONT, color }).setOrigin(0.5);
+    panel(this, 660, 165, 560, 430);
+    this.add.text(685, 180, r.clear ? '종 경험치' : '패배한 판은 경험치가 없습니다', style(22, '#ffe2b8'));
+    r.xp.slice(0, 12).forEach((x, i) => {
+      const up = x.after > x.before;
+      this.add.text(700, 222 + i * 28, `${D.unitById[x.id].name}  +${x.gain}`, style(16));
+      this.add.text(1190, 222 + i * 28, up ? `Lv.${x.before} → Lv.${x.after} ▲` : `Lv.${x.after}`, style(16, up ? '#58d68d' : '#aaaaaa')).setOrigin(1, 0);
+    });
+    if (r.clear) this.add.text(700, 560, '레벨마다 그 종의 피해 +2%, 레벨 5부터 10%로 성장기 등장', style(13, '#8899aa'));
 
-    // Wave and life information texts
-    this.add.text(640, 300, T('result.wave', { wave: d.wave, total: d.total }), { fontSize: '28px', fontFamily: FONT, color: '#ffffff' }).setOrigin(0.5);
-    this.add.text(640, 350, T('result.life', { life: d.life }), { fontSize: '24px', fontFamily: FONT, color: '#ffffff' }).setOrigin(0.5);
-
-    // Retry button (Left) - no longer need to store reference
-    this.makeButton(520, 480, T('result.retry'), () => this.scene.start('Battle'));
-
-    // Title button (Right) - no longer need to store reference
-    this.makeButton(760, 480, T('result.title'), () => this.scene.start('Title'));
-
-    // Keyboard shortcuts: R for retry, ESC for title
-    this.input.keyboard.on('keydown-R', () => this.scene.start('Battle'));
+    button(this, 440, 650, 200, 56, '다시 하기 (R)', () => this.scene.start('Battle', { stageId: d.stageId }), { size: 20 });
+    button(this, 660, 650, 200, 56, '스테이지 선택', () => this.scene.start('StageSelect'), { size: 20, fill: 0x3a7bd5 });
+    button(this, 880, 650, 160, 56, '타이틀 (ESC)', () => this.scene.start('Title'), { size: 18 });
+    this.input.keyboard.on('keydown-R', () => this.scene.start('Battle', { stageId: d.stageId }));
     this.input.keyboard.on('keydown-ESC', () => this.scene.start('Title'));
-  }
-
-  /**
-   * Helper method to create a styled button.
-   * @param {number} x - X position (center).
-   * @param {number} y - Y position (center).
-   * @param {string} label - Button text.
-   * @param {function} onClick - Click handler.
-   * @returns {Phaser.GameObjects.Rectangle} The button graphics object.
-   */
-  makeButton(x, y, label, onClick) {
-    const bg = this.add.rectangle(x, y, 200, 64, 0x3a7bd5).setStrokeStyle(2, 0xffffff);
-    const txt = this.add.text(x, y, label, { fontSize: '28px', fontFamily: FONT, color: '#ffffff' }).setOrigin(0.5);
-
-    bg.setInteractive({ useHandCursor: true }).on('pointerdown', onClick);
-
-    return bg;
   }
 }

@@ -48,6 +48,7 @@ export function tickHealers(state, dt) {
     h.healCd -= dt;
     if (h.healCd > 0) continue;
     h.healCd = h.heal.every;
+    state.events?.push({ type: 'heal', eid: h.eid });
     for (const o of state.enemies) {
       if (o.hp > 0 && Math.abs(o.pos - h.pos) <= h.heal.radius) o.hp = Math.min(o.maxHp, o.hp + o.maxHp * h.heal.percent / 100);
     }

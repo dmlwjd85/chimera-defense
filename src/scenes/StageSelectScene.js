@@ -14,16 +14,21 @@ export default class StageSelectScene extends Phaser.Scene {
     const data = buildData(this.registry.get('raw'));
     const save = this.registry.get('save');
     this.cameras.main.setBackgroundColor('#141a21');
+    if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.6);
     title(this, 640, 70, '숲 챕터', 44);
     data.stages.forEach((st, i) => {
       const x = 230 + i * 410, open = stageUnlocked(save, data, st.id), rec = save.stages[st.id];
       panel(this, x - 180, 130, 360, 470, { alpha: open ? 0.95 : 0.5 });
       this.add.text(x, 165, st.name, style(24, open ? '#ffe2b8' : '#777777')).setOrigin(0.5);
-      st.zones.forEach((z, k) => {
+      if (this.textures.exists('thumb-' + st.id)) {
+        const im = this.add.image(x, 238, 'thumb-' + st.id).setDisplaySize(330, 120);
+        if (!open) im.setTint(0x555555);
+        st.zones.forEach((z, k) => this.add.text(x - 110 + k * 110, 286, ZONE_NAME[z], style(13, '#ffffff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5));
+      } else st.zones.forEach((z, k) => {
         this.add.rectangle(x - 110 + k * 110, 235, 104, 60, ZONE_COLORS[z] ?? 0x666666).setAlpha(open ? 1 : 0.4);
         this.add.text(x - 110 + k * 110, 235, ZONE_NAME[z], style(16)).setOrigin(0.5);
       });
-      this.add.text(x, 280, '← 방어선            적 등장 →', style(12, '#8899aa')).setOrigin(0.5);
+      this.add.text(x, 305, '← 방어선            적 등장 →', style(12, '#8899aa')).setOrigin(0.5);
       const boss = data.enemyById[st.boss];
       this.add.circle(x, 360, 46, open ? 0x22262b : 0x111111).setStrokeStyle(3, 0x885555);
       this.add.text(x, 360, open ? '?' : '🔒', style(40, '#aa6666')).setOrigin(0.5);

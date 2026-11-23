@@ -13,6 +13,7 @@ export default class ResultScene extends Phaser.Scene {
     const D = buildData(this.registry.get('raw'));
     const r = d.report;
     this.cameras.main.setBackgroundColor('#141a21');
+    if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.45);
     title(this, 640, 70, r.clear ? '스테이지 클리어!' : '패배', 56).setColor(r.clear ? '#7CFC9A' : '#ff6b6b');
     this.add.text(640, 130, `${D.stageById[d.stageId]?.name ?? ''} · 도달 웨이브 ${d.wave}/${d.total} · 남은 생명 ${d.life}${d.bossLeaked ? ' · 보스가 방어선을 넘음(보스 처치 보상 없음)' : ''}`, style(18, '#dddddd')).setOrigin(0.5);
 

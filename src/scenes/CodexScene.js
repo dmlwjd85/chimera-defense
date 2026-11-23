@@ -14,6 +14,7 @@ export default class CodexScene extends Phaser.Scene {
     this.save = this.registry.get('save');
     this.tab = d?.tab ?? 'units';
     this.cameras.main.setBackgroundColor('#141a21');
+    if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.45);
     title(this, 640, 45, '도감', 36);
     TABS.forEach(([id, label], i) => button(this, 300 + i * 170, 100, 150, 40, label, () => this.scene.restart({ tab: id }), { fill: id === this.tab ? 0xb8742a : 0x2f4f6f }));
     panel(this, 40, 130, 1200, 520);

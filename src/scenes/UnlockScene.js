@@ -13,6 +13,7 @@ export default class UnlockScene extends Phaser.Scene {
     const save = this.registry.get('save');
     const U = D.config.unlocks;
     this.cameras.main.setBackgroundColor('#141a21');
+    if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.45);
     title(this, 640, 50, '해금', 36);
     this.add.text(640, 100, `에센스 ${save.essence}`, style(24, '#ffd84d')).setOrigin(0.5);
     if (d?.msg) this.add.text(640, 135, d.msg, style(16, '#58d68d')).setOrigin(0.5);

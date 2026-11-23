@@ -8,6 +8,7 @@ import { terrainMatch, effRange, effBlock, effDamage, effInterval } from '../log
 import { isResting } from '../logic/combat.js';
 import { makeEnemy } from '../logic/waves.js';
 import { unitRig, enemyRig } from './rigs.js';
+import { FX, ambient } from './fx.js';
 import { button, panel, style, unitToken, silhouette, hex, COLORS } from './ui.js';
 
 import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX } from './layout.js';
@@ -43,6 +44,7 @@ export default class BattleScene extends Phaser.Scene {
     this.drawSummonPanel();
     this.drawBaitShop();
     this.bondGfx = this.add.graphics().setDepth(40);
+    this.fx = new FX(this);
     this.bondTexts = [];
     this.toastText = this.add.text(640, 120, '', style(20, '#ffd84d', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(2000).setVisible(false);
     this.tutorialStep = this.stageId === 'forest-1' && !this.save.tutorialDone ? 0 : -1;
@@ -63,6 +65,14 @@ export default class BattleScene extends Phaser.Scene {
   // ---------- static layout ----------
   drawPath() {
     const st = this.state.stage;
+    if (this.textures.exists('bg-' + st.id)) {
+      this.add.image(640, 360, 'bg-' + st.id).setDisplaySize(1280, 720).setDepth(-10);
+      st.zones.slice(0, 3).forEach((id, i) => this.add.text(tileToX(i * ZONE_TILES + ZONE_TILES / 2), PATH_Y - PATH_H / 2 - 12, ZONE_NAME[id], style(14, '#ffffff', { stroke: '#000000', strokeThickness: 4 })).setOrigin(0.5).setAlpha(0.85).setDepth(3));
+      this.zoneGlow = this.add.graphics().setDepth(4);
+      this.add.text(tileToX(0) - 40, PATH_Y + PATH_H / 2 + 40, '방어선', style(13, '#ff8a80', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
+      ambient(this, st);
+      return;
+    }
     const g = this.add.graphics();
     g.fillStyle(0x1a2229, 1).fillRect(0, PATH_Y - PATH_H / 2 - 40, 1280, PATH_H + 80);
     st.zones.slice(0, 3).forEach((id, i) => {
@@ -78,6 +88,8 @@ export default class BattleScene extends Phaser.Scene {
   }
 
   drawHud() {
+    const hud = this.add.graphics().setDepth(0);
+    hud.fillGradientStyle(0x0b1016, 0x0b1016, 0x0b1016, 0x0b1016, 0.75, 0.75, 0, 0).fillRect(0, 0, 1280, 110);
     this.lifeText = this.add.text(24, 26, '', style(22)).setOrigin(0, 0.5);
     this.goldText = this.add.text(150, 26, '', style(22, '#ffd84d')).setOrigin(0, 0.5);
     this.waveText = this.add.text(560, 22, '', style(22)).setOrigin(0.5);
@@ -93,7 +105,7 @@ export default class BattleScene extends Phaser.Scene {
 
   drawBench() {
     this.add.text(BENCH_X0 - SLOT / 2, BENCH_Y - SLOT / 2 - 16, '대기석', style(15)).setOrigin(0, 0.5);
-    this.benchSlots = this.state.bench.map((_, i) => this.add.rectangle(benchSlotX(i), BENCH_Y, SLOT, SLOT).setStrokeStyle(2, 0x8899aa));
+    this.benchSlots = this.state.bench.map((_, i) => this.add.rectangle(benchSlotX(i), BENCH_Y, SLOT, SLOT, 0x0b1016, 0.45).setStrokeStyle(2, 0xc9d6ea, 0.8));
     const sx = Math.max(760, benchSlotX(this.state.bench.length - 1) + 130);
     this.sellZone = this.add.rectangle(sx, BENCH_Y, 120, SLOT, 0x5c1f1f).setStrokeStyle(2, 0xc0392b);
     this.add.text(sx, BENCH_Y, '판매\n(끌어 놓기)', style(14, '#ffffff', { align: 'center' })).setOrigin(0.5);
@@ -316,10 +328,11 @@ export default class BattleScene extends Phaser.Scene {
   finish() {
     this.leaving = true;
     const s = this.state;
+    if (s.result === 'clear') { this.fx.confetti(); this.fx.banner('스테이지 클리어!', '#7CFC9A'); }
     const report = settleRun(this.save, s, this.data2);
     if (this.tutorialStep >= 0) this.save.tutorialDone = true;
     writeSave(this.registry.get('storage'), this.save);
-    this.time.delayedCall(900, () => this.scene.start('Result', { report, stageId: this.stageId, wave: s.wave, total: s.stage.waves.length, life: s.life, bossLeaked: s.bossLeaked && s.result === 'clear' }));
+    this.time.delayedCall(s.result === 'clear' ? 2400 : 900, () => this.scene.start('Result', { report, stageId: this.stageId, wave: s.wave, total: s.stage.waves.length, life: s.life, bossLeaked: s.bossLeaked && s.result === 'clear' }));
   }
 
   makeUnitView(unit) {
@@ -354,7 +367,7 @@ export default class BattleScene extends Phaser.Scene {
     const busy = ['attack', 'skill', 'hit', 'merge_in', 'evolve', 'respawn'].includes(m) && !r.inst.finished;
     if (this.state.result === 'clear') { if (m !== 'victory') r.inst.play('victory', { loop: true }); }
     else if (u.down) { if (m !== 'down') r.inst.play('down'); }
-    else if (v.wasDown) r.inst.play('respawn');
+    else if (v.wasDown) { r.inst.play('respawn'); this.fx.respawn(v.container.x, v.container.y); }
     else if (onField && u.moving) { if (m !== 'move') r.inst.play('move', { loop: true }); r.inst.moveVelocity = Math.sign(u.targetPos - u.pos) * 180; }
     else if (!busy && m !== 'idle') r.inst.play('idle', { loop: true });
     if (!u.moving) r.inst.moveVelocity = 0;
@@ -448,6 +461,7 @@ export default class BattleScene extends Phaser.Scene {
       if (!v.rig && v.body.setStrokeStyle) { if (stroke === null) v.body.setStrokeStyle(); else v.body.setStrokeStyle(3, stroke); }
       if (v.rig) { v.statusTint ??= null; const tint = stroke; if (tint !== v.statusTint) { v.statusTint = tint; for (const o of v.holder.list) if (o.setTint) { if (tint === null) o.clearTint(); else o.setTint(tint === 0xffffff ? 0xbbbbff : tint); } } }
       v.lastX = x; v.lastY = y;
+      this.fx.status(e, x, y);
     }
     for (const [eid, v] of this.enemyViews) {
       if (seen.has(eid)) continue;
@@ -486,23 +500,53 @@ export default class BattleScene extends Phaser.Scene {
     this.lastAttack ??= new Map();
     for (const ev of this.state.events) {
       switch (ev.type) {
-        case 'kill': { const v = this.goneViews?.get(ev.eid); if (v && ev.gold) this.floatText(v.lastX, v.lastY, `+${ev.gold}`, '#ffd84d'); if (ev.boss) this.cameras.main.flash(300, 255, 255, 255); break; }
-        case 'leak': this.floatText(tileToX(0) + 30, PATH_Y - 40, `-${ev.leak}`, '#ff5252', 22); this.cameras.main.shake(100, 0.005); break;
-        case 'attack': this.lastAttack.set(ev.uid, time()); break;
-        case 'skill': if (ev.name) this.floatText(...unitPos(ev.uid).map((v, i) => v - (i ? 50 : 0)), ev.name, '#e8c3ff', 15); break;
-        case 'dodge': this.floatText(...unitPos(ev.uid).map((v, i) => v - (i ? 30 : 0)), '회피', '#7fd1ff', 13); break;
-        case 'survive': this.floatText(...unitPos(ev.uid).map((v, i) => v - (i ? 50 : 0)), '간을 두고 왔다!', '#ffb3c6', 16); break;
+        case 'kill': { const v = this.goneViews?.get(ev.eid); if (v) { if (ev.gold) this.floatText(v.lastX, v.lastY - 10, `+${ev.gold}`, '#ffd84d'); this.fx.kill(v.lastX, v.lastY, ev.gold, ev.boss); } if (ev.boss) { this.cameras.main.flash(300, 255, 255, 255); this.fx.banner(`${data.enemyById[ev.id].name} 처치!`, '#ffd84d'); } break; }
+        case 'leak': this.floatText(tileToX(0) + 30, PATH_Y - 40, `-${ev.leak}`, '#ff5252', 22); this.fx.leak(tileToX(0), PATH_Y); this.cameras.main.shake(100, 0.005); break;
+        case 'attack': {
+          this.lastAttack.set(ev.uid, time());
+          const u = this.state.field.find((x) => x.uid === ev.uid);
+          const ve = this.enemyViews.get(ev.eid) ?? this.goneViews?.get(ev.eid);
+          if (!u || !ve) break;
+          const [ux, uy] = unitPos(ev.uid);
+          if (u.stats.range >= 3) this.fx.projectile(u.speciesId, ux, uy, ve.lastX, ve.lastY, ev.aoe);
+          else { this.fx.slash(ve.lastX, ve.lastY, ev.aoe ? 0xffe066 : 0xffffff); this.fx.hit(ve.lastX, ve.lastY, ev.aoe ? 'gold' : 'white', ev.aoe); if (ev.aoe) this.fx.ring(ve.lastX, ve.lastY + 10, 'gold', 1); }
+          break;
+        }
+        case 'skill': if (ev.name) { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 50, ev.name, '#e8c3ff', 15); this.fx.skill(x, y, 'purple'); } break;
+        case 'hold': { const [x, y] = unitPos(ev.uid); this.fx.ring(x + 30, y + 10, 'white', 0.8, 300); break; }
+        case 'knock': { const ve = this.enemyViews.get(ev.eid); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY + 10, 4, 0xd9c49a); this.fx.hit(ve.lastX, ve.lastY, 'orange'); } break; }
+        case 'heal': { const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.heal(ve.lastX, ve.lastY); break; }
+        case 'down': { const [x, y] = unitPos(ev.uid); this.fx.down(x, y); break; }
+        case 'dodge': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 30, '회피', '#7fd1ff', 13); this.fx.burst('leaf', x, y, 3, 0x7fd1ff); break; }
+        case 'survive': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 50, '간을 두고 왔다!', '#ffb3c6', 16); this.fx.evolve(x, y, false); break; }
+        case 'summon': this.time.delayedCall(this.save.settings.fastRoulette ? 700 : 1950, () => { const [x, y] = unitPos(ev.uid); this.fx.burst('rise', x, y, 12, 0xfff6a0); this.fx.ring(x, y + 20, 'gold', 0.8); }); break;
         case 'gold': this.floatText(...unitPos(ev.uid), `+${ev.gold}`, '#ffd84d'); break;
-        case 'bondNew': { const b = data.lore.bonds.find((x) => x.id === ev.id); this.toast(`${b.kind === 'clash' ? '⚡ 상극' : '♥ 인연'} 발견: ${b.name} — ${b.desc}`, b.kind === 'clash' ? '#f0883e' : '#ff9fbf'); break; }
-        case 'shieldBreak': this.toast('보호막이 깨졌다!', '#d2b4ff'); break;
-        case 'bossSummon': this.floatText(640, PATH_Y - 110, '박쥐왕이 졸개를 불렀다', '#aab7b8'); break;
-        case 'merge':
-          if (ev.kind === 'weak') this.toast('합성 실패… 적들이 멈춰서 구경한다', '#cccccc');
-          if (ev.kind === 'chimera') this.cameras.main.flash(250, 180, 120, 255);
+        case 'bondNew': {
+          const b = data.lore.bonds.find((x) => x.id === ev.id);
+          const pair = (this.state.view?.bonds ?? []).find((x) => x.bond.id === ev.id);
+          if (pair) { const [a, c] = Object.values(pair.units).map((u) => unitPos(u.uid)); if (b.kind === 'clash') { this.fx.clash(...a); this.fx.clash(...c); } else this.fx.hearts(...a, ...c); }
+          this.toast(`${b.kind === 'clash' ? '⚡ 상극' : '♥ 인연'} 발견: ${b.name} — ${b.desc}`, b.kind === 'clash' ? '#f0883e' : '#ff9fbf'); break; }
+        case 'shieldBreak': { this.toast('보호막이 깨졌다!', '#d2b4ff'); const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.shieldBreak(ve.lastX, ve.lastY); break; }
+        case 'bossSummon': { this.floatText(640, PATH_Y - 110, '박쥐왕이 졸개를 불렀다', '#aab7b8'); const ve = this.enemyViews.get(ev.eid); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY, 10, 0x6c5a8a); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.5); } break; }
+        case 'merge': {
+          const [mx, my] = unitPos(ev.uid);
+          if (ev.kind === 'weak') { this.toast('합성 실패… 적들이 멈춰서 구경한다', '#cccccc'); this.fx.weak(mx, my); }
+          if (ev.kind === 'chimera') { this.cameras.main.flash(250, 180, 120, 255); this.fx.chimera(mx, my); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '키메라'} 탄생!`, '#d7bde2', '키메라 합성 성공'); }
+          if (ev.kind === 'evolve') this.fx.evolve(mx, my, false);
+          if (ev.kind === 'spirit') { this.fx.evolve(mx, my, true); this.cameras.main.flash(300, 255, 230, 140); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '영물'}`, '#ffd84d', '영물 각성'); }
           if (this.tutorialStep === 2 && (ev.kind === 'evolve' || ev.kind === 'spirit')) this.tutorialStep = 3;
           if (this.tutorialStep === 3 && (ev.kind === 'chimera' || ev.kind === 'weak')) this.endTutorial();
           break;
-        case 'waveStart': this.toast(`웨이브 ${ev.wave} 시작`, '#ffffff'); if (this.tutorialStep === 3 && ev.wave >= 6) this.endTutorial(); break;
+        }
+        case 'waveStart': {
+          const w = this.state.stage.waves[ev.wave - 1];
+          const boss = (w?.extra ?? []).map((id) => data.enemyById[id]).find((e) => e && e.boss && e.id !== 'miniboss');
+          const mini = (w?.extra ?? []).includes('miniboss');
+          if (boss) { this.fx.banner(`보스 등장 · ${boss.name}`, '#ff6b6b', boss.desc); this.cameras.main.shake(400, 0.006); }
+          else if (mini) this.fx.banner(`웨이브 ${ev.wave} · 덤불멧돼지`, '#ffb27a', '미니보스가 온다');
+          else this.fx.banner(`웨이브 ${ev.wave}`, '#ffffff', Object.keys(w?.mix ?? {}).map((id) => data.enemyById[id].name).join(' · '));
+        }
+          if (this.tutorialStep === 3 && ev.wave >= 6) this.endTutorial(); break;
         default: break;
       }
     }

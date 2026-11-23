@@ -77,6 +77,8 @@ export function hitDamage(state, u, e) {
   const ar = flags(u).afterRest;
   if (ar?.dmg && u.afterRestLeft > 0) dmg *= 1 + ar.dmg / 100;
   if (ar?.firstHit && u.firstHitReady) dmg *= ar.firstHit;
+  if (e.resist) dmg *= (u.stats.range <= 1 ? e.resist.melee : e.resist.ranged) ?? 1;
+  if (e.weak && u.stats.element && e.weak.includes(u.stats.element)) dmg *= 1 + (state.weakBonus ?? 30) / 100;
   if (e.markPct) dmg *= 1 + e.markPct / 100;
   if (e.curseLeft > 0) dmg *= 1 + (state.curseBonus ?? 20) / 100;
   if (crit > 0 && state.rng() < crit / 100) dmg *= 2;
@@ -402,6 +404,13 @@ export function combatTick(state, data, dt) {
   // deaths and leaks
   const alive = [];
   for (const e of state.enemies) {
+    if (e.hp <= 0 && e.revive && !e.revived && e.pos > 0) {
+      // 언데드: 한 번은 다시 일어난다
+      Object.assign(e, { revived: true, hp: Math.round(e.maxHp * e.revive.percent / 100), stunLeft: 0.8, poisonLeft: 0, burnLeft: 0 });
+      state.events.push({ type: 'revive', eid: e.eid });
+      alive.push(e);
+      continue;
+    }
     if (e.hp <= 0) {
       const killer = e.lastHitBy === null ? null : byUid.get(e.lastHitBy);
       let gold = e.gold;

@@ -66,6 +66,7 @@ export function makeEnemy(enemyId, wave, stage, data, eid, offset = 0) {
   }
 
   const cfg = data.config;
+  const clim = cfg.climates?.[stage.climate]?.enemy;
   const s = def.scaleWithWave ? enemyScale(wave, stage, cfg) : (def.stageMultHp ? stage.mult : 1);
   const hp = Math.round(def.hp * s * (cfg.difficulty?.enemyHp ?? 1));
 
@@ -77,7 +78,7 @@ export function makeEnemy(enemyId, wave, stage, data, eid, offset = 0) {
     maxHp: hp,
     attack: Math.round(def.attack * s * (cfg.tempo?.enemy ?? 1) * (cfg.difficulty?.enemyAttack ?? 1)),
     interval: def.interval * (cfg.tempo?.enemy ?? 1),
-    speed: def.speed,
+    speed: def.speed * ((def.flying ? clim?.flySpeed : clim?.speed) ?? 1),
     gold: def.gold,
     leak: def.leak,
     flying: !!def.flying,
@@ -87,6 +88,10 @@ export function makeEnemy(enemyId, wave, stage, data, eid, offset = 0) {
     holdFactor: def.holdFactor ?? 1,
     slowFactor: def.slowFactor ?? 1,
     pattern: def.pattern ?? null,
+    resist: def.resist ?? null,
+    weak: def.weak ?? null,
+    revive: def.revive ?? null,
+    kin: def.kin ?? null,
     blockedBy: null,
     lastHitBy: null,
     holdLeft: 0,

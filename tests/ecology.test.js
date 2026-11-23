@@ -45,6 +45,6 @@ test('favor: essence spent on a known animal raises its summon chance a little',
   assert.ok(buyFavor(save, D, 'fox').ok); assert.ok(buyFavor(save, D, 'fox').ok);
   assert.equal(save.essence, 100 - D.config.favor.costs[0] - D.config.favor.costs[1]);
   const base = unitChances(newRollCtx(), 5, D, null, {}), fav = unitChances(newRollCtx(), 5, D, null, { favor: save.favor });
-  assert.ok(fav.fox > base.fox && fav.fox < base.fox * 1.3);
+  assert.ok(fav.fox > base.fox && fav.fox < base.fox * 1.1);
   assert.ok(Math.abs(Object.values(fav).reduce((a, b) => a + b, 0) - 1) < 1e-9);
 });

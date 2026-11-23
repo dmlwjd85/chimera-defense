@@ -5,9 +5,9 @@
  "anims": "quadruped",
  "artRes": 2,
  "palette": {
-  "fur": "#e2522b",
-  "furDark": "#a23b1e",
-  "belly": "#fff6e6",
+  "fur": "#3a3340",
+  "furDark": "#29242e",
+  "belly": "#55495e",
   "ink": "#2b1d16",
   "accent": "#ffd36b"
  },

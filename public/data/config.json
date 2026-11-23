@@ -1,420 +1,732 @@
 {
-  "pathLength": 12,
-  "maxDeployed": 6,
-  "benchSize": 3,
-  "life": 20,
-  "startGold": 100,
-  "summon": {
-    "base": 40,
-    "step": 5,
-    "max": 100,
-    "note": "기획서 3장 제안값(2026-11-20 19:55)"
+ "pathLength": 12,
+ "maxDeployed": 6,
+ "benchSize": 3,
+ "life": 20,
+ "startGold": 100,
+ "summon": {
+  "base": 40,
+  "step": 5,
+  "max": 100,
+  "note": "기획서 3장 제안값(2026-11-20 19:55)"
+ },
+ "waveReward": {
+  "base": 30,
+  "perWave": 5
+ },
+ "prep": {
+  "seconds": 15,
+  "skipGoldPerSec": 1,
+  "skipGoldMax": 15
+ },
+ "sell": {
+  "young": 15,
+  "teen": 25,
+  "adult": 40,
+  "spirit": 80,
+  "chimera": 40,
+  "weak": 15
+ },
+ "stageMult": {
+  "young": {
+   "damage": 1.0,
+   "hold": 1.0,
+   "status": 1.0
   },
-  "waveReward": {
-    "base": 30,
-    "perWave": 5
+  "teen": {
+   "damage": 1.4,
+   "hold": 1.25,
+   "status": 1.1
   },
-  "prep": {
-    "seconds": 15,
-    "skipGoldPerSec": 1,
-    "skipGoldMax": 15
+  "adult": {
+   "damage": 1.8,
+   "hold": 1.5,
+   "status": 1.25
   },
-  "sell": {
-    "young": 15,
-    "teen": 25,
-    "adult": 40,
-    "spirit": 80,
-    "chimera": 40,
-    "weak": 15
-  },
-  "stageMult": {
-    "young": {
-      "damage": 1.0,
-      "hold": 1.0,
-      "status": 1.0
-    },
-    "teen": {
-      "damage": 1.4,
-      "hold": 1.25,
-      "status": 1.1
-    },
-    "adult": {
-      "damage": 1.8,
-      "hold": 1.5,
-      "status": 1.25
-    },
-    "spirit": {
-      "damage": 3.2,
-      "hold": 2.0,
-      "status": 1.5
-    }
-  },
-  "demoRarity": [
-    {
-      "fromWave": 1,
-      "toWave": 5,
-      "common": 70,
-      "rare": 25,
-      "hero": 5
-    },
-    {
-      "fromWave": 6,
-      "toWave": 10,
-      "common": 60,
-      "rare": 30,
-      "hero": 10
-    },
-    {
-      "fromWave": 11,
-      "toWave": 15,
-      "common": 50,
-      "rare": 33,
-      "hero": 17
-    }
-  ],
-  "pityCount": 10,
-  "unitMoveSpeed": 2,
-  "minSpacing": 0.5,
-  "blockReach": 0.7,
-  "regen": {
-    "delay": 3,
-    "percentPerSec": 8
-  },
-  "flyingMinRange": 3,
-  "enemyHpGrowth": 0.18,
-  "waveCount": {
-    "base": 8,
-    "perWave": 2
-  },
-  "groupGap": 3,
-  "inGroupGap": 0.4,
-  "groupMin": 3,
-  "groupMax": 6,
-  "chimeraHpRatio": 0.7,
-  "blockedOffset": 0.5,
-  "weakStareSeconds": 1,
-  "weakStareRange": 2,
-  "maxSubStep": 0.05,
-  "weakNamePrefix": "어설픈 ",
-  "swarmSpacing": 0.15,
-  "bossDelay": 1.0,
-  "sameSpecies": {
-    "perUnit": 4,
-    "partnerPerUnit": 4,
-    "note": "확정(2026-11-20, 선생님 결정 '같은 종이 나올 확률을 올려'): 가진 동물 1마리(어린 기준, 성장기 2·성체 4)마다 그 종과 키메라 짝 종의 소환 무게 +4 (기본 1)"
-  },
-  "damageBoost": {
-    "common": 4.2,
-    "rare": 2.9,
-    "hero": 1.9,
-    "note": "2026-11-23 한 칸 3마리 배치로 강해져 ×0.8 한 번 더. 봇 30판: 스테이지1 93%, 2 60%, 3 33%"
-  },
-  "synergy": {
-    "min": 3,
-    "effects": {
-      "eurasia": {
-        "interval": -10
-      },
-      "america": {
-        "range": 1
-      },
-      "africa": {
-        "dmg": 15
-      }
-    },
-    "note": "기획서 4장 대륙 시너지"
-  },
-  "terrain": {
-    "dmg": 20,
-    "hp": 20,
-    "holdDur": 20
-  },
-  "designate": {
-    "continent": 20,
-    "habitat": 40
-  },
-  "bait": {
-    "cost": 20,
-    "summons": 3,
-    "mult": 2,
-    "prepOnly": true,
-    "types": {
-      "meat": {
-        "name": "고기",
-        "role": "dealer",
-        "desc": "딜러가 잘 나옴"
-      },
-      "honey": {
-        "name": "꿀",
-        "role": "bruiser",
-        "desc": "브루저가 잘 나옴"
-      },
-      "berry": {
-        "name": "열매",
-        "role": "technician",
-        "desc": "테크니션이 잘 나옴"
-      },
-      "seed": {
-        "name": "씨앗",
-        "role": "buffer",
-        "desc": "버퍼가 잘 나옴"
-      }
-    },
-    "note": "2026-11-23 결정: 먹이는 준비 단계에서 사서 다음 3회 소환에서 그 역할 무게 2배"
-  },
-  "speciesLevel": {
-    "dmgPerLevel": 2,
-    "max": 10,
-    "xpPerLevel": 20,
-    "stageXp": [
-      30,
-      45,
-      60
-    ],
-    "spiritBonus": 50,
-    "teenChanceAt5": 10
-  },
-  "essence": {
-    "perWave": 1,
-    "clear": 20,
-    "firstClear": 30,
-    "newRecipe": 10,
-    "newSpecies": 3,
-    "weakFirst": 1
-  },
-  "unlocks": {
-    "startGold": {
-      "step": 20,
-      "costs": [
-        30,
-        60
-      ]
-    },
-    "bench": {
-      "step": 1,
-      "costs": [
-        40
-      ]
-    },
-    "hint": {
-      "cost": 25
-    }
-  },
-  "hintShardsPerReveal": 3,
-  "lanes": 3,
-  "note_lanes": "2026-11-23: 한 칸에 위·가운데·아래 줄로 3마리까지. 날 수 있는 동물(까마귀·독수리·베짱이·치즈 도둑·썬더버드·봉황)은 공중 아무 곳이나, 대신 길을 막지 못함",
-  "carry": {
-    "maxStage": "teen",
-    "fallbackGold": 40,
-    "note": "2026-11-23: 스테이지를 깨면 다음 스테이지에 동물 1마리를 성장기까지 낮춰 데려감(특성 유지). 데려온 동물이 없으면 시작 골드 +40. 봇 30판: 스테이지2 50→67%, 스테이지3 33→43%, 6웨이브 전 패배 크게 줄어듦"
-  },
-  "formation": {
-    "front": 6.5,
-    "rangedGap": 1.2,
-    "note": "2026-11-23: 웨이브가 시작되면 배치 간격을 유지한 채 전열이 6.5칸(가운데)까지 전진, 원거리는 전열 1.2칸 뒤, 공중은 제자리 높이. 웨이브가 끝나면 원래 자리로",
-    "colGap": 0.8,
-    "squeeze": 0.72
-  },
-  "elements": {
-    "chance": {
-      "young": 0,
-      "teen": 9,
-      "adult": 14,
-      "spirit": 20,
-      "chimera": 16
-    },
-    "bonus": 20,
-    "defs": {
-      "fire": {
-        "name": "불",
-        "icon": "🔥",
-        "burnPct": 19,
-        "dur": 3
-      },
-      "water": {
-        "name": "물",
-        "icon": "💧",
-        "slow": 30,
-        "dur": 2,
-        "splash": 0.8,
-        "splashPct": 40
-      },
-      "wind": {
-        "name": "바람",
-        "icon": "🌪",
-        "push": 0.45
-      },
-      "earth": {
-        "name": "땅",
-        "icon": "⛰",
-        "stun": 0.6,
-        "radius": 0.7
-      },
-      "thunder": {
-        "name": "번개",
-        "icon": "⚡",
-        "chain": 2,
-        "range": 1.6,
-        "chainPct": 55
-      },
-      "moon": {
-        "name": "달",
-        "icon": "🌙",
-        "curse": 20,
-        "dur": 3
-      },
-      "grass": {
-        "name": "풀",
-        "icon": "🌿",
-        "root": 0.8
-      },
-      "light": {
-        "name": "빛",
-        "icon": "☀",
-        "delay": 0.7
-      }
-    }
-  },
-  "patches": {
-    "chance": {
-      "adult": 35,
-      "spirit": 100,
-      "chimera": 100
-    },
-    "radius": 1.0,
-    "dur": 6,
-    "max": 6,
-    "bySpecies": {
-      "bison": "sand",
-      "wolf_in_sheep": "frost"
-    },
-    "byElement": {
-      "fire": "scorch",
-      "water": "puddle",
-      "wind": "cloud",
-      "earth": "rock",
-      "thunder": "storm",
-      "moon": "frost",
-      "grass": "thicket",
-      "light": "sunbeam"
-    },
-    "defs": {
-      "scorch": {
-        "name": "불탄 땅",
-        "icon": "🔥",
-        "enemy": {
-          "burn": 16
-        }
-      },
-      "puddle": {
-        "name": "물웅덩이",
-        "icon": "💧",
-        "enemy": {
-          "slow": 25,
-          "wet": 50
-        }
-      },
-      "cloud": {
-        "name": "구름 그늘",
-        "icon": "☁",
-        "enemy": {
-          "flySlow": 40
-        },
-        "ally": {
-          "dodge": 15
-        }
-      },
-      "rock": {
-        "name": "바위 턱",
-        "icon": "⛰",
-        "enemy": {
-          "slow": 20
-        },
-        "ally": {
-          "taken": -20
-        }
-      },
-      "sand": {
-        "name": "모래바람",
-        "icon": "🏜",
-        "enemy": {
-          "attackSlow": 25,
-          "slow": 10
-        }
-      },
-      "storm": {
-        "name": "먹구름",
-        "icon": "⛈",
-        "enemy": {
-          "bolt": 25
-        }
-      },
-      "frost": {
-        "name": "얼음판",
-        "icon": "❄",
-        "enemy": {
-          "slow": 40
-        }
-      },
-      "thicket": {
-        "name": "풀숲",
-        "icon": "🌿",
-        "ally": {
-          "dodge": 20,
-          "regen": 2
-        }
-      },
-      "sunbeam": {
-        "name": "햇살",
-        "icon": "☀",
-        "ally": {
-          "interval": -15,
-          "dmg": 10
-        }
-      }
-    }
-  },
-  "grid": {
-    "cols": 3,
-    "rows": 3,
-    "x0": 0.5,
-    "step": 1.0,
-    "skyY": [
-      150,
-      190,
-      230
-    ],
-    "note": "2026-11-23: 내 진영 3×3 아홉 칸. 칸 하나에 한 마리. 웨이브가 시작되면 아홉 칸 대형 그대로 formation.front 까지 이동"
-  },
-  "meleeReach": 0.7,
-  "brawl": {
-    "leash": 1.3,
-    "rangedLeash": 1.0,
-    "spacing": 0.6,
-    "retarget": 0.35,
-    "note": "2026-11-23: 웨이브 때 근접은 가까운 적(동료가 막고 있는 적 포함)에게 다가가 붙고, 원거리는 사거리 안으로 조금 따라붙는다. 같은 줄끼리는 spacing 만큼 떨어진다"
-  },
-  "tempo": {
-    "unit": 1.4,
-    "unitDamage": 1.66,
-    "enemy": 1.25,
-    "note": "2026-11-23: 공격이 너무 빨라 타격감이 없어 간격을 늘리고 한 방 피해를 키움. 아군은 N번째 공격 효과가 덜 터지는 만큼 피해를 조금 더(1.55) 줌"
-  },
-  "difficulty": {
-    "enemyHp": 1.35,
-    "enemyAttack": 1.2,
-    "note": "2026-11-23: 처음엔 어렵게, 별자리 나무(특성)를 찍어야 깨기 쉽게"
-  },
-  "favor": {
-    "max": 5,
-    "costs": [
-      10,
-      15,
-      20,
-      30,
-      40
-    ],
-    "perLevel": 12,
-    "note": "2026-11-23: 도감에서 에센스로 특정 동물과 정을 쌓으면 그 동물이 나올 무게 +12%/단계"
+  "spirit": {
+   "damage": 3.2,
+   "hold": 2.0,
+   "status": 1.5
   }
+ },
+ "demoRarity": [
+  {
+   "fromWave": 1,
+   "toWave": 5,
+   "common": 70,
+   "rare": 25,
+   "hero": 5
+  },
+  {
+   "fromWave": 6,
+   "toWave": 10,
+   "common": 60,
+   "rare": 30,
+   "hero": 10
+  },
+  {
+   "fromWave": 11,
+   "toWave": 15,
+   "common": 50,
+   "rare": 33,
+   "hero": 17
+  }
+ ],
+ "pityCount": 10,
+ "unitMoveSpeed": 2,
+ "minSpacing": 0.5,
+ "blockReach": 0.7,
+ "regen": {
+  "delay": 3,
+  "percentPerSec": 8
+ },
+ "flyingMinRange": 3,
+ "enemyHpGrowth": 0.18,
+ "waveCount": {
+  "base": 8,
+  "perWave": 2
+ },
+ "groupGap": 3,
+ "inGroupGap": 0.4,
+ "groupMin": 3,
+ "groupMax": 6,
+ "chimeraHpRatio": 0.7,
+ "blockedOffset": 0.5,
+ "weakStareSeconds": 1,
+ "weakStareRange": 2,
+ "maxSubStep": 0.05,
+ "weakNamePrefix": "어설픈 ",
+ "swarmSpacing": 0.15,
+ "bossDelay": 1.0,
+ "sameSpecies": {
+  "perUnit": 4,
+  "partnerPerUnit": 4,
+  "note": "확정(2026-11-20, 선생님 결정 '같은 종이 나올 확률을 올려'): 가진 동물 1마리(어린 기준, 성장기 2·성체 4)마다 그 종과 키메라 짝 종의 소환 무게 +4 (기본 1)"
+ },
+ "damageBoost": {
+  "common": 4.2,
+  "rare": 2.9,
+  "hero": 1.9,
+  "note": "2026-11-23 한 칸 3마리 배치로 강해져 ×0.8 한 번 더. 봇 30판: 스테이지1 93%, 2 60%, 3 33%"
+ },
+ "synergy": {
+  "min": 3,
+  "effects": {
+   "eurasia": {
+    "interval": -10
+   },
+   "america": {
+    "range": 1
+   },
+   "africa": {
+    "dmg": 15
+   }
+  },
+  "note": "기획서 4장 대륙 시너지"
+ },
+ "terrain": {
+  "dmg": 20,
+  "hp": 20,
+  "holdDur": 20
+ },
+ "designate": {
+  "continent": 20,
+  "habitat": 40
+ },
+ "bait": {
+  "cost": 20,
+  "summons": 3,
+  "mult": 2,
+  "prepOnly": true,
+  "types": {
+   "meat": {
+    "name": "고기",
+    "role": "dealer",
+    "desc": "딜러가 잘 나옴"
+   },
+   "honey": {
+    "name": "꿀",
+    "role": "bruiser",
+    "desc": "브루저가 잘 나옴"
+   },
+   "berry": {
+    "name": "열매",
+    "role": "technician",
+    "desc": "테크니션이 잘 나옴"
+   },
+   "seed": {
+    "name": "씨앗",
+    "role": "buffer",
+    "desc": "버퍼가 잘 나옴"
+   }
+  },
+  "note": "2026-11-23 결정: 먹이는 준비 단계에서 사서 다음 3회 소환에서 그 역할 무게 2배"
+ },
+ "speciesLevel": {
+  "dmgPerLevel": 2,
+  "max": 10,
+  "xpPerLevel": 20,
+  "stageXp": [
+   30,
+   45,
+   60,
+   75,
+   90,
+   105
+  ],
+  "spiritBonus": 50,
+  "teenChanceAt5": 10
+ },
+ "essence": {
+  "perWave": 1,
+  "clear": 20,
+  "firstClear": 30,
+  "newRecipe": 10,
+  "newSpecies": 3,
+  "weakFirst": 1
+ },
+ "unlocks": {
+  "startGold": {
+   "step": 20,
+   "costs": [
+    30,
+    60
+   ]
+  },
+  "bench": {
+   "step": 1,
+   "costs": [
+    40
+   ]
+  },
+  "hint": {
+   "cost": 25
+  }
+ },
+ "hintShardsPerReveal": 3,
+ "lanes": 3,
+ "note_lanes": "2026-11-23: 한 칸에 위·가운데·아래 줄로 3마리까지. 날 수 있는 동물(까마귀·독수리·베짱이·치즈 도둑·썬더버드·봉황)은 공중 아무 곳이나, 대신 길을 막지 못함",
+ "carry": {
+  "maxStage": "teen",
+  "fallbackGold": 40,
+  "note": "2026-11-23: 스테이지를 깨면 다음 스테이지에 동물 1마리를 성장기까지 낮춰 데려감(특성 유지). 데려온 동물이 없으면 시작 골드 +40. 봇 30판: 스테이지2 50→67%, 스테이지3 33→43%, 6웨이브 전 패배 크게 줄어듦"
+ },
+ "formation": {
+  "front": 6.5,
+  "rangedGap": 1.2,
+  "note": "2026-11-23: 웨이브가 시작되면 배치 간격을 유지한 채 전열이 6.5칸(가운데)까지 전진, 원거리는 전열 1.2칸 뒤, 공중은 제자리 높이. 웨이브가 끝나면 원래 자리로",
+  "colGap": 0.8,
+  "squeeze": 0.72
+ },
+ "elements": {
+  "chance": {
+   "young": 0,
+   "teen": 9,
+   "adult": 14,
+   "spirit": 20,
+   "chimera": 16
+  },
+  "bonus": 20,
+  "defs": {
+   "fire": {
+    "name": "불",
+    "icon": "🔥",
+    "burnPct": 19,
+    "dur": 3
+   },
+   "water": {
+    "name": "물",
+    "icon": "💧",
+    "slow": 30,
+    "dur": 2,
+    "splash": 0.8,
+    "splashPct": 40
+   },
+   "wind": {
+    "name": "바람",
+    "icon": "🌪",
+    "push": 0.45
+   },
+   "earth": {
+    "name": "땅",
+    "icon": "⛰",
+    "stun": 0.6,
+    "radius": 0.7
+   },
+   "thunder": {
+    "name": "번개",
+    "icon": "⚡",
+    "chain": 2,
+    "range": 1.6,
+    "chainPct": 55
+   },
+   "moon": {
+    "name": "달",
+    "icon": "🌙",
+    "curse": 20,
+    "dur": 3
+   },
+   "grass": {
+    "name": "풀",
+    "icon": "🌿",
+    "root": 0.8
+   },
+   "light": {
+    "name": "빛",
+    "icon": "☀",
+    "delay": 0.7
+   }
+  }
+ },
+ "patches": {
+  "chance": {
+   "adult": 35,
+   "spirit": 100,
+   "chimera": 100
+  },
+  "radius": 1.0,
+  "dur": 6,
+  "max": 6,
+  "bySpecies": {
+   "bison": "sand",
+   "wolf_in_sheep": "frost"
+  },
+  "byElement": {
+   "fire": "scorch",
+   "water": "puddle",
+   "wind": "cloud",
+   "earth": "rock",
+   "thunder": "storm",
+   "moon": "frost",
+   "grass": "thicket",
+   "light": "sunbeam"
+  },
+  "defs": {
+   "scorch": {
+    "name": "불탄 땅",
+    "icon": "🔥",
+    "enemy": {
+     "burn": 16
+    }
+   },
+   "puddle": {
+    "name": "물웅덩이",
+    "icon": "💧",
+    "enemy": {
+     "slow": 25,
+     "wet": 50
+    }
+   },
+   "cloud": {
+    "name": "구름 그늘",
+    "icon": "☁",
+    "enemy": {
+     "flySlow": 40
+    },
+    "ally": {
+     "dodge": 15
+    }
+   },
+   "rock": {
+    "name": "바위 턱",
+    "icon": "⛰",
+    "enemy": {
+     "slow": 20
+    },
+    "ally": {
+     "taken": -20
+    }
+   },
+   "sand": {
+    "name": "모래바람",
+    "icon": "🏜",
+    "enemy": {
+     "attackSlow": 25,
+     "slow": 10
+    }
+   },
+   "storm": {
+    "name": "먹구름",
+    "icon": "⛈",
+    "enemy": {
+     "bolt": 25
+    }
+   },
+   "frost": {
+    "name": "얼음판",
+    "icon": "❄",
+    "enemy": {
+     "slow": 40
+    }
+   },
+   "thicket": {
+    "name": "풀숲",
+    "icon": "🌿",
+    "ally": {
+     "dodge": 20,
+     "regen": 2
+    }
+   },
+   "sunbeam": {
+    "name": "햇살",
+    "icon": "☀",
+    "ally": {
+     "interval": -15,
+     "dmg": 10
+    }
+   }
+  }
+ },
+ "grid": {
+  "cols": 3,
+  "rows": 3,
+  "x0": 0.5,
+  "step": 1.0,
+  "skyY": [
+   150,
+   190,
+   230
+  ],
+  "note": "2026-11-23: 내 진영 3×3 아홉 칸. 칸 하나에 한 마리. 웨이브가 시작되면 아홉 칸 대형 그대로 formation.front 까지 이동"
+ },
+ "meleeReach": 0.7,
+ "brawl": {
+  "leash": 1.3,
+  "rangedLeash": 1.0,
+  "spacing": 0.6,
+  "retarget": 0.35,
+  "note": "2026-11-23: 웨이브 때 근접은 가까운 적(동료가 막고 있는 적 포함)에게 다가가 붙고, 원거리는 사거리 안으로 조금 따라붙는다. 같은 줄끼리는 spacing 만큼 떨어진다"
+ },
+ "tempo": {
+  "unit": 1.4,
+  "unitDamage": 1.66,
+  "enemy": 1.25,
+  "note": "2026-11-23: 공격이 너무 빨라 타격감이 없어 간격을 늘리고 한 방 피해를 키움. 아군은 N번째 공격 효과가 덜 터지는 만큼 피해를 조금 더(1.55) 줌"
+ },
+ "difficulty": {
+  "enemyHp": 1.35,
+  "enemyAttack": 1.2,
+  "note": "2026-11-23: 처음엔 어렵게, 별자리 나무(특성)를 찍어야 깨기 쉽게"
+ },
+ "favor": {
+  "max": 5,
+  "costs": [
+   10,
+   15,
+   20,
+   30,
+   40
+  ],
+  "perLevel": 4,
+  "note": "2026-11-23: 정 붙이기는 살짝만. 단계당 그 동물이 나올 무게 +4% (최대 +20%)"
+ },
+ "roster": {
+  "note": "처음엔 공격 유형별 6종. 별이 모이면 차례로 합류.",
+  "starter": [
+   "dog",
+   "rabbit",
+   "fox",
+   "rooster",
+   "crow",
+   "bighorn"
+  ],
+  "starterRole": {
+   "dog": "막기",
+   "rabbit": "둔화",
+   "fox": "독",
+   "rooster": "응원",
+   "crow": "대공 저격",
+   "bighorn": "밀치기"
+  },
+  "unlocks": [
+   {
+    "stars": 2,
+    "id": "ant"
+   },
+   {
+    "stars": 3,
+    "id": "frog"
+   },
+   {
+    "stars": 4,
+    "id": "grasshopper"
+   },
+   {
+    "stars": 5,
+    "id": "wolf"
+   },
+   {
+    "stars": 7,
+    "id": "bear"
+   },
+   {
+    "stars": 9,
+    "id": "monkey"
+   },
+   {
+    "stars": 11,
+    "id": "bison"
+   },
+   {
+    "stars": 13,
+    "id": "eagle"
+   },
+   {
+    "stars": 15,
+    "id": "tiger"
+   }
+  ]
+ },
+ "stars": {
+  "life": 60,
+  "par": 420,
+  "note": "★ 클리어 / ★ 생명 60% 이상 / ★ 제한 시간(스테이지 par, 초) 안에"
+ },
+ "weakBonus": 30,
+ "climateEffect": {
+  "dmg": 10,
+  "chanceUp": 1.4,
+  "chanceDown": 0.6
+ },
+ "climates": {
+  "clear": {
+   "name": "맑음",
+   "icon": "☀",
+   "tale": "볕이 좋아 모두 기지개를 켰지요.",
+   "strong": [
+    "light"
+   ],
+   "weak": []
+  },
+  "rain": {
+   "name": "비",
+   "icon": "🌧",
+   "tale": "비가 오자 불씨는 숨고 번개는 신이 났지요.",
+   "strong": [
+    "water",
+    "thunder"
+   ],
+   "weak": [
+    "fire"
+   ],
+   "weather": "rain",
+   "tint": [
+    37,
+    58,
+    90,
+    0.22
+   ]
+  },
+  "night": {
+   "name": "달밤",
+   "icon": "🌙",
+   "tale": "달이 밝아 그림자가 길어진 밤이었지요.",
+   "strong": [
+    "moon"
+   ],
+   "weak": [
+    "light"
+   ],
+   "tint": null
+  },
+  "drought": {
+   "name": "가뭄",
+   "icon": "🏜",
+   "tale": "석 달 가뭄에 풀은 눕고 불씨만 살판났지요.",
+   "strong": [
+    "fire",
+    "earth"
+   ],
+   "weak": [
+    "water",
+    "grass"
+   ],
+   "enemy": {
+    "speed": 1.08
+   },
+   "weather": "sand",
+   "tint": [
+    217,
+    154,
+    74,
+    0.2
+   ]
+  },
+  "blizzard": {
+   "name": "눈보라",
+   "icon": "❄",
+   "tale": "눈보라가 치자 날개 달린 것들은 몸을 사렸지요.",
+   "strong": [
+    "moon",
+    "fire"
+   ],
+   "weak": [
+    "wind",
+    "grass"
+   ],
+   "enemy": {
+    "flySpeed": 0.8
+   },
+   "weather": "snow",
+   "tint": [
+    207,
+    230,
+    255,
+    0.2
+   ]
+  },
+  "storm": {
+   "name": "폭풍",
+   "icon": "⛈",
+   "tale": "하늘이 으르렁대자 바람과 번개가 춤을 췄지요.",
+   "strong": [
+    "thunder",
+    "wind"
+   ],
+   "weak": [
+    "fire",
+    "light"
+   ],
+   "enemy": {
+    "flySpeed": 1.2
+   },
+   "weather": "storm",
+   "tint": [
+    26,
+    31,
+    58,
+    0.3
+   ]
+  },
+  "ash": {
+   "name": "화산재",
+   "icon": "🌋",
+   "tale": "재가 눈처럼 내려 해가 붉게 보였지요.",
+   "strong": [
+    "fire",
+    "earth"
+   ],
+   "weak": [
+    "wind",
+    "light"
+   ]
+  },
+  "fog": {
+   "name": "안개",
+   "icon": "🌫",
+   "tale": "안개가 짙어 코앞의 벗도 흐릿했지요.",
+   "strong": [
+    "water",
+    "moon"
+   ],
+   "weak": [
+    "light",
+    "thunder"
+   ]
+  },
+  "moonless": {
+   "name": "그믐",
+   "icon": "🌑",
+   "tale": "달도 숨은 밤, 묘지만 깨어 있었지요.",
+   "strong": [
+    "light",
+    "fire"
+   ],
+   "weak": [
+    "moon"
+   ]
+  },
+  "miasma": {
+   "name": "마계의 독기",
+   "icon": "☠",
+   "tale": "문틈으로 새어 나온 독기에 풀이 까맣게 탔지요.",
+   "strong": [
+    "light",
+    "wind"
+   ],
+   "weak": [
+    "grass",
+    "water"
+   ]
+  },
+  "cave": {
+   "name": "땅속 열기",
+   "icon": "🕳",
+   "tale": "깊이 내려갈수록 땅이 숨을 쉬었지요.",
+   "strong": [
+    "earth",
+    "water"
+   ],
+   "weak": [
+    "wind",
+    "thunder"
+   ]
+  },
+  "heart": {
+   "name": "심장의 고동",
+   "icon": "💗",
+   "tale": "지구의 심장이 뛸 때마다 모두의 힘이 솟았지요.",
+   "strong": [
+    "fire",
+    "water",
+    "wind",
+    "earth",
+    "thunder",
+    "moon",
+    "grass",
+    "light"
+   ],
+   "weak": []
+  }
+ },
+ "roadmap": [
+  {
+   "n": 7,
+   "name": "불의 산 기슭",
+   "climate": "ash",
+   "zones": "화산·용암길·온천",
+   "boss": "용암 거북",
+   "theme": "불에 강한 마물. 물과 바람이 귀해지는 곳"
+  },
+  {
+   "n": 8,
+   "name": "안개 늪",
+   "climate": "fog",
+   "zones": "늪·갈대밭·썩은 숲",
+   "boss": "늪의 마녀",
+   "theme": "언데드가 본격적으로 일어나는 곳"
+  },
+  {
+   "n": 9,
+   "name": "달 없는 묘지",
+   "climate": "moonless",
+   "zones": "묘지·폐허·까마귀 언덕",
+   "boss": "목 없는 기사",
+   "theme": "되살아나는 적, 빛과 불이 열쇠"
+  },
+  {
+   "n": 10,
+   "name": "마계의 문턱",
+   "climate": "miasma",
+   "zones": "갈라진 땅·검은 숲·문",
+   "boss": "문지기 쌍둥이",
+   "theme": "마계 동물이 직접 넘어오는 곳"
+  },
+  {
+   "n": 11,
+   "name": "땅속 길",
+   "climate": "cave",
+   "zones": "동굴·수정굴·지하 호수",
+   "boss": "굴 파는 거대 두더지",
+   "theme": "하늘이 없는 싸움, 비행이 막히는 곳"
+  },
+  {
+   "n": 12,
+   "name": "지구의 심장",
+   "climate": "heart",
+   "zones": "맨틀 다리·심장의 방",
+   "boss": "굶주린 왕",
+   "theme": "마지막 싸움"
+  }
+ ]
 }

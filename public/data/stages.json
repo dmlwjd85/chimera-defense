@@ -1,422 +1,846 @@
 [
-  {
-    "id": "forest-1",
-    "name": "숲 1 · 우람멧돼지",
-    "mult": 1.0,
-    "zones": [
-      "village",
-      "field",
-      "forest"
-    ],
-    "waves": [
-      {
-        "mix": {
-          "normal": 100
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 100
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 70,
-          "fast": 30
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 60,
-          "swarm": 40
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 70,
-          "tough": 30
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 60,
-          "flying": 40
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 40,
-          "fast": 30,
-          "swarm": 30
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 50,
-          "tough": 30,
-          "healer": 20
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "fast": 30,
-          "flying": 30,
-          "tough": 20,
-          "normal": 20
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 50,
-          "swarm": 50
-        },
-        "extra": [
-          "miniboss"
-        ]
-      },
-      {
-        "mix": {
-          "normal": 40,
-          "fast": 40,
-          "tough": 5,
-          "swarm": 5,
-          "flying": 5,
-          "healer": 5
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 5,
-          "fast": 5,
-          "tough": 40,
-          "swarm": 40,
-          "flying": 5,
-          "healer": 5
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 5,
-          "fast": 5,
-          "tough": 5,
-          "swarm": 5,
-          "flying": 40,
-          "healer": 40
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 5,
-          "fast": 5,
-          "tough": 40,
-          "swarm": 5,
-          "flying": 40,
-          "healer": 5
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "fast": 100
-        },
-        "extra": [
-          "boss_boar"
-        ]
-      }
-    ],
-    "boss": "boss_boar"
-  },
-  {
-    "id": "forest-2",
-    "name": "숲 2 · 박쥐왕",
-    "mult": 1.4,
-    "zones": [
-      "plains",
-      "wetland",
-      "forest"
-    ],
-    "waves": [
-      {
-        "mix": {
-          "normal": 100
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 100
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 70,
-          "fast": 30
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 60,
-          "swarm": 40
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 70,
-          "tough": 30
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 60,
-          "flying": 40
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 40,
-          "fast": 30,
-          "swarm": 30
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 50,
-          "tough": 30,
-          "healer": 20
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "fast": 30,
-          "flying": 30,
-          "tough": 20,
-          "normal": 20
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 50,
-          "swarm": 50
-        },
-        "extra": [
-          "miniboss"
-        ]
-      },
-      {
-        "mix": {
-          "normal": 40,
-          "fast": 40,
-          "tough": 5,
-          "swarm": 5,
-          "flying": 5,
-          "healer": 5
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 5,
-          "fast": 5,
-          "tough": 40,
-          "swarm": 40,
-          "flying": 5,
-          "healer": 5
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 5,
-          "fast": 5,
-          "tough": 5,
-          "swarm": 5,
-          "flying": 40,
-          "healer": 40
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 5,
-          "fast": 5,
-          "tough": 40,
-          "swarm": 5,
-          "flying": 40,
-          "healer": 5
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 40,
-          "flying": 60
-        },
-        "extra": [
-          "boss_bat"
-        ]
-      }
-    ],
-    "boss": "boss_bat"
-  },
-  {
-    "id": "forest-3",
-    "name": "숲 3 · 숲의 그림자",
-    "mult": 1.9,
-    "zones": [
-      "village",
-      "plains",
-      "mountain"
-    ],
-    "waves": [
-      {
-        "mix": {
-          "normal": 100
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 100
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 70,
-          "fast": 30
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 60,
-          "swarm": 40
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 70,
-          "tough": 30
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 60,
-          "flying": 40
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 40,
-          "fast": 30,
-          "swarm": 30
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 50,
-          "tough": 30,
-          "healer": 20
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "fast": 30,
-          "flying": 30,
-          "tough": 20,
-          "normal": 20
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 50,
-          "swarm": 50
-        },
-        "extra": [
-          "miniboss"
-        ]
-      },
-      {
-        "mix": {
-          "normal": 40,
-          "fast": 40,
-          "tough": 5,
-          "swarm": 5,
-          "flying": 5,
-          "healer": 5
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 5,
-          "fast": 5,
-          "tough": 40,
-          "swarm": 40,
-          "flying": 5,
-          "healer": 5
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 5,
-          "fast": 5,
-          "tough": 5,
-          "swarm": 5,
-          "flying": 40,
-          "healer": 40
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 5,
-          "fast": 5,
-          "tough": 40,
-          "swarm": 5,
-          "flying": 40,
-          "healer": 5
-        },
-        "extra": []
-      },
-      {
-        "mix": {
-          "normal": 30,
-          "swarm": 40,
-          "healer": 30
-        },
-        "extra": [
-          "boss_shadow"
-        ]
-      }
-    ],
-    "boss": "boss_shadow"
-  }
+ {
+  "id": "forest-1",
+  "name": "1 · 숲 어귀",
+  "mult": 1.0,
+  "zones": [
+   "village",
+   "field",
+   "forest"
+  ],
+  "waves": [
+   {
+    "mix": {
+     "normal": 100
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 100
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 70,
+     "fast": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 60,
+     "swarm": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 70,
+     "tough": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 60,
+     "flying": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 40,
+     "fast": 30,
+     "swarm": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 50,
+     "tough": 30,
+     "healer": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "fast": 30,
+     "flying": 30,
+     "tough": 20,
+     "normal": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 50,
+     "swarm": 50
+    },
+    "extra": [
+     "miniboss"
+    ]
+   },
+   {
+    "mix": {
+     "normal": 40,
+     "fast": 40,
+     "tough": 5,
+     "swarm": 5,
+     "flying": 5,
+     "healer": 5
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 5,
+     "fast": 5,
+     "tough": 40,
+     "swarm": 40,
+     "flying": 5,
+     "healer": 5
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 5,
+     "fast": 5,
+     "tough": 5,
+     "swarm": 5,
+     "flying": 40,
+     "healer": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 5,
+     "fast": 5,
+     "tough": 40,
+     "swarm": 5,
+     "flying": 40,
+     "healer": 5
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "fast": 100
+    },
+    "extra": [
+     "boss_boar"
+    ]
+   }
+  ],
+  "boss": "boss_boar",
+  "climate": "clear",
+  "par": 480
+ },
+ {
+  "id": "forest-2",
+  "name": "2 · 비 오는 습지",
+  "mult": 1.25,
+  "zones": [
+   "plains",
+   "wetland",
+   "forest"
+  ],
+  "waves": [
+   {
+    "mix": {
+     "normal": 100
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 100
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 70,
+     "fast": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 60,
+     "swarm": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 70,
+     "tough": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 60,
+     "flying": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 40,
+     "fast": 30,
+     "swarm": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 50,
+     "tough": 30,
+     "healer": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "fast": 30,
+     "flying": 30,
+     "tough": 20,
+     "normal": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 50,
+     "swarm": 50
+    },
+    "extra": [
+     "miniboss"
+    ]
+   },
+   {
+    "mix": {
+     "normal": 40,
+     "fast": 40,
+     "tough": 5,
+     "swarm": 5,
+     "flying": 5,
+     "healer": 5
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 5,
+     "fast": 5,
+     "tough": 40,
+     "swarm": 40,
+     "flying": 5,
+     "healer": 5
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 5,
+     "fast": 5,
+     "tough": 5,
+     "swarm": 5,
+     "flying": 40,
+     "healer": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 5,
+     "fast": 5,
+     "tough": 40,
+     "swarm": 5,
+     "flying": 40,
+     "healer": 5
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 40,
+     "flying": 60
+    },
+    "extra": [
+     "boss_bat"
+    ]
+   }
+  ],
+  "boss": "boss_bat",
+  "climate": "rain",
+  "par": 500
+ },
+ {
+  "id": "forest-3",
+  "name": "3 · 달밤의 산길",
+  "mult": 1.7,
+  "zones": [
+   "village",
+   "plains",
+   "mountain"
+  ],
+  "waves": [
+   {
+    "mix": {
+     "normal": 100
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 100
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 70,
+     "fast": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 60,
+     "swarm": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 70,
+     "tough": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 60,
+     "flying": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 40,
+     "fast": 30,
+     "swarm": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 50,
+     "tough": 30,
+     "healer": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "fast": 30,
+     "flying": 30,
+     "tough": 20,
+     "normal": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 50,
+     "swarm": 50
+    },
+    "extra": [
+     "miniboss"
+    ]
+   },
+   {
+    "mix": {
+     "normal": 40,
+     "fast": 40,
+     "tough": 5,
+     "swarm": 5,
+     "flying": 5,
+     "healer": 5
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 5,
+     "fast": 5,
+     "tough": 40,
+     "swarm": 40,
+     "flying": 5,
+     "healer": 5
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 5,
+     "fast": 5,
+     "tough": 5,
+     "swarm": 5,
+     "flying": 40,
+     "healer": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 5,
+     "fast": 5,
+     "tough": 40,
+     "swarm": 5,
+     "flying": 40,
+     "healer": 5
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 30,
+     "swarm": 40,
+     "healer": 30
+    },
+    "extra": [
+     "boss_shadow"
+    ]
+   }
+  ],
+  "boss": "boss_shadow",
+  "climate": "night",
+  "par": 520,
+  "night": true
+ },
+ {
+  "id": "stage-4",
+  "name": "4 · 메마른 고원",
+  "mult": 1.8,
+  "zones": [
+   "plains",
+   "mountain",
+   "plains"
+  ],
+  "climate": "drought",
+  "par": 540,
+  "art": "forest-2",
+  "waves": [
+   {
+    "mix": {
+     "normal": 100
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 80,
+     "skeleton": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 55,
+     "fast": 25,
+     "skeleton": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 45,
+     "swarm": 30,
+     "skeleton": 25
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 40,
+     "tough": 25,
+     "skeleton": 35
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "skeleton": 35,
+     "flying": 40,
+     "normal": 25
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "fast": 40,
+     "skeleton": 30,
+     "swarm": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "skeleton": 50,
+     "tough": 30,
+     "healer": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "fast": 30,
+     "flying": 30,
+     "skeleton": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "skeleton": 50,
+     "swarm": 50
+    },
+    "extra": [
+     "miniboss"
+    ]
+   },
+   {
+    "mix": {
+     "skeleton": 45,
+     "fast": 40,
+     "tough": 5,
+     "flying": 5,
+     "healer": 5
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "skeleton": 40,
+     "tough": 40,
+     "swarm": 10,
+     "healer": 10
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "flying": 40,
+     "healer": 30,
+     "skeleton": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "skeleton": 40,
+     "tough": 20,
+     "flying": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "skeleton": 60,
+     "tough": 40
+    },
+    "extra": [
+     "boss_bone"
+    ]
+   }
+  ],
+  "boss": "boss_bone"
+ },
+ {
+  "id": "stage-5",
+  "name": "5 · 얼어붙은 호수",
+  "mult": 2.0,
+  "zones": [
+   "wetland",
+   "field",
+   "mountain"
+  ],
+  "climate": "blizzard",
+  "par": 560,
+  "art": "forest-1",
+  "waves": [
+   {
+    "mix": {
+     "normal": 100
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 80,
+     "ghost": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 55,
+     "fast": 20,
+     "ghost": 25
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 40,
+     "swarm": 35,
+     "ghost": 25
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 35,
+     "tough": 30,
+     "ghost": 35
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "ghost": 30,
+     "wisp": 40,
+     "normal": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "fast": 30,
+     "ghost": 40,
+     "swarm": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "ghost": 40,
+     "tough": 40,
+     "healer": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "wisp": 40,
+     "ghost": 30,
+     "fast": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "ghost": 50,
+     "swarm": 50
+    },
+    "extra": [
+     "miniboss"
+    ]
+   },
+   {
+    "mix": {
+     "ghost": 40,
+     "fast": 30,
+     "wisp": 20,
+     "healer": 10
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "tough": 40,
+     "ghost": 40,
+     "swarm": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "wisp": 45,
+     "healer": 25,
+     "ghost": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "ghost": 35,
+     "tough": 30,
+     "wisp": 35
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "ghost": 60,
+     "wisp": 40
+    },
+    "extra": [
+     "boss_frost"
+    ]
+   }
+  ],
+  "boss": "boss_frost"
+ },
+ {
+  "id": "stage-6",
+  "name": "6 · 폭풍의 묘지",
+  "mult": 1.7,
+  "zones": [
+   "village",
+   "plains",
+   "forest"
+  ],
+  "climate": "storm",
+  "par": 580,
+  "art": "forest-3",
+  "night": true,
+  "waves": [
+   {
+    "mix": {
+     "normal": 100
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 60,
+     "skeleton": 20,
+     "ghost": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 30,
+     "fast": 25,
+     "skeleton": 25,
+     "ghost": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "normal": 30,
+     "swarm": 30,
+     "ghost": 20,
+     "skeleton": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "zombie": 25,
+     "skeleton": 35,
+     "normal": 40
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "wisp": 40,
+     "skeleton": 20,
+     "ghost": 20,
+     "normal": 20
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "fast": 30,
+     "ghost": 35,
+     "swarm": 35
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "zombie": 35,
+     "ghost": 35,
+     "healer": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "wisp": 35,
+     "skeleton": 35,
+     "fast": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "zombie": 30,
+     "swarm": 40,
+     "ghost": 30
+    },
+    "extra": [
+     "miniboss"
+    ]
+   },
+   {
+    "mix": {
+     "skeleton": 35,
+     "ghost": 35,
+     "fast": 20,
+     "healer": 10
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "zombie": 40,
+     "skeleton": 30,
+     "swarm": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "wisp": 40,
+     "healer": 30,
+     "ghost": 30
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "zombie": 30,
+     "wisp": 35,
+     "skeleton": 35
+    },
+    "extra": []
+   },
+   {
+    "mix": {
+     "zombie": 40,
+     "skeleton": 30,
+     "ghost": 30
+    },
+    "extra": [
+     "boss_lich"
+    ]
+   }
+  ],
+  "boss": "boss_lich"
+ }
 ]

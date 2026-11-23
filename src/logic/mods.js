@@ -185,6 +185,8 @@ export function computeMods(state, data) {
   const bondDmg = (eco(state, data, 'bondDmg') ?? 0) * bonds.filter((b) => b.bond.kind !== 'clash').length;
   const few = eco(state, data, 'fewBuff');
   const fewOn = few && state.field.length <= few[0];
+  const clim = cfg.climates?.[state.stage.climate];
+  const climSide = (el, c, a, b, n) => (c.strong?.includes(el) ? a : c.weak?.includes(el) ? b : n);
   for (const u of state.field) {
     const m = u.mods;
     u.wasBuffed = Object.keys(m.auraIn).length > 0 || (state.allyBuffs ?? []).length > 0;
@@ -198,6 +200,7 @@ export function computeMods(state, data) {
       const k = Math.max(m.flags.terrainMult ?? 1, 1);
       for (const [s, v] of Object.entries(cfg.terrain)) m[s] += v * k;
     }
+    if (clim && u.stats.element) m.dmg += climSide(u.stats.element, clim, cfg.climateEffect?.dmg ?? 0, -(cfg.climateEffect?.dmg ?? 0), 0);
     if (state.patches?.length && cfg.patches) for (const [s, v] of Object.entries(patchAllyMods(state, u, cfg))) m[s] += v;
     if (m.flags.perBruiserHp) m.hp += m.flags.perBruiserHp * state.field.filter((o) => (o.stats.role ?? '') === 'bruiser').length;
     // max hp follows hp%; keep the current fraction

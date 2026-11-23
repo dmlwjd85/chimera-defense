@@ -122,6 +122,21 @@ export default class BattleScene extends Phaser.Scene {
     }));
   }
 
+  /** Cheer glow under every ally while a buffer's cheer runs; dust behind a bruiser dashing to block. */
+  drawRoles() {
+    const s = this.state;
+    this.roleGfx ??= this.add.graphics().setDepth(47);
+    this.roleGfx.clear();
+    const cheer = (s.cheer?.left ?? 0) > 0;
+    for (const u of s.field) {
+      const v = this.unitViews.get(u.uid);
+      if (!v || u.down) continue;
+      const x = v.container.x, y = v.container.y;
+      if (cheer) this.roleGfx.lineStyle(2, 0x9cff6b, 0.5 + 0.3 * Math.sin(this.time.now / 120)).strokeEllipse(x, y + 30, 70, 22);
+      if (u.stats.role === 'bruiser' && u.intercept != null && u.moving && Math.random() < 0.5) this.fx.burst('puff', x - 18 * Math.sign(u.targetPos - u.pos || 1), y + 26, 1, 0xc9a26a);
+    }
+  }
+
   /** Slow motion and a small push-in for the big moments. */
   spotlight(dur = 0.5, zoom = 1.05) {
     this.slowMo = Math.max(this.slowMo ?? 0, dur);
@@ -214,6 +229,7 @@ export default class BattleScene extends Phaser.Scene {
     });
     this.drawSpellBar();
     this.drawSoul();
+    this.drawRoles();
   }
 
   drawSpellBar() {
@@ -1315,6 +1331,32 @@ export default class BattleScene extends Phaser.Scene {
         case 'knock': { const ve = this.enemyViews.get(ev.eid); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY + 10, 4, 0xd9c49a); this.fx.hit(ve.lastX, ve.lastY, 'orange'); } break; }
         case 'heal': { const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.heal(ve.lastX, ve.lastY); sfx('heal'); break; }
         case 'down': { const [x, y] = unitPos(ev.uid); this.fx.down(x, y); sfx('down'); break; }
+        case 'guard': { // 브루저가 동료 앞을 막아섬
+          const [x, y] = unitPos(ev.uid), [ax, ay] = unitPos(ev.ally);
+          this.fx.bubbleShield(ax, ay - 10, 0xffd08a); this.fx.line(x, y - 20, ax, ay - 20, 0xffd08a, 4, 200);
+          this.fx.shout(x, y - 88, ['막아!', '내 뒤로!', '버텨!', '덤벼!'][Math.floor(Math.random() * 4)], 0xffd08a, { size: 20, hold: 500 });
+          const v = this.unitViews.get(ev.uid); if (v) v.shakeT = 0.18; sfx('shield'); break;
+        }
+        case 'combo': { // 딜러 연계: 두 번 치기, 필살(근접 회전 베기 / 원거리 관통 / 하늘 급강하)
+          const [x, y] = unitPos(ev.uid), ve = this.enemyViews.get(ev.eid) ?? this.goneViews?.get(ev.eid), tx = ve?.lastX ?? x + 80, ty = ve?.lastY ?? y;
+          const v = this.unitViews.get(ev.uid);
+          if (ev.kind === 'double') { this.time.delayedCall(90, () => { this.fx.slash(tx, ty, 0xffffff); this.fx.hit(tx, ty, 0xffffff); }); if (v) { v.lungeT = 0; v.lungeDir = 1; } sfx('slash'); break; }
+          const word = { spin: '회전 베기!', pierce: '꿰뚫기!', dive: '급강하!' }[ev.style];
+          this.fx.shout(x, y - 96, word, 0xff8a3c, { size: 26, hold: 650 });
+          if (ev.style === 'spin') { this.fx.ring(x, y + 10, 0xffb347, 2.0, 360); for (let k = 0; k < 3; k++) this.time.delayedCall(k * 70, () => this.fx.slash(x + (k - 1) * 30, y - 6, 0xffd08a)); }
+          else if (ev.style === 'pierce') { const last = (ev.eids ?? []).map((id) => this.enemyViews.get(id) ?? this.goneViews?.get(id)).filter(Boolean).at(-1); this.fx.line(x, y - 14, (last?.lastX ?? tx) + 40, last?.lastY ?? ty, 0xfff27a, 8, 260); }
+          else { this.fx.shockwave(tx, ty + 20, 0xbfefff, 2, 2); this.fx.burst('leaf', tx, ty, 10, 0xbfefff); }
+          for (const id of ev.eids ?? []) { const e = this.enemyViews.get(id) ?? this.goneViews?.get(id); if (e) this.fx.hit(e.lastX, e.lastY, 0xff8a3c, true); }
+          this.hitStop = Math.max(this.hitStop ?? 0, 0.06); this.cameras.main.shake(140, 0.004); sfx('bigKill'); break;
+        }
+        case 'cheer': { // 버퍼 응원: 온 팀이 체감할 만큼, 숫자로 보여 줌
+          const [x, y] = unitPos(ev.uid);
+          this.fx.shout(x, y - 96, ['영차영차!', '힘내라!', '가자—!', '둥둥둥!'][Math.floor(Math.random() * 4)], 0x9cff6b, { size: 24, hold: 700 });
+          this.fx.shockwave(x, y + 20, 0x9cff6b, 3, 3.2);
+          this.floatText(x, y - 130, `📣 온 팀 공속 +${ev.interval}% · 피해 +${ev.dmg}% · ${ev.dur}초`, '#9cff6b', 16);
+          for (const u of this.state.field) { if (u.uid === ev.uid || u.down) continue; const [ux, uy] = unitPos(u.uid); this.fx.burst('note', ux, uy - 40, 3, 0x9cff6b); this.fx.ring(ux, uy + 24, 0x9cff6b, 0.9, 420); }
+          sfx('bond'); break;
+        }
         case 'dodge': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 30, '회피', '#7fd1ff', 13); this.fx.burst('leaf', x, y, 3, 0x7fd1ff); sfx('dodge'); break; }
         case 'survive': { const [x, y] = unitPos(ev.uid); this.floatText(x, y - 50, '간을 두고 왔다!', '#ffb3c6', 16); this.fx.evolve(x, y, false); sfx('evolve'); break; }
         case 'summon': { sfx('summon'); const su = this.state.bench.find((x) => x && x.uid === ev.uid); if (su?.soul) this.fx.banner(`👑 소울펫 ${su.stats.name} 등장!`, '#ffd84d', this.data2.config.soul.sig[this.state.soul.id]?.feel ?? ''); break; }

@@ -62,3 +62,31 @@ test('deck: saved picks, soul pet always in, gaps tell what to bring; horde wave
   const q = buildWave(st, hordeWave, D, makeRng(1));
   assert.ok(q.filter((x) => x.horde).length >= 30);
 });
+
+test('roles: bruisers guard allies, dealers chain a finisher, buffers cheer the whole team', async () => {
+  const { tickRoles, dealerCombo } = await import('../src/logic/roles.js');
+  const { hitUnit } = await import('../src/logic/combat.js');
+  const rc = D.config.roles;
+  const s = createBattle(D, 'forest-1', 1); s.phase = 'wave';
+  const bear = await mkUnit(D, 1, 'bear', 'adult', 3), fox = await mkUnit(D, 2, 'fox', 'adult', 3.5);
+  s.field = [bear, fox]; computeMods(s, D);
+  assert.ok(bear.mods.taken <= rc.bruiser.mods.taken);
+  const fh = fox.hp, bh = bear.hp;
+  hitUnit(s, D, fox, 100, null);
+  assert.ok(bear.hp < bh, 'the bruiser takes part of the blow');
+  assert.ok(fh - fox.hp < 100 * (1 - rc.bruiser.guard.share / 100) + 1e-6);
+  assert.ok(s.events.some((e) => e.type === 'guard'));
+  // dealer finisher
+  const tiger = await mkUnit(D, 3, 'tiger', 'adult', 3); s.field = [tiger]; computeMods(s, D);
+  s.enemies = [makeEnemy('tough', 1, s.stage, D, 1), makeEnemy('tough', 1, s.stage, D, 2)];
+  s.enemies[0].pos = 3.5; s.enemies[1].pos = 3.9;
+  for (let k = 0; k < rc.dealer.combo.finisher; k++) dealerCombo(s, D, tiger, s.enemies[0], [s.enemies[0]]);
+  assert.ok(s.events.some((e) => e.type === 'combo' && e.kind === 'finisher' && e.style === 'spin'));
+  assert.ok(s.enemies[1].hp < s.enemies[1].maxHp, 'a spin finisher hits the enemy next to the target');
+  // buffer cheer
+  const rooster = await mkUnit(D, 4, 'rooster', 'adult', 2); s.field = [rooster, tiger]; s.events.length = 0; s.enemies = [makeEnemy('boss_boar', 1, s.stage, D, 9)];
+  tickRoles(s, D, rc.buffer.cheer.first + 0.1);
+  assert.ok(s.events.some((e) => e.type === 'cheer'));
+  computeMods(s, D);
+  assert.ok(tiger.mods.interval <= rc.dealer.mods.interval + rc.buffer.cheer.interval);
+});

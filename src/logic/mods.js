@@ -2,6 +2,7 @@
 // terrain, species level and timed buffs. All abilities are '효과 + 조건' lines (plan ch.12) read from data.
 import { patchAllyMods } from './patchMods.js';
 import { applySoulMods } from './soul.js';
+import { applyRoleMods } from './roles.js';
 import { traitView } from './traits.js';
 import { ownedRelics, eco, whoMatches } from './relics.js';
 
@@ -188,10 +189,12 @@ export function computeMods(state, data) {
   const fewOn = few && state.field.length <= few[0];
   const clim = cfg.climates?.[state.stage.climate];
   const climSide = (el, c, a, b, n) => (c.strong?.includes(el) ? a : c.weak?.includes(el) ? b : n);
+  for (const u of state.field) u.roleAura = false;
+  applyRoleMods(state, data);
   applySoulMods(state, data);
   for (const u of state.field) {
     const m = u.mods;
-    u.wasBuffed = Object.keys(m.auraIn).length > 0 || (state.allyBuffs ?? []).length > 0;
+    u.wasBuffed = Object.keys(m.auraIn).length > 0 || (state.allyBuffs ?? []).length > 0 || !!u.roleAura || (state.cheer?.left ?? 0) > 0;
     for (const [s, v] of Object.entries(m.auraIn)) m[s] += v;
     for (const [s, v] of Object.entries(m.auraNeg)) m[s] += v;
     for (const b of state.allyBuffs ?? []) m[b.stat] += b.percent * (b.percent > 0 || b.stat === 'interval' ? m.buffRecv : 1);

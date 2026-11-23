@@ -404,9 +404,9 @@
   "note": "2026-11-23: 공격이 너무 빨라 타격감이 없어 간격을 늘리고 한 방 피해를 키움. 아군은 N번째 공격 효과가 덜 터지는 만큼 피해를 조금 더(1.55) 줌"
  },
  "difficulty": {
-  "enemyHp": 1.35,
-  "enemyAttack": 1.2,
-  "note": "2026-11-23: 처음엔 어렵게, 별자리 나무(특성)를 찍어야 깨기 쉽게"
+  "enemyHp": 2.2,
+  "enemyAttack": 1.7,
+  "note": "2026-11-24: 역할 손맛(브루저·딜러·버퍼)이 들어간 만큼 적 체력 1.35->2.2, 공격 1.2->1.7"
  },
  "favor": {
   "max": 5,
@@ -1372,5 +1372,57 @@
   "gold": 0.4,
   "spacing": 0.35,
   "note": "무쌍 타임: 11·14 웨이브는 약한 적이 세 배로 몰려옴"
+ },
+ "roles": {
+  "note": "2026-11-24 역할 손맛: 브루저는 든든하게 막고 몸을 던져 가로막음, 딜러는 빠르고 다양한 연계, 버퍼는 체감되는 응원",
+  "bruiser": {
+   "mods": {
+    "taken": -15,
+    "hp": 15
+   },
+   "brace": {
+    "blocked": 2,
+    "taken": -15
+   },
+   "guard": {
+    "tiles": 1.4,
+    "share": 40,
+    "minHp": 25
+   },
+   "dashSpeed": 2.2
+  },
+  "dealer": {
+   "mods": {
+    "interval": -15
+   },
+   "combo": {
+    "double": 3,
+    "doubleMult": 0.8,
+    "finisher": 5,
+    "finMult": 2.4,
+    "spinRadius": 0.9,
+    "spinPush": 0.35,
+    "diveRadius": 1.2,
+    "diveStun": 0.6,
+    "pierceLen": 2.5,
+    "pierceCount": 3
+   }
+  },
+  "buffer": {
+   "aura": {
+    "tiles": 2.2,
+    "interval": -12,
+    "dmg": 10
+   },
+   "cheer": {
+    "first": 4,
+    "every": 9,
+    "dur": 3.5,
+    "interval": -25,
+    "dmg": 20,
+    "adultBonus": 20,
+    "spiritBonus": 50
+   }
+  }
  }
 }

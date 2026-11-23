@@ -25,11 +25,11 @@ const TINT = { gold: 0xffd84d, purple: 0xb388ff, green: 0x7CFC9A, red: 0xff5252,
 const PROJECTILE = {
   crow: ['fx-stone', 0xffffff, 0.9], eagle: ['fx-feather', 0xffffff, 1.1], fox: ['fx-orb', 0x7fffd4, 0.9], rooster: ['fx-note', 0xffe066, 1.1],
   grasshopper: ['fx-note', 0x9cff6b, 1.1], frog: ['fx-bubble', 0x9fe4ff, 1.1], cheese_thief: ['fx-stone', 0xffe9a8, 1], thunderbird: ['fx-bolt', 0xfff6a0, 0.6],
-  phoenix: ['fx-orb', 0xff9800, 1.2], bullfrog: ['fx-bubble', 0x9fe4ff, 1.4],
+  phoenix: ['fx-orb', 0xff9800, 1.2], monkey: ['fx-orb', 0xffb347, 0.9], bullfrog: ['fx-bubble', 0x9fe4ff, 1.4],
 };
 /** How each kind of animal lands its blows. */
 export const STRIKE = {
-  bear: 'paw', bear_tiger: 'paw', bison: 'horn', bighorn: 'horn', tiger: 'claw', rabbit: 'kick', jackalope: 'kick', wolf: 'bite', wolf_in_sheep: 'bite',
+  ant: 'bite', dog: 'bite', bear: 'paw', bear_tiger: 'paw', bison: 'horn', bighorn: 'horn', tiger: 'claw', rabbit: 'kick', jackalope: 'kick', wolf: 'bite', wolf_in_sheep: 'bite',
   crow: 'drop', cheese_thief: 'drop', eagle: 'dive', thunderbird: 'dive', phoenix: 'dive', fox: 'foxfire', frog: 'bubble', bullfrog: 'bubble', rooster: 'song', grasshopper: 'song',
 };
 

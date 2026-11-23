@@ -26,8 +26,8 @@ assert.strictEqual(pairKey('crow', 'fox'), 'crow+fox');
 
 // Test buildData structure and validation
 assert.ok(Array.isArray(gameData.units));
-assert.strictEqual(gameData.units.length, 12);
-assert.ok(Object.keys(gameData.unitById).length === 12);
+assert.strictEqual(gameData.units.length, 15);
+assert.ok(Object.keys(gameData.unitById).length === 15);
 assert.ok(Array.isArray(gameData.recipes));
 assert.strictEqual(gameData.recipes.length, 7);
 assert.ok(Object.keys(gameData.recipeById).length === 7);

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { button, title, style, panel, unitToken } from './ui.js';
 import { buildData, pairKey } from '../logic/data.js';
-import { levelInfo } from '../logic/meta.js';
+import { levelInfo, favorState, buyFavor, writeSave } from '../logic/meta.js';
 
 const TABS = [['units', '동물'], ['spirits', '신화급'], ['chimeras', '키메라'], ['flops', '흑역사'], ['bonds', '인연'], ['enemies', '적']];
 const CONT = { eurasia: '유라시아', america: '아메리카', africa: '아프리카' };
@@ -19,6 +19,7 @@ export default class CodexScene extends Phaser.Scene {
     TABS.forEach(([id, label], i) => button(this, 640 - (TABS.length - 1) * 80 + i * 160, 100, 145, 40, label, () => this.scene.restart({ tab: id }), { fill: id === this.tab ? 0xb8742a : 0x2f4f6f }));
     panel(this, 40, 130, 1200, 520);
     this[this.tab]();
+    if (d?.open && this.data2.unitById[d.open]) this.showDetail(this.data2.unitById[d.open]);
     button(this, 120, 685, 160, 44, '← 타이틀', () => this.scene.start('Title'));
   }
 
@@ -32,13 +33,63 @@ export default class CodexScene extends Phaser.Scene {
       const tok = unitToken(this, { kind: 'base', speciesId: u.id, stage: lv.level >= 10 ? 'spirit' : 'adult', stats: { color: u.color } }, D);
       tok.setPosition(c.x + 40, c.y + 45).setAlpha(seen ? 1 : 0.5);
       if (!seen) tok.list.forEach((o) => o.setTint?.(0x000000));
-      this.add.text(c.x + 80, c.y + 8, seen ? `${u.name}  Lv.${lv.level}` : '???', style(17, lv.level >= 10 ? '#ffd84d' : '#ffffff'));
+      this.add.text(c.x + 80, c.y + 8, seen ? `${u.name}  Lv.${lv.level}${S.favor?.[u.id] ? '  ' + '♥'.repeat(S.favor[u.id]) : ''}` : '???', style(17, lv.level >= 10 ? '#ffd84d' : '#ffffff'));
+      if (seen) { const z = this.add.zone(c.x + c.w / 2, c.y + c.h / 2, c.w, c.h).setInteractive({ useHandCursor: true }); z.on('pointerdown', () => this.showDetail(u)); this.add.text(c.x + c.w - 8, c.y + c.h - 18, '자세히 ▸', style(11, '#d4b06a')).setOrigin(1, 0); }
       this.add.text(c.x + 80, c.y + 32, `${CONT[u.continent]} · 영물 ${seen ? u.stageNames.spirit : '???'}`, style(12, '#aabbcc'));
       if (seen) {
         this.add.text(c.x + 80, c.y + 52, `"${u.codex}"`, style(12, '#dddddd', { wordWrap: { width: 200 } }));
         if (u.nickname && u.nickname !== '없음') this.add.text(c.x + 10, c.y + 100, `별명: ${u.nickname}`, style(11, '#8899aa'));
       }
     });
+  }
+
+  /** 동물 한 마리의 도감 쪽: 사는 곳·먹이·천적, 먹이사슬 인연, 신화급 모습, 에센스로 정 붙이기. */
+  showDetail(u) {
+    this.detail?.forEach((o) => o.destroy());
+    const D = this.data2, S = this.save, T = D.tales ?? {}, objs = [];
+    const add = (o) => { objs.push(o.setDepth?.(3002) ?? o); return o; };
+    objs.push(this.add.rectangle(640, 360, 1280, 720, 0x05080c, 0.72).setInteractive().setDepth(3000));
+    objs.push(panel(this, 190, 70, 900, 580, { depth: 3001, alpha: 0.98 }));
+    const tok = unitToken(this, { kind: 'base', speciesId: u.id, stage: 'adult', stats: { color: u.color } }, D); tok.setPosition(270, 150).setScale(1.5); add(tok);
+    const sp = unitToken(this, { kind: 'base', speciesId: u.id, stage: 'spirit', stats: { color: u.color } }, D); sp.setPosition(1000, 150).setScale(1.3); add(sp);
+    const gotSp = (S.codex.spirits ?? []).includes(u.id);
+    if (!gotSp) sp.list.forEach((o) => o.setTint?.(0x000000));
+    add(this.add.text(350, 100, u.name, style(30, '#ffe6b0', { stroke: '#2a1a08', strokeThickness: 5 })));
+    add(this.add.text(350, 142, `${CONT[u.continent]} · ${{ bruiser: '브루저', dealer: '딜러', technician: '테크니션', buffer: '버퍼' }[u.role]} · ${D.config.elements.defs[u.element]?.icon ?? ''} ${D.config.elements.defs[u.element]?.name ?? ''} 속성`, style(14, '#d4b06a')));
+    add(this.add.text(350, 166, `"${u.codex}"`, style(13, '#cfd8dc', { wordWrap: { width: 520 } })));
+    add(this.add.text(1000, 210, gotSp ? `🌟 ${u.stageNames.spirit}` : '🌟 ???', style(15, '#ffd84d')).setOrigin(0.5));
+    add(this.add.text(1000, 232, T.myth?.[u.id] ? `${T.myth[u.id].flag} ${T.myth[u.id].source}` : '', style(12, '#cfd8dc')).setOrigin(0.5));
+    let y = 228;
+    const row = (icon, label, text, col = '#efe3c8') => { add(this.add.text(230, y, `${icon} ${label}`, style(14, '#9fd8ff'))); const o = add(this.add.text(340, y, text, style(14, col, { wordWrap: { width: 540 } }))); y += Math.max(24, o.height + 6); };
+    row('🏡', '사는 곳', u.eco.home); row('🍽', '먹이', u.eco.diet); row('⚠', '천적', u.eco.foes); row('💡', '한마디', u.eco.fact);
+    y += 6; add(this.add.text(230, y, '🔗 먹이사슬과 인연', style(15, '#ffe6b0'))); y += 26;
+    const rel = D.lore.bonds.filter((b) => b.pair.includes(u.id));
+    if (!rel.length) { add(this.add.text(240, y, '아직 알려진 인연이 없어요.', style(13, '#8fa1b3'))); y += 22; }
+    for (const b of rel.slice(0, 5)) {
+      const other = D.unitById[b.pair.find((p) => p !== u.id)]?.name ?? '';
+      const clash = b.kind === 'clash';
+      add(this.add.text(240, y, `${clash ? '⚡' : '♥'} ${b.name} — ${other}와(과)  ·  ${T.bonds?.[b.id] ?? b.desc}`, style(13, clash ? '#ffb27a' : '#ff9fbf', { wordWrap: { width: 800 } }))); y += 20;
+      if (b.flip && (b.flip.by ?? b.pair).includes(u.id)) { add(this.add.text(262, y, `✨ 신화급이 되면 → ${b.flip.name}: ${T.flips?.[b.id] ?? ''}`, style(12, '#ffd84d', { wordWrap: { width: 780 } }))); y += 20; }
+    }
+    y += 6; add(this.add.text(230, y, '🧬 타고나는 특성 (둘을 갖고 태어나요)', style(15, '#ffe6b0'))); y += 24;
+    const tr = D.traits[u.id];
+    if (tr) {
+      add(this.add.text(240, y, '강점  ' + tr.str.map((d) => d.name).join(' · '), style(13, '#7CFC9A'))); y += 20;
+      add(this.add.text(240, y, '약점  ' + tr.weak.map((d) => `${d.name} ➜ ${d.flip.name}`).join(' · '), style(12, '#ffb27a', { wordWrap: { width: 820 } }))); y += 38;
+    }
+    const f = D.config.favor, st = favorState(S, D, u.id);
+    const lv = st.level ?? 0;
+    add(this.add.text(230, 596, `💗 정 붙이기 ${'♥'.repeat(lv)}${'♡'.repeat(f.max - lv)}  — ${u.name} 소환 확률 무게 +${lv * f.perLevel}%`, style(14, '#ff9fbf')));
+    const close = () => { objs.forEach((o) => o.destroy()); fb.destroy(); cb.destroy(); this.detail = null; };
+    const fb = button(this, 880, 606, 230, 40, st.reason === 'max' ? '가득 찼어요' : `정 붙이기 · 에센스 ${st.cost ?? f.costs[lv]}`, () => {
+      const r = buyFavor(S, D, u.id);
+      if (!r.ok) return;
+      writeSave(this.registry.get('storage'), S); close(); this.scene.restart({ tab: 'units', open: u.id });
+    }, { depth: 3003, size: 14, fill: 0x5a2a4a, stroke: 0xff9fbf });
+    fb.setEnabled(st.ok);
+    add(this.add.text(650, 628, `가진 에센스 ${S.essence}`, style(12, '#ffd84d')));
+    const cb = button(this, 1050, 100, 44, 44, '✕', close, { depth: 3003, size: 18 });
+    this.detail = [...objs, { destroy: () => { fb.destroy(); cb.destroy(); } }];
   }
 
   /** 신화급(영물) 도감: 만든 적 있으면 이름·고향·기술·설화, 아니면 실루엣과 '성체 둘을 합치면' 힌트. */
@@ -101,11 +152,11 @@ export default class CodexScene extends Phaser.Scene {
   bonds() {
     const D = this.data2, S = this.save;
     D.lore.bonds.forEach((b, i) => {
-      const c = this.cell(i, 3, 385, 70), seen = S.codex.bonds.includes(b.id);
+      const c = this.cell(i, 3, 385, 62), seen = S.codex.bonds.includes(b.id);
       const names = b.pair.map((p) => D.unitById[p]?.name ?? p).join(' + ');
-      this.add.text(c.x + 10, c.y + 6, `${b.kind === 'clash' ? '⚡' : '♥'} ${seen ? b.name : '???'}`, style(17, b.kind === 'clash' ? '#f0883e' : '#ff8fb1'));
-      this.add.text(c.x + 10, c.y + 30, `${names} · ${b.sameTeam ? '함께 출전' : b.tiles + '타일 안'}`, style(12, '#aabbcc'));
-      this.add.text(c.x + 10, c.y + 48, seen ? b.desc : `출처: ${b.source}`, style(12, '#dddddd'));
+      this.add.text(c.x + 10, c.y + 4, `${b.kind === 'clash' ? '⚡' : '♥'} ${seen ? b.name : '???'}${seen && b.flip ? '  ✨' + b.flip.name : ''}`, style(15, b.kind === 'clash' ? '#f0883e' : '#ff8fb1'));
+      this.add.text(c.x + 10, c.y + 26, `${names} · ${b.sameTeam ? '함께 출전' : b.tiles + '타일 안'}`, style(12, '#aabbcc'));
+      this.add.text(c.x + 10, c.y + 42, seen ? b.desc : `출처: ${b.source}`, style(11, '#dddddd'));
     });
   }
 

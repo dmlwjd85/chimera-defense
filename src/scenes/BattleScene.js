@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { attachInput } from './BattleInput.js';
 import { buildData } from '../logic/data.js';
-import { createBattle, step, summon, skipPrep, deploy, moveUnit, recall, sell, merge, buyBait, toggleLock, summonPrice, addCarry, chooseRelic } from '../logic/battle.js';
+import { createBattle, step, summon, skipPrep, deploy, moveUnit, recall, sell, merge, buyBait, toggleLock, summonPrice, addCarry, chooseRelic, makeUnit } from '../logic/battle.js';
 import { ownedRelics } from '../logic/relics.js';
 import { battleOptions, settleRun, writeSave, carryCandidates, setCarry } from '../logic/meta.js';
 import { traitView } from '../logic/traits.js';
@@ -70,6 +70,7 @@ export default class BattleScene extends Phaser.Scene {
 
     window.__battle = { scene: this, get state() { return this.scene.state; }, data: this.data2,
       actions: { summon, deploy, moveUnit, recall, sell, merge, skipPrep, buyBait, toggleLock },
+      put: (sp, stage, pos, row) => { const st = this.state; const i = st.bench.indexOf(null); if (i < 0) return null; st.bench[i] = makeUnit(st, this.data2, { kind: 'base', speciesId: sp, stage, parts: null, traits: [] }); return deploy(st, this.data2, i, pos, { row }); },
       spawn: (id, pos = 9) => { const st = this.state; const e = makeEnemy(id, st.wave, st.stage, this.data2, st.nextEid++); e.pos = pos; st.enemies.push(e); return e; } };
     attachInput(this);
     if (this.carried) this.time.delayedCall(400, () => { this.toast(`지난 스테이지에서 데려온 동물: ${this.carried.white ? '흰 ' : ''}${this.carried.stats.name}`, '#9cff6b'); this.fx.burst('rise', benchSlotX(0), BENCH_Y, 14, 0x9cff6b); });
@@ -139,7 +140,7 @@ export default class BattleScene extends Phaser.Scene {
     this.chipObjs.forEach((c) => c.destroy()); this.chipObjs = [];
     let x = 18;
     for (const c of syn) { const o = chip(this, x, 76, `${CONT_ICON[c]} ${CONT_NAME[c]}`, SYN_TEXT[c], { stroke: 0x7fd1ff, size: 12 }); this.chipObjs.push(o); x += o.w + 6; }
-    for (const b of bonds) { const clash = b.bond.kind === 'clash'; const o = chip(this, x, 76, `${clash ? '⚡' : '♥'} ${b.bond.name}`, `${b.bond.name} · ${clash ? '상극' : '인연'}\n${this.data2.tales?.bonds?.[b.bond.id] ?? ''}\n· ${b.bond.desc}`, { stroke: clash ? 0xf0883e : 0xff9fbf, size: 12 }); this.chipObjs.push(o); x += o.w + 6; if (x > 900) break; }
+    for (const b of bonds) { const clash = b.bond.kind === 'clash', flip = b.bond.kind === 'flip'; const o = chip(this, x, 76, `${flip ? '✨' : clash ? '⚡' : '♥'} ${b.bond.name}`, `${b.bond.name} · ${flip ? '뒤집힌 악연' : clash ? '악연' : '인연'}\n${(flip ? this.data2.tales?.flips : this.data2.tales?.bonds)?.[b.bond.id] ?? ''}\n· ${b.bond.desc}`, { stroke: flip ? 0xffd84d : clash ? 0xf0883e : 0xff9fbf, size: 12 }); this.chipObjs.push(o); x += o.w + 6; if (x > 900) break; }
   }
 
   /** Owned relics as icon chips at the top right. */
@@ -587,6 +588,7 @@ export default class BattleScene extends Phaser.Scene {
     this.drawBonds();
     this.persistentFx();
     this.syncPatches();
+    this.tickKicks();
     this.drainEvents();
     this.updateHud();
     this.updateTutorial();
@@ -620,7 +622,9 @@ export default class BattleScene extends Phaser.Scene {
     const icon = this.add.text(22, top + 8, '', style(15)).setOrigin(0.5);
     const foot = this.add.circle(0, 34, 4, 0x7CFC9A).setVisible(false);
     const foot2 = this.add.ellipse(0, 34, 58, 14, 0x000000, 0.3);
-    c.add([foot2, glow, foot, tok, name, barBg, bar, downText, icon].filter(Boolean));
+    const leaf = unit.speciesId === 'grasshopper' ? this.add.graphics() : null;
+    if (leaf) { leaf.fillStyle(0x2e7d32, 1).fillEllipse(0, 36, 84, 18); leaf.fillStyle(0x66bb6a, 1).fillEllipse(-2, 33, 78, 13); leaf.lineStyle(2, 0x2e7d32, 1).lineBetween(-36, 34, 36, 34); leaf.lineStyle(3, 0x2e7d32, 1).lineBetween(38, 35, 52, 44); }
+    c.add([foot2, leaf, glow, foot, tok, name, barBg, bar, downText, icon].filter(Boolean));
     c.unitUid = unit.uid;
     c.setSize(64, 80).setInteractive({ draggable: true, useHandCursor: true });
     const shadow = unit.stats.flyer ? this.add.ellipse(0, 0, 54, 14, 0x000000, 0.3).setDepth(45).setVisible(false) : null;
@@ -888,6 +892,59 @@ export default class BattleScene extends Phaser.Scene {
     this.tweens.add({ targets: this.comboText, alpha: 0, delay: 900, duration: 300 });
   }
 
+  /** 신화급 탄생: 컷인과 함께 약점이 하나씩 강점으로 뒤집히는 걸 보여 준다. */
+  spiritDrama(uid) {
+    const u = [...this.state.field, ...this.state.bench].find((x) => x && x.uid === uid);
+    if (!u) return;
+    this.lastCutIn = -9999;
+    this.fx.cutIn(`${u.stats.name} 강림`, 0xffd84d, '약점이 모두 강점으로 뒤집혔다!');
+    this.hitStop = 0.25;
+    const flips = (u.traits ?? []).filter((t) => t.kind === 'weak' && t.flipped).map((t) => this.data2.traits?.[t.sp]?.weak.find((d) => d.id === t.id)).filter(Boolean);
+    flips.forEach((d, i) => this.time.delayedCall(700 + i * 650, () => {
+      const v = this.unitViews.get(uid); if (!v) return;
+      const x = v.container.x, y = v.container.y;
+      const t = this.add.text(x, y - 70, d.name, style(18, '#ffb27a', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(1760);
+      this.tweens.add({ targets: t, scaleX: 0, duration: 180, delay: 250, onComplete: () => { t.setText('✨ ' + d.flip.name).setColor('#7fd1ff'); this.tweens.add({ targets: t, scaleX: 1.25, scaleY: 1.25, duration: 200, ease: 'Back.out' }); this.fx.ring(x, y, 0xffd84d, 1.4, 420); this.fx.burst('star', x, y - 30, 10, 0x7fd1ff); sfx('reveal'); } });
+      this.tweens.add({ targets: t, y: y - 120, alpha: 0, delay: 1300, duration: 400, onComplete: () => t.destroy() });
+    }));
+  }
+
+  /** 먹이사슬·악연 킥: 가끔 벌벌 떨거나 말다툼을 한다. 신화급이 악연을 뒤집으면 크게 알린다. */
+  tickKicks() {
+    if (this.modalOpen || this.paused) return;
+    const now = this.time.now, bonds = this.state.view?.bonds ?? [];
+    this.kickAt ??= new Map(); this.flipSeen ??= new Set();
+    const pos = (u) => { const v = this.unitViews.get(u.uid); return v ? [v.container.x, v.container.y, v] : null; };
+    for (const { bond: b, units } of bonds) {
+      const [pa, pb] = b.pair; const A = pos(units[pa]), P = pos(units[b.prey ?? pb]);
+      if (!A || !P) continue;
+      if (b.kind === 'flip' && !this.flipSeen.has(b.id)) {
+        this.flipSeen.add(b.id);
+        const base = this.data2.lore.bonds.find((x) => x.id === b.id);
+        this.fx.banner(`✨ 악연이 뒤집혔다 · ${base.name} ➜ ${b.name}`, '#ffd84d', this.data2.tales?.flips?.[b.id] ?? b.desc);
+        this.fx.hearts(A[0], A[1], P[0], P[1]); this.fx.line(A[0], A[1] - 20, P[0], P[1] - 20, 0xffd84d, 5, 500); this.cameras.main.flash(200, 255, 240, 180); sfx('bond');
+        this.kickAt.set(b.id, now + 6000);
+        continue;
+      }
+      if (!b.kick && b.kind !== 'flip') continue;
+      if (!this.kickAt.has(b.id)) { this.kickAt.set(b.id, now + 2500 + Math.random() * 2000); continue; }
+      if (now < this.kickAt.get(b.id)) continue;
+      this.kickAt.set(b.id, now + 7000 + Math.random() * 5000);
+      const say = (at, list, col, delay = 0) => this.time.delayedCall(delay, () => this.fx.shout(at[0], at[1] - 86, list[Math.floor(Math.random() * list.length)], col, { size: 17, hold: 600 }));
+      if (b.kind === 'flip') { this.fx.burst('heart', (A[0] + P[0]) / 2, Math.min(A[1], P[1]) - 40, 3); continue; }
+      const bk = b.barks ?? { pred: ['…'], prey: ['…'] };
+      if (b.kick === 'fear') {
+        if (Math.random() < 0.5) say(A, bk.pred, 0xffe0b2);
+        P[2].shakeT = 0.9; say(P, bk.prey, 0xcfe8ff, 350);
+        this.time.delayedCall(350, () => this.floatText(P[0] + 22, P[1] - 46, '💦', '#ffffff', 16));
+      } else if (b.kick === 'bicker') {
+        say(A, bk.pred, 0xffcdd2); say(P, bk.prey, 0xffe0b2, 450);
+        A[2].shakeT = 0.4; this.time.delayedCall(450, () => { P[2].shakeT = 0.4; });
+        this.time.delayedCall(700, () => this.floatText((A[0] + P[0]) / 2, Math.min(A[1], P[1]) - 60, '💢', '#ff5252', 22));
+      } else { say(A, bk.pred, 0xfff1a8); say(P, bk.prey, 0xd8f5c8, 400); }
+    }
+  }
+
   /** Bench entrance: the animal bursts out of its slot as a silhouette, lands, then its colours pop in. */
   startEntrance(uid) {
     const v = this.unitViews.get(uid);
@@ -1079,7 +1136,7 @@ export default class BattleScene extends Phaser.Scene {
           if (ev.kind === 'weak') { this.toast('합성 실패… 적들이 멈춰서 구경한다', '#cccccc'); this.fx.weak(mx, my); sfx('weak'); }
           if (ev.kind === 'chimera') { this.cameras.main.flash(250, 180, 120, 255); sfx('chimera'); this.fx.chimera(mx, my); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '키메라'} 탄생!`, '#d7bde2', '키메라 합성 성공'); }
           if (ev.kind === 'evolve') { this.fx.evolve(mx, my, false); sfx('evolve'); }
-          if (ev.kind === 'spirit') { sfx('spirit'); this.fx.evolve(mx, my, true); this.cameras.main.flash(300, 255, 230, 140); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '영물'}`, '#ffd84d', '영물 각성'); }
+          if (ev.kind === 'spirit') { this.spiritDrama(ev.uid); sfx('spirit'); this.fx.evolve(mx, my, true); this.cameras.main.flash(300, 255, 230, 140);  }
           if (this.tutorialStep === 2 && (ev.kind === 'evolve' || ev.kind === 'spirit')) this.tutorialStep = 3;
           if (this.tutorialStep === 3 && (ev.kind === 'chimera' || ev.kind === 'weak')) this.endTutorial();
           break;
@@ -1145,7 +1202,7 @@ export default class BattleScene extends Phaser.Scene {
 }
 
 const time = () => performance.now();
-const SHOT_SFX = { crow: 'shoot', eagle: 'slash', fox: 'magic', rooster: 'note', grasshopper: 'note', frog: 'magic', cheese_thief: 'magic', thunderbird: 'bolt', phoenix: 'fire', bullfrog: 'magic' };
+const SHOT_SFX = { monkey: 'shoot', crow: 'shoot', eagle: 'slash', fox: 'magic', rooster: 'note', grasshopper: 'note', frog: 'magic', cheese_thief: 'magic', thunderbird: 'bolt', phoenix: 'fire', bullfrog: 'magic' };
 const PATCH_TIP = { scorch: '밟은 적이 불에 덴다', puddle: '적이 느려지고 번개에 더 아파한다', cloud: '나는 적이 느려지고 우리 편은 잘 피한다', rock: '적이 느려지고 우리 편은 덜 다친다', sand: '적의 공격이 굼떠진다', storm: '번개가 적을 때린다', frost: '적이 크게 느려진다', thicket: '우리 편이 잘 피하고 기운을 차린다', sunbeam: '우리 편 손발이 빨라진다' };
 const PATCH_COL = { scorch: 0xff6a2a, puddle: 0x4fc3ff, cloud: 0xdfe9f2, rock: 0x9a8a78, sand: 0xe2c078, storm: 0x6b6fa8, frost: 0xbfeaff, thicket: 0x5fbf5a, sunbeam: 0xfff1a8 };
 const ELEM_TALE = {

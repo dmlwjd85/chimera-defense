@@ -17,7 +17,7 @@ const json = (scene, key) => scene.cache.json.get(key);
 /** Rig instance + view for a unit, inside `parent` container; null when there is no rig (weak chimera). */
 export function unitRig(scene, unit, parent, scale = 0.17) {
   if (unit.kind === 'weak') return null;
-  const rig = json(scene, 'rigR-' + unit.speciesId);
+  const rig = (unit.stage === 'spirit' && json(scene, 'rigR-' + unit.speciesId + '_spirit')) || json(scene, 'rigR-' + unit.speciesId);
   if (!rig) return null;
   const template = json(scene, 'rigT-' + rig.template), anims = json(scene, 'rigA-' + (rig.anims ?? rig.template));
   if (!template || !anims) return null;

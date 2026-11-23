@@ -161,11 +161,11 @@ def frog(c='#5fae4a', belly='#e6f2b0', extra='', horns=False):
     b += extra
     return svg(b, d)
 
-def grasshopper():
-    c = '#7ccf4f'; d = grad('gb', c)
+def grasshopper(c='#7ccf4f', wing=True, guitar=True):
+    d = grad('gb', c)
     b = shadow(256, 470, 140, 20)
     b += f'<path d="M150 330 L120 240 L150 450" fill="none" stroke="{INK}" stroke-width="30" stroke-linejoin="round" stroke-linecap="round"/><path d="M150 330 L120 240 L150 450" fill="none" stroke="{shade(c,0.8)}" stroke-width="16" stroke-linejoin="round" stroke-linecap="round"/>'
-    b += f'<path d="M140 280 C 120 200 230 190 300 250 Z" fill="#cfe9a8" opacity="0.85" {S()}/>'
+    if wing: b += f'<path d="M140 280 C 120 200 230 190 300 250 Z" fill="#cfe9a8" opacity="0.85" {S()}/>'
     b += f'<ellipse cx="220" cy="340" rx="110" ry="72" fill="url(#gb)" {S()}/>'
     for x in (215, 265):
         b += f'<path d="M{x} 390 L{x-10} 455" stroke="{INK}" stroke-width="18" stroke-linecap="round"/><path d="M{x} 390 L{x-10} 455" stroke="{shade(c,0.85)}" stroke-width="8" stroke-linecap="round"/>'
@@ -176,8 +176,8 @@ def grasshopper():
     b += f'<path d="M{hx+40} {hy+45} C {hx+55} {hy+60} {hx+70} {hy+55} {hx+78} {hy+45}" fill="none" stroke="{INK}" stroke-width="6" stroke-linecap="round"/>'
     b += blush(hx + 40, hy + 30)
     # tiny guitar
-    b += f'<g transform="rotate(-30 360 360)"><ellipse cx="350" cy="370" rx="45" ry="38" fill="#c8833f" {S()}/><circle cx="350" cy="370" r="12" fill="{INK}"/><rect x="390" y="362" width="80" height="16" fill="#8b5a2b" {S()}/></g>'
-    b += f'<text x="440" y="200" font-size="56" fill="{INK}" font-family="sans-serif">♪</text>'
+    if guitar: b += f'<g transform="rotate(-30 360 360)"><ellipse cx="350" cy="370" rx="45" ry="38" fill="#c8833f" {S()}/><circle cx="350" cy="370" r="12" fill="{INK}"/><rect x="390" y="362" width="80" height="16" fill="#8b5a2b" {S()}/></g>'
+    if guitar: b += f'<text x="440" y="200" font-size="56" fill="{INK}" font-family="sans-serif">♪</text>'
     return svg(b, d)
 
 # ---------------- enemies ----------------
@@ -326,6 +326,22 @@ for k, v in FUR.items(): ART[k] = quad(v)
 for k, v in BIRD.items(): ART[k] = bird(v)
 ART['frog'] = frog()
 ART['grasshopper'] = grasshopper()
+FUR['dog'] = dict(c='#e0a868', dark='#b8834a', belly='#fff6e6', ears='point', snout='round', tail='fluffy', tailTip='#fff6e6', snoutCol='#fff6e6', earIn='#f2c9a0')
+FUR['monkey'] = dict(c='#a8744a', dark='#7d5433', belly='#f2d3b0', ears='round', snout='round', tail='thin', snoutCol='#f2d3b0', earIn='#f2d3b0', bodyW=110, bodyH=82)
+ART['dog'] = quad(FUR['dog']); ART['monkey'] = quad(FUR['monkey'])
+ART['ant'] = grasshopper('#8a4b32', wing=False, guitar=False)
+# 신화급 모습 (도감·망원경용)
+SP_FUR = {'fox': dict(c='#fbf6ee', tailTip='#ff8fb1', eyeCol='#c2185b'), 'tiger': dict(c='#f6f3ea', snoutCol='#ffffff', eyeCol='#2e86de'), 'bear': dict(c='#a9785a', snoutCol='#f2dcb8'),
+          'rabbit': dict(c='#cdeee0', dark='#9fd6c0', belly='#f4fffa', eyeCol='#00897b'), 'bison': dict(c='#4a86c0', dark='#2e5c8a', hump='#2e5c8a', snoutCol='#1d3c5c'),
+          'wolf': dict(c='#3c4452', dark='#1f232c', tailTip='#9fb3c8', eyeCol='#ff5252', angry=True), 'bighorn': dict(c='#f2c94c', dark='#c99a1e', snoutCol='#fff6d6'),
+          'dog': dict(c='#e2522b', dark='#a8321a', tailTip='#ffd54f', eyeCol='#ffd54f', snoutCol='#ffe0b2'), 'monkey': dict(c='#d4a017', dark='#a67c00', snoutCol='#ffe8c2', earIn='#ffe8c2')}
+SP_BIRD = {'rooster': dict(c='#ffd54f', headCol='#ffd54f', belly='#fff3b0', tailCol='#ff9800'), 'crow': dict(c='#1c1c28', headCol='#1c1c28', belly='#c62828', beak='#ffd54f', tailCol='#3a1a1a'),
+           'eagle': dict(c='#c9a227', headCol='#fffbe6', belly='#e6c65a', tailCol='#fffbe6')}
+for k, v in SP_FUR.items(): ART[k + '-spirit'] = quad({**FUR[k], **v})
+for k, v in SP_BIRD.items(): ART[k + '-spirit'] = bird({**BIRD[k], **v})
+ART['frog-spirit'] = frog(c='#e6b422', belly='#fff3b0')
+ART['grasshopper-spirit'] = grasshopper('#b9a36a')
+ART['ant-spirit'] = grasshopper('#b87333', wing=False, guitar=False)
 
 # chimeras
 cheese = '<path d="M380 250 L450 230 L440 290 Z" fill="#ffd54f" stroke="#2b1d16" stroke-width="6"/><circle cx="420" cy="255" r="7" fill="#e6b800"/>'
@@ -362,6 +378,6 @@ for k, s in ART.items():
     manifest[fname] = f'assets/units/{fname}.png'
 
 mp = os.path.join(os.path.dirname(__file__), '..', 'public', 'assets', 'manifest.json')
-m = json.load(open(mp)); m['images'] = manifest
+m = json.load(open(mp)); m['images'] = {**{k: v for k, v in m['images'].items() if not (k.startswith('unit-') or k.startswith('enemy-'))}, **manifest}
 json.dump(m, open(mp, 'w'), ensure_ascii=False, indent=2)
 print(len(manifest), 'images')

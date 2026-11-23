@@ -1,0 +1,110 @@
+{
+ "species": "monkey",
+ "skin": "monkey",
+ "template": "quadruped",
+ "anims": "quadruped",
+ "artRes": 2,
+ "palette": {
+  "fur": "#a8744a",
+  "furDark": "#785335",
+  "belly": "#f2d3b0",
+  "ink": "#2b1d16",
+  "accent": "#ffd36b"
+ },
+ "slotOverrides": {
+  "ear_n": {
+   "x": 10,
+   "ph": {
+    "shape": "ellipse",
+    "w": 60,
+    "h": 60
+   }
+  },
+  "ear_r": {
+   "x": 10,
+   "ph": {
+    "shape": "ellipse",
+    "w": 56,
+    "h": 56
+   }
+  },
+  "body": {
+   "ph": {
+    "shape": "ellipse",
+    "w": 260,
+    "h": 150
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "label": "어린",
+   "scale": 0.62,
+   "speed": 1.15,
+   "amp": 1.2,
+   "boneScale": {
+    "head": 1.6,
+    "eye": 1.25,
+    "ear_n": 1.1,
+    "ear_r": 1.1,
+    "tail_1": 0.85,
+    "leg_fr_up": 0.82,
+    "leg_fr_lo": 0.82,
+    "leg_fn_up": 0.82,
+    "leg_fn_lo": 0.82,
+    "leg_br_up": 0.82,
+    "leg_br_lo": 0.82,
+    "leg_bn_up": 0.82,
+    "leg_bn_lo": 0.82
+   },
+   "parts": {
+    "nose": null
+   }
+  },
+  "teen": {
+   "label": "성장기",
+   "scale": 0.82,
+   "speed": 1.05,
+   "amp": 1.08,
+   "boneScale": {
+    "head": 1.45,
+    "eye": 1.14,
+    "tail_1": 0.95
+   },
+   "parts": {
+    "nose": null
+   }
+  },
+  "adult": {
+   "label": "성체",
+   "scale": 1.0,
+   "speed": 1.0,
+   "amp": 1.0,
+   "boneScale": {
+    "head": 1.32,
+    "eye": 1.08
+   },
+   "parts": {
+    "nose": null
+   }
+  },
+  "spirit": {
+   "label": "영물",
+   "scale": 1.12,
+   "speed": 1.0,
+   "amp": 1.0,
+   "boneScale": {
+    "head": 1.34,
+    "eye": 1.08
+   },
+   "parts": {
+    "nose": null
+   }
+  }
+ },
+ "skins": {
+  "default": {
+   "parts": {}
+  }
+ }
+}

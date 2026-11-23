@@ -19,6 +19,9 @@ export const SOUND = {
   jackalope: { hit: ['뿔콩!', '탁탁!'], skill: ['깡총깡총!!', '뿅!'], hurt: ['히잉!'] },
   thunderbird: { hit: ['파직!', '콰르릉!'], skill: ['콰콰쾅!!', '번쩍!!'], hurt: ['찌직?!'] },
   phoenix: { hit: ['화르륵!', '휘릭!'], skill: ['화아아악!!', '활활!!'], hurt: ['피융…'] },
+  ant: { hit: ['영차!', '앙!'], skill: ['영차영차!!', '우르르르!'], hurt: ['뽁!', '데굴'] },
+  dog: { hit: ['왕!', '덥석!', '컹!'], skill: ['월월월!!', '크르르릉!'], hurt: ['깨갱!', '낑낑'] },
+  monkey: { hit: ['휙!', '끼끼!', '탁!'], skill: ['우끼끼끼!!', '이얍!'], hurt: ['끽?!', '우끼…'] },
   _: { hit: ['퍽!', '팍!'], skill: ['얍!!', '으랏차!'], hurt: ['윽!', '앗!'] },
 };
 export const ELEM_SOUND = { fire: '화르륵!', water: '철퍽!', wind: '휘잉!', earth: '쿠궁!', thunder: '파지직!', moon: '스르르…', grass: '스르륵!', light: '번쩍!' };

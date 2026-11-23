@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>키메라 디펜스 · 리그 랩</title>
+  <style>
+    body { margin: 0; background: #15181d; color: #e8e8e8; font: 14px/1.4 system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+    #wrap { display: flex; flex-wrap: wrap; gap: 12px; padding: 12px; }
+    #game { flex: 1 1 760px; min-width: 320px; max-width: 1100px; aspect-ratio: 16/9; }
+    #panel { flex: 0 1 320px; display: flex; flex-direction: column; gap: 10px; }
+    fieldset { border: 1px solid #333a44; border-radius: 8px; padding: 8px 10px; margin: 0; }
+    legend { color: #ffb35c; padding: 0 4px; }
+    button { background: #262c35; color: #eee; border: 1px solid #3c4552; border-radius: 6px; padding: 5px 9px; margin: 2px; cursor: pointer; font: inherit; }
+    button.on { background: #ff8a3d; color: #111; border-color: #ff8a3d; }
+    label { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
+    input[type=range] { flex: 1; }
+    select, textarea { width: 100%; background: #0f1216; color: #ddd; border: 1px solid #333a44; border-radius: 6px; font: 12px ui-monospace, monospace; }
+    textarea { height: 140px; }
+    #log { font: 12px ui-monospace, monospace; color: #9fb3c8; height: 72px; overflow: auto; white-space: pre; }
+    .val { width: 44px; text-align: right; color: #9fb3c8; font: 12px ui-monospace, monospace; }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <div id="game"></div>
+    <div id="panel">
+      <fieldset><legend>모션</legend><div id="motions"></div></fieldset>
+      <fieldset><legend>장면</legend>
+        <button data-mode="stages" class="on">단계 비교</button>
+        <button data-mode="battle">전투 미리보기</button>
+        <button data-mode="walk">이동 (꼬리 흔들림)</button>
+      </fieldset>
+      <fieldset><legend>보기</legend>
+        <label>속도 <input id="speed" type="range" min="0" max="2" step="0.05" value="1"><span class="val" id="speedv">1.00</span></label>
+        <label><input id="bones" type="checkbox"> 뼈대 보기</label>
+        <button id="flip">좌우 반전</button><button id="flash">피격 번쩍</button><button id="pause">일시정지</button>
+      </fieldset>
+      <fieldset><legend>뼈 편집 (기본 자세)</legend>
+        <select id="bone"></select>
+        <label>회전 <input id="b_rot" type="range" min="-180" max="180" step="1"><span class="val" id="b_rotv"></span></label>
+        <label>X <input id="b_x" type="range" min="-300" max="300" step="1"><span class="val" id="b_xv"></span></label>
+        <label>Y <input id="b_y" type="range" min="-300" max="300" step="1"><span class="val" id="b_yv"></span></label>
+        <button id="export">템플릿 JSON 보기</button><button id="copy">복사</button>
+        <textarea id="json" spellcheck="false" placeholder="여기에 수정된 템플릿 JSON이 나옵니다. public/data/rig/quadruped.template.json 에 붙여 넣으면 됩니다."></textarea>
+      </fieldset>
+      <fieldset><legend>이벤트</legend><div id="log"></div></fieldset>
+    </div>
+  </div>
+  <script type="module" src="/src/rigLab.js"></script>
+</body>
+</html>

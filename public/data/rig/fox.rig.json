@@ -1,0 +1,61 @@
+{
+ "species": "fox",
+ "name": "여우",
+ "template": "quadruped",
+ "palette": {
+  "fur": "#e2762e",
+  "furDark": "#b85a22",
+  "belly": "#f6e7cf",
+  "ink": "#2b1d16",
+  "accent": "#ffd36b"
+ },
+ "stages": {
+  "young": {
+   "label": "어린 여우",
+   "scale": 0.62,
+   "speed": 1.15,
+   "amp": 1.2,
+   "boneScale": {
+    "head": 1.32,
+    "eye": 1.2,
+    "ear_n": 1.1,
+    "ear_r": 1.1,
+    "tail_1": 0.85,
+    "leg_fr_up": 0.82,
+    "leg_fr_lo": 0.82,
+    "leg_fn_up": 0.82,
+    "leg_fn_lo": 0.82,
+    "leg_br_up": 0.82,
+    "leg_br_lo": 0.82,
+    "leg_bn_up": 0.82,
+    "leg_bn_lo": 0.82
+   }
+  },
+  "teen": {
+   "label": "성장기 여우",
+   "scale": 0.82,
+   "speed": 1.05,
+   "amp": 1.08,
+   "boneScale": {
+    "head": 1.12,
+    "eye": 1.08,
+    "tail_1": 0.95
+   }
+  },
+  "adult": {
+   "label": "성체 여우",
+   "scale": 1.0,
+   "speed": 1.0,
+   "amp": 1.0,
+   "boneScale": {},
+   "parts": {
+    "deco": null
+   }
+  }
+ },
+ "skins": {
+  "default": {
+   "parts": {}
+  }
+ }
+}

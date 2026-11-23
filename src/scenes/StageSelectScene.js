@@ -34,8 +34,10 @@ export default class StageSelectScene extends Phaser.Scene {
       this.add.text(x, 360, open ? '?' : '🔒', style(40, '#aa6666')).setOrigin(0.5);
       this.add.text(x, 425, `보스: ${boss?.name ?? '-'}`, style(18)).setOrigin(0.5);
       this.add.text(x, 452, BOSS_ROLE[st.boss] ?? '', style(14, '#f0883e')).setOrigin(0.5);
-      this.add.text(x, 485, `적 체력 ×${st.mult}`, style(14, '#aabbcc')).setOrigin(0.5);
-      this.add.text(x, 512, rec?.cleared ? '클리어 ✔' : rec ? `최고 웨이브 ${rec.bestWave}` : '처음', style(15, rec?.cleared ? '#58d68d' : '#cccccc')).setOrigin(0.5);
+      this.add.text(x, 476, `적 체력 ×${st.mult}`, style(14, '#aabbcc')).setOrigin(0.5);
+      const carry = save.carry?.[st.id];
+      if (i > 0 && open) this.add.text(x, 519, carry ? `데려갈 동물: ${carry.white ? '흰 ' : ''}${carry.stage === 'teen' ? '성장기' : '어린'} ${data.unitById[carry.speciesId].name}` : `데려갈 동물 없음 → 시작 골드 +${data.config.carry.fallbackGold}`, style(13, '#9cff6b')).setOrigin(0.5);
+      this.add.text(x, 497, rec?.cleared ? '클리어 ✔' : rec ? `최고 웨이브 ${rec.bestWave}` : '처음', style(15, rec?.cleared ? '#58d68d' : '#cccccc')).setOrigin(0.5);
       const b = button(this, x, 560, 200, 52, open ? '출발' : '앞 스테이지를 깨면 열림', () => this.scene.start('Battle', { stageId: st.id }), { size: open ? 22 : 13, fill: open ? 0x3a7bd5 : 0x333333 });
       b.setEnabled(open);
     });

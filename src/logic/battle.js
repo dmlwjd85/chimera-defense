@@ -29,6 +29,17 @@ export function createBattle(data, stageId, seed = 1, opts = {}) {
   };
 }
 
+/** Put the companion brought from the previous stage on the bench (see meta.carryInstance). */
+export function addCarry(state, data, inst) {
+  if (!inst || !data.unitById[inst.speciesId]) return null;
+  const slot = state.bench.indexOf(null);
+  if (slot < 0) return null;
+  const u = makeUnit(state, data, { kind: 'base', speciesId: inst.speciesId, stage: inst.stage, parts: null, traits: (inst.traits ?? []).map((t) => ({ ...t })), white: !!inst.white });
+  u.carried = true;
+  state.bench[slot] = u;
+  return u;
+}
+
 /** Wrap an instance into a live unit with a fresh uid. */
 export function makeUnit(state, data, inst) {
   const stats = unitStats(inst, data);

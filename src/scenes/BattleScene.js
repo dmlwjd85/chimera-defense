@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import { attachInput } from './BattleInput.js';
 import { buildData } from '../logic/data.js';
-import { createBattle, step, summon, skipPrep, deploy, moveUnit, recall, sell, merge, buyBait, toggleLock, summonPrice } from '../logic/battle.js';
-import { battleOptions, settleRun, writeSave } from '../logic/meta.js';
+import { createBattle, step, summon, skipPrep, deploy, moveUnit, recall, sell, merge, buyBait, toggleLock, summonPrice, addCarry } from '../logic/battle.js';
+import { battleOptions, settleRun, writeSave, carryCandidates, setCarry } from '../logic/meta.js';
 import { traitView } from '../logic/traits.js';
 import { terrainMatch, effRange, effBlock, effDamage, effInterval } from '../logic/mods.js';
 import { isResting } from '../logic/combat.js';
@@ -36,7 +36,10 @@ export default class BattleScene extends Phaser.Scene {
     this.save = this.registry.get('save');
     this.stageId = d?.stageId ?? 'forest-1';
     const seedParam = Number(new URLSearchParams(window.location.search).get('seed'));
-    this.state = createBattle(this.data2, this.stageId, seedParam > 0 ? seedParam : Date.now() % 100000, battleOptions(this.save, this.data2));
+    const bopts = battleOptions(this.save, this.data2, this.stageId);
+    this.state = createBattle(this.data2, this.stageId, seedParam > 0 ? seedParam : Date.now() % 100000, bopts);
+    this.carried = addCarry(this.state, this.data2, bopts.carry);
+    this.fallbackGold = !bopts.carry && this.data2.stages.findIndex((x) => x.id === this.stageId) > 0 ? this.data2.config.carry.fallbackGold : 0;
     Object.assign(this, { speed: 1, paused: false, leaving: false, unitViews: new Map(), enemyViews: new Map(), hidden: new Set(), designate: { continent: null, habitat: null } });
     this.cameras.main.setBackgroundColor('#141a21');
     this.drawPath();
@@ -61,6 +64,8 @@ export default class BattleScene extends Phaser.Scene {
       actions: { summon, deploy, moveUnit, recall, sell, merge, skipPrep, buyBait, toggleLock },
       spawn: (id, pos = 9) => { const st = this.state; const e = makeEnemy(id, st.wave, st.stage, this.data2, st.nextEid++); e.pos = pos; st.enemies.push(e); return e; } };
     attachInput(this);
+    if (this.carried) this.time.delayedCall(400, () => { this.toast(`지난 스테이지에서 데려온 동물: ${this.carried.white ? '흰 ' : ''}${this.carried.stats.name}`, '#9cff6b'); this.fx.burst('rise', benchSlotX(0), BENCH_Y, 14, 0x9cff6b); });
+    else if (this.fallbackGold) this.time.delayedCall(400, () => this.toast(`데려온 동물이 없어 시작 골드 +${this.fallbackGold}`, '#ffd84d'));
     this.input.on('pointerdown', unlockAudio);
     this.input.keyboard.on('keydown', unlockAudio);
     this.stanceFx = new Map();
@@ -337,9 +342,11 @@ export default class BattleScene extends Phaser.Scene {
     const s = this.state;
     if (s.result === 'clear') { this.fx.confetti(); this.fx.banner('스테이지 클리어!', '#7CFC9A'); sfx('clear'); } else sfx('lose');
     const report = settleRun(this.save, s, this.data2);
+    const candidates = s.result === 'clear' ? carryCandidates(s, this.data2) : [];
+    if (candidates.length) setCarry(this.save, this.data2, this.stageId, candidates[0]);
     if (this.tutorialStep >= 0) this.save.tutorialDone = true;
     writeSave(this.registry.get('storage'), this.save);
-    this.time.delayedCall(s.result === 'clear' ? 2400 : 900, () => this.scene.start('Result', { report, stageId: this.stageId, wave: s.wave, total: s.stage.waves.length, life: s.life, bossLeaked: s.bossLeaked && s.result === 'clear' }));
+    this.time.delayedCall(s.result === 'clear' ? 2400 : 900, () => this.scene.start('Result', { report, candidates, stageId: this.stageId, wave: s.wave, total: s.stage.waves.length, life: s.life, bossLeaked: s.bossLeaked && s.result === 'clear' }));
   }
 
   makeUnitView(unit) {

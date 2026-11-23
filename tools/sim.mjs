@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { buildData } from '../src/logic/data.js';
-import { createBattle, step, summon, deploy, merge, skipPrep } from '../src/logic/battle.js';
+import { createBattle, step, summon, deploy, merge, skipPrep, addCarry } from '../src/logic/battle.js';
 import { mergeKind } from '../src/logic/merge.js';
 import { summonCost } from '../src/logic/economy.js';
 import { newRollCtx, rollSummon, advanceRollCtx } from '../src/logic/roulette.js';
@@ -86,7 +86,8 @@ const label = (u) => `${u.kind}:${u.speciesId ?? u.parts.join('+')}:${u.stage}`;
 
 /** Play one full stage with the bot; returns a summary (and per-wave log). */
 export function runOne(data, seed, opts = {}) {
-  const state = createBattle(data, opts.stage ?? 'forest-1', seed);
+  const state = createBattle(data, opts.stage ?? 'forest-1', seed, { startGoldBonus: opts.extraGold ?? 0 });
+  if (opts.carry) addCarry(state, data, { speciesId: opts.carry, stage: opts.carryStage ?? 'teen', traits: [] });
   const waves = [];
   const made = {};
   let nextTurn = 0, lastWave = 0, lifeAtStart = state.life;

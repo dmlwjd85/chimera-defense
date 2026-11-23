@@ -44,11 +44,40 @@ export function levelsOf(save, data) {
   return out;
 }
 
+const STAGE_RANK = { young: 0, teen: 1, adult: 2, spirit: 3 };
+
+/** A unit as a companion for the next stage: base animals only, capped at 성장기 (teen), traits kept. */
+export function carryInstance(u, data) {
+  if (!u || u.kind !== 'base') return null;
+  const cap = data.config.carry?.maxStage ?? 'teen';
+  const stage = STAGE_RANK[u.stage] > STAGE_RANK[cap] ? cap : u.stage;
+  return { speciesId: u.speciesId, stage, white: !!u.white, traits: (u.traits ?? []).map((t) => ({ ...t, locked: false })), from: u.stage };
+}
+
+/** Companion candidates after a clear (strongest first). */
+export function carryCandidates(state, data) {
+  return [...state.field, ...state.bench].filter((u) => u && u.kind === 'base')
+    .sort((a, b) => STAGE_RANK[b.stage] - STAGE_RANK[a.stage]).map((u) => ({ ...carryInstance(u, data), name: u.stats.name }));
+}
+
+/** Store the companion for the stage after `stageId`. */
+export function setCarry(save, data, stageId, inst) {
+  const i = data.stages.findIndex((s) => s.id === stageId);
+  const next = data.stages[i + 1];
+  if (!next) return false;
+  (save.carry ??= {})[next.id] = inst;
+  return true;
+}
+
 /** Options for createBattle from the save. */
-export function battleOptions(save, data) {
+export function battleOptions(save, data, stageId = null) {
   const u = data.config.unlocks;
+  const idx = stageId ? data.stages.findIndex((s) => s.id === stageId) : 0;
+  const carry = stageId ? save.carry?.[stageId] ?? null : null;
+  const fallback = idx > 0 && !carry ? data.config.carry?.fallbackGold ?? 0 : 0;
   return {
-    startGoldBonus: u.startGold.step * save.unlocks.startGold,
+    carry,
+    startGoldBonus: u.startGold.step * save.unlocks.startGold + fallback,
     benchBonus: u.bench.step * save.unlocks.bench,
     levels: levelsOf(save, data),
     known: { recipes: save.codex.recipes, failed: save.codex.failedPairs },

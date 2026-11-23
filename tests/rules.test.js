@@ -178,3 +178,25 @@ test('a full stage still runs to the end with every rule on', async () => {
     assert.ok(['clear', 'lose'].includes(r.result), stage + ' ' + r.result);
   }
 });
+
+test('companion: clear gives a teen-capped animal for the next stage; without one, start gold +40', async () => {
+  const { carryCandidates, setCarry } = await import('../src/logic/meta.js');
+  const { addCarry } = await import('../src/logic/battle.js');
+  const save = defaultSave();
+  const st = createBattle(D, 'forest-1', 1);
+  st.field = [makeUnit(st, D, { kind: 'base', speciesId: 'wolf', stage: 'spirit', parts: null, traits: [tr('wolf', 'wolf_s1', 'str', { locked: true })] }),
+    makeUnit(st, D, { kind: 'chimera', speciesId: 'cheese_thief', stage: 'adult', parts: ['fox', 'crow'] })];
+  const c = carryCandidates(st, D);
+  assert.equal(c.length, 1, 'chimeras cannot be carried');
+  assert.deepEqual([c[0].speciesId, c[0].stage, c[0].traits[0].id, c[0].traits[0].locked], ['wolf', 'teen', 'wolf_s1', false]);
+  setCarry(save, D, 'forest-1', c[0]);
+  const o2 = battleOptions(save, D, 'forest-2');
+  const s2 = createBattle(D, 'forest-2', 1, o2);
+  const u = addCarry(s2, D, o2.carry);
+  assert.ok(u && s2.bench[0] === u && u.stage === 'teen' && u.carried);
+  assert.equal(s2.gold, D.config.startGold);
+  const o3 = battleOptions(save, D, 'forest-3');
+  assert.equal(o3.carry, null);
+  assert.equal(createBattle(D, 'forest-3', 1, o3).gold, D.config.startGold + D.config.carry.fallbackGold);
+  assert.equal(battleOptions(save, D, 'forest-1').startGoldBonus, 0, 'stage 1 never gets the fallback');
+});

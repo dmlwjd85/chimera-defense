@@ -164,7 +164,8 @@ export default class CodexScene extends Phaser.Scene {
     const D = this.data2, S = this.save;
     D.enemies.forEach((e, i) => {
       const c = this.cell(i, 4, 290, 100), seen = S.codex.enemies.includes(e.id);
-      this.add.rectangle(c.x + 30, c.y + 40, e.boss ? 44 : 30, e.boss ? 44 : 30, Phaser.Display.Color.HexStringToColor(e.color).color).setAlpha(seen ? 1 : 0.15);
+      if (this.textures.exists('enemy-' + e.id)) { const im = this.add.image(c.x + 30, c.y + 40, 'enemy-' + e.id).setDisplaySize(e.boss ? 58 : 46, e.boss ? 58 : 46); if (!seen) im.setTint(0x000000).setAlpha(0.4); }
+      else this.add.rectangle(c.x + 30, c.y + 40, e.boss ? 44 : 30, e.boss ? 44 : 30, Phaser.Display.Color.HexStringToColor(e.color).color).setAlpha(seen ? 1 : 0.15);
       this.add.text(c.x + 65, c.y + 8, seen ? e.name : '???', style(17));
       if (seen) {
         this.add.text(c.x + 65, c.y + 32, e.desc, style(11, '#aabbcc', { wordWrap: { width: 215 } }));

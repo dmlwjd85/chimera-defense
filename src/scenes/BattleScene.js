@@ -9,7 +9,7 @@ import { terrainMatch, effRange, effBlock, effDamage, effInterval } from '../log
 import { isResting } from '../logic/combat.js';
 import { makeEnemy } from '../logic/waves.js';
 import { unitRig, enemyRig } from './rigs.js';
-import { FX, ambient, STRIKE } from './fx.js';
+import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
 import { soundOf, ELEM_SOUND } from './onomato.js';
 import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
@@ -81,14 +81,27 @@ export default class BattleScene extends Phaser.Scene {
   }
 
   // ---------- static layout ----------
+  /** Stage climate: sky tint, weather, a chip under the top bar and an opening line. */
+  showClimate() {
+    const cfg = this.data2.config, st = this.state.stage, c = cfg.climates?.[st.climate];
+    if (!c) return;
+    weather(this, c);
+    const icons = (ids) => ids.map((e) => cfg.elements.defs[e]?.icon ?? '').join('');
+    const tip = `${c.name}\n“${c.tale}”${c.strong?.length ? `\n${icons(c.strong)} 속성 동물: 피해 +${cfg.climateEffect.dmg}%, 속성 공격이 자주 터져요` : ''}${c.weak?.length ? `\n${icons(c.weak)} 속성 동물: 피해 -${cfg.climateEffect.dmg}%, 속성 공격이 뜸해져요` : ''}${c.enemy?.speed ? '\n적이 조금 빨라져요' : ''}${c.enemy?.flySpeed ? `\n나는 적이 ${c.enemy.flySpeed < 1 ? '느려져요' : '빨라져요'}` : ''}`;
+    chip(this, 1090, 100, `${c.icon} ${c.name}  ${c.strong?.length ? icons(c.strong) + '▲' : ''} ${c.weak?.length ? icons(c.weak) + '▼' : ''}`, tip, { stroke: 0x7fd1ff, size: 13, depth: 30 });
+    this.time.delayedCall(700, () => this.fx.banner(`${c.icon} ${c.name}`, '#cfe8ff', c.tale));
+  }
+
   drawPath() {
     const st = this.state.stage;
-    if (this.textures.exists('bg-' + st.id)) {
-      this.add.image(640, 360, 'bg-' + st.id).setDisplaySize(1280, 720).setDepth(-10);
+    const bgKey = 'bg-' + (st.art ?? st.id);
+    if (this.textures.exists(bgKey)) {
+      this.add.image(640, 360, bgKey).setDisplaySize(1280, 720).setDepth(-10);
       st.zones.slice(0, 3).forEach((id, i) => this.add.text(tileToX(i * ZONE_TILES + ZONE_TILES / 2), PATH_Y - PATH_H / 2 - 12, ZONE_NAME[id], style(14, '#ffffff', { stroke: '#000000', strokeThickness: 4 })).setOrigin(0.5).setAlpha(0.85).setDepth(3));
       this.zoneGlow = this.add.graphics().setDepth(4);
       this.add.text(tileToX(0) - 45, PATH_Y + PATH_H / 2 - 30, '방어선', style(13, '#ff8a80', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
       ambient(this, st);
+      this.showClimate();
       return;
     }
     const g = this.add.graphics();
@@ -1130,7 +1143,8 @@ export default class BattleScene extends Phaser.Scene {
           if (pair) { const [a, c] = Object.values(pair.units).map((u) => unitPos(u.uid)); if (b.kind === 'clash') { this.fx.clash(...a); this.fx.clash(...c); } else this.fx.hearts(...a, ...c); } sfx(b.kind === 'clash' ? 'clash' : 'bond');
           this.toast(`${b.kind === 'clash' ? '⚡ 상극' : '♥ 인연'} 발견: ${b.name} — ${b.desc}`, b.kind === 'clash' ? '#f0883e' : '#ff9fbf'); break; }
         case 'shieldBreak': { this.toast('보호막이 깨졌다!', '#d2b4ff'); const ve = this.enemyViews.get(ev.eid); if (ve) this.fx.shieldBreak(ve.lastX, ve.lastY); sfx('shatter'); break; }
-        case 'bossSummon': { this.floatText(640, PATH_Y - 110, '박쥐왕이 졸개를 불렀다', '#aab7b8'); const ve = this.enemyViews.get(ev.eid); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY, 10, 0x6c5a8a); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.5); } sfx('bossSummon'); break; }
+        case 'revive': { const ve = this.enemyViews.get(ev.eid); if (ve) { this.floatText(ve.lastX, ve.lastY - 40, '벌떡!', '#9cff6b'); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.2); this.fx.burst('puff', ve.lastX, ve.lastY, 8, 0x6f8f5a); } sfx('bossSummon'); break; }
+        case 'bossSummon': { const ve = this.enemyViews.get(ev.eid); this.floatText(640, PATH_Y - 110, `${data.enemyById[this.state.enemies.find((x) => x.eid === ev.eid)?.id]?.name ?? '보스'}이(가) 졸개를 불렀다`, '#aab7b8'); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY, 10, 0x6c5a8a); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.5); } sfx('bossSummon'); break; }
         case 'merge': {
           const [mx, my] = unitPos(ev.uid);
           if (ev.kind === 'weak') { this.toast('합성 실패… 적들이 멈춰서 구경한다', '#cccccc'); this.fx.weak(mx, my); sfx('weak'); }

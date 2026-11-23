@@ -85,8 +85,32 @@ export function battleOptions(save, data, stageId = null) {
     levels: levelsOf(save, data),
     known: { recipes: save.codex.recipes, failed: save.codex.failedPairs },
     seenSpecies: save.codex.units, seenBonds: save.codex.bonds,
+    pool: rosterPool(save, data),
   };
 }
+
+/** Stars of one stage record (old saves: a clear without stars counts as one). */
+export const starsOf = (rec) => (rec ? rec.stars ?? (rec.cleared ? 1 : 0) : 0);
+export const totalStars = (save) => Object.values(save.stages ?? {}).reduce((n, r) => n + starsOf(r), 0);
+
+/** Star goals of a finished battle: [clear, life kept, in time]. */
+export function starGoals(state, data) {
+  const sc = data.config.stars ?? { life: 60, par: 420 };
+  const clear = state.result === 'clear';
+  const par = state.stage.par ?? sc.par;
+  return { clear, life: clear && state.life >= (state.maxLife ?? data.config.life) * sc.life / 100, time: clear && state.time <= par, par, lifeNeed: sc.life };
+}
+export const starsFor = (state, data) => { const g = starGoals(state, data); return g.clear ? 1 + (g.life ? 1 : 0) + (g.time ? 1 : 0) : 0; };
+
+/** Animals the roulette can bring: the six starters plus everyone the collected stars have called in. */
+export function rosterPool(save, data) {
+  const r = data.config.roster;
+  if (!r) return null;
+  const stars = totalStars(save);
+  return [...r.starter, ...r.unlocks.filter((u) => stars >= u.stars).map((u) => u.id)].filter((id) => data.unitById[id]);
+}
+/** The next animal waiting on stars, or null when everyone has joined. */
+export const nextUnlock = (save, data) => (data.config.roster?.unlocks ?? []).find((u) => totalStars(save) < u.stars) ?? null;
 
 export const stageUnlocked = (save, data, stageId) => {
   const i = data.stages.findIndex((s) => s.id === stageId);
@@ -161,7 +185,12 @@ export function settleRun(save, state, data) {
   if (demoRecipes.every((r) => save.codex.recipes.includes(r))) give('allRecipes');
   if (clear && state.bossKilled && state.life >= cfg.life) give('flawlessBoss');
 
+  const starsBefore = totalStars(save);
+  const goals = starGoals(state, data), stars = starsFor(state, data);
   if (clear) rec.cleared = true;
+  if (clear) { rec.stars = Math.max(starsOf(rec), stars); rec.bestTime = Math.min(rec.bestTime ?? Infinity, Math.round(state.time)); }
+  const starsAfter = totalStars(save);
+  const joined = (cfg.roster?.unlocks ?? []).filter((u) => u.stars > starsBefore && u.stars <= starsAfter).map((u) => u.id);
   rec.bestWave = Math.max(rec.bestWave, clear ? state.stage.waves.length : state.wave);
   save.essence += essence;
   // hint shards turn into hints automatically
@@ -176,7 +205,8 @@ export function settleRun(save, state, data) {
   const fromRelics = (state.relics ?? []).reduce((n, id) => n + (sc[data.relicById?.[id]?.rarity] ?? 0), 0);
   const shards = fromRelics + Math.floor(waves / (sc.perWaves ?? 3));
   save.shards = (save.shards ?? 0) + shards;
-  return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length };
+  return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
+    stars, goals, totalStars: starsAfter, joined, time: Math.round(state.time) };
 }
 
 /** Reveal one material of an undiscovered recipe. Returns { recipe, part } or null. */

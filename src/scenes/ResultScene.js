@@ -15,8 +15,18 @@ export default class ResultScene extends Phaser.Scene {
     const r = d.report;
     this.cameras.main.setBackgroundColor('#141a21');
     if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.45);
-    title(this, 640, 70, r.clear ? '스테이지 클리어!' : '패배', 56).setColor(r.clear ? '#7CFC9A' : '#ff6b6b');
-    this.add.text(640, 130, `${D.stageById[d.stageId]?.name ?? ''} · 도달 웨이브 ${d.wave}/${d.total} · 남은 생명 ${d.life}${d.bossLeaked ? ' · 보스가 방어선을 넘음(보스 처치 보상 없음)' : ''}`, style(18, '#dddddd')).setOrigin(0.5);
+    title(this, 640, r.clear ? 44 : 70, r.clear ? '스테이지 클리어!' : '패배', r.clear ? 40 : 56).setColor(r.clear ? '#7CFC9A' : '#ff6b6b');
+    if (r.clear && r.goals) {
+      const g = r.goals, mm = (t) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
+      const st = this.add.text(640, 112, '★'.repeat(r.stars) + '☆'.repeat(3 - r.stars), style(34, '#ffd84d', { stroke: '#000', strokeThickness: 5 })).setOrigin(0.5).setScale(0.2);
+      this.tweens.add({ targets: st, scale: 1, duration: 500, ease: 'Back.out' });
+      this.add.text(640, 150, `✔ 클리어    ${g.life ? '✔' : '✘'} 생명 ${g.lifeNeed}% 이상    ${g.time ? '✔' : '✘'} ${mm(g.par)} 안에 (걸린 시간 ${mm(r.time)})    ·    모은 별 ⭐${r.totalStars}`, style(14, '#cfe8ff')).setOrigin(0.5);
+      if (r.joined?.length) {
+        const t = this.add.text(640, 548, `🎉 새 친구 합류: ${r.joined.map((id) => D.unitById[id]?.name).join(', ')} — 이제 지구본에서 만날 수 있어요`, style(17, '#9cff6b', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
+        this.tweens.add({ targets: t, scale: { from: 1, to: 1.06 }, yoyo: true, repeat: -1, duration: 700 });
+      }
+    }
+    this.add.text(640, r.clear && r.goals ? 84 : 130, `${D.stageById[d.stageId]?.name ?? ''} · 도달 웨이브 ${d.wave}/${d.total} · 남은 생명 ${d.life}${d.bossLeaked ? ' · 보스가 방어선을 넘음(보스 처치 보상 없음)' : ''}`, style(r.clear ? 13 : 18, '#dddddd')).setOrigin(0.5);
 
     panel(this, 60, 165, 560, 375);
     this.add.text(85, 180, `에센스 +${r.essence}`, style(24, '#ffd84d'));
@@ -44,7 +54,7 @@ export default class ResultScene extends Phaser.Scene {
     if (r.clear && next && d.candidates?.length) {
       const save = this.registry.get('save');
       const stageName = { young: '어린', teen: '성장기' };
-      this.add.text(640, 562, `${next.name}에 데려갈 동물 1마리 (성장기까지, 특성 유지)`, style(15, '#9cff6b')).setOrigin(0.5);
+      this.add.text(640, r.joined?.length ? 572 : 562, `${next.name}에 데려갈 동물 1마리 (성장기까지, 특성 유지)`, style(15, '#9cff6b')).setOrigin(0.5);
       const picks = d.candidates.slice(0, 6);
       const btns = [];
       const mark = (k) => btns.forEach((b, i) => b.set((i === k ? '✔ ' : '') + label(picks[i])));

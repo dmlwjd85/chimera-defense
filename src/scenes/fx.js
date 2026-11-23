@@ -537,10 +537,38 @@ export class FX {
   }
 }
 
+/** Stage climate on screen: a sky tint plus rain, snow, blowing sand or a thunderstorm. */
+export function weather(scene, c) {
+  if (c.tint) scene.add.rectangle(640, 360, 1280, 720, Phaser.Display.Color.GetColor(c.tint[0], c.tint[1], c.tint[2]), c.tint[3]).setDepth(-4);
+  if (!c.weather) return;
+  if (!scene.textures.exists('fx-rain')) {
+    const g = scene.make.graphics({ add: false });
+    g.fillStyle(0xffffff, 1).fillRect(0, 0, 2, 16); g.generateTexture('fx-rain', 2, 16); g.destroy();
+  }
+  const rain = (freq, alpha) => scene.add.particles(0, 0, 'fx-rain', {
+    x: { min: -100, max: 1380 }, y: -20, speedY: { min: 620, max: 820 }, speedX: { min: -160, max: -110 }, rotate: 12,
+    lifespan: 1100, frequency: freq, quantity: 2, scaleY: { min: 0.8, max: 1.6 }, alpha: { start: alpha, end: alpha * 0.6 }, tint: 0xbfe0ff,
+  }).setDepth(7);
+  if (c.weather === 'rain') rain(14, 0.45);
+  if (c.weather === 'storm') {
+    rain(9, 0.55);
+    const flash = scene.add.rectangle(640, 360, 1280, 720, 0xdfe8ff, 0).setDepth(8);
+    scene.time.addEvent({ delay: 5200, loop: true, callback: () => { if (Math.random() < 0.7) scene.tweens.add({ targets: flash, alpha: { from: 0.32, to: 0 }, duration: 420, ease: 'Quad.out' }); } });
+  }
+  if (c.weather === 'snow' && scene.textures.exists('fx-snow')) scene.add.particles(0, 0, 'fx-snow', {
+    x: { min: 0, max: 1500 }, y: -10, speedY: { min: 90, max: 170 }, speedX: { min: -220, max: -120 }, lifespan: 6000, frequency: 45,
+    scale: { min: 0.2, max: 0.55 }, rotate: { start: 0, end: 360 }, alpha: { start: 0.95, end: 0.3 },
+  }).setDepth(7);
+  if (c.weather === 'sand' && scene.textures.exists('fx-puff')) scene.add.particles(0, 0, 'fx-puff', {
+    x: 1340, y: { min: 200, max: 620 }, speedX: { min: -420, max: -260 }, speedY: { min: -20, max: 20 }, lifespan: 5200, frequency: 260,
+    scale: { min: 0.8, max: 1.8 }, alpha: { start: 0.22, end: 0 }, tint: 0xe2b874,
+  }).setDepth(7);
+}
+
 /** Ambient life for a stage: drifting clouds, falling leaves/petals, fireflies, portal motes, water glints. */
 export function ambient(scene, stage) {
   if (!scene.textures.exists('fx-puff')) return;
-  const night = stage.id === 'forest-3';
+  const night = !!stage.night || stage.id === 'forest-3';
   for (let i = 0; i < 4; i++) {
     const c = scene.add.image(Phaser.Math.Between(0, 1280), Phaser.Math.Between(40, 160), 'fx-puff').setDepth(-5).setAlpha(night ? 0.12 : 0.28).setScale(Phaser.Math.FloatBetween(1.6, 2.8), 1.1);
     scene.tweens.add({ targets: c, x: c.x + 1500, duration: Phaser.Math.Between(60000, 110000), repeat: -1, onRepeat: () => { c.x = -200; } });

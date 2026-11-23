@@ -512,7 +512,7 @@ SPIRIT = {
  'frog': dict(c='#e6b422', belly='#fff3b0'),
  'grasshopper': dict(c='#b9a36a'),
  'ant': dict(c='#b87333'),
- 'dog': dict(c='#e2522b', dark='#a8321a', tailTip='#ffd54f', sock='#ffb300', eyeCol='#ffd54f', earIn='#ffb300', fluff='#ffb300', snoutCol='#ffe0b2'),
+ 'dog': dict(c='#3a3340', dark='#1d1822', belly='#55495e', tailTip='#ff5a3c', sock='#55495e', eyeCol='#ff3b30', earIn='#ff5a3c', fluff='#ff5a3c', snoutCol='#6b5f73'),
  'monkey': dict(c='#d4a017', dark='#a67c00', headband=True, snoutCol='#ffe8c2', earIn='#ffe8c2', fluff='#ffe08a'),
 }
 for _k, _v in SPIRIT.items(): SKINS[_k + '_spirit'] = {**SKINS[_k], **_v}

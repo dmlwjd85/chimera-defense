@@ -334,7 +334,7 @@ ART['ant'] = grasshopper('#8a4b32', wing=False, guitar=False)
 SP_FUR = {'fox': dict(c='#fbf6ee', tailTip='#ff8fb1', eyeCol='#c2185b'), 'tiger': dict(c='#f6f3ea', snoutCol='#ffffff', eyeCol='#2e86de'), 'bear': dict(c='#a9785a', snoutCol='#f2dcb8'),
           'rabbit': dict(c='#cdeee0', dark='#9fd6c0', belly='#f4fffa', eyeCol='#00897b'), 'bison': dict(c='#4a86c0', dark='#2e5c8a', hump='#2e5c8a', snoutCol='#1d3c5c'),
           'wolf': dict(c='#3c4452', dark='#1f232c', tailTip='#9fb3c8', eyeCol='#ff5252', angry=True), 'bighorn': dict(c='#f2c94c', dark='#c99a1e', snoutCol='#fff6d6'),
-          'dog': dict(c='#e2522b', dark='#a8321a', tailTip='#ffd54f', eyeCol='#ffd54f', snoutCol='#ffe0b2'), 'monkey': dict(c='#d4a017', dark='#a67c00', snoutCol='#ffe8c2', earIn='#ffe8c2')}
+          'dog': dict(c='#3a3340', dark='#1d1822', tailTip='#ff5a3c', eyeCol='#ff3b30', snoutCol='#6b5f73', belly='#55495e', earIn='#ff5a3c'), 'monkey': dict(c='#d4a017', dark='#a67c00', snoutCol='#ffe8c2', earIn='#ffe8c2')}
 SP_BIRD = {'rooster': dict(c='#ffd54f', headCol='#ffd54f', belly='#fff3b0', tailCol='#ff9800'), 'crow': dict(c='#1c1c28', headCol='#1c1c28', belly='#c62828', beak='#ffd54f', tailCol='#3a1a1a'),
            'eagle': dict(c='#c9a227', headCol='#fffbe6', belly='#e6c65a', tailCol='#fffbe6')}
 for k, v in SP_FUR.items(): ART[k + '-spirit'] = quad({**FUR[k], **v})
@@ -358,6 +358,49 @@ ART['thunderbird'] = bird(dict(c='#2e5c8a', headCol='#2e5c8a', belly='#4a86c0', 
 flame = '<path d="M150 290 C 40 230 60 120 120 100 C 110 160 140 190 160 200 C 150 150 190 110 220 120 C 190 170 200 230 200 260 Z" fill="#ff9800" stroke="#2b1d16" stroke-width="7"/><path d="M150 270 C 100 230 100 170 130 150 C 130 200 160 220 180 240 Z" fill="#ffe082"/>'
 ART['phoenix'] = bird(dict(c='#e53935', headCol='#ef5350', belly='#ffb74d', comb=True, beak='#ffd54f', hook=True, tailCol='#ff7043', tailExtra=flame))
 
+
+def skeleton(c='#ece6d4', big=False):
+    extra = ''
+    for y in (300, 325, 350):
+        extra += f'<path d="M205 {y} C 235 {y+10} 280 {y+10} 310 {y}" fill="none" stroke="{shade(c,0.55)}" stroke-width="7" stroke-linecap="round"/>'
+    extra += f'<path d="M256 285 L256 370" stroke="{shade(c,0.55)}" stroke-width="7"/>'
+    extra += f'<path d="M352 300 L420 235" stroke="{INK}" stroke-width="18" stroke-linecap="round"/><path d="M352 300 L420 235" stroke="#b9c2cc" stroke-width="9" stroke-linecap="round"/>'
+    if big:
+        extra += f'<path d="M165 185 C 170 95 345 95 350 185 Z" fill="#7a2f2f" {S()}/><path d="M250 100 L262 40 L276 100 Z" fill="#ffd84d" {S()}/><rect x="160" y="178" width="196" height="16" rx="6" fill="#ffd84d" {S()}/>'
+    return imp(c, w=1.25 if big else 1.0, extra=extra, horns=False, eyes='#1b1420')
+
+def ghost(c='#bfe6ff', king=False):
+    d = f'<radialGradient id="gg" cx="0.45" cy="0.35" r="0.7"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="{c}"/></radialGradient>'
+    b = shadow(256, 478, 110, 14)
+    b += f'<path d="M130 440 C 110 300 120 150 256 140 C 392 150 402 300 382 440 C 360 410 345 450 322 420 C 300 455 280 420 256 450 C 232 420 212 455 190 420 C 168 450 150 410 130 440 Z" fill="url(#gg)" opacity="0.9" {S()}/>'
+    b += f'<ellipse cx="210" cy="255" rx="22" ry="30" fill="{INK}"/><ellipse cx="282" cy="255" rx="20" ry="27" fill="{INK}"/><circle cx="204" cy="246" r="7" fill="#9fe8ff"/><circle cx="277" cy="247" r="6" fill="#9fe8ff"/>'
+    b += f'<ellipse cx="244" cy="330" rx="24" ry="30" fill="{INK}"/>'
+    b += f'<path d="M135 300 C 90 300 70 330 60 370 C 95 350 115 350 140 350 Z" fill="url(#gg)" opacity="0.9" {S()}/>'
+    if king:
+        b += f'<path d="M180 150 L170 70 L215 120 L256 55 L297 120 L342 70 L332 150 Z" fill="#dff4ff" {S()}/>'
+        for (x, y) in ((90, 180), (430, 210), (120, 110), (410, 120), (60, 260)):
+            b += f'<path d="M{x} {y-14} L{x+5} {y-5} L{x+14} {y} L{x+5} {y+5} L{x} {y+14} L{x-5} {y+5} L{x-14} {y} L{x-5} {y-5} Z" fill="#ffffff" opacity="0.85"/>'
+    return svg(b, d)
+
+def wisp():
+    d = '<radialGradient id="gw" cx="0.5" cy="0.6" r="0.6"><stop offset="0" stop-color="#ffffff"/><stop offset="0.5" stop-color="#7df9ff"/><stop offset="1" stop-color="#2a7fd6"/></radialGradient>'
+    b = f'<circle cx="256" cy="300" r="150" fill="#7df9ff" opacity="0.18"/>'
+    b += f'<path d="M256 110 C 300 190 370 230 360 320 C 352 400 300 440 256 440 C 212 440 160 400 152 320 C 146 250 200 240 210 180 C 230 200 250 170 256 110 Z" fill="url(#gw)" {S()}/>'
+    b += f'<ellipse cx="225" cy="320" rx="16" ry="22" fill="{INK}"/><ellipse cx="285" cy="320" rx="16" ry="22" fill="{INK}"/><path d="M228 372 C 245 388 268 388 284 372" fill="none" stroke="{INK}" stroke-width="8" stroke-linecap="round"/>'
+    return svg(b, d)
+
+def lich():
+    d = '<radialGradient id="gl" cx="0.5" cy="0.4" r="0.7"><stop offset="0" stop-color="#6a3f96"/><stop offset="1" stop-color="#1c1030"/></radialGradient>'
+    b = shadow(256, 478, 160, 20)
+    b += f'<path d="M120 470 C 110 330 140 200 256 120 C 372 200 402 330 392 470 Z" fill="url(#gl)" {S()}/>'
+    b += f'<path d="M175 250 C 180 170 332 170 337 250 C 340 320 300 350 256 350 C 212 350 172 320 175 250 Z" fill="#14101f" {S()}/>'
+    b += f'<circle cx="225" cy="262" r="15" fill="#c6ff5a"/><circle cx="287" cy="262" r="15" fill="#c6ff5a"/><circle cx="225" cy="262" r="6" fill="{INK}"/><circle cx="287" cy="262" r="6" fill="{INK}"/>'
+    b += f'<path d="M232 312 L242 326 L256 312 L270 326 L280 312" fill="none" stroke="#c6ff5a" stroke-width="6" stroke-linecap="round"/>'
+    b += f'<path d="M110 470 L90 150" stroke="{INK}" stroke-width="20" stroke-linecap="round"/><path d="M110 470 L90 150" stroke="#7a5a3a" stroke-width="10" stroke-linecap="round"/>'
+    b += f'<circle cx="88" cy="125" r="34" fill="#c6ff5a" opacity="0.35"/><circle cx="88" cy="125" r="22" fill="#eaffb0" {S()}/>'
+    b += f'<path d="M256 120 L236 60 L256 80 L276 60 Z" fill="#ffd84d" {S()}/>'
+    return svg(b, d)
+
 # enemies (face left = walk toward defense line)
 ART['enemy-normal'] = imp('#6b4fa0')
 ART['enemy-fast'] = weasel()
@@ -370,6 +413,13 @@ ART['enemy-boss_boar'] = boar('#5b3a29', extra='<path d="M235 140 L255 90 L275 1
 ART['enemy-bat'] = bat()
 ART['enemy-boss_bat'] = bat('#2a2440', king=True)
 ART['enemy-boss_shadow'] = shadow_boss()
+ART['enemy-skeleton'] = skeleton()
+ART['enemy-ghost'] = ghost()
+ART['enemy-zombie'] = boar('#6f8f5a', extra='<path d="M250 250 L330 300 M262 236 L246 262 M290 252 L274 278 M318 270 L302 296" stroke="#2b1d16" stroke-width="7" stroke-linecap="round"/><ellipse cx="150" cy="240" rx="18" ry="14" fill="#c6ff5a" stroke="#2b1d16" stroke-width="6"/>')
+ART['enemy-wisp'] = wisp()
+ART['enemy-boss_bone'] = skeleton('#d8d2c0', big=True)
+ART['enemy-boss_frost'] = ghost('#9fd0ff', king=True)
+ART['enemy-boss_lich'] = lich()
 
 manifest = {}
 for k, s in ART.items():

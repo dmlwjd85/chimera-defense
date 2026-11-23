@@ -5,15 +5,24 @@ import { patchesAt, patchAllyMods } from './patchMods.js';
 export { patchesAt, patchAllyMods };
 
 /** Chance (%) that this unit's hit turns elemental. */
-export function elementChance(u, cfg) {
+export function elementChance(u, cfg, climate = null) {
   if (!u.stats.element || !cfg.elements) return 0;
   const c = cfg.elements.chance;
-  return (u.kind === 'chimera' ? c.chimera : c[u.stage] ?? 0) + (u.mods?.elemChance ?? 0);
+  const base = (u.kind === 'chimera' ? c.chimera : c[u.stage] ?? 0) + (u.mods?.elemChance ?? 0);
+  return base * climateSide(u.stats.element, climate, cfg.climateEffect?.chanceUp ?? 1, cfg.climateEffect?.chanceDown ?? 1, 1);
+}
+
+/** Pick a value by how the stage climate treats an element: strong / weak / neither. */
+export function climateSide(element, climate, strong, weak, neither) {
+  if (!climate || !element) return neither;
+  if (climate.strong?.includes(element)) return strong;
+  if (climate.weak?.includes(element)) return weak;
+  return neither;
 }
 
 /** Roll and apply an elemental proc after a normal attack. Returns the event or null. */
 export function elementProc(state, u, target, hits, cfg) {
-  const ch = elementChance(u, cfg);
+  const ch = elementChance(u, cfg, cfg.climates?.[state.stage.climate]);
   if (ch <= 0 || state.rng() >= ch / 100) return null;
   const el = u.stats.element, d = cfg.elements.defs[el];
   const base = effDamage(u) * (cfg.elements.bonus + (u.mods?.elemDmg ?? 0)) / 100;

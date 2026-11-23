@@ -1,4 +1,35 @@
 {
   "note": "그록 그림 교체용: 키를 넣고 파일을 public/assets/units/ 에 두면 임시 도형 대신 그림이 나옵니다. 키 형식 unit-<종id> (모든 단계) 또는 unit-<종id>-<단계 young|teen|adult|spirit>, 키메라는 unit-<레시피id>, 적은 enemy-<적id>.",
-  "images": {}
+  "images": {
+    "unit-fox": "assets/units/unit-fox.png",
+    "unit-wolf": "assets/units/unit-wolf.png",
+    "unit-bear": "assets/units/unit-bear.png",
+    "unit-tiger": "assets/units/unit-tiger.png",
+    "unit-rabbit": "assets/units/unit-rabbit.png",
+    "unit-bison": "assets/units/unit-bison.png",
+    "unit-bighorn": "assets/units/unit-bighorn.png",
+    "unit-rooster": "assets/units/unit-rooster.png",
+    "unit-crow": "assets/units/unit-crow.png",
+    "unit-eagle": "assets/units/unit-eagle.png",
+    "unit-frog": "assets/units/unit-frog.png",
+    "unit-grasshopper": "assets/units/unit-grasshopper.png",
+    "unit-cheese_thief": "assets/units/unit-cheese_thief.png",
+    "unit-bear_tiger": "assets/units/unit-bear_tiger.png",
+    "unit-wolf_in_sheep": "assets/units/unit-wolf_in_sheep.png",
+    "unit-bullfrog": "assets/units/unit-bullfrog.png",
+    "unit-jackalope": "assets/units/unit-jackalope.png",
+    "unit-thunderbird": "assets/units/unit-thunderbird.png",
+    "unit-phoenix": "assets/units/unit-phoenix.png",
+    "enemy-normal": "assets/units/enemy-normal.png",
+    "enemy-fast": "assets/units/enemy-fast.png",
+    "enemy-tough": "assets/units/enemy-tough.png",
+    "enemy-swarm": "assets/units/enemy-swarm.png",
+    "enemy-flying": "assets/units/enemy-flying.png",
+    "enemy-healer": "assets/units/enemy-healer.png",
+    "enemy-miniboss": "assets/units/enemy-miniboss.png",
+    "enemy-boss_boar": "assets/units/enemy-boss_boar.png",
+    "enemy-bat": "assets/units/enemy-bat.png",
+    "enemy-boss_bat": "assets/units/enemy-boss_bat.png",
+    "enemy-boss_shadow": "assets/units/enemy-boss_shadow.png"
+  }
 }

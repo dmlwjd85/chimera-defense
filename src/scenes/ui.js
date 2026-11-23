@@ -49,7 +49,12 @@ export function unitToken(scene, unit, data) {
   const id = unit.kind === 'weak' ? null : unit.speciesId;
   const key = id && [`unit-${id}-${unit.stage}`, `unit-${id}`].find((k) => scene.textures.exists(k));
   if (key) {
-    c.add(scene.add.image(0, 0, key).setDisplaySize(stageR * 2.4, stageR * 2.4));
+    if (unit.stage === 'spirit') c.add(scene.add.circle(0, 0, stageR * 1.35, COLORS.gold, 0.35).setStrokeStyle(3, COLORS.gold, 0.9));
+    if (unit.white) c.add(scene.add.circle(0, 0, stageR * 1.3, 0xffffff, 0.35));
+    c.add(scene.add.image(0, -stageR * 0.2, key).setDisplaySize(stageR * 2.9, stageR * 2.9));
+  } else if (unit.kind === 'weak' && unit.parts?.every((p) => scene.textures.exists('unit-' + p))) {
+    unit.parts.forEach((p, i) => c.add(scene.add.image((i ? 1 : -1) * stageR * 0.45, -stageR * 0.2, 'unit-' + p).setDisplaySize(stageR * 2, stageR * 2).setTint(0x8a8a8a).setAngle(i ? 12 : -12)));
+    c.add(scene.add.text(0, -stageR * 0.3, '?', style(stageR, '#ffffff', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5));
   } else if (unit.kind === 'chimera') {
     const [a, b] = unit.parts.map((p) => hex(data.unitById[p].color));
     const g = scene.add.graphics();
@@ -66,7 +71,7 @@ export function unitToken(scene, unit, data) {
     if (unit.stage === 'spirit') g.lineStyle(2, COLORS.gold, 0.6).strokeCircle(0, 0, stageR + 5);
     c.add(g);
   }
-  if (!key) {
+  if (!key && !(unit.kind === 'weak' && c.list.length > 1)) {
     const letter = unit.kind === 'weak' ? '?' : unit.kind === 'chimera' ? data.recipeById[unit.speciesId].name[0] : data.unitById[id].name[0];
     c.add(scene.add.text(0, 0, letter, style(stageR, '#111111', { fontStyle: 'bold' })).setOrigin(0.5));
   }

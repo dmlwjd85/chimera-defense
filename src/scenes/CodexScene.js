@@ -29,7 +29,8 @@ export default class CodexScene extends Phaser.Scene {
       const c = this.cell(i, 4, 290, 120), seen = S.codex.units.includes(u.id);
       const lv = levelInfo(S.speciesXp[u.id] ?? 0, D.config);
       const tok = unitToken(this, { kind: 'base', speciesId: u.id, stage: lv.level >= 10 ? 'spirit' : 'adult', stats: { color: u.color } }, D);
-      tok.setPosition(c.x + 40, c.y + 45).setAlpha(seen ? 1 : 0.15);
+      tok.setPosition(c.x + 40, c.y + 45).setAlpha(seen ? 1 : 0.5);
+      if (!seen) tok.list.forEach((o) => o.setTint?.(0x000000));
       this.add.text(c.x + 80, c.y + 8, seen ? `${u.name}  Lv.${lv.level}` : '???', style(17, lv.level >= 10 ? '#ffd84d' : '#ffffff'));
       this.add.text(c.x + 80, c.y + 32, `${CONT[u.continent]} · 영물 ${seen ? u.stageNames.spirit : '???'}`, style(12, '#aabbcc'));
       if (seen) {
@@ -45,7 +46,8 @@ export default class CodexScene extends Phaser.Scene {
       const c = this.cell(i, 3, 385, 120), known = S.codex.recipes.includes(r.id);
       const hint = S.hints[r.id] ?? [];
       const tok = unitToken(this, { kind: 'chimera', speciesId: r.id, stage: 'adult', parts: r.parts, stats: {} }, D);
-      tok.setPosition(c.x + 40, c.y + 45).setAlpha(known ? 1 : 0.12);
+      tok.setPosition(c.x + 40, c.y + 45).setAlpha(known ? 1 : 0.5);
+      if (!known) tok.list.forEach((o) => o.setTint?.(0x000000));
       const parts = r.parts.map((p) => (known || hint.includes(p) ? D.unitById[p].name : `?(${CONT[D.unitById[p].continent]})`)).join(' + ');
       this.add.text(c.x + 85, c.y + 8, known ? r.name : '???', style(18, known ? '#d7bde2' : '#888888'));
       this.add.text(c.x + 85, c.y + 34, parts, style(13, '#aabbcc'));

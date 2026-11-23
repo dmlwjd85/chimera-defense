@@ -375,7 +375,7 @@ export default class BattleScene extends Phaser.Scene {
     const def = this.data2.enemyById[e.id];
     const size = e.boss ? 52 : e.id === 'swarm' ? 16 : e.id === 'bat' ? 20 : 28;
     const key = this.textures.exists('enemy-' + e.id) ? 'enemy-' + e.id : null;
-    const body = key ? this.add.image(0, 0, key).setDisplaySize(size * 1.4, size * 1.4) : e.flying ? this.add.triangle(0, 0, 0, size, size / 2, 0, size, size, hex(def.color)) : this.add.rectangle(0, 0, size, size, hex(def.color));
+    const body = key ? this.add.image(0, 0, key).setDisplaySize(size * 2, size * 2) : e.flying ? this.add.triangle(0, 0, 0, size, size / 2, 0, size, size, hex(def.color)) : this.add.rectangle(0, 0, size, size, hex(def.color));
     body.setDepth(70);
     const barW = e.boss ? 70 : 30;
     const bar = this.add.rectangle(0, 0, barW, 4, 0xff5252).setOrigin(0, 0.5).setDepth(71);

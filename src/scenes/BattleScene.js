@@ -82,7 +82,7 @@ export default class BattleScene extends Phaser.Scene {
       this.add.image(640, 360, 'bg-' + st.id).setDisplaySize(1280, 720).setDepth(-10);
       st.zones.slice(0, 3).forEach((id, i) => this.add.text(tileToX(i * ZONE_TILES + ZONE_TILES / 2), PATH_Y - PATH_H / 2 - 12, ZONE_NAME[id], style(14, '#ffffff', { stroke: '#000000', strokeThickness: 4 })).setOrigin(0.5).setAlpha(0.85).setDepth(3));
       this.zoneGlow = this.add.graphics().setDepth(4);
-      this.add.text(tileToX(0) - 40, PATH_Y + PATH_H / 2 + 40, '방어선', style(13, '#ff8a80', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
+      this.add.text(tileToX(0) - 45, PATH_Y + PATH_H / 2 - 30, '방어선', style(13, '#ff8a80', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
       ambient(this, st);
       return;
     }
@@ -475,9 +475,11 @@ export default class BattleScene extends Phaser.Scene {
   update(time, delta) {
     const live = !this.paused && !this.modalOpen;
     this.realDt = Math.min(delta / 1000, 0.1);
-    this.frameDt = live ? Math.min(delta / 1000, 0.1) * this.speed : 0;
+    const stop = (this.hitStop ?? 0) > 0;
+    if (stop) this.hitStop -= this.realDt;
+    this.frameDt = live && !stop ? Math.min(delta / 1000, 0.1) * this.speed : 0;
     this.enemyHits = new Set(this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid));
-    if (live) step(this.state, this.data2, this.frameDt);
+    if (live && !stop) step(this.state, this.data2, this.frameDt);
     this.enemyHits = new Set([...this.enemyHits, ...this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid)]);
     this.preAnimate();
     this.syncUnits();
@@ -570,11 +572,20 @@ export default class BattleScene extends Phaser.Scene {
           v.curY += (y - v.curY) * k;
           v.walking = Math.abs(x - v.curX) > 6;
           v.walkDir = Math.sign(dx);
-          v.container.setPosition(v.curX, v.curY);
+          let lx = 0;
+          if (v.lungeT != null) { v.lungeT += this.realDt || 0.016; const k = v.lungeT / 0.2; lx = k < 1 ? Math.sin(k * Math.PI) * 26 * v.lungeDir : 0; if (k >= 1) v.lungeT = null; }
+          if (v.shakeT > 0) { v.shakeT -= this.realDt || 0.016; lx += Math.sin(this.time.now / 18) * 4 * Math.max(0, v.shakeT / 0.18); }
+          v.container.setPosition(v.curX + lx, v.curY);
         } else { v.curX = x; v.curY = y; v.walking = false; v.container.setPosition(x, y); }
       } else { v.curX = undefined; v.curY = undefined; }
       v.container.setDepth(onField ? (u.stats.flyer ? 900 + y : 50 + y) : 60);
       if (v.shadow) { v.shadow.setVisible(onField && u.stats.flyer && !u.down); v.shadow.setPosition(x, LANE_Y[1] + 34); }
+      if (onField && u.hp < (v.hpSeen ?? u.hp) - 0.4 && !u.down) {
+        const d = v.hpSeen - u.hp; v.shakeT = 0.18;
+        this.floatText(v.container.x + Phaser.Math.Between(-8, 8), v.container.y - 60, `-${Math.round(d)}`, '#ff6b6b', d >= (u.maxHp ?? u.stats.hp) * 0.2 ? 22 : 15);
+        this.fx.hit(v.container.x - 6, v.container.y - 10, 'red', false);
+      }
+      v.hpSeen = u.hp;
       const max = u.maxHp ?? u.stats.hp;
       v.bar.width = 50 * Math.max(0, u.hp) / max;
       v.bar.setFillStyle(u.hp / max < 0.3 ? 0xe74c3c : 0x2ecc71);
@@ -647,19 +658,30 @@ export default class BattleScene extends Phaser.Scene {
       if (!v) this.enemyViews.set(e.eid, (v = this.makeEnemyView(e)));
       const x = tileToX(Math.min(e.pos, this.data2.config.pathLength + 0.3));
       const bob = e.flying ? Math.sin((this.time.now / 300) + e.eid) * 5 : 0;
-      const y = e.flying ? PATH_Y - 72 + bob : PATH_Y + ((e.eid % 3) - 1) * 16 + (e.boss ? -6 : 0);
+      const blk = e.blockedBy != null ? this.state.field.find((u) => u.uid === e.blockedBy) : null;
+      const laneY = LANE_Y[blk && !blk.stats.flyer ? blk.lane ?? 1 : e.eid % 3] + 22;
+      v.laneY = v.laneY == null ? laneY : v.laneY + (laneY - v.laneY) * Math.min(1, (this.realDt || 0.016) * 6);
+      const y = e.flying ? PATH_Y - 110 + bob : v.laneY + (e.boss ? -6 : 0);
+      if (v.kb) { v.kb *= Math.pow(0.0005, this.realDt || 0.016); if (Math.abs(v.kb) < 0.3) v.kb = 0; }
+      const xk = x + (v.kb ?? 0);
+      if (e.hp < v.lastHp - 0.4) { v.dmgAcc = (v.dmgAcc ?? 0) + (v.lastHp - e.hp); }
+      if (v.dmgAcc && this.time.now - (v.dmgAt ?? 0) > 110) {
+        const d = v.dmgAcc, heavy = d >= e.maxHp * 0.18;
+        this.dmgNumber(xk, y - v.size / 2 - 26, d, heavy);
+        v.dmgAcc = 0; v.dmgAt = this.time.now;
+      }
       if (v.rig) {
-        v.holder.setPosition(x, y + v.px * 0.42);
+        v.holder.setPosition(xk, y + v.px * 0.42);
         const r = v.rig.inst, m = r.motion;
         const still = e.blockedBy !== null || e.holdLeft > 0 || e.stunLeft > 0;
         if (this.enemyHits?.has(e.eid)) r.play('attack');
         else if (!(m === 'attack' && !r.finished) && !(m === 'hit' && !r.finished)) { if (still && m !== 'idle') r.play('idle', { loop: true }); else if (!still && m !== 'move') r.play('move', { loop: true }); }
-        if (e.hp < v.lastHp - 0.01) r.hitFlash(0.08);
+        if (e.hp < v.lastHp - 0.01) { r.hitFlash(0.14); if (!(m === 'attack' && !r.finished)) r.play('hit'); }
         v.lastHp = e.hp;
         r.setFacing(e.confuseLeft > 0 ? 1 : -1);
         v.rig.view.update(e.stunLeft > 0 || e.holdLeft > 0 ? 0 : this.frameDt);
         v.holder.setDepth(70 + y / 10);
-      } else v.body.setPosition(x, y);
+      } else { v.body.setPosition(xk, y); if (e.hp < v.lastHp - 0.01) { v.body.setFillStyle?.(0xffffff); this.time.delayedCall(70, () => v.body.active && v.body.setFillStyle?.(hex(this.data2.enemyById[e.id].color))); } v.lastHp = e.hp; }
       v.bar.setPosition(x - v.barW / 2, y - v.size / 2 - (v.rig ? 22 : 7));
       v.bar.width = v.barW * Math.max(0, e.hp) / e.maxHp;
       v.label?.setPosition(x, y + v.size / 2 + 12);
@@ -667,7 +689,7 @@ export default class BattleScene extends Phaser.Scene {
       const stroke = e.holdLeft > 0 || e.stunLeft > 0 ? 0xffffff : e.confuseLeft > 0 ? 0xc39bd3 : e.poisonLeft > 0 ? 0x58d68d : e.slowLeft > 0 ? 0x5dade2 : null;
       if (!v.rig && v.body.setStrokeStyle) { if (stroke === null) v.body.setStrokeStyle(); else v.body.setStrokeStyle(3, stroke); }
       if (v.rig) { v.statusTint ??= null; const tint = stroke; if (tint !== v.statusTint) { v.statusTint = tint; for (const o of v.holder.list) if (o.setTint) { if (tint === null) o.clearTint(); else o.setTint(tint === 0xffffff ? 0xbbbbff : tint); } } }
-      v.lastX = x; v.lastY = y;
+      v.lastX = xk; v.lastY = y;
       this.fx.status(e, x, y);
     }
     for (const [eid, v] of this.enemyViews) {
@@ -681,6 +703,26 @@ export default class BattleScene extends Phaser.Scene {
         tick();
       } else v.body.destroy();
       (this.goneViews ??= new Map()).set(eid, v);
+    }
+  }
+
+  dmgNumber(x, y, d, heavy) {
+    const t = this.add.text(x + Phaser.Math.Between(-10, 10), y, String(Math.round(d)), style(heavy ? 26 : 17, heavy ? '#ffe066' : '#ffffff', { stroke: heavy ? '#7a2a00' : '#000000', strokeThickness: heavy ? 6 : 4, fontStyle: 'bold' })).setOrigin(0.5).setDepth(1700).setScale(heavy ? 1.6 : 1.2);
+    this.tweens.add({ targets: t, scale: 1, duration: 120, ease: 'Back.out' });
+    this.tweens.add({ targets: t, y: y - (heavy ? 42 : 30), alpha: 0, delay: heavy ? 380 : 220, duration: 420, onComplete: () => t.destroy() });
+  }
+
+  /** Hit-stop: freeze the simulation for a few frames on heavy hits. */
+  stopFor(sec) { const now = this.time.now; if (now - (this.lastStopAt ?? 0) < 220) return; this.lastStopAt = now; this.hitStop = Math.max(this.hitStop ?? 0, sec); }
+
+  /** Knock enemy sprites back from x and squash them (visual only). */
+  kick(eids, fromX, px) {
+    for (const id of eids) {
+      const v = this.enemyViews.get(id);
+      if (!v) continue;
+      v.kb = (Math.sign(v.lastX - fromX) || 1) * px;
+      const o = v.rig ? v.holder : v.body;
+      this.tweens.add({ targets: o, scaleX: { from: 1.18, to: 1 }, scaleY: { from: 0.84, to: 1 }, duration: 160, ease: 'Back.out' });
     }
   }
 
@@ -716,7 +758,18 @@ export default class BattleScene extends Phaser.Scene {
           if (!u || !ve) break;
           const [ux, uy] = unitPos(ev.uid);
           if (u.stats.range >= 3) { this.fx.projectile(u.speciesId, ux, uy, ve.lastX, ve.lastY, ev.aoe); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); }
-          else { this.fx.slash(ve.lastX, ve.lastY, ev.aoe ? 0xffe066 : 0xffffff); this.fx.hit(ve.lastX, ve.lastY, ev.aoe ? 'gold' : 'white', ev.aoe); if (ev.aoe) this.fx.ring(ve.lastX, ve.lastY + 10, 'gold', 1); sfx('slash'); sfx('hit'); }
+          else {
+            const v = this.unitViews.get(ev.uid);
+            if (v) { v.lungeT = 0; v.lungeDir = Math.sign(ve.lastX - ux) || 1; }
+            const big = ev.aoe || u.stats.role === 'bruiser';
+            this.fx.meleeArc(ux, uy, ve.lastX, ve.lastY, ev.aoe ? 0xffe066 : 0xffffff, big);
+            this.fx.hit(ve.lastX, ve.lastY, ev.aoe ? 'gold' : 'white', ev.aoe);
+            if (big) this.fx.impact(ve.lastX + 6, ve.lastY - 8, ev.aoe ? 0xffb35c : 0xffe066, ev.aoe ? 1.1 : 0.8);
+            if (ev.aoe) { this.fx.groundAoe(ve.lastX, ve.lastY + 26, 75, 0xffd84d, { shake: false }); this.stopFor(0.045); }
+            this.kick(ev.eids?.length ? ev.eids : [ev.eid], ux, big ? 12 : 7);
+            this.cameras.main.shake(70, big ? 0.0028 : 0.0014);
+            sfx('slash'); sfx('hit');
+          }
           this.fx.onHitFlavor(u.stats.effects, ve.lastX, ve.lastY);
           break;
         }
@@ -726,7 +779,8 @@ export default class BattleScene extends Phaser.Scene {
           const u = this.state.field.find((x) => x.uid === ev.uid);
           const extra = { color: u?.speciesId === 'wolf' ? 0xff7043 : 0xffd84d, allies: this.state.field.filter((o) => !o.down).map((o) => unitPos(o.uid)), allyAt: ev.ally != null ? unitPos(ev.ally) : null };
           this.fx.skillFx(ev.fx, at, targets, extra);
-          if (ev.name && ev.fx !== 'roosterFlee') this.floatText(at[0], at[1] - 55, ev.name, '#e8c3ff', 15);
+          if (ev.name) this.fx.shout(at[0], at[1] - 92, ev.name, SHOUT_COL[ev.fx] ?? 0xffe066);
+          if (targets.length && ['damageHeld', 'pushHeld', 'damageAll', 'stunRadius', 'flee'].includes(ev.fx)) { this.stopFor(0.07); this.kick(ev.eids ?? [], at[0], 16); }
           sfx(ev.fx === 'allyBuff' ? (u?.speciesId === 'wolf' ? 'howl' : 'note') : SKILL_SFX[ev.fx] ?? 'magic');
           break;
         }
@@ -823,4 +877,5 @@ export default class BattleScene extends Phaser.Scene {
 
 const time = () => performance.now();
 const SHOT_SFX = { crow: 'shoot', eagle: 'slash', fox: 'magic', rooster: 'note', grasshopper: 'note', frog: 'magic', cheese_thief: 'magic', thunderbird: 'bolt', phoenix: 'fire', bullfrog: 'magic' };
+const SHOUT_COL = { damageHeld: 0xffb35c, pushHeld: 0xffd08a, damageAll: 0xffb35c, flee: 0xff8a65, stunRadius: 0xb8ff8a, allyBuff: 0xffe066, stance: 0xa8e1ff, charm: 0xffb3d1, tongue: 0xffb3d1, hundred: 0xffe066, crowCall: 0xfff1a8, roosterFlee: 0xfff1a8, halveRespawn: 0xfff1a8 };
 const SKILL_SFX = { damageHeld: 'slash', flee: 'roar', pushHeld: 'slam', damageAll: 'stampede', stunRadius: 'slam', halveRespawn: 'crow', stance: 'stance', charm: 'charm', tongue: 'tongue', hundred: 'hundred', crowCall: 'crow', roosterFlee: 'crow' };

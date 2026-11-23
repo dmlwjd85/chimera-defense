@@ -86,7 +86,7 @@ export class FX {
       onComplete: () => {
         p.destroy();
         this.hit(x2, y2, tint, aoe);
-        if (aoe) this.ring(x2, y2, tint, 1.2);
+        if (aoe) { this.ring(x2, y2, tint, 1.2); this.groundAoe(x2, y2 + 26, 70, tint); }
       },
     });
   }
@@ -198,22 +198,111 @@ export class FX {
     for (let k = 0; k < 10; k++) this.scene.time.delayedCall(k * 45, () => { const x = 130 + k * 110; this.burst('puff', x, y + 20, 4, 0xc9a26a); this.burst('spark', x, y, 3, 0xffe066); });
   }
 
+  /** Melee swing: a thick crescent sweeping across the target, with speed lines. */
+  meleeArc(x1, y1, x2, y2, color = 0xffffff, big = false) {
+    const sc = this.scene;
+    const dir = Math.sign(x2 - x1) || 1;
+    const g = sc.add.graphics().setDepth(1605).setBlendMode('ADD');
+    const R = big ? 58 : 44;
+    const cx = x2 - dir * R * 0.55, cy = y2 - 4;
+    const a0 = dir > 0 ? -2.2 : Math.PI + 2.2, a1 = dir > 0 ? 0.9 : Math.PI - 0.9;
+    const t = { k: 0 };
+    sc.tweens.add({
+      targets: t, k: 1, duration: 170, ease: 'Cubic.out',
+      onUpdate: () => {
+        g.clear();
+        const end = a0 + (a1 - a0) * t.k, start = a0 + (a1 - a0) * Math.max(0, t.k - 0.55);
+        for (const [w, al, rr] of [[big ? 16 : 12, 0.35, R + 6], [big ? 9 : 7, 0.85, R], [3, 1, R - 7]]) {
+          g.lineStyle(w * (1 - t.k * 0.4), color, al * (1 - Math.max(0, t.k - 0.6) * 2.5));
+          g.beginPath(); g.arc(cx, cy, rr, Math.min(start, end), Math.max(start, end)); g.strokePath();
+        }
+      },
+      onComplete: () => sc.tweens.add({ targets: g, alpha: 0, duration: 90, onComplete: () => g.destroy() }),
+    });
+    for (let i = 0; i < (big ? 5 : 3); i++) {
+      const ly = y2 - 18 + i * 12 + Phaser.Math.Between(-3, 3);
+      const l = sc.add.rectangle(x2 - dir * 50, ly, 34, 2, 0xffffff, 0.8).setDepth(1604).setBlendMode('ADD');
+      sc.tweens.add({ targets: l, x: x2 + dir * 18, scaleX: 0.2, alpha: 0, duration: 160, delay: i * 18, onComplete: () => l.destroy() });
+    }
+  }
+
+  /** Impact star (cartoon "pow") on a heavy hit. */
+  impact(x, y, color = 0xffe066, size = 1) {
+    const sc = this.scene;
+    const g = sc.add.graphics().setDepth(1606);
+    const pts = []; for (let i = 0; i < 16; i++) { const r = (i % 2 ? 9 : 22) * size; const a = i / 16 * Math.PI * 2 + 0.2; pts.push({ x: Math.cos(a) * r, y: Math.sin(a) * r }); }
+    g.fillStyle(0xffffff, 1).fillPoints(pts, true);
+    g.lineStyle(2.5, color, 1).strokePoints(pts, true, true);
+    g.setPosition(x, y).setScale(0.3);
+    sc.tweens.add({ targets: g, scale: 1.25, duration: 90, ease: 'Back.out', onComplete: () => sc.tweens.add({ targets: g, alpha: 0, scale: 1.5, duration: 140, onComplete: () => g.destroy() }) });
+  }
+
+  /** Area damage painted on the road plane: flash disc, expanding rim, radial cracks, rim dust. */
+  groundAoe(x, y, r = 90, color = 0xffb35c, opts = {}) {
+    const sc = this.scene;
+    const flat = 0.34;
+    const g = sc.add.graphics().setDepth(opts.depth ?? 30).setPosition(x, y);
+    const t = { k: 0 };
+    const cracks = Array.from({ length: 9 }, (_, i) => ({ a: i / 9 * Math.PI * 2 + Math.random() * 0.4, l: 0.55 + Math.random() * 0.4 }));
+    sc.tweens.add({
+      targets: t, k: 1, duration: opts.dur ?? 520, ease: 'Cubic.out',
+      onUpdate: () => {
+        const k = t.k, rr = r * (0.25 + 0.75 * k), fade = 1 - k;
+        g.clear();
+        g.fillStyle(color, 0.45 * fade).fillEllipse(0, 0, rr * 2, rr * 2 * flat);
+        g.fillStyle(0xffffff, 0.45 * Math.max(0, 1 - k * 3)).fillEllipse(0, 0, rr * 1.2, rr * 1.2 * flat);
+        g.lineStyle(5 * fade + 1, color, 0.95 * fade).strokeEllipse(0, 0, rr * 2, rr * 2 * flat);
+        g.lineStyle(2, 0xffffff, 0.8 * fade).strokeEllipse(0, 0, rr * 1.7, rr * 1.7 * flat);
+        g.lineStyle(2.5, 0x2a1a08, 0.55 * Math.min(1, fade * 1.6));
+        for (const c of cracks) { const L = r * c.l * Math.min(1, k * 2.2); g.beginPath(); g.moveTo(0, 0); g.lineTo(Math.cos(c.a) * L * 0.5, Math.sin(c.a) * L * 0.5 * flat + 2); g.lineTo(Math.cos(c.a + 0.15) * L, Math.sin(c.a + 0.15) * L * flat); g.strokePath(); }
+      },
+      onComplete: () => g.destroy(),
+    });
+    for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2; this.scene.time.delayedCall(60, () => this.burst('puff', x + Math.cos(a) * r * 0.85, y + Math.sin(a) * r * 0.85 * flat - 6, 1, opts.dust ?? 0xd9c49a)); }
+    if (opts.shake !== false) sc.cameras.main.shake(140, 0.0035 * (r / 90));
+  }
+
+  /** Comic shout bubble with the skill name over the caster. */
+  shout(x, y, text, color = 0xffe066) {
+    const sc = this.scene;
+    sc.shoutSlots ??= [];
+    const now = sc.time.now;
+    sc.shoutSlots = sc.shoutSlots.filter((s) => s.until > now);
+    let yy = y;
+    while (sc.shoutSlots.some((s) => Math.abs(s.x - x) < 130 && Math.abs(s.y - yy) < 32)) yy -= 34;
+    sc.shoutSlots.push({ x, y: yy, until: now + 900 });
+    const c = sc.add.container(x, yy).setDepth(1750);
+    const t = sc.add.text(0, 0, text + '!', { fontFamily: FONT, fontSize: '19px', fontStyle: 'bold', color: '#2a1606', stroke: '#ffffff', strokeThickness: 4 }).setOrigin(0.5);
+    const w = t.width + 28, h = t.height + 14;
+    const g = sc.add.graphics();
+    const pts = [];
+    for (let i = 0; i < 22; i++) { const a = i / 22 * Math.PI * 2; const sp = i % 2 ? 1 : 1.16; pts.push({ x: Math.cos(a) * w / 2 * sp, y: Math.sin(a) * h / 2 * sp }); }
+    g.fillStyle(0x000000, 0.35).fillPoints(pts.map((p) => ({ x: p.x + 3, y: p.y + 4 })), true);
+    g.fillStyle(color, 1).fillPoints(pts, true);
+    g.lineStyle(3, 0x2a1606, 1).strokePoints(pts, true, true);
+    g.fillStyle(color, 1).fillTriangle(-8, h / 2 - 2, 8, h / 2 - 2, -2, h / 2 + 14);
+    g.lineStyle(3, 0x2a1606, 1).lineBetween(-8, h / 2 + 1, -2, h / 2 + 14).lineBetween(8, h / 2 + 1, -2, h / 2 + 14);
+    c.add([g, t]).setScale(0.2).setAngle(Phaser.Math.Between(-6, 6));
+    sc.tweens.add({ targets: c, scale: 1, duration: 160, ease: 'Back.out' });
+    sc.tweens.add({ targets: c, y: yy - 16, alpha: 0, delay: 780, duration: 260, onComplete: () => c.destroy() });
+  }
+
   /** Dispatch a skill event to its effect. at = [x,y] of the caster; targets = [[x,y]...]. */
   skillFx(kind, at, targets = [], extra = {}) {
     const [x, y] = at;
     switch (kind) {
-      case 'damageHeld': targets.forEach(([tx, ty]) => this.claws(tx, ty)); break;                       // 앞발 후려치기
-      case 'flee': this.shockwave(x, y, 0xff7043, 3, 3); this.burst('spark', x + 20, y - 20, 12, 0xffcc80); this.scene.cameras.main.shake(160, 0.004); break; // 어흥
-      case 'pushHeld': targets.forEach(([tx, ty]) => { this.burst('puff', tx, ty + 10, 6, 0xd9c49a); this.hit(tx, ty, 'white', true); }); this.ring(x + 30, y + 10, 0xffffff, 1.2); break; // 뒷발·뿔 자랑
-      case 'damageAll': this.stampede(y); targets.forEach(([tx, ty]) => this.hit(tx, ty, 'orange')); this.scene.cameras.main.shake(300, 0.005); break; // 떼 지어 달리기
-      case 'stunRadius': this.shockwave(x, y + 20, 0x9cff6b, 2, 2.6); this.burst('puff', x, y + 25, 10, 0xb8e0a0); targets.forEach(([tx, ty]) => this.burst('star', tx, ty - 20, 4)); this.scene.cameras.main.shake(200, 0.006); break; // 방석 착지
+      case 'damageHeld': targets.forEach(([tx, ty]) => { this.claws(tx, ty); this.impact(tx, ty - 6, 0xffa040, 1.2); }); break;                       // 앞발 후려치기
+      case 'flee': this.groundAoe(x + 60, y + 30, 170, 0xff7043); this.shockwave(x, y, 0xff7043, 3, 3); this.burst('spark', x + 20, y - 20, 12, 0xffcc80); this.scene.cameras.main.shake(160, 0.004); break; // 어흥
+      case 'pushHeld': targets.forEach(([tx, ty]) => { this.groundAoe(tx, ty + 26, 60, 0xffffff, { shake: false }); this.impact(tx, ty - 6, 0xffb35c, 1.1); this.burst('puff', tx, ty + 10, 6, 0xd9c49a); this.hit(tx, ty, 'white', true); }); this.ring(x + 30, y + 10, 0xffffff, 1.2); break; // 뒷발·뿔 자랑
+      case 'damageAll': this.stampede(y); targets.forEach(([tx, ty], i) => this.scene.time.delayedCall(i * 40, () => this.groundAoe(tx, ty + 26, 80, 0xffb35c, { shake: false }))); targets.forEach(([tx, ty]) => this.hit(tx, ty, 'orange')); this.scene.cameras.main.shake(300, 0.005); break; // 떼 지어 달리기
+      case 'stunRadius': this.groundAoe(x, y + 30, 150, 0x9cff6b); this.shockwave(x, y + 20, 0x9cff6b, 2, 2.6); this.burst('puff', x, y + 25, 10, 0xb8e0a0); targets.forEach(([tx, ty]) => this.burst('star', tx, ty - 20, 4)); this.scene.cameras.main.shake(200, 0.006); break; // 방석 착지
       case 'allyBuff': this.pillar(x, y, extra.color ?? 0xffd84d); this.burst('note', x, y - 30, 10, extra.color ?? 0xffd84d); (extra.allies ?? []).forEach(([ax, ay]) => this.ring(ax, ay + 20, extra.color ?? 0xffd84d, 0.9)); break; // 하울링·전국 투어
       case 'halveRespawn': this.burst('bigFlare', x, y - 30, 1, 0xffe066); if (extra.allyAt) { this.pillar(...extra.allyAt, 0xffe066); this.burst('rise', ...extra.allyAt, 12, 0xffe066); } break; // 새벽 네 시
       case 'stance': this.pillar(x, y, 0x7fd1ff); this.ring(x, y + 10, 0x7fd1ff, 1.2); break; // 겨울잠 직전·몸 부풀리기
       case 'charm': targets.forEach(([tx, ty]) => { this.burst('heart', tx, ty - 10, 5); this.burst('flare', tx, ty, 1, 0xff8fb1); }); this.burst('heart', x, y - 30, 3); break; // 홀리기
       case 'tongue': targets.forEach(([tx, ty]) => this.line(x + 20, y - 5, tx, ty, 0xff8fb1, 7, 160)); break; // 혀 낚시
-      case 'hundred': this.pillar(x, y, 0xffd84d); this.shockwave(x, y, 0xffd84d, 2, 2); this.burst('star', x, y - 30, 16, 0xffd84d); break; // 백일 수행
-      case 'crowCall': this.burst('bigFlare', x, y - 40, 1, 0xffe066); this.burst('note', x, y - 40, 12, 0xffe066); this.shockwave(x, y - 20, 0xffe066, 2, 2.5); break; // 꼬끼오
+      case 'hundred': this.groundAoe(x, y + 30, 120, 0xffd84d, { shake: false }); this.pillar(x, y, 0xffd84d); this.shockwave(x, y, 0xffd84d, 2, 2); this.burst('star', x, y - 30, 16, 0xffd84d); break; // 백일 수행
+      case 'crowCall': this.groundAoe(x, y + 30, 220, 0xffe066, { shake: false, dur: 700 }); this.burst('bigFlare', x, y - 40, 1, 0xffe066); this.burst('note', x, y - 40, 12, 0xffe066); this.shockwave(x, y - 20, 0xffe066, 2, 2.5); break; // 꼬끼오
       case 'roosterFlee': this.burst('note', x, y - 30, 4, 0xfff6a0); targets.forEach(([tx, ty]) => this.burst('puff', tx, ty, 3, 0xffffff)); break; // 닭이 울면 귀신이 물러간다
       case 'hold': targets.forEach(([tx, ty]) => { this.ring(tx, ty + 10, extra.burst ? 0xff9f43 : 0xffffff, 0.7, 300); if (extra.burst) this.hit(tx, ty, 'orange', true); }); break; // 저지·들이받기
       case 'counter': targets.forEach(([tx, ty]) => { this.slash(tx, ty, 0x7fd1ff); this.hit(tx, ty, 'blue'); }); break; // 약 올리기

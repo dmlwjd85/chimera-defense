@@ -9,7 +9,7 @@ OUT = os.path.join(ROOT, 'public', 'assets', 'bg')
 FX = os.path.join(ROOT, 'public', 'assets', 'fx')
 os.makedirs(OUT, exist_ok=True); os.makedirs(FX, exist_ok=True)
 W, H = 1280, 720
-PY, PH, X0, TILE = 330, 120, 100, 90
+PY, PH, X0, TILE = 340, 190, 100, 90
 TOP, BOT = PY - PH // 2, PY + PH // 2  # 270..390
 DEPTH = 26  # front face thickness of the path slab
 
@@ -296,15 +296,15 @@ def scene(stage, zones, seed, overlay=False, guide=False):
 
 def path_layer(zones, rng):
     out = ''
-    # home gate (left) and enemy portal (right)
-    out += f'<rect x="20" y="230" width="70" height="170" rx="8" fill="#6b4a2e"/><path d="M14 236 Q55 196 96 236 Z" fill="#a1442c"/><rect x="34" y="300" width="42" height="100" rx="20" fill="#3a2716"/>'
-    out += ''.join(f'<rect x="{12+k*20}" y="{240+(k%2)*6}" width="12" height="160" rx="5" fill="#8a6a44"/>' for k in range(0))
-    out += f'<rect x="20" y="230" width="8" height="170" fill="#4a3220"/><rect x="82" y="230" width="8" height="170" fill="#4a3220"/>'
-    out += lantern(24, 300, 0.9) + lantern(86, 300, 0.9)
-    out += f'<ellipse cx="1232" cy="320" rx="90" ry="130" fill="url(#portal)" opacity="0.9" filter="url(#soft)"/>'
-    out += f'<ellipse cx="1232" cy="320" rx="38" ry="76" fill="#1a0b2b" stroke="#c48bff" stroke-width="5"/><ellipse cx="1232" cy="320" rx="26" ry="58" fill="none" stroke="#7b3fbf" stroke-width="4" stroke-dasharray="14 10"/>'
-    out += f'<path d="M1196 250 L1206 222 L1218 246 M1262 246 L1274 218 L1280 244" stroke="#4d4a5b" stroke-width="10" stroke-linecap="round"/>'
-    out += rock(1200, 410, 1.1, '#5d5a6b') + rock(1262, 400, 0.9, '#4d4a5b')
+    # home gate (left) and enemy portal (right), anchored to the road band
+    gt, gb = TOP - 30, BOT + 6
+    out += f'<rect x="20" y="{gt}" width="70" height="{gb-gt}" rx="8" fill="#6b4a2e"/><path d="M12 {gt+6} Q55 {gt-40} 98 {gt+6} Z" fill="#a1442c"/><rect x="34" y="{gt+80}" width="42" height="{gb-gt-80}" rx="20" fill="#3a2716"/>'
+    out += f'<rect x="20" y="{gt}" width="8" height="{gb-gt}" fill="#4a3220"/><rect x="82" y="{gt}" width="8" height="{gb-gt}" fill="#4a3220"/>'
+    out += lantern(24, gt + 70, 0.9) + lantern(86, gt + 70, 0.9)
+    out += f'<ellipse cx="1232" cy="{PY}" rx="100" ry="{PH*0.9:.0f}" fill="url(#portal)" opacity="0.9" filter="url(#soft)"/>'
+    out += f'<ellipse cx="1232" cy="{PY}" rx="44" ry="{PH*0.55:.0f}" fill="#1a0b2b" stroke="#c48bff" stroke-width="5"/><ellipse cx="1232" cy="{PY}" rx="30" ry="{PH*0.42:.0f}" fill="none" stroke="#7b3fbf" stroke-width="4" stroke-dasharray="14 10"/>'
+    out += f'<path d="M1190 {PY-PH*0.55:.0f} L1202 {PY-PH*0.72:.0f} L1214 {PY-PH*0.56:.0f} M1252 {PY-PH*0.56:.0f} L1266 {PY-PH*0.74:.0f} L1278 {PY-PH*0.55:.0f}" stroke="#4d4a5b" stroke-width="10" stroke-linecap="round"/>'
+    out += rock(1196, BOT + 14, 1.1, '#5d5a6b') + rock(1262, BOT + 6, 0.9, '#4d4a5b')
     # path tiles
     out += '<!--tiles-->'
     out += f'<rect x="{X0-6}" y="{BOT+DEPTH-4}" width="{12*TILE+12}" height="22" fill="#000" opacity="0.35" filter="url(#soft)"/>'
@@ -366,6 +366,14 @@ def road_svg(zones, rng, alpha=0.92, seams=True, tufts=True):
         if z == 'wetland': out += reeds(x0 + 30, BOT + 12, 0.9, rng) + reeds(x0 + 320, BOT + 16, 0.8, rng)
     return out
 
+def seams_svg(stage, zones):
+    out = f'<rect x="0" y="{BOT+50}" width="{W}" height="{H-BOT-50}" fill="url(#uiFade)"/>'
+    for t in range(1, 12):
+        x = X0 + t * TILE; zb = t % 4 == 0
+        out += f'<path d="M{x} {TOP+14} V{BOT-14}" stroke="{"#fff3d6" if zb else "#2a1a08"}" stroke-width="{2.5 if zb else 1.5}" stroke-dasharray="{"" if zb else "5 10"}" opacity="{0.32 if zb else 0.16}" stroke-linecap="round"/>'
+    out += f'<rect width="{W}" height="{H}" fill="url(#vig)"/>'
+    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W*2}" height="{H*2}"><defs>{defs(stage, zones)}</defs>{out}</svg>'
+
 def overlay_svg(stage, zones, rng, sk):
     out = f'<rect x="0" y="{BOT+70}" width="{W}" height="{H-BOT-70}" fill="url(#uiFade)"/>'
     out += road_svg(zones, rng, alpha=0.88, tufts=False)
@@ -377,7 +385,7 @@ def overlay_svg(stage, zones, rng, sk):
     out += f'<rect width="{W}" height="{H}" fill="url(#vig)"/>'
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W*2}" height="{H*2}"><defs>{defs(stage, zones)}</defs>{out}</svg>'
 
-def ai_composite(svg, ai_path, name, q=88, night=False):
+def ai_composite(svg, ai_path, name, q=88, night=False, light=True):
     """Fit the AI scenery to 2560x1440 (cover), soften/grade it a touch, then lay the path overlay on top."""
     tmp = os.path.join(OUT, name + '.svg'); png = os.path.join(OUT, name + '_ov.png')
     open(tmp, 'w').write(svg)
@@ -394,7 +402,7 @@ def ai_composite(svg, ai_path, name, q=88, night=False):
     band = ai.convert('L')
     lum = ImageStat.Stat(band).mean[0] / 255
     k = max(0.5, min(1.0, 0.15 + lum / 0.5 * 0.85)) * (0.8 if night else 1)
-    if k < 0.99:
+    if light and k < 0.99:
         r_, g_, b_, a_ = ov.split()
         cool = 1 + (1 - k) * 0.35
         ov = Image.merge('RGBA', (r_.point(lambda v: int(v * k)), g_.point(lambda v: int(v * k)), b_.point(lambda v: min(255, int(v * k * cool))), a_))
@@ -441,6 +449,16 @@ def make_fx():
     fx_png('feather', 32, '<path d="M-14 2 Q0 -10 14 -2 Q0 6 -14 2 Z" fill="#fff"/><path d="M-14 2 L14 -2" stroke="#bbb" stroke-width="1"/>')
     fx_png('beam', 64, '<rect x="-12" y="-32" width="24" height="64" fill="url(#r)"/>')
 
+def make_pass2():
+    """Composite (painting + road/gate/portal overlay, no UI fade) at 1344x768 for the 리코스 repaint pass."""
+    stages = json.load(open(os.path.join(ROOT, 'public', 'data', 'stages.json')))
+    gd = os.path.join(ROOT, 'art-src', 'guides')
+    for i, st in enumerate(stages):
+        ai = os.path.join(ROOT, 'art-src', 'recos', f'{st["id"]}.png')
+        im = ai_composite(scene(st['id'], st['zones'], 100 + i, overlay=True), ai, 'p2tmp', night=bool(SKY[st['id']]['tint']))
+        os.remove(os.path.join(OUT, 'p2tmp.jpg'))
+        im.resize((1344, 768), Image.LANCZOS).save(os.path.join(gd, f'pass2_{st["id"]}.png'))
+
 def make_guides():
     stages = json.load(open(os.path.join(ROOT, 'public', 'data', 'stages.json')))
     gd = os.path.join(ROOT, 'art-src', 'guides'); os.makedirs(gd, exist_ok=True)
@@ -472,7 +490,9 @@ def main():
     images = {}
     for i, st in enumerate(stages):
         ai = os.path.join(ROOT, 'art-src', 'recos', f'{st["id"]}.png')
-        if os.path.exists(ai): im = ai_composite(scene(st['id'], st['zones'], 100 + i, overlay=True), ai, 'bg-' + st['id'], night=bool(SKY[st['id']]['tint']))
+        fin = os.path.join(ROOT, 'art-src', 'recos', f'{st["id"]}_final.png')
+        if os.path.exists(fin): im = ai_composite(seams_svg(st['id'], st['zones']), fin, 'bg-' + st['id'], light=False)
+        elif os.path.exists(ai): im = ai_composite(scene(st['id'], st['zones'], 100 + i, overlay=True), ai, 'bg-' + st['id'], night=bool(SKY[st['id']]['tint']))
         else: im = to_jpg(scene(st['id'], st['zones'], 100 + i), 'bg-' + st['id'])
         images['bg-' + st['id']] = f'assets/bg/bg-{st["id"]}.jpg'
         if i == 0:
@@ -490,4 +510,4 @@ def main():
 
 if __name__ == '__main__':
     import sys
-    make_guides() if 'guides' in sys.argv else main()
+    make_guides() if 'guides' in sys.argv else make_pass2() if 'pass2' in sys.argv else main()

@@ -1,8 +1,9 @@
 # Publishes dist/ (game + rig lab) to GitHub Pages.
-# Manual only: Pages must first be turned on in Settings → Pages → Source: GitHub Actions
-# (a private repo needs a paid plan for Pages).
+# Runs on every push to main, and can also be run by hand.
 name: Pages
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read

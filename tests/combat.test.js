@@ -10,7 +10,23 @@ test('bear blocks up to its block count', async () => {
   const bear = await mkUnit(D, 1, 'bear', 'young', 3);
   const es = await Promise.all([5, 5.2, 5.4, 5.6].map((p, i) => mkEnemy(D, 'normal', p, i + 1)));
   const s = mkState(D, [bear], es);
-  run(s, 3);
+  run(s, 2.2);
+  const on = s.enemies.filter((e) => e.blockedBy === 1);
+  assert.equal(on.filter((e) => !e.crowd).length, bear.stats.block, '정식으로 막는 수는 막기 수만큼');
+  assert.equal(on.length, 4, '넘친 적도 지나가지 않고 달라붙어 싸움');
+});
+
+test('넘친 적은 잠시 치고받다가 밀치고 빠져나감, 같은 동물에게 다시 붙지 않음', async () => {
+  const bear = await mkUnit(D, 1, 'bear', 'young', 3);
+  bear.stats.hp = bear.hp = bear.maxHp = 1e9;
+  const es = await Promise.all([5, 5.2, 5.4, 5.6].map((p, i) => mkEnemy(D, 'normal', p, i + 1)));
+  for (const e of es) e.hp = e.maxHp = 1e9;
+  const s = mkState(D, [bear], es);
+  run(s, 2.2);
+  const extra = s.enemies.find((e) => e.crowd);
+  assert.ok(extra, '달라붙은 적');
+  run(s, D.config.crowd.hold + 0.5);
+  assert.ok(extra.blockedBy === null && extra.passed.includes(1) && extra.pos < bear.pos, '빠져나감');
   assert.equal(s.enemies.filter((e) => e.blockedBy === 1).length, bear.stats.block);
 });
 

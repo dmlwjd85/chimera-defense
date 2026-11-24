@@ -42,15 +42,19 @@ def arm_parts(P, Bn, O, n, src, far, thick, y, rot, lo_rot, up=(140, 92), lo=(11
     leg_bones(Bn, O, n, up[1], lo[1], y=y, rot=rot); Bn[f'leg_{n}_lo'].update(rot=lo_rot)
     O[f'leg_{n}_up'] = {'x': round(up[1] * 0.42)}; O[f'leg_{n}_paw'] = {'x': round(lo[0] * 0.30 / 0.40 * 0.36)}
 
-def biped(head=204, ear=66, tail=240, attacks=('claw', 'attack', 'butt'), tail_part=True, torso=1.4, arm=1.25, leg=1.28):
+def biped(head=204, ear=66, tail=240, attacks=('claw', 'attack', 'butt'), tail_part=True, torso=1.4, arm=1.25, leg=1.28, split=False):
     """두 발로 선 신화급(산군·웅녀): 넓은 가슴, 솟은 목덜미·등, 굵은 팔다리. 엉덩이 관절은 모으고 발만 벌려 딛음(걸을 땐 두 발이 교차)."""
     P, O = {}, {'head': {'x': 26, 'y': 4}, 'ear_n': {'x': -4}, 'ear_r': {'x': -14}}
     Bn = {'neck': {'length': 14}, 'head': {'x': 14}, 'ear_r': {'x': 46, 'y': -56, 'rot': -72}}   # 먼 귀는 머리 위 앞쪽으로 살짝 보임(도안)
     # 몸통: 가슴(위 60%) 위에 허리띠·골반(아래 50%)을 얹어 이음매가 띠 밑으로 숨음
-    P['torso_front'] = {'src': 'body', 'crop': [0, 0, 1, 0.60], 'length': 180, 'rot': -90, 'thick': torso}; O['torso_front'] = {'x': 66, 'y': -5}
-    P['body'] = {'src': 'body', 'crop': [0, 0.46, 1, 1], 'length': 162, 'rot': -90, 'thick': torso}; O['body'] = {'x': 36, 'z': 5}
-    # 목덜미·등 근육: 머리 뒤에서 등으로 이어지는 둥근 덩어리(도안의 솟은 승모근). 가슴 뼈에 붙어 숨 쉴 때 같이 움직임
-    P['chest_fluff'] = {'src': 'lup', 'length': 176, 'rot': -90, 'thick': 1.0, 'feather': ['right', 'bottom']}; O['chest_fluff'] = {'x': -40, 'y': -46}
+    if split:   # 부위판에 윗몸통(솟은 목덜미·어깨 포함)과 허리띠 골반이 따로 있음
+        P['torso_front'] = {'src': 'torso', 'length': 246, 'rot': -90, 'thick': torso * 0.82}; O['torso_front'] = {'x': 56, 'y': -8}
+        P['body'] = {'src': 'pelvis', 'crop': [0, 0.24, 1, 1], 'length': 133, 'rot': -90, 'thick': torso * 0.82}; O['body'] = {'x': 8, 'z': 5}   # 위 테두리(그릇 입구)는 잘라 가슴 밑이 띠 속으로 들어간 것처럼
+    else:
+        P['torso_front'] = {'src': 'body', 'crop': [0, 0, 1, 0.60], 'length': 180, 'rot': -90, 'thick': torso}; O['torso_front'] = {'x': 66, 'y': -5}
+        P['body'] = {'src': 'body', 'crop': [0, 0.46, 1, 1], 'length': 162, 'rot': -90, 'thick': torso}; O['body'] = {'x': 36, 'z': 5}
+        # 목덜미·등 근육 임시: 허벅지 조각을 빌려 등에 얹음
+        P['chest_fluff'] = {'src': 'lup', 'length': 176, 'rot': -90, 'thick': 1.0, 'feather': ['right', 'bottom']}; O['chest_fluff'] = {'x': -40, 'y': -46}
     P['head'] = {'src': 'head', 'length': head}
     P['ear_n'] = {'src': 'ear_n', 'length': ear, 'rot': -90}; P['ear_r'] = {'src': 'ear_r', 'length': round(ear * 0.95), 'rot': -90, 'dark': 0.85}
     # 팔: 두 손 모두 손등이 보이는 주먹 조각(손바닥이 바깥을 향해 보이면 어색함)
@@ -62,8 +66,27 @@ def biped(head=204, ear=66, tail=240, attacks=('claw', 'attack', 'butt'), tail_p
     for n in ('bn', 'br'): P[f'leg_{n}_lo']['thick'] = leg * 0.9; P[f'leg_{n}_paw']['thick'] = leg * 0.9
     for n in ('br',): [P[f'leg_{n}_{k}'].update(dark=0.88) for k in ('up', 'lo', 'paw')]
     if tail_part: P['tail'] = {'src': 'tail', 'length': tail, 'flipV': True}; O['tail'] = {'rope': None, 'x': 100, 'y': 0}
-    hide = [h for h in HIDE if h != 'chest_fluff'] + ['horn'] + ([] if tail_part else ['tail'])
+    hide = [h for h in HIDE if split or h != 'chest_fluff'] + ['horn'] + ([] if tail_part else ['tail'])
     return {'hide': hide, 'bones': Bn, 'boneScale': {}, 'over': O, 'parts': P, 'attacks': list(attacks), 'stance': {'bn': 44, 'br': -40}}
+
+def cerberus():
+    """케르베로스: 불꽃 갈기 시바. 나머지 머리 둘은 한 조각(wing 칸)으로 목에 붙여 본래 머리 뒤에 둠."""
+    f = quad(100, 150, curl=True, head=240, attacks=('bite', 'pounce', 'claw'), up=(96, 66), lo=(90, 74), thick=1.1)
+    f['parts']['wing'] = {'src': 'heads', 'length': 430}
+    f['hide'] = [h for h in f['hide'] if h != 'wing']
+    f['over']['wing'] = {'bone': 'neck', 'x': 10, 'y': -60, 'rot': 55, 'z': 4.8}   # 목의 기울기를 되돌려 곧게, 본래 머리 뒤 위로
+    return f
+
+def ungnyeo():
+    """웅녀: 산군과 같은 두 발 골격, 저고리 윗몸통·마늘 목걸이, 앞손에 쑥 한 다발. 꼬리는 짧아서 숨김."""
+    f = biped(head=240, ear=62, attacks=('attack', 'butt', 'claw'), tail_part=False, torso=1.3, arm=1.2, leg=1.22, split=True)
+    f['parts']['torso_front'].update(crop=[0.02, 0.07, 0.86, 1], length=232)   # 앞소매 토막·목 테두리는 잘라냄(팔이 그 자리를 덮음)
+    f['over']['torso_front'].update(x=44, y=10)   # 저고리 앞섶·마늘 목걸이가 가슴 앞에 오게
+    f['bones']['leg_fr_up']['y'] = 22   # 먼 팔은 몸통 뒤로 숨겨 등 뒤로 소매가 삐져나오지 않게
+    f['parts']['deco'] = {'src': 'mugwort', 'length': 118, 'rot': -60}
+    f['hide'] = [h for h in f['hide'] if h != 'deco']
+    f['over']['deco'] = {'bone': 'leg_fn_paw', 'x': 18, 'y': -6, 'z': 8.1}
+    return f
 
 FITS = {
  'dog': quad(105, 150, curl=True, attacks=('bite', 'claw')),
@@ -75,7 +98,9 @@ FITS = {
  'bison': quad(80, 150, 65, head=270, attacks=('butt',), thick=1.1),
  'bighorn': quad(80, 90, 35, horn=200, attacks=('butt',)),
  'fox_spirit': quad(140, head=255, fan=360, attacks=('bite', 'pounce', 'claw'), up=(100, 68), lo=(92, 78)),
- 'tiger_spirit': biped(),
+ 'tiger_spirit': biped(split=True),
+ 'dog_spirit': cerberus(),
+ 'bear_spirit': ungnyeo(),
 }
 if __name__ == '__main__':
     for k, v in FITS.items(): json.dump(v, open(os.path.join(OUT, k + '.json'), 'w'), ensure_ascii=False, indent=1)

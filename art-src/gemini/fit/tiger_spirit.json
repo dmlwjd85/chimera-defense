@@ -5,7 +5,6 @@
   "nose",
   "eye",
   "belly",
-  "chest_fluff",
   "neck",
   "wing",
   "deco",
@@ -13,40 +12,45 @@
  ],
  "bones": {
   "neck": {
-   "length": 26
+   "length": 14
   },
   "head": {
-   "x": 26
+   "x": 14
+  },
+  "ear_r": {
+   "x": 46,
+   "y": -56,
+   "rot": -72
   },
   "leg_fn_up": {
    "length": 92,
-   "y": -16,
-   "rot": 152
+   "y": -14,
+   "rot": 162
   },
   "leg_fn_lo": {
    "x": 92,
-   "length": 92,
-   "rot": -62
+   "length": 80,
+   "rot": -58
   },
   "leg_fn_paw": {
-   "x": 92
+   "x": 80
   },
   "leg_fr_up": {
    "length": 92,
-   "y": 44,
-   "rot": 128
+   "y": 46,
+   "rot": 142
   },
   "leg_fr_lo": {
    "x": 92,
-   "length": 92,
-   "rot": -72
+   "length": 80,
+   "rot": -58
   },
   "leg_fr_paw": {
-   "x": 92
+   "x": 80
   },
   "leg_bn_up": {
    "length": 74,
-   "y": 48
+   "y": 18
   },
   "leg_bn_lo": {
    "x": 74,
@@ -57,7 +61,7 @@
   },
   "leg_br_up": {
    "length": 74,
-   "y": -44
+   "y": -16
   },
   "leg_br_lo": {
    "x": 74,
@@ -70,39 +74,44 @@
  "boneScale": {},
  "over": {
   "head": {
-   "x": 30,
-   "y": 0
+   "x": 26,
+   "y": 4
   },
   "ear_n": {
    "x": -4
   },
   "ear_r": {
-   "x": -6
-  },
-  "body": {
-   "x": 30
+   "x": -14
   },
   "torso_front": {
-   "x": 68,
+   "x": 66,
    "y": -5
   },
+  "body": {
+   "x": 36,
+   "z": 5
+  },
+  "chest_fluff": {
+   "x": -40,
+   "y": -46
+  },
   "leg_fn_up": {
-   "x": 46
+   "x": 39
   },
   "leg_fn_lo": {
-   "x": 46
-  },
-  "leg_fr_up": {
-   "x": 46
-  },
-  "leg_fr_lo": {
-   "x": 46
+   "x": 40
   },
   "leg_fn_paw": {
-   "x": 24
+   "x": 30
+  },
+  "leg_fr_up": {
+   "x": 39
+  },
+  "leg_fr_lo": {
+   "x": 40
   },
   "leg_fr_paw": {
-   "x": 24
+   "x": 30
   },
   "leg_bn_up": {
    "x": 37
@@ -123,146 +132,153 @@
   }
  },
  "parts": {
-  "body": {
-   "src": "body",
-   "crop": [
-    0,
-    0.5,
-    1,
-    1
-   ],
-   "length": 150,
-   "rot": -90,
-   "thick": 1.22
-  },
   "torso_front": {
    "src": "body",
    "crop": [
     0,
     0,
     1,
-    0.58
+    0.6
    ],
-   "feather": [
-    "bottom"
-   ],
-   "length": 174,
+   "length": 180,
    "rot": -90,
-   "thick": 1.5
+   "thick": 1.4
+  },
+  "body": {
+   "src": "body",
+   "crop": [
+    0,
+    0.46,
+    1,
+    1
+   ],
+   "length": 162,
+   "rot": -90,
+   "thick": 1.4
+  },
+  "chest_fluff": {
+   "src": "lup",
+   "length": 176,
+   "rot": -90,
+   "thick": 1.0,
+   "feather": [
+    "right",
+    "bottom"
+   ]
   },
   "head": {
    "src": "head",
-   "length": 186
+   "length": 204
   },
   "ear_n": {
    "src": "ear_n",
-   "length": 64,
+   "length": 66,
    "rot": -90
   },
   "ear_r": {
    "src": "ear_r",
-   "length": 61,
+   "length": 63,
    "rot": -90,
    "dark": 0.85
   },
   "leg_fn_up": {
    "src": "aup",
-   "length": 150,
-   "rot": 90,
-   "thick": 1.55,
    "crop": [
     0,
     0,
     1,
-    0.74
+    0.54
    ],
    "feather": [
     "bottom"
-   ]
+   ],
+   "length": 140,
+   "rot": 90,
+   "thick": 1.25
   },
   "leg_fn_lo": {
-   "src": "alo",
+   "src": "aup",
    "crop": [
     0,
-    0,
+    0.4,
     1,
-    0.7
+    0.8
    ],
    "feather": [
-    "bottom"
+    "top"
    ],
-   "length": 124,
+   "length": 112,
    "rot": 90,
-   "thick": 1.55
+   "thick": 1.25
   },
   "leg_fn_paw": {
-   "src": "alo",
+   "src": "aup",
    "crop": [
     0,
-    0.58,
+    0.7,
     1,
     1
    ],
    "feather": [
     "top"
    ],
-   "length": 74,
+   "length": 84,
    "rot": 90,
-   "thick": 1.395
+   "thick": 1.25
   },
   "leg_fr_up": {
    "src": "aup",
-   "length": 146,
-   "rot": 90,
-   "thick": 1.55,
-   "dark": 0.82,
    "crop": [
     0,
     0,
     1,
-    0.74
+    0.54
    ],
    "feather": [
     "bottom"
-   ]
+   ],
+   "length": 140,
+   "rot": 90,
+   "thick": 1.25,
+   "dark": 0.88
   },
   "leg_fr_lo": {
-   "src": "alo",
+   "src": "aup",
    "crop": [
     0,
-    0,
+    0.4,
     1,
-    0.7
+    0.8
    ],
    "feather": [
-    "bottom"
+    "top"
    ],
-   "length": 120,
+   "length": 112,
    "rot": 90,
-   "thick": 1.55,
-   "dark": 0.82
+   "thick": 1.25,
+   "dark": 0.88
   },
   "leg_fr_paw": {
-   "src": "alo",
+   "src": "aup",
    "crop": [
     0,
-    0.58,
+    0.7,
     1,
     1
    ],
    "feather": [
     "top"
    ],
-   "length": 72,
+   "length": 84,
    "rot": 90,
-   "thick": 1.395,
-   "dark": 0.82
+   "thick": 1.25,
+   "dark": 0.88
   },
   "leg_bn_up": {
    "src": "lup",
    "length": 128,
    "rot": 90,
-   "thick": 1.5
+   "thick": 1.28
   },
   "leg_bn_lo": {
    "src": "llo",
@@ -272,12 +288,9 @@
     1,
     0.7
    ],
-   "feather": [
-    "bottom"
-   ],
    "length": 108,
    "rot": 90,
-   "thick": 1.29
+   "thick": 1.1520000000000001
   },
   "leg_bn_paw": {
    "src": "llo",
@@ -293,14 +306,14 @@
    "ankle": true,
    "axis": "tall",
    "length": 59,
-   "thick": 1.29
+   "thick": 1.1520000000000001
   },
   "leg_br_up": {
    "src": "lup",
    "length": 124,
    "rot": 90,
-   "thick": 1.5,
-   "dark": 0.82
+   "thick": 1.28,
+   "dark": 0.88
   },
   "leg_br_lo": {
    "src": "llo",
@@ -310,13 +323,10 @@
     1,
     0.7
    ],
-   "feather": [
-    "bottom"
-   ],
    "length": 104,
    "rot": 90,
-   "thick": 1.29,
-   "dark": 0.82
+   "thick": 1.1520000000000001,
+   "dark": 0.88
   },
   "leg_br_paw": {
    "src": "llo",
@@ -332,8 +342,8 @@
    "ankle": true,
    "axis": "tall",
    "length": 56,
-   "thick": 1.29,
-   "dark": 0.82
+   "thick": 1.1520000000000001,
+   "dark": 0.88
   },
   "tail": {
    "src": "tail",
@@ -345,5 +355,9 @@
   "claw",
   "attack",
   "butt"
- ]
+ ],
+ "stance": {
+  "bn": 44,
+  "br": -40
+ }
 }

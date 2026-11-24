@@ -51,8 +51,12 @@ export class RigInstance {
     for (const l of this.ik) {
       const lo = this.bones[this.boneIndex[l.lower]], up = this.bones[this.boneIndex[l.upper]];
       const a = apply(worlds[l.upper], 0, 0), k = apply(worlds[l.lower], 0, 0), f = apply(worlds[l.lower], lo.length || 0, 0);
-      this.footRest[l.name] = { x: f[0], y: f[1], unit: (Math.hypot(k[0] - a[0], k[1] - a[1]) + Math.hypot(f[0] - k[0], f[1] - k[1])) / 174 };
+      const unit = (Math.hypot(k[0] - a[0], k[1] - a[1]) + Math.hypot(f[0] - k[0], f[1] - k[1])) / 174;
+      // rig.stance: 서 있을 때 발을 벌려 딛는 폭(엉덩이 관절은 모아 두고 발만 앞뒤로 벌림)
+      this.footRest[l.name] = { x: f[0] + (this.rig.stance?.[l.name] || 0) * unit, y: f[1], px: f[0], unit };
     }
+    const fr = Object.values(this.footRest);
+    this.footCenter = fr.length ? fr.reduce((s, r) => s + r.px, 0) / fr.length : 0;   // 걸을 때 두 발이 교차하는 중심선
     this.lastIk = null;
   }
   /** play(name, { loop, mix, then }) — non-loop clips return to `then` (default idle) unless the clip holds its last frame. */
@@ -126,7 +130,7 @@ export class RigInstance {
         }
         const o = offsets['ik_' + l.name];
         if (o) { x += o.x; y += o.y; pitch += o.rot; }
-        cur = { x: rest.x + x * rest.unit * amp, y: rest.y + y * rest.unit * amp, pitch };
+        cur = { x: (g?.center ? this.footCenter : rest.x) + x * rest.unit * amp, y: rest.y + y * rest.unit * amp, pitch };
       }
       const pv = prevIk?.[l.name];
       if (cur && pv) out[l.name] = { x: lerp(cur.x, pv.x, m), y: lerp(cur.y, pv.y, m), pitch: lerp(cur.pitch, pv.pitch, m), w: lerp(1, pv.w ?? 1, m) };

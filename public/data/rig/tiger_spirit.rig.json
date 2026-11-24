@@ -1,7 +1,7 @@
 {
  "species": "tiger_spirit",
  "skin": "tiger_spirit",
- "template": "quadruped",
+ "template": "biped",
  "anims": "quadruped",
  "artRes": 2,
  "palette": {

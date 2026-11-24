@@ -1,5 +1,5 @@
 // Screen layout of the battle scene (no Phaser import, so node tests can use it).
-export const PATH_Y = 340, X0 = 100, TILE = 90, PATH_H = 190, BENCH_Y = 630, BENCH_X0 = 110, BENCH_GAP = 105, SLOT = 90;
+export const PATH_Y = 340, X0 = 100, TILE = 90, PATH_H = 190, BENCH_Y = 630, BENCH_X0 = 108, BENCH_GAP = 104, SLOT = 90;
 
 /** Tile position to screen x. */
 export function tileToX(pos) { return X0 + pos * TILE; }

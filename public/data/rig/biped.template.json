@@ -1,0 +1,540 @@
+{
+ "id": "biped",
+ "canvas": 1024,
+ "baseline": 922,
+ "notes": "Upright version of the quadruped rig: same bone names and art parts, standing on the hind legs.",
+ "bones": [
+  {
+   "name": "root",
+   "x": 0,
+   "y": 0
+  },
+  {
+   "name": "hips",
+   "parent": "root",
+   "x": -28,
+   "y": -176,
+   "rot": -80,
+   "length": 200
+  },
+  {
+   "name": "chest",
+   "parent": "hips",
+   "x": 200,
+   "y": -12,
+   "length": 60
+  },
+  {
+   "name": "neck",
+   "parent": "chest",
+   "x": 52,
+   "y": 14,
+   "rot": 34,
+   "length": 60
+  },
+  {
+   "name": "head",
+   "parent": "neck",
+   "x": 60,
+   "y": 0,
+   "rot": 46,
+   "length": 90
+  },
+  {
+   "name": "jaw",
+   "parent": "head",
+   "x": 55,
+   "y": 30,
+   "rot": 10,
+   "length": 55
+  },
+  {
+   "name": "ear_r",
+   "parent": "head",
+   "x": -25,
+   "y": -55,
+   "rot": -110,
+   "length": 70
+  },
+  {
+   "name": "ear_n",
+   "parent": "head",
+   "x": 5,
+   "y": -60,
+   "rot": -80,
+   "length": 75
+  },
+  {
+   "name": "eye",
+   "parent": "head",
+   "x": 48,
+   "y": -14
+  },
+  {
+   "name": "horn",
+   "parent": "head",
+   "x": -5,
+   "y": -40
+  },
+  {
+   "name": "tail_1",
+   "parent": "hips",
+   "x": 0,
+   "y": -42,
+   "rot": 232,
+   "length": 75
+  },
+  {
+   "name": "tail_2",
+   "parent": "tail_1",
+   "x": 75,
+   "y": 0,
+   "rot": -12,
+   "length": 75
+  },
+  {
+   "name": "tail_3",
+   "parent": "tail_2",
+   "x": 75,
+   "y": 0,
+   "rot": -14,
+   "length": 70
+  },
+  {
+   "name": "leg_fr_up",
+   "parent": "chest",
+   "x": 20,
+   "y": -26,
+   "rot": 150,
+   "length": 82
+  },
+  {
+   "name": "leg_fr_lo",
+   "parent": "leg_fr_up",
+   "x": 82,
+   "y": 0,
+   "rot": -48,
+   "length": 92
+  },
+  {
+   "name": "leg_fn_up",
+   "parent": "chest",
+   "x": 20,
+   "y": 22,
+   "rot": 150,
+   "length": 82
+  },
+  {
+   "name": "leg_fn_lo",
+   "parent": "leg_fn_up",
+   "x": 82,
+   "y": 0,
+   "rot": -48,
+   "length": 92
+  },
+  {
+   "name": "leg_br_up",
+   "parent": "hips",
+   "x": 4,
+   "y": -18,
+   "rot": 170,
+   "length": 82
+  },
+  {
+   "name": "leg_br_lo",
+   "parent": "leg_br_up",
+   "x": 82,
+   "y": 0,
+   "length": 92,
+   "foot": true
+  },
+  {
+   "name": "leg_bn_up",
+   "parent": "hips",
+   "x": 4,
+   "y": 16,
+   "rot": 170,
+   "length": 82
+  },
+  {
+   "name": "leg_bn_lo",
+   "parent": "leg_bn_up",
+   "x": 82,
+   "y": 0,
+   "length": 92,
+   "foot": true
+  },
+  {
+   "name": "wing",
+   "parent": "chest",
+   "x": -40,
+   "y": -10,
+   "rot": 200,
+   "length": 90
+  },
+  {
+   "name": "deco",
+   "parent": "chest",
+   "x": 20,
+   "y": 10
+  }
+ ],
+ "slots": [
+  {
+   "name": "leg_fr_lo",
+   "bone": "leg_fr_lo",
+   "x": 46,
+   "y": 0,
+   "z": 0,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 124,
+    "h": 38
+   }
+  },
+  {
+   "name": "leg_fr_up",
+   "bone": "leg_fr_up",
+   "x": 41,
+   "y": 0,
+   "z": 1,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 128,
+    "h": 50
+   }
+  },
+  {
+   "name": "leg_br_lo",
+   "bone": "leg_br_lo",
+   "x": 46,
+   "y": 0,
+   "z": 0,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 124,
+    "h": 38
+   }
+  },
+  {
+   "name": "leg_br_up",
+   "bone": "leg_br_up",
+   "x": 41,
+   "y": 0,
+   "z": 1,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 140,
+    "h": 62
+   }
+  },
+  {
+   "name": "tail",
+   "bone": "tail_1",
+   "z": 2,
+   "color": "fur",
+   "rope": [
+    "tail_1",
+    "tail_2",
+    "tail_3"
+   ],
+   "ropeSegments": 5,
+   "ph": {
+    "shape": "tail",
+    "w": 220,
+    "h": 90
+   }
+  },
+  {
+   "name": "ear_r",
+   "bone": "ear_r",
+   "x": 35,
+   "y": 0,
+   "z": 3,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 80,
+    "h": 48
+   }
+  },
+  {
+   "name": "wing",
+   "bone": "wing",
+   "x": 45,
+   "y": 0,
+   "z": 3.5,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 120,
+    "h": 70
+   },
+   "part": null
+  },
+  {
+   "name": "body",
+   "bone": "hips",
+   "x": 105,
+   "y": -5,
+   "z": 4,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 300,
+    "h": 165
+   }
+  },
+  {
+   "name": "belly",
+   "bone": "hips",
+   "x": 120,
+   "y": 35,
+   "z": 5,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 210,
+    "h": 70
+   }
+  },
+  {
+   "name": "chest_fluff",
+   "bone": "chest",
+   "x": 15,
+   "y": 10,
+   "z": 6,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 120,
+    "h": 140
+   }
+  },
+  {
+   "name": "leg_bn_up",
+   "bone": "leg_bn_up",
+   "x": 41,
+   "y": 0,
+   "z": 7,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 144,
+    "h": 66
+   }
+  },
+  {
+   "name": "leg_bn_lo",
+   "bone": "leg_bn_lo",
+   "x": 46,
+   "y": 0,
+   "z": 7,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 128,
+    "h": 42
+   }
+  },
+  {
+   "name": "leg_fn_up",
+   "bone": "leg_fn_up",
+   "x": 41,
+   "y": 0,
+   "z": 8,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 132,
+    "h": 54
+   }
+  },
+  {
+   "name": "leg_fn_lo",
+   "bone": "leg_fn_lo",
+   "x": 46,
+   "y": 0,
+   "z": 8,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 128,
+    "h": 42
+   }
+  },
+  {
+   "name": "neck",
+   "bone": "neck",
+   "x": 35,
+   "y": 0,
+   "z": 9,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 95,
+    "h": 85
+   }
+  },
+  {
+   "name": "jaw",
+   "bone": "jaw",
+   "x": 28,
+   "y": 0,
+   "z": 10,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 70,
+    "h": 30
+   }
+  },
+  {
+   "name": "head",
+   "bone": "head",
+   "x": 30,
+   "y": -5,
+   "z": 11,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 150,
+    "h": 120
+   }
+  },
+  {
+   "name": "horn",
+   "bone": "horn",
+   "x": 0,
+   "y": 0,
+   "z": 11.5,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 120,
+    "h": 80
+   },
+   "part": null
+  },
+  {
+   "name": "muzzle",
+   "bone": "head",
+   "x": 85,
+   "y": 15,
+   "z": 12,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 85,
+    "h": 48
+   },
+   "rot": 10
+  },
+  {
+   "name": "nose",
+   "bone": "head",
+   "x": 125,
+   "y": 10,
+   "z": 13,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 22,
+    "h": 18
+   }
+  },
+  {
+   "name": "ear_n",
+   "bone": "ear_n",
+   "x": 38,
+   "y": 0,
+   "z": 12,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 85,
+    "h": 52
+   }
+  },
+  {
+   "name": "eye",
+   "bone": "eye",
+   "x": 0,
+   "y": 0,
+   "z": 14,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 34,
+    "h": 40
+   }
+  },
+  {
+   "name": "deco",
+   "bone": "deco",
+   "x": 0,
+   "y": 0,
+   "z": 15,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 10,
+    "h": 10
+   },
+   "part": null
+  }
+ ],
+ "procedural": {
+  "breath": {
+   "slots": [
+    "body",
+    "belly",
+    "chest_fluff"
+   ],
+   "period": 2.6,
+   "scaleY": 0.03
+  },
+  "blink": {
+   "slot": "eye",
+   "min": 3,
+   "max": 6,
+   "close": 0.12
+  },
+  "springs": [
+   {
+    "bones": [
+     "tail_1",
+     "tail_2",
+     "tail_3"
+    ],
+    "stiffness": 60,
+    "damping": 8,
+    "limit": 35,
+    "sway": 0.12
+   },
+   {
+    "bones": [
+     "ear_n",
+     "ear_r"
+    ],
+    "stiffness": 120,
+    "damping": 12,
+    "limit": 20,
+    "sway": 0.05
+   },
+   {
+    "bones": [
+     "wing"
+    ],
+    "stiffness": 90,
+    "damping": 9,
+    "limit": 25,
+    "sway": 0.08
+   }
+  ]
+ }
+}

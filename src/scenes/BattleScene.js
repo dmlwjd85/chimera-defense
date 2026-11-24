@@ -35,6 +35,9 @@ const TUTORIAL = [
 ];
 const ZONE_TILES = 4;
 
+// 한 동물에 붙은 적들이 서는 자리(x, y 픽셀): 정면, 위 어깨, 아래 어깨, 뒤 위, 뒤 아래
+const ENGAGE_RING = [[0, 0], [14, -20], [14, 20], [36, -10], [36, 12]];
+
 export default class BattleScene extends Phaser.Scene {
   constructor() { super('Battle'); }
 
@@ -994,11 +997,21 @@ export default class BattleScene extends Phaser.Scene {
       const blk = e.blockedBy != null ? this.state.field.find((u) => u.uid === e.blockedBy) : null;
       const queue = blk ? this.state.enemies.filter((o) => o.blockedBy === e.blockedBy && !o.flying) : [];
       const qi = Math.max(0, queue.indexOf(e));
-      const laneY = this.laneY(blk && !blk.stats.flyer ? blk.lane ?? 1 : e.eid % 3) + 22;
+      // 붙어 싸우는 적은 동물을 에워쌈(정면·위·아래·뒷줄), 다가오는 적은 가운데로 모이며 앞에 선 동물 쪽으로 방향을 틂
+      const ring = ENGAGE_RING[qi % ENGAGE_RING.length], ringRow = Math.floor(qi / ENGAGE_RING.length);
+      let laneY;
+      if (blk && !blk.stats.flyer) laneY = this.laneY(blk.lane ?? 1) + 22 + ring[1];
+      else {
+        const ahead = e.flying ? null : this.state.field.filter((u) => !u.down && !u.stats.flyer && e.pos - u.pos >= -0.2 && e.pos - u.pos < 2.2 && !e.passed?.includes(u.uid)).sort((a, b) => b.pos - a.pos)[0];
+        const own = this.laneY(e.eid % 3), mid = this.laneY(1);
+        const base = mid + (own - mid) * 0.55 + ((e.eid * 7) % 5 - 2) * 4;
+        const k = ahead ? Math.min(1, Math.max(0, (2.2 - (e.pos - ahead.pos)) / 1.4)) : 0;
+        laneY = base + (this.laneY(ahead?.lane ?? 1) - base) * k + 22;
+      }
       v.laneY = v.laneY == null ? laneY : v.laneY + (laneY - v.laneY) * Math.min(1, (this.realDt || 0.016) * 6);
       const y = e.flying ? PATH_Y - 110 + bob : v.laneY + (e.boss ? -6 : 0);
       if (v.kb) { v.kb *= Math.pow(0.0005, this.realDt || 0.016); if (Math.abs(v.kb) < 0.3) v.kb = 0; }
-      v.qx = (v.qx ?? 0) + (qi * 34 - (v.qx ?? 0)) * Math.min(1, (this.realDt || 0.016) * 8);
+      v.qx = (v.qx ?? 0) + ((blk ? ring[0] + ringRow * 30 : 0) - (v.qx ?? 0)) * Math.min(1, (this.realDt || 0.016) * 8);
       const xk = x + (v.kb ?? 0) + v.qx;
       if (e.hp < v.lastHp - 0.4) { v.dmgAcc = (v.dmgAcc ?? 0) + (v.lastHp - e.hp); }
       if (v.dmgAcc && this.time.now - (v.dmgAt ?? 0) > 110) {

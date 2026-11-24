@@ -7,7 +7,7 @@ import { soulOnHit, soulOnKill } from './soul.js';
 import { guardShare, moveMult, dealerCombo, tickRoles } from './roles.js';
 
 const standing = (u) => !u.down && !u.moving;
-const usedSlots = (state, uid) => state.enemies.reduce((s, e) => s + (e.blockedBy === uid ? e.blockSlots : 0), 0);
+const usedSlots = (state, uid) => state.enemies.reduce((s, e) => s + (e.blockedBy === uid && !e.crowd ? e.blockSlots : 0), 0);
 const releaseBy = (state, uid) => { for (const e of state.enemies) if (e.blockedBy === uid) e.blockedBy = null; };
 const flags = (u) => u.mods?.flags ?? {};
 const isSwarm = (e) => e.id === 'swarm';
@@ -350,9 +350,16 @@ export function combatTick(state, data, dt) {
     state.events.push({ type: 'bossSummon', eid: e.eid });
   }
 
+  const C = cfg.crowd;
   for (const e of state.enemies) {
     const b = e.blockedBy === null ? null : byUid.get(e.blockedBy);
-    if (e.blockedBy !== null && (!b || !standing(b))) e.blockedBy = null;
+    if (e.blockedBy !== null && (!b || !standing(b))) { e.blockedBy = null; e.crowd = false; }
+    if (!e.crowd) continue;
+    if (e.blockedBy === null) { e.crowd = false; continue; }
+    // 달라붙어 싸우던 적: 막는 자리가 비면 정식으로 막힘, 아니면 잠시 뒤 밀치고 빠져나감
+    if (usedSlots(state, e.blockedBy) + e.blockSlots <= effBlock(b)) { e.crowd = false; continue; }
+    e.crowdLeft -= dt;
+    if (e.crowdLeft <= 0) { (e.passed ??= []).push(e.blockedBy); state.events.push({ type: 'slip', eid: e.eid, uid: e.blockedBy }); e.blockedBy = null; e.crowd = false; }
   }
   for (const e of state.enemies) e.pos = Math.min(cfg.pathLength + 2, e.pos + enemyVelocity(e) * dt);
   const free = state.enemies.filter((e) => e.blockedBy === null && !e.flying && e.hp > 0 && e.confuseLeft <= 0).sort((a, b) => a.pos - b.pos);
@@ -364,7 +371,17 @@ export function combatTick(state, data, dt) {
       if (d < 0 || d > cfg.blockReach || usedSlots(state, u.uid) + e.blockSlots > effBlock(u)) continue;
       if (!best || d < e.pos - best.pos) best = u;
     }
-    if (best) { e.blockedBy = best.uid; e.pos = best.pos + cfg.blockedOffset; }
+    if (best) { e.blockedBy = best.uid; e.pos = best.pos + cfg.blockedOffset; continue; }
+    // 자리가 다 찼어도 그냥 지나가지 않음: 앞을 막아선 동물에게 달라붙어 한동안 치고받다가 밀치고 나감(동물마다 한 번)
+    if (!C || (e.passed?.length ?? 0) >= C.maxTimes) continue;
+    let near = null;
+    for (const u of state.field) {
+      if (!standing(u) || u.stats.flyer || e.passed?.includes(u.uid)) continue;
+      const d = e.pos - u.pos;
+      if (d < 0 || d > cfg.blockReach) continue;
+      if (!near || d < e.pos - near.pos) near = u;
+    }
+    if (near) Object.assign(e, { blockedBy: near.uid, crowd: true, crowdLeft: C.hold * (e.boss ? C.bossK : 1), pos: near.pos + cfg.blockedOffset });
   }
 
   // enemy attacks

@@ -9,7 +9,7 @@ import { traitView } from '../logic/traits.js';
 import { terrainMatch, effRange, effBlock, effDamage, effInterval } from '../logic/mods.js';
 import { isResting } from '../logic/combat.js';
 import { makeEnemy } from '../logic/waves.js';
-import { unitRig, enemyRig } from './rigs.js';
+import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS } from './rigs.js';
 import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
 import { soundOf, ELEM_SOUND } from './onomato.js';
@@ -853,7 +853,7 @@ export default class BattleScene extends Phaser.Scene {
     const r = v.rig;
     if (!r) return;
     const m = r.inst.motion;
-    const busy = ['attack', 'skill', 'hit', 'merge_in', 'evolve', 'respawn'].includes(m) && !r.inst.finished;
+    const busy = [...ATTACK_MOTIONS, 'skill', 'hit', 'merge_in', 'evolve', 'respawn'].includes(m) && !r.inst.finished;
     if (this.state.result === 'clear') { if (m !== 'victory') r.inst.play('victory', { loop: true }); }
     else if (u.down) { if (m !== 'down') r.inst.play('down'); }
     else if (v.wasDown) { r.inst.play('respawn'); this.fx.respawn(v.container.x, v.container.y); sfx('respawn'); }
@@ -1245,7 +1245,7 @@ export default class BattleScene extends Phaser.Scene {
     this.pendingBirth ??= new Map();
     for (const ev of this.state.events) {
       const v = ev.uid != null ? this.unitViews.get(ev.uid) : null;
-      if (ev.type === 'attack' && v?.rig) v.rig.inst.play('attack');
+      if (ev.type === 'attack' && v?.rig) playAttack(v.rig.inst);
       if (ev.type === 'skill' && v?.rig && ev.name) v.rig.inst.play('skill');
       if (ev.type === 'merge') this.pendingBirth.set(ev.uid, ev.kind === 'evolve' || ev.kind === 'spirit' ? 'evolve' : 'merge_in');
       if (ev.type === 'summon') this.pendingBirth.set(ev.uid, 'merge_in');

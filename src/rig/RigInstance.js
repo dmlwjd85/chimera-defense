@@ -1,6 +1,6 @@
 // One animated character: template (bones/slots) + anims (clips) + rig (species skin and stage modifiers).
 // Pure logic, no Phaser. The renderer reads getDrawList() every frame.
-import { fromTRS, mul, apply, decompose } from './math.js';
+import { fromTRS, mul, apply, decompose, lerp, lerpAngle, clamp, DEG } from './math.js';
 import { sampleClip, blendPoses, eventsBetween, neutral } from './animator.js';
 import { Breath, Blink, AngleSpring } from './procedural.js';
 import { chainPoints } from './rope.js';
@@ -10,7 +10,12 @@ const IDENTITY = [1, 0, 0, 1, 0, 0];
 export class RigInstance {
   constructor(template, anims, rig, opts = {}) {
     this.template = template; this.anims = anims; this.rig = rig;
-    this.bones = template.bones;
+    // 리그마다 뼈 위치·길이를 고칠 수 있음(도안 비율에 뼈를 맞춤): rig.boneOverrides = { 뼈: { x, y, rot, length } }
+    const bo = rig.boneOverrides || {};
+    this.bones = template.bones.map((b) => (bo[b.name] ? { ...b, ...bo[b.name] } : b));
+    this.ik = template.ik || [];              // 다리 IK: 발을 목표 지점에 두고 무릎 각도를 풂
+    this.ikUpper = {}; for (const l of this.ik) this.ikUpper[l.upper] = l;
+    this.footRest = {}; this.lastIk = null;
     this.boneIndex = Object.fromEntries(this.bones.map((b, i) => [b.name, i]));
     this.lengths = Object.fromEntries(this.bones.map((b) => [b.name, b.length || 0]));
     const p = template.procedural || {};
@@ -41,6 +46,14 @@ export class RigInstance {
     for (const s of Object.values(this.springs)) s.reset();
     this.groundOffset = 0;
     this.groundOffset = -this.lowestFoot();
+    // 서 있는 자세에서 발이 놓이는 자리(IK 목표의 기준)와 다리 길이 단위
+    const { worlds } = this.solveBones({}, 0, false, null);
+    for (const l of this.ik) {
+      const lo = this.bones[this.boneIndex[l.lower]], up = this.bones[this.boneIndex[l.upper]];
+      const a = apply(worlds[l.upper], 0, 0), k = apply(worlds[l.lower], 0, 0), f = apply(worlds[l.lower], lo.length || 0, 0);
+      this.footRest[l.name] = { x: f[0], y: f[1], unit: (Math.hypot(k[0] - a[0], k[1] - a[1]) + Math.hypot(f[0] - k[0], f[1] - k[1])) / 174 };
+    }
+    this.lastIk = null;
   }
   /** play(name, { loop, mix, then }) — non-loop clips return to `then` (default idle) unless the clip holds its last frame. */
   play(name, opts = {}) {
@@ -48,7 +61,7 @@ export class RigInstance {
     if (!clip) throw new Error(`unknown motion ${name}`);
     const loop = opts.loop ?? clip.loop ?? false;
     const mix = opts.mix ?? clip.mix ?? 0.12;
-    if (this.cur && mix > 0) { this.prev = { ...this.cur, frozen: sampleClip(this.cur.clip, this.cur.t) }; this.mixLeft = this.mixDur = mix; }
+    if (this.cur && mix > 0) { this.prev = { ...this.cur, frozen: sampleClip(this.cur.clip, this.cur.t), ik: this.lastIk }; this.mixLeft = this.mixDur = mix; }
     else { this.prev = null; this.mixLeft = 0; }
     this.cur = { name, clip, t: 0, loop, then: opts.then ?? (clip.hold ? null : 'idle'), done: false };
     return this;
@@ -89,6 +102,40 @@ export class RigInstance {
     return pose;
   }
 
+  /**
+   * 발 목표(IK). 클립에 ik가 있으면 그 다리들은 발을 땅에 둔 채 몸이 움직이고(무게 이동),
+   * ik.gait가 있으면 걸음 주기에 맞춰 발이 딛고(뒤로 밀림) 떼는(호를 그리며 앞으로) 궤적을 만듦.
+   * 반환: { 다리: { x, y, pitch, w } } — w는 FK와 섞는 비율(클립 전환 중에 0~1).
+   */
+  ikTargets(offsets) {
+    if (!this.ik.length) return null;
+    const c = this.cur, cfg = c.clip.ik, m = this.prev && this.mixLeft > 0 ? this.mixLeft / this.mixDur : 0;
+    const prevIk = m > 0 ? this.prev.ik : null;
+    if (!cfg && !prevIk) return null;
+    const amp = this.stageDef.amp ?? 1, out = {};
+    for (const l of this.ik) {
+      const rest = this.footRest[l.name]; if (!rest) continue;
+      let cur = null;
+      if (cfg && (!cfg.legs || cfg.legs.includes(l.name))) {
+        let x = 0, y = 0, pitch = 0;
+        const g = cfg.gait;
+        if (g) {
+          const duty = g.duty ?? 0.6, ph = (((c.t / c.clip.duration + (g.phase?.[l.name] ?? 0)) % 1) + 1) % 1;
+          if (ph < duty) x = g.stride * (0.5 - ph / duty);                       // 딛는 동안: 몸 기준으로 발이 일정하게 뒤로
+          else { const u = (ph - duty) / (1 - duty), e = u * u * (3 - 2 * u); x = g.stride * (e - 0.5); y = -g.lift * Math.sin(Math.PI * u); pitch = (g.pitch ?? 22) * Math.sin(2 * Math.PI * u); }
+        }
+        const o = offsets['ik_' + l.name];
+        if (o) { x += o.x; y += o.y; pitch += o.rot; }
+        cur = { x: rest.x + x * rest.unit * amp, y: rest.y + y * rest.unit * amp, pitch };
+      }
+      const pv = prevIk?.[l.name];
+      if (cur && pv) out[l.name] = { x: lerp(cur.x, pv.x, m), y: lerp(cur.y, pv.y, m), pitch: lerp(cur.pitch, pv.pitch, m), w: lerp(1, pv.w ?? 1, m) };
+      else if (cur) out[l.name] = { ...cur, w: 1 - m };
+      else if (pv) out[l.name] = { ...pv, w: (pv.w ?? 1) * m };
+    }
+    return out;
+  }
+
   /** Local TRS for one bone after setup pose, stage modifiers and clip offsets. */
   localOf(b, off) {
     const amp = this.stageDef.amp ?? 1;
@@ -103,11 +150,31 @@ export class RigInstance {
   }
 
   /** Bone world matrices in rig space (feet on y=0, facing right). */
-  solveBones(offsets, dt, simulate) {
-    const worlds = {}; const alphaOf = {};
+  solveBones(offsets, dt, simulate, ik) {
+    const worlds = {}; const alphaOf = {}; const want = {};
+    // 다리가 완전히 펴진 채로는 몸을 옮길 여유가 없으므로 IK를 쓰는 동안 엉덩이를 살짝 낮춤(무게감)
+    let sink = 0;
+    if (ik) { let w = 0, unit = 1; for (const l of this.ik) if (ik[l.name]) { w = Math.max(w, ik[l.name].w); unit = this.footRest[l.name].unit; } sink = (this.cur.clip.ik?.sink ?? this.prev?.clip.ik?.sink ?? 10) * unit * w; }
     for (const b of this.bones) {
       const L = this.localOf(b, offsets[b.name]);
+      if (!b.parent) L.y += sink;
       const parent = b.parent ? worlds[b.parent] : IDENTITY;
+      if (ik) {
+        const leg = this.ikUpper?.[b.name], T = leg && ik[leg.name];
+        if (T && T.w > 0) {                                   // 윗다리: 엉덩이~발 목표로 두 뼈 각도를 풂
+          const lo = this.bones[this.boneIndex[leg.lower]], Llo = this.localOf(lo, offsets[lo.name]);
+          const O = apply(parent, L.x, L.y), ps = Math.hypot(parent[0], parent[1]), pr = Math.atan2(parent[1], parent[0]) / DEG;
+          const L1 = Math.abs(Llo.x) * ps * L.sx, L2 = (lo.length || 0) * ps * L.sx * Llo.sx;
+          const dx = T.x - O[0], dy = T.y - O[1], d = clamp(Math.hypot(dx, dy), Math.abs(L1 - L2) + 0.5, L1 + L2 - 0.5);
+          const a = Math.atan2(dy, dx) / DEG, A = Math.acos(clamp((L1 * L1 + d * d - L2 * L2) / (2 * L1 * d), -1, 1)) / DEG;
+          const B = Math.acos(clamp((L1 * L1 + L2 * L2 - d * d) / (2 * L1 * L2), -1, 1)) / DEG;
+          const upW = a - leg.bend * A, loW = upW + leg.bend * (180 - B);
+          L.rot = lerpAngle(L.rot, upW - pr, T.w);
+          want[leg.lower] = { world: loW, w: T.w }; if (leg.paw) want[leg.paw] = { world: T.pitch, w: T.w };
+        }
+        const wv = want[b.name];
+        if (wv) L.rot = lerpAngle(L.rot, wv.world - Math.atan2(parent[1], parent[0]) / DEG, wv.w);
+      }
       let m = mul(parent, fromTRS(L.x, L.y, L.rot, L.sx, L.sy));
       const spring = simulate && this.springs[b.name];
       if (spring) {
@@ -124,9 +191,9 @@ export class RigInstance {
   }
 
   lowestFoot() {
-    const { worlds } = this.solveBones({}, 0, false);
+    const { worlds } = this.solveBones({}, 0, false, null);
     let maxY = -Infinity;
-    for (const b of this.bones) if (b.foot) maxY = Math.max(maxY, apply(worlds[b.name], b.length || 0, 0)[1]);
+    for (const b of this.bones) if (b.foot) { const m = worlds[b.name]; maxY = Math.max(maxY, apply(m, b.length || 0, 0)[1] + (b.footPad || 0) * Math.hypot(m[0], m[1])); } // footPad: 발목 아래 발바닥 두께
     return maxY === -Infinity ? 0 : maxY;
   }
 
@@ -136,8 +203,9 @@ export class RigInstance {
   }
 
   solve(dt, events) {
-    const { worlds, alphaOf } = this.solveBones(this.currentOffsets(), dt, true);
-    this.worlds = worlds; this.alphaOf = alphaOf;
+    const offsets = this.currentOffsets(), ik = this.ikTargets(offsets);
+    const { worlds, alphaOf } = this.solveBones(offsets, dt, true, ik);
+    this.worlds = worlds; this.alphaOf = alphaOf; this.lastIk = ik;
     this.lastEvents = events;
     return events;
   }

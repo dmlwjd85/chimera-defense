@@ -2,7 +2,7 @@
  "species": "rooster_spirit",
  "skin": "rooster_spirit",
  "template": "bird",
- "anims": "quadruped",
+ "anims": "legacy",
  "artRes": 2,
  "palette": {
   "fur": "#ffd54f",

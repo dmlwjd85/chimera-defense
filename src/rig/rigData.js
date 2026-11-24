@@ -23,6 +23,7 @@ export function validateTemplate(t) {
 export function validateAnims(anims, template) {
   const errs = [];
   const bones = new Set(template.bones.map((b) => b.name));
+  for (const n of ['fr', 'fn', 'br', 'bn']) bones.add('ik_' + n); // 발 목표(IK) 트랙
   for (const m of MOTIONS) if (!anims[m]) errs.push(`motion ${m} missing`);
   for (const [name, a] of Object.entries(anims)) {
     if (!(a.duration > 0)) errs.push(`${name}: duration must be > 0`);

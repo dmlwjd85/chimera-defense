@@ -2,7 +2,7 @@
  "species": "ant_spirit",
  "skin": "ant_spirit",
  "template": "bug",
- "anims": "quadruped",
+ "anims": "legacy",
  "artRes": 2,
  "palette": {
   "fur": "#b87333",

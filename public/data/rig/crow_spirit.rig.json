@@ -2,7 +2,7 @@
  "species": "crow_spirit",
  "skin": "crow_spirit",
  "template": "bird",
- "anims": "quadruped",
+ "anims": "legacy",
  "artRes": 2,
  "palette": {
   "fur": "#1c1c28",

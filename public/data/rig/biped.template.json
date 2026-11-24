@@ -2,6 +2,22 @@
  "id": "biped",
  "canvas": 1024,
  "baseline": 922,
+ "ik": [
+  {
+   "name": "br",
+   "upper": "leg_br_up",
+   "lower": "leg_br_lo",
+   "paw": "leg_br_paw",
+   "bend": 1
+  },
+  {
+   "name": "bn",
+   "upper": "leg_bn_up",
+   "lower": "leg_bn_lo",
+   "paw": "leg_bn_paw",
+   "bend": 1
+  }
+ ],
  "notes": "Upright version of the quadruped rig: same bone names and art parts, standing on the hind legs.",
  "bones": [
   {
@@ -18,9 +34,16 @@
    "length": 200
   },
   {
-   "name": "chest",
+   "name": "spine",
    "parent": "hips",
-   "x": 200,
+   "x": 100,
+   "y": 0,
+   "length": 100
+  },
+  {
+   "name": "chest",
+   "parent": "spine",
+   "x": 100,
    "y": -12,
    "length": 60
   },
@@ -117,6 +140,13 @@
    "length": 92
   },
   {
+   "name": "leg_fr_paw",
+   "parent": "leg_fr_lo",
+   "x": 92,
+   "y": 0,
+   "length": 30
+  },
+  {
    "name": "leg_fn_up",
    "parent": "chest",
    "x": 20,
@@ -131,6 +161,13 @@
    "y": 0,
    "rot": -48,
    "length": 92
+  },
+  {
+   "name": "leg_fn_paw",
+   "parent": "leg_fn_lo",
+   "x": 92,
+   "y": 0,
+   "length": 30
   },
   {
    "name": "leg_br_up",
@@ -149,6 +186,14 @@
    "foot": true
   },
   {
+   "name": "leg_br_paw",
+   "parent": "leg_br_lo",
+   "x": 92,
+   "y": 0,
+   "rot": -90,
+   "length": 30
+  },
+  {
    "name": "leg_bn_up",
    "parent": "hips",
    "x": 4,
@@ -163,6 +208,14 @@
    "y": 0,
    "length": 92,
    "foot": true
+  },
+  {
+   "name": "leg_bn_paw",
+   "parent": "leg_bn_lo",
+   "x": 92,
+   "y": 0,
+   "rot": -90,
+   "length": 30
   },
   {
    "name": "wing",
@@ -486,6 +539,76 @@
     "h": 10
    },
    "part": null
+  },
+  {
+   "name": "leg_fr_paw",
+   "bone": "leg_fr_paw",
+   "x": 12,
+   "y": 0,
+   "z": 0.05,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 50,
+    "h": 30
+   },
+   "part": null
+  },
+  {
+   "name": "leg_br_paw",
+   "bone": "leg_br_paw",
+   "x": 12,
+   "y": 0,
+   "z": 0.06,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 50,
+    "h": 30
+   },
+   "part": null
+  },
+  {
+   "name": "leg_bn_paw",
+   "bone": "leg_bn_paw",
+   "x": 12,
+   "y": 0,
+   "z": 7.05,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 50,
+    "h": 30
+   },
+   "part": null
+  },
+  {
+   "name": "leg_fn_paw",
+   "bone": "leg_fn_paw",
+   "x": 12,
+   "y": 0,
+   "z": 8.05,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 50,
+    "h": 30
+   },
+   "part": null
+  },
+  {
+   "name": "torso_front",
+   "bone": "spine",
+   "x": 50,
+   "y": 0,
+   "z": 4.5,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 160,
+    "h": 165
+   },
+   "part": null
   }
  ],
  "procedural": {
@@ -534,6 +657,15 @@
     "damping": 9,
     "limit": 25,
     "sway": 0.08
+   },
+   {
+    "bones": [
+     "head"
+    ],
+    "stiffness": 260,
+    "damping": 22,
+    "limit": 7,
+    "sway": 0.015
    }
   ]
  }

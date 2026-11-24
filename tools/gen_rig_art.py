@@ -52,7 +52,19 @@ def legs(par_front, par_back, fy, by, up=105, lo=118, rot=90, fx=(0, 15), bx=(10
     for side, dx, par, (x0, y0) in (('fr', -30, par_front, (fx[0], fy)), ('fn', fx[1], par_front, (0, fy)), ('br', -30, par_back, (bx[0], by)), ('bn', bx[1], par_back, (bx[0], by))):
         out.append(b(f'leg_{side}_up', par, x0 + dx, y0, rot=rot, length=up))
         out.append(b(f'leg_{side}_lo', f'leg_{side}_up', up, 0, rot=0, length=lo, foot=True))
+        out.append(b(f'leg_{side}_paw', f'leg_{side}_lo', lo, 0, rot=-rot, length=30))   # 발: 서 있을 때 바닥과 나란함
     return out
+
+IK_LEGS = [{'name': n, 'upper': f'leg_{n}_up', 'lower': f'leg_{n}_lo', 'paw': f'leg_{n}_paw', 'bend': 1 if n[0] == 'f' else -1} for n in ('fr', 'fn', 'br', 'bn')]  # 앞다리는 관절이 앞으로, 뒷다리(비절)는 뒤로 꺾임
+PAW_SLOTS = lambda: [slot(f'leg_{n}_paw', f'leg_{n}_paw', 12, 0, z, 50, 30, part=None) for n, z in (('fr', 0.05), ('br', 0.06), ('bn', 7.05), ('fn', 8.05))]
+
+def clean(T):
+    """없는 뼈를 가리키는 부위·IK를 뺌(네발 템플릿을 베껴 만든 새·개구리·벌레용)."""
+    names = {x['name'] for x in T['bones']}
+    T['slots'] = [x for x in T['slots'] if x['bone'] in names]
+    T.pop('ik', None)
+    for sp in T['procedural'].get('springs', []): sp['bones'] = [x for x in sp['bones'] if x in names]
+    return T
 
 def slot(name, bone, x=0, y=0, z=0, w=40, h=40, rot=0, **k):
     d = {'name': name, 'bone': bone, 'x': x, 'y': y, 'z': z, 'color': 'fur', 'ph': {'shape': 'ellipse', 'w': w, 'h': h}}
@@ -60,7 +72,7 @@ def slot(name, bone, x=0, y=0, z=0, w=40, h=40, rot=0, **k):
     d.update(k); return d
 
 def quad_template():
-    B = [b('root', None, 0, 0), b('hips', 'root', -95, -250, length=200), b('chest', 'hips', 200, -12, length=60),
+    B = [b('root', None, 0, 0), b('hips', 'root', -95, -250, length=200), b('spine', 'hips', 100, 0, length=100), b('chest', 'spine', 100, -12, length=60),
          b('neck', 'chest', 50, -40, rot=-55, length=70), b('head', 'neck', 70, 0, rot=55, length=90),
          b('jaw', 'head', 55, 30, rot=10, length=55), b('ear_r', 'head', -25, -55, rot=-110, length=70),
          b('ear_n', 'head', 5, -60, rot=-80, length=75), b('eye', 'head', 48, -14), b('horn', 'head', -5, -40),
@@ -78,21 +90,23 @@ def quad_template():
          slot('neck', 'neck', 35, 0, 9, 95, 85), slot('jaw', 'jaw', 28, 0, 10, 70, 30), slot('head', 'head', 30, -5, 11, 150, 120),
          slot('horn', 'horn', 0, 0, 11.5, 120, 80, part=None), slot('muzzle', 'head', 85, 15, 12, 85, 48, rot=10), slot('nose', 'head', 125, 10, 13, 22, 18),
          slot('ear_n', 'ear_n', 38, 0, 12, 85, 52), slot('eye', 'eye', 0, 0, 14, 34, 40), slot('deco', 'deco', 0, 0, 15, 10, 10, part=None)]
-    return {'id': 'quadruped', 'canvas': 1024, 'baseline': 922,
+    S += PAW_SLOTS() + [slot('torso_front', 'spine', 50, 0, 4.5, 160, 165, part=None)]
+    return {'id': 'quadruped', 'canvas': 1024, 'baseline': 922, 'ik': IK_LEGS,
             'notes': 'Rig space: feet on y=0, facing right, degrees clockwise positive. Child x/y are in the parent local space.',
             'bones': B, 'slots': S,
             'procedural': {'breath': {'slots': ['body', 'belly', 'chest_fluff'], 'period': 2.6, 'scaleY': 0.03},
                            'blink': {'slot': 'eye', 'min': 3, 'max': 6, 'close': 0.12},
                            'springs': [{'bones': ['tail_1', 'tail_2', 'tail_3'], 'stiffness': 60, 'damping': 8, 'limit': 35, 'sway': 0.12},
                                        {'bones': ['ear_n', 'ear_r'], 'stiffness': 120, 'damping': 12, 'limit': 20, 'sway': 0.05},
-                                       {'bones': ['wing'], 'stiffness': 90, 'damping': 9, 'limit': 25, 'sway': 0.08}]}}
+                                       {'bones': ['wing'], 'stiffness': 90, 'damping': 9, 'limit': 25, 'sway': 0.08},
+                                       {'bones': ['head'], 'stiffness': 260, 'damping': 22, 'limit': 7, 'sway': 0.015}]}}
 
 def biped_template():
     """두 발로 선 네발짐승(웅녀, 산군): 네발 템플릿과 같은 뼈 이름·같은 그림 조각을 쓰되 서 있는 자세로 다시 세운다.
     앞다리는 팔이 되어 걸을 때 흔들리고, 뒷다리로 걷는다. 애니메이션은 네발 것을 그대로 쓴다."""
     T = quad_template()
     LEAN = -80
-    B = [b('root', None, 0, 0), b('hips', 'root', -28, -176, rot=LEAN, length=200), b('chest', 'hips', 200, -12, length=60),
+    B = [b('root', None, 0, 0), b('hips', 'root', -28, -176, rot=LEAN, length=200), b('spine', 'hips', 100, 0, length=100), b('chest', 'spine', 100, -12, length=60),
          b('neck', 'chest', 52, 14, rot=34, length=60), b('head', 'neck', 60, 0, rot=46, length=90),
          b('jaw', 'head', 55, 30, rot=10, length=55), b('ear_r', 'head', -25, -55, rot=-110, length=70),
          b('ear_n', 'head', 5, -60, rot=-80, length=75), b('eye', 'head', 48, -14), b('horn', 'head', -5, -40),
@@ -102,11 +116,14 @@ def biped_template():
     for side, y in (('fr', -26), ('fn', 22)):
         B.append(b(f'leg_{side}_up', 'chest', 20, y, rot=150, length=82))
         B.append(b(f'leg_{side}_lo', f'leg_{side}_up', 82, 0, rot=-48, length=92))
+        B.append(b(f'leg_{side}_paw', f'leg_{side}_lo', 92, 0, rot=0, length=30))
     # 다리(뒷다리): 골반에서 곧게 아래로
     for side, y in (('br', -18), ('bn', 16)):
         B.append(b(f'leg_{side}_up', 'hips', 4, y, rot=90 - LEAN, length=82))
         B.append(b(f'leg_{side}_lo', f'leg_{side}_up', 82, 0, rot=0, length=92, foot=True))
+        B.append(b(f'leg_{side}_paw', f'leg_{side}_lo', 92, 0, rot=-90, length=30))
     B += [b('wing', 'chest', -40, -10, rot=200, length=90), b('deco', 'chest', 20, 10)]
+    T['ik'] = [{**x, 'bend': 1} for x in IK_LEGS if x['name'] in ('br', 'bn')]  # 사람처럼 무릎이 앞으로
     T.update(id='biped', bones=B, notes='Upright version of the quadruped rig: same bone names and art parts, standing on the hind legs.')
     return T
 
@@ -138,7 +155,7 @@ def bird_template():
         S.append(s)
     T['slots'] = S
     T['procedural']['breath']['slots'] = ['body', 'belly']
-    return T
+    return clean(T)
 
 def frog_template():
     T = quad_template(); T['id'] = 'frog'
@@ -168,7 +185,7 @@ def frog_template():
     T['slots'] = S
     T['procedural']['breath']['slots'] = ['body', 'belly']
     T['procedural']['springs'] = [{'bones': ['ear_n', 'ear_r'], 'stiffness': 140, 'damping': 12, 'limit': 12, 'sway': 0.04}]
-    return T
+    return clean(T)
 
 def bug_template():
     T = bird_template(); T['id'] = 'bug'
@@ -192,7 +209,7 @@ def bug_template():
         if s['name'] == 'tail': s['part'] = None
         if s['name'] == 'muzzle': s.update(x=70, y=25); s['ph'] = {'shape': 'ellipse', 'w': 40, 'h': 30}
         if s['name'] == 'deco': s.pop('part', None); s['ph'] = {'shape': 'ellipse', 'w': 120, 'h': 110}
-    return T
+    return clean(T)
 
 # ------------------------------------------------------------------ shading helpers (cel shade + rim light + fur)
 _cid = [0]
@@ -595,12 +612,12 @@ def main():
         stages = {}
         for stg, (label, scale, speed, amp, bs) in STAGE_OF.items():
             stages[stg] = {'label': label, 'scale': scale, 'speed': speed, 'amp': amp, 'boneScale': bs, 'parts': dict(parts)}
-        rig = {'species': sid, 'skin': sid, 'template': sp['t'], 'anims': 'quadruped', 'artRes': RES,
+        rig = {'species': sid, 'skin': sid, 'template': sp['t'], 'anims': sp['t'] if sp['t'] in ('biped', 'quadruped') else 'legacy', 'artRes': RES,
                'palette': {'fur': sp['c'], 'furDark': shade(sp['c'], 0.72), 'belly': sp.get('belly', '#f6e7cf'), 'ink': INK, 'accent': '#ffd36b'},
                'slotOverrides': slot_over, 'stages': stages, 'skins': {'default': {'parts': {}}}}
         json.dump(rig, open(os.path.join(DATA, f'{sid}.rig.json'), 'w'), ensure_ascii=False, indent=1)
         index.append(sid)
-    json.dump({'rigs': index, 'templates': list(templates), 'anims': ['quadruped', 'sprite']}, open(os.path.join(DATA, 'index.json'), 'w'), ensure_ascii=False, indent=1)
+    json.dump({'rigs': index, 'templates': list(templates), 'anims': ['quadruped', 'biped', 'legacy', 'sprite']}, open(os.path.join(DATA, 'index.json'), 'w'), ensure_ascii=False, indent=1)
     manifest['images'] = images
     json.dump(manifest, open(manifest_path, 'w'), ensure_ascii=False, indent=2)
     print(len(index), 'rigs,', sum(1 for k in images if k.startswith('rig-')), 'part images')
@@ -609,3 +626,4 @@ if __name__ == '__main__':
     main()
     # 제미나이 부위판이 있는 동물은 벡터 부위 대신 그 그림을 입힘
     import apply_parts; apply_parts.main()
+    import gen_anims  # 동작 클립 보강(IK 걸음, 할퀴기·들이받기 등)

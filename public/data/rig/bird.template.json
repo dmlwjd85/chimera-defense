@@ -116,6 +116,14 @@
    "foot": true
   },
   {
+   "name": "leg_fr_paw",
+   "parent": "leg_fr_lo",
+   "x": 55,
+   "y": 0,
+   "rot": -90,
+   "length": 30
+  },
+  {
    "name": "leg_fn_up",
    "parent": "hips",
    "x": 60,
@@ -130,6 +138,14 @@
    "y": 0,
    "length": 55,
    "foot": true
+  },
+  {
+   "name": "leg_fn_paw",
+   "parent": "leg_fn_lo",
+   "x": 55,
+   "y": 0,
+   "rot": -90,
+   "length": 30
   },
   {
    "name": "leg_br_up",
@@ -148,6 +164,14 @@
    "foot": true
   },
   {
+   "name": "leg_br_paw",
+   "parent": "leg_br_lo",
+   "x": 55,
+   "y": 0,
+   "rot": -90,
+   "length": 30
+  },
+  {
    "name": "leg_bn_up",
    "parent": "hips",
    "x": 40,
@@ -162,6 +186,14 @@
    "y": 0,
    "length": 55,
    "foot": true
+  },
+  {
+   "name": "leg_bn_paw",
+   "parent": "leg_bn_lo",
+   "x": 55,
+   "y": 0,
+   "rot": -90,
+   "length": 30
   },
   {
    "name": "wing",
@@ -392,6 +424,62 @@
     "h": 10
    },
    "part": null
+  },
+  {
+   "name": "leg_fr_paw",
+   "bone": "leg_fr_paw",
+   "x": 12,
+   "y": 0,
+   "z": 0.05,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 50,
+    "h": 30
+   },
+   "part": null
+  },
+  {
+   "name": "leg_br_paw",
+   "bone": "leg_br_paw",
+   "x": 12,
+   "y": 0,
+   "z": 0.06,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 50,
+    "h": 30
+   },
+   "part": null
+  },
+  {
+   "name": "leg_bn_paw",
+   "bone": "leg_bn_paw",
+   "x": 12,
+   "y": 0,
+   "z": 7.05,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 50,
+    "h": 30
+   },
+   "part": null
+  },
+  {
+   "name": "leg_fn_paw",
+   "bone": "leg_fn_paw",
+   "x": 12,
+   "y": 0,
+   "z": 8.05,
+   "color": "fur",
+   "ph": {
+    "shape": "ellipse",
+    "w": 50,
+    "h": 30
+   },
+   "part": null
   }
  ],
  "procedural": {
@@ -439,6 +527,15 @@
     "damping": 9,
     "limit": 25,
     "sway": 0.08
+   },
+   {
+    "bones": [
+     "head"
+    ],
+    "stiffness": 260,
+    "damping": 22,
+    "limit": 7,
+    "sway": 0.015
    }
   ]
  }

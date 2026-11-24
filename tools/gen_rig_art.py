@@ -342,6 +342,21 @@ def paint_quad(sp, s, w, h):
                                   f'<path d="M{x} 35 L{x+sgn*5} -30 M{x+sgn*3} 0 L{x+sgn*28} -18 M{x+sgn*5} -22 L{x-sgn*15} -38" stroke="#c49a6c" stroke-width="7" stroke-linecap="round" fill="none"/>')
             return one(-25, -1) + one(25, 1), ''
         return '', ''
+    if n == 'wing' and sp.get('extraHeads'):
+        # 케르베로스: 본래 머리 뒤로 머리 둘을 더 그림(같은 털빛, 뒤쪽일수록 어둡게)
+        def one(cx, cy, k):
+            f, e = shade(c, k), shade(sp.get('earIn', dark), k)
+            o = f'<path d="M{cx-34} {cy-34} L{cx-26} {cy-78} L{cx-2} {cy-44} Z" fill="{f}" {st(5)}/><path d="M{cx+4} {cy-44} L{cx+22} {cy-82} L{cx+38} {cy-36} Z" fill="{f}" {st(5)}/>'
+            o += f'<path d="M{cx-26} {cy-44} L{cx-24} {cy-64} L{cx-12} {cy-46} Z" fill="{e}"/>'
+            o += f'<ellipse cx="{cx}" cy="{cy}" rx="56" ry="48" fill="{f}" {st(6)}/>'
+            o += f'<ellipse cx="{cx+46}" cy="{cy+16}" rx="32" ry="21" fill="{shade(sp.get("snoutCol", belly), k)}" {st(5)}/><ellipse cx="{cx+72}" cy="{cy+8}" rx="9" ry="7" fill="{INK}"/>'
+            o += f'<ellipse cx="{cx+22}" cy="{cy-12}" rx="11" ry="13" fill="#fff" {st(4)}/><circle cx="{cx+25}" cy="{cy-10}" r="6" fill="{sp.get("eyeCol", "#3a2414")}"/>'
+            o += f'<path d="M{cx+8} {cy-30} l26 8" stroke="{INK}" stroke-width="6" stroke-linecap="round"/><path d="M{cx+34} {cy+30} q14 8 28 0" fill="none" stroke="{INK}" stroke-width="4" stroke-linecap="round"/>'
+            return o
+        neck = lambda x, y, k: (f'<path d="M-40 38 L{x-8} {y+14}" stroke="{INK}" stroke-width="50" stroke-linecap="round"/>'
+                                f'<path d="M-40 38 L{x-8} {y+14}" stroke="{shade(c, k)}" stroke-width="40" stroke-linecap="round"/>')
+        # 본래 머리가 뼈 배율 1.34라 같은 크기로 보이게 1.7배
+        return f'<g transform="scale(1.7)">{neck(-62, -46, 0.82)}{one(-62, -46, 0.82)}{neck(68, 38, 0.92)}{one(68, 38, 0.92)}</g>', ''
     if n == 'wing':
         col = sp.get('wingCol', '#2f3542')
         return f'<path d="M{-w/2+4} {-h*0.3} C {0} {-h/2} {w*0.4} {-h*0.3} {w/2-4} 0 C {w*0.2} {h*0.1} {w*0.1} {h*0.4} {-w*0.05} {h*0.25} C {-w*0.15} {h/2-4} {-w*0.35} {h*0.2} {-w/2+4} {-h*0.3} Z" fill="{col}" {st()}/>', ''
@@ -535,7 +550,8 @@ SPIRIT = {
  'frog': dict(c='#e6b422', belly='#fff3b0'),
  'grasshopper': dict(c='#b9a36a'),
  'ant': dict(c='#b87333'),
- 'dog': dict(c='#3a3340', dark='#1d1822', belly='#55495e', tailTip='#ff5a3c', sock='#55495e', eyeCol='#ff3b30', earIn='#ff5a3c', fluff='#ff5a3c', snoutCol='#6b5f73'),
+ 'dog': dict(c='#cf7a2e', dark='#8f4c1c', belly='#ffe9c8', tailTip='#ff6a2a', sock='#5e3014', eyeCol='#e53935', earIn='#5e3014', fluff='#ffb347', snoutCol='#ffe9c8',
+             extraHeads=True, parts={'wing': 'wing'}, over={'wing': {'x': -104, 'y': 118, 'rot': -200, 'w': 520, 'h': 460}}),
  'monkey': dict(c='#d4a017', dark='#a67c00', headband=True, snoutCol='#ffe8c2', earIn='#ffe8c2', fluff='#ffe08a'),
 }
 for _k, _v in SPIRIT.items(): SKINS[_k + '_spirit'] = {**SKINS[_k], **_v}

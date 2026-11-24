@@ -13,7 +13,7 @@ export function preloadRigs(scene) {
 }
 
 const json = (scene, key) => scene.cache.json.get(key);
-const ART_SPIRITS = new Set(['dog']);
+const ART_SPIRITS = new Set([]); // 리코스 그림 한 장으로 움직일 신화급(지금은 없음: 케르베로스는 개 리그에 머리 둘을 더한 것)
 
 /** Rig instance + view for a unit, inside `parent` container; null when there is no rig (weak chimera). */
 export function unitRig(scene, unit, parent, scale = 0.17) {

@@ -334,7 +334,7 @@ ART['ant'] = grasshopper('#8a4b32', wing=False, guitar=False)
 SP_FUR = {'fox': dict(c='#fbf6ee', tailTip='#ff8fb1', eyeCol='#c2185b'), 'tiger': dict(c='#f6f3ea', snoutCol='#ffffff', eyeCol='#2e86de'), 'bear': dict(c='#a9785a', snoutCol='#f2dcb8'),
           'rabbit': dict(c='#cdeee0', dark='#9fd6c0', belly='#f4fffa', eyeCol='#00897b'), 'bison': dict(c='#4a86c0', dark='#2e5c8a', hump='#2e5c8a', snoutCol='#1d3c5c'),
           'wolf': dict(c='#3c4452', dark='#1f232c', tailTip='#9fb3c8', eyeCol='#ff5252', angry=True), 'bighorn': dict(c='#f2c94c', dark='#c99a1e', snoutCol='#fff6d6'),
-          'dog': dict(c='#3a3340', dark='#1d1822', tailTip='#ff5a3c', eyeCol='#ff3b30', snoutCol='#6b5f73', belly='#55495e', earIn='#ff5a3c'), 'monkey': dict(c='#d4a017', dark='#a67c00', snoutCol='#ffe8c2', earIn='#ffe8c2')}
+          'dog': dict(c='#cf7a2e', dark='#8f4c1c', tailTip='#ff6a2a', eyeCol='#e53935', snoutCol='#ffe9c8', belly='#ffe9c8', earIn='#5e3014'), 'monkey': dict(c='#d4a017', dark='#a67c00', snoutCol='#ffe8c2', earIn='#ffe8c2')}
 SP_BIRD = {'rooster': dict(c='#ffd54f', headCol='#ffd54f', belly='#fff3b0', tailCol='#ff9800'), 'crow': dict(c='#1c1c28', headCol='#1c1c28', belly='#c62828', beak='#ffd54f', tailCol='#3a1a1a'),
            'eagle': dict(c='#c9a227', headCol='#fffbe6', belly='#e6c65a', tailCol='#fffbe6')}
 for k, v in SP_FUR.items(): ART[k + '-spirit'] = quad({**FUR[k], **v})

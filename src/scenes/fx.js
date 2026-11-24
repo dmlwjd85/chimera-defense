@@ -1,3 +1,4 @@
+import { dotOn, dotify } from './dotfx.js';
 // Battle effects: hit sparks, projectiles, area rings, status particles, evolution beams, kills, banners, ambient weather.
 // Uses textures fx-* (tools/gen_bg.py). Every call is cheap: emitters are created once and `explode`d.
 import Phaser from 'phaser';
@@ -45,6 +46,7 @@ export class FX {
     const p = PRESETS[name];
     const e = this.scene.add.particles(0, 0, p.tex, { ...p, tex: undefined, emitting: false });
     e.setDepth(depth);
+    if (dotOn()) dotify(this.scene, e, false, true);
     return (this.emitters[name] = e);
   }
 

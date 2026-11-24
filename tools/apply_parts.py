@@ -10,7 +10,7 @@ art-src/gemini/fit/<종>.json    : 조각 → 리그 부위 맞춤(tools/gen_fit
 """
 import json, os, subprocess, glob
 import numpy as np
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFilter
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 G = os.path.join(ROOT, 'art-src', 'gemini')
 DATA = os.path.join(ROOT, 'public', 'data', 'rig')
@@ -18,6 +18,14 @@ ART = os.path.join(ROOT, 'public', 'assets', 'rig')
 
 def piece(sp, o):
     im = Image.open(os.path.join(G, 'parts', sp, o['src'] + '.png')).convert('RGBA')
+    for cx, cy, rx, ry, sx, sy in o.get('fill', []):   # 부위판에 그려진 목·다리 끼우는 구멍을 몸 색으로 메움(머리가 흔들릴 때 드러나지 않게). 값은 그림 크기 대비 비율
+        A = np.array(im).astype(float); H, W = A.shape[:2]; yy, xx = np.mgrid[0:H, 0:W]
+        inside = Image.fromarray((A[..., 3] > 200).astype(np.uint8) * 255).filter(ImageFilter.MinFilter(7))   # 외곽선은 남김
+        m = (((xx - cx * W) / (rx * W)) ** 2 + ((yy - cy * H) / (ry * H)) ** 2 <= 1) & (np.array(inside) > 0)
+        m = np.array(Image.fromarray(m.astype(np.uint8) * 255).filter(ImageFilter.GaussianBlur(1.2))).astype(float)[..., None] / 255
+        col = A[round(sy * H) - 2: round(sy * H) + 3, round(sx * W) - 2: round(sx * W) + 3, :3].reshape(-1, 3).mean(0)
+        A[..., :3] = A[..., :3] * (1 - m) + col * m
+        im = Image.fromarray(A.astype(np.uint8), 'RGBA')
     if o.get('crop'):
         W, H = im.size; x0, y0, x1, y1 = o['crop']; im = im.crop((round(x0 * W), round(y0 * H), round(x1 * W), round(y1 * H)))
     for side in o.get('feather', []):       # 잘린 변이 겹치는 부위 위에서 선으로 보이지 않게 투명하게 풀어 줌

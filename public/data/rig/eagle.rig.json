@@ -2,7 +2,7 @@
  "species": "eagle",
  "skin": "eagle",
  "template": "bird",
- "anims": "legacy",
+ "anims": "bird",
  "artRes": 2,
  "palette": {
   "fur": "#7a4a2a",
@@ -154,5 +154,9 @@
   }
  },
  "boneOverrides": {},
+ "attacks": [
+  "swoop",
+  "peck"
+ ],
  "gemini": true
 }

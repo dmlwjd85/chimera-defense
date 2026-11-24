@@ -15,7 +15,7 @@ export function preloadRigs(scene) {
 const json = (scene, key) => scene.cache.json.get(key);
 
 /** 공격 동작들(할퀴기·들이받기·물기·덮치기 포함). 리그의 attacks 목록을 차례로 돌려 써서 공격이 단조롭지 않게 함. */
-export const ATTACK_MOTIONS = ['attack', 'claw', 'butt', 'bite', 'pounce'];
+export const ATTACK_MOTIONS = ['attack', 'claw', 'butt', 'bite', 'pounce', 'peck', 'swoop'];
 export function playAttack(inst) {
   const list = (inst.rig.attacks || []).filter((n) => inst.anims[n]);
   if (!list.length) return inst.play('attack');

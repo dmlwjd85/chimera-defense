@@ -2,7 +2,7 @@
  "species": "frog",
  "skin": "frog",
  "template": "frog",
- "anims": "legacy",
+ "anims": "frog",
  "artRes": 2,
  "palette": {
   "fur": "#5fae4a",
@@ -153,5 +153,9 @@
   }
  },
  "boneOverrides": {},
+ "attacks": [
+  "butt",
+  "attack"
+ ],
  "gemini": true
 }

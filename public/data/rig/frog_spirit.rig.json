@@ -2,7 +2,7 @@
  "species": "frog_spirit",
  "skin": "frog_spirit",
  "template": "frog",
- "anims": "legacy",
+ "anims": "frog",
  "artRes": 2,
  "palette": {
   "fur": "#e6b422",

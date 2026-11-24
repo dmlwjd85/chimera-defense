@@ -2,7 +2,7 @@
  "species": "thunderbird",
  "skin": "thunderbird",
  "template": "bird",
- "anims": "legacy",
+ "anims": "bird",
  "artRes": 2,
  "palette": {
   "fur": "#2e5c8a",

@@ -155,7 +155,9 @@ def bird_template():
         S.append(s)
     T['slots'] = S
     T['procedural']['breath']['slots'] = ['body', 'belly']
-    return clean(T)
+    T = clean(T)
+    T['ik'] = [{'name': n, 'upper': f'leg_{n}_up', 'lower': f'leg_{n}_lo', 'paw': f'leg_{n}_paw', 'bend': -1} for n in ('fn', 'bn')]
+    return T
 
 def frog_template():
     T = quad_template(); T['id'] = 'frog'
@@ -188,7 +190,7 @@ def frog_template():
     return clean(T)
 
 def bug_template():
-    T = bird_template(); T['id'] = 'bug'
+    T = bird_template(); T['id'] = 'bug'; T.pop('ik', None)
     for bn in T['bones']:
         if bn['name'] == 'hips': bn.update(x=-40, y=-150, length=170)
         if bn['name'] == 'ear_n': bn.update(x=10, y=-60, rot=-75, length=110)
@@ -612,18 +614,18 @@ def main():
         stages = {}
         for stg, (label, scale, speed, amp, bs) in STAGE_OF.items():
             stages[stg] = {'label': label, 'scale': scale, 'speed': speed, 'amp': amp, 'boneScale': bs, 'parts': dict(parts)}
-        rig = {'species': sid, 'skin': sid, 'template': sp['t'], 'anims': sp['t'] if sp['t'] in ('biped', 'quadruped') else 'legacy', 'artRes': RES,
+        rig = {'species': sid, 'skin': sid, 'template': sp['t'], 'anims': sp['t'] if sp['t'] in ('biped', 'quadruped', 'bird', 'frog') else 'legacy', 'artRes': RES,
                'palette': {'fur': sp['c'], 'furDark': shade(sp['c'], 0.72), 'belly': sp.get('belly', '#f6e7cf'), 'ink': INK, 'accent': '#ffd36b'},
                'slotOverrides': slot_over, 'stages': stages, 'skins': {'default': {'parts': {}}}}
         json.dump(rig, open(os.path.join(DATA, f'{sid}.rig.json'), 'w'), ensure_ascii=False, indent=1)
         index.append(sid)
-    json.dump({'rigs': index, 'templates': list(templates), 'anims': ['quadruped', 'biped', 'legacy', 'sprite']}, open(os.path.join(DATA, 'index.json'), 'w'), ensure_ascii=False, indent=1)
+    json.dump({'rigs': index, 'templates': list(templates), 'anims': ['quadruped', 'biped', 'bird', 'frog', 'legacy', 'sprite']}, open(os.path.join(DATA, 'index.json'), 'w'), ensure_ascii=False, indent=1)
     manifest['images'] = images
     json.dump(manifest, open(manifest_path, 'w'), ensure_ascii=False, indent=2)
     print(len(index), 'rigs,', sum(1 for k in images if k.startswith('rig-')), 'part images')
 
 if __name__ == '__main__':
     main()
+    import gen_anims  # 동작 클립 보강(IK 걸음, 할퀴기·들이받기 등). 부위 입히기가 이 클립 파일을 읽으니 먼저 만듦
     # 제미나이 부위판이 있는 동물은 벡터 부위 대신 그 그림을 입힘
     import apply_parts; apply_parts.main()
-    import gen_anims  # 동작 클립 보강(IK 걸음, 할퀴기·들이받기 등)

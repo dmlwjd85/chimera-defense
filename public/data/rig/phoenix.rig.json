@@ -2,7 +2,7 @@
  "species": "phoenix",
  "skin": "phoenix",
  "template": "bird",
- "anims": "legacy",
+ "anims": "bird",
  "artRes": 2,
  "palette": {
   "fur": "#e53935",

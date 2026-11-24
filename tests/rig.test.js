@@ -220,3 +220,33 @@ test('산군 걸음: 엉덩이 관절은 모여 있고 두 발이 서로 교차�
   const hip = (n) => r.bones.find((b) => b.name === `leg_${n}_up`).y;
   assert.ok(Math.abs(hip('bn') - hip('br')) < 40, '엉덩이 관절은 모음');
 });
+
+test('새·개구리 전용 동작: 새는 두 발로 걷고(IK) 날 땐 다리를 접고 날개를 폄, 쪼기·급강하·폴짝 뛰기가 있음', () => {
+  const BT = read('bird.template'), BA = read('bird.anims'), FT = read('frog.template'), FA = read('frog.anims');
+  assert.deepEqual(validateAnims(BA, BT), []);
+  assert.deepEqual(validateAnims(FA, FT), []);
+  assert.deepEqual(BT.ik.map((l) => l.name), ['fn', 'bn']);
+  assert.ok(!read('bug.template').ik, '벌레는 다리 IK 없음');
+  for (const sp of ['crow', 'eagle', 'rooster']) {
+    const rig = read(sp + '.rig'); assert.equal(rig.anims, 'bird');
+    assert.ok(rig.attacks.length && rig.attacks.every((n) => BA[n]), sp + ' 공격 동작');
+  }
+  const frog = read('frog.rig'); assert.equal(frog.anims, 'frog'); assert.ok(frog.attacks.every((n) => FA[n]));
+  // 걷기: 딛는 발은 땅에, 드는 발은 떠 있음
+  const w = new RigInstance(BT, BA, read('rooster.rig'), { stage: 'adult', motion: 'move', seed: 1 });
+  let lifted = 0, planted = 0;
+  for (let i = 0; i < 40; i++) { w.update(1 / 60); const ik = w.lastIk; if (ik.fn.y < w.footRest.fn.y - 4 || ik.bn.y < w.footRest.bn.y - 4) lifted++; if (Math.abs(ik.fn.y - w.footRest.fn.y) < 0.5 || Math.abs(ik.bn.y - w.footRest.bn.y) < 0.5) planted++; }
+  assert.ok(lifted > 8 && planted > 30, `걸음 ${lifted}/${planted}`);
+  // 날기: IK 없이 다리를 접어 발이 서 있을 때보다 높이 올라감, 날개는 커짐
+  const foot = (inst) => Math.max(...inst.getDrawList().filter((d) => d.slot.endsWith('_paw') || d.slot.endsWith('_lo')).map((d) => d.y));
+  const st = new RigInstance(BT, BA, read('crow.rig'), { stage: 'adult', motion: 'idle', seed: 1 }); run(st, 0.3);
+  const fl = new RigInstance(BT, BA, read('crow.rig'), { stage: 'adult', motion: 'fly', seed: 1 }); run(fl, 0.5);
+  assert.equal(fl.lastIk, null);
+  assert.ok(foot(fl) < foot(st) - 8, `접은 다리 ${foot(fl)} < ${foot(st)}`);
+  const wing = (inst) => inst.getDrawList().find((d) => d.slot === 'wing');
+  assert.ok(Math.abs(wing(fl).sx) > Math.abs(wing(st).sx) * 1.15, '날개 펴짐');
+  // 개구리 폴짝: 한 주기 안에 몸이 떠올랐다 내려옴
+  const fr = new RigInstance(FT, FA, frog, { stage: 'adult', motion: 'move', seed: 1 });
+  const ys = []; for (let i = 0; i < 36; i++) { fr.update(1 / 60); ys.push(fr.getDrawList().find((d) => d.slot === 'body').y); }
+  assert.ok(Math.max(...ys) - Math.min(...ys) > 20, `폴짝 높이 ${Math.max(...ys) - Math.min(...ys)}`);
+});

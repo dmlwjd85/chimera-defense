@@ -7,29 +7,59 @@
   "belly",
   "chest_fluff",
   "neck",
-  "horn",
   "wing",
-  "deco"
+  "deco",
+  "horn"
  ],
- "boneScale": {
-  "neck": 0.3,
-  "leg_fr_up": [
-   0.75,
-   1
-  ],
-  "leg_fn_up": [
-   0.75,
-   1
-  ],
-  "leg_br_up": [
-   0.75,
-   1
-  ],
-  "leg_bn_up": [
-   0.75,
-   1
-  ]
+ "bones": {
+  "neck": {
+   "length": 21
+  },
+  "head": {
+   "x": 21
+  },
+  "leg_fn_up": {
+   "length": 68
+  },
+  "leg_fn_lo": {
+   "x": 68,
+   "length": 78
+  },
+  "leg_fn_paw": {
+   "x": 78
+  },
+  "leg_fr_up": {
+   "length": 68
+  },
+  "leg_fr_lo": {
+   "x": 68,
+   "length": 78
+  },
+  "leg_fr_paw": {
+   "x": 78
+  },
+  "leg_bn_up": {
+   "length": 68
+  },
+  "leg_bn_lo": {
+   "x": 68,
+   "length": 78
+  },
+  "leg_bn_paw": {
+   "x": 78
+  },
+  "leg_br_up": {
+   "length": 68
+  },
+  "leg_br_lo": {
+   "x": 68,
+   "length": 78
+  },
+  "leg_br_paw": {
+   "x": 78
+  }
  },
+ "boneScale": {},
  "over": {
   "head": {
    "x": 40,
@@ -41,6 +71,37 @@
   "ear_r": {
    "x": 4
   },
+  "body": {
+   "x": 48
+  },
+  "torso_front": {
+   "x": 68,
+   "y": -5
+  },
+  "leg_fn_up": {
+   "x": 34
+  },
+  "leg_fn_lo": {
+   "x": 39
+  },
+  "leg_fr_up": {
+   "x": 34
+  },
+  "leg_fr_lo": {
+   "x": 39
+  },
+  "leg_bn_up": {
+   "x": 34
+  },
+  "leg_bn_lo": {
+   "x": 39
+  },
+  "leg_br_up": {
+   "x": 34
+  },
+  "leg_br_lo": {
+   "x": 39
+  },
   "tail": {
    "rope": null,
    "x": 120,
@@ -51,7 +112,29 @@
  "parts": {
   "body": {
    "src": "body",
-   "length": 300
+   "crop": [
+    0,
+    0,
+    0.62,
+    1
+   ],
+   "feather": [
+    "right"
+   ],
+   "length": 186
+  },
+  "torso_front": {
+   "src": "body",
+   "crop": [
+    0.42,
+    0,
+    1,
+    1
+   ],
+   "feather": [
+    "left"
+   ],
+   "length": 174
   },
   "head": {
    "src": "head",
@@ -64,52 +147,162 @@
   },
   "ear_r": {
    "src": "ear_r",
-   "length": 134,
+   "length": 133,
    "rot": -90,
    "dark": 0.85
   },
   "leg_fn_up": {
    "src": "fup",
-   "length": 105,
-   "rot": 90
-  },
-  "leg_fr_up": {
-   "src": "fup",
-   "length": 105,
+   "length": 100,
    "rot": 90,
-   "dark": 0.82
+   "thick": 1.0
   },
   "leg_fn_lo": {
    "src": "flo",
+   "crop": [
+    0,
+    0,
+    1,
+    0.7
+   ],
+   "feather": [
+    "bottom"
+   ],
+   "length": 92,
+   "rot": 90,
+   "thick": 1.0
+  },
+  "leg_fn_paw": {
+   "src": "flo",
+   "crop": [
+    0,
+    0.62,
+    1,
+    1
+   ],
+   "feather": [
+    "top"
+   ],
+   "ankle": true,
+   "axis": "tall",
+   "length": 50,
+   "thick": 1.0
+  },
+  "leg_fr_up": {
+   "src": "fup",
    "length": 100,
-   "rot": 90
+   "rot": 90,
+   "thick": 1.0,
+   "dark": 0.82
   },
   "leg_fr_lo": {
    "src": "flo",
-   "length": 100,
+   "crop": [
+    0,
+    0,
+    1,
+    0.7
+   ],
+   "feather": [
+    "bottom"
+   ],
+   "length": 92,
    "rot": 90,
+   "thick": 1.0,
+   "dark": 0.82
+  },
+  "leg_fr_paw": {
+   "src": "flo",
+   "crop": [
+    0,
+    0.62,
+    1,
+    1
+   ],
+   "feather": [
+    "top"
+   ],
+   "ankle": true,
+   "axis": "tall",
+   "length": 50,
+   "thick": 1.0,
    "dark": 0.82
   },
   "leg_bn_up": {
    "src": "bup",
-   "length": 105,
-   "rot": 90
-  },
-  "leg_br_up": {
-   "src": "bup",
-   "length": 105,
+   "length": 104,
    "rot": 90,
-   "dark": 0.82
+   "thick": 1.0
   },
   "leg_bn_lo": {
    "src": "blo",
-   "length": 100,
-   "rot": 90
+   "crop": [
+    0,
+    0,
+    1,
+    0.7
+   ],
+   "feather": [
+    "bottom"
+   ],
+   "length": 92,
+   "rot": 90,
+   "thick": 1.0
+  },
+  "leg_bn_paw": {
+   "src": "blo",
+   "crop": [
+    0,
+    0.62,
+    1,
+    1
+   ],
+   "feather": [
+    "top"
+   ],
+   "ankle": true,
+   "axis": "tall",
+   "length": 50,
+   "thick": 1.0
+  },
+  "leg_br_up": {
+   "src": "bup",
+   "length": 104,
+   "rot": 90,
+   "thick": 1.0,
+   "dark": 0.82
   },
   "leg_br_lo": {
    "src": "blo",
-   "length": 100,
+   "crop": [
+    0,
+    0,
+    1,
+    0.7
+   ],
+   "feather": [
+    "bottom"
+   ],
+   "length": 92,
    "rot": 90,
+   "thick": 1.0,
+   "dark": 0.82
+  },
+  "leg_br_paw": {
+   "src": "blo",
+   "crop": [
+    0,
+    0.62,
+    1,
+    1
+   ],
+   "feather": [
+    "top"
+   ],
+   "ankle": true,
+   "axis": "tall",
+   "length": 50,
+   "thick": 1.0,
    "dark": 0.82
   },
   "tail": {
@@ -118,5 +311,10 @@
    "rot": -90,
    "axis": "max"
   }
- }
+ },
+ "attacks": [
+  "bite",
+  "pounce",
+  "claw"
+ ]
 }

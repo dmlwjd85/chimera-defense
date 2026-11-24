@@ -47,6 +47,8 @@
  ],
  "anims": [
   "quadruped",
+  "biped",
+  "legacy",
   "sprite"
  ]
 }

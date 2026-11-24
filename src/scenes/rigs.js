@@ -13,6 +13,15 @@ export function preloadRigs(scene) {
 }
 
 const json = (scene, key) => scene.cache.json.get(key);
+
+/** 공격 동작들(할퀴기·들이받기·물기·덮치기 포함). 리그의 attacks 목록을 차례로 돌려 써서 공격이 단조롭지 않게 함. */
+export const ATTACK_MOTIONS = ['attack', 'claw', 'butt', 'bite', 'pounce'];
+export function playAttack(inst) {
+  const list = (inst.rig.attacks || []).filter((n) => inst.anims[n]);
+  if (!list.length) return inst.play('attack');
+  inst._atk = ((inst._atk ?? -1) + 1) % list.length;
+  return inst.play(list[inst._atk]);
+}
 const ART_SPIRITS = new Set([]); // 리코스 그림 한 장으로 움직일 신화급(지금은 없음: 케르베로스는 개 리그에 머리 둘을 더한 것)
 
 /** Rig instance + view for a unit, inside `parent` container; null when there is no rig (weak chimera). */

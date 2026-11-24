@@ -154,7 +154,9 @@ test('every drawn rig (animals, chimeras) validates and runs all motions at ever
       for (const d of r.getDrawList()) assert.ok(Number.isFinite(d.x) && Number.isFinite(d.y), `${id}/${st}/${m}/${d.slot}`);
     }
     const r = new RigInstance(tpl, an, rig, { stage: 'young' }); r.update(0);
-    const feet = tpl.bones.filter((b) => b.foot).map((b) => apply(r.worlds[b.name], b.length, 0)[1]);
+    r.play('down', { mix: 0 }); r.play('idle', { mix: 0 }); r.setStage('young');   // 서 있는 기본 자세(IK로 낮춘 엉덩이 없이)에서 발바닥이 땅에 닿음
+    const { worlds } = r.solveBones({}, 0, false, null);
+    const feet = r.bones.filter((b) => b.foot).map((b) => apply(worlds[b.name], b.length, 0)[1] + (b.footPad || 0) * Math.hypot(worlds[b.name][0], worlds[b.name][1]));
     assert.ok(Math.abs(Math.max(...feet)) < 1e-6, id + ' feet on the ground');
   }
 });
@@ -166,7 +168,7 @@ test('sprite template (one-image enemies) runs every motion', () => {
   for (const m of MOTIONS) { const r = new RigInstance(tpl, an, rig, { stage: 'adult' }); r.play(m); run(r, an[m].duration); }
 });
 
-test('제미나이 부위판 리그: 머리가 주둥이를 품고, 꼬리는 통째 그림, 다리는 [길이, 굵기] 배율', () => {
+test('제미나이 부위판 리그: 머리가 주둥이를 품고, 꼬리는 통째 그림, 뼈를 도안 비율에 맞춤', () => {
   const fox = read('fox.rig');
   assert.equal(fox.gemini, true);
   const r = new RigInstance(T, A, fox, {}); r.update(0);
@@ -174,6 +176,36 @@ test('제미나이 부위판 리그: 머리가 주둥이를 품고, 꼬리는 �
   assert.ok(!dl.some((d) => d.slot === 'muzzle' || d.slot === 'jaw'), '주둥이·턱 부위는 숨김');
   const tail = dl.find((d) => d.slot === 'tail');
   assert.ok(tail && !tail.rope, '꼬리는 휘지 않는 한 장 그림');
-  const leg = dl.find((d) => d.slot === 'leg_fn_up');
-  assert.ok(Math.abs(leg.sx - 0.75) < 0.05 && Math.abs(leg.sy - 1) < 0.05, `다리 배율 ${leg.sx}, ${leg.sy}`);
+  assert.equal(fox.boneOverrides.leg_fn_up.length, 62, '도안 비율에 맞춘 짧은 다리 뼈');
+  assert.ok(dl.some((d) => d.slot === 'leg_fn_paw') && dl.some((d) => d.slot === 'torso_front'), '발과 앞몸통이 따로 움직이는 부위로 들어감');
+});
+
+test('다리 IK: 서 있을 때 발이 제자리, 몸이 앞뒤로 움직여도 발은 땅에 남음', () => {
+  const dog = read('dog.rig');
+  const r = new RigInstance(T, A, dog, {}); r.update(0);
+  const foot = (n) => { const lo = r.bones.find((b) => b.name === `leg_${n}_lo`); return apply(r.worlds[lo.name], lo.length, 0); };
+  for (const n of ['fn', 'fr', 'bn', 'br']) { const f = foot(n), rest = r.footRest[n]; assert.ok(Math.hypot(f[0] - rest.x, f[1] - rest.y) < 1.5, `${n} 발이 ${f} / ${rest.x},${rest.y}`); }
+  r.play('bite', { mix: 0 }); r.update(0.28);                      // 몸이 앞으로 크게 나간 순간
+  const hipsX = decompose(r.worlds.hips).x;
+  r.play('idle', { mix: 0 }); r.update(0);
+  assert.ok(Math.abs(hipsX - decompose(r.worlds.hips).x) > 8, '몸은 움직였어야 함');
+  r.play('bite', { mix: 0 }); r.update(0.28);
+  for (const n of ['bn', 'br']) { const f = foot(n), rest = r.footRest[n]; assert.ok(Math.hypot(f[0] - rest.x, f[1] - rest.y) < 2.5, `${n} 발이 끌림`); }
+});
+
+test('걸음: 딛는 발은 땅에 붙어 뒤로 밀리고, 떼는 발은 들림', () => {
+  const r = new RigInstance(T, A, read('dog.rig'), { motion: 'move' });
+  let lifted = 0, grounded = 0;
+  for (let i = 0; i < 28; i++) { r.update(0.02); const t = r.lastIk.fn; if (t.y < r.footRest.fn.y - 3) lifted++; else grounded++; }
+  assert.ok(lifted > 5 && grounded > 8, `들림 ${lifted}, 디딤 ${grounded}`);
+});
+
+test('공격 동작: 할퀴기·들이받기·물기·덮치기 클립이 있고 리그가 쓸 목록을 가짐', () => {
+  for (const m of ['claw', 'butt', 'bite', 'pounce']) assert.ok(A[m], m);
+  const B = read('biped.anims'), TB = read('biped.template'), san = read('tiger_spirit.rig');
+  assert.deepEqual(validateAnims(B, TB), []);
+  assert.ok(san.attacks.every((n) => B[n]), '산군 공격 동작');
+  const r = new RigInstance(TB, B, san, { stage: 'spirit' });
+  for (const m of san.attacks) { r.play(m, { mix: 0 }); for (let i = 0; i < 30; i++) r.update(0.03); }
+  assert.ok(Object.values(r.worlds).every((w) => w.every(Number.isFinite)));
 });

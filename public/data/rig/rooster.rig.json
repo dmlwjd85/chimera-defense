@@ -2,7 +2,7 @@
  "species": "rooster",
  "skin": "rooster",
  "template": "bird",
- "anims": "quadruped",
+ "anims": "legacy",
  "artRes": 2,
  "palette": {
   "fur": "#fffaf0",
@@ -60,9 +60,16 @@
     "eye": null,
     "ear_n": null,
     "horn": null,
-    "deco": null
-   },
-   "_headBase": 1.6
+    "deco": null,
+    "head": "head",
+    "body": "body",
+    "wing": "wing",
+    "tail": "tail",
+    "leg_fn_up": "leg_fn_up",
+    "leg_bn_up": "leg_bn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_bn_lo": "leg_bn_lo"
+   }
   },
   "teen": {
    "label": "성장기",
@@ -82,9 +89,16 @@
     "eye": null,
     "ear_n": null,
     "horn": null,
-    "deco": null
-   },
-   "_headBase": 1.45
+    "deco": null,
+    "head": "head",
+    "body": "body",
+    "wing": "wing",
+    "tail": "tail",
+    "leg_fn_up": "leg_fn_up",
+    "leg_bn_up": "leg_bn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_bn_lo": "leg_bn_lo"
+   }
   },
   "adult": {
    "label": "성체",
@@ -103,9 +117,16 @@
     "eye": null,
     "ear_n": null,
     "horn": null,
-    "deco": null
-   },
-   "_headBase": 1.32
+    "deco": null,
+    "head": "head",
+    "body": "body",
+    "wing": "wing",
+    "tail": "tail",
+    "leg_fn_up": "leg_fn_up",
+    "leg_bn_up": "leg_bn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_bn_lo": "leg_bn_lo"
+   }
   },
   "spirit": {
    "label": "영물",
@@ -124,9 +145,16 @@
     "eye": null,
     "ear_n": null,
     "horn": null,
-    "deco": null
-   },
-   "_headBase": 1.34
+    "deco": null,
+    "head": "head",
+    "body": "body",
+    "wing": "wing",
+    "tail": "tail",
+    "leg_fn_up": "leg_fn_up",
+    "leg_bn_up": "leg_bn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_bn_lo": "leg_bn_lo"
+   }
   }
  },
  "skins": {
@@ -134,5 +162,6 @@
    "parts": {}
   }
  },
+ "boneOverrides": {},
  "gemini": true
 }

@@ -2,7 +2,7 @@
  "species": "bear_spirit",
  "skin": "bear_spirit",
  "template": "biped",
- "anims": "quadruped",
+ "anims": "biped",
  "artRes": 2,
  "palette": {
   "fur": "#a9785a",

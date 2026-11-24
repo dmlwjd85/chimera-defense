@@ -19,11 +19,7 @@
    "x": 4
   },
   "body": {
-   "ph": {
-    "shape": "ellipse",
-    "w": 270,
-    "h": 150
-   }
+   "x": 48
   },
   "muzzle": {
    "x": 80,
@@ -34,14 +30,58 @@
     "h": 46
    }
   },
+  "head": {
+   "x": 40,
+   "y": 0
+  },
+  "torso_front": {
+   "x": 68,
+   "y": -5
+  },
+  "leg_fn_up": {
+   "x": 31
+  },
+  "leg_fn_lo": {
+   "x": 35
+  },
+  "leg_fr_up": {
+   "x": 31
+  },
+  "leg_fr_lo": {
+   "x": 35
+  },
+  "leg_bn_up": {
+   "x": 31
+  },
+  "leg_bn_lo": {
+   "x": 35
+  },
+  "leg_br_up": {
+   "x": 31
+  },
+  "leg_br_lo": {
+   "x": 35
+  },
   "tail": {
    "rope": null,
    "x": 25,
    "y": 0
   },
-  "head": {
-   "x": 40,
-   "y": 0
+  "leg_fn_paw": {
+   "x": 2.8,
+   "y": 11.2
+  },
+  "leg_fr_paw": {
+   "x": 2.8,
+   "y": 11.2
+  },
+  "leg_bn_paw": {
+   "x": 3.0,
+   "y": 11.2
+  },
+  "leg_br_paw": {
+   "x": 3.0,
+   "y": 11.2
   }
  },
  "stages": {
@@ -51,32 +91,19 @@
    "speed": 1.15,
    "amp": 1.2,
    "boneScale": {
-    "head": 5.333333333333334,
+    "head": 1.6,
     "eye": 1.25,
     "ear_n": 1.1,
     "ear_r": 1.1,
     "tail_1": 0.85,
-    "leg_fr_up": [
-     0.75,
-     1
-    ],
+    "leg_fr_up": 0.82,
     "leg_fr_lo": 0.82,
-    "leg_fn_up": [
-     0.75,
-     1
-    ],
+    "leg_fn_up": 0.82,
     "leg_fn_lo": 0.82,
-    "leg_br_up": [
-     0.75,
-     1
-    ],
+    "leg_br_up": 0.82,
     "leg_br_lo": 0.82,
-    "leg_bn_up": [
-     0.75,
-     1
-    ],
-    "leg_bn_lo": 0.82,
-    "neck": 0.3
+    "leg_bn_up": 0.82,
+    "leg_bn_lo": 0.82
    },
    "parts": {
     "nose": null,
@@ -86,11 +113,28 @@
     "belly": null,
     "chest_fluff": null,
     "neck": null,
-    "horn": null,
     "wing": null,
-    "deco": null
-   },
-   "_headBase": 1.6
+    "deco": null,
+    "horn": null,
+    "body": "body",
+    "torso_front": "torso_front",
+    "head": "head",
+    "ear_n": "ear_n",
+    "ear_r": "ear_r",
+    "leg_fn_up": "leg_fn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_fn_paw": "leg_fn_paw",
+    "leg_fr_up": "leg_fr_up",
+    "leg_fr_lo": "leg_fr_lo",
+    "leg_fr_paw": "leg_fr_paw",
+    "leg_bn_up": "leg_bn_up",
+    "leg_bn_lo": "leg_bn_lo",
+    "leg_bn_paw": "leg_bn_paw",
+    "leg_br_up": "leg_br_up",
+    "leg_br_lo": "leg_br_lo",
+    "leg_br_paw": "leg_br_paw",
+    "tail": "tail"
+   }
   },
   "teen": {
    "label": "성장기",
@@ -98,26 +142,9 @@
    "speed": 1.05,
    "amp": 1.08,
    "boneScale": {
-    "head": 4.833333333333333,
+    "head": 1.45,
     "eye": 1.14,
-    "tail_1": 0.95,
-    "leg_fr_up": [
-     0.75,
-     1
-    ],
-    "leg_fn_up": [
-     0.75,
-     1
-    ],
-    "leg_br_up": [
-     0.75,
-     1
-    ],
-    "leg_bn_up": [
-     0.75,
-     1
-    ],
-    "neck": 0.3
+    "tail_1": 0.95
    },
    "parts": {
     "nose": null,
@@ -127,11 +154,28 @@
     "belly": null,
     "chest_fluff": null,
     "neck": null,
-    "horn": null,
     "wing": null,
-    "deco": null
-   },
-   "_headBase": 1.45
+    "deco": null,
+    "horn": null,
+    "body": "body",
+    "torso_front": "torso_front",
+    "head": "head",
+    "ear_n": "ear_n",
+    "ear_r": "ear_r",
+    "leg_fn_up": "leg_fn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_fn_paw": "leg_fn_paw",
+    "leg_fr_up": "leg_fr_up",
+    "leg_fr_lo": "leg_fr_lo",
+    "leg_fr_paw": "leg_fr_paw",
+    "leg_bn_up": "leg_bn_up",
+    "leg_bn_lo": "leg_bn_lo",
+    "leg_bn_paw": "leg_bn_paw",
+    "leg_br_up": "leg_br_up",
+    "leg_br_lo": "leg_br_lo",
+    "leg_br_paw": "leg_br_paw",
+    "tail": "tail"
+   }
   },
   "adult": {
    "label": "성체",
@@ -139,25 +183,8 @@
    "speed": 1.0,
    "amp": 1.0,
    "boneScale": {
-    "head": 4.4,
-    "eye": 1.08,
-    "leg_fr_up": [
-     0.75,
-     1
-    ],
-    "leg_fn_up": [
-     0.75,
-     1
-    ],
-    "leg_br_up": [
-     0.75,
-     1
-    ],
-    "leg_bn_up": [
-     0.75,
-     1
-    ],
-    "neck": 0.3
+    "head": 1.32,
+    "eye": 1.08
    },
    "parts": {
     "nose": null,
@@ -167,11 +194,28 @@
     "belly": null,
     "chest_fluff": null,
     "neck": null,
-    "horn": null,
     "wing": null,
-    "deco": null
-   },
-   "_headBase": 1.32
+    "deco": null,
+    "horn": null,
+    "body": "body",
+    "torso_front": "torso_front",
+    "head": "head",
+    "ear_n": "ear_n",
+    "ear_r": "ear_r",
+    "leg_fn_up": "leg_fn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_fn_paw": "leg_fn_paw",
+    "leg_fr_up": "leg_fr_up",
+    "leg_fr_lo": "leg_fr_lo",
+    "leg_fr_paw": "leg_fr_paw",
+    "leg_bn_up": "leg_bn_up",
+    "leg_bn_lo": "leg_bn_lo",
+    "leg_bn_paw": "leg_bn_paw",
+    "leg_br_up": "leg_br_up",
+    "leg_br_lo": "leg_br_lo",
+    "leg_br_paw": "leg_br_paw",
+    "tail": "tail"
+   }
   },
   "spirit": {
    "label": "영물",
@@ -179,25 +223,8 @@
    "speed": 1.0,
    "amp": 1.0,
    "boneScale": {
-    "head": 4.466666666666667,
-    "eye": 1.08,
-    "leg_fr_up": [
-     0.75,
-     1
-    ],
-    "leg_fn_up": [
-     0.75,
-     1
-    ],
-    "leg_br_up": [
-     0.75,
-     1
-    ],
-    "leg_bn_up": [
-     0.75,
-     1
-    ],
-    "neck": 0.3
+    "head": 1.34,
+    "eye": 1.08
    },
    "parts": {
     "nose": null,
@@ -207,11 +234,28 @@
     "belly": null,
     "chest_fluff": null,
     "neck": null,
-    "horn": null,
     "wing": null,
-    "deco": null
-   },
-   "_headBase": 1.34
+    "deco": null,
+    "horn": null,
+    "body": "body",
+    "torso_front": "torso_front",
+    "head": "head",
+    "ear_n": "ear_n",
+    "ear_r": "ear_r",
+    "leg_fn_up": "leg_fn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_fn_paw": "leg_fn_paw",
+    "leg_fr_up": "leg_fr_up",
+    "leg_fr_lo": "leg_fr_lo",
+    "leg_fr_paw": "leg_fr_paw",
+    "leg_bn_up": "leg_bn_up",
+    "leg_bn_lo": "leg_bn_lo",
+    "leg_bn_paw": "leg_bn_paw",
+    "leg_br_up": "leg_br_up",
+    "leg_br_lo": "leg_br_lo",
+    "leg_br_paw": "leg_br_paw",
+    "tail": "tail"
+   }
   }
  },
  "skins": {
@@ -219,5 +263,61 @@
    "parts": {}
   }
  },
+ "boneOverrides": {
+  "neck": {
+   "length": 21
+  },
+  "head": {
+   "x": 21
+  },
+  "leg_fn_up": {
+   "length": 62
+  },
+  "leg_fn_lo": {
+   "x": 62,
+   "length": 70,
+   "footPad": 30.1
+  },
+  "leg_fn_paw": {
+   "x": 70
+  },
+  "leg_fr_up": {
+   "length": 62
+  },
+  "leg_fr_lo": {
+   "x": 62,
+   "length": 70,
+   "footPad": 30.1
+  },
+  "leg_fr_paw": {
+   "x": 70
+  },
+  "leg_bn_up": {
+   "length": 62
+  },
+  "leg_bn_lo": {
+   "x": 62,
+   "length": 70,
+   "footPad": 30.1
+  },
+  "leg_bn_paw": {
+   "x": 70
+  },
+  "leg_br_up": {
+   "length": 62
+  },
+  "leg_br_lo": {
+   "x": 62,
+   "length": 70,
+   "footPad": 30.1
+  },
+  "leg_br_paw": {
+   "x": 70
+  }
+ },
+ "attacks": [
+  "butt",
+  "pounce"
+ ],
  "gemini": true
 }

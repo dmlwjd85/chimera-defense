@@ -2,7 +2,7 @@
  "species": "grasshopper",
  "skin": "grasshopper",
  "template": "bug",
- "anims": "quadruped",
+ "anims": "legacy",
  "artRes": 2,
  "palette": {
   "fur": "#7ccf4f",

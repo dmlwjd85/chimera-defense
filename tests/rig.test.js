@@ -8,7 +8,7 @@ import { fromTRS, mul, apply, decompose, lerpAngle } from '../src/rig/math.js';
 import { AngleSpring, Blink, Breath } from '../src/rig/procedural.js';
 
 const read = (n) => JSON.parse(readFileSync(new URL(`../public/data/rig/${n}.json`, import.meta.url), 'utf8'));
-const T = read('quadruped.template'), A = read('quadruped.anims'), R = read('fox.rig');
+const T = read('quadruped.template'), A = read('quadruped.anims'), R = read('monkey.rig');
 const mk = (o = {}) => new RigInstance(T, A, R, o);
 const run = (r, sec, step = 1 / 60) => { const ev = []; for (let t = 0; t < sec - 1e-9; t += step) ev.push(...r.update(step)); return ev; };
 
@@ -164,4 +164,16 @@ test('sprite template (one-image enemies) runs every motion', () => {
   assert.deepEqual(validateAnims(an, tpl), []);
   const rig = { species: 'normal', stages: { adult: { scale: 1 } } };
   for (const m of MOTIONS) { const r = new RigInstance(tpl, an, rig, { stage: 'adult' }); r.play(m); run(r, an[m].duration); }
+});
+
+test('제미나이 부위판 리그: 머리가 주둥이를 품고, 꼬리는 통째 그림, 다리는 [길이, 굵기] 배율', () => {
+  const fox = read('fox.rig');
+  assert.equal(fox.gemini, true);
+  const r = new RigInstance(T, A, fox, {}); r.update(0);
+  const dl = r.getDrawList();
+  assert.ok(!dl.some((d) => d.slot === 'muzzle' || d.slot === 'jaw'), '주둥이·턱 부위는 숨김');
+  const tail = dl.find((d) => d.slot === 'tail');
+  assert.ok(tail && !tail.rope, '꼬리는 휘지 않는 한 장 그림');
+  const leg = dl.find((d) => d.slot === 'leg_fn_up');
+  assert.ok(Math.abs(leg.sx - 0.75) < 0.05 && Math.abs(leg.sy - 1) < 0.05, `다리 배율 ${leg.sx}, ${leg.sy}`);
 });

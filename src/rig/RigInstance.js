@@ -92,9 +92,11 @@ export class RigInstance {
   /** Local TRS for one bone after setup pose, stage modifiers and clip offsets. */
   localOf(b, off) {
     const amp = this.stageDef.amp ?? 1;
-    const bs = this.stageDef.boneScale?.[b.name] ?? 1;
+    // 뼈 배율: 숫자면 가로세로 같이, [길이, 굵기]면 따로(짧고 굵은 다리 같은 2등신 비율용)
+    const bsv = this.stageDef.boneScale?.[b.name] ?? 1;
+    const bs = Array.isArray(bsv) ? bsv[0] : bsv, bsy = Array.isArray(bsv) ? bsv[1] : bsv;
     const o = off || neutral();
-    const sy = (b.sy ?? 1) * bs * o.sy;
+    const sy = (b.sy ?? 1) * bsy * o.sy;
     let y = (b.y || 0) + o.y * amp;
     if (!b.parent) y += this.groundOffset;
     return { x: (b.x || 0) + o.x * amp, y, rot: (b.rot || 0) + o.rot * amp, sx: (b.sx ?? 1) * bs * o.sx, sy, alpha: o.alpha };

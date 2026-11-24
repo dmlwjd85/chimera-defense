@@ -607,3 +607,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # 제미나이 부위판이 있는 동물은 벡터 부위 대신 그 그림을 입힘
+    import apply_parts; apply_parts.main()

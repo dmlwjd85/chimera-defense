@@ -11,7 +11,17 @@
   "ink": "#2b1d16",
   "accent": "#ffd36b"
  },
- "slotOverrides": {},
+ "slotOverrides": {
+  "tail": {
+   "rope": null,
+   "x": 55,
+   "y": 0
+  },
+  "head": {
+   "x": -18,
+   "y": 30
+  }
+ },
  "stages": {
   "young": {
    "label": "어린",
@@ -34,7 +44,14 @@
     "leg_bn_lo": 0.82
    },
    "parts": {
-    "ear_n": null
+    "ear_n": null,
+    "belly": null,
+    "jaw": null,
+    "muzzle": null,
+    "eye": null,
+    "ear_r": null,
+    "horn": null,
+    "deco": null
    }
   },
   "teen": {
@@ -48,7 +65,14 @@
     "tail_1": 0.95
    },
    "parts": {
-    "ear_n": null
+    "ear_n": null,
+    "belly": null,
+    "jaw": null,
+    "muzzle": null,
+    "eye": null,
+    "ear_r": null,
+    "horn": null,
+    "deco": null
    }
   },
   "adult": {
@@ -61,7 +85,14 @@
     "eye": 1.08
    },
    "parts": {
-    "ear_n": null
+    "ear_n": null,
+    "belly": null,
+    "jaw": null,
+    "muzzle": null,
+    "eye": null,
+    "ear_r": null,
+    "horn": null,
+    "deco": null
    }
   },
   "spirit": {
@@ -74,7 +105,14 @@
     "eye": 1.08
    },
    "parts": {
-    "ear_n": null
+    "ear_n": null,
+    "belly": null,
+    "jaw": null,
+    "muzzle": null,
+    "eye": null,
+    "ear_r": null,
+    "horn": null,
+    "deco": null
    }
   }
  },
@@ -82,5 +120,6 @@
   "default": {
    "parts": {}
   }
- }
+ },
+ "gemini": true
 }

@@ -20,6 +20,15 @@
     "w": 30,
     "h": 45
    }
+  },
+  "tail": {
+   "rope": null,
+   "x": 55,
+   "y": 0
+  },
+  "head": {
+   "x": -18,
+   "y": 30
   }
  },
  "stages": {
@@ -44,7 +53,14 @@
     "leg_bn_lo": 0.82
    },
    "parts": {
-    "ear_r": null
+    "ear_r": null,
+    "belly": null,
+    "jaw": null,
+    "muzzle": null,
+    "eye": null,
+    "ear_n": null,
+    "horn": null,
+    "deco": null
    }
   },
   "teen": {
@@ -58,7 +74,14 @@
     "tail_1": 0.95
    },
    "parts": {
-    "ear_r": null
+    "ear_r": null,
+    "belly": null,
+    "jaw": null,
+    "muzzle": null,
+    "eye": null,
+    "ear_n": null,
+    "horn": null,
+    "deco": null
    }
   },
   "adult": {
@@ -71,7 +94,14 @@
     "eye": 1.08
    },
    "parts": {
-    "ear_r": null
+    "ear_r": null,
+    "belly": null,
+    "jaw": null,
+    "muzzle": null,
+    "eye": null,
+    "ear_n": null,
+    "horn": null,
+    "deco": null
    }
   },
   "spirit": {
@@ -84,7 +114,14 @@
     "eye": 1.08
    },
    "parts": {
-    "ear_r": null
+    "ear_r": null,
+    "belly": null,
+    "jaw": null,
+    "muzzle": null,
+    "eye": null,
+    "ear_n": null,
+    "horn": null,
+    "deco": null
    }
   }
  },
@@ -92,5 +129,6 @@
   "default": {
    "parts": {}
   }
- }
+ },
+ "gemini": true
 }

@@ -13,11 +13,19 @@
  },
  "slotOverrides": {
   "head": {
-   "ph": {
-    "shape": "ellipse",
-    "w": 158,
-    "h": 134
-   }
+   "x": 40,
+   "y": 0
+  },
+  "tail": {
+   "rope": null,
+   "x": 60,
+   "y": 0
+  },
+  "ear_n": {
+   "x": 52
+  },
+  "ear_r": {
+   "x": 50
   }
  },
  "stages": {
@@ -32,17 +40,42 @@
     "ear_n": 1.1,
     "ear_r": 1.1,
     "tail_1": 0.85,
-    "leg_fr_up": 0.82,
+    "leg_fr_up": [
+     0.75,
+     1
+    ],
     "leg_fr_lo": 0.82,
-    "leg_fn_up": 0.82,
+    "leg_fn_up": [
+     0.75,
+     1
+    ],
     "leg_fn_lo": 0.82,
-    "leg_br_up": 0.82,
+    "leg_br_up": [
+     0.75,
+     1
+    ],
     "leg_br_lo": 0.82,
-    "leg_bn_up": 0.82,
-    "leg_bn_lo": 0.82
+    "leg_bn_up": [
+     0.75,
+     1
+    ],
+    "leg_bn_lo": 0.82,
+    "neck": [
+     0.3,
+     1
+    ]
    },
    "parts": {
-    "nose": null
+    "nose": null,
+    "muzzle": null,
+    "jaw": null,
+    "eye": null,
+    "belly": null,
+    "chest_fluff": null,
+    "neck": null,
+    "horn": null,
+    "wing": null,
+    "deco": null
    }
   },
   "teen": {
@@ -53,10 +86,39 @@
    "boneScale": {
     "head": 1.45,
     "eye": 1.14,
-    "tail_1": 0.95
+    "tail_1": 0.95,
+    "leg_fr_up": [
+     0.75,
+     1
+    ],
+    "leg_fn_up": [
+     0.75,
+     1
+    ],
+    "leg_br_up": [
+     0.75,
+     1
+    ],
+    "leg_bn_up": [
+     0.75,
+     1
+    ],
+    "neck": [
+     0.3,
+     1
+    ]
    },
    "parts": {
-    "nose": null
+    "nose": null,
+    "muzzle": null,
+    "jaw": null,
+    "eye": null,
+    "belly": null,
+    "chest_fluff": null,
+    "neck": null,
+    "horn": null,
+    "wing": null,
+    "deco": null
    }
   },
   "adult": {
@@ -66,10 +128,39 @@
    "amp": 1.0,
    "boneScale": {
     "head": 1.32,
-    "eye": 1.08
+    "eye": 1.08,
+    "leg_fr_up": [
+     0.75,
+     1
+    ],
+    "leg_fn_up": [
+     0.75,
+     1
+    ],
+    "leg_br_up": [
+     0.75,
+     1
+    ],
+    "leg_bn_up": [
+     0.75,
+     1
+    ],
+    "neck": [
+     0.3,
+     1
+    ]
    },
    "parts": {
-    "nose": null
+    "nose": null,
+    "muzzle": null,
+    "jaw": null,
+    "eye": null,
+    "belly": null,
+    "chest_fluff": null,
+    "neck": null,
+    "horn": null,
+    "wing": null,
+    "deco": null
    }
   },
   "spirit": {
@@ -79,10 +170,39 @@
    "amp": 1.0,
    "boneScale": {
     "head": 1.34,
-    "eye": 1.08
+    "eye": 1.08,
+    "leg_fr_up": [
+     0.75,
+     1
+    ],
+    "leg_fn_up": [
+     0.75,
+     1
+    ],
+    "leg_br_up": [
+     0.75,
+     1
+    ],
+    "leg_bn_up": [
+     0.75,
+     1
+    ],
+    "neck": [
+     0.3,
+     1
+    ]
    },
    "parts": {
-    "nose": null
+    "nose": null,
+    "muzzle": null,
+    "jaw": null,
+    "eye": null,
+    "belly": null,
+    "chest_fluff": null,
+    "neck": null,
+    "horn": null,
+    "wing": null,
+    "deco": null
    }
   }
  },
@@ -90,5 +210,6 @@
   "default": {
    "parts": {}
   }
- }
+ },
+ "gemini": true
 }

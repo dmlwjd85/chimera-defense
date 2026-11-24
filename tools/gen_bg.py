@@ -298,9 +298,10 @@ def path_layer(zones, rng):
     out = ''
     # home gate (left) and enemy portal (right), anchored to the road band
     gt, gb = TOP - 30, BOT + 6
-    out += f'<rect x="20" y="{gt}" width="70" height="{gb-gt}" rx="8" fill="#6b4a2e"/><path d="M12 {gt+6} Q55 {gt-40} 98 {gt+6} Z" fill="#a1442c"/><rect x="34" y="{gt+80}" width="42" height="{gb-gt-80}" rx="20" fill="#3a2716"/>'
-    out += f'<rect x="20" y="{gt}" width="8" height="{gb-gt}" fill="#4a3220"/><rect x="82" y="{gt}" width="8" height="{gb-gt}" fill="#4a3220"/>'
-    out += lantern(24, gt + 70, 0.9) + lantern(86, gt + 70, 0.9)
+    if not os.path.exists(GATE_ART):  # 리코스가 그린 성문이 있으면 도형 성문은 그리지 않음(ai_composite에서 그림을 얹음)
+        out += f'<rect x="20" y="{gt}" width="70" height="{gb-gt}" rx="8" fill="#6b4a2e"/><path d="M12 {gt+6} Q55 {gt-40} 98 {gt+6} Z" fill="#a1442c"/><rect x="34" y="{gt+80}" width="42" height="{gb-gt-80}" rx="20" fill="#3a2716"/>'
+        out += f'<rect x="20" y="{gt}" width="8" height="{gb-gt}" fill="#4a3220"/><rect x="82" y="{gt}" width="8" height="{gb-gt}" fill="#4a3220"/>'
+        out += lantern(24, gt + 70, 0.9) + lantern(86, gt + 70, 0.9)
     out += f'<ellipse cx="1232" cy="{PY}" rx="100" ry="{PH*0.9:.0f}" fill="url(#portal)" opacity="0.9" filter="url(#soft)"/>'
     out += f'<ellipse cx="1232" cy="{PY}" rx="44" ry="{PH*0.55:.0f}" fill="#1a0b2b" stroke="#c48bff" stroke-width="5"/><ellipse cx="1232" cy="{PY}" rx="30" ry="{PH*0.42:.0f}" fill="none" stroke="#7b3fbf" stroke-width="4" stroke-dasharray="14 10"/>'
     out += f'<path d="M1190 {PY-PH*0.55:.0f} L1202 {PY-PH*0.72:.0f} L1214 {PY-PH*0.56:.0f} M1252 {PY-PH*0.56:.0f} L1266 {PY-PH*0.74:.0f} L1278 {PY-PH*0.55:.0f}" stroke="#4d4a5b" stroke-width="10" stroke-linecap="round"/>'
@@ -385,6 +386,22 @@ def overlay_svg(stage, zones, rng, sk):
     out += f'<rect width="{W}" height="{H}" fill="url(#vig)"/>'
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W*2}" height="{H*2}"><defs>{defs(stage, zones)}</defs>{out}</svg>'
 
+GATE_ART = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'art-src', 'recos', 'gate.png')
+
+def paste_gate(im, k=1.0, cool=1.0):
+    """리코스가 그린 성문(오려 낸 그림)을 길 왼쪽 끝에 얹는다. 2560x1440 기준 (0,300)에 282x512."""
+    if not os.path.exists(GATE_ART): return im
+    g = Image.open(GATE_ART).convert('RGBA').resize((282, 512), Image.LANCZOS)
+    if k < 0.99:
+        r_, g_, b_, a_ = g.split()
+        g = Image.merge('RGBA', (r_.point(lambda v: int(v * k)), g_.point(lambda v: int(v * k)), b_.point(lambda v: min(255, int(v * k * cool))), a_))
+    base = im.convert('RGBA')
+    sh = Image.new('RGBA', base.size, (0, 0, 0, 0))
+    ImageDraw.Draw(sh).ellipse((10, 770, 330, 830), fill=(0, 0, 0, 90))
+    base = Image.alpha_composite(base, sh.filter(ImageFilter.GaussianBlur(14)))
+    base.alpha_composite(g, (0, 300))
+    return base.convert('RGB')
+
 def ai_composite(svg, ai_path, name, q=88, night=False, light=True):
     """Fit the AI scenery to 2560x1440 (cover), soften/grade it a touch, then lay the path overlay on top."""
     tmp = os.path.join(OUT, name + '.svg'); png = os.path.join(OUT, name + '_ov.png')
@@ -408,6 +425,7 @@ def ai_composite(svg, ai_path, name, q=88, night=False, light=True):
         ov = Image.merge('RGBA', (r_.point(lambda v: int(v * k)), g_.point(lambda v: int(v * k)), b_.point(lambda v: min(255, int(v * k * cool))), a_))
     print(name, 'band lum', round(lum, 2), 'overlay k', round(k, 2))
     im = Image.alpha_composite(ai.convert('RGBA'), ov).convert('RGB')
+    if name.startswith('bg-'): im = paste_gate(im, k if light else 1.0, 1 + (1 - k) * 0.35 if light else 1.0)
     im.save(os.path.join(OUT, name + '.jpg'), quality=q, optimize=True)
     os.remove(tmp); os.remove(png)
     return im
@@ -489,6 +507,7 @@ def main():
     stages = json.load(open(os.path.join(ROOT, 'public', 'data', 'stages.json')))
     images = {}
     for i, st in enumerate(stages):
+        if st.get('art'): continue  # 다른 스테이지 그림을 빌려 쓰는 스테이지(4~6)는 건너뜀
         ai = os.path.join(ROOT, 'art-src', 'recos', f'{st["id"]}.png')
         fin = os.path.join(ROOT, 'art-src', 'recos', f'{st["id"]}_final.png')
         if os.path.exists(ai):

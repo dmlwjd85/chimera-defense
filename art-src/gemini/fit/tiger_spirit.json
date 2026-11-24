@@ -1,0 +1,105 @@
+{
+ "hide": [
+  "muzzle",
+  "jaw",
+  "nose",
+  "eye",
+  "belly",
+  "chest_fluff",
+  "neck",
+  "horn",
+  "wing",
+  "deco"
+ ],
+ "boneScale": {
+  "neck": 0.4
+ },
+ "over": {
+  "head": {
+   "x": 30,
+   "y": 0
+  },
+  "ear_n": {
+   "x": 6
+  },
+  "ear_r": {
+   "x": 4
+  },
+  "tail": {
+   "rope": null,
+   "x": 100,
+   "y": 0
+  }
+ },
+ "parts": {
+  "body": {
+   "src": "body",
+   "length": 300,
+   "rot": -90
+  },
+  "head": {
+   "src": "head",
+   "length": 215
+  },
+  "ear_n": {
+   "src": "ear_n",
+   "length": 70,
+   "rot": -90
+  },
+  "ear_r": {
+   "src": "ear_r",
+   "length": 66,
+   "rot": -90,
+   "dark": 0.85
+  },
+  "leg_fn_up": {
+   "src": "aup",
+   "length": 160,
+   "rot": 90
+  },
+  "leg_fr_up": {
+   "src": "aup",
+   "length": 160,
+   "rot": 90,
+   "dark": 0.82
+  },
+  "leg_fn_lo": {
+   "src": "alo",
+   "length": 130,
+   "rot": 90
+  },
+  "leg_fr_lo": {
+   "src": "alo",
+   "length": 130,
+   "rot": 90,
+   "dark": 0.82
+  },
+  "leg_bn_up": {
+   "src": "lup",
+   "length": 120,
+   "rot": 90
+  },
+  "leg_br_up": {
+   "src": "lup",
+   "length": 120,
+   "rot": 90,
+   "dark": 0.82
+  },
+  "leg_bn_lo": {
+   "src": "llo",
+   "length": 125,
+   "rot": 90
+  },
+  "leg_br_lo": {
+   "src": "llo",
+   "length": 125,
+   "rot": 90,
+   "dark": 0.82
+  },
+  "tail": {
+   "src": "tail",
+   "length": 230,
+   "flipV": true
+  }
+ }
+}

@@ -8,6 +8,8 @@ work = im.copy()
 for pt in [(0, 0), (W - 1, 0), (0, H - 1), (W - 1, H - 1), (W // 2, 0), (W // 2, H - 1), (0, H // 2), (W - 1, H // 2)]:
     ImageDraw.floodfill(work, pt, (255, 0, 255), thresh=38)
 a = np.array(work); fg = ~((a[..., 0] == 255) & (a[..., 1] == 0) & (a[..., 2] == 255))
+fg = ndimage.binary_closing(fg, structure=np.ones((3, 3)), iterations=5)  # 흰 안쪽 털 때문에 갈라진 조각을 붙임
+fg = ndimage.binary_fill_holes(fg)
 lab, n = ndimage.label(fg)
 objs = ndimage.find_objects(lab); sizes = ndimage.sum(fg, lab, range(1, n + 1))
 comps = []

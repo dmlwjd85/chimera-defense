@@ -52,7 +52,8 @@
     "eye": null,
     "horn": null,
     "deco": null
-   }
+   },
+   "_headBase": 1.6
   },
   "teen": {
    "label": "성장기",
@@ -73,7 +74,8 @@
     "eye": null,
     "horn": null,
     "deco": null
-   }
+   },
+   "_headBase": 1.45
   },
   "adult": {
    "label": "성체",
@@ -93,7 +95,8 @@
     "eye": null,
     "horn": null,
     "deco": null
-   }
+   },
+   "_headBase": 1.32
   },
   "spirit": {
    "label": "영물",
@@ -113,7 +116,8 @@
     "eye": null,
     "horn": null,
     "deco": null
-   }
+   },
+   "_headBase": 1.34
   }
  },
  "skins": {

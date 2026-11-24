@@ -28,10 +28,10 @@
    }
   },
   "ear_n": {
-   "x": 52
+   "x": 6
   },
   "ear_r": {
-   "x": 50
+   "x": 4
   },
   "tail": {
    "rope": null,
@@ -50,7 +50,7 @@
    "speed": 1.15,
    "amp": 1.2,
    "boneScale": {
-    "head": 1.6,
+    "head": 5.333333333333334,
     "eye": 1.25,
     "ear_n": 1.1,
     "ear_r": 1.1,
@@ -75,10 +75,7 @@
      1
     ],
     "leg_bn_lo": 0.82,
-    "neck": [
-     0.3,
-     1
-    ]
+    "neck": 0.3
    },
    "parts": {
     "horn": null,
@@ -91,7 +88,8 @@
     "neck": null,
     "wing": null,
     "deco": null
-   }
+   },
+   "_headBase": 1.6
   },
   "teen": {
    "label": "성장기",
@@ -99,7 +97,7 @@
    "speed": 1.05,
    "amp": 1.08,
    "boneScale": {
-    "head": 1.45,
+    "head": 4.833333333333333,
     "eye": 1.14,
     "tail_1": 0.95,
     "leg_fr_up": [
@@ -118,10 +116,7 @@
      0.75,
      1
     ],
-    "neck": [
-     0.3,
-     1
-    ]
+    "neck": 0.3
    },
    "parts": {
     "horn": null,
@@ -134,7 +129,8 @@
     "neck": null,
     "wing": null,
     "deco": null
-   }
+   },
+   "_headBase": 1.45
   },
   "adult": {
    "label": "성체",
@@ -142,7 +138,7 @@
    "speed": 1.0,
    "amp": 1.0,
    "boneScale": {
-    "head": 1.32,
+    "head": 4.4,
     "eye": 1.08,
     "leg_fr_up": [
      0.75,
@@ -160,10 +156,7 @@
      0.75,
      1
     ],
-    "neck": [
-     0.3,
-     1
-    ]
+    "neck": 0.3
    },
    "parts": {
     "horn": null,
@@ -176,7 +169,8 @@
     "neck": null,
     "wing": null,
     "deco": null
-   }
+   },
+   "_headBase": 1.32
   },
   "spirit": {
    "label": "영물",
@@ -184,7 +178,7 @@
    "speed": 1.0,
    "amp": 1.0,
    "boneScale": {
-    "head": 1.34,
+    "head": 4.466666666666667,
     "eye": 1.08,
     "leg_fr_up": [
      0.75,
@@ -202,10 +196,7 @@
      0.75,
      1
     ],
-    "neck": [
-     0.3,
-     1
-    ]
+    "neck": 0.3
    },
    "parts": {
     "horn": null,
@@ -218,7 +209,8 @@
     "neck": null,
     "wing": null,
     "deco": null
-   }
+   },
+   "_headBase": 1.34
   }
  },
  "skins": {

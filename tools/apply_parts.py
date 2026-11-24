@@ -15,14 +15,18 @@ ART = os.path.join(ROOT, 'public', 'assets', 'rig')
 def apply(sp):
     fit = json.load(open(os.path.join(G, 'fit', sp + '.json')))
     rp = os.path.join(DATA, sp + '.rig.json'); rig = json.load(open(rp))
+    nk = fit.get('boneScale', {}).get('neck')
     for st in rig['stages'].values():
         st.setdefault('parts', {})
         for h in fit.get('hide', []): st['parts'][h] = None
+        base = st.setdefault('_headBase', st.get('boneScale', {}).get('head', 1))
         st['boneScale'] = {**st.get('boneScale', {}), **fit.get('boneScale', {})}
+        # 목을 고르게 줄이면 머리도 같이 작아지므로 머리 배율을 그만큼 되돌림(한쪽만 줄이면 머리가 비틀림)
+        if isinstance(nk, (int, float)): st['boneScale']['head'] = base / nk
     rig['slotOverrides'] = {**rig.get('slotOverrides', {}), **fit.get('over', {})}
     rig['gemini'] = True
     json.dump(rig, open(rp, 'w'), ensure_ascii=False, indent=1)
-    pose = json.loads(subprocess.check_output(['node', os.path.join(ROOT, 'tools', 'rig_pose.mjs'), rp, 'adult']))
+    pose = json.loads(subprocess.check_output(['node', os.path.join(ROOT, 'tools', 'rig_pose.mjs'), rp, fit.get('stage', 'spirit' if sp.endswith('_spirit') else 'adult')]))
     E = {e['slot']: e for e in pose['list']}; ar = pose['artRes']
     made = []
     for slot, o in fit['parts'].items():

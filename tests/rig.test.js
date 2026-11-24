@@ -209,3 +209,14 @@ test('공격 동작: 할퀴기·들이받기·물기·덮치기 클립이 있고
   for (const m of san.attacks) { r.play(m, { mix: 0 }); for (let i = 0; i < 30; i++) r.update(0.03); }
   assert.ok(Object.values(r.worlds).every((w) => w.every(Number.isFinite)));
 });
+
+test('산군 걸음: 엉덩이 관절은 모여 있고 두 발이 서로 교차하며 나아감, 서 있을 땐 발을 벌려 디딤', () => {
+  const TB = read('biped.template'), B = read('biped.anims'), san = read('tiger_spirit.rig');
+  const r = new RigInstance(TB, B, san, { stage: 'spirit', motion: 'move' });
+  let front = 0, back = 0;
+  for (let i = 0; i < 40; i++) { r.update(0.02); const d = r.lastIk.bn.x - r.lastIk.br.x; if (d > 20) front++; if (d < -20) back++; }
+  assert.ok(front > 6 && back > 6, `가까운 발이 앞 ${front}, 뒤 ${back}`);
+  assert.ok(r.footRest.bn.x - r.footRest.br.x > 60, '서 있을 때 벌린 발');
+  const hip = (n) => r.bones.find((b) => b.name === `leg_${n}_up`).y;
+  assert.ok(Math.abs(hip('bn') - hip('br')) < 40, '엉덩이 관절은 모음');
+});

@@ -21,7 +21,7 @@ def piece(sp, o):
     if o.get('crop'):
         W, H = im.size; x0, y0, x1, y1 = o['crop']; im = im.crop((round(x0 * W), round(y0 * H), round(x1 * W), round(y1 * H)))
     for side in o.get('feather', []):       # 잘린 변이 겹치는 부위 위에서 선으로 보이지 않게 투명하게 풀어 줌
-        a = np.array(im.split()[3]).astype(float); H, W = a.shape; n = max(4, round((H if side in ('top', 'bottom') else W) * 0.09))
+        a = np.array(im.split()[3]).astype(float); H, W = a.shape; n = max(4, round((H if side in ('top', 'bottom') else W) * 0.06))
         ramp = np.clip(np.arange(n) / n, 0, 1)
         if side == 'top': a[:n, :] *= ramp[:, None]
         if side == 'bottom': a[-n:, :] *= ramp[::-1][:, None]
@@ -50,6 +50,7 @@ def apply(sp):
     rig['slotOverrides'] = {**rig.get('slotOverrides', {}), **fit.get('over', {})}
     rig['boneOverrides'] = json.loads(json.dumps(fit.get('bones', {})))
     if fit.get('attacks'): rig['attacks'] = fit['attacks']
+    if fit.get('stance'): rig['stance'] = fit['stance']
     rig['gemini'] = True
     json.dump(rig, open(rp, 'w'), ensure_ascii=False, indent=1)
     stage = fit.get('stage', 'spirit' if sp.endswith('_spirit') else 'adult')

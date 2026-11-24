@@ -9,7 +9,7 @@ def leg_parts(P, n, up, lo, up_len, lo_len, far, thick=1.0, up_bone=62, lo_bone=
     """다리 하나: 윗다리 + 정강이(조각 위 70%) + 발(조각 아래 38%, 발목에서 따로 꺾임)."""
     d = {'dark': FAR} if far else {}
     P[f'leg_{n}_up'] = {'src': up, 'length': up_len, 'rot': 90, 'thick': thick, **d}
-    P[f'leg_{n}_lo'] = {'src': lo, 'crop': [0, 0, 1, 0.70], 'feather': ['bottom'], 'length': lo_len, 'rot': 90, 'thick': thick, **d}
+    P[f'leg_{n}_lo'] = {'src': lo, 'crop': [0, 0, 1, 0.70], 'length': lo_len, 'rot': 90, 'thick': thick, **d}
     if hand: P[f'leg_{n}_paw'] = {'src': lo, 'crop': [0, 0.58, 1, 1], 'feather': ['top'], 'length': round(lo_len * 0.42 / 0.70), 'rot': 90, 'thick': thick, **d}
     else: P[f'leg_{n}_paw'] = {'src': lo, 'crop': [0, 0.62, 1, 1], 'feather': ['top'], 'ankle': True, 'axis': 'tall', 'length': round(lo_len * 0.38 / 0.70), 'thick': thick, **d}
 
@@ -33,26 +33,37 @@ def quad(ear=100, tail=180, tailx=70, head=250, curl=False, horn=None, attacks=(
     if horn: P['horn'] = {'src': 'horn', 'length': horn}; O['horn'] = {'x': -25, 'y': -15}
     return {'hide': hide, 'bones': Bn, 'boneScale': {}, 'over': O, 'parts': P, 'attacks': list(attacks)}
 
-def biped(head=186, ear=64, tail=240, attacks=('claw', 'attack', 'butt'), tail_part=True, chest=1.5, pelvis=1.22, arm=1.55, leg=1.5):
-    """두 발로 선 신화급(산군·웅녀): 넓은 가슴, 굵은 팔다리, 벌려 디딘 발, 앞뒤로 벌린 어깨."""
-    P, O = {}, {'head': {'x': 30, 'y': 0}, 'ear_n': {'x': -4}, 'ear_r': {'x': -6}}
-    Bn = {'neck': {'length': 26}, 'head': {'x': 26}}
-    P['body'] = {'src': 'body', 'crop': [0, 0.5, 1, 1], 'length': 150, 'rot': -90, 'thick': pelvis}; O['body'] = {'x': 30}
-    P['torso_front'] = {'src': 'body', 'crop': [0, 0, 1, 0.58], 'feather': ['bottom'], 'length': 174, 'rot': -90, 'thick': chest}; O['torso_front'] = {'x': 68, 'y': -5}
+def arm_parts(P, Bn, O, n, src, far, thick, y, rot, lo_rot, up=(140, 92), lo=(112, 80)):
+    """팔 하나(조각 하나가 어깨~손 전체): 위팔(위 50%) + 아래팔(42~80%) + 손(70% 아래). 손은 손목에서 따로 꺾임."""
+    d = {'dark': 0.88} if far else {}
+    P[f'leg_{n}_up'] = {'src': src, 'crop': [0, 0, 1, 0.54], 'feather': ['bottom'], 'length': up[0], 'rot': 90, 'thick': thick, **d}
+    P[f'leg_{n}_lo'] = {'src': src, 'crop': [0, 0.40, 1, 0.80], 'feather': ['top'], 'length': lo[0], 'rot': 90, 'thick': thick, **d}
+    P[f'leg_{n}_paw'] = {'src': src, 'crop': [0, 0.70, 1, 1], 'feather': ['top'], 'length': round(lo[0] * 0.30 / 0.40), 'rot': 90, 'thick': thick, **d}
+    leg_bones(Bn, O, n, up[1], lo[1], y=y, rot=rot); Bn[f'leg_{n}_lo'].update(rot=lo_rot)
+    O[f'leg_{n}_up'] = {'x': round(up[1] * 0.42)}; O[f'leg_{n}_paw'] = {'x': round(lo[0] * 0.30 / 0.40 * 0.36)}
+
+def biped(head=204, ear=66, tail=240, attacks=('claw', 'attack', 'butt'), tail_part=True, torso=1.4, arm=1.25, leg=1.28):
+    """두 발로 선 신화급(산군·웅녀): 넓은 가슴, 솟은 목덜미·등, 굵은 팔다리. 엉덩이 관절은 모으고 발만 벌려 딛음(걸을 땐 두 발이 교차)."""
+    P, O = {}, {'head': {'x': 26, 'y': 4}, 'ear_n': {'x': -4}, 'ear_r': {'x': -14}}
+    Bn = {'neck': {'length': 14}, 'head': {'x': 14}, 'ear_r': {'x': 46, 'y': -56, 'rot': -72}}   # 먼 귀는 머리 위 앞쪽으로 살짝 보임(도안)
+    # 몸통: 가슴(위 60%) 위에 허리띠·골반(아래 50%)을 얹어 이음매가 띠 밑으로 숨음
+    P['torso_front'] = {'src': 'body', 'crop': [0, 0, 1, 0.60], 'length': 180, 'rot': -90, 'thick': torso}; O['torso_front'] = {'x': 66, 'y': -5}
+    P['body'] = {'src': 'body', 'crop': [0, 0.46, 1, 1], 'length': 162, 'rot': -90, 'thick': torso}; O['body'] = {'x': 36, 'z': 5}
+    # 목덜미·등 근육: 머리 뒤에서 등으로 이어지는 둥근 덩어리(도안의 솟은 승모근). 가슴 뼈에 붙어 숨 쉴 때 같이 움직임
+    P['chest_fluff'] = {'src': 'lup', 'length': 176, 'rot': -90, 'thick': 1.0, 'feather': ['right', 'bottom']}; O['chest_fluff'] = {'x': -40, 'y': -46}
     P['head'] = {'src': 'head', 'length': head}
     P['ear_n'] = {'src': 'ear_n', 'length': ear, 'rot': -90}; P['ear_r'] = {'src': 'ear_r', 'length': round(ear * 0.95), 'rot': -90, 'dark': 0.85}
-    # 팔: 가까운 팔은 어깨를 뒤에 두고 주먹을 가슴 앞에, 먼 팔은 앞으로 뻗어 발톱을 세움(도안의 자세)
-    leg_parts(P, 'fn', 'aup', 'alo', 150, 124, False, arm, hand=True); leg_bones(Bn, O, 'fn', 92, 92, y=-16, rot=152)
-    leg_parts(P, 'fr', 'aup', 'alo', 146, 120, True, arm, hand=True); leg_bones(Bn, O, 'fr', 92, 92, y=44, rot=128)
-    for n in ('fn', 'fr'): P[f'leg_{n}_up'].update(crop=[0, 0, 1, 0.74], feather=['bottom']); P[f'leg_{n}_paw']['thick'] = arm * 0.9
-    Bn['leg_fn_lo'].update(rot=-62); Bn['leg_fr_lo'].update(rot=-72)
-    O['leg_fn_paw'] = {'x': 24}; O['leg_fr_paw'] = {'x': 24}
-    # 다리: 앞뒤로 벌려 디딤(무게가 두 발 사이에 실림)
-    leg_parts(P, 'bn', 'lup', 'llo', 128, 108, False, leg); leg_bones(Bn, O, 'bn', 74, 84, y=48)
-    leg_parts(P, 'br', 'lup', 'llo', 124, 104, True, leg); leg_bones(Bn, O, 'br', 74, 84, y=-44)
-    for n in ('bn', 'br'): P[f'leg_{n}_lo']['thick'] = leg * 0.86; P[f'leg_{n}_paw']['thick'] = leg * 0.86
+    # 팔: 두 손 모두 손등이 보이는 주먹 조각(손바닥이 바깥을 향해 보이면 어색함)
+    arm_parts(P, Bn, O, 'fn', 'aup', False, arm, y=-14, rot=162, lo_rot=-58)
+    arm_parts(P, Bn, O, 'fr', 'aup', True, arm, y=46, rot=142, lo_rot=-58)
+    # 다리
+    leg_parts(P, 'bn', 'lup', 'llo', 128, 108, False, leg); leg_bones(Bn, O, 'bn', 74, 84, y=18)
+    leg_parts(P, 'br', 'lup', 'llo', 124, 104, True, leg); leg_bones(Bn, O, 'br', 74, 84, y=-16)
+    for n in ('bn', 'br'): P[f'leg_{n}_lo']['thick'] = leg * 0.9; P[f'leg_{n}_paw']['thick'] = leg * 0.9
+    for n in ('br',): [P[f'leg_{n}_{k}'].update(dark=0.88) for k in ('up', 'lo', 'paw')]
     if tail_part: P['tail'] = {'src': 'tail', 'length': tail, 'flipV': True}; O['tail'] = {'rope': None, 'x': 100, 'y': 0}
-    return {'hide': HIDE + ['horn'] + ([] if tail_part else ['tail']), 'bones': Bn, 'boneScale': {}, 'over': O, 'parts': P, 'attacks': list(attacks)}
+    hide = [h for h in HIDE if h != 'chest_fluff'] + ['horn'] + ([] if tail_part else ['tail'])
+    return {'hide': hide, 'bones': Bn, 'boneScale': {}, 'over': O, 'parts': P, 'attacks': list(attacks), 'stance': {'bn': 44, 'br': -40}}
 
 FITS = {
  'dog': quad(105, 150, curl=True, attacks=('bite', 'claw')),

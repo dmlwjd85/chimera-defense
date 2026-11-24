@@ -11,7 +11,12 @@
   "ink": "#2b1d16",
   "accent": "#ffd36b"
  },
- "slotOverrides": {},
+ "slotOverrides": {
+  "head": {
+   "x": -45,
+   "y": 40
+  }
+ },
  "stages": {
   "young": {
    "label": "어린",
@@ -33,7 +38,15 @@
     "leg_bn_up": 0.82,
     "leg_bn_lo": 0.82
    },
-   "parts": {}
+   "parts": {
+    "belly": null,
+    "jaw": null,
+    "ear_n": null,
+    "ear_r": null,
+    "eye": null,
+    "horn": null,
+    "deco": null
+   }
   },
   "teen": {
    "label": "성장기",
@@ -45,7 +58,15 @@
     "eye": 1.14,
     "tail_1": 0.95
    },
-   "parts": {}
+   "parts": {
+    "belly": null,
+    "jaw": null,
+    "ear_n": null,
+    "ear_r": null,
+    "eye": null,
+    "horn": null,
+    "deco": null
+   }
   },
   "adult": {
    "label": "성체",
@@ -56,7 +77,15 @@
     "head": 1.32,
     "eye": 1.08
    },
-   "parts": {}
+   "parts": {
+    "belly": null,
+    "jaw": null,
+    "ear_n": null,
+    "ear_r": null,
+    "eye": null,
+    "horn": null,
+    "deco": null
+   }
   },
   "spirit": {
    "label": "영물",
@@ -67,12 +96,21 @@
     "head": 1.34,
     "eye": 1.08
    },
-   "parts": {}
+   "parts": {
+    "belly": null,
+    "jaw": null,
+    "ear_n": null,
+    "ear_r": null,
+    "eye": null,
+    "horn": null,
+    "deco": null
+   }
   }
  },
  "skins": {
   "default": {
    "parts": {}
   }
- }
+ },
+ "gemini": true
 }

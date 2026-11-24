@@ -1,0 +1,68 @@
+{
+ "hide": [
+  "belly",
+  "jaw",
+  "muzzle",
+  "eye",
+  "ear_n",
+  "ear_r",
+  "horn",
+  "deco"
+ ],
+ "boneScale": {},
+ "over": {
+  "tail": {
+   "rope": null,
+   "x": 55,
+   "y": 0
+  },
+  "head": {
+   "x": -18,
+   "y": 30
+  }
+ },
+ "parts": {
+  "head": {
+   "src": "head",
+   "length": 175
+  },
+  "body": {
+   "src": "body",
+   "length": 215,
+   "axis": "tall"
+  },
+  "wing": {
+   "src": "wing",
+   "length": 170,
+   "flipV": true
+  },
+  "tail": {
+   "src": "tail",
+   "length": 150,
+   "flipV": true,
+   "rot": -25
+  },
+  "leg_fn_up": {
+   "src": "lup",
+   "length": 60,
+   "rot": 90
+  },
+  "leg_bn_up": {
+   "src": "lup",
+   "length": 60,
+   "rot": 90,
+   "dark": 0.8
+  },
+  "leg_fn_lo": {
+   "src": "llo",
+   "length": 80,
+   "rot": 90
+  },
+  "leg_bn_lo": {
+   "src": "llo",
+   "length": 80,
+   "rot": 90,
+   "dark": 0.8
+  }
+ }
+}

@@ -302,9 +302,10 @@ def path_layer(zones, rng):
         out += f'<rect x="20" y="{gt}" width="70" height="{gb-gt}" rx="8" fill="#6b4a2e"/><path d="M12 {gt+6} Q55 {gt-40} 98 {gt+6} Z" fill="#a1442c"/><rect x="34" y="{gt+80}" width="42" height="{gb-gt-80}" rx="20" fill="#3a2716"/>'
         out += f'<rect x="20" y="{gt}" width="8" height="{gb-gt}" fill="#4a3220"/><rect x="82" y="{gt}" width="8" height="{gb-gt}" fill="#4a3220"/>'
         out += lantern(24, gt + 70, 0.9) + lantern(86, gt + 70, 0.9)
-    out += f'<ellipse cx="1232" cy="{PY}" rx="100" ry="{PH*0.9:.0f}" fill="url(#portal)" opacity="0.9" filter="url(#soft)"/>'
-    out += f'<ellipse cx="1232" cy="{PY}" rx="44" ry="{PH*0.55:.0f}" fill="#1a0b2b" stroke="#c48bff" stroke-width="5"/><ellipse cx="1232" cy="{PY}" rx="30" ry="{PH*0.42:.0f}" fill="none" stroke="#7b3fbf" stroke-width="4" stroke-dasharray="14 10"/>'
-    out += f'<path d="M1190 {PY-PH*0.55:.0f} L1202 {PY-PH*0.72:.0f} L1214 {PY-PH*0.56:.0f} M1252 {PY-PH*0.56:.0f} L1266 {PY-PH*0.74:.0f} L1278 {PY-PH*0.55:.0f}" stroke="#4d4a5b" stroke-width="10" stroke-linecap="round"/>'
+    if not os.path.exists(PORTAL_ART):  # 리코스 포탈 그림이 있으면 도형 포탈은 그리지 않음
+        out += f'<ellipse cx="1232" cy="{PY}" rx="100" ry="{PH*0.9:.0f}" fill="url(#portal)" opacity="0.9" filter="url(#soft)"/>'
+        out += f'<ellipse cx="1232" cy="{PY}" rx="44" ry="{PH*0.55:.0f}" fill="#1a0b2b" stroke="#c48bff" stroke-width="5"/><ellipse cx="1232" cy="{PY}" rx="30" ry="{PH*0.42:.0f}" fill="none" stroke="#7b3fbf" stroke-width="4" stroke-dasharray="14 10"/>'
+        out += f'<path d="M1190 {PY-PH*0.55:.0f} L1202 {PY-PH*0.72:.0f} L1214 {PY-PH*0.56:.0f} M1252 {PY-PH*0.56:.0f} L1266 {PY-PH*0.74:.0f} L1278 {PY-PH*0.55:.0f}" stroke="#4d4a5b" stroke-width="10" stroke-linecap="round"/>'
     out += rock(1196, BOT + 14, 1.1, '#5d5a6b') + rock(1262, BOT + 6, 0.9, '#4d4a5b')
     # path tiles
     out += '<!--tiles-->'
@@ -388,18 +389,26 @@ def overlay_svg(stage, zones, rng, sk):
 
 GATE_ART = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'art-src', 'recos', 'gate.png')
 
+PORTAL_ART = os.path.join(os.path.dirname(GATE_ART), 'portal.png')
+
 def paste_gate(im, k=1.0, cool=1.0):
-    """리코스가 그린 성문(오려 낸 그림)을 길 왼쪽 끝에 얹는다. 2560x1440 기준 (0,300)에 282x512."""
+    """리코스가 그린 성문(오려 낸 그림)을 길 왼쪽 끝에 얹는다. 2560x1440 기준 (0,300)에 288x608. 아치가 길 전체 높이(세 줄)를 덮음."""
     if not os.path.exists(GATE_ART): return im
-    g = Image.open(GATE_ART).convert('RGBA').resize((282, 512), Image.LANCZOS)
+    g = Image.open(GATE_ART).convert('RGBA').resize((288, 608), Image.LANCZOS)
     if k < 0.99:
         r_, g_, b_, a_ = g.split()
         g = Image.merge('RGBA', (r_.point(lambda v: int(v * k)), g_.point(lambda v: int(v * k)), b_.point(lambda v: min(255, int(v * k * cool))), a_))
     base = im.convert('RGBA')
     sh = Image.new('RGBA', base.size, (0, 0, 0, 0))
-    ImageDraw.Draw(sh).ellipse((10, 770, 330, 830), fill=(0, 0, 0, 90))
+    ImageDraw.Draw(sh).ellipse((20, 850, 360, 900), fill=(0, 0, 0, 80))
     base = Image.alpha_composite(base, sh.filter(ImageFilter.GaussianBlur(14)))
     base.alpha_composite(g, (0, 300))
+    if os.path.exists(PORTAL_ART):  # 적이 나오는 포탈: 길 오른쪽 끝, 길 높이를 덮음
+        p = Image.open(PORTAL_ART).convert('RGBA'); ph = 620; p = p.resize((round(p.width * ph / p.height), ph), Image.LANCZOS)
+        glow = Image.new('RGBA', base.size, (0, 0, 0, 0))
+        ImageDraw.Draw(glow).ellipse((2464 - 260, 680 - 330, 2464 + 260, 680 + 330), fill=(150, 80, 255, 70))
+        base = Image.alpha_composite(base, glow.filter(ImageFilter.GaussianBlur(40)))
+        base.alpha_composite(p, (2464 - p.width // 2, 890 - ph))
     return base.convert('RGB')
 
 def ai_composite(svg, ai_path, name, q=88, night=False, light=True):

@@ -427,6 +427,15 @@ for k, s in ART.items():
     write(fname, s)
     manifest[fname] = f'assets/units/{fname}.png'
 
+# 리코스(ComfyUI)가 그린 그림이 있으면 벡터 그림 대신 그것을 씀 (art-src/recos/sprites/<키>.png, 384px로 저장)
+from PIL import Image as _Im
+_sp = os.path.join(os.path.dirname(__file__), '..', 'art-src', 'recos', 'sprites')
+if os.path.isdir(_sp):
+    for _f in sorted(os.listdir(_sp)):
+        if _f.endswith('.png') and _f[:-4] in manifest:
+            _Im.open(os.path.join(_sp, _f)).convert('RGBA').resize((384, 384), _Im.LANCZOS).save(os.path.join(os.path.dirname(__file__), '..', 'public', 'assets', 'units', _f))
+            print('recos sprite:', _f)
+
 mp = os.path.join(os.path.dirname(__file__), '..', 'public', 'assets', 'manifest.json')
 m = json.load(open(mp)); m['images'] = {**{k: v for k, v in m['images'].items() if not (k.startswith('unit-') or k.startswith('enemy-'))}, **manifest}
 json.dump(m, open(mp, 'w'), ensure_ascii=False, indent=2)

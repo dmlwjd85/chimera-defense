@@ -13,34 +13,66 @@
  },
  "slotOverrides": {
   "head": {
-   "ph": {
-    "shape": "ellipse",
-    "w": 165,
-    "h": 140
-   }
+   "x": 26,
+   "y": 4
   },
   "body": {
-   "ph": {
-    "shape": "ellipse",
-    "w": 320,
-    "h": 180
-   }
+   "x": 8,
+   "z": 5
   },
   "ear_n": {
-   "x": 18,
-   "ph": {
-    "shape": "ellipse",
-    "w": 56,
-    "h": 56
-   }
+   "x": -4
   },
   "ear_r": {
+   "x": -14
+  },
+  "torso_front": {
+   "x": 44,
+   "y": 10
+  },
+  "leg_fn_up": {
+   "x": 39
+  },
+  "leg_fn_lo": {
+   "x": 40
+  },
+  "leg_fn_paw": {
+   "x": 30
+  },
+  "leg_fr_up": {
+   "x": 39
+  },
+  "leg_fr_lo": {
+   "x": 40
+  },
+  "leg_fr_paw": {
+   "x": 30
+  },
+  "leg_bn_up": {
+   "x": 37
+  },
+  "leg_bn_lo": {
+   "x": 42
+  },
+  "leg_br_up": {
+   "x": 37
+  },
+  "leg_br_lo": {
+   "x": 42
+  },
+  "deco": {
+   "bone": "leg_fn_paw",
    "x": 18,
-   "ph": {
-    "shape": "ellipse",
-    "w": 52,
-    "h": 52
-   }
+   "y": -6,
+   "z": 8.1
+  },
+  "leg_bn_paw": {
+   "x": 7.4,
+   "y": 13.7
+  },
+  "leg_br_paw": {
+   "x": 7.0,
+   "y": 13.0
   }
  },
  "stages": {
@@ -65,7 +97,34 @@
     "leg_bn_lo": 0.82
    },
    "parts": {
-    "nose": null
+    "nose": null,
+    "muzzle": null,
+    "jaw": null,
+    "eye": null,
+    "belly": null,
+    "chest_fluff": null,
+    "neck": null,
+    "wing": null,
+    "horn": null,
+    "tail": null,
+    "torso_front": "torso_front",
+    "body": "body",
+    "head": "head",
+    "ear_n": "ear_n",
+    "ear_r": "ear_r",
+    "leg_fn_up": "leg_fn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_fn_paw": "leg_fn_paw",
+    "leg_fr_up": "leg_fr_up",
+    "leg_fr_lo": "leg_fr_lo",
+    "leg_fr_paw": "leg_fr_paw",
+    "leg_bn_up": "leg_bn_up",
+    "leg_bn_lo": "leg_bn_lo",
+    "leg_bn_paw": "leg_bn_paw",
+    "leg_br_up": "leg_br_up",
+    "leg_br_lo": "leg_br_lo",
+    "leg_br_paw": "leg_br_paw",
+    "deco": "deco"
    }
   },
   "teen": {
@@ -79,7 +138,34 @@
     "tail_1": 0.95
    },
    "parts": {
-    "nose": null
+    "nose": null,
+    "muzzle": null,
+    "jaw": null,
+    "eye": null,
+    "belly": null,
+    "chest_fluff": null,
+    "neck": null,
+    "wing": null,
+    "horn": null,
+    "tail": null,
+    "torso_front": "torso_front",
+    "body": "body",
+    "head": "head",
+    "ear_n": "ear_n",
+    "ear_r": "ear_r",
+    "leg_fn_up": "leg_fn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_fn_paw": "leg_fn_paw",
+    "leg_fr_up": "leg_fr_up",
+    "leg_fr_lo": "leg_fr_lo",
+    "leg_fr_paw": "leg_fr_paw",
+    "leg_bn_up": "leg_bn_up",
+    "leg_bn_lo": "leg_bn_lo",
+    "leg_bn_paw": "leg_bn_paw",
+    "leg_br_up": "leg_br_up",
+    "leg_br_lo": "leg_br_lo",
+    "leg_br_paw": "leg_br_paw",
+    "deco": "deco"
    }
   },
   "adult": {
@@ -92,7 +178,34 @@
     "eye": 1.08
    },
    "parts": {
-    "nose": null
+    "nose": null,
+    "muzzle": null,
+    "jaw": null,
+    "eye": null,
+    "belly": null,
+    "chest_fluff": null,
+    "neck": null,
+    "wing": null,
+    "horn": null,
+    "tail": null,
+    "torso_front": "torso_front",
+    "body": "body",
+    "head": "head",
+    "ear_n": "ear_n",
+    "ear_r": "ear_r",
+    "leg_fn_up": "leg_fn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_fn_paw": "leg_fn_paw",
+    "leg_fr_up": "leg_fr_up",
+    "leg_fr_lo": "leg_fr_lo",
+    "leg_fr_paw": "leg_fr_paw",
+    "leg_bn_up": "leg_bn_up",
+    "leg_bn_lo": "leg_bn_lo",
+    "leg_bn_paw": "leg_bn_paw",
+    "leg_br_up": "leg_br_up",
+    "leg_br_lo": "leg_br_lo",
+    "leg_br_paw": "leg_br_paw",
+    "deco": "deco"
    }
   },
   "spirit": {
@@ -105,7 +218,34 @@
     "eye": 1.08
    },
    "parts": {
-    "nose": null
+    "nose": null,
+    "muzzle": null,
+    "jaw": null,
+    "eye": null,
+    "belly": null,
+    "chest_fluff": null,
+    "neck": null,
+    "wing": null,
+    "horn": null,
+    "tail": null,
+    "torso_front": "torso_front",
+    "body": "body",
+    "head": "head",
+    "ear_n": "ear_n",
+    "ear_r": "ear_r",
+    "leg_fn_up": "leg_fn_up",
+    "leg_fn_lo": "leg_fn_lo",
+    "leg_fn_paw": "leg_fn_paw",
+    "leg_fr_up": "leg_fr_up",
+    "leg_fr_lo": "leg_fr_lo",
+    "leg_fr_paw": "leg_fr_paw",
+    "leg_bn_up": "leg_bn_up",
+    "leg_bn_lo": "leg_bn_lo",
+    "leg_bn_paw": "leg_bn_paw",
+    "leg_br_up": "leg_br_up",
+    "leg_br_lo": "leg_br_lo",
+    "leg_br_paw": "leg_br_paw",
+    "deco": "deco"
    }
   }
  },
@@ -113,5 +253,78 @@
   "default": {
    "parts": {}
   }
- }
+ },
+ "boneOverrides": {
+  "neck": {
+   "length": 14
+  },
+  "head": {
+   "x": 14
+  },
+  "ear_r": {
+   "x": 46,
+   "y": -56,
+   "rot": -72
+  },
+  "leg_fn_up": {
+   "length": 92,
+   "y": -14,
+   "rot": 162
+  },
+  "leg_fn_lo": {
+   "x": 92,
+   "length": 80,
+   "rot": -58
+  },
+  "leg_fn_paw": {
+   "x": 80
+  },
+  "leg_fr_up": {
+   "length": 92,
+   "y": 22,
+   "rot": 142
+  },
+  "leg_fr_lo": {
+   "x": 92,
+   "length": 80,
+   "rot": -58
+  },
+  "leg_fr_paw": {
+   "x": 80
+  },
+  "leg_bn_up": {
+   "length": 74,
+   "y": 18
+  },
+  "leg_bn_lo": {
+   "x": 74,
+   "length": 84,
+   "footPad": 41.3
+  },
+  "leg_bn_paw": {
+   "x": 84
+  },
+  "leg_br_up": {
+   "length": 74,
+   "y": -16
+  },
+  "leg_br_lo": {
+   "x": 74,
+   "length": 84,
+   "footPad": 39.2
+  },
+  "leg_br_paw": {
+   "x": 84
+  }
+ },
+ "attacks": [
+  "attack",
+  "butt",
+  "claw"
+ ],
+ "stance": {
+  "bn": 44,
+  "br": -40
+ },
+ "gemini": true
 }

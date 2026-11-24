@@ -5,6 +5,7 @@
   "nose",
   "eye",
   "belly",
+  "chest_fluff",
   "neck",
   "wing",
   "deco",
@@ -84,16 +85,12 @@
    "x": -14
   },
   "torso_front": {
-   "x": 66,
-   "y": -5
+   "x": 56,
+   "y": -8
   },
   "body": {
-   "x": 36,
+   "x": 8,
    "z": 5
-  },
-  "chest_fluff": {
-   "x": -40,
-   "y": -46
   },
   "leg_fn_up": {
    "x": 39
@@ -133,38 +130,22 @@
  },
  "parts": {
   "torso_front": {
-   "src": "body",
-   "crop": [
-    0,
-    0,
-    1,
-    0.6
-   ],
-   "length": 180,
+   "src": "torso",
+   "length": 246,
    "rot": -90,
-   "thick": 1.4
+   "thick": 1.148
   },
   "body": {
-   "src": "body",
+   "src": "pelvis",
    "crop": [
     0,
-    0.46,
+    0.24,
     1,
     1
    ],
-   "length": 162,
+   "length": 133,
    "rot": -90,
-   "thick": 1.4
-  },
-  "chest_fluff": {
-   "src": "lup",
-   "length": 176,
-   "rot": -90,
-   "thick": 1.0,
-   "feather": [
-    "right",
-    "bottom"
-   ]
+   "thick": 1.148
   },
   "head": {
    "src": "head",

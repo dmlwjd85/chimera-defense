@@ -9,6 +9,7 @@ import { traitView } from '../logic/traits.js';
 import { terrainMatch, effRange, effBlock, effDamage, effInterval } from '../logic/mods.js';
 import { isResting } from '../logic/combat.js';
 import { makeEnemy } from '../logic/waves.js';
+import { dotOn, dotify } from './dotfx.js';
 import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS } from './rigs.js';
 import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
@@ -295,7 +296,8 @@ export default class BattleScene extends Phaser.Scene {
     const st = this.state.stage;
     const bgKey = 'bg-' + (st.art ?? st.id);
     if (this.textures.exists(bgKey)) {
-      this.add.image(640, 360, bgKey).setDisplaySize(1280, 720).setDepth(-10);
+      const bgImg = this.add.image(640, 360, bgKey).setDisplaySize(1280, 720).setDepth(-10);
+      if (dotOn()) dotify(this, bgImg, false);
       st.zones.slice(0, 3).forEach((id, i) => this.add.text(tileToX(i * ZONE_TILES + ZONE_TILES / 2), PATH_Y - PATH_H / 2 - 12, ZONE_NAME[id], style(14, '#ffffff', { stroke: '#000000', strokeThickness: 4 })).setOrigin(0.5).setAlpha(0.85).setDepth(3));
       this.zoneGlow = this.add.graphics().setDepth(4);
       this.add.text(tileToX(0) - 45, PATH_Y + PATH_H / 2 - 30, '방어선', style(13, '#ff8a80', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
@@ -827,6 +829,7 @@ export default class BattleScene extends Phaser.Scene {
     const c = this.add.container(0, 0);
     const sub = this.add.container(0, 30);
     const rig = unitRig(this, unit, sub, 0.22);
+    if (rig && dotOn()) dotify(this, sub);
     const tok = rig ? sub : unitToken(this, unit, this.data2);
     const top = rig ? -70 : -38;
     const glow = unit.stage === 'spirit' ? this.add.ellipse(0, 30, 90, 22, COLORS.gold, 0.45) : unit.white ? this.add.ellipse(0, 30, 80, 20, 0xffffff, 0.4) : null;
@@ -978,6 +981,7 @@ export default class BattleScene extends Phaser.Scene {
     const holder = this.add.container(0, 0).setDepth(70);
     const px = size * 2.2;
     const rig = enemyRig(this, e, holder, px);
+    if (rig && dotOn()) dotify(this, holder);
     const body = rig ? holder : e.flying ? this.add.triangle(0, 0, 0, size, size / 2, 0, size, size, hex(def.color)).setDepth(70) : this.add.rectangle(0, 0, size, size, hex(def.color)).setDepth(70);
     const barW = e.boss ? 70 : 30;
     const bar = this.add.rectangle(0, 0, barW, 4, 0xff5252).setOrigin(0, 0.5).setDepth(71);

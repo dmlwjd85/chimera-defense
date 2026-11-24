@@ -206,21 +206,22 @@ export default class BattleScene extends Phaser.Scene {
   buildSpellBar() {
     const sp = this.data2.config.spells, ids = this.state.spells ?? [];
     if (!sp || !ids.length) return;
-    const X = 492, Y = 556, W = 392;
-    panel(this, X, Y, W, 132, { alpha: 0.9, plain: true });
-    this.add.text(X + 14, Y + 8, '🔮 마법', style(14, '#d7bde2'));
+    // 먹이 줄과 판매 칸 사이(케이지 위)에 둠: 케이지가 늘어나도 겹치지 않음
+    const X = 420, Y = 458, W = 350;
+    panel(this, X, Y, W, 90, { alpha: 0.9, plain: true });
+    this.add.text(X + 12, Y + 5, '🔮 마법', style(13, '#d7bde2'));
     this.manaBar = this.add.graphics().setDepth(2);
-    this.manaText = this.add.text(X + W - 14, Y + 8, '', style(13, '#9fd8ff')).setOrigin(1, 0).setDepth(2);
+    this.manaText = this.add.text(X + W - 12, Y + 6, '', style(11, '#9fd8ff')).setOrigin(1, 0).setDepth(2);
     const KIND = { attack: 0xe05a4a, defense: 0x4a9be0, support: 0x58c070 }, KIND_NAME = { attack: '공격', defense: '방어', support: '서포트' };
     const KEYS = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U'];
-    const step = Math.min(56, (W - 20) / ids.length);
+    const step = Math.min(48, (W - 16) / ids.length);
     this.spellBtns = ids.map((id, i) => {
-      const d = spellDef(this.data2, id), x = X + W / 2 - (ids.length - 1) * step / 2 + i * step, y = Y + 84;
+      const d = spellDef(this.data2, id), x = X + W / 2 - (ids.length - 1) * step / 2 + i * step, y = Y + 56;
       const ring = this.add.graphics().setDepth(2);
-      const icon = this.add.text(x, y - 4, d.icon, style(26)).setOrigin(0.5).setDepth(3);
-      const cost = this.add.text(x, y + 26, `${spellCost(this.state, this.data2, d)}`, style(11, '#9fd8ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
-      this.add.text(x - 20, y - 26, KEYS[i], style(10, '#8899aa')).setDepth(3);
-      const z = this.add.zone(x, y, step - 4, 62).setInteractive({ useHandCursor: true }).setDepth(4);
+      const icon = this.add.text(x, y - 2, d.icon, style(21)).setOrigin(0.5).setDepth(3);
+      const cost = this.add.text(x + 13, y + 15, `${spellCost(this.state, this.data2, d)}`, style(10, '#9fd8ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
+      this.add.text(x - 20, y - 22, KEYS[i], style(9, '#8899aa')).setDepth(3);
+      const z = this.add.zone(x, y, step - 2, 50).setInteractive({ useHandCursor: true }).setDepth(4);
       z.on('pointerover', () => showTip(this, `${d.icon} ${d.name} · ${KIND_NAME[d.kind]} · 마력 ${spellCost(this.state, this.data2, d)}\n“${d.tale}”\n· ${d.desc}`, x, y - 36));
       z.on('pointerout', () => hideTip(this));
       z.on('pointerdown', () => this.doSpell(id));
@@ -234,14 +235,14 @@ export default class BattleScene extends Phaser.Scene {
 
   drawSpellBar() {
     if (!this.spellBtns) return;
-    const sp = this.data2.config.spells, s = this.state, X = 492, Y = 556, W = 392;
+    const sp = this.data2.config.spells, s = this.state, X = 420, Y = 458, W = 350, R = 20;
     const k = Math.max(0, Math.min(1, (s.mana ?? 0) / sp.max));
-    this.manaBar.clear().fillStyle(0x0b1220, 1).fillRoundedRect(X + 14, Y + 32, W - 28, 12, 6).fillStyle(0x4aa3ff, 1).fillRoundedRect(X + 14, Y + 32, Math.max(8, (W - 28) * k), 12, 6).lineStyle(1, 0x9fd8ff, 0.7).strokeRoundedRect(X + 14, Y + 32, W - 28, 12, 6);
-    this.manaText.setText(`마력 ${Math.floor(s.mana ?? 0)} / ${sp.max}${s.phase !== 'wave' ? '  (전투 중에 참)' : ''}`);
+    this.manaBar.clear().fillStyle(0x0b1220, 1).fillRoundedRect(X + 12, Y + 23, W - 24, 8, 4).fillStyle(0x4aa3ff, 1).fillRoundedRect(X + 12, Y + 23, Math.max(6, (W - 24) * k), 8, 4).lineStyle(1, 0x9fd8ff, 0.7).strokeRoundedRect(X + 12, Y + 23, W - 24, 8, 4);
+    this.manaText.setText(`마력 ${Math.floor(s.mana ?? 0)} / ${sp.max}${s.phase !== 'wave' ? ' (전투 중에 참)' : ''}`);
     for (const b of this.spellBtns) {
       const ok = !spellBlock(s, this.data2, b.id), has = (s.mana ?? 0) >= b.need;
-      b.ring.clear().fillStyle(0x0d141d, 0.95).fillCircle(b.x, b.y, 25).lineStyle(3, b.col, ok ? 1 : 0.35).strokeCircle(b.x, b.y, 25);
-      if (!has) b.ring.fillStyle(0x4aa3ff, 0.25).slice(b.x, b.y, 25, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, (s.mana ?? 0) / b.need), false).fillPath();
+      b.ring.clear().fillStyle(0x0d141d, 0.95).fillCircle(b.x, b.y, R).lineStyle(3, b.col, ok ? 1 : 0.35).strokeCircle(b.x, b.y, R);
+      if (!has) b.ring.fillStyle(0x4aa3ff, 0.25).slice(b.x, b.y, R, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, (s.mana ?? 0) / b.need), false).fillPath();
       b.icon.setAlpha(ok ? 1 : 0.4); b.cost.setColor(has ? '#9fd8ff' : '#667788');
       if (ok && !b.ready) this.tweens.add({ targets: b.icon, scale: { from: 1.35, to: 1 }, duration: 260 });
       b.ready = ok;
@@ -458,9 +459,9 @@ export default class BattleScene extends Phaser.Scene {
       this.add.text(benchSlotX(i), BENCH_Y, '🔒', style(22)).setOrigin(0.5).setAlpha(0.6).setDepth(2);
       r.on('pointerover', () => showTip(this, '잠긴 케이지\n· 별자리 나무의 케이지 갈래에서 엶', benchSlotX(i), BENCH_Y - 50)).on('pointerout', () => hideTip(this));
     }
-    const sx = 765, sy = 505;
-    this.sellZone = this.add.rectangle(sx, sy, 150, 70, 0x3a1414, 0.85).setStrokeStyle(2, 0xc0392b, 0.9);
-    this.add.text(sx, sy, '🪙 판매\n(끌어다 놓기)', style(13, '#ffcdd2', { align: 'center' })).setOrigin(0.5);
+    const sx = 832, sy = 503;
+    this.sellZone = this.add.rectangle(sx, sy, 108, 84, 0x3a1414, 0.85).setStrokeStyle(2, 0xc0392b, 0.9);
+    this.add.text(sx, sy, '🪙 판매\n(끌어다\n놓기)', style(12, '#ffcdd2', { align: 'center' })).setOrigin(0.5);
     this.buildSpellBar();
   }
 
@@ -517,8 +518,8 @@ export default class BattleScene extends Phaser.Scene {
     this.baitLabel = this.add.text(24, 470, '🍖 먹이  ⓘ', style(13, '#ffe2b8')).setInteractive({ useHandCursor: true });
     this.baitLabel.on('pointerover', () => showTip(this, '준비 시간에만 · 다음 3회 소환에서 그 역할이 나올 확률 2배', 120, 466)).on('pointerout', () => hideTip(this));
     this.baitBtns = Object.entries(b.types).map(([id, t], i) =>
-      button(this, 85 + i * 130, 510, 120, 44, `${t.name} ${b.cost}\n${ROLE_NAME[t.role]}`, () => this.doBait(id), { size: 13, fill: 0x4a3b22 }));
-    this.baitState = this.add.text(560, 510, '', style(14, '#ffd84d')).setOrigin(0, 0.5);
+      button(this, 70 + i * 98, 512, 92, 44, `${t.name} ${b.cost}\n${ROLE_NAME[t.role]}`, () => this.doBait(id), { size: 12, fill: 0x4a3b22 }));
+    this.baitState = this.add.text(120, 470, '', style(13, '#ffd84d'));
   }
 
   drawSummonPanel() {

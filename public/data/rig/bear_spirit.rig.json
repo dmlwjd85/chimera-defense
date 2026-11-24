@@ -1,7 +1,7 @@
 {
  "species": "bear_spirit",
  "skin": "bear_spirit",
- "template": "quadruped",
+ "template": "biped",
  "anims": "quadruped",
  "artRes": 2,
  "palette": {

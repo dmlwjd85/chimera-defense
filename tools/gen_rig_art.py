@@ -87,6 +87,29 @@ def quad_template():
                                        {'bones': ['ear_n', 'ear_r'], 'stiffness': 120, 'damping': 12, 'limit': 20, 'sway': 0.05},
                                        {'bones': ['wing'], 'stiffness': 90, 'damping': 9, 'limit': 25, 'sway': 0.08}]}}
 
+def biped_template():
+    """두 발로 선 네발짐승(웅녀, 산군): 네발 템플릿과 같은 뼈 이름·같은 그림 조각을 쓰되 서 있는 자세로 다시 세운다.
+    앞다리는 팔이 되어 걸을 때 흔들리고, 뒷다리로 걷는다. 애니메이션은 네발 것을 그대로 쓴다."""
+    T = quad_template()
+    LEAN = -80
+    B = [b('root', None, 0, 0), b('hips', 'root', -28, -176, rot=LEAN, length=200), b('chest', 'hips', 200, -12, length=60),
+         b('neck', 'chest', 52, 14, rot=34, length=60), b('head', 'neck', 60, 0, rot=46, length=90),
+         b('jaw', 'head', 55, 30, rot=10, length=55), b('ear_r', 'head', -25, -55, rot=-110, length=70),
+         b('ear_n', 'head', 5, -60, rot=-80, length=75), b('eye', 'head', 48, -14), b('horn', 'head', -5, -40),
+         b('tail_1', 'hips', 0, -42, rot=232, length=75), b('tail_2', 'tail_1', 75, 0, rot=-12, length=75),
+         b('tail_3', 'tail_2', 75, 0, rot=-14, length=70)]
+    # 팔(앞다리): 어깨에서 앞으로 살짝 내밀고 팔꿈치를 굽힘. 땅을 딛지 않으므로 foot 표시 없음
+    for side, y in (('fr', -26), ('fn', 22)):
+        B.append(b(f'leg_{side}_up', 'chest', 20, y, rot=150, length=82))
+        B.append(b(f'leg_{side}_lo', f'leg_{side}_up', 82, 0, rot=-48, length=92))
+    # 다리(뒷다리): 골반에서 곧게 아래로
+    for side, y in (('br', -18), ('bn', 16)):
+        B.append(b(f'leg_{side}_up', 'hips', 4, y, rot=90 - LEAN, length=82))
+        B.append(b(f'leg_{side}_lo', f'leg_{side}_up', 82, 0, rot=0, length=92, foot=True))
+    B += [b('wing', 'chest', -40, -10, rot=200, length=90), b('deco', 'chest', 20, 10)]
+    T.update(id='biped', bones=B, notes='Upright version of the quadruped rig: same bone names and art parts, standing on the hind legs.')
+    return T
+
 def bird_template():
     T = quad_template(); T['id'] = 'bird'
     B = [b('root', None, 0, 0), b('hips', 'root', -40, -175, length=140), b('chest', 'hips', 130, -10, length=40),
@@ -453,7 +476,7 @@ def paint_bug(sp, s, w, h):
                 f'<rect x="{w*0.15}" y="2" width="{w*0.35}" height="14" fill="#8b5a2b" {st(4)}/></g>'), ''
     return '', ''
 
-PAINT = {'quadruped': paint_quad, 'bird': paint_bird, 'frog': paint_frog, 'bug': paint_bug}
+PAINT = {'quadruped': paint_quad, 'biped': paint_quad, 'bird': paint_bird, 'frog': paint_frog, 'bug': paint_bug}
 
 # ------------------------------------------------------------------ skins
 YOUNG = {'head': 1.6, 'eye': 1.25, 'ear_n': 1.1, 'ear_r': 1.1, 'tail_1': 0.85, **{f'leg_{s}_{p}': 0.82 for s in ('fr', 'fn', 'br', 'bn') for p in ('up', 'lo')}}
@@ -516,11 +539,13 @@ SPIRIT = {
  'monkey': dict(c='#d4a017', dark='#a67c00', headband=True, snoutCol='#ffe8c2', earIn='#ffe8c2', fluff='#ffe08a'),
 }
 for _k, _v in SPIRIT.items(): SKINS[_k + '_spirit'] = {**SKINS[_k], **_v}
+# 신화급이 되면 두 발로 서는 동물: 웅녀(곰), 산군(호랑이)
+for _k in ('bear', 'tiger'): SKINS[_k + '_spirit'] = {**SKINS.get(_k + '_spirit', SKINS[_k]), 't': 'biped'}
 
 STAGE_OF = {'young': ('어린', 0.62, 1.15, 1.2, YOUNG), 'teen': ('성장기', 0.82, 1.05, 1.08, TEEN), 'adult': ('성체', 1.0, 1.0, 1.0, {'head': 1.32, 'eye': 1.08}), 'spirit': ('영물', 1.12, 1.0, 1.0, {'head': 1.34, 'eye': 1.08})}
 
 def main():
-    templates = {'quadruped': quad_template(), 'bird': bird_template(), 'frog': frog_template(), 'bug': bug_template()}
+    templates = {'quadruped': quad_template(), 'biped': biped_template(), 'bird': bird_template(), 'frog': frog_template(), 'bug': bug_template()}
     for k, T in templates.items():
         json.dump(T, open(os.path.join(DATA, f'{k}.template.json'), 'w'), ensure_ascii=False, indent=1)
     manifest_path = os.path.join(ROOT, 'public', 'assets', 'manifest.json')
@@ -534,7 +559,7 @@ def main():
         parts = {}
         for s in T['slots']:
             if s.get('part', 'x') is None and s['name'] not in sp.get('parts', {}):
-                if not (s['name'] == 'horn' and sp.get('horns')) and not (s['name'] == 'wing' and sp['t'] != 'quadruped'):
+                if not (s['name'] == 'horn' and sp.get('horns')) and not (s['name'] == 'wing' and sp['t'] not in ('quadruped', 'biped')):
                     continue
             geo = {**s.get('ph', {}), **{k2: v for k2, v in over.get(s['name'], {}).items() if k2 in ('w', 'h')}}
             w, h = geo.get('w', 40), geo.get('h', 40)

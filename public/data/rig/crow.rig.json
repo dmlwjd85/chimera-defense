@@ -2,7 +2,7 @@
  "species": "crow",
  "skin": "crow",
  "template": "bird",
- "anims": "legacy",
+ "anims": "bird",
  "artRes": 2,
  "palette": {
   "fur": "#2f3542",
@@ -154,5 +154,9 @@
   }
  },
  "boneOverrides": {},
+ "attacks": [
+  "peck",
+  "swoop"
+ ],
  "gemini": true
 }

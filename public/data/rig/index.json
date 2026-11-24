@@ -48,6 +48,8 @@
  "anims": [
   "quadruped",
   "biped",
+  "bird",
+  "frog",
   "legacy",
   "sprite"
  ]

@@ -2,7 +2,7 @@
  "species": "rooster",
  "skin": "rooster",
  "template": "bird",
- "anims": "legacy",
+ "anims": "bird",
  "artRes": 2,
  "palette": {
   "fur": "#fffaf0",
@@ -163,5 +163,8 @@
   }
  },
  "boneOverrides": {},
+ "attacks": [
+  "peck"
+ ],
  "gemini": true
 }

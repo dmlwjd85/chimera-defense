@@ -2,7 +2,7 @@
  "species": "bullfrog",
  "skin": "bullfrog",
  "template": "frog",
- "anims": "legacy",
+ "anims": "frog",
  "artRes": 2,
  "palette": {
   "fur": "#7c8b3a",

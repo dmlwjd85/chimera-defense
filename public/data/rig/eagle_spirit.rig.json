@@ -2,7 +2,7 @@
  "species": "eagle_spirit",
  "skin": "eagle_spirit",
  "template": "bird",
- "anims": "legacy",
+ "anims": "bird",
  "artRes": 2,
  "palette": {
   "fur": "#c9a227",

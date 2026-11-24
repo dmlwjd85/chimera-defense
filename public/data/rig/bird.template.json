@@ -538,5 +538,21 @@
     "sway": 0.015
    }
   ]
- }
+ },
+ "ik": [
+  {
+   "name": "fn",
+   "upper": "leg_fn_up",
+   "lower": "leg_fn_lo",
+   "paw": "leg_fn_paw",
+   "bend": -1
+  },
+  {
+   "name": "bn",
+   "upper": "leg_bn_up",
+   "lower": "leg_bn_lo",
+   "paw": "leg_bn_paw",
+   "bend": -1
+  }
+ ]
 }

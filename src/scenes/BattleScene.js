@@ -853,12 +853,13 @@ export default class BattleScene extends Phaser.Scene {
     const r = v.rig;
     if (!r) return;
     const m = r.inst.motion;
+    const mv = u.stats.flyer && r.inst.anims.fly ? 'fly' : 'move';   // 나는 새는 걷지 않고 날갯짓
     const busy = [...ATTACK_MOTIONS, 'skill', 'hit', 'merge_in', 'evolve', 'respawn'].includes(m) && !r.inst.finished;
     if (this.state.result === 'clear') { if (m !== 'victory') r.inst.play('victory', { loop: true }); }
     else if (u.down) { if (m !== 'down') r.inst.play('down'); }
     else if (v.wasDown) { r.inst.play('respawn'); this.fx.respawn(v.container.x, v.container.y); sfx('respawn'); }
-    else if (onField && (u.moving || v.walking)) { if (m !== 'move') r.inst.play('move', { loop: true }); r.inst.moveVelocity = (u.moving ? Math.sign(u.targetPos - u.pos) : v.walkDir) * 180; }
-    else if (!busy && onField && u.stats.flyer) { if (m !== 'move') r.inst.play('move', { loop: true }); }
+    else if (onField && (u.moving || v.walking)) { if (m !== mv) r.inst.play(mv, { loop: true }); r.inst.moveVelocity = (u.moving ? Math.sign(u.targetPos - u.pos) : v.walkDir) * 180; }
+    else if (!busy && onField && u.stats.flyer) { if (m !== mv) r.inst.play(mv, { loop: true }); }
     else if (!busy && m !== 'idle') r.inst.play('idle', { loop: true });
     if (!u.moving && !v.walking) r.inst.moveVelocity = 0;
     r.inst.setFacing(onField && ((u.moving && u.targetPos < u.pos) || (!u.moving && v.walking && v.walkDir < 0)) ? -1 : 1);

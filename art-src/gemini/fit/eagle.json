@@ -64,5 +64,9 @@
    "rot": 90,
    "dark": 0.8
   }
- }
+ },
+ "attacks": [
+  "swoop",
+  "peck"
+ ]
 }

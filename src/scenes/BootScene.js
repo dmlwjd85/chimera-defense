@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { FONT, makeT } from '../text.js';
 import { loadSave } from '../logic/meta.js';
 import { preloadRigs } from './rigs.js';
+import { rotateCrumbs } from './debug.js';
 
 const DATA_KEYS = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'globe', 'talents', 'story'];
 
@@ -9,6 +10,7 @@ export default class BootScene extends Phaser.Scene {
   constructor() { super('Boot'); }
 
   preload() {
+    rotateCrumbs();
     this.add.text(640, 360, '불러오는 중...', { fontSize: '28px', color: '#ffffff', fontFamily: FONT }).setOrigin(0.5);
     this.load.json('text', 'data/text.json');
     for (const k of DATA_KEYS) this.load.json(k, `data/${k}.json`);

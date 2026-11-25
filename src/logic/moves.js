@@ -11,7 +11,9 @@ export function movesOf(u, cfg) {
   const m = M(cfg);
   if (!m) return ['a1'];
   const key = u.kind === 'chimera' ? 'chimera' : u.kind === 'weak' ? 'young' : u.stage;
-  const list = m.stages[key] ?? m.stages.young;
+  let list = m.stages[key] ?? m.stages.young;
+  // 전용 필살기 연출이 따로 있는 신화급(산군 '어흥' 블릿 타임 등)은 공용 필살기를 쓰지 않음
+  if (u.kind !== 'chimera' && (m.ultOwn ?? []).includes(u.speciesId)) list = list.filter((k) => k !== 'ult');
   return u.stats.element ? list : list.filter((k) => k !== 'el');
 }
 

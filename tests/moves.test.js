@@ -13,7 +13,8 @@ test('each stage has its own attack set: young 1, teen 2, adult 2+element, mythi
   assert.deepEqual(movesOf(mk(s, 'tiger', 'young'), D.config), ['a1']);
   assert.deepEqual(movesOf(mk(s, 'tiger', 'teen'), D.config), ['a1', 'a2']);
   assert.deepEqual(movesOf(mk(s, 'tiger', 'adult'), D.config), ['a1', 'a2', 'el']);
-  assert.deepEqual(movesOf(mk(s, 'tiger', 'spirit'), D.config), ['a1', 'a2', 'el', 'ult']);
+  assert.deepEqual(movesOf(mk(s, 'bear', 'spirit'), D.config), ['a1', 'a2', 'el', 'ult']);
+  assert.deepEqual(movesOf(mk(s, 'tiger', 'spirit'), D.config), ['a1', 'a2', 'el'], '산군은 전용 필살기(어흥) 연출이 따로 있음');
   assert.equal(a2Of(mk(s, 'bear', 'teen'), D.config).name, '몸통박치기');
   assert.equal(a2Of(mk(s, 'fox', 'teen'), D.config).name, '2연사');
 });
@@ -32,14 +33,14 @@ test('moves are random but follow the situation; the ultimate fires when the gau
   for (let i = 0; i < 600; i++) { u.elCd = 0; m[pickMove(s, u, t, D.config)]++; }
   assert.ok(m.a2 / 600 > n.a2 / 600 + 0.1, 'more second attacks in a crowd');
   u.elCd = 3; assert.notEqual([...Array(50)].map(() => pickMove(s, u, t, D.config)).includes('el'), true, 'element waits for its cooldown');
-  const g = mk(s, 'tiger', 'spirit');
+  const g = mk(s, 'bear', 'spirit');
   for (let i = 0; i < 20; i++) chargeUlt(g, D.config, 'hit');
   assert.equal(pickMove(s, g, t, D.config), 'ult');
 });
 
 test('an ultimate in battle hits around the target and resets the gauge', () => {
   const s = B.createBattle(D, 'forest-1', 4);
-  s.bench = [mk(s, 'tiger', 'spirit')]; B.deploy(s, D, 0); B.skipPrep(s, D);
+  s.bench = [mk(s, 'bear', 'spirit')]; B.deploy(s, D, 0); B.skipPrep(s, D);
   for (let i = 0; i < 40; i++) B.step(s, D, 0.1);
   const u = s.field[0]; u.ultGauge = 100; s.queue = [];
   const e1 = makeEnemy('normal', 1, s.stage, D, 901), e2 = makeEnemy('normal', 1, s.stage, D, 902);

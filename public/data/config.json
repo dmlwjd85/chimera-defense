@@ -393,6 +393,7 @@
   },
   "el": { "mult": 1.0 },
   "ult": { "gauge": 100, "perHit": 8, "perHurtPct": 0.5, "perKill": 12, "mult": 2.6, "aoe": 1.1, "splash": 0.6, "name": "필살기", "chimeraName": "키메라 일격" },
+  "ultOwn": ["tiger"],
   "ultNames": { "bear": "백일 기도의 일격", "tiger": "산군의 포효", "fox": "구미호의 여우불", "rabbit": "달토끼 방아", "rooster": "금계의 새벽", "crow": "삼족오의 태양", "bison": "베이브 대지 가르기", "wolf": "펜리르 사슬 끊기", "eagle": "아퀼라의 번개", "bighorn": "황금 양털 돌진", "frog": "금와왕의 호령", "grasshopper": "티토노스의 노래", "ant": "미르미돈 창진", "dog": "케르베로스 삼중 물기", "monkey": "여의봉 난타" },
   "note": "2026-11-26 공격 기술 묶음: 어린 기본1, 성장기 기본2, 성체 기본2+속성, 신화·키메라 기본2+속성+필살기. 매 공격 무작위(가중치 weights). 기본2는 표적 근처 적 crowd마리 이상 ×crowdMult, 표적 체력 lowHp 아래 ×lowHpMult. 속성은 쿨다운 cooldown초, 특성·유물 속성 확률 +%p, 강한 기후 ×climateUp·약한 기후 ×climateDown, 보스 ×bossMult. 필살기는 게이지(때릴 때 perHit, 맞은 체력 1%당 perHurtPct, 처치 perKill)가 가득 차면 다음 공격"
  },

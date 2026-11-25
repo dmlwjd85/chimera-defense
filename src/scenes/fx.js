@@ -5,11 +5,11 @@ import Phaser from 'phaser';
 import { FONT } from '../text.js';
 
 const PRESETS = {
-  spark: { tex: 'fx-spark', speed: { min: 120, max: 320 }, lifespan: 380, scale: { start: 0.9, end: 0 }, rotate: { min: 0, max: 360 }, blendMode: 'ADD' },
-  flare: { tex: 'fx-flare', speed: 0, lifespan: 220, scale: { start: 0.6, end: 1.6 }, alpha: { start: 0.9, end: 0 }, blendMode: 'ADD' },
-  bigFlare: { tex: 'fx-flare', speed: 0, lifespan: 500, scale: { start: 1, end: 4 }, alpha: { start: 0.9, end: 0 }, blendMode: 'ADD' },
-  star: { tex: 'fx-star', speed: { min: 80, max: 240 }, lifespan: 700, scale: { start: 0.9, end: 0.2 }, rotate: { min: 0, max: 360 }, gravityY: 300 },
-  puff: { tex: 'fx-puff', speed: { min: 20, max: 70 }, lifespan: 600, scale: { start: 0.5, end: 1.3 }, alpha: { start: 0.7, end: 0 } },
+  spark: { tex: 'fx-spark', speed: { min: 90, max: 220 }, lifespan: 260, scale: { start: 0.6, end: 0 }, rotate: { min: 0, max: 360 }, blendMode: 'ADD' },
+  flare: { tex: 'fx-flare', speed: 0, lifespan: 160, scale: { start: 0.4, end: 0.9 }, alpha: { start: 0.6, end: 0 }, blendMode: 'ADD' },
+  bigFlare: { tex: 'fx-flare', speed: 0, lifespan: 380, scale: { start: 0.8, end: 2.4 }, alpha: { start: 0.55, end: 0 }, blendMode: 'ADD' },
+  star: { tex: 'fx-star', speed: { min: 80, max: 200 }, lifespan: 420, scale: { start: 0.55, end: 0.1 }, rotate: { min: 0, max: 360 }, gravityY: 300 },
+  puff: { tex: 'fx-puff', speed: { min: 20, max: 60 }, lifespan: 450, scale: { start: 0.4, end: 0.9 }, alpha: { start: 0.45, end: 0 } },
   shard: { tex: 'fx-shard', speed: { min: 150, max: 380 }, lifespan: 650, scale: { start: 1, end: 0.3 }, rotate: { min: 0, max: 360 }, gravityY: 500 },
   coin: { tex: 'fx-coin', speed: { min: 80, max: 180 }, angle: { min: 230, max: 310 }, lifespan: 600, scale: { start: 0.9, end: 0.6 }, gravityY: 500 },
   heart: { tex: 'fx-heart', speed: { min: 30, max: 90 }, angle: { min: 240, max: 300 }, lifespan: 900, scale: { start: 0.8, end: 0.3 }, alpha: { start: 1, end: 0 } },
@@ -52,6 +52,11 @@ export class FX {
 
   burst(name, x, y, n, tint) {
     if (!this.ok) return;
+    // 간소화(2026-11-25): 같은 자리에서 같은 입자가 연달아 터지면 건너뜀(동물이 가려지지 않게)
+    const now = this.scene.time.now; this.recent ??= [];
+    this.recent = this.recent.filter((r) => now - r.t < 90);
+    if (n > 1 && this.recent.some((r) => r.name === name && Math.abs(r.x - x) < 40 && Math.abs(r.y - y) < 40)) return;
+    this.recent.push({ name, x, y, t: now });
     const e = this.em(name);
     if (tint !== undefined) e.setParticleTint(tint); else if (!PRESETS[name].tint) e.setParticleTint(0xffffff);
     const live = this.scene.state?.enemies?.length ?? 0;
@@ -334,7 +339,9 @@ export class FX {
   impact(x, y, color = 0xffe066, size = 1) {
     const sc = this.scene;
     const g = sc.add.graphics().setDepth(1606);
+    size *= 0.65;
     const pts = []; for (let i = 0; i < 16; i++) { const r = (i % 2 ? 9 : 22) * size; const a = i / 16 * Math.PI * 2 + 0.2; pts.push({ x: Math.cos(a) * r, y: Math.sin(a) * r }); }
+    g.setAlpha(0.75);
     g.fillStyle(0xffffff, 1).fillPoints(pts, true);
     g.lineStyle(2.5, color, 1).strokePoints(pts, true, true);
     g.setPosition(x, y).setScale(0.3);

@@ -42,11 +42,7 @@ export function findMergePair(state, data, kind) {
 
 /** Deploy spots in order: melee hold the middle, ranged stand just behind the front blocker within reach. */
 export function deploySpots(state, unit) {
-  if (state.cfgGrid) {
-    const g = state.cfgGrid, cols = [...Array(g.cols).keys()].map((c) => g.x0 + c * g.step);
-    if (unit.stats.flyer) return [...cols];
-    return unit.stats.range <= 1 ? [...cols].reverse() : [cols[1], cols[2], cols[0]].filter((v) => v !== undefined);
-  }
+  if (state.arenaMuster) return [0];   // 성문 출전: 자리는 역할이 정함
   const melee = unit.stats.range <= 1;
   if (melee) return [...SPOTS].sort((x, y) => Math.abs(x - 6) - Math.abs(y - 6) || y - x);
   const blockers = state.field.filter((u) => u.stats.block >= 2 || u.stats.range <= 1);
@@ -60,6 +56,7 @@ export function deploySpots(state, unit) {
 
 /** Try the deploy spots in role order; true when one worked. */
 function deployFirst(state, data) {
+  state.arenaMuster = !!data.config.muster;
   const index = state.bench.findIndex(Boolean);
   if (index < 0) return false;
   return deploySpots(state, state.bench[index]).some((p) => deploy(state, data, index, p).ok);

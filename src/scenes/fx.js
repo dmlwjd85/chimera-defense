@@ -477,6 +477,7 @@ export class FX {
   /** Comic shout bubble with the skill name over the caster. */
   shout(x, y, text, color = 0xffe066, opts = {}) {
     const sc = this.scene;
+    x = Math.max(90, Math.min(1190, x));   // 성문 안에서 외쳐도 말풍선은 화면 안에
     sc.shoutSlots ??= [];
     const now = sc.time.now;
     sc.shoutSlots = sc.shoutSlots.filter((s) => s.until > now);

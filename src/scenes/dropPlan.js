@@ -1,6 +1,5 @@
-import { PATH_Y, PATH_H, SLOT, xToTile, benchSlotPos, laneAt, SKY_TOP, SKY_BOTTOM } from './layout.js';
+import { PATH_Y, PATH_H, SLOT, xToTile, benchSlotPos, laneAt, SKY_TOP, SKY_BOTTOM, inRosterRow } from './layout.js';
 import { mergeKind, mergePreview } from '../logic/merge.js';
-import { gridCol, gridPos } from '../logic/battle.js';
 import { sellPrice } from '../logic/economy.js';
 
 // Pure drop rules for the battle screen (no Phaser): what a drag-and-drop or tap should do.
@@ -61,17 +60,11 @@ export function planDrop(state, data, uid, x, y, ctx) {
     return { action: 'sell', ref: fromRef, price, name: from.stats.name, confirm: from.kind === 'chimera' || from.stage === 'spirit' };
   }
   const flyer = !!from.stats?.flyer;
-  const g = data.config.grid;
-  if (g) {
-    const c = gridCol(xToTile(x), data.config);
-    const sky = flyer && y >= SKY_TOP && y < PATH_Y - PATH_H / 2;
-    if (c >= 0 && (onPath(y) || sky)) {
-      const row = onPath(y) ? laneAt(y) : g.skyY.reduce((b, v, i) => (Math.abs(v - y) < Math.abs(g.skyY[b] - y) ? i : b), 0);
-      const pos = gridPos(c, data.config), opts = { row };
-      return fromRef.where === 'bench' ? { action: 'deploy', index: fromRef.index, pos, opts } : { action: 'move', uid, pos, opts };
-    }
+  if (data.config.muster) {
+    // 배치 칸 없음: 케이지 동물을 들판이나 출전 줄에 놓으면 출전(자리는 역할이 정함), 출전한 동물을 케이지에 놓으면 귀환
+    const onField = onPath(y) || (flyer && y >= SKY_TOP && y <= SKY_BOTTOM);
+    if (fromRef.where === 'bench' && (onField || inRosterRow(x, y))) return { action: 'deploy', index: fromRef.index, pos: 0, opts: {} };
     if (fromRef.where === 'field' && benchSlotAt(x, y, state.bench.length) >= 0) return { action: 'recall', uid };
-    if (onPath(y) || (flyer && y >= SKY_TOP && y <= SKY_BOTTOM)) return { action: 'none', reason: 'outsideCamp' };
     return { action: 'none' };
   }
   if (flyer ? y >= SKY_TOP && y <= SKY_BOTTOM : onPath(y)) {

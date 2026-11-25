@@ -35,7 +35,8 @@ export function attachInput(scene) {
     const u = scene.selectedUid == null ? null : st().field.find((f) => f.uid === scene.selectedUid);
     if (!u) return hideRange(scene);
     const reach = u.stats.range <= 1 ? (data.config.meleeReach ?? 1) + Math.max(0, effRange(u) - 1) : effRange(u);
-    showRange(scene, tileToX(u.pos - (u.stats.range <= 1 ? 0.35 : reach)), tileToX(u.pos + reach), PATH_Y, PATH_H, u.stats.range <= 1);
+    const at = u.inGate && u.slot != null ? u.slot : u.pos;   // 성문 안에서 기다리는 동물은 싸울 자리를 미리 보여 줌
+    showRange(scene, tileToX(at - (u.stats.range <= 1 ? 0.35 : reach)), tileToX(at + reach), PATH_Y, PATH_H, u.stats.range <= 1);
   };
 
   scene.events.on('postupdate', () => {
@@ -43,9 +44,22 @@ export function attachInput(scene) {
     if (!refOf(st(), scene.selectedUid)) deselect(); else refreshRange();
   });
 
+  let press = null;
   scene.input.on('gameobjectdown', (pointer, obj) => {
     if (scene.modalOpen || obj.unitUid == null) return;
+    press = { uid: obj.unitUid, x: pointer.worldX, y: pointer.worldY };
     select(obj.unitUid);
+  });
+
+  // 케이지 동물을 (끌지 않고) 누르면 바로 출전 — 자리는 타고난 역할대로
+  scene.input.on('gameobjectup', (pointer, obj) => {
+    const p = press; press = null;
+    if (!p || scene.modalOpen || obj.unitUid !== p.uid || st().phase === 'ended') return;
+    if (Math.hypot(pointer.worldX - p.x, pointer.worldY - p.y) >= DRAG_MIN) return;
+    const ref = refOf(st(), p.uid);
+    if (ref?.where !== 'bench' || !data.config.muster) return;
+    const r = say(deploy(st(), data, ref.index, 0, {}));
+    if (r.ok) { scene.onPlaced?.(r.unit); select(r.unit.uid); }
   });
 
   scene.input.on('pointerdown', (pointer, objs) => {
@@ -73,13 +87,11 @@ export function attachInput(scene) {
   scene.input.on('drag', (pointer, obj, dragX, dragY) => {
     if (scene.dragUid !== obj.unitUid) return;
     obj.setPosition(dragX, dragY);
-    scene.hoverCell?.(pointer.worldX, pointer.worldY, obj.unitUid);
   });
 
   scene.input.on('dragend', (pointer, obj) => {
     if (scene.dragUid !== obj.unitUid) return;
     clearRings();
-    scene.hoverCell?.(0, 0, null);
     obj.setDepth(obj.baseDepth ?? 0);
     const uid = scene.dragUid;
     scene.dragUid = null;
@@ -107,8 +119,10 @@ export function attachInput(scene) {
         const doMerge = () => { const r = say(merge(s, data, plan.fromRef, plan.toRef)); if (r.ok && r.kind !== 'swap') { scene.toast(r.unit.stats.name); select(r.unit.uid); } };
         const doSwap = () => { const r = say(swap(s, data, plan.fromRef, plan.toRef)); if (r.ok) scene.fx?.ring(scene.unitViews.get(from.uid)?.container.x ?? 640, (scene.unitViews.get(from.uid)?.container.y ?? 300) + 20, 0x7fd1ff, 0.8); };
         const opts = [];
-        const where = (ref) => (ref.where === 'bench' ? '대기석' : '진영');
-        opts.push({ icon: '⇄', label: '자리 바꾸기', sub: `${from.stats.name}(${where(plan.fromRef)}) ↔ ${to.stats.name}(${where(plan.toRef)})`, color: 0x7fd1ff, onPick: doSwap });
+        const where = (ref) => (ref.where === 'bench' ? '케이지' : '출전');
+        const bothOut = plan.fromRef.where === 'field' && plan.toRef.where === 'field';
+        if (!(bothOut && data.config.muster)) opts.push({ icon: '⇄', label: plan.fromRef.where === plan.toRef.where ? '자리 바꾸기' : '교체', sub: `${from.stats.name}(${where(plan.fromRef)}) ↔ ${to.stats.name}(${where(plan.toRef)})`, color: 0x7fd1ff, onPick: doSwap });
+        if (!opts.length && kind === 'swap') { scene.toast('자리는 역할대로 알아서 잡아요'); break; }
         if (kind === 'evolve') opts.unshift({ icon: '⬆', label: '진화', sub: `${T(p.textKey, p.vars)}\n특성: ${names(inheritEvolve(to.traits, from.traits))}`, color: 0x2ecc71, onPick: doMerge });
         if (kind === 'spirit') opts.unshift({ icon: '🌟', label: '영물로 진화', sub: `${T('merge.spirit', p.vars)}\n특성: ${names(inheritSpirit(to.traits, from.traits))} (약점이 모두 뒤집혀요)`, color: 0xffd84d, onPick: doMerge });
         if (kind === 'chimera' || kind === 'weak') {

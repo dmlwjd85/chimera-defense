@@ -39,7 +39,7 @@ export function steer(state, cfg, dt) {
   const a = A(cfg);
   if (!a) return;
   const foes = state.enemies.filter((e) => e.hp > 0);
-  const ground = state.field.filter((u) => !u.down && !u.stats.flyer && u.slot != null);
+  const ground = state.field.filter((u) => !u.down && !u.stats.flyer && u.slot != null && !u.inGate && !u.rushing);
   const plans = [];
   for (const u of ground) {
     u.engageCd = (u.engageCd ?? 0) - dt;
@@ -123,7 +123,7 @@ export function driftEnemies(state, cfg, dt) {
       let best = null, bd = Infinity;
       const D = a.depth ?? DEF_DEPTH;
       for (const u of state.field) {
-        if (u.down || u.stats.flyer || e.passed?.includes(u.uid)) continue;
+        if (u.down || u.inGate || u.stats.flyer || e.passed?.includes(u.uid)) continue;
         const dx = e.pos - u.pos;
         if (dx < -0.2 || dx > a.sight) continue;
         const full = state.enemies.some((o) => o.blockedBy === u.uid) ? 0.6 : 0;
@@ -132,6 +132,8 @@ export function driftEnemies(state, cfg, dt) {
       }
       if (best) want = depthOf(best);
     }
+    // 포탈 가운데로 줄지어 나온 적은 아무도 안 보이면 제 갈 길(homeY)로 부채꼴처럼 퍼짐
+    if (want == null && e.homeY != null && !(e.stunLeft > 0) && !(e.holdLeft > 0)) want = e.homeY;
     if (want == null) continue;
     want = clamp01(want);
     const step = speed * dt;

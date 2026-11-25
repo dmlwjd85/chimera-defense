@@ -24,16 +24,11 @@ test('bot merge pair prefers a field unit as target', () => {
   assert.equal(findMergePair(s, D, 'spirit'), null);
 });
 
-test('ranged units are placed within reach behind the front blocker', () => {
+test('the bot just sends animals out; the role decides where they stand', () => {
   const s = createBattle(D, 'forest-1', 1);
-  const bear = makeUnit(s, D, { kind: 'base', speciesId: 'bear', stage: 'young', parts: null });
-  Object.assign(bear, { pos: 6, targetPos: 6 });
-  s.field.push(bear);
+  s.arenaMuster = true;
   const crow = makeUnit(s, D, { kind: 'base', speciesId: 'crow', stage: 'young', parts: null });
-  const first = deploySpots(s, crow)[0];
-  assert.ok(first >= 0.5 && first <= 2.5, 'inside the camp');
-  const bearSpots = deploySpots(s, bear);
-  assert.equal(bearSpots[0], 2.5, 'melee goes to the front column');
+  assert.deepEqual(deploySpots(s, crow), [0]);
 });
 
 test('summon luck numbers are deterministic and in range', () => {

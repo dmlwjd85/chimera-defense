@@ -20,16 +20,20 @@ test('bench and field limits', () => {
   s.gold = 9999;
   for (let i = 0; i < D.config.benchSize; i++) B.summon(s, D);
   assert.equal(B.summon(s, D).reason, 'benchFull');
-  // the camp is a 3×3 grid: one animal per cell, outside the camp is refused
+  // no camp cells: a cage animal goes into the gate and takes its spot from its role
   const mk = (sp) => B.makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'young', parts: null });
-  s.bench = [mk('bear'), mk('fox'), mk('wolf'), mk('bison'), mk('crow')];
-  assert.ok(B.deploy(s, D, 0, 2.5).ok && B.deploy(s, D, 1, 2.4).ok && B.deploy(s, D, 2, 2.6).ok);
-  assert.deepEqual(s.field.map((u) => u.cell.r).sort(), [0, 1, 2]);
-  assert.ok(s.field.every((u) => u.pos === 2.5 && u.cell.c === 2));
-  assert.equal(B.deploy(s, D, 3, 2.5).reason, 'occupied');
-  assert.equal(B.deploy(s, D, 3, 6).reason, 'outsideCamp');
-  assert.ok(B.deploy(s, D, 4, 0.5, { row: 0 }).ok, 'crow takes a cell too and hovers above it');
-  assert.equal(s.field.find((u) => u.speciesId === 'crow').skyY, D.config.grid.skyY[0]);
+  s.bench = [mk('bear'), mk('fox'), mk('wolf'), mk('bison'), mk('crow'), mk('tiger'), mk('dog')];
+  for (let i = 0; i < 6; i++) assert.ok(B.deploy(s, D, i).ok);
+  assert.equal(B.deploy(s, D, 6).reason, 'fieldFull');
+  assert.ok(s.field.every((u) => u.inGate && u.pos === D.config.muster.gate), 'everyone waits inside the gate during prep');
+  const by = (sp) => s.field.find((u) => u.speciesId === sp);
+  const f = D.config.formation.front;
+  assert.equal(by('bear').slot, f, 'bruisers hold the front line');
+  assert.equal(by('bison').slot, f);
+  assert.notEqual(by('bear').rowY, by('bison').rowY, 'two bruisers split the depth');
+  assert.ok(by('tiger').slot < f && by('fox').slot < by('tiger').slot && by('wolf').slot < by('fox').slot, 'dealer, then ranged, then support further back');
+  assert.ok([0.18, 0.82].includes(by('tiger').rowY), 'a melee dealer starts on a flank');
+  assert.equal(by('crow').skyY, D.config.muster.sky[0], 'flyers hover');
 });
 
 test('merges update bench and discoveries', () => {
@@ -56,29 +60,46 @@ test('empty field leaks wave 1, then lose at low life', () => {
   assert.deepEqual([t.result, t.life], ['lose', 0]);
 });
 
-test('the camp marches to the middle as one block and walks back after the wave', () => {
+test('wave start: animals run out of the gate one by one in a line, spread to their spots, and walk back in after', () => {
   const s = B.createBattle(D, STAGE, 4);
   const mk = (sp) => B.makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'young', parts: null });
-  s.bench = [mk('bear'), mk('fox'), mk('crow')];
-  B.deploy(s, D, 0, 2.5, { row: 1 }); B.deploy(s, D, 1, 0.5, { row: 2 }); B.deploy(s, D, 2, 1.5, { row: 0 });
+  s.bench = [mk('fox'), mk('bear'), mk('crow')];
+  for (let i = 0; i < 3; i++) B.deploy(s, D, i);
   B.skipPrep(s, D);
-  const f = D.config.formation, g = f.colGap;
-  assert.deepEqual(s.field.map((u) => u.targetPos), [f.front, f.front - 2 * g, f.front - g], 'columns close up a little in battle');
-  B.standDown(s);
-  assert.deepEqual(s.field.map((u) => u.pos), [2.5, 0.5, 1.5]);
+  const [fox, bear, crow] = s.field;
+  assert.ok(bear.gateDelay < crow.gateDelay && crow.gateDelay < fox.gateDelay, 'front-liners first, ranged last');
+  B.step(s, D, 0.05);
+  assert.ok(!bear.inGate && fox.inGate, 'the bear is out first, the fox still waits');
+  assert.equal(bear.targetY, D.config.muster.gateY, 'first straight out of the doorway');
+  for (let i = 0; i < 40; i++) B.step(s, D, 0.1);
+  assert.ok(s.field.every((u) => !u.inGate && !u.rushing), 'everyone is out and settled');
+  assert.ok(Math.abs(bear.pos - bear.slot) < 0.6 && Math.abs(fox.pos - fox.slot) < 0.6, 'standing near their role spots');
+  B.standDown(s, D);
+  assert.ok(s.field.every((u) => u.inGate && u.pos === D.config.muster.gate), 'back inside the gate');
 });
 
-test('swap exchanges cells without merging', () => {
+test('enemies come out of the portal in a line, then spread to their own depth', () => {
+  const s = B.createBattle(D, STAGE, 9);
+  B.skipPrep(s, D);
+  for (let i = 0; i < 200 && !s.enemies.length; i++) B.step(s, D, 0.05);
+  const e = s.enemies[0];
+  assert.ok(Math.abs(e.y - D.config.muster.portalY) < 0.06, 'comes out of the middle of the portal');
+  for (let i = 0; i < 60; i++) B.step(s, D, 0.05);
+  assert.ok(Math.abs(e.y - e.homeY) < 0.05, 'fanned out with nobody in sight');
+});
+
+test('swap: bench animal takes the field spot; field animals cannot trade spots by hand', () => {
   const s = B.createBattle(D, STAGE, 5);
   const mk = (sp) => B.makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'young', parts: null });
-  s.bench = [mk('bear'), mk('bear'), mk('fox')];
-  B.deploy(s, D, 0, 2.5, { row: 1 }); B.deploy(s, D, 1, 0.5, { row: 0 });
+  s.bench = [mk('bear'), mk('fox'), mk('tiger')];
+  B.deploy(s, D, 0); B.deploy(s, D, 1);
   const [a, b] = s.field;
   assert.ok(B.swap(s, D, { where: 'field', uid: a.uid }, { where: 'field', uid: b.uid }).ok);
-  assert.deepEqual([a.cell, b.cell], [{ c: 0, r: 0 }, { c: 2, r: 1 }]);
   assert.equal(s.field.length, 2);
   assert.ok(B.swap(s, D, { where: 'bench', index: 2 }, { where: 'field', uid: a.uid }).ok);
-  assert.equal(s.field.find((u) => u.speciesId === 'fox').cell.c, 0);
+  const tiger = s.field.find((u) => u.speciesId === 'tiger');
+  assert.ok(tiger && tiger.inGate && s.bench[2].speciesId === 'bear');
+  assert.equal(tiger.slot, D.config.formation.front, 'with no bruiser left the dealer leads');
 });
 
 test('brawl: a free melee animal joins an ally holding an enemy; a leaker gets cut off', async () => {

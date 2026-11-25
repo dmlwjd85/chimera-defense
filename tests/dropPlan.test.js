@@ -3,14 +3,15 @@ import assert from 'node:assert/strict';
 import { loadData } from './helpers.js';
 import { createBattle, makeUnit, merge } from '../src/logic/battle.js';
 import { planDrop, refOf, ringFor, benchSlotAt } from '../src/scenes/dropPlan.js';
-import { tileToX, benchSlotX, PATH_Y, BENCH_Y } from '../src/scenes/layout.js';
+import { tileToX, benchSlotPos, PATH_Y } from '../src/scenes/layout.js';
+const BX = (i) => benchSlotPos(i).x, BY = (i) => benchSlotPos(i).y;
 
 const D = loadData();
 const base = (s, sp, stage) => makeUnit(s, D, { kind: 'base', speciesId: sp, stage, parts: null });
 const posMap = (s) => {
   const m = new Map();
   s.field.forEach((u) => m.set(u.uid, { x: tileToX(u.pos), y: PATH_Y }));
-  s.bench.forEach((u, i) => u && m.set(u.uid, { x: benchSlotX(i), y: BENCH_Y }));
+  s.bench.forEach((u, i) => u && m.set(u.uid, { x: BX(i), y: BY(i) }));
   return m;
 };
 const plan = (s, uid, x, y, inSell = false) => planDrop(s, D, uid, x, y, { positions: posMap(s), inSell });
@@ -22,26 +23,26 @@ test('bench to path deploys, field to path moves, field to bench recalls', () =>
   Object.assign(f, { pos: 2.5, targetPos: 2.5, cell: { c: 2, r: 1 } });
   s.field.push(f);
   assert.deepEqual(plan(s, s.bench[0].uid, tileToX(1.6), PATH_Y), { action: 'deploy', index: 0, pos: 1.5, opts: { row: 1 } });
-  assert.deepEqual(plan(s, f.uid, tileToX(0.3), PATH_Y + 70), { action: 'move', uid: f.uid, pos: 0.5, opts: { row: 2 } });
+  assert.deepEqual(plan(s, f.uid, tileToX(0.3), PATH_Y + 150), { action: 'move', uid: f.uid, pos: 0.5, opts: { row: 2 } });
   assert.equal(plan(s, f.uid, tileToX(8), PATH_Y).reason, 'outsideCamp');
-  assert.deepEqual(plan(s, f.uid, benchSlotX(1), BENCH_Y), { action: 'recall', uid: f.uid });
-  assert.equal(plan(s, f.uid, 640, 480).action, 'none');
+  assert.deepEqual(plan(s, f.uid, BX(1), BY(1)), { action: 'recall', uid: f.uid });
+  assert.equal(plan(s, f.uid, 640, 700).action, 'none');
   assert.deepEqual(refOf(s, f.uid), { where: 'field', uid: f.uid });
-  assert.equal(benchSlotAt(benchSlotX(4), BENCH_Y, 5), 4);
-  assert.equal(benchSlotAt(benchSlotX(5), BENCH_Y, 5), -1);
+  assert.equal(benchSlotAt(BX(4), BY(4), 5), 4);
+  assert.equal(benchSlotAt(BX(5), BY(5), 5), -1);
 });
 
 test('drop on same species same stage evolves without confirm; adults ask before spirit', () => {
   const s = createBattle(D, 'forest-1', 1);
   s.bench[0] = base(s, 'fox', 'young');
   s.bench[1] = base(s, 'fox', 'young');
-  const p = plan(s, s.bench[0].uid, benchSlotX(1) + 10, BENCH_Y);
+  const p = plan(s, s.bench[0].uid, BX(1) + 10, BY(1));
   assert.equal(p.action, 'merge');
   assert.equal(p.preview.kind, 'evolve');
   assert.equal(p.confirm, null);
   s.bench[2] = base(s, 'fox', 'adult');
   s.bench[3] = base(s, 'fox', 'adult');
-  const q = plan(s, s.bench[2].uid, benchSlotX(3), BENCH_Y);
+  const q = plan(s, s.bench[2].uid, BX(3), BY(3));
   assert.equal(q.preview.kind, 'spirit');
   assert.equal(q.confirm, 'spirit');
   assert.ok(merge(s, D, q.fromRef, q.toRef).ok);
@@ -52,7 +53,7 @@ test('different-species adults ask with a preview; merge wins over sell zone', (
   const s = createBattle(D, 'forest-1', 1);
   s.bench[0] = base(s, 'fox', 'adult');
   s.bench[1] = base(s, 'crow', 'adult');
-  const p = plan(s, s.bench[0].uid, benchSlotX(1), BENCH_Y, true);
+  const p = plan(s, s.bench[0].uid, BX(1), BY(1), true);
   assert.equal(p.action, 'merge');
   assert.equal(p.confirm, 'preview');
   assert.equal(p.preview.textKey, 'merge.unknown');
@@ -62,9 +63,9 @@ test('sell asks only for chimera and spirit', () => {
   const s = createBattle(D, 'forest-1', 1);
   s.bench[0] = base(s, 'fox', 'teen');
   s.bench[1] = base(s, 'fox', 'spirit');
-  const a = plan(s, s.bench[0].uid, 740, BENCH_Y, true);
+  const a = plan(s, s.bench[0].uid, 52, 486, true);
   assert.deepEqual([a.action, a.price, a.confirm], ['sell', D.config.sell.teen, false]);
-  const b = plan(s, s.bench[1].uid, 740, BENCH_Y, true);
+  const b = plan(s, s.bench[1].uid, 52, 486, true);
   assert.deepEqual([b.action, b.price, b.confirm], ['sell', D.config.sell.spirit, true]);
 });
 

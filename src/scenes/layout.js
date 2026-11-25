@@ -1,20 +1,26 @@
 // Screen layout of the battle scene (no Phaser import, so node tests can use it).
-// 2026-11-25 화면 재배치: 아래 조작판을 한 줄(y 612~720)로 줄이고 들판을 넓힘(y 235~565)
-export const PATH_Y = 400, X0 = 100, TILE = 90, PATH_H = 330, BENCH_Y = 667, BENCH_X0 = 66, BENCH_GAP = 84, SLOT = 76;
-export const DOCK_Y = 612;
+// 2026-11-25 사이드바 배치: 왼쪽(출전 초상화·케이지·판매·먹이), 오른쪽(합성 제단·소환·마법), 가운데는 넓은 들판.
+export const SIDE_L = 104, SIDE_R = 1176, SIDE_TOP = 100;
+export const PATH_Y = 446, X0 = 150, TILE = 82, PATH_H = 420;
+export const SLOT = 50, BENCH_X0 = 28, BENCH_GAP = 48, BENCH_Y = 318, BENCH_ROW = 56;
+/** 아래 조작판은 없앰(사이드바로). 화면 맨 아래. */
+export const DOCK_Y = 720;
 
 /** Tile position to screen x. */
 export function tileToX(pos) { return X0 + pos * TILE; }
 /** Screen x to tile position. */
 export function xToTile(x) { return (x - X0) / TILE; }
-/** Screen x of a bench slot centre. */
-export function benchSlotX(i) { return BENCH_X0 + i * BENCH_GAP; }
+/** Centre of a cage slot (2 columns in the left sidebar). */
+export function benchSlotPos(i) { return { x: BENCH_X0 + (i % 2) * BENCH_GAP, y: BENCH_Y + Math.floor(i / 2) * BENCH_ROW }; }
+/** Screen x of a cage slot centre. */
+export function benchSlotX(i) { return benchSlotPos(i).x; }
+/** Centre of a deployed-animal portrait (2 columns × 3 rows, left sidebar top). */
+export function rosterPos(i) { return { x: BENCH_X0 + (i % 2) * BENCH_GAP, y: 148 + Math.floor(i / 2) * 52 }; }
 
 /** Container y for each ground lane (0 top, 1 middle, 2 bottom); the unit's feet sit ~30px lower. */
-// 2026-11-25 패싸움: 들판을 위아래로 넓힘(뒤 y≈231 ~ 앞 y≈419, 발 위치는 +30)
-export const LANE_Y = [PATH_Y - 150, PATH_Y - 8, PATH_Y + 134];
+export const LANE_Y = [PATH_Y - 172, PATH_Y - 12, PATH_Y + 148];
 /** 원근감: 뒷줄은 조금 작게, 앞줄은 조금 크게. */
-export const LANE_SCALE = [0.8, 0.98, 1.16];
+export const LANE_SCALE = [0.8, 0.99, 1.18];
 /** Flyers can hover anywhere between these screen heights. */
 export const SKY_TOP = 130, SKY_BOTTOM = PATH_Y + 20;
 /** Nearest lane for a screen y. */

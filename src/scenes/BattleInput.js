@@ -80,12 +80,17 @@ export function attachInput(scene) {
     if (scene.dragUid !== obj.unitUid) return;
     clearRings();
     scene.hoverCell?.(0, 0, null);
-    obj.setDepth(0);
+    obj.setDepth(obj.baseDepth ?? 0);
     const uid = scene.dragUid;
     scene.dragUid = null;
     if (!dragStart || Math.hypot(pointer.worldX - dragStart.x, pointer.worldY - dragStart.y) < DRAG_MIN) return;
-    const positions = new Map();
-    for (const [vuid, v] of scene.unitViews) if (vuid !== uid) positions.set(vuid, { x: v.container.x, y: v.container.y });
+    // 합성 제단 칸에 놓으면 제단에 올림
+    const slot = scene.altar?.slotAt(pointer.worldX, pointer.worldY) ?? -1;
+    if (slot >= 0) { scene.altar.put(slot, uid); return; }
+    // 놓을 곳: 들판·케이지의 동물 그림과 왼쪽 출전 초상화 둘 다
+    const positions = [];
+    for (const [vuid, v] of scene.unitViews) if (vuid !== uid) positions.push([vuid, { x: v.container.x, y: v.container.y }]);
+    for (const [vuid, p] of scene.roster?.spots() ?? []) if (vuid !== uid) positions.push([vuid, p]);
     const inSell = scene.sellZone.getBounds().contains(pointer.worldX, pointer.worldY);
     const plan = planDrop(st(), data, uid, pointer.worldX, pointer.worldY, { positions, inSell });
     runPlan(plan);

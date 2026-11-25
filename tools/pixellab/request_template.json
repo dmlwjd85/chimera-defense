@@ -1,0 +1,160 @@
+{
+  "_설명": "키메라 디펜스 캐릭터 동작 생성용 PixelLab 요청 틀. 한 캐릭터의 모든 방향·모든 프레임에 같은 값만 쓴다(방향마다 값 섞지 않기). <> 표시만 바꿔 쓴다. 토큰은 환경변수 PIXELLAB_API_TOKEN에서만 읽는다. 규칙 전문은 docs/동작_주문_규칙.md.",
+  "_순서": [
+    "1) GET /v2/balance 로 남은 생성 횟수 기록",
+    "2) 캐릭터 1개 생성(step_character) → 8방향 회전을 measure.py/qa.py 로 비율 검수 → 통과한 character_id 하나만 고정",
+    "3) 그 character_id 로 동작 생성(step_animation): 8방향을 한 번의 요청으로 함께 보냄(같은 3D 동작 공유)",
+    "4) 응답의 animation_group_id·background_job_ids 를 바로 파일에 저장(출력 필터링 금지)",
+    "5) 64프레임 전부 measure.py 측정 + check_dot.py, 불릿타임이면 장면 i=방향 i 프레임 i 의 중심·발밑선 확인",
+    "6) GET /v2/balance 로 사용량 기록",
+    "7) 참고 그림마다 role(style|shape_pose|color_material_light_only)을 적는다",
+    "8) 비율 검수와 함께 실루엣 검사(tools/silhouette_check.py), 전장·칸 나란히 비교, 전후 비교를 한다"
+  ],
+  "fixed_consistency": {
+    "reference_image": "<승인된 정면(south) 64×64 도트 1장. 산군 = sangun_ult_v2/rotations/south.png>",
+    "image_size": {
+      "width": 64,
+      "height": 64
+    },
+    "view": "side",
+    "template_id": "mannequin",
+    "no_background": true,
+    "target_palette": {
+      "colors": [
+        "#050208",
+        "#18072a",
+        "#320919",
+        "#3e2e4a",
+        "#5280ab",
+        "#5b5776",
+        "#752c29",
+        "#77b4e3",
+        "#9f92a7",
+        "#ab693b",
+        "#bbb7c7",
+        "#c2131c",
+        "#cedeed",
+        "#d49250",
+        "#f3bc5a",
+        "#fcfbfd"
+      ],
+      "max_colors": 16
+    },
+    "seed_policy": "캐릭터 1개 = 시드 1개, 동작 1개 = 시드 1개. 같은 동작의 8방향은 반드시 한 요청(같은 시드)으로. 다시 뽑을 때만 시드 +1 하고 기록.",
+    "direction_order_bullet_time": [
+      "south-west",
+      "west",
+      "north-west",
+      "north",
+      "north-east",
+      "east",
+      "south-east",
+      "south"
+    ],
+    "bullet_time_rule": "장면 i 는 위 순서의 i번째 방향 + 그 방향 기술 프레임 i. 마지막 장면(정면 south)은 영웅 착지 포즈(별도 짧은 정면 동작의 마지막 장)를 700ms 유지. 캐릭터·팔레트·크기·시드 정책을 방향마다 섞지 않음."
+  },
+  "step_character": {
+    "endpoint": "POST /v2/create-character-pro",
+    "body": {
+      "method": "rotate_character",
+      "description": "<캐릭터 설명 + 'Same height, head size and body bulk from every angle.'>",
+      "reference_image": {
+        "type": "base64",
+        "base64": "<reference_image>",
+        "format": "png"
+      },
+      "image_size": "<fixed_consistency.image_size>",
+      "view": "<fixed_consistency.view>",
+      "template_id": "<fixed_consistency.template_id>",
+      "no_background": true,
+      "target_palette": "<fixed_consistency.target_palette>",
+      "seed": "<캐릭터 시드, 산군 v3 = 902>"
+    },
+    "pass_rule": "qa.py 기준(키 ±4%, 머리비율 ±5%, 발밑선 ±1px, 어깨폭 옆 70%/대각 85%, 머리폭 ±8%). 통과 못 하면 시드만 바꿔 재시도하고 결과표 보관"
+  },
+  "step_animation": {
+    "endpoint": "POST /v2/characters/animations",
+    "body": {
+      "character_id": "<검수 통과한 character_id 하나>",
+      "animation_name": "<동작 이름>",
+      "action_description": "<동작을 영어 한 문장으로>",
+      "mode": "skeleton-v3",
+      "frame_count": 8,
+      "directions": [
+        "east",
+        "south-east",
+        "south",
+        "south-west",
+        "west",
+        "north-west",
+        "north",
+        "north-east"
+      ],
+      "target_palette": "<fixed_consistency.target_palette>",
+      "seed": "<동작 시드, 산군 필살기 = 889>"
+    },
+    "note": "template_animation_id 를 안 주면 skeleton-v3 가 동작 설명으로 3D 동작 하나를 만들어 모든 방향에 같은 타이밍으로 입힌다. 출력 칸은 96×96. 한 방향만 다시 뽑을 땐 animation_group_id 를 넣어 같은 3D 동작을 공유한다."
+  },
+  "sangun_example": {
+    "character_id": "e71e74c2-7bb3-4e17-8157-68de8a46eb6a",
+    "animation_group_id": "d41910c5-5161-424b-ba3d-35e88afaccc1",
+    "action_description": "crouches low gathering power, leaps forward high into the air raising both huge white fists, slams one giant clawed fist down powerfully toward the ground, and lands in a wide heroic battle stance",
+    "finish_pose": {
+      "animation_group_id": "d4304c49-c0ad-463d-83a5-049dc0b88aa9",
+      "background_job_id": "bec68b27-b089-429c-8c69-b96362984f02",
+      "direction": "south",
+      "seed": 890,
+      "frame_used": "frame_007",
+      "action_description": "lands and finishes in a wide powerful heroic stance facing the viewer, both big fists ready at the sides, chest out, feet planted firmly"
+    }
+  },
+  "reference_images": [
+    {
+      "path": "<승인된 참고 그림 경로>",
+      "role": "style"
+    }
+  ],
+  "reference_images_note": "장마다 role을 하나만 적는다. style=그림체만, shape_pose=모양·포즈만, color_material_light_only=색·소재·빛만(얼굴·머리·옷 구조는 베끼지 않음). fixed_consistency.reference_image(정면 64×64)는 기존처럼 유지한다.",
+  "motion_order": {
+    "anchor_art_id": "<통과한 원화 1장 id 또는 경로>",
+    "motions": [
+      {
+        "name": "<동작 이름, 예: 산군_필살기>",
+        "frame_count": 8,
+        "frame_ms": [
+          140,
+          140,
+          140,
+          140,
+          140,
+          140,
+          140,
+          700
+        ],
+        "expression_notes": "<장면별 표정. 예: 착지 정면, 영웅 자세>"
+      }
+    ],
+    "note": "frame_ms 예시는 산군 필살기 v4/v6(장면 140ms, 정면 마무리 약 700ms). 다른 동작은 숫자를 지어내지 말고 따로 정한 값만 넣는다."
+  },
+  "rejection_rules_ref": "docs/동작_주문_규칙.md",
+  "qa": {
+    "proportion": {
+      "reference_direction": "south",
+      "height_pct": 4,
+      "head_ratio_pct": 5,
+      "baseline_px": 1,
+      "shoulder_side_min_of_front_pct": 70,
+      "shoulder_diagonal_and_back_min_of_front_pct": 85,
+      "head_width_pct": 8,
+      "source": "sangun_ult_v3/qa_v3.md, sangun_ult_v3/plan.md"
+    },
+    "silhouette_check": true,
+    "side_by_side_in_game": true,
+    "before_after": true,
+    "outline": "#291a1f",
+    "isolated_pixels_max": 0,
+    "head_not_hidden_by_arm": true,
+    "finish_pose_front_south": true,
+    "no_partial_composite_or_stretch": true
+  }
+}

@@ -47,9 +47,9 @@ export class DotFX extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {
   }
 }
 
-export const dotOn = () => {
-  try { const q = new URLSearchParams(location.search).get('dot'); if (q != null) localStorage.setItem('chimera-dot', q); return (q ?? localStorage.getItem('chimera-dot')) === '1'; } catch { return false; }
-};
+// 화면 픽셀화 효과는 시험용: 주소에 ?dot=1 이 있을 때만(저장하지 않음). 물체마다 화면 크기 버퍼를 쓰므로 폰에선 끔.
+const DOT_ON = (() => { try { localStorage.removeItem('chimera-dot'); return new URLSearchParams(location.search).get('dot') === '1' && !window.matchMedia?.('(pointer: coarse)').matches; } catch { return false; } })();
+export const dotOn = () => DOT_ON;
 
 /** 장면에 한 번 등록하고, 물체에 도트 효과를 씌움. line=false면 외곽선 없이(배경). */
 export function dotify(scene, obj, line = true, soft = false) {

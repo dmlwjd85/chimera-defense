@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { button, title, style, panel } from './ui.js';
 import { defaultSave, writeSave } from '../logic/meta.js';
 import { unlockAudio } from './sfx.js';
+import { showDebug } from './debug.js';
 
 export default class TitleScene extends Phaser.Scene {
   constructor() { super('Title'); }
@@ -13,6 +14,7 @@ export default class TitleScene extends Phaser.Scene {
     else this.drawBackdrop();
     if (this.textures.exists('fx-leaf')) this.add.particles(0, 0, 'fx-leaf', { x: { min: 0, max: 1280 }, y: -10, speedY: { min: 30, max: 70 }, speedX: { min: -20, max: 20 }, lifespan: 12000, frequency: 350, scale: { min: 0.3, max: 0.6 }, rotate: { start: 0, end: 360 }, tint: [0xffb3c6, 0x9ccc65, 0xffd36b], alpha: 0.8 });
     title(this, 640, 170, '키메라 디펜스', 68);
+    showDebug(this, null);
     this.add.text(640, 240, '지구의 심장을 지켜라 — 동화와 신화 속 짐승들의 대연합', style(22, '#e8d9b8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5);
     const go = () => this.scene.start(save.openingSeen ? 'StageSelect' : 'Opening', { next: 'StageSelect' });
     button(this, 640, 350, 260, 64, '시작', go, { size: 26, fill: 0x3a7bd5 });

@@ -10,6 +10,7 @@ import { terrainMatch, effRange, effBlock, effDamage, effInterval } from '../log
 import { isResting } from '../logic/combat.js';
 import { makeEnemy } from '../logic/waves.js';
 import { dotOn, dotify } from './dotfx.js';
+import { crumb } from './debug.js';
 import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS } from './rigs.js';
 import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
@@ -756,6 +757,7 @@ export default class BattleScene extends Phaser.Scene {
 
   // ---------- frame ----------
   update(time, delta) {
+    { const now = performance.now(); if (now - (this.crumbAt ?? 0) > 1000) { this.crumbAt = now; crumb(this); } }
     const live = !this.paused && !this.modalOpen;
     this.realDt = Math.min(delta / 1000, 0.1);
     const stop = (this.hitStop ?? 0) > 0;

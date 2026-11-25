@@ -1,0 +1,120 @@
+{
+ "note": "bear 도트(2026-11-25 제미나이 확정 시안: 아기 눈 크게, 성체 머리 크게). 칸 72×56, 발밑선 y=51. 아직 그림은 대기 1장씩이고 걷기·공격은 코드 연출(통통·내딛기) — 동작 그림은 나중에.",
+ "species": "bear",
+ "sheet": "dot-bear",
+ "file": "assets/dot/bear.png",
+ "frameW": 72,
+ "frameH": 56,
+ "foot": 51,
+ "cols": 2,
+ "anchorX": 36,
+ "palette": [
+  "#291a1f",
+  "#2c3b1b",
+  "#321d26",
+  "#382c30",
+  "#3a2829",
+  "#492c2f",
+  "#4b3c3c",
+  "#543939",
+  "#684a44",
+  "#826d66",
+  "#9a6a51",
+  "#b19d90",
+  "#bc6d41",
+  "#bc8061",
+  "#d2bbb7"
+ ],
+ "frames": [
+  "bear_baby_idle_01",
+  "bear_adult_idle_01"
+ ],
+ "standing": [
+  "bear_baby_idle_01",
+  "bear_adult_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "baby": {
+   "top": 12,
+   "idle": {
+    "frames": [
+     "bear_baby_idle_01",
+     "bear_baby_idle_01"
+    ],
+    "durs": [
+     0.34,
+     0.34
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "adult": {
+   "top": 8,
+   "idle": {
+    "frames": [
+     "bear_adult_idle_01",
+     "bear_adult_idle_01"
+    ],
+    "durs": [
+     0.38,
+     0.38
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "bear_adult_idle_01",
+     "bear_adult_idle_01",
+     "bear_adult_idle_01",
+     "bear_adult_idle_01",
+     "bear_adult_idle_01",
+     "bear_adult_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.8
+  },
+  "teen": {
+   "set": "baby",
+   "scale": 1
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 1
+  }
+ }
+}

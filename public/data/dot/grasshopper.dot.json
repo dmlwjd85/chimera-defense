@@ -1,0 +1,120 @@
+{
+ "note": "grasshopper 도트(2026-11-25 제미나이 확정 시안: 아기 눈 크게, 성체 머리 크게). 칸 72×56, 발밑선 y=51. 아직 그림은 대기 1장씩이고 걷기·공격은 코드 연출(통통·내딛기) — 동작 그림은 나중에.",
+ "species": "grasshopper",
+ "sheet": "dot-grasshopper",
+ "file": "assets/dot/grasshopper.png",
+ "frameW": 72,
+ "frameH": 56,
+ "foot": 51,
+ "cols": 2,
+ "anchorX": 36,
+ "palette": [
+  "#291a1f",
+  "#2d3c20",
+  "#312a28",
+  "#445d29",
+  "#4c583c",
+  "#54664e",
+  "#5b7f3e",
+  "#62795f",
+  "#6b8050",
+  "#7f936f",
+  "#86a659",
+  "#8eb079",
+  "#a6bf74",
+  "#abb18c",
+  "#dad7cb"
+ ],
+ "frames": [
+  "grasshopper_baby_idle_01",
+  "grasshopper_adult_idle_01"
+ ],
+ "standing": [
+  "grasshopper_baby_idle_01",
+  "grasshopper_adult_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "baby": {
+   "top": 20,
+   "idle": {
+    "frames": [
+     "grasshopper_baby_idle_01",
+     "grasshopper_baby_idle_01"
+    ],
+    "durs": [
+     0.34,
+     0.34
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "adult": {
+   "top": 12,
+   "idle": {
+    "frames": [
+     "grasshopper_adult_idle_01",
+     "grasshopper_adult_idle_01"
+    ],
+    "durs": [
+     0.38,
+     0.38
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "grasshopper_adult_idle_01",
+     "grasshopper_adult_idle_01",
+     "grasshopper_adult_idle_01",
+     "grasshopper_adult_idle_01",
+     "grasshopper_adult_idle_01",
+     "grasshopper_adult_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.8
+  },
+  "teen": {
+   "set": "baby",
+   "scale": 1
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 1
+  }
+ }
+}

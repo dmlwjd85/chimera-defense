@@ -1,0 +1,121 @@
+{
+ "note": "bison 도트(2026-11-25 제미나이 확정 시안: 아기 눈 크게, 성체 머리 크게). 칸 72×56, 발밑선 y=51. 아직 그림은 대기 1장씩이고 걷기·공격은 코드 연출(통통·내딛기) — 동작 그림은 나중에.",
+ "species": "bison",
+ "sheet": "dot-bison",
+ "file": "assets/dot/bison.png",
+ "frameW": 72,
+ "frameH": 56,
+ "foot": 51,
+ "cols": 2,
+ "anchorX": 36,
+ "palette": [
+  "#291a1f",
+  "#2d3219",
+  "#382228",
+  "#43201d",
+  "#4d2e2d",
+  "#5f3b36",
+  "#6c4c4a",
+  "#71463c",
+  "#85594a",
+  "#8f675c",
+  "#935f4e",
+  "#a67362",
+  "#b28e82",
+  "#d1a993",
+  "#e0ccc0",
+  "#f8e9e3"
+ ],
+ "frames": [
+  "bison_baby_idle_01",
+  "bison_adult_idle_01"
+ ],
+ "standing": [
+  "bison_baby_idle_01",
+  "bison_adult_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "baby": {
+   "top": 13,
+   "idle": {
+    "frames": [
+     "bison_baby_idle_01",
+     "bison_baby_idle_01"
+    ],
+    "durs": [
+     0.34,
+     0.34
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "adult": {
+   "top": 8,
+   "idle": {
+    "frames": [
+     "bison_adult_idle_01",
+     "bison_adult_idle_01"
+    ],
+    "durs": [
+     0.38,
+     0.38
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "bison_adult_idle_01",
+     "bison_adult_idle_01",
+     "bison_adult_idle_01",
+     "bison_adult_idle_01",
+     "bison_adult_idle_01",
+     "bison_adult_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.8
+  },
+  "teen": {
+   "set": "baby",
+   "scale": 1
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 1
+  }
+ }
+}

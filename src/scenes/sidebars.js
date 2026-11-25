@@ -1,26 +1,27 @@
-// 사이드바(2026-11-25): 왼쪽은 출전 초상화·케이지·판매·먹이, 오른쪽은 합성 제단·소환·마법.
-// 가운데 들판을 넓게 비우고, 싸우는 동물은 초상화로 고르고 합성함.
-import { SIDE_L, SIDE_R, SIDE_TOP, SLOT, rosterPos } from './layout.js';
+// 아래 조작판(2026-11-25 시안 1): 출전 초상화 · 케이지 · 판매 · 합성 제단 · 마법 · 지구본 소환을 한 줄에.
+// 싸우는 동물은 초상화로 고르고, 제단 두 칸에 올려 합성함.
+import { DOCK_Y, rosterPos } from './layout.js';
+export const ALTAR = { x: 578, w: 192 };
 import { panel, style, unitToken, button } from './ui.js';
 import { mergeKind, mergePreview } from '../logic/merge.js';
 import { refOf, unitOf } from './dropPlan.js';
 
-const CELL_W = 44, CELL_H = 48;
-const KIND_LABEL = { evolve: '⬆ 진화', spirit: '🌟 영물', chimera: '🧪 키메라', weak: '🧪 모험', swap: '⇄ 자리 바꾸기' };
+const CELL_W = 42, CELL_H = 50;
+const KIND_LABEL = { evolve: '⬆ 진화', spirit: '🌟 영물', chimera: '🧪 키메라', weak: '🧪 모험', swap: '⇄ 교체' };
 
-/** Sidebar backgrounds (drawn once). */
+/** Dock background (drawn once). */
 export function drawSidebars(scene) {
   const g = scene.add.graphics().setDepth(0.5);
-  g.fillStyle(0x0b1016, 0.86).fillRect(0, SIDE_TOP - 6, SIDE_L, 720 - SIDE_TOP + 6);
-  g.fillStyle(0x0b1016, 0.86).fillRect(SIDE_R, SIDE_TOP - 6, 1280 - SIDE_R, 720 - SIDE_TOP + 6);
-  g.lineStyle(1, 0xd4b06a, 0.45).lineBetween(SIDE_L, SIDE_TOP - 6, SIDE_L, 720).lineBetween(SIDE_R, SIDE_TOP - 6, SIDE_R, 720);
+  g.fillGradientStyle(0x0b1016, 0x0b1016, 0x0b1016, 0x0b1016, 0.1, 0.1, 0.9, 0.9).fillRect(0, DOCK_Y - 22, 1280, 22);
+  g.fillStyle(0x0b1016, 0.92).fillRect(0, DOCK_Y, 1280, 720 - DOCK_Y);
+  g.lineStyle(1, 0xd4b06a, 0.45).lineBetween(0, DOCK_Y, 1280, DOCK_Y);
 }
 
 /** Deployed-animal portraits: tap to select, drag to merge / move / altar. */
 export class Roster {
   constructor(scene) {
     this.scene = scene;
-    this.label = scene.add.text(6, SIDE_TOP + 2, '', style(12, '#ffe6b0')).setDepth(2);
+    this.label = scene.add.text(10, DOCK_Y + 4, '', style(11, '#ffe6b0')).setDepth(2);
     const max = scene.data2.config.maxDeployed ?? 6;
     this.cells = [...Array(max)].map((_, i) => {
       const p = rosterPos(i);
@@ -68,7 +69,7 @@ export class Roster {
     this.sel.clear();
     const su = s.field.find((u) => u.uid === this.scene.selectedUid);
     const v = su && this.scene.unitViews.get(su.uid);
-    if (v && !su.down) {
+    if (v && !su.down && !su.inGate) {
       const x = v.container.x, y = v.container.y + 30 * (v.persp ?? 1);
       const pulse = 1 + Math.sin(this.scene.time.now / 160) * 0.08;
       this.sel.lineStyle(3, 0xffd84d, 0.95).strokeEllipse(x, y, 66 * pulse, 18 * pulse);
@@ -81,19 +82,20 @@ export class Altar {
   constructor(scene) {
     this.scene = scene;
     this.uids = [null, null];
-    const x = (SIDE_R + 1280) / 2, y0 = SIDE_TOP;
-    panel(scene, SIDE_R + 4, y0, 1280 - SIDE_R - 8, 168, { alpha: 0.9, plain: true, stroke: 0xb388ff });
-    scene.add.text(x, y0 + 6, '🧪 합성 제단', style(12, '#e8c3ff')).setOrigin(0.5, 0).setDepth(2);
-    this.slots = [x - 24, x + 24].map((sx, i) => {
-      const y = y0 + 52;
+    const X = ALTAR.x, y0 = DOCK_Y + 4, x = X + 146;
+    panel(scene, X, y0, ALTAR.w, 100, { alpha: 0.9, plain: true, stroke: 0xb388ff });
+    scene.add.text(X + 8, y0 + 4, '🧪 합성 제단', style(11, '#e8c3ff')).setDepth(2);
+    this.slots = [X + 28, X + 76].map((sx, i) => {
+      const y = y0 + 58;
       const bg = scene.add.rectangle(sx, y, 42, 42, 0x150b22, 0.85).setStrokeStyle(1.5, 0xb388ff, 0.8).setDepth(1).setInteractive({ useHandCursor: true });
       bg.on('pointerdown', () => { this.uids[i] = null; });
       const c = scene.add.container(sx, y).setDepth(3);
       const hint = scene.add.text(sx, y, '+', style(18, '#8a6fb0')).setOrigin(0.5).setDepth(2);
       return { x: sx, y, bg, c, hint, key: '' };
     });
-    this.preview = scene.add.text(x, y0 + 80, '', style(11, '#e8dcff', { align: 'center', wordWrap: { width: 92 } })).setOrigin(0.5, 0).setDepth(2);
-    this.btn = button(scene, x, y0 + 146, 88, 28, '합성', () => this.go(), { size: 13, fill: 0x4a2a6a, stroke: 0xb388ff });
+    scene.add.text(X + 52, y0 + 58, '+', style(14, '#b388ff')).setOrigin(0.5).setDepth(2);
+    this.preview = scene.add.text(x, y0 + 40, '', style(10, '#e8dcff', { align: 'center', wordWrap: { width: 86 } })).setOrigin(0.5).setDepth(2);
+    this.btn = button(scene, x, y0 + 80, 84, 26, '합성', () => this.go(), { size: 12, fill: 0x4a2a6a, stroke: 0xb388ff });
   }
 
   /** Slot index under a point, or -1. */
@@ -127,7 +129,7 @@ export class Altar {
       this.preview.setText(`${KIND_LABEL[kind] ?? kind}${name && kind !== 'swap' ? `\n${name}` : ''}`);
       this.btn.set(kind === 'swap' ? '자리 바꾸기' : '합성').setEnabled(!a.down && !b.down);
     } else {
-      this.preview.setText('초상화나 케이지 동물을\n두 칸에 끌어다 놓기');
+      this.preview.setText('두 칸에\n끌어다 놓기');
       this.btn.set('합성').setEnabled(false);
     }
   }

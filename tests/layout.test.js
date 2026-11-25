@@ -19,7 +19,7 @@ test('tileToX and xToTile are inverse', () => {
 test('bench slot centres and hit test', () => {
   for (let i = 0; i < 5; i++) {
     const p = benchSlotPos(i);
-    assert.strictEqual(p.x, BENCH_X0 + (i % 2) * BENCH_GAP);
+    assert.strictEqual(p.x, BENCH_X0 + i * BENCH_GAP);
     assert.strictEqual(benchSlotAt(p.x, p.y, 5), i);
   }
   const p2 = benchSlotPos(2), p0 = benchSlotPos(0);

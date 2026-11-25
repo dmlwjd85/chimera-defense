@@ -6,14 +6,15 @@ import { makeEnemy } from './waves.js';
 import { soulOnHit, soulOnKill } from './soul.js';
 import { guardShare, moveMult, dealerCombo, tickRoles } from './roles.js';
 import { dist, steer, driftEnemies } from './arena.js';
+import { tickMuster, rushMult, intoGate } from './muster.js';
 
 // 2D 거리(앞뒤 깊이 포함). state.arenaCfg 는 combatTick 이 넣어 둠
 const gap = (state, a, b) => dist(a, b, { arena: state.arenaCfg });
 
-const standing = (u) => !u.down && !u.moving;
+const standing = (u) => !u.down && !u.moving && !u.inGate;
 const usedSlots = (state, uid) => state.enemies.reduce((s, e) => s + (e.blockedBy === uid && !e.crowd ? e.blockSlots : 0), 0);
 // 걸어가다 적과 부딪히면 그 자리에 멈춰 맞붙음(패싸움)
-const halt = (u) => { u.targetPos = u.pos; u.targetY = u.y; u.moving = false; u.formationMove = false; };
+const halt = (u) => { u.targetPos = u.pos; u.targetY = u.y; u.moving = false; u.formationMove = false; u.rushing = false; u.via = null; };
 const releaseBy = (state, uid) => { for (const e of state.enemies) if (e.blockedBy === uid) e.blockedBy = null; };
 const flags = (u) => u.mods?.flags ?? {};
 const isSwarm = (e) => e.id === 'swarm';
@@ -181,7 +182,7 @@ function timerAction(state, data, u, s) {
 export function tickUnitSkills(state, data, dt) {
   const cfg = data.config;
   for (const u of state.field) {
-    if (u.down) continue;
+    if (u.down || u.inGate) continue;
     for (const k of Object.keys(u.skillCd)) u.skillCd[k] = Math.max(0, u.skillCd[k] - dt);
     // hp-triggered stances run even while walking or resting
     for (const [i, h] of effectsOf(u, 'hpTrigger').entries()) {
@@ -314,17 +315,17 @@ export function combatTick(state, data, dt) {
   state.allyBuffs = state.allyBuffs.filter((b) => b.left > 0);
 
   // 패싸움: 근접은 가까운 적(동료가 붙잡은 적 포함)에게 다가가 붙고, 원거리는 사거리 안으로 따라붙는다
-  if (state.phase === 'wave') { if (cfg.arena) steer(state, cfg, dt); else if (cfg.brawl) brawl(state, cfg, dt); }
+  if (state.phase === 'wave') { if (cfg.muster) tickMuster(state, cfg, dt); if (cfg.arena) steer(state, cfg, dt); else if (cfg.brawl) brawl(state, cfg, dt); }
 
   // movement
   for (const u of state.field) {
-    if (u.down) continue;
+    if (u.down || u.inGate) continue;
     const D = u.stats.flyer || !cfg.arena ? 0 : cfg.arena.depth;
     u.y ??= 0.5; u.targetY ??= u.y;
     if (!D) u.y = u.targetY;
     const gx = u.targetPos - u.pos, gy = (u.targetY - u.y) * D;
     const len = Math.hypot(gx, gy);
-    const speed = cfg.unitMoveSpeed * (findEffect(u, 'moveSpeed')?.mult ?? 1) * moveMult(data, u);
+    const speed = cfg.unitMoveSpeed * (findEffect(u, 'moveSpeed')?.mult ?? 1) * moveMult(data, u) * rushMult(cfg, u);
     const stepLen = speed * dt;
     const was = u.moving;
     u.moving = len > 1e-9;
@@ -339,7 +340,11 @@ export function combatTick(state, data, dt) {
   for (const u of state.field) {
     if (!u.down) continue;
     u.respawnLeft -= dt;
-    if (u.respawnLeft <= 0) Object.assign(u, { down: false, hp: u.maxHp ?? u.stats.hp, respawnLeft: 0, lastHitAt: state.time, attackCd: 0 });
+    if (u.respawnLeft <= 0) {
+      Object.assign(u, { down: false, hp: u.maxHp ?? u.stats.hp, respawnLeft: 0, lastHitAt: state.time, attackCd: 0 });
+      // 성문 출전: 쓰러졌던 동물은 성문 안에서 다시 일어나 자기 자리로 달려 나감
+      if (cfg.muster && state.phase === 'wave') { releaseBy(state, u.uid); intoGate(u, cfg, state); }
+    }
   }
 
   tickEnemyTimers(state, dt);
@@ -378,7 +383,7 @@ export function combatTick(state, data, dt) {
   for (const e of free) {
     let best = null;
     for (const u of state.field) {
-      if (!(cfg.arena && u.stats.role === 'bruiser' ? !u.down && !u.stats.flyer : standing(u))) continue;
+      if (!(cfg.arena && u.stats.role === 'bruiser' ? !u.down && !u.inGate && !u.stats.flyer : standing(u))) continue;
       const dx = e.pos - u.pos, d = gap(state, e, u);
       if (dx < -0.15 || d > cfg.blockReach || usedSlots(state, u.uid) + e.blockSlots > effBlock(u)) continue;
       if (!best || d < gap(state, e, best)) best = u;
@@ -388,7 +393,7 @@ export function combatTick(state, data, dt) {
     if (!C || (e.passed?.length ?? 0) >= C.maxTimes) continue;
     let near = null;
     for (const u of state.field) {
-      if (!(cfg.arena && u.stats.role === 'bruiser' ? !u.down : standing(u)) || u.stats.flyer || e.passed?.includes(u.uid)) continue;
+      if (!(cfg.arena && u.stats.role === 'bruiser' ? !u.down && !u.inGate : standing(u)) || u.stats.flyer || e.passed?.includes(u.uid)) continue;
       const dx = e.pos - u.pos, d = gap(state, e, u);
       if (dx < -0.15 || d > cfg.blockReach) continue;
       if (!near || d < gap(state, e, near)) near = u;

@@ -16,15 +16,15 @@ const posMap = (s) => {
 };
 const plan = (s, uid, x, y, inSell = false) => planDrop(s, D, uid, x, y, { positions: posMap(s), inSell });
 
-test('bench to path deploys, field to path moves, field to bench recalls', () => {
+test('no camp cells: bench to field or roster row deploys, field to bench recalls, field to field does nothing', () => {
   const s = createBattle(D, 'forest-1', 1);
   s.bench[0] = base(s, 'fox', 'young');
   const f = base(s, 'bear', 'young');
-  Object.assign(f, { pos: 2.5, targetPos: 2.5, cell: { c: 2, r: 1 } });
+  Object.assign(f, { pos: 5.8, targetPos: 5.8 });
   s.field.push(f);
-  assert.deepEqual(plan(s, s.bench[0].uid, tileToX(1.6), PATH_Y), { action: 'deploy', index: 0, pos: 1.5, opts: { row: 1 } });
-  assert.deepEqual(plan(s, f.uid, tileToX(0.3), PATH_Y + 150), { action: 'move', uid: f.uid, pos: 0.5, opts: { row: 2 } });
-  assert.equal(plan(s, f.uid, tileToX(8), PATH_Y).reason, 'outsideCamp');
+  assert.deepEqual(plan(s, s.bench[0].uid, tileToX(1.6), PATH_Y), { action: 'deploy', index: 0, pos: 0, opts: {} });
+  assert.deepEqual(plan(s, s.bench[0].uid, 120, 672), { action: 'deploy', index: 0, pos: 0, opts: {} });
+  assert.equal(plan(s, f.uid, tileToX(0.3), PATH_Y + 150).action, 'none');
   assert.deepEqual(plan(s, f.uid, BX(1), BY(1)), { action: 'recall', uid: f.uid });
   assert.equal(plan(s, f.uid, 640, 700).action, 'none');
   assert.deepEqual(refOf(s, f.uid), { where: 'field', uid: f.uid });
@@ -80,16 +80,10 @@ test('drag rings: green for evolve/spirit, purple for known recipe, grey ? other
   assert.equal(ringFor(fox, base(s, 'fox', 'young'), D, s.known), null);
 });
 
-test('moving a unit during prep places it at once; during a wave it walks', async () => {
+test('animals pick their own spot: moving one by hand is refused', async () => {
   const { moveUnit } = await import('../src/logic/battle.js');
   const s = createBattle(D, 'forest-1', 1);
   const f = base(s, 'bear', 'young');
-  Object.assign(f, { pos: 2.5, targetPos: 2.5, cell: { c: 2, r: 1 }, lane: 1 });
   s.field.push(f);
-  assert.ok(moveUnit(s, D, f.uid, 0.6).ok);
-  assert.deepEqual([f.pos, f.targetPos], [0.5, 0.5]);
-  assert.equal(moveUnit(s, D, f.uid, 7).reason, 'outsideCamp');
-  s.phase = 'wave'; s.formationDelta = 4;
-  assert.ok(moveUnit(s, D, f.uid, 1.5).ok);
-  assert.deepEqual([f.pos, f.targetPos], [0.5, D.config.formation.front - D.config.formation.colGap]);
+  assert.equal(moveUnit(s, D, f.uid, 3).reason, 'auto');
 });

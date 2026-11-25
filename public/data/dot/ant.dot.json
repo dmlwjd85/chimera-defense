@@ -1,0 +1,120 @@
+{
+ "note": "ant 도트(2026-11-25 제미나이 확정 시안: 아기 눈 크게, 성체 머리 크게). 칸 72×56, 발밑선 y=51. 아직 그림은 대기 1장씩이고 걷기·공격은 코드 연출(통통·내딛기) — 동작 그림은 나중에.",
+ "species": "ant",
+ "sheet": "dot-ant",
+ "file": "assets/dot/ant.png",
+ "frameW": 72,
+ "frameH": 56,
+ "foot": 51,
+ "cols": 2,
+ "anchorX": 36,
+ "palette": [
+  "#291a1f",
+  "#3d2822",
+  "#4a1621",
+  "#5b2b30",
+  "#671e21",
+  "#6d7e52",
+  "#782630",
+  "#814b3b",
+  "#93494d",
+  "#98343a",
+  "#b24143",
+  "#bf5d59",
+  "#d15c5b",
+  "#e0d4d8",
+  "#e4a984"
+ ],
+ "frames": [
+  "ant_baby_idle_01",
+  "ant_adult_idle_01"
+ ],
+ "standing": [
+  "ant_baby_idle_01",
+  "ant_adult_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "baby": {
+   "top": 20,
+   "idle": {
+    "frames": [
+     "ant_baby_idle_01",
+     "ant_baby_idle_01"
+    ],
+    "durs": [
+     0.34,
+     0.34
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "adult": {
+   "top": 19,
+   "idle": {
+    "frames": [
+     "ant_adult_idle_01",
+     "ant_adult_idle_01"
+    ],
+    "durs": [
+     0.38,
+     0.38
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "ant_adult_idle_01",
+     "ant_adult_idle_01",
+     "ant_adult_idle_01",
+     "ant_adult_idle_01",
+     "ant_adult_idle_01",
+     "ant_adult_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.8
+  },
+  "teen": {
+   "set": "baby",
+   "scale": 1
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 1
+  }
+ }
+}

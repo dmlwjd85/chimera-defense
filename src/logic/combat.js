@@ -5,9 +5,15 @@ import { computeMods, effDamage, effInterval, effRange, effBlock, effAoe, cdMult
 import { makeEnemy } from './waves.js';
 import { soulOnHit, soulOnKill } from './soul.js';
 import { guardShare, moveMult, dealerCombo, tickRoles } from './roles.js';
+import { dist, steer, driftEnemies } from './arena.js';
+
+// 2D 거리(앞뒤 깊이 포함). state.arenaCfg 는 combatTick 이 넣어 둠
+const gap = (state, a, b) => dist(a, b, { arena: state.arenaCfg });
 
 const standing = (u) => !u.down && !u.moving;
 const usedSlots = (state, uid) => state.enemies.reduce((s, e) => s + (e.blockedBy === uid && !e.crowd ? e.blockSlots : 0), 0);
+// 걸어가다 적과 부딪히면 그 자리에 멈춰 맞붙음(패싸움)
+const halt = (u) => { u.targetPos = u.pos; u.targetY = u.y; u.moving = false; u.formationMove = false; };
 const releaseBy = (state, uid) => { for (const e of state.enemies) if (e.blockedBy === uid) e.blockedBy = null; };
 const flags = (u) => u.mods?.flags ?? {};
 const isSwarm = (e) => e.id === 'swarm';
@@ -38,7 +44,7 @@ export function pickTarget(state, u) {
   for (const e of state.enemies) if (e.blockedBy === u.uid && hittable(u, e) && (!best || e.pos < best.pos)) best = e;
   if (best) return best;
   const range = u.stats.range <= 1 ? (state.meleeReach ?? 1) + Math.max(0, effRange(u) - 1) : effRange(u);
-  const inRange = state.enemies.filter((e) => hittable(u, e) && Math.abs(e.pos - u.pos) <= range);
+  const inRange = state.enemies.filter((e) => hittable(u, e) && gap(state, u, e) <= range);
   if (!inRange.length) return null;
   const mis = flags(u).misTarget;
   if (mis && inRange.length > 1 && state.rng() < mis / 100) return inRange[Math.floor(state.rng() * inRange.length)];
@@ -269,6 +275,7 @@ export function onWaveEnd(state, data) {
 /** Advance combat by dt seconds (no spawning, no wave flow). */
 export function combatTick(state, data, dt) {
   const cfg = data.config;
+  state.arenaCfg = cfg.arena ?? null;
   state.allyBuffs ??= [];
   for (const u of state.field) { u.temp ??= []; u.skillCd ??= {}; }
   const view = computeMods(state, data);
@@ -307,19 +314,23 @@ export function combatTick(state, data, dt) {
   state.allyBuffs = state.allyBuffs.filter((b) => b.left > 0);
 
   // 패싸움: 근접은 가까운 적(동료가 붙잡은 적 포함)에게 다가가 붙고, 원거리는 사거리 안으로 따라붙는다
-  if (state.phase === 'wave' && cfg.brawl) brawl(state, cfg, dt);
+  if (state.phase === 'wave') { if (cfg.arena) steer(state, cfg, dt); else if (cfg.brawl) brawl(state, cfg, dt); }
 
   // movement
   for (const u of state.field) {
     if (u.down) continue;
-    const gap = u.targetPos - u.pos;
+    const D = u.stats.flyer || !cfg.arena ? 0 : cfg.arena.depth;
+    u.y ??= 0.5; u.targetY ??= u.y;
+    if (!D) u.y = u.targetY;
+    const gx = u.targetPos - u.pos, gy = (u.targetY - u.y) * D;
+    const len = Math.hypot(gx, gy);
     const speed = cfg.unitMoveSpeed * (findEffect(u, 'moveSpeed')?.mult ?? 1) * moveMult(data, u);
     const stepLen = speed * dt;
     const was = u.moving;
-    u.moving = Math.abs(gap) > 1e-9;
-    u.pos = Math.abs(gap) <= stepLen ? u.targetPos : u.pos + Math.sign(gap) * stepLen;
+    u.moving = len > 1e-9;
+    if (len <= stepLen) { u.pos = u.targetPos; u.y = u.targetY; } else { u.pos += (gx / len) * stepLen; if (D) u.y += (gy / len) * stepLen / D; }
     if (u.moving) releaseBy(state, u.uid);
-    if (was && Math.abs(u.targetPos - u.pos) < 1e-9) {
+    if (was && Math.abs(u.targetPos - u.pos) < 1e-9 && Math.abs(u.targetY - u.y) < 1e-9) {
       u.moving = false;
       if (flags(u).restOnMove && !u.formationMove) u.restLeft = Math.max(u.restLeft, flags(u).restOnMove);
       u.formationMove = false;
@@ -362,26 +373,27 @@ export function combatTick(state, data, dt) {
     if (e.crowdLeft <= 0) { (e.passed ??= []).push(e.blockedBy); state.events.push({ type: 'slip', eid: e.eid, uid: e.blockedBy }); e.blockedBy = null; e.crowd = false; }
   }
   for (const e of state.enemies) e.pos = Math.min(cfg.pathLength + 2, e.pos + enemyVelocity(e) * dt);
+  if (cfg.arena) driftEnemies(state, cfg, dt);
   const free = state.enemies.filter((e) => e.blockedBy === null && !e.flying && e.hp > 0 && e.confuseLeft <= 0).sort((a, b) => a.pos - b.pos);
   for (const e of free) {
     let best = null;
     for (const u of state.field) {
-      if (!standing(u)) continue;
-      const d = e.pos - u.pos;
-      if (d < 0 || d > cfg.blockReach || usedSlots(state, u.uid) + e.blockSlots > effBlock(u)) continue;
-      if (!best || d < e.pos - best.pos) best = u;
+      if (!(cfg.arena && u.stats.role === 'bruiser' ? !u.down && !u.stats.flyer : standing(u))) continue;
+      const dx = e.pos - u.pos, d = gap(state, e, u);
+      if (dx < -0.15 || d > cfg.blockReach || usedSlots(state, u.uid) + e.blockSlots > effBlock(u)) continue;
+      if (!best || d < gap(state, e, best)) best = u;
     }
-    if (best) { e.blockedBy = best.uid; e.pos = best.pos + cfg.blockedOffset; continue; }
+    if (best) { e.blockedBy = best.uid; e.pos = best.pos + cfg.blockedOffset; if (cfg.arena && best.moving) halt(best); continue; }
     // 자리가 다 찼어도 그냥 지나가지 않음: 앞을 막아선 동물에게 달라붙어 한동안 치고받다가 밀치고 나감(동물마다 한 번)
     if (!C || (e.passed?.length ?? 0) >= C.maxTimes) continue;
     let near = null;
     for (const u of state.field) {
-      if (!standing(u) || u.stats.flyer || e.passed?.includes(u.uid)) continue;
-      const d = e.pos - u.pos;
-      if (d < 0 || d > cfg.blockReach) continue;
-      if (!near || d < e.pos - near.pos) near = u;
+      if (!(cfg.arena && u.stats.role === 'bruiser' ? !u.down : standing(u)) || u.stats.flyer || e.passed?.includes(u.uid)) continue;
+      const dx = e.pos - u.pos, d = gap(state, e, u);
+      if (dx < -0.15 || d > cfg.blockReach) continue;
+      if (!near || d < gap(state, e, near)) near = u;
     }
-    if (near) Object.assign(e, { blockedBy: near.uid, crowd: true, crowdLeft: C.hold * (e.boss ? C.bossK : 1), pos: near.pos + cfg.blockedOffset });
+    if (near) { Object.assign(e, { blockedBy: near.uid, crowd: true, crowdLeft: C.hold * (e.boss ? C.bossK : 1), pos: near.pos + cfg.blockedOffset }); if (cfg.arena && near.moving) halt(near); }
   }
 
   // enemy attacks
@@ -393,7 +405,7 @@ export function combatTick(state, data, dt) {
     const b = byUid.get(e.blockedBy);
     state.events.push({ type: 'enemyAttack', eid: e.eid });
     hitUnit(state, data, b, e.attack, e);
-    if (e.boss) for (const o of state.field) if (o !== b && !o.down && !o.stats.flyer && Math.abs(o.pos - b.pos) <= 1) hitUnit(state, data, o, e.attack, e);
+    if (e.boss) for (const o of state.field) if (o !== b && !o.down && !o.stats.flyer && gap(state, o, b) <= 1) hitUnit(state, data, o, e.attack, e);
   }
 
   // unit attacks
@@ -408,7 +420,7 @@ export function combatTick(state, data, dt) {
     u.lastTargetEid = target.eid;
     const aoe = effAoe(u);
     const hits = aoe > 0
-      ? state.enemies.filter((e) => hittable(u, e) && Math.abs(e.pos - target.pos) <= aoe)
+      ? state.enemies.filter((e) => hittable(u, e) && gap(state, e, target) <= aoe)
       : [target];
     const multi = findEffect(u, 'multiShot')?.count ?? 1;
     for (let k = 0; k < multi; k++) for (const e of hits) damageEnemy(state, e, hitDamage(state, u, e), aoe > 0, u.uid);

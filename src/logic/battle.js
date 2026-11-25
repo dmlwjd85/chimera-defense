@@ -9,6 +9,7 @@ import { mergeKind, mergeUnits } from './merge.js';
 import { buildWave, makeEnemy } from './waves.js';
 import { combatTick, onWaveStart, onWaveEnd } from './combat.js';
 import { eco, rollOffer, chooseRelic } from './relics.js';
+import { rowDepth, spawnDepth } from './arena.js';
 import { rollTraits, inheritEvolve, inheritSpirit, inheritChimera, inheritWeak } from './traits.js';
 
 const fail = (reason) => ({ ok: false, reason });
@@ -39,7 +40,7 @@ export function createBattle(data, stageId, seed = 1, opts = {}) {
   state.spellCd = 0;
   state.weakBonus = cfg.weakBonus ?? 30;
   state.cfgGrid = data.config.grid ?? null;
-  state.meleeReach = data.config.meleeReach ?? 1;
+  state.meleeReach = data.config.arena?.meleeReach ?? data.config.meleeReach ?? 1;
   state.gold += eco(state, data, 'startGold') ?? 0;
   state.life += eco(state, data, 'life') ?? 0;
   state.mana = Math.min(cfg.spells?.max ?? 0, state.mana + (eco(state, data, 'manaStart') ?? 0));
@@ -61,7 +62,7 @@ export function addCarry(state, data, inst) {
 /** Wrap an instance into a live unit with a fresh uid. */
 export function makeUnit(state, data, inst) {
   const stats = unitStats(inst, data);
-  return { traits: [], ...inst, uid: state.nextUid++, stats, pos: 0, targetPos: 0, hp: stats.hp, maxHp: stats.hp, down: false, respawnLeft: 0,
+  return { traits: [], ...inst, uid: state.nextUid++, stats, pos: 0, targetPos: 0, y: 0.5, targetY: 0.5, hp: stats.hp, maxHp: stats.hp, down: false, respawnLeft: 0,
     lastHitAt: -99, attackCd: 0, skillCd: {}, attackCount: 0, moving: false, temp: [] };
 }
 
@@ -171,7 +172,10 @@ function seat(state, cfg, unit, c, r) {
   unit.cell = { c, r };
   const home = gridPos(c, cfg);
   if (isFlyer(unit)) { unit.lane = null; unit.skyY = cfg.grid.skyY?.[r] ?? 190; } else unit.lane = r;
-  unit.home = state.phase === 'wave' ? { pos: home, lane: unit.lane, skyY: unit.skyY } : null;
+  unit.rowY = rowDepth(r, cfg);
+  if (state.phase === 'prep' || unit.y == null || !state.field.includes(unit)) unit.y = unit.rowY;
+  unit.targetY = unit.rowY;
+  unit.home = state.phase === 'wave' ? { pos: home, lane: unit.lane, skyY: unit.skyY, y: unit.rowY } : null;
   unit.slot = battleSpot(c, cfg);
   return { home, target: state.phase === 'wave' ? clampPos(unit.slot, cfg) : home };
 }
@@ -359,8 +363,9 @@ export function formUp(state, data) {
     for (const u of state.field) {
       const c = u.cell?.c ?? gridCol(u.targetPos, data.config);
       const home = gridPos(Math.max(0, c), data.config);
-      u.home = { pos: home, lane: u.lane, skyY: u.skyY };
+      u.home = { pos: home, lane: u.lane, skyY: u.skyY, y: u.rowY ?? u.y };
       u.slot = battleSpot(Math.max(0, c), data.config);
+      u.targetY = u.rowY ?? u.y;
       u.targetPos = clampPos(u.slot, data.config);
       u.formationMove = true;
     }
@@ -386,6 +391,7 @@ export function standDown(state) {
   for (const u of state.field) {
     if (!u.home) continue;
     Object.assign(u, { pos: u.home.pos, targetPos: u.home.pos, lane: u.home.lane ?? u.lane, skyY: u.home.skyY ?? u.skyY, moving: false, formationMove: false });
+    if (u.home.y != null) { u.y = u.home.y; u.targetY = u.home.y; }
     u.home = null; u.slot = null; u.engageCd = 0;
   }
   state.formationDelta = 0;
@@ -443,7 +449,7 @@ function subStep(state, data, d) {
   state.waveTime += d;
   let n = 0;
   while (n < state.queue.length && state.queue[n].at <= state.waveTime) n++;
-  for (const q of state.queue.slice(0, n)) { { const en = makeEnemy(q.enemyId, state.wave, state.stage, data, state.nextEid++, q.offset); if (q.horde) { const h = data.config.horde; en.hp = en.maxHp = Math.max(1, Math.round(en.hp * h.hp)); en.attack = Math.round(en.attack * h.attack); en.gold = Math.max(1, Math.round(en.gold * h.gold)); en.horde = true; } state.enemies.push(en); } (state.seenEnemies ??= new Set()).add(q.enemyId); }
+  for (const q of state.queue.slice(0, n)) { { const en = makeEnemy(q.enemyId, state.wave, state.stage, data, state.nextEid++, q.offset); if (q.horde) { const h = data.config.horde; en.hp = en.maxHp = Math.max(1, Math.round(en.hp * h.hp)); en.attack = Math.round(en.attack * h.attack); en.gold = Math.max(1, Math.round(en.gold * h.gold)); en.horde = true; } en.y ??= spawnDepth(en.eid); state.enemies.push(en); } (state.seenEnemies ??= new Set()).add(q.enemyId); }
   state.queue = state.queue.slice(n);
   combatTick(state, data, d);
   tickMana(state, data, d);

@@ -1,0 +1,94 @@
+{
+ "note": "tiger 신화급 도트(2026-11-26 PixelLab 확정: 손 달린 사람 모양). 그림 1칸 = 화면 1px.",
+ "species": "tiger_spirit",
+ "sheet": "dot-tiger_spirit",
+ "file": "assets/dot/tiger_spirit.png",
+ "frameW": 101,
+ "frameH": 108,
+ "foot": 105,
+ "cols": 1,
+ "anchorX": 50,
+ "palette": [
+  "#190632",
+  "#291a1f",
+  "#445c8b",
+  "#4c0d1e",
+  "#5b8dc1",
+  "#77bdf4",
+  "#89152f",
+  "#954923",
+  "#b56339",
+  "#b60828",
+  "#bfbdd2",
+  "#c5e7fc",
+  "#df8935",
+  "#f80307",
+  "#fcaf38",
+  "#fcd765"
+ ],
+ "frames": [
+  "tiger_myth_idle_01"
+ ],
+ "standing": [
+  "tiger_myth_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "myth": {
+   "top": 1,
+   "idle": {
+    "frames": [
+     "tiger_myth_idle_01",
+     "tiger_myth_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "tiger_myth_idle_01",
+     "tiger_myth_idle_01",
+     "tiger_myth_idle_01",
+     "tiger_myth_idle_01",
+     "tiger_myth_idle_01",
+     "tiger_myth_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

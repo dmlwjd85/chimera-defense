@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { button, title, style, panel, showTip, hideTip } from './ui.js';
+import { button, title, style, panel, showTip, hideTip , speciesImage } from './ui.js';
 import { buildData } from '../logic/data.js';
 import { stageUnlocked, starsOf, totalStars, nextUnlock } from '../logic/meta.js';
 import { soulGaps, soulSig } from '../logic/soul.js';
@@ -34,8 +34,8 @@ export default class StageSelectScene extends Phaser.Scene {
       const x = 420 + i * 62, got = total >= u.stars, unit = data.unitById[u.id];
       const key = 'unit-' + u.id;
       this.add.circle(x, 40, 23, got ? 0x24384a : 0x161c24).setStrokeStyle(2, got ? 0xffd84d : nx?.id === u.id ? 0x9cff6b : 0x3b4b5e);
-      if (this.textures.exists(key)) { const im = this.add.image(x, 40, key).setDisplaySize(40, 40); if (!got) im.setTint(0x000000).setAlpha(0.55); }
-      else this.add.text(x, 40, got ? unit.name[0] : '?', style(18)).setOrigin(0.5);
+      const im0 = speciesImage(this, u.id, 'young', x, 40, 40); if (im0) { if (!got) im0.setTint(0x000000).setAlpha(0.55); }
+      if (!im0) this.add.text(x, 40, got ? unit.name[0] : '?', style(18)).setOrigin(0.5);
       this.add.text(x, 73, got ? '합류' : `⭐${u.stars}`, style(11, got ? '#58d68d' : nx?.id === u.id ? '#9cff6b' : '#8899aa')).setOrigin(0.5);
       const z = this.add.zone(x, 44, 56, 66).setInteractive();
       z.on('pointerover', () => showTip(this, got ? `${unit.name} · 합류함` : `별 ${u.stars}개를 모으면 ${nx?.id === u.id ? unit.name : '새 친구'} 합류`, x, 14));

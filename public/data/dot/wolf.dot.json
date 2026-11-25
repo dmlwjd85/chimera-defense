@@ -1,35 +1,39 @@
 {
- "note": "wolf 도트(2026-11-25 제미나이 확정 시안: 아기 눈 크게, 성체 머리 크게). 칸 72×56, 발밑선 y=51. 아직 그림은 대기 1장씩이고 걷기·공격은 코드 연출(통통·내딛기) — 동작 그림은 나중에.",
+ "note": "wolf 도트(2026-11-26 PixelLab 확정: 손발·머리·눈이 큰 캐주얼, 아기·성장기·성체). 그림 1칸 = 화면 1px. 동작 그림은 아직이고 대기 들썩임·공격 내딛기는 코드 연출. 원본 art-src/pixellab.",
  "species": "wolf",
  "sheet": "dot-wolf",
  "file": "assets/dot/wolf.png",
- "frameW": 72,
- "frameH": 56,
- "foot": 51,
- "cols": 2,
- "anchorX": 36,
+ "frameW": 112,
+ "frameH": 83,
+ "foot": 80,
+ "cols": 3,
+ "anchorX": 56,
  "palette": [
-  "#283e1c",
+  "#0c0405",
   "#291a1f",
-  "#3b2727",
-  "#4b3e37",
-  "#5f5452",
-  "#746561",
-  "#7d6d6c",
-  "#93867c",
-  "#9c8f8a",
+  "#423535",
+  "#4f4343",
+  "#5b4c46",
+  "#615450",
+  "#685c59",
+  "#7e6f69",
+  "#8d7c74",
+  "#93837d",
+  "#a19387",
   "#ae9e91",
-  "#c5b6a9",
-  "#d2bfb5",
-  "#dac4bc",
-  "#efe2d0"
+  "#b8a99a",
+  "#d0bdb5",
+  "#e5d8c3",
+  "#f0e3d2"
  ],
  "frames": [
   "wolf_baby_idle_01",
+  "wolf_teen_idle_01",
   "wolf_adult_idle_01"
  ],
  "standing": [
   "wolf_baby_idle_01",
+  "wolf_teen_idle_01",
   "wolf_adult_idle_01"
  ],
  "attacks": [
@@ -37,15 +41,32 @@
  ],
  "sets": {
   "baby": {
-   "top": 12,
+   "top": 33,
    "idle": {
     "frames": [
      "wolf_baby_idle_01",
      "wolf_baby_idle_01"
     ],
     "durs": [
-     0.34,
-     0.34
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "teen": {
+   "top": 18,
+   "idle": {
+    "frames": [
+     "wolf_teen_idle_01",
+     "wolf_teen_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
     ],
     "loop": true,
     "fx": {
@@ -54,15 +75,15 @@
    }
   },
   "adult": {
-   "top": 8,
+   "top": 1,
    "idle": {
     "frames": [
      "wolf_adult_idle_01",
      "wolf_adult_idle_01"
     ],
     "durs": [
-     0.38,
-     0.38
+     0.36,
+     0.36
     ],
     "loop": true,
     "fx": {
@@ -105,15 +126,15 @@
  "stages": {
   "young": {
    "set": "baby",
-   "scale": 0.8
+   "scale": 0.5
   },
   "teen": {
-   "set": "baby",
-   "scale": 0.95
+   "set": "teen",
+   "scale": 0.5
   },
   "adult": {
    "set": "adult",
-   "scale": 1
+   "scale": 0.5
   }
  }
 }

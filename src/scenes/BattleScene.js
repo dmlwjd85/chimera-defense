@@ -1280,12 +1280,13 @@ export default class BattleScene extends Phaser.Scene {
           if (p.kind === 'sunbeam') { g.fillStyle(col, 0.16).fillPoints([{ x: x - 30, y: cy - 60 }, { x: x + 30, y: cy - 60 }, { x: x + w / 2, y: PATH_Y + PATH_H / 2 }, { x: x - w / 2, y: PATH_Y + PATH_H / 2 }], true); g.fillStyle(col, 0.22).fillEllipse(x, PATH_Y + 30, w, PATH_H * 0.5); }
           else { g.fillStyle(0x000000, 0.18).fillEllipse(x, PATH_Y + 30, w, PATH_H * 0.55); for (const [dx, dy, r] of [[-50, 6, 30], [-18, -8, 38], [22, -4, 34], [54, 8, 26], [0, 12, 40]]) g.fillStyle(col, 0.92).fillCircle(x + dx, cy + dy, r); for (const [dx, dy, r] of [[-30, 16, 26], [20, 18, 28]]) g.fillStyle(0x000000, p.kind === 'storm' ? 0.25 : 0.08).fillCircle(x + dx, cy + dy, r); }
         } else {
-          g.fillStyle(col, 0.3).fillEllipse(x, PATH_Y + 10, w * 1.05, PATH_H * 0.86);
-          g.fillStyle(col, 0.34).fillEllipse(x - 8, PATH_Y + 6, w * 0.8, PATH_H * 0.6);
-          g.lineStyle(2.5, col, 0.85).strokeEllipse(x, PATH_Y + 10, w * 1.05, PATH_H * 0.86);
+          // 벨트스크롤 전장에 맞춰 바닥 장판을 낮고 옅게(동물이 가리지 않게)
+          g.fillStyle(col, 0.16).fillEllipse(x, PATH_Y + 40, w * 1.0, PATH_H * 0.42);
+          g.fillStyle(col, 0.2).fillEllipse(x - 8, PATH_Y + 38, w * 0.75, PATH_H * 0.28);
+          g.lineStyle(2, col, 0.45).strokeEllipse(x, PATH_Y + 40, w * 1.0, PATH_H * 0.42);
           const r = new Phaser.Math.RandomDataGenerator([String(p.id)]);
           for (let i = 0; i < 9; i++) {
-            const px = x + r.between(-w * 0.4, w * 0.4), py = PATH_Y + 10 + r.between(-PATH_H * 0.3, PATH_H * 0.3);
+            const px = x + r.between(-w * 0.38, w * 0.38), py = PATH_Y + 40 + r.between(-PATH_H * 0.15, PATH_H * 0.15);
             if (p.kind === 'frost') { g.lineStyle(2, 0xffffff, 0.8); for (let a = 0; a < 3; a++) g.lineBetween(px - Math.cos(a * 1.05) * 9, py - Math.sin(a * 1.05) * 5, px + Math.cos(a * 1.05) * 9, py + Math.sin(a * 1.05) * 5); }
             else if (p.kind === 'rock') g.fillStyle(0x6d6258, 0.9).fillTriangle(px - 10, py + 6, px + 10, py + 6, px + r.between(-4, 4), py - 12);
             else if (p.kind === 'thicket') { g.lineStyle(3, 0x2e7d32, 0.9); g.lineBetween(px, py + 6, px - 5, py - 10).lineBetween(px, py + 6, px + 1, py - 13).lineBetween(px, py + 6, px + 6, py - 9); }
@@ -1472,7 +1473,8 @@ export default class BattleScene extends Phaser.Scene {
     this.pendingBirth ??= new Map();
     for (const ev of this.state.events) {
       const v = ev.uid != null ? this.unitViews.get(ev.uid) : null;
-      if (ev.type === 'attack' && v?.rig) playAttack(v.rig.inst);
+      if (ev.type === 'attack' && v?.rig) playAttack(v.rig.inst, ev.move);
+      if (ev.type === 'ult' && v?.rig) v.rig.inst.play(v.rig.inst.anims.skill ? 'skill' : 'attack');
       if (ev.type === 'skill' && v?.rig && ev.name) v.rig.inst.play('skill');
       if (ev.type === 'merge') this.pendingBirth.set(ev.uid, ev.kind === 'evolve' || ev.kind === 'spirit' ? 'evolve' : 'merge_in');
       if (ev.type === 'summon') this.pendingBirth.set(ev.uid, 'merge_in');
@@ -1488,9 +1490,18 @@ export default class BattleScene extends Phaser.Scene {
       switch (ev.type) {
         case 'kill': { const v = this.goneViews?.get(ev.eid); if (v) { if (ev.gold) this.floatText(v.lastX, v.lastY - 10, `+${ev.gold}`, '#ffd84d'); this.fx.kill(v.lastX, v.lastY, ev.gold, ev.boss); } sfx(ev.boss ? 'bigKill' : 'kill'); if (ev.gold) sfx('coin'); if (ev.boss) { this.cameras.main.flash(300, 255, 255, 255); this.fx.banner(`${data.enemyById[ev.id].name} 처치!`, '#ffd84d'); } break; }
         case 'leak': this.floatText(tileToX(0) + 30, PATH_Y - 40, `-${ev.leak}`, '#ff5252', 22); this.fx.leak(tileToX(0), PATH_Y); this.cameras.main.shake(100, 0.005); sfx('leak'); break;
+        case 'ult': {
+          // 필살기: 이름 컷인 + 잠깐 멈춤 + 표적 둘레 충격
+          const uu = this.state.field.find((x) => x.uid === ev.uid), ve = this.enemyViews.get(ev.eid) ?? this.goneViews?.get(ev.eid);
+          if (this.fx.cutIn(ev.name, 0xffd84d, uu?.stats.name ?? '')) this.stopFor(0.14);
+          if (ve) { this.fx.groundAoe(ve.lastX, ve.lastY + 26, 110, 0xffd84d); this.fx.impact(ve.lastX, ve.lastY, 0xffd84d, 1.2); }
+          this.cameras.main.shake(160, 0.006); sfx('bigKill');
+          break;
+        }
         case 'attack': {
           this.lastAttack.set(ev.uid, time());
           this.combo();
+          if (ev.moveName && (ev.move === 'el' || Math.random() < 0.3)) { const vv = this.unitViews.get(ev.uid); const now = this.time.now; if (vv && now - (this.moveWordAt?.get(ev.uid) ?? -9999) > 2500) { (this.moveWordAt ??= new Map()).set(ev.uid, now); this.fx.shout(vv.container.x, vv.container.y - 96, ev.moveName, ev.move === 'el' ? 0x9be7ff : 0xffe066, { size: 15, hold: 520 }); } }
           { const uu = this.state.field.find((x) => x.uid === ev.uid), ve0 = this.enemyViews.get(ev.eid); const now = this.time.now; if (uu && ve0 && now - (this.hitWordAt?.get(ev.uid) ?? -9999) > 1600 && Math.random() < 0.45) { (this.hitWordAt ??= new Map()).set(ev.uid, now); this.time.delayedCall(uu.stats.range >= 3 ? 220 : 60, () => this.fx.sfxWord(ve0.lastX + Phaser.Math.Between(-12, 12), ve0.lastY - 44, soundOf(uu, 'hit'), '#fff2a8', ev.aoe ? 28 : 22)); } }
           const u = this.state.field.find((x) => x.uid === ev.uid);
           const ve = this.enemyViews.get(ev.eid) ?? this.goneViews?.get(ev.eid);

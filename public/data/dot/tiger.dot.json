@@ -1,37 +1,39 @@
 {
- "note": "tiger 도트(2026-11-25 제미나이 확정 시안: 아기 눈 크게, 성체 머리 크게). 칸 72×56, 발밑선 y=51. 아직 그림은 대기 1장씩이고 걷기·공격은 코드 연출(통통·내딛기) — 동작 그림은 나중에.",
+ "note": "tiger 도트(2026-11-26 PixelLab 확정: 손발·머리·눈이 큰 캐주얼, 아기·성장기·성체). 그림 1칸 = 화면 1px. 동작 그림은 아직이고 대기 들썩임·공격 내딛기는 코드 연출. 원본 art-src/pixellab.",
  "species": "tiger",
  "sheet": "dot-tiger",
  "file": "assets/dot/tiger.png",
- "frameW": 72,
- "frameH": 56,
- "foot": 51,
- "cols": 2,
- "anchorX": 36,
+ "frameW": 111,
+ "frameH": 81,
+ "foot": 78,
+ "cols": 3,
+ "anchorX": 55,
  "palette": [
   "#291a1f",
-  "#382a20",
-  "#50322d",
-  "#59240e",
-  "#61503f",
-  "#7d4322",
-  "#856b60",
-  "#a9958a",
-  "#af693e",
-  "#b97a5b",
-  "#d5beae",
-  "#e1a77c",
-  "#e58f48",
-  "#eda366",
-  "#f0e0cc",
-  "#faf0e7"
+  "#4a2329",
+  "#4b180c",
+  "#682c1e",
+  "#754944",
+  "#a04c27",
+  "#a37d78",
+  "#b36245",
+  "#cb6537",
+  "#d9b3a7",
+  "#e6814f",
+  "#fc9047",
+  "#fda050",
+  "#fe7f3a",
+  "#fee7da",
+  "#fef1ea"
  ],
  "frames": [
   "tiger_baby_idle_01",
+  "tiger_teen_idle_01",
   "tiger_adult_idle_01"
  ],
  "standing": [
   "tiger_baby_idle_01",
+  "tiger_teen_idle_01",
   "tiger_adult_idle_01"
  ],
  "attacks": [
@@ -39,15 +41,32 @@
  ],
  "sets": {
   "baby": {
-   "top": 12,
+   "top": 32,
    "idle": {
     "frames": [
      "tiger_baby_idle_01",
      "tiger_baby_idle_01"
     ],
     "durs": [
-     0.34,
-     0.34
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "teen": {
+   "top": 16,
+   "idle": {
+    "frames": [
+     "tiger_teen_idle_01",
+     "tiger_teen_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
     ],
     "loop": true,
     "fx": {
@@ -56,15 +75,15 @@
    }
   },
   "adult": {
-   "top": 8,
+   "top": 1,
    "idle": {
     "frames": [
      "tiger_adult_idle_01",
      "tiger_adult_idle_01"
     ],
     "durs": [
-     0.38,
-     0.38
+     0.36,
+     0.36
     ],
     "loop": true,
     "fx": {
@@ -107,15 +126,15 @@
  "stages": {
   "young": {
    "set": "baby",
-   "scale": 0.8
+   "scale": 0.5
   },
   "teen": {
-   "set": "baby",
-   "scale": 0.95
+   "set": "teen",
+   "scale": 0.5
   },
   "adult": {
    "set": "adult",
-   "scale": 1
+   "scale": 0.5
   }
  }
 }

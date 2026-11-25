@@ -21,9 +21,14 @@ export function climateSide(element, climate, strong, weak, neither) {
 }
 
 /** Roll and apply an elemental proc after a normal attack. Returns the event or null. */
-export function elementProc(state, u, target, hits, cfg) {
-  const ch = elementChance(u, cfg, cfg.climates?.[state.stage.climate]);
-  if (ch <= 0 || state.rng() >= ch / 100) return null;
+export function elementProc(state, u, target, hits, cfg, force = false) {
+  // 기술 묶음(config.moves)이 있으면 속성 공격은 '속성' 기술을 골랐을 때만(force) 나감
+  if (force) { if (!u.stats.element || !cfg.elements?.defs?.[u.stats.element]) return null; }
+  else {
+    if (cfg.moves) return null;
+    const ch = elementChance(u, cfg, cfg.climates?.[state.stage.climate]);
+    if (ch <= 0 || state.rng() >= ch / 100) return null;
+  }
   const el = u.stats.element, d = cfg.elements.defs[el];
   const base = effDamage(u) * (cfg.elements.bonus + (u.mods?.elemDmg ?? 0)) / 100;
   const touched = [target];

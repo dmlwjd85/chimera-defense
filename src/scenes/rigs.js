@@ -27,12 +27,13 @@ const dotBad = new Set();
 /** 그 종·단계의 도트 설정(없거나 깨졌거나 시트가 없으면 null → 기존 리그로). 영물(spirit)은 도트 영물 그림이 있을 때만. */
 export function dotDataFor(scene, speciesId, stage) {
   if (!dotArtOn()) return null;
-  const d = scene.cache.json.get('dotD-' + speciesId);
-  if (!d || dotBad.has(speciesId)) return null;
+  // 신화급은 따로 그린 시트(<종>_spirit)가 있으면 그걸로(팔레트 16색이 단계 묶음마다 따로라서)
+  const d = (stage === 'spirit' && scene.cache.json.get('dotD-' + speciesId + '_spirit')) || scene.cache.json.get('dotD-' + speciesId);
+  if (!d || dotBad.has(d.species)) return null;
   if (stage === 'spirit' && !d.stages.spirit) return null;
   if (!d._checked) {
     const errs = validateDot(d);
-    if (errs.length) { console.warn(`dot ${speciesId}:`, errs); dotBad.add(speciesId); return null; }
+    if (errs.length) { console.warn(`dot ${d.species}:`, errs); dotBad.add(d.species); return null; }
     d._checked = true;
   }
   if (!scene.textures.exists(d.sheet) || !ensureDotFrames(scene, d)) return null;
@@ -43,8 +44,11 @@ const json = (scene, key) => scene.cache.json.get(key);
 
 /** 공격 동작들(할퀴기·들이받기·물기·덮치기 포함). 리그의 attacks 목록을 차례로 돌려 써서 공격이 단조롭지 않게 함. */
 export const ATTACK_MOTIONS = ['attack', 'claw', 'butt', 'bite', 'pounce', 'peck', 'swoop'];
-export function playAttack(inst) {
+export function playAttack(inst, move = null) {
   const list = (inst.rig.attacks || []).filter((n) => inst.anims[n]);
+  // 기술 묶음: 기본1 = 첫 공격 동작, 기본2 = 둘째 동작, 속성·필살기 = 기술 동작
+  if (move === 'el' || move === 'ult') return inst.play(inst.anims.skill ? 'skill' : list.at(-1) ?? 'attack');
+  if (move === 'a1' || move === 'a2') { if (!list.length) return inst.play('attack'); return inst.play(list[move === 'a2' ? Math.min(1, list.length - 1) : 0]); }
   if (!list.length) return inst.play('attack');
   inst._atk = ((inst._atk ?? -1) + 1) % list.length;
   return inst.play(list[inst._atk]);

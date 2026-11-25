@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { button, title, style, panel } from './ui.js';
+import { speciesImage, button, title, style, panel } from './ui.js';
 import { buildData } from '../logic/data.js';
 import { rosterPool, favorState, buyFavor, writeSave } from '../logic/meta.js';
 import { deckOf, soulGaps, soulSig } from '../logic/soul.js';
@@ -40,7 +40,7 @@ export default class DeckScene extends Phaser.Scene {
     g.fillStyle(0x0d141d, 0.92).fillRoundedRect(30, 76, 430, 572, 16).lineStyle(2, 0xd4b06a, 0.8).strokeRoundedRect(30, 76, 430, 572, 16);
     const u = D.unitById[this.sel], sig = soulSig(D, u.id), isSoul = S.soulPet === u.id, open = unlocked.includes(u.id);
     const lv = S.favor?.[u.id] ?? 0;
-    if (this.textures.exists('unit-' + u.id)) { const im = add(this.add.image(110, 150, 'unit-' + u.id).setDisplaySize(120, 120)); if (!open) im.setTint(0x000000).setAlpha(0.5); }
+    { const im0 = speciesImage(this, u.id, 'adult', 110, 150, 120); if (im0) { const im = add(im0); if (!open) im.setTint(0x000000).setAlpha(0.5); } }
     add(this.add.text(180, 96, `${isSoul ? '👑 ' : ''}${open ? u.name : '???'}`, style(26, isSoul ? '#ffd84d' : '#ffffff')));
     add(this.add.text(180, 132, `${ROLE[u.role]}   ${E[u.element]?.icon ?? ''} ${E[u.element]?.name ?? ''}   사거리 ${u.range}`, style(14, '#cfe8ff')));
     add(this.add.text(180, 156, open ? u.baseSkillDesc : `⭐ ${cfg.roster.unlocks.find((x) => x.id === u.id)?.stars ?? 0}개에 합류`, style(12, '#aabbcc', { wordWrap: { width: 265 } })));
@@ -80,7 +80,7 @@ export default class DeckScene extends Phaser.Scene {
       const cx = 496 + (i % 5) * 150, cy = 116 + Math.floor(i / 5) * 138, has = unlocked.includes(id), inDeck = deck.includes(id), soul = S.soulPet === id;
       g.fillStyle(inDeck ? 0x1d3346 : 0x141b24, 1).fillRoundedRect(cx, cy, 140, 128, 10);
       g.lineStyle(this.sel === id ? 4 : 2, soul ? 0xffd84d : this.sel === id ? 0xffffff : inDeck ? 0x7fd1ff : 0x3b4b5e, 1).strokeRoundedRect(cx, cy, 140, 128, 10);
-      if (this.textures.exists('unit-' + id)) { const im = add(this.add.image(cx + 70, cy + 46, 'unit-' + id).setDisplaySize(72, 72)); if (!has) im.setTint(0x000000).setAlpha(0.45); else if (!inDeck) im.setAlpha(0.55); }
+      { const im0 = speciesImage(this, id, 'adult', cx + 70, cy + 46, 72); if (im0) { const im = add(im0); if (!has) im.setTint(0x000000).setAlpha(0.45); else if (!inDeck) im.setAlpha(0.55); } }
       add(this.add.text(cx + 70, cy + 92, has ? `${soul ? '👑 ' : ''}${a.name}` : `⭐${cfg.roster.unlocks.find((x) => x.id === id)?.stars}`, style(14, soul ? '#ffd84d' : has ? '#ffffff' : '#8899aa')).setOrigin(0.5));
       add(this.add.text(cx + 70, cy + 112, has ? `${ROLE[a.role].split(' ')[0]}${E[a.element]?.icon ?? ''} ${soulSig(D, id).name}` : '', style(11, '#aabbcc')).setOrigin(0.5));
       if (inDeck) add(this.add.text(cx + 8, cy + 6, '✔', style(14, '#7CFC9A')));

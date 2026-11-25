@@ -1,37 +1,39 @@
 {
- "note": "bison 도트(2026-11-25 제미나이 확정 시안: 아기 눈 크게, 성체 머리 크게). 칸 72×56, 발밑선 y=51. 아직 그림은 대기 1장씩이고 걷기·공격은 코드 연출(통통·내딛기) — 동작 그림은 나중에.",
+ "note": "bison 도트(2026-11-26 PixelLab 확정: 손발·머리·눈이 큰 캐주얼, 아기·성장기·성체). 그림 1칸 = 화면 1px. 동작 그림은 아직이고 대기 들썩임·공격 내딛기는 코드 연출. 원본 art-src/pixellab.",
  "species": "bison",
  "sheet": "dot-bison",
  "file": "assets/dot/bison.png",
- "frameW": 72,
- "frameH": 56,
- "foot": 51,
- "cols": 2,
- "anchorX": 36,
+ "frameW": 109,
+ "frameH": 80,
+ "foot": 77,
+ "cols": 3,
+ "anchorX": 54,
  "palette": [
+  "#080106",
+  "#1c0609",
   "#291a1f",
-  "#2d3219",
-  "#382228",
-  "#43201d",
-  "#4d2e2d",
-  "#5f3b36",
-  "#6c4c4a",
-  "#71463c",
-  "#85594a",
-  "#8f675c",
-  "#935f4e",
-  "#a67362",
-  "#b28e82",
-  "#d1a993",
-  "#e0ccc0",
-  "#f8e9e3"
+  "#3f2c2d",
+  "#4b2826",
+  "#582720",
+  "#5e3731",
+  "#70311e",
+  "#724942",
+  "#834a37",
+  "#885241",
+  "#8a3d23",
+  "#98604d",
+  "#a9562e",
+  "#ad7a68",
+  "#f4f4f5"
  ],
  "frames": [
   "bison_baby_idle_01",
+  "bison_teen_idle_01",
   "bison_adult_idle_01"
  ],
  "standing": [
   "bison_baby_idle_01",
+  "bison_teen_idle_01",
   "bison_adult_idle_01"
  ],
  "attacks": [
@@ -39,15 +41,32 @@
  ],
  "sets": {
   "baby": {
-   "top": 13,
+   "top": 33,
    "idle": {
     "frames": [
      "bison_baby_idle_01",
      "bison_baby_idle_01"
     ],
     "durs": [
-     0.34,
-     0.34
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "teen": {
+   "top": 17,
+   "idle": {
+    "frames": [
+     "bison_teen_idle_01",
+     "bison_teen_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
     ],
     "loop": true,
     "fx": {
@@ -56,15 +75,15 @@
    }
   },
   "adult": {
-   "top": 8,
+   "top": 1,
    "idle": {
     "frames": [
      "bison_adult_idle_01",
      "bison_adult_idle_01"
     ],
     "durs": [
-     0.38,
-     0.38
+     0.36,
+     0.36
     ],
     "loop": true,
     "fx": {
@@ -107,15 +126,15 @@
  "stages": {
   "young": {
    "set": "baby",
-   "scale": 0.8
+   "scale": 0.5
   },
   "teen": {
-   "set": "baby",
-   "scale": 0.95
+   "set": "teen",
+   "scale": 0.5
   },
   "adult": {
    "set": "adult",
-   "scale": 1
+   "scale": 0.5
   }
  }
 }

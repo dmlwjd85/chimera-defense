@@ -1,37 +1,39 @@
 {
- "note": "rooster 도트(2026-11-25 제미나이 확정 시안: 아기 눈 크게, 성체 머리 크게). 칸 72×56, 발밑선 y=51. 아직 그림은 대기 1장씩이고 걷기·공격은 코드 연출(통통·내딛기) — 동작 그림은 나중에.",
+ "note": "rooster 도트(2026-11-26 PixelLab 확정: 손발·머리·눈이 큰 캐주얼, 아기·성장기·성체). 그림 1칸 = 화면 1px. 동작 그림은 아직이고 대기 들썩임·공격 내딛기는 코드 연출. 원본 art-src/pixellab.",
  "species": "rooster",
  "sheet": "dot-rooster",
  "file": "assets/dot/rooster.png",
- "frameW": 72,
- "frameH": 56,
- "foot": 51,
- "cols": 2,
- "anchorX": 36,
+ "frameW": 91,
+ "frameH": 84,
+ "foot": 81,
+ "cols": 3,
+ "anchorX": 45,
  "palette": [
-  "#262b30",
+  "#080307",
+  "#17422d",
   "#291a1f",
-  "#37570d",
-  "#3c4944",
-  "#416967",
-  "#45211a",
-  "#5f3122",
-  "#6a6d27",
-  "#7f9273",
-  "#81412d",
-  "#8f5d41",
-  "#bb6242",
-  "#bd755c",
-  "#e6b179",
-  "#fad89a",
-  "#faf0de"
+  "#48874f",
+  "#662813",
+  "#862724",
+  "#a85a26",
+  "#c4352c",
+  "#c56218",
+  "#cf6b3c",
+  "#e88d3c",
+  "#e98728",
+  "#f6b152",
+  "#f9b73e",
+  "#fbce9c",
+  "#fdf2e7"
  ],
  "frames": [
   "rooster_baby_idle_01",
+  "rooster_teen_idle_01",
   "rooster_adult_idle_01"
  ],
  "standing": [
   "rooster_baby_idle_01",
+  "rooster_teen_idle_01",
   "rooster_adult_idle_01"
  ],
  "attacks": [
@@ -39,15 +41,32 @@
  ],
  "sets": {
   "baby": {
-   "top": 12,
+   "top": 34,
    "idle": {
     "frames": [
      "rooster_baby_idle_01",
      "rooster_baby_idle_01"
     ],
     "durs": [
-     0.34,
-     0.34
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "teen": {
+   "top": 18,
+   "idle": {
+    "frames": [
+     "rooster_teen_idle_01",
+     "rooster_teen_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
     ],
     "loop": true,
     "fx": {
@@ -56,15 +75,15 @@
    }
   },
   "adult": {
-   "top": 8,
+   "top": 1,
    "idle": {
     "frames": [
      "rooster_adult_idle_01",
      "rooster_adult_idle_01"
     ],
     "durs": [
-     0.38,
-     0.38
+     0.36,
+     0.36
     ],
     "loop": true,
     "fx": {
@@ -107,15 +126,15 @@
  "stages": {
   "young": {
    "set": "baby",
-   "scale": 0.8
+   "scale": 0.5
   },
   "teen": {
-   "set": "baby",
-   "scale": 0.95
+   "set": "teen",
+   "scale": 0.5
   },
   "adult": {
    "set": "adult",
-   "scale": 1
+   "scale": 0.5
   }
  }
 }

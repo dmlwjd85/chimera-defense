@@ -30,7 +30,7 @@ test('fire burns, earth stuns nearby, thunder chains, wind pushes', async () => 
     const u = await mkUnit(D, 9, sp, 'adult', 3);
     const s = st([await mkEnemy(D, 'normal', 4, 1), await mkEnemy(D, 'normal', 4.3, 2)]);
     s.field = [u]; computeMods(s, D);
-    const ev = elementProc(s, u, s.enemies[0], [s.enemies[0]], D.config);
+    const ev = elementProc(s, u, s.enemies[0], [s.enemies[0]], D.config, true);
     assert.ok(ev && ev.type === 'element', sp);
     assert.ok(check(s.enemies), sp);
   }

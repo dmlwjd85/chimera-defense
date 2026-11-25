@@ -54,7 +54,9 @@ export class FX {
     if (!this.ok) return;
     const e = this.em(name);
     if (tint !== undefined) e.setParticleTint(tint); else if (!PRESETS[name].tint) e.setParticleTint(0xffffff);
-    e.explode(n, x, y);
+    const live = this.scene.state?.enemies?.length ?? 0;
+    const k = live > 14 ? 0.35 : live > 7 ? 0.5 : 0.65;
+    e.explode(Math.max(1, Math.round(n * k)), x, y);
   }
 
   hit(x, y, color = 'white', big = false) {

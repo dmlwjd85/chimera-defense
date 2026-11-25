@@ -829,9 +829,9 @@ export default class BattleScene extends Phaser.Scene {
     const c = this.add.container(0, 0);
     const sub = this.add.container(0, 30);
     const rig = unitRig(this, unit, sub, 0.22);
-    if (rig && dotOn()) dotify(this, sub);
+    if (rig && !rig.dot && dotOn()) dotify(this, sub);   // 진짜 도트 그림에는 화면 픽셀화 효과를 겹치지 않음
     const tok = rig ? sub : unitToken(this, unit, this.data2);
-    const top = rig ? -70 : -38;
+    const top = rig?.dot ? Math.min(-70, 30 + Math.round(rig.view.topY()) - 8) : rig ? -70 : -38;   // 도트는 그림 키에 맞춰 체력 막대를 머리 위로
     const glow = unit.stage === 'spirit' ? this.add.ellipse(0, 30, 90, 22, COLORS.gold, 0.45) : unit.white ? this.add.ellipse(0, 30, 80, 20, 0xffffff, 0.4) : null;
     const name = this.add.text(0, 40, unit.stats.name, style(12, '#ffffff', { stroke: '#000000', strokeThickness: 3 })).setOrigin(0.5);
     const barBg = this.add.rectangle(0, top, 50, 6, 0x000000).setOrigin(0.5);

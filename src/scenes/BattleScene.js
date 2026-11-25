@@ -1472,7 +1472,8 @@ export default class BattleScene extends Phaser.Scene {
     this.pendingBirth ??= new Map();
     for (const ev of this.state.events) {
       const v = ev.uid != null ? this.unitViews.get(ev.uid) : null;
-      if (ev.type === 'attack' && v?.rig) playAttack(v.rig.inst);
+      if (ev.type === 'attack' && v?.rig) playAttack(v.rig.inst, ev.move);
+      if (ev.type === 'ult' && v?.rig) v.rig.inst.play(v.rig.inst.anims.skill ? 'skill' : 'attack');
       if (ev.type === 'skill' && v?.rig && ev.name) v.rig.inst.play('skill');
       if (ev.type === 'merge') this.pendingBirth.set(ev.uid, ev.kind === 'evolve' || ev.kind === 'spirit' ? 'evolve' : 'merge_in');
       if (ev.type === 'summon') this.pendingBirth.set(ev.uid, 'merge_in');
@@ -1488,9 +1489,18 @@ export default class BattleScene extends Phaser.Scene {
       switch (ev.type) {
         case 'kill': { const v = this.goneViews?.get(ev.eid); if (v) { if (ev.gold) this.floatText(v.lastX, v.lastY - 10, `+${ev.gold}`, '#ffd84d'); this.fx.kill(v.lastX, v.lastY, ev.gold, ev.boss); } sfx(ev.boss ? 'bigKill' : 'kill'); if (ev.gold) sfx('coin'); if (ev.boss) { this.cameras.main.flash(300, 255, 255, 255); this.fx.banner(`${data.enemyById[ev.id].name} 처치!`, '#ffd84d'); } break; }
         case 'leak': this.floatText(tileToX(0) + 30, PATH_Y - 40, `-${ev.leak}`, '#ff5252', 22); this.fx.leak(tileToX(0), PATH_Y); this.cameras.main.shake(100, 0.005); sfx('leak'); break;
+        case 'ult': {
+          // 필살기: 이름 컷인 + 잠깐 멈춤 + 표적 둘레 충격
+          const uu = this.state.field.find((x) => x.uid === ev.uid), ve = this.enemyViews.get(ev.eid) ?? this.goneViews?.get(ev.eid);
+          if (this.fx.cutIn(ev.name, 0xffd84d, uu?.stats.name ?? '')) this.stopFor(0.14);
+          if (ve) { this.fx.groundAoe(ve.lastX, ve.lastY + 26, 110, 0xffd84d); this.fx.impact(ve.lastX, ve.lastY, 0xffd84d, 1.2); }
+          this.cameras.main.shake(160, 0.006); sfx('bigKill');
+          break;
+        }
         case 'attack': {
           this.lastAttack.set(ev.uid, time());
           this.combo();
+          if (ev.moveName && (ev.move === 'el' || Math.random() < 0.3)) { const vv = this.unitViews.get(ev.uid); const now = this.time.now; if (vv && now - (this.moveWordAt?.get(ev.uid) ?? -9999) > 2500) { (this.moveWordAt ??= new Map()).set(ev.uid, now); this.fx.shout(vv.container.x, vv.container.y - 96, ev.moveName, ev.move === 'el' ? 0x9be7ff : 0xffe066, { size: 15, hold: 520 }); } }
           { const uu = this.state.field.find((x) => x.uid === ev.uid), ve0 = this.enemyViews.get(ev.eid); const now = this.time.now; if (uu && ve0 && now - (this.hitWordAt?.get(ev.uid) ?? -9999) > 1600 && Math.random() < 0.45) { (this.hitWordAt ??= new Map()).set(ev.uid, now); this.time.delayedCall(uu.stats.range >= 3 ? 220 : 60, () => this.fx.sfxWord(ve0.lastX + Phaser.Math.Between(-12, 12), ve0.lastY - 44, soundOf(uu, 'hit'), '#fff2a8', ev.aoe ? 28 : 22)); } }
           const u = this.state.field.find((x) => x.uid === ev.uid);
           const ve = this.enemyViews.get(ev.eid) ?? this.goneViews?.get(ev.eid);

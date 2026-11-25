@@ -7,6 +7,7 @@ import { soulOnHit, soulOnKill } from './soul.js';
 import { guardShare, moveMult, dealerCombo, tickRoles } from './roles.js';
 import { dist, steer, driftEnemies } from './arena.js';
 import { tickMuster, rushMult, intoGate } from './muster.js';
+import { pickMove, a2Of, chargeUlt, tickMoves, ultName } from './moves.js';
 
 // 2D 거리(앞뒤 깊이 포함). state.arenaCfg 는 combatTick 이 넣어 둠
 const gap = (state, a, b) => dist(a, b, { arena: state.arenaCfg });
@@ -149,6 +150,7 @@ export function hitUnit(state, data, u, amount, attacker = null) {
   if (cut) amt *= 1 - cut.percent / 100;
   u.hp -= Math.max(0, amt);
   u.lastHitAt = state.time;
+  if (data.config.moves) chargeUlt(u, data.config, 'hurt', 100 * Math.max(0, amt) / (u.maxHp ?? u.stats.hp));
   if (u.hp > 0) return;
   if (f.surviveOnce && !u.survived) { u.survived = true; u.hp = 1; state.events.push({ type: 'survive', uid: u.uid }); return; }
   const respawn = u.stats.respawn * Math.max(0.2, 1 + (u.mods?.respawn ?? 0) / 100);
@@ -326,6 +328,7 @@ export function combatTick(state, data, dt) {
     u.cycleT = (u.cycleT ?? 0) + (state.phase === 'wave' && !u.down ? dt : 0);
     u.restLeft = Math.max(0, (u.restLeft ?? 0) - dt);
     u.afterRestLeft = Math.max(0, (u.afterRestLeft ?? 0) - dt);
+    tickMoves(u, dt);
     for (const t of u.temp) t.left -= dt;
     u.temp = u.temp.filter((t) => t.left > 0);
     if (wasResting && !isResting(u) && flags(u).afterRest) { u.afterRestLeft = flags(u).afterRest.dur ?? 0; u.firstHitReady = !!flags(u).afterRest.firstHit; }
@@ -447,22 +450,36 @@ export function combatTick(state, data, dt) {
     u.attackCd = effInterval(u);
     u.sameTargetN = u.lastTargetEid === target.eid ? (u.sameTargetN ?? 0) + 1 : 0;
     u.lastTargetEid = target.eid;
-    const aoe = effAoe(u);
+    // 기술 고르기(config.moves): 기본1·기본2·속성·필살기 — 조건에 따라 가중치가 바뀌는 무작위
+    const move = cfg.moves ? pickMove(state, u, target, cfg) : 'a1';
+    const a2 = move === 'a2' ? a2Of(u, cfg) : null;
+    const MV = cfg.moves ?? {};
+    let mult = 1, reps = 1;
+    if (a2) { mult = a2.mult ?? 1; reps = a2.hits ?? 1; }
+    if (move === 'el') mult = MV.el?.mult ?? 1;
+    if (move === 'ult') mult = MV.ult?.mult ?? 2.5;
+    const aoe = Math.max(effAoe(u), move === 'ult' ? MV.ult?.aoe ?? 1 : 0);
     const hits = aoe > 0
       ? state.enemies.filter((e) => hittable(u, e) && gap(state, e, target) <= aoe)
       : [target];
     const multi = findEffect(u, 'multiShot')?.count ?? 1;
-    for (let k = 0; k < multi; k++) for (const e of hits) damageEnemy(state, e, hitDamage(state, u, e), aoe > 0, u.uid);
+    for (let r = 0; r < reps; r++) for (let k = 0; k < multi; k++) for (const e of hits) { if (e.hp > 0 || r === 0) damageEnemy(state, e, hitDamage(state, u, e) * mult * (move === 'ult' && e !== target ? MV.ult?.splash ?? 0.5 : 1), aoe > 0, u.uid); }
     u.firstHitReady = false;
+    if (a2?.push && !target.boss && target.hp > 0) { target.pos = Math.min(cfg.pathLength, target.pos + a2.push); }
+    if (a2?.stun && target.hp > 0) target.stunLeft = Math.max(target.stunLeft ?? 0, target.boss ? a2.stun / 3 : a2.stun);
+    if (a2?.healAlly) { const mate = state.field.filter((o) => !o.down && !o.inGate && o !== u).sort((x, y) => x.hp / (x.maxHp ?? x.stats.hp) - y.hp / (y.maxHp ?? y.stats.hp))[0]; if (mate) mate.hp = Math.min(mate.maxHp ?? mate.stats.hp, mate.hp + (mate.maxHp ?? mate.stats.hp) * a2.healAlly / 100); }
     if (flags(u).splashChance && state.rng() < flags(u).splashChance / 100) {
       const other = state.enemies.find((e) => e !== target && hittable(u, e) && Math.abs(e.pos - u.pos) <= effRange(u) + 1);
       if (other) { damageEnemy(state, other, hitDamage(state, u, other), false, u.uid); state.events.push({ type: 'splash', uid: u.uid, eid: other.eid }); }
     }
     applyOnHit(state, u, hits, target, cfg);
-    elementProc(state, u, target, hits, cfg);
+    if (move === 'el' || move === 'ult') { elementProc(state, u, target, hits, cfg, true); if (move === 'el') u.elCd = MV.rules?.el?.cooldown ?? 4; }
+    else elementProc(state, u, target, hits, cfg);
+    if (move === 'ult') { u.ultGauge = 0; state.events.push({ type: 'ult', uid: u.uid, eid: target.eid, name: ultName(u, cfg), eids: hits.map((e) => e.eid) }); }
+    else if (cfg.moves) chargeUlt(u, cfg, 'hit');
     soulOnHit(state, data, u, target, hits);
     dealerCombo(state, data, u, target, hits);
-    state.events.push({ type: 'attack', uid: u.uid, eid: target.eid, aoe: aoe > 0, eids: hits.map((e) => e.eid) });
+    state.events.push({ type: 'attack', uid: u.uid, eid: target.eid, aoe: aoe > 0, eids: hits.map((e) => e.eid), move, moveName: a2?.name ?? (move === 'el' ? cfg.elements?.defs?.[u.stats.element]?.name + ' 공격' : null), hits: reps });
   }
 
   tickUnitSkills(state, data, dt);
@@ -487,6 +504,7 @@ export function combatTick(state, data, dt) {
         if (fk.restAfterKill) killer.restLeft = Math.max(killer.restLeft ?? 0, fk.restAfterKill);
         if (fk.killStack) killer.killStacks = (killer.killStacks ?? 0) + 1;
         gold += soulOnKill(state, data, killer, e);
+        if (cfg.moves) chargeUlt(killer, cfg, 'kill');
       }
       const holder = e.blockedBy === null ? null : byUid.get(e.blockedBy);
       if (holder && holder !== killer && flags(holder).heldKillGold) gold += flags(holder).heldKillGold;

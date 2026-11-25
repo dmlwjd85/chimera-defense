@@ -1,6 +1,9 @@
 // Rig data for the battle: part-drawn animals (quadruped/bird/frog/bug templates) and one-image enemies (sprite template).
 import { RigInstance } from '../rig/RigInstance.js';
 import { RigView } from '../rig/RigView.js';
+import { DotInstance } from '../rig/DotInstance.js';
+import { DotView, ensureDotFrames } from '../rig/DotView.js';
+import { DOT_PX, validateDot } from '../rig/dotData.js';
 
 /** Queue every rig JSON in Boot's preload. */
 export function preloadRigs(scene) {
@@ -10,6 +13,30 @@ export function preloadRigs(scene) {
     for (const a of idx.anims) scene.load.json('rigA-' + a, `data/rig/${a}.anims.json`);
     for (const id of idx.rigs) scene.load.json('rigR-' + id, `data/rig/${id}.rig.json`);
   });
+  // 도트 그림이 있는 종: 설정 파일만 여기서 읽음(시트 그림은 manifest/art-pack에 dot-<종> 키로 들어 있음)
+  scene.load.json('dotIndex', 'data/dot/index.json');
+  scene.load.once('filecomplete-json-dotIndex', (k, t, idx) => {
+    for (const id of idx?.species ?? []) scene.load.json('dotD-' + id, `data/dot/${id}.dot.json`);
+  });
+}
+
+/** 도트 그림 켜짐 여부. ?dotart=0 이면 예전 조각 리그로 비교해 볼 수 있음(저장하지 않음). */
+export const dotArtOn = () => { try { return new URLSearchParams(location.search).get('dotart') !== '0'; } catch { return true; } };
+
+const dotBad = new Set();
+/** 그 종·단계의 도트 설정(없거나 깨졌거나 시트가 없으면 null → 기존 리그로). 영물(spirit)은 도트 영물 그림이 있을 때만. */
+export function dotDataFor(scene, speciesId, stage) {
+  if (!dotArtOn()) return null;
+  const d = scene.cache.json.get('dotD-' + speciesId);
+  if (!d || dotBad.has(speciesId)) return null;
+  if (stage === 'spirit' && !d.stages.spirit) return null;
+  if (!d._checked) {
+    const errs = validateDot(d);
+    if (errs.length) { console.warn(`dot ${speciesId}:`, errs); dotBad.add(speciesId); return null; }
+    d._checked = true;
+  }
+  if (!scene.textures.exists(d.sheet) || !ensureDotFrames(scene, d)) return null;
+  return d;
 }
 
 const json = (scene, key) => scene.cache.json.get(key);
@@ -27,6 +54,12 @@ const ART_SPIRITS = new Set([]); // 리코스 그림 한 장으로 움직일 신
 /** Rig instance + view for a unit, inside `parent` container; null when there is no rig (weak chimera). */
 export function unitRig(scene, unit, parent, scale = 0.17) {
   if (unit.kind === 'weak') return null;
+  // 도트 그림이 있는 종은 도트로(전투 기본 배율 0.22일 때 도트 1칸 = 3px). 없는 종은 아래 기존 리그 그대로.
+  const dot = dotDataFor(scene, unit.speciesId, unit.stage);
+  if (dot) {
+    const inst = new DotInstance(dot, { stage: unit.stage, scale });
+    return { inst, view: new DotView(scene, inst, { parent, px: DOT_PX * (scale / 0.22) }), dot: true };
+  }
   // 리코스 그림을 통째로 쓰는 신화급(케르베로스): 한 장짜리 스프라이트 리그로 움직임
   const artKey = unit.stage === 'spirit' && ART_SPIRITS.has(unit.speciesId) ? `unit-${unit.speciesId}-spirit` : null;
   if (artKey && scene.textures.exists(artKey)) {

@@ -39,8 +39,9 @@ export function validateDot(d) {
   if (!d.sets || !Object.keys(d.sets).length) errs.push('sets missing');
   for (const [sname, set] of Object.entries(d.sets || {})) {
     if (!set.idle) errs.push(`set ${sname}: idle missing`);
-    if (!attacks.some((a) => set[a])) errs.push(`set ${sname}: no attack clip (${attacks.join('/')})`);
+    if (set.top != null && (!Number.isInteger(set.top) || set.top < 0 || set.top >= d.frameH)) errs.push(`set ${sname}: top must be a row inside the frame`);
     for (const [cname, c] of Object.entries(set)) {
+      if (cname === 'top') continue;
       const at = `set ${sname} clip ${cname}`;
       if (!Array.isArray(c.frames) || !c.frames.length) { errs.push(`${at}: frames missing`); continue; }
       for (const f of c.frames) if (!frames.has(f)) errs.push(`${at}: unknown frame ${f}`);
@@ -61,6 +62,8 @@ export function validateDot(d) {
       if (attacks.includes(cname) && !(c.events || []).some((e) => e[1] === 'hit')) errs.push(`${at}: attack needs a hit event`);
     }
   }
+  // 공격 그림은 한 세트 이상에 있어야 함(아기처럼 공격 장이 없는 세트는 재생기가 대기 장으로 내딛기 연출을 만듦)
+  if (d.sets && !Object.values(d.sets).some((set) => attacks.some((a) => set[a]))) errs.push(`no attack clip (${attacks.join('/')}) in any set`);
   if (!d.stages || !Object.keys(d.stages).length) errs.push('stages missing');
   for (const [st, def] of Object.entries(d.stages || {})) {
     if (!['young', 'teen', 'adult', 'spirit'].includes(st)) errs.push(`unknown stage ${st}`);

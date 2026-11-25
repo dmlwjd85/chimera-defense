@@ -42,6 +42,8 @@ test('validateDot catches broken data', () => {
     [(d) => { d.palette = ['#ea6c12']; }, /outline/],
     [(d) => { d.sheet = 'fox'; }, /dot-/],
     [(d) => { d.foot = 8; }, /foot/],
+    [(d) => { delete d.sets.adult.claw; }, /no attack clip/],
+    [(d) => { d.sets.adult.top = 99; }, /top must be a row/],
   ];
   for (const [breakIt, re] of cases) { const d = sample(); breakIt(d); assert.match(validateDot(d).join('\n'), re); }
 });
@@ -90,4 +92,64 @@ test('every registered dot species follows the spec', () => {
     const r = checkSheet(decodePng(readFileSync(pub(d.file))), d);
     assert.deepEqual(r.errors, [], `${sp} sheet`);
   }
+});
+
+// ---------- 도트 재생기(DotInstance): RigInstance와 같은 약속으로 움직이는지 ----------
+import { DotInstance } from '../src/rig/DotInstance.js';
+
+const T6 = [0.12, 0.12, 0.07, 0.11, 0.20, 0.28];
+const foxLike = () => ({
+  ...sample(), frames: ['b1', 'b2', 'b3', 'b4', 'a1', 'a2', 'a3', 'a4', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6'], cols: 14, standing: [],
+  sets: {
+    baby: { idle: { frames: ['b1', 'b2', 'b3', 'b4'], durs: [0.22, 0.22, 0.22, 0.22], loop: true } },
+    adult: {
+      idle: { frames: ['a1', 'a2', 'a3', 'a4'], durs: [0.24, 0.24, 0.24, 0.24], loop: true },
+      claw: { frames: ['c1', 'c2', 'c3', 'c4', 'c5', 'c6'], durs: T6, hold: { frame: 3, sec: 0.09 }, events: [[0.31, 'hit']] },
+    },
+  },
+  stages: { young: { set: 'baby', scale: 0.8 }, teen: { set: 'baby', scale: 1 }, adult: { set: 'adult', scale: 1 } },
+});
+const step = (inst, sec, dt = 1 / 120) => { const ev = []; for (let t = 0; t < sec - 1e-9; t += dt) ev.push(...inst.update(dt)); return ev; };
+
+test('DotInstance: claw follows the 0.12/0.12/0.07/0.11+freeze/0.20/0.28 timetable and fires hit at frame 4', () => {
+  assert.deepEqual(validateDot(foxLike()), []);
+  const f = new DotInstance(foxLike(), { stage: 'adult' });
+  const hits = []; f.on('hit', (e) => hits.push(e.t));
+  f.play('claw');
+  const seen = [];
+  for (const t of [0.05, 0.17, 0.27, 0.35, 0.47, 0.6, 0.85]) { step(f, t - (seen.length ? [0.05, 0.17, 0.27, 0.35, 0.47, 0.6, 0.85][seen.length - 1] : 0)); seen.push(f.getPose().frame); }
+  assert.deepEqual(seen, ['c1', 'c2', 'c3', 'c4', 'c4', 'c5', 'c6']);   // 0.42~0.51초는 4번 장에서 멈칫
+  assert.deepEqual(hits, [0.31]);
+  assert.equal(f.motion, 'claw'); assert.equal(f.finished, false);
+  const ev = step(f, 0.2);
+  assert.ok(ev.some((e) => e.name === 'complete' && e.data === 'claw'));
+  assert.equal(f.motion, 'idle');                                        // 끝나면 대기로 돌아감
+});
+
+test('DotInstance: every battle motion exists, unknown names fall back to idle, stages pick their art', () => {
+  const d = foxLike();
+  for (const st of ['young', 'teen', 'adult']) {
+    const f = new DotInstance(d, { stage: st });
+    for (const m of ['idle', 'move', 'attack', 'claw', 'skill', 'hit', 'down', 'respawn', 'victory', 'merge_in', 'evolve']) {
+      assert.ok(f.anims[m], `${st} ${m}`);
+      f.play(m); step(f, 0.3); assert.ok(d.frames.includes(f.getPose().frame), `${st} ${m} frame`);
+    }
+    assert.equal(f.anims.fly, undefined);                                 // 나는 동물이 아니면 날갯짓 없음(전투 코드가 걷기로 씀)
+    f.play('no_such_motion'); assert.equal(f.motion, 'idle');
+    assert.equal(new DotInstance(d, { stage: st }).getPose().frame[0], st === 'adult' ? 'a' : 'b');
+  }
+  assert.equal(new DotInstance(d, { stage: 'spirit' }).stageKey, 'adult'); // 그림 없는 단계는 성체로
+});
+
+test('DotInstance: baby attack (no drawn claw) still hits on time, lunges forward; down stays; flash/silhouette/facing', () => {
+  const f = new DotInstance(foxLike(), { stage: 'young' });
+  const hits = []; f.on('hit', (e) => hits.push(e.t));
+  f.play('claw'); step(f, 0.4);
+  assert.deepEqual(hits, [0.31]);
+  assert.ok(f.getPose().dx > 0, 'lunges toward the enemy');
+  f.play('down'); step(f, 2);
+  assert.equal(f.motion, 'down'); assert.equal(f.finished, true); assert.ok(f.getPose().alpha < 0.6);
+  f.hitFlash(0.1); assert.equal(f.getPose().white, true); step(f, 0.12); assert.equal(f.getPose().white, false);
+  f.silhouette = true; assert.equal(f.getPose().silhouette, true);
+  f.setFacing(-1); assert.equal(f.getPose().facing, -1);
 });

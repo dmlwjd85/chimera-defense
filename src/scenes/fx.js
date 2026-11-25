@@ -120,7 +120,7 @@ export class FX {
     this.burst('puff', x, y, boss ? 14 : 5, 0xdddddd);
     this.burst('spark', x, y, boss ? 24 : 6, 0xffe066);
     if (gold > 0 && this.ok) {
-      for (let i = 0; i < Math.min(5, Math.ceil(gold / 2)); i++) {
+      for (let i = 0; i < Math.min(3, Math.ceil(gold / 3)); i++) {
         const c = this.scene.add.image(x, y, 'fx-coin').setDepth(1700).setScale(0.7);
         this.scene.tweens.add({ targets: c, x: { from: x, to: 160 }, y: { from: y - 20, to: 26 }, scale: 0.4, duration: 520 + i * 70, ease: 'Cubic.in', delay: i * 40, onComplete: () => c.destroy() });
       }
@@ -473,9 +473,11 @@ export class FX {
     sc.shoutSlots ??= [];
     const now = sc.time.now;
     sc.shoutSlots = sc.shoutSlots.filter((s) => s.until > now);
+    // 같은 말이 가까이서 연달아 나오면 한 번만, 쌓여도 두 줄까지만(화면을 덮지 않게)
+    if (sc.shoutSlots.some((s) => s.text === text && Math.abs(s.x - x) < 200)) return;
     let yy = y;
-    while (sc.shoutSlots.some((s) => Math.abs(s.x - x) < 130 && Math.abs(s.y - yy) < 32)) yy -= 34;
-    sc.shoutSlots.push({ x, y: yy, until: now + 900 });
+    while (sc.shoutSlots.some((s) => Math.abs(s.x - x) < 130 && Math.abs(s.y - yy) < 32)) { yy -= 34; if (y - yy > 34) return; }
+    sc.shoutSlots.push({ x, y: yy, until: now + 900, text });
     const c = sc.add.container(x, yy).setDepth(1750);
     const t = sc.add.text(0, 0, text, { fontFamily: FONT, fontSize: `${opts.size ?? 22}px`, fontStyle: 'bold', color: opts.ink ?? '#2a1606', stroke: '#ffffff', strokeThickness: 5 }).setOrigin(0.5);
     const w = t.width + 28, h = t.height + 14;

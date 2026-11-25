@@ -49,7 +49,7 @@ export class RigView {
     for (const k of [`rig-${skin}-${this.inst.stage}-${slot}`, `rig-${skin}-${slot}`, `${this.inst.rig.species}_${this.inst.stage}_${part}`]) if (this.scene.textures.exists(k)) return k;
     return `ph_${this.inst.rig.species}_${slot}`;
   }
-  artScale(key) { return key.startsWith('rig-') ? 1 / (this.inst.rig.artRes ?? 2) : (this.inst.rig.artScale ?? 1); }
+  artScale(key) { return key.startsWith('rig-') ? (globalThis.__artHalf ? 2 : 1) / (this.inst.rig.artRes ?? 2) : (this.inst.rig.artScale ?? 1); }
   objFor(d) {
     let o = this.objs[d.slot];
     const key = this.textureFor(d.slot, d.part);

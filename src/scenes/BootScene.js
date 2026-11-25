@@ -14,7 +14,11 @@ export default class BootScene extends Phaser.Scene {
     for (const k of DATA_KEYS) this.load.json(k, `data/${k}.json`);
     // Optional art: everything listed in the manifest replaces the placeholder shapes.
     // Art comes bundled (assets/art-pack.json, built by tools/pack-art.mjs); the manifest is the fallback.
-    this.load.json('artpack', 'assets/art-pack.json');
+    // 폰(손가락 입력)은 그림 메모리가 모자라 전투에서 튕겨서 반쪽 해상도 묶음을 씀(?half=0 끔, ?half=1 켬)
+    const qh = new URLSearchParams(location.search).get('half');
+    const half = qh != null ? qh === '1' : !!window.matchMedia?.('(pointer: coarse)').matches;
+    window.__artHalf = half;
+    this.load.json('artpack', half ? 'assets/art-pack-m.json' : 'assets/art-pack.json');
     const useArt = (pack) => {
       this.load.json('manifest', 'assets/manifest.json');
       this.load.once('filecomplete-json-manifest', (k, t, m) => { for (const [key, path] of Object.entries(m?.images ?? {})) this.load.image(key, pack?.[key] ?? path); });
@@ -26,6 +30,8 @@ export default class BootScene extends Phaser.Scene {
   }
 
   create() {
+    // 그림은 이미 텍스처가 됐으니 수십 MB짜리 묶음 글자는 버림
+    this.cache.json.remove('artpack');
     const T = makeT(this.cache.json.get('text'));
     this.registry.set('T', T);
     const raw = {};

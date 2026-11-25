@@ -35,7 +35,8 @@ export class DotView {
     try { const m = this.container.getWorldTransformMatrix(); ws = Math.hypot(m.a, m.b) || 1; } catch { ws = 1; }
     const z = this.scene.cameras?.main?.zoom || 1;
     const want = this.px * (this.inst.stageDef.scale ?? 1) * ws * z;
-    const d = Math.max(1, Math.round(want));
+    // 정수로 맞추면 앞뒤로 움직일 때 도트 1칸이 1px↔2px로 툭 바뀌어 크기가 튐 → config.art.dotSmooth면 부드럽게(2026-11-25 크기 비교 뒤)
+    const d = (this.scene.data2?.config?.art?.dotSmooth ?? this.scene.registry?.get('dotSmooth')) ? Math.max(0.5, want) : Math.max(1, Math.round(want));
     return { device: d, local: d / (ws * z) };
   }
 

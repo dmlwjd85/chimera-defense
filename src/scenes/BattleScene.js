@@ -962,7 +962,7 @@ export default class BattleScene extends Phaser.Scene {
     const def = this.data2.enemyById[e.id];
     const size = e.boss ? 52 : e.id === 'swarm' ? 16 : e.id === 'bat' ? 20 : 28;
     const holder = this.add.container(0, 0).setDepth(70);
-    const px = size * 2.2;
+    const px = size * 2.2 * (e.boss ? 1 : this.data2.config.art?.enemyScale ?? 1);   // 적 그림 크기(도트 동물과 키 맞춤)
     const rig = enemyRig(this, e, holder, px);
     if (rig && dotOn()) dotify(this, holder);
     const body = rig ? holder : e.flying ? this.add.triangle(0, 0, 0, size, size / 2, 0, size, size, hex(def.color)).setDepth(70) : this.add.rectangle(0, 0, size, size, hex(def.color)).setDepth(70);

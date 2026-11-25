@@ -1,0 +1,6 @@
+도트 이펙트 시트(hit-spark, blunt-hit, crit-hit, claw-swipe, poof)
+- 출처: pixelfx by Patch (https://github.com/patch-gg/pixelfx), MIT License, Copyright (c) 2026 Patch
+  `node tools/render.mjs <id> --sheet --no-actor` 로 뽑은 시트 그대로 씀
+- 일부 이펙트는 Sprite Fusion의 공개 픽셀 VFX를 고친 것: https://www.spritefusion.com/pixel-art-vfx
+  MIT License, Copyright (c) 2026 Hugo Duprez
+- 라이선스 전문: LICENSE-pixelfx.txt

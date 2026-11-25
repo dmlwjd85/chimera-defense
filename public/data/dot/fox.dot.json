@@ -38,7 +38,7 @@
   },
   "stages": {
     "young": { "set": "baby", "scale": 0.8 },
-    "teen": { "set": "baby", "scale": 1 },
+    "teen": { "set": "baby", "scale": 0.95 },
     "adult": { "set": "adult", "scale": 1 }
   }
 }

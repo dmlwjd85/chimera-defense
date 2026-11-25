@@ -3,6 +3,7 @@ import { FONT, makeT } from '../text.js';
 import { loadSave } from '../logic/meta.js';
 import { preloadRigs } from './rigs.js';
 import { rotateCrumbs } from './debug.js';
+import { PFX } from './fx.js';
 
 const DATA_KEYS = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'globe', 'talents', 'story'];
 
@@ -28,6 +29,8 @@ export default class BootScene extends Phaser.Scene {
     this.load.once('filecomplete-json-artpack', (k, t, pack) => useArt(pack));
     this.load.once('loaderror', (f) => { if (f.key === 'artpack') useArt(null); });
     preloadRigs(this);
+    // 도트 이펙트(pixelfx, MIT — 에셋 출처 장부 참고): 타격·치명타·할퀴기·처치 연기
+    for (const n of PFX) this.load.atlas('pfx-' + n, `assets/fx/pfx/${n}.png`, `assets/fx/pfx/${n}.json`);
     this.load.on('loaderror', (f) => console.warn('load failed:', f.key));
   }
 

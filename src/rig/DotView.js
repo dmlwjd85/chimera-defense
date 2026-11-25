@@ -8,7 +8,9 @@ export function ensureDotFrames(scene, dot) {
   const tex = scene.textures.get(dot.sheet);
   if (!tex || tex.key === '__MISSING') return false;
   if (!tex._dotReady) {
-    dot.frames.forEach((name, i) => { if (!tex.has(name)) tex.add(name, 0, (i % dot.cols) * dot.frameW, Math.floor(i / dot.cols) * dot.frameH, dot.frameW, dot.frameH); });
+    // 동작 시트(rects)는 장마다 그림만 잘라 촘촘히 묶음: [x, y, w, h, 왼쪽, 위](왼쪽·위 = 기준점(가운데·발밑) 대비)
+    if (dot.rects) for (const [name, r] of Object.entries(dot.rects)) { if (!tex.has(name)) tex.add(name, 0, r[0], r[1], r[2], r[3]); }
+    else dot.frames.forEach((name, i) => { if (!tex.has(name)) tex.add(name, 0, (i % dot.cols) * dot.frameW, Math.floor(i / dot.cols) * dot.frameH, dot.frameW, dot.frameH); });
     tex.setFilter(Phaser.Textures.FilterMode.NEAREST);
     tex._dotReady = true;
   }
@@ -24,6 +26,7 @@ export class DotView {
     this.px = opts.px ?? DOT_PX;
     const d = this.dot, ax = d.anchorX ?? d.frameW / 2;
     this.sprite = scene.add.image(0, 0, d.sheet, d.frames[0]).setOrigin(ax / d.frameW, (d.foot + 1) / d.frameH);
+    { const r = d.rects?.[d.frames[0]]; if (r) this.sprite.setOrigin(-r[4] / r[2], -r[5] / r[3]); }
     this.container.add(this.sprite);
     this.objs = { body: this.sprite };   // RigView와 같은 이름(전투 코드가 objs를 훑는 곳 대비)
     this.sync();
@@ -48,7 +51,13 @@ export class DotView {
 
   sync() {
     const p = this.inst.getPose(), o = this.sprite;
-    if (o.frame.name !== p.frame) o.setFrame(p.frame);
+    if (o.frame.name !== p.frame || this._face !== p.facing) {
+      if (o.frame.name !== p.frame) o.setFrame(p.frame);
+      this._face = p.facing;
+      // 잘라 묶은 장: 기준점이 칸 가운데가 아니라서, 좌우를 뒤집을 때 기준점도 거울처럼 옮김
+      const r = this.dot.rects?.[p.frame];
+      if (r) { const ox = -r[4] / r[2]; o.setOrigin(p.facing < 0 ? 1 - ox : ox, -r[5] / r[3]); }
+    }
     const { local } = this.dotScale();
     o.setScale(local).setFlipX(p.facing < 0).setAlpha(p.alpha);
     o.setPosition(p.dx * local * p.facing, p.dy * local);

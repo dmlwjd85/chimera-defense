@@ -1,0 +1,161 @@
+{
+ "species": "eagle",
+ "motions": {
+  "baby_a1": {
+   "n": 8,
+   "max|h%|": 73.3,
+   "foot±": 9
+  },
+  "baby_down": {
+   "n": 6,
+   "max|h%|": 57.8,
+   "foot±": 3
+  },
+  "baby_hit": {
+   "n": 4,
+   "max|h%|": 77.8,
+   "foot±": 3
+  },
+  "baby_idle": {
+   "n": 4,
+   "max|h%|": 73.3,
+   "foot±": 2
+  },
+  "baby_walk": {
+   "n": 8,
+   "max|h%|": 73.3,
+   "foot±": 7
+  },
+  "teen_a1": {
+   "n": 8,
+   "max|h%|": 46.0,
+   "foot±": 7
+  },
+  "teen_a2": {
+   "n": 8,
+   "max|h%|": 46.0,
+   "foot±": 6
+  },
+  "teen_down": {
+   "n": 6,
+   "max|h%|": 49.2,
+   "foot±": 5
+  },
+  "teen_hit": {
+   "n": 4,
+   "max|h%|": 50.8,
+   "foot±": 2
+  },
+  "teen_idle": {
+   "n": 4,
+   "max|h%|": 46.0,
+   "foot±": 2
+  },
+  "teen_walk": {
+   "n": 8,
+   "max|h%|": 46.0,
+   "foot±": 4
+  },
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 36.7,
+   "foot±": 7
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 36.7,
+   "foot±": 7
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 49.4,
+   "foot±": 11
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 36.7,
+   "foot±": 8
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 36.7,
+   "foot±": 3
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 39.2,
+   "foot±": 2
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 36.7,
+   "foot±": 2
+  },
+  "myth_a1": {
+   "n": 8,
+   "max|h%|": 36.8,
+   "foot±": 2
+  },
+  "myth_a2": {
+   "n": 8,
+   "max|h%|": 28.3,
+   "foot±": 11
+  },
+  "myth_down": {
+   "n": 8,
+   "max|h%|": 48.1,
+   "foot±": 4
+  },
+  "myth_el": {
+   "n": 8,
+   "max|h%|": 35.8,
+   "foot±": 2
+  },
+  "myth_hit": {
+   "n": 4,
+   "max|h%|": 33.0,
+   "foot±": 2
+  },
+  "myth_idle": {
+   "n": 4,
+   "max|h%|": 1.9,
+   "foot±": 0
+  },
+  "myth_ult": {
+   "n": 16,
+   "max|h%|": 26.4,
+   "foot±": 15
+  },
+  "myth_walk": {
+   "n": 8,
+   "max|h%|": 2.8,
+   "foot±": 3
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   485
+  ],
+  "box": [
+   119,
+   113
+  ],
+  "frames": 114,
+  "colors": 16,
+  "px": 993280
+ },
+ "spirit": {
+  "sheet": [
+   2048,
+   486
+  ],
+  "box": [
+   145,
+   148
+  ],
+  "frames": 64,
+  "colors": 16,
+  "px": 995328
+ }
+}

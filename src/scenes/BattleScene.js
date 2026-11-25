@@ -12,7 +12,7 @@ import { makeEnemy } from '../logic/waves.js';
 import { dotOn, dotify } from './dotfx.js';
 import { crumb, debugOn } from './debug.js';
 import { DOT_PX } from '../rig/dotData.js';
-import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS } from './rigs.js';
+import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets } from './rigs.js';
 import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
 import { soundOf, ELEM_SOUND } from './onomato.js';
@@ -45,7 +45,18 @@ const ENGAGE_RING = [[0, 0], [14, -20], [14, 20], [36, -10], [36, 12]];
 export default class BattleScene extends Phaser.Scene {
   constructor() { super('Battle'); }
 
+  /** 덱에 든 종의 동작 시트만 불러옴(폰 메모리). 못 불러오면 정지 그림으로 싸움. */
+  preload(d) {
+    try {
+      const data = buildData(this.registry.get('raw'));
+      const pool = window.__forcePool ?? battleOptions(this.registry.get('save'), data, d?.stageId ?? 'forest-1').pool ?? [];
+      queueMotionSheets(this, pool);
+    } catch (e) { console.warn('motion sheets', e); }
+    this.load.on('loaderror', (f) => console.warn('motion sheet missing', f.key));
+  }
+
   create(d) {
+    this.events.once('shutdown', () => dropMotionSheets(this));
     this.T = this.registry.get('T');
     this.data2 = buildData(this.registry.get('raw'));
     this.save = this.registry.get('save');
@@ -1474,7 +1485,7 @@ export default class BattleScene extends Phaser.Scene {
     for (const ev of this.state.events) {
       const v = ev.uid != null ? this.unitViews.get(ev.uid) : null;
       if (ev.type === 'attack' && v?.rig) playAttack(v.rig.inst, ev.move);
-      if (ev.type === 'ult' && v?.rig) v.rig.inst.play(v.rig.inst.anims.skill ? 'skill' : 'attack');
+      if (ev.type === 'ult' && v?.rig) { const a = v.rig.inst; a.play(a.dot?.sets?.[a.stageDef?.set]?.ult ? 'ult' : a.anims.skill ? 'skill' : 'attack'); }
       if (ev.type === 'skill' && v?.rig && ev.name) v.rig.inst.play('skill');
       if (ev.type === 'merge') this.pendingBirth.set(ev.uid, ev.kind === 'evolve' || ev.kind === 'spirit' ? 'evolve' : 'merge_in');
       if (ev.type === 'summon') this.pendingBirth.set(ev.uid, 'merge_in');
@@ -1514,7 +1525,13 @@ export default class BattleScene extends Phaser.Scene {
             this.time.delayedCall(170, () => { this.fx.gust(ve.lastX, ve.lastY, 1, u.speciesId === 'phoenix' ? 0xffb35c : 0xe0f7ff); this.fx.hit(ve.lastX, ve.lastY, u.speciesId === 'phoenix' ? 'orange' : 'white', true); if (ev.aoe) this.fx.groundAoe(ve.lastX, ve.lastY + 26, 80, u.speciesId === 'thunderbird' ? 0xfff6a0 : u.speciesId === 'phoenix' ? 0xff8a3c : 0xcfefff, { shake: false }); if (u.speciesId === 'thunderbird') this.fx.bolt(ve.lastX, ve.lastY - 150, ve.lastX, ve.lastY); this.kick2(ev, ux); });
             sfx('slash');
           } else if (kind === 'drop') { this.fx.drop(ve.lastX, ve.lastY, 'fx-stone', u.speciesId === 'cheese_thief' ? 0xffe9a8 : 0xffffff); this.time.delayedCall(200, () => this.kick2(ev, ux)); sfx('shoot'); }
-          else if (u.stats.range >= 3) { this.fx.projectile(u.speciesId, ux, uy, ve.lastX, ve.lastY, ev.aoe); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); }
+          else if (u.stats.range >= 3) {
+            // 동작 그림이 있으면 던지는 장(타격 순간)에 맞춰 날림
+            const clip = this.unitViews.get(ev.uid)?.rig?.inst?.cur?.clip;
+            const hitT = clip?.events?.find((e) => e[1] === 'hit')?.[0];
+            const fire = () => { const [x0, y0] = unitPos(ev.uid); this.fx.projectile(u.speciesId, x0, y0, ve.lastX, ve.lastY, ev.aoe); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); };
+            if (hitT > 0.02) this.time.delayedCall(Math.min(0.4, hitT) * 1000 / (this.speed || 1), fire); else fire();
+          }
           else {
             const v = this.unitViews.get(ev.uid);
             if (v) { v.lungeT = 0; v.lungeDir = Math.sign(ve.lastX - ux) || 1; }

@@ -179,6 +179,23 @@ function timerAction(state, data, u, s) {
   }
 }
 
+/** 산군 필살기 연출이 끝난 뒤 데이터(units.json)에 정의된 어흥 효과와 번개 장판을 적용한다. */
+export function applySangunUlt(state, data, uid) {
+  const cfg = data.config;
+  const u = state.field.find((x) => x.uid === uid && !x.down);
+  if (!u) return [];
+  const s = effectsOf(u, 'timerSkill').find((e) => e.action === 'flee');
+  if (!s) return [];
+  const used = timerAction(state, data, u, s);
+  const eids = used ? (s.lastEids ?? []) : [];
+  if (used) {
+    state.events.push({ type: 'skill', uid: u.uid, name: s.name ?? '어흥', fx: s.action, eids, big: false });
+    const t = state.enemies.find((e) => e.eid === eids[0]);
+    addPatch(state, u, t ? t.pos : u.pos + 0.6, cfg);
+  }
+  return eids;
+}
+
 export function tickUnitSkills(state, data, dt) {
   const cfg = data.config;
   for (const u of state.field) {
@@ -243,6 +260,13 @@ export function tickUnitSkills(state, data, dt) {
       const key = 't' + i;
       if (u.skillCd[key] === undefined) u.skillCd[key] = s.every * cm;
       if (!ready(key)) continue;
+      if (state.deferSangunUlt && u.speciesId === 'tiger' && u.stage === 'spirit' && s.action === 'flee') {
+        const hs = state.enemies.filter((e) => e.hp > 0 && Math.abs(e.pos - u.pos) <= s.radius && !e.boss && !e.flying);
+        if (!hs.length) { u.skillCd[key] = 0.5; continue; }
+        u.skillCd[key] = s.every * cm;
+        state.events.push({ type: 'sangunUlt', uid: u.uid, name: s.name ?? '어흥', fx: s.action, radius: s.radius, dur: s.dur, eids: hs.map((e) => e.eid) });
+        continue;
+      }
       const used = timerAction(state, data, u, s);
       u.skillCd[key] = used ? s.every * cm : 0.5;
       if (used) {

@@ -1,0 +1,372 @@
+{
+ "frames": [
+  {
+   "filename": "fx_00",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_01",
+   "frame": {
+    "x": 192,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_02",
+   "frame": {
+    "x": 384,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_03",
+   "frame": {
+    "x": 576,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_04",
+   "frame": {
+    "x": 768,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_05",
+   "frame": {
+    "x": 960,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_06",
+   "frame": {
+    "x": 0,
+    "y": 144,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_07",
+   "frame": {
+    "x": 192,
+    "y": 144,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_08",
+   "frame": {
+    "x": 384,
+    "y": 144,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_09",
+   "frame": {
+    "x": 576,
+    "y": 144,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_10",
+   "frame": {
+    "x": 768,
+    "y": 144,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_11",
+   "frame": {
+    "x": 960,
+    "y": 144,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_12",
+   "frame": {
+    "x": 0,
+    "y": 288,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_13",
+   "frame": {
+    "x": 192,
+    "y": 288,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_14",
+   "frame": {
+    "x": 384,
+    "y": 288,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_15",
+   "frame": {
+    "x": 576,
+    "y": 288,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  },
+  {
+   "filename": "fx_16",
+   "frame": {
+    "x": 768,
+    "y": 288,
+    "w": 192,
+    "h": 144
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 192,
+    "h": 144
+   },
+   "sourceSize": {
+    "w": 192,
+    "h": 144
+   }
+  }
+ ],
+ "meta": {
+  "app": "chimera-defense pack_sangun_ult.py",
+  "version": "1.0",
+  "image": "under.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 1152,
+   "h": 432
+  },
+  "scale": "1"
+ }
+}

@@ -31,6 +31,11 @@ export default class BootScene extends Phaser.Scene {
     preloadRigs(this);
     // 도트 이펙트(pixelfx, MIT — 에셋 출처 장부 참고): 타격·치명타·할퀴기·처치 연기
     for (const n of PFX) this.load.atlas('pfx-' + n, `assets/fx/pfx/${n}.png`, `assets/fx/pfx/${n}.json`);
+    // 산군 필살기 v6 (8방향 회전 + under/over 이펙트 레이어 + 시간표 JSON)
+    this.load.json('sangunUlt', 'data/sangun_ult.json');
+    for (const layer of ['char', 'under', 'over']) {
+      this.load.atlas(`sangun-ult-${layer}`, `assets/fx/sangun-ult/${layer}.png`, `assets/fx/sangun-ult/${layer}.json`);
+    }
     this.load.on('loaderror', (f) => console.warn('load failed:', f.key));
   }
 
@@ -47,6 +52,11 @@ export default class BootScene extends Phaser.Scene {
     this.registry.set('storage', storage);
     this.registry.set('save', loadSave(storage));
     document.title = T('title.pageTitle');
+    const q = new URLSearchParams(location.search);
+    if (q.get('sangunUlt') === '1' || q.get('ult') === '1' || q.get('ult') === 'sangun') {
+      this.scene.start('Battle', { stageId: 'forest-1', testSangunUlt: true });
+      return;
+    }
     this.scene.start('Title');
   }
 }

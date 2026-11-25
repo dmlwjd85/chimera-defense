@@ -1,0 +1,256 @@
+{
+  "note": "산군 필살기 v6 연출 시간표 및 레이어 설정 (fx_config.json 기반)",
+  "canvas": {
+    "width": 192,
+    "height": 144,
+    "character_offset_xy": [
+      48,
+      28
+    ],
+    "source_character": "96x96"
+  },
+  "ground_baseline_y": 104,
+  "orbit_total_ms": 1100,
+  "landing_total_ms": 1460,
+  "one_play_ms": 2560,
+  "frames": [
+    {
+      "index": 0,
+      "char_frame": "char_0",
+      "under_frame": "fx_00",
+      "over_frame": "fx_00",
+      "phase": "기 모으기",
+      "label": "장면1 south-west (f0)",
+      "duration_ms": 140,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 1,
+      "char_frame": "char_1",
+      "under_frame": "fx_01",
+      "over_frame": "fx_01",
+      "phase": "회오리 상승",
+      "label": "장면2 west (f1)",
+      "duration_ms": 160,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 2,
+      "char_frame": "char_2",
+      "under_frame": "fx_02",
+      "over_frame": "fx_02",
+      "phase": "회오리 상승",
+      "label": "장면3 north-west (f2)",
+      "duration_ms": 180,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 3,
+      "char_frame": "char_3",
+      "under_frame": "fx_03",
+      "over_frame": "fx_03",
+      "phase": "회오리 상승",
+      "label": "장면4 north (f3)",
+      "duration_ms": 180,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 4,
+      "char_frame": "char_4",
+      "under_frame": "fx_04",
+      "over_frame": "fx_04",
+      "phase": "하강·강타",
+      "label": "장면5 north-east (f4)",
+      "duration_ms": 160,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 5,
+      "char_frame": "char_5",
+      "under_frame": "fx_05",
+      "over_frame": "fx_05",
+      "phase": "하강·강타",
+      "label": "장면6 east (f5)",
+      "duration_ms": 140,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 6,
+      "char_frame": "char_6",
+      "under_frame": "fx_06",
+      "over_frame": "fx_06",
+      "phase": "하강·강타",
+      "label": "장면7 south-east (f6)",
+      "duration_ms": 140,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 7,
+      "char_frame": "char_7",
+      "under_frame": "fx_07",
+      "over_frame": "fx_07",
+      "phase": "착지 충격파",
+      "label": "착지1 쿵! 충격",
+      "duration_ms": 60,
+      "shake_px": [
+        6,
+        3
+      ],
+      "has_flash": true
+    },
+    {
+      "index": 8,
+      "char_frame": "char_7",
+      "under_frame": "fx_08",
+      "over_frame": "fx_08",
+      "phase": "착지 충격파",
+      "label": "착지2 고리1 확장",
+      "duration_ms": 80,
+      "shake_px": [
+        -5,
+        -3
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 9,
+      "char_frame": "char_7",
+      "under_frame": "fx_09",
+      "over_frame": "fx_09",
+      "phase": "착지 충격파",
+      "label": "착지3 이중 충격파",
+      "duration_ms": 80,
+      "shake_px": [
+        4,
+        -2
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 10,
+      "char_frame": "char_7",
+      "under_frame": "fx_10",
+      "over_frame": "fx_10",
+      "phase": "착지 충격파",
+      "label": "착지4 흙먼지 분출",
+      "duration_ms": 80,
+      "shake_px": [
+        -3,
+        2
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 11,
+      "char_frame": "char_7",
+      "under_frame": "fx_11",
+      "over_frame": "fx_11",
+      "phase": "착지 충격파",
+      "label": "착지5 먼지 상승",
+      "duration_ms": 80,
+      "shake_px": [
+        2,
+        1
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 12,
+      "char_frame": "char_7",
+      "under_frame": "fx_12",
+      "over_frame": "fx_12",
+      "phase": "착지 충격파",
+      "label": "착지6 파편 낙하",
+      "duration_ms": 100,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 13,
+      "char_frame": "char_7",
+      "under_frame": "fx_13",
+      "over_frame": "fx_13",
+      "phase": "착지 충격파",
+      "label": "착지7 먼지 가라앉음",
+      "duration_ms": 100,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 14,
+      "char_frame": "char_7",
+      "under_frame": "fx_14",
+      "over_frame": "fx_14",
+      "phase": "착지 충격파",
+      "label": "착지8 착지 잔먼지",
+      "duration_ms": 100,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 15,
+      "char_frame": "char_7",
+      "under_frame": "fx_15",
+      "over_frame": "fx_15",
+      "phase": "착지 충격파",
+      "label": "착지9 잔금 정리",
+      "duration_ms": 100,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    },
+    {
+      "index": 16,
+      "char_frame": "char_7",
+      "under_frame": "fx_16",
+      "over_frame": "fx_16",
+      "phase": "착지 충격파",
+      "label": "착지10 정면 마무리",
+      "duration_ms": 680,
+      "shake_px": [
+        0,
+        0
+      ],
+      "has_flash": false
+    }
+  ]
+}

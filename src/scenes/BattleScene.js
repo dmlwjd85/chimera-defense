@@ -7,10 +7,11 @@ import { ownedRelics } from '../logic/relics.js';
 import { battleOptions, settleRun, writeSave, carryCandidates, setCarry } from '../logic/meta.js';
 import { traitView } from '../logic/traits.js';
 import { terrainMatch, effRange, effBlock, effDamage, effInterval } from '../logic/mods.js';
-import { isResting } from '../logic/combat.js';
+import { isResting, applySangunUlt } from '../logic/combat.js';
 import { makeEnemy } from '../logic/waves.js';
 import { dotOn, dotify } from './dotfx.js';
-import { crumb } from './debug.js';
+import { crumb, debugOn } from './debug.js';
+import { DOT_PX } from '../rig/dotData.js';
 import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS } from './rigs.js';
 import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
@@ -53,6 +54,8 @@ export default class BattleScene extends Phaser.Scene {
     const bopts = battleOptions(this.save, this.data2, this.stageId);
     this.registry.set('highlight', null); this.bestShot = 0;
     this.state = createBattle(this.data2, this.stageId, seedParam > 0 ? seedParam : Date.now() % 100000, bopts);
+    this.state.deferSangunUlt = true;
+    this.testSangunUlt = !!d?.testSangunUlt;
     this.carried = addCarry(this.state, this.data2, bopts.carry);
     this.fallbackGold = !bopts.carry && this.data2.stages.findIndex((x) => x.id === this.stageId) > 0 ? this.data2.config.carry.fallbackGold : 0;
     Object.assign(this, { speed: 1, paused: false, leaving: false, unitViews: new Map(), enemyViews: new Map(), hidden: new Set(), designate: { continent: null, habitat: null } });
@@ -74,17 +77,22 @@ export default class BattleScene extends Phaser.Scene {
     kb.on('keydown-ONE', () => { this.speed = 1; });
     kb.on('keydown-TWO', () => { this.speed = 2; });
     kb.on('keydown-P', () => { this.paused = !this.paused; });
+    if (debugOn || this.testSangunUlt) kb.on('keydown-F9', () => this.triggerSangunUlt());
 
     window.__battle = { scene: this, get state() { return this.scene.state; }, data: this.data2,
       actions: { summon, deploy, moveUnit, recall, sell, merge, skipPrep, buyBait, toggleLock },
       put: (sp, stage, pos, row) => { const st = this.state; const i = st.bench.indexOf(null); if (i < 0) return null; st.bench[i] = makeUnit(st, this.data2, { kind: 'base', speciesId: sp, stage, parts: null, traits: [] }); return deploy(st, this.data2, i, pos, { row }); },
-      spawn: (id, pos = 9) => { const st = this.state; const e = makeEnemy(id, st.wave, st.stage, this.data2, st.nextEid++); e.pos = pos; st.enemies.push(e); return e; } };
+      spawn: (id, pos = 9) => { const st = this.state; const e = makeEnemy(id, st.wave, st.stage, this.data2, st.nextEid++); e.pos = pos; st.enemies.push(e); return e; },
+      playSangunUlt: (uid) => this.triggerSangunUlt(uid),
+      get sangunUlt() { return this.scene.sangunUlt ? { index: this.scene.sangunUlt.frameIdx, elapsedMs: this.scene.sangunUlt.elapsedMs } : null; } };
     attachInput(this);
     if (this.carried) this.time.delayedCall(400, () => { this.toast(`지난 스테이지에서 데려온 동물: ${this.carried.white ? '흰 ' : ''}${this.carried.stats.name}`, '#9cff6b'); this.fx.burst('rise', benchSlotX(0), BENCH_Y, 14, 0x9cff6b); });
     else if (this.fallbackGold) this.time.delayedCall(400, () => this.toast(`데려온 동물이 없어 시작 골드 +${this.fallbackGold}`, '#ffd84d'));
     this.input.on('pointerdown', unlockAudio);
     this.input.keyboard.on('keydown', unlockAudio);
     this.stanceFx = new Map();
+    this.events.once('shutdown', () => this.cleanupSangunUlt());
+    if (this.testSangunUlt) this.setupSangunUltDemo();
   }
 
   // ---------- soul pet: the star of the run ----------
@@ -291,7 +299,7 @@ export default class BattleScene extends Phaser.Scene {
     const icons = (ids) => ids.map((e) => cfg.elements.defs[e]?.icon ?? '').join('');
     const tip = `${c.name}\n“${c.tale}”${c.strong?.length ? `\n${icons(c.strong)} 속성 동물: 피해 +${cfg.climateEffect.dmg}%, 속성 공격 잦아짐` : ''}${c.weak?.length ? `\n${icons(c.weak)} 속성 동물: 피해 -${cfg.climateEffect.dmg}%, 속성 공격 뜸해짐` : ''}${c.enemy?.speed ? '\n적이 조금 빨라짐' : ''}${c.enemy?.flySpeed ? `\n나는 적 ${c.enemy.flySpeed < 1 ? '느려짐' : '빨라짐'}` : ''}`;
     chip(this, 1090, 100, `${c.icon} ${c.name}  ${c.strong?.length ? icons(c.strong) + '▲' : ''} ${c.weak?.length ? icons(c.weak) + '▼' : ''}`, tip, { stroke: 0x7fd1ff, size: 13, depth: 30 });
-    this.time.delayedCall(700, () => this.fx.banner(`${c.icon} ${c.name}`, '#cfe8ff', c.tale));
+    if (!this.testSangunUlt) this.time.delayedCall(700, () => this.fx.banner(`${c.icon} ${c.name}`, '#cfe8ff', c.tale));
   }
 
   drawPath() {
@@ -760,6 +768,10 @@ export default class BattleScene extends Phaser.Scene {
     { const now = performance.now(); if (now - (this.crumbAt ?? 0) > 1000) { this.crumbAt = now; crumb(this); } }
     const live = !this.paused && !this.modalOpen;
     this.realDt = Math.min(delta / 1000, 0.1);
+    if (this.sangunUlt) {
+      if (live) this.tickSangunUlt(this.realDt);
+      return;
+    }
     const stop = (this.hitStop ?? 0) > 0;
     if (stop) this.hitStop -= this.realDt;
     if ((this.slowMo ?? 0) > 0) this.slowMo -= this.realDt;
@@ -783,6 +795,220 @@ export default class BattleScene extends Phaser.Scene {
     this.updateTutorial();
     if (this.cardUid != null && time - (this.cardAt ?? 0) > 250) { this.cardAt = time; this.showUnitCard(this.cardUid); }
     if (this.state.phase === 'ended' && !this.leaving) this.finish();
+  }
+
+  // ---------- 산군 필살기 v6 (블릿 타임 8방향 회전 + 회오리/충격파 이펙트) ----------
+  setupSangunUltDemo() {
+    this.tutorialStep = -1;
+    const s = this.state;
+    s.phase = 'wave';
+    s.wave = 1;
+    s.waveTime = 0;
+    s.enemies = [];
+    s.queue = [];
+    const putDirect = (sp, stage, pos, y, skillCd) => {
+      const u = makeUnit(s, this.data2, { kind: 'base', speciesId: sp, stage, parts: null, traits: [] });
+      Object.assign(u, { pos, targetPos: pos, y, targetY: y, lane: Math.round(y * 2), inGate: false, rushing: false, moving: false });
+      if (skillCd) u.skillCd = { ...skillCd };
+      s.field.push(u);
+      return u;
+    };
+    const sangun = putDirect('tiger', 'spirit', 5.4, 0.5, { t0: 0.45 });
+    putDirect('bear', 'adult', 6.1, 0.22);
+    putDirect('fox', 'adult', 2.9, 0.78);
+    [
+      ['normal', 6.3, 0.28],
+      ['fast', 6.7, 0.52],
+      ['tough', 7.2, 0.72],
+      ['normal', 7.6, 0.44],
+    ].forEach(([id, pos, y]) => {
+      const e = makeEnemy(id, s.wave, s.stage, this.data2, s.nextEid++);
+      e.pos = pos;
+      e.y = y;
+      s.enemies.push(e);
+    });
+    this.syncUnits();
+    this.syncEnemies();
+    this.toast('⚡ 산군 필살기 v6 테스트 모드 (F9로 재실행)', '#ffd84d');
+    return sangun.uid;
+  }
+
+  triggerSangunUlt(uid = null) {
+    if (this.sangunUlt) return false;
+    const s = this.state;
+    let u = uid != null
+      ? s.field.find((x) => x.uid === uid && !x.down)
+      : s.field.find((x) => x.speciesId === 'tiger' && x.stage === 'spirit' && !x.down);
+    if (!u) {
+      u = makeUnit(s, this.data2, { kind: 'base', speciesId: 'tiger', stage: 'spirit', parts: null, traits: [] });
+      Object.assign(u, { pos: 5.4, targetPos: 5.4, y: 0.5, targetY: 0.5, lane: 1, inGate: false, rushing: false, moving: false });
+      s.field.push(u);
+      if (s.phase !== 'wave') s.phase = 'wave';
+      if (!s.enemies.some((e) => e.hp > 0)) {
+        for (const [id, pos, y] of [['normal', 6.4, 0.35], ['fast', 6.9, 0.55], ['tough', 7.4, 0.7]]) {
+          const e = makeEnemy(id, s.wave, s.stage, this.data2, s.nextEid++);
+          e.pos = pos; e.y = y; s.enemies.push(e);
+        }
+      }
+      this.syncUnits();
+      this.syncEnemies();
+    }
+    this.startSangunUlt(u.uid, { name: '어흥' });
+    return true;
+  }
+
+  startSangunUlt(uid, opts = {}) {
+    if (this.sangunUlt) return;
+    const cfg = this.cache.json.get('sangunUlt');
+    const readyTex = ['sangun-ult-char', 'sangun-ult-under', 'sangun-ult-over'].every((k) => this.textures.exists(k));
+    if (!cfg?.frames?.length || !readyTex) {
+      applySangunUlt(this.state, this.data2, uid);
+      return;
+    }
+    for (const k of ['sangun-ult-char', 'sangun-ult-under', 'sangun-ult-over']) {
+      this.textures.get(k).setFilter(Phaser.Textures.FilterMode.NEAREST);
+    }
+    const u = this.state.field.find((x) => x.uid === uid);
+    const v = this.unitViews.get(uid);
+    const fx = v ? v.container.x : tileToX(u?.pos ?? 5.4);
+    const fy = v ? v.container.y + 30 : this.groundY(u?.y ?? 0.5) + 30;
+    const scale = DOT_PX;
+    const K = window.__K ?? 1;
+    const cam = this.cameras.main;
+
+    // 정지: 트윈·타이머·입자·전투 시뮬레이션을 멈추고 산군 기존 스프라이트는 숨김
+    this.tweens.pauseAll();
+    const wasTimePaused = this.time.paused;
+    this.time.paused = true;
+    const pausedEmitters = [];
+    for (const obj of this.children.list) {
+      if (obj?.type === 'ParticleEmitter' && obj.active && !obj.paused) {
+        obj.pause();
+        pausedEmitters.push(obj);
+      }
+    }
+    if (v) {
+      v.container.setVisible(false);
+      if (v.shadow) v.shadow.setVisible(false);
+    }
+    if (u?.soul) {
+      this.soulGfx?.clear();
+      this.soulTag?.setVisible(false);
+    }
+
+    const backdrop = this.add.rectangle(640, 360, 1800, 1100, 0x050812, 0).setDepth(1750);
+    const f0 = cfg.frames[0];
+    const [ox, oy] = cfg.canvas?.character_offset_xy ?? [48, 28];
+    const cw = cfg.canvas?.width ?? 192;
+    const ch = cfg.canvas?.height ?? 144;
+    const gy = cfg.ground_baseline_y ?? 104;
+    const cx = cw / 2;
+    const underSp = this.add.sprite(0, 0, 'sangun-ult-under', f0.under_frame).setOrigin(cx / cw, gy / ch);
+    const charSp = this.add.sprite(0, 0, 'sangun-ult-char', f0.char_frame).setOrigin((cx - ox) / 96, (gy - oy) / 96);
+    const overSp = this.add.sprite(0, 0, 'sangun-ult-over', f0.over_frame).setOrigin(cx / cw, gy / ch);
+    const ultBox = this.add.container(fx, fy, [underSp, charSp, overSp]).setDepth(1760).setScale(scale);
+    const titleText = this.add.text(640, 92, `⚡ 산군 필살기 · ${opts.name ?? '어흥'}`, style(22, '#ffe15a', { stroke: '#291a1f', strokeThickness: 6, fontStyle: 'bold' })).setOrigin(0.5).setDepth(1770).setAlpha(0);
+
+    this.sangunUlt = {
+      uid,
+      cfg,
+      scale,
+      frameIdx: 0,
+      frameMs: 0,
+      elapsedMs: 0,
+      backdrop,
+      ultBox,
+      underSp,
+      charSp,
+      overSp,
+      titleText,
+      baseZoom: K,
+      targetZoom: 1.12 * K,
+      targetCx: Phaser.Math.Clamp(fx, 575, 705),
+      targetCy: Phaser.Math.Clamp(fy - 18, 325, 395),
+      cam,
+      wasTimePaused,
+      pausedEmitters,
+      skipEffect: !!opts.skipEffect,
+    };
+    this.enterSangunUltFrame(0);
+  }
+
+  enterSangunUltFrame(idx) {
+    const st = this.sangunUlt;
+    if (!st) return;
+    const fr = st.cfg.frames[idx];
+    if (!fr) return;
+    st.underSp.setFrame(fr.under_frame);
+    st.charSp.setFrame(fr.char_frame);
+    st.overSp.setFrame(fr.over_frame);
+    if (idx === 0) sfx('stance');
+    else if (idx === 1) sfx('dodge');
+    else if (fr.has_flash) { sfx('slam'); sfx('roar'); }
+  }
+
+  tickSangunUlt(dt) {
+    const st = this.sangunUlt;
+    if (!st) return;
+    const ms = dt * 1000;
+    st.elapsedMs += ms;
+    st.frameMs += ms;
+    const frames = st.cfg.frames;
+    while (st.frameIdx < frames.length && st.frameMs >= frames[st.frameIdx].duration_ms) {
+      st.frameMs -= frames[st.frameIdx].duration_ms;
+      st.frameIdx++;
+      if (st.frameIdx < frames.length) this.enterSangunUltFrame(st.frameIdx);
+    }
+    if (st.frameIdx >= frames.length) {
+      this.finishSangunUlt();
+      return;
+    }
+    const fr = frames[st.frameIdx];
+    const zoomK = Math.min(1, st.elapsedMs / 220);
+    const ease = 1 - Math.pow(1 - zoomK, 3);
+    const z = st.baseZoom + (st.targetZoom - st.baseZoom) * ease;
+    const cx = 640 + (st.targetCx - 640) * ease;
+    const cy = 360 + (st.targetCy - 360) * ease;
+    const [sx, sy] = fr.shake_px ?? [0, 0];
+    st.cam.setZoom(z);
+    st.cam.centerOn(cx - sx * st.scale, cy - sy * st.scale);
+    const dimK = Math.min(1, st.elapsedMs / 160);
+    st.backdrop.setFillStyle(0x050812, 0.62 * dimK);
+    st.titleText.setAlpha(dimK);
+  }
+
+  finishSangunUlt() {
+    const st = this.sangunUlt;
+    if (!st) return;
+    const uid = st.uid;
+    const skipEffect = st.skipEffect;
+    this.cleanupSangunUlt();
+    if (!skipEffect) {
+      applySangunUlt(this.state, this.data2, uid);
+      this.drainEvents();
+    }
+  }
+
+  cleanupSangunUlt() {
+    const st = this.sangunUlt;
+    if (!st) return;
+    this.sangunUlt = null;
+    st.backdrop?.destroy();
+    st.ultBox?.destroy();
+    st.titleText?.destroy();
+    st.cam?.setZoom(st.baseZoom);
+    st.cam?.centerOn(640, 360);
+    const v = this.unitViews?.get(st.uid);
+    if (v) {
+      v.container?.setVisible(true);
+      const u = this.state?.field?.find((x) => x.uid === st.uid);
+      if (v.shadow) v.shadow.setVisible(!!u?.stats?.flyer && !u?.down);
+    }
+    this.time.paused = st.wasTimePaused ?? false;
+    this.tweens.resumeAll();
+    for (const em of st.pausedEmitters ?? []) {
+      if (em?.active) em.resume();
+    }
   }
 
   finish() {
@@ -1297,6 +1523,10 @@ export default class BattleScene extends Phaser.Scene {
             sfx('slash'); sfx('hit');
           }
           this.fx.onHitFlavor(u.stats.effects, ve.lastX, ve.lastY);
+          break;
+        }
+        case 'sangunUlt': {
+          this.startSangunUlt(ev.uid, ev);
           break;
         }
         case 'skill': {

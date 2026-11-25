@@ -1,0 +1,94 @@
+{
+ "note": "frog 신화급 도트(2026-11-26 PixelLab 확정: 손 달린 사람 모양). 그림 1칸 = 화면 1px.",
+ "species": "frog_spirit",
+ "sheet": "dot-frog_spirit",
+ "file": "assets/dot/frog_spirit.png",
+ "frameW": 92,
+ "frameH": 108,
+ "foot": 105,
+ "cols": 1,
+ "anchorX": 46,
+ "palette": [
+  "#070204",
+  "#291a1f",
+  "#33113f",
+  "#554523",
+  "#59265e",
+  "#6b5923",
+  "#776829",
+  "#7a3075",
+  "#917b2c",
+  "#9a4e94",
+  "#afa025",
+  "#be9848",
+  "#d9ba4e",
+  "#edda5d",
+  "#f8e382",
+  "#fefefe"
+ ],
+ "frames": [
+  "frog_myth_idle_01"
+ ],
+ "standing": [
+  "frog_myth_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "myth": {
+   "top": 1,
+   "idle": {
+    "frames": [
+     "frog_myth_idle_01",
+     "frog_myth_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "frog_myth_idle_01",
+     "frog_myth_idle_01",
+     "frog_myth_idle_01",
+     "frog_myth_idle_01",
+     "frog_myth_idle_01",
+     "frog_myth_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

@@ -1,0 +1,94 @@
+{
+ "note": "crow 신화급 도트(2026-11-26 PixelLab 확정: 손 달린 사람 모양). 그림 1칸 = 화면 1px.",
+ "species": "crow_spirit",
+ "sheet": "dot-crow_spirit",
+ "file": "assets/dot/crow_spirit.png",
+ "frameW": 99,
+ "frameH": 108,
+ "foot": 105,
+ "cols": 1,
+ "anchorX": 49,
+ "palette": [
+  "#050211",
+  "#291a1f",
+  "#343645",
+  "#474a56",
+  "#5b5e69",
+  "#5c343b",
+  "#753019",
+  "#7f848b",
+  "#995b25",
+  "#a8acb7",
+  "#ca8835",
+  "#d41510",
+  "#e3e6ed",
+  "#f0b544",
+  "#f75038",
+  "#fad166"
+ ],
+ "frames": [
+  "crow_myth_idle_01"
+ ],
+ "standing": [
+  "crow_myth_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "myth": {
+   "top": 1,
+   "idle": {
+    "frames": [
+     "crow_myth_idle_01",
+     "crow_myth_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "crow_myth_idle_01",
+     "crow_myth_idle_01",
+     "crow_myth_idle_01",
+     "crow_myth_idle_01",
+     "crow_myth_idle_01",
+     "crow_myth_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

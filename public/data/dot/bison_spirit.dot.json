@@ -1,0 +1,94 @@
+{
+ "note": "bison 신화급 도트(2026-11-26 PixelLab 확정: 손 달린 사람 모양). 그림 1칸 = 화면 1px.",
+ "species": "bison_spirit",
+ "sheet": "dot-bison_spirit",
+ "file": "assets/dot/bison_spirit.png",
+ "frameW": 100,
+ "frameH": 109,
+ "foot": 106,
+ "cols": 1,
+ "anchorX": 50,
+ "palette": [
+  "#0c0421",
+  "#161038",
+  "#25295e",
+  "#291a1f",
+  "#364d88",
+  "#4d6052",
+  "#4e7399",
+  "#5a312c",
+  "#5b8eb6",
+  "#7eb0d3",
+  "#86503e",
+  "#a56b4d",
+  "#bd8558",
+  "#d59e61",
+  "#f2ca81",
+  "#feebac"
+ ],
+ "frames": [
+  "bison_myth_idle_01"
+ ],
+ "standing": [
+  "bison_myth_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "myth": {
+   "top": 1,
+   "idle": {
+    "frames": [
+     "bison_myth_idle_01",
+     "bison_myth_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "bison_myth_idle_01",
+     "bison_myth_idle_01",
+     "bison_myth_idle_01",
+     "bison_myth_idle_01",
+     "bison_myth_idle_01",
+     "bison_myth_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

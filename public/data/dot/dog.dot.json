@@ -1,36 +1,39 @@
 {
- "note": "dog 도트(2026-11-25 제미나이 확정 시안: 아기 눈 크게, 성체 머리 크게). 칸 72×56, 발밑선 y=51. 아직 그림은 대기 1장씩이고 걷기·공격은 코드 연출(통통·내딛기) — 동작 그림은 나중에.",
+ "note": "dog 도트(2026-11-26 PixelLab 확정: 손발·머리·눈이 큰 캐주얼, 아기·성장기·성체). 그림 1칸 = 화면 1px. 동작 그림은 아직이고 대기 들썩임·공격 내딛기는 코드 연출. 원본 art-src/pixellab.",
  "species": "dog",
  "sheet": "dot-dog",
  "file": "assets/dot/dog.png",
- "frameW": 72,
- "frameH": 56,
- "foot": 51,
- "cols": 2,
- "anchorX": 36,
+ "frameW": 91,
+ "frameH": 84,
+ "foot": 81,
+ "cols": 3,
+ "anchorX": 45,
  "palette": [
+  "#150408",
   "#291a1f",
-  "#422a25",
-  "#542811",
-  "#734727",
-  "#77725e",
-  "#996446",
-  "#b59784",
-  "#b86b3a",
-  "#bc7d59",
-  "#dcc1b2",
-  "#e0a26f",
-  "#e2b993",
-  "#e6a158",
-  "#f2e1c8",
-  "#f9f1e7"
+  "#5d2d1f",
+  "#7f432b",
+  "#9d5734",
+  "#9f6c53",
+  "#ba6b3c",
+  "#c98358",
+  "#d8a888",
+  "#dcb79f",
+  "#eb9f60",
+  "#f6a35e",
+  "#f6b87d",
+  "#f79d4f",
+  "#fde5c3",
+  "#feedd4"
  ],
  "frames": [
   "dog_baby_idle_01",
+  "dog_teen_idle_01",
   "dog_adult_idle_01"
  ],
  "standing": [
   "dog_baby_idle_01",
+  "dog_teen_idle_01",
   "dog_adult_idle_01"
  ],
  "attacks": [
@@ -38,15 +41,32 @@
  ],
  "sets": {
   "baby": {
-   "top": 12,
+   "top": 35,
    "idle": {
     "frames": [
      "dog_baby_idle_01",
      "dog_baby_idle_01"
     ],
     "durs": [
-     0.34,
-     0.34
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "teen": {
+   "top": 20,
+   "idle": {
+    "frames": [
+     "dog_teen_idle_01",
+     "dog_teen_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
     ],
     "loop": true,
     "fx": {
@@ -55,15 +75,15 @@
    }
   },
   "adult": {
-   "top": 8,
+   "top": 1,
    "idle": {
     "frames": [
      "dog_adult_idle_01",
      "dog_adult_idle_01"
     ],
     "durs": [
-     0.38,
-     0.38
+     0.36,
+     0.36
     ],
     "loop": true,
     "fx": {
@@ -106,15 +126,15 @@
  "stages": {
   "young": {
    "set": "baby",
-   "scale": 0.8
+   "scale": 0.5
   },
   "teen": {
-   "set": "baby",
-   "scale": 0.95
+   "set": "teen",
+   "scale": 0.5
   },
   "adult": {
    "set": "adult",
-   "scale": 1
+   "scale": 0.5
   }
  }
 }

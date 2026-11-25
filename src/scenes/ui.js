@@ -1,6 +1,7 @@
 // Shared drawing helpers for all scenes (placeholder art: shapes and text, swappable for images later).
 import Phaser from 'phaser';
 import { FONT } from '../text.js';
+import { dotDataFor } from './rigs.js';
 
 export const COLORS = { bg: 0x141a21, panel: 0x1f2a36, line: 0x3b4b5e, accent: 0xffb35c, good: 0x58d68d, bad: 0xf0883e, flip: 0x5dade2, gold: 0xffd84d };
 export const hex = (h) => Phaser.Display.Color.HexStringToColor(h ?? '#888888').color;
@@ -87,12 +88,35 @@ export function title(scene, x, y, text, size = 40) {
  * Placeholder token for a unit: colored disc sized by stage, initial letter, stage ring, chimera split.
  * Uses an image instead when a texture `unit-<id>-<stage>` or `unit-<id>` exists (drop-in Grok art).
  */
+/** 종 그림 한 장(도트가 있으면 그 단계 도트, 없으면 unit-<종> 그림). 덱·스테이지 선택 같은 카드용. size = 차지할 네모 한 변. */
+export function speciesImage(scene, id, stage, x, y, size) {
+  const dot = dotDataFor(scene, id, stage);
+  const set = dot && dot.sets[dot.stages[stage]?.set];
+  if (set) {
+    const h = dot.foot + 1 - (set.top ?? 0);
+    const img = scene.add.image(x, y + size / 2, dot.sheet, set.idle.frames[0]).setOrigin(0.5, (dot.foot + 1) / dot.frameH);
+    img.setScale(Math.min((size * 0.95) / h, (size * 0.95) / dot.frameW));
+    return img;
+  }
+  if (scene.textures.exists('unit-' + id)) return scene.add.image(x, y, 'unit-' + id).setDisplaySize(size, size);
+  return null;
+}
+
 export function unitToken(scene, unit, data) {
   const c = scene.add.container(0, 0);
   const stageR = { young: 20, teen: 24, adult: 28, spirit: 30 }[unit.stage] ?? 26;
   const id = unit.kind === 'weak' ? null : unit.speciesId;
+  // 도트 그림이 있으면 초상화도 그 단계 도트로(2026-11-26 PixelLab 확정본)
+  const dot = id && unit.kind === 'base' ? dotDataFor(scene, id, unit.stage) : null;
+  const dset = dot && dot.sets[dot.stages[unit.stage]?.set];
   const key = id && [`unit-${id}-${unit.stage}`, `unit-${id}`].find((k) => scene.textures.exists(k));
-  if (key) {
+  if (dset) {
+    if (unit.stage === 'spirit') c.add(scene.add.circle(0, 0, stageR * 1.35, COLORS.gold, 0.35).setStrokeStyle(3, COLORS.gold, 0.9));
+    const img = scene.add.image(0, stageR * 0.9, dot.sheet, dset.idle.frames[0]).setOrigin(0.5, (dot.foot + 1) / dot.frameH);
+    const h = dot.foot + 1 - (dset.top ?? 0), w = dot.frameW;
+    img.setScale(Math.min((stageR * (unit.stage === 'spirit' ? 1.9 : 2.5)) / h, (stageR * 2.8) / w));
+    c.add(img);
+  } else if (key) {
     if (unit.stage === 'spirit') c.add(scene.add.circle(0, 0, stageR * 1.35, COLORS.gold, 0.35).setStrokeStyle(3, COLORS.gold, 0.9));
     if (unit.white) c.add(scene.add.circle(0, 0, stageR * 1.3, 0xffffff, 0.35));
     c.add(scene.add.image(0, -stageR * 0.2, key).setDisplaySize(stageR * 2.9, stageR * 2.9));

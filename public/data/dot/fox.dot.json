@@ -1,44 +1,140 @@
 {
-  "note": "여우 도트(확정본 fox_dot_v3). 칸 72×56, 발밑선 y=51, 1도트=3px. 성장기는 아기 그림을 기본 크기로, 어린 단계는 아기 그림을 조금 작게(계획서 기본값). 구미호(spirit)는 아직 기존 리그.",
-  "species": "fox",
-  "sheet": "dot-fox",
-  "file": "assets/dot/fox.png",
-  "frameW": 72,
-  "frameH": 56,
-  "foot": 51,
-  "cols": 14,
-  "anchorX": 36,
-  "palette": ["#291a1f", "#2e2422", "#42342e", "#9e5614", "#ba480a", "#da5860", "#ea6c12", "#ebd0ac", "#ff942a", "#ffe15a", "#fff4e0", "#ffffff"],
-  "frames": [
-    "fox_baby_idle_01", "fox_baby_idle_02", "fox_baby_idle_03", "fox_baby_idle_04",
-    "fox_adult_idle_01", "fox_adult_idle_02", "fox_adult_idle_03", "fox_adult_idle_04",
-    "fox_adult_claw_01", "fox_adult_claw_02", "fox_adult_claw_03", "fox_adult_claw_04", "fox_adult_claw_05", "fox_adult_claw_06"
-  ],
-  "standing": [
-    "fox_baby_idle_01", "fox_baby_idle_02", "fox_baby_idle_03", "fox_baby_idle_04",
-    "fox_adult_idle_01", "fox_adult_idle_02", "fox_adult_idle_03", "fox_adult_idle_04",
-    "fox_adult_claw_01", "fox_adult_claw_02", "fox_adult_claw_05", "fox_adult_claw_06"
-  ],
-  "attacks": ["claw"],
-  "sets": {
-    "baby": {
-      "top": 15,
-      "idle": { "frames": ["fox_baby_idle_01", "fox_baby_idle_02", "fox_baby_idle_03", "fox_baby_idle_04"], "durs": [0.22, 0.22, 0.22, 0.22], "loop": true }
-    },
-    "adult": {
-      "top": 8,
-      "idle": { "frames": ["fox_adult_idle_01", "fox_adult_idle_02", "fox_adult_idle_03", "fox_adult_idle_04"], "durs": [0.24, 0.24, 0.24, 0.24], "loop": true },
-      "claw": {
-        "frames": ["fox_adult_claw_01", "fox_adult_claw_02", "fox_adult_claw_03", "fox_adult_claw_04", "fox_adult_claw_05", "fox_adult_claw_06"],
-        "durs": [0.12, 0.12, 0.07, 0.11, 0.20, 0.28],
-        "hold": { "frame": 3, "sec": 0.09 },
-        "events": [[0.31, "hit"]]
-      }
+ "note": "fox 도트(2026-11-26 PixelLab 확정: 손발·머리·눈이 큰 캐주얼, 아기·성장기·성체). 그림 1칸 = 화면 1px. 동작 그림은 아직이고 대기 들썩임·공격 내딛기는 코드 연출. 원본 art-src/pixellab.",
+ "species": "fox",
+ "sheet": "dot-fox",
+ "file": "assets/dot/fox.png",
+ "frameW": 111,
+ "frameH": 83,
+ "foot": 80,
+ "cols": 3,
+ "anchorX": 55,
+ "palette": [
+  "#240507",
+  "#291a1f",
+  "#43332c",
+  "#4f1407",
+  "#762e12",
+  "#9b7052",
+  "#a94109",
+  "#bb4a0b",
+  "#d2ad96",
+  "#d86a20",
+  "#e16513",
+  "#e2c19e",
+  "#ea6c12",
+  "#f1670c",
+  "#f98f2b",
+  "#feedd2"
+ ],
+ "frames": [
+  "fox_baby_idle_01",
+  "fox_teen_idle_01",
+  "fox_adult_idle_01"
+ ],
+ "standing": [
+  "fox_baby_idle_01",
+  "fox_teen_idle_01",
+  "fox_adult_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "baby": {
+   "top": 33,
+   "idle": {
+    "frames": [
+     "fox_baby_idle_01",
+     "fox_baby_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
     }
+   }
   },
-  "stages": {
-    "young": { "set": "baby", "scale": 0.8 },
-    "teen": { "set": "baby", "scale": 0.95 },
-    "adult": { "set": "adult", "scale": 1 }
+  "teen": {
+   "top": 18,
+   "idle": {
+    "frames": [
+     "fox_teen_idle_01",
+     "fox_teen_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "adult": {
+   "top": 1,
+   "idle": {
+    "frames": [
+     "fox_adult_idle_01",
+     "fox_adult_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "fox_adult_idle_01",
+     "fox_adult_idle_01",
+     "fox_adult_idle_01",
+     "fox_adult_idle_01",
+     "fox_adult_idle_01",
+     "fox_adult_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
   }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
 }

@@ -1,0 +1,94 @@
+{
+ "note": "grasshopper 신화급 도트(2026-11-26 PixelLab 확정: 손 달린 사람 모양). 그림 1칸 = 화면 1px.",
+ "species": "grasshopper_spirit",
+ "sheet": "dot-grasshopper_spirit",
+ "file": "assets/dot/grasshopper_spirit.png",
+ "frameW": 91,
+ "frameH": 102,
+ "foot": 99,
+ "cols": 1,
+ "anchorX": 45,
+ "palette": [
+  "#200509",
+  "#291a1f",
+  "#50240f",
+  "#512a2b",
+  "#623328",
+  "#72422f",
+  "#845437",
+  "#9f6736",
+  "#b07529",
+  "#c28940",
+  "#cea05b",
+  "#dda652",
+  "#e8b869",
+  "#f8d27c",
+  "#fbf4d4",
+  "#fde997"
+ ],
+ "frames": [
+  "grasshopper_myth_idle_01"
+ ],
+ "standing": [
+  "grasshopper_myth_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "myth": {
+   "top": 1,
+   "idle": {
+    "frames": [
+     "grasshopper_myth_idle_01",
+     "grasshopper_myth_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "grasshopper_myth_idle_01",
+     "grasshopper_myth_idle_01",
+     "grasshopper_myth_idle_01",
+     "grasshopper_myth_idle_01",
+     "grasshopper_myth_idle_01",
+     "grasshopper_myth_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

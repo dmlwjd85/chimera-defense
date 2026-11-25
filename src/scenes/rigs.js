@@ -27,12 +27,13 @@ const dotBad = new Set();
 /** 그 종·단계의 도트 설정(없거나 깨졌거나 시트가 없으면 null → 기존 리그로). 영물(spirit)은 도트 영물 그림이 있을 때만. */
 export function dotDataFor(scene, speciesId, stage) {
   if (!dotArtOn()) return null;
-  const d = scene.cache.json.get('dotD-' + speciesId);
-  if (!d || dotBad.has(speciesId)) return null;
+  // 신화급은 따로 그린 시트(<종>_spirit)가 있으면 그걸로(팔레트 16색이 단계 묶음마다 따로라서)
+  const d = (stage === 'spirit' && scene.cache.json.get('dotD-' + speciesId + '_spirit')) || scene.cache.json.get('dotD-' + speciesId);
+  if (!d || dotBad.has(d.species)) return null;
   if (stage === 'spirit' && !d.stages.spirit) return null;
   if (!d._checked) {
     const errs = validateDot(d);
-    if (errs.length) { console.warn(`dot ${speciesId}:`, errs); dotBad.add(speciesId); return null; }
+    if (errs.length) { console.warn(`dot ${d.species}:`, errs); dotBad.add(d.species); return null; }
     d._checked = true;
   }
   if (!scene.textures.exists(d.sheet) || !ensureDotFrames(scene, d)) return null;

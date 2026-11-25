@@ -1,0 +1,94 @@
+{
+ "note": "wolf 신화급 도트(2026-11-26 PixelLab 확정: 손 달린 사람 모양). 그림 1칸 = 화면 1px.",
+ "species": "wolf_spirit",
+ "sheet": "dot-wolf_spirit",
+ "file": "assets/dot/wolf_spirit.png",
+ "frameW": 99,
+ "frameH": 109,
+ "foot": 106,
+ "cols": 1,
+ "anchorX": 49,
+ "palette": [
+  "#110418",
+  "#291a1f",
+  "#333041",
+  "#3f3d4f",
+  "#552e23",
+  "#56596d",
+  "#727a8c",
+  "#794e38",
+  "#8f99a7",
+  "#9ca8b5",
+  "#ac7142",
+  "#d49c55",
+  "#f0c46c",
+  "#f4ebb7",
+  "#f7fcfe",
+  "#f9de8c"
+ ],
+ "frames": [
+  "wolf_myth_idle_01"
+ ],
+ "standing": [
+  "wolf_myth_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "myth": {
+   "top": 1,
+   "idle": {
+    "frames": [
+     "wolf_myth_idle_01",
+     "wolf_myth_idle_01"
+    ],
+    "durs": [
+     0.36,
+     0.36
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "wolf_myth_idle_01",
+     "wolf_myth_idle_01",
+     "wolf_myth_idle_01",
+     "wolf_myth_idle_01",
+     "wolf_myth_idle_01",
+     "wolf_myth_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

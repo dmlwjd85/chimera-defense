@@ -877,7 +877,7 @@ export default class BattleScene extends Phaser.Scene {
   syncUnits() {
     const s = this.state;
     const live = [
-      ...s.field.map((u) => [u, tileToX(u.pos), u.stats.flyer ? (u.skyY ?? 200) - 30 : this.laneY(u.lane ?? 1), true]),
+      ...s.field.map((u) => [u, tileToX(u.pos), u.stats.flyer ? (u.skyY ?? 200) - 30 : this.groundY(u.y ?? (u.lane ?? 1) / 2), true]),
       ...s.bench.map((u, i) => (u ? [u, benchSlotX(i), BENCH_Y, false] : null)).filter(Boolean),
     ];
     const seen = new Set();
@@ -903,7 +903,7 @@ export default class BattleScene extends Phaser.Scene {
           const dx = x - v.curX;
           v.curX = Math.abs(dx) > 600 * (this.realDt || 0.016) * this.speed ? v.curX + Math.sign(dx) * 600 * (this.realDt || 0.016) * this.speed : v.curX + dx * k;
           v.curY += (y - v.curY) * k;
-          v.walking = Math.abs(x - v.curX) > 6;
+          v.walking = Math.abs(x - v.curX) > 6 || Math.abs(y - v.curY) > 5;
           v.walkDir = Math.sign(dx);
           let lx = 0;
           if (v.lungeT != null) { v.lungeT += this.realDt || 0.016; const k = v.lungeT / 0.3; lx = k < 0.35 ? -10 * (k / 0.35) * v.lungeDir : k < 1 ? (-10 + 40 * Math.sin(((k - 0.35) / 0.65) * Math.PI)) * v.lungeDir * (k < 0.55 ? 1 : 1) : 0; if (k >= 1) v.lungeT = null; }
@@ -913,7 +913,7 @@ export default class BattleScene extends Phaser.Scene {
       } else { v.curX = undefined; v.curY = undefined; }
       v.container.setDepth(onField ? (u.stats.flyer ? 900 + y : 50 + y) : 60);
       if (v.ent && (onField || this.dragUid === u.uid)) this.endEntrance(v);
-      if (!v.ent && this.dragUid !== u.uid) { const k = (onField ? (u.stats.flyer ? LANE_SCALE[u.cell?.r ?? 1] * 0.96 : LANE_SCALE[u.lane ?? 1]) : 1) * (u.soul && onField ? 1 + 0.3 * Math.min(1, (u.soulKills ?? 0) / this.data2.config.soul.maxKills) : 1); if (Math.abs((v.persp ?? 1) - k) > 0.001) { v.persp = k; v.container.setScale(k); } }
+      if (!v.ent && this.dragUid !== u.uid) { const k = (onField ? (u.stats.flyer ? LANE_SCALE[u.cell?.r ?? 1] * 0.96 : this.depthScale(u.y ?? (u.lane ?? 1) / 2)) : 1) * (u.soul && onField ? 1 + 0.3 * Math.min(1, (u.soulKills ?? 0) / this.data2.config.soul.maxKills) : 1); if (Math.abs((v.persp ?? 1) - k) > 0.001) { v.persp = k; v.container.setScale(k); } }
       if (v.foot2) v.foot2.setVisible(!u.stats.flyer || !onField);
       if (v.shadow) { v.shadow.setVisible(onField && u.stats.flyer && !u.down); v.shadow.setPosition(v.container.x, this.laneY(u.cell?.r ?? 1) + 34); }
       if (onField && u.hp < (v.hpSeen ?? u.hp) - 0.4 && !u.down) {
@@ -1003,15 +1003,8 @@ export default class BattleScene extends Phaser.Scene {
       const qi = Math.max(0, queue.indexOf(e));
       // 붙어 싸우는 적은 동물을 에워쌈(정면·위·아래·뒷줄), 다가오는 적은 가운데로 모이며 앞에 선 동물 쪽으로 방향을 틂
       const ring = ENGAGE_RING[qi % ENGAGE_RING.length], ringRow = Math.floor(qi / ENGAGE_RING.length);
-      let laneY;
-      if (blk && !blk.stats.flyer) laneY = this.laneY(blk.lane ?? 1) + 22 + ring[1];
-      else {
-        const ahead = e.flying ? null : this.state.field.filter((u) => !u.down && !u.stats.flyer && e.pos - u.pos >= -0.2 && e.pos - u.pos < 2.2 && !e.passed?.includes(u.uid)).sort((a, b) => b.pos - a.pos)[0];
-        const own = this.laneY(e.eid % 3), mid = this.laneY(1);
-        const base = mid + (own - mid) * 0.55 + ((e.eid * 7) % 5 - 2) * 4;
-        const k = ahead ? Math.min(1, Math.max(0, (2.2 - (e.pos - ahead.pos)) / 1.4)) : 0;
-        laneY = base + (this.laneY(ahead?.lane ?? 1) - base) * k + 22;
-      }
+      // 앞뒤 깊이(e.y)는 전투 로직이 정함: 다가오는 적은 앞에 선 동물 쪽으로, 붙잡힌 적은 그 동물을 에워쌈
+      const laneY = this.groundY(e.y ?? 0.5) + 22;
       v.laneY = v.laneY == null ? laneY : v.laneY + (laneY - v.laneY) * Math.min(1, (this.realDt || 0.016) * 6);
       const y = e.flying ? PATH_Y - 110 + bob : v.laneY + (e.boss ? -6 : 0);
       if (v.kb) { v.kb *= Math.pow(0.0005, this.realDt || 0.016); if (Math.abs(v.kb) < 0.3) v.kb = 0; }
@@ -1033,7 +1026,7 @@ export default class BattleScene extends Phaser.Scene {
         v.lastHp = e.hp;
         r.setFacing(e.confuseLeft > 0 ? 1 : -1);
         v.rig.view.update(e.stunLeft > 0 || e.holdLeft > 0 ? 0 : this.frameDt);
-        v.holder.setDepth(70 + y / 10);
+        v.holder.setDepth(50 + y + 0.5);
       } else { v.body.setPosition(xk, y); if (e.hp < v.lastHp - 0.01) { v.body.setFillStyle?.(0xffffff); this.time.delayedCall(70, () => v.body.active && v.body.setFillStyle?.(hex(this.data2.enemyById[e.id].color))); } v.lastHp = e.hp; }
       v.bar.setPosition(x - v.barW / 2, y - v.size / 2 - (v.rig ? 22 : 7));
       v.bar.width = v.barW * Math.max(0, e.hp) / e.maxHp;
@@ -1234,6 +1227,11 @@ export default class BattleScene extends Phaser.Scene {
   kick2(ev, fromX) { this.kick(ev.eids?.length ? ev.eids : [ev.eid], fromX, 9); }
 
   /** Row height on the road; rows close in a little toward the middle while a wave runs (패싸움 느낌). */
+  /** Screen y of a ground depth (0 back … 1 front) on the road. */
+  groundY(d) { return this.laneY(0) + Math.max(0, Math.min(1, d)) * (this.laneY(2) - this.laneY(0)); }
+  /** Perspective scale for a ground depth. */
+  depthScale(d) { const t = Math.max(0, Math.min(1, d)); return LANE_SCALE[0] + t * (LANE_SCALE[2] - LANE_SCALE[0]); }
+
   laneY(r) {
     const mid = LANE_Y[1];
     return mid + (LANE_Y[r] - mid) * (this.squeezeK ?? 1);

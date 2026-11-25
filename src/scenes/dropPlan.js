@@ -1,4 +1,4 @@
-import { PATH_Y, PATH_H, BENCH_Y, SLOT, xToTile, benchSlotX, laneAt, SKY_TOP, SKY_BOTTOM } from './layout.js';
+import { PATH_Y, PATH_H, SLOT, xToTile, benchSlotPos, laneAt, SKY_TOP, SKY_BOTTOM } from './layout.js';
 import { mergeKind, mergePreview } from '../logic/merge.js';
 import { gridCol, gridPos } from '../logic/battle.js';
 import { sellPrice } from '../logic/economy.js';
@@ -30,8 +30,7 @@ export const onPath = (y) => Math.abs(y - PATH_Y) <= PATH_H / 2;
 
 /** Bench slot index under a screen point, or -1. */
 export function benchSlotAt(x, y, benchSize) {
-  if (Math.abs(y - BENCH_Y) > SLOT / 2) return -1;
-  for (let i = 0; i < benchSize; i++) if (Math.abs(x - benchSlotX(i)) <= SLOT / 2) return i;
+  for (let i = 0; i < benchSize; i++) { const p = benchSlotPos(i); if (Math.abs(x - p.x) <= SLOT / 2 && Math.abs(y - p.y) <= SLOT / 2) return i; }
   return -1;
 }
 

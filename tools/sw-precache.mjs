@@ -4,7 +4,7 @@ import { readdirSync, statSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { createHash } from 'node:crypto';
 const dist = new URL('../dist/', import.meta.url).pathname;
-const skip = (p) => p === 'sw.js' || p.startsWith('assets/rig/') || p.startsWith('assets/units/') || p.startsWith('assets/bg/') || p.startsWith('assets/fx/') || p.startsWith('assets/temp/');
+const skip = (p) => p === 'sw.js' || p.startsWith('assets/rig/') || p.startsWith('assets/units/') || p.startsWith('assets/bg/') || p.startsWith('assets/fx/') || p.startsWith('assets/temp/') || p.startsWith('assets/m/') || p.startsWith('assets/art-pack');
 const files = [];
 const walk = (d) => { for (const f of readdirSync(d)) { const p = join(d, f); if (statSync(p).isDirectory()) walk(p); else { const r = relative(dist, p).split('\\').join('/'); if (!skip(r)) files.push(r); } } };
 walk(dist);

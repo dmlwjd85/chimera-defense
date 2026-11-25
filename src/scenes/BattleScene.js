@@ -902,13 +902,16 @@ export default class BattleScene extends Phaser.Scene {
       const max = u.maxHp ?? u.stats.hp;
       v.bar.width = 50 * Math.max(0, u.hp) / max;
       v.bar.setFillStyle(u.hp / max < 0.3 ? 0xe74c3c : 0x2ecc71);
-      v.bar.setVisible(onField); v.barBg.setVisible(onField);
+      v.bar.setVisible(onField && !u.down); v.barBg.setVisible(onField && !u.down);
       v.name.setVisible(onField && !u.inGate && (s.phase !== 'wave' || this.selectedUid === u.uid));
       const gateA = onField ? Math.max(0, Math.min(1, (v.container.x - this.gateXY().x - 6) / 46)) : 1;   // 성문 어둠 속으로 사라지고 거기서 나타남
-      v.container.setAlpha(this.hidden.has(u.uid) ? 0 : (u.down && !v.rig ? 0.35 : 1) * gateA);
+      // 쓰러지면 쓰러지는 동작 뒤 서서히 사라짐 → 부활은 성문에서
+      if (u.down) v.downT = (v.downT ?? 0) + (this.frameDt || 0); else v.downT = 0;
+      const downA = u.down && onField ? Math.max(0, 1 - Math.max(0, v.downT - 0.7) / 0.45) : 1;
+      v.container.setAlpha(this.hidden.has(u.uid) ? 0 : (u.down && !v.rig ? 0.35 : 1) * gateA * downA);
       if (v.container.input) v.container.input.enabled = gateA > 0.3 || !onField;
       this.animateUnit(u, v, onField, this.frameDt);
-      v.downText.setText(u.down ? String(Math.ceil(u.respawnLeft)) : '');
+      v.downText.setText('');   // 남은 부활 시간은 아래 출전 초상화에 표시
       const clash = onField && (s.view?.bonds ?? []).some((b) => b.bond.kind === 'clash' && Object.values(b.units).includes(u));
       v.icon.setText(onField && !u.down && isResting(u) ? 'Zz' : clash ? '⚡' : '');
       v.foot.setVisible(onField && terrainMatch(u, s, this.data2.config));

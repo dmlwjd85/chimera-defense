@@ -1,0 +1,121 @@
+{
+ "note": "rooster 도트(2026-11-25 제미나이 확정 시안: 아기 눈 크게, 성체 머리 크게). 칸 72×56, 발밑선 y=51. 아직 그림은 대기 1장씩이고 걷기·공격은 코드 연출(통통·내딛기) — 동작 그림은 나중에.",
+ "species": "rooster",
+ "sheet": "dot-rooster",
+ "file": "assets/dot/rooster.png",
+ "frameW": 72,
+ "frameH": 56,
+ "foot": 51,
+ "cols": 2,
+ "anchorX": 36,
+ "palette": [
+  "#262b30",
+  "#291a1f",
+  "#37570d",
+  "#3c4944",
+  "#416967",
+  "#45211a",
+  "#5f3122",
+  "#6a6d27",
+  "#7f9273",
+  "#81412d",
+  "#8f5d41",
+  "#bb6242",
+  "#bd755c",
+  "#e6b179",
+  "#fad89a",
+  "#faf0de"
+ ],
+ "frames": [
+  "rooster_baby_idle_01",
+  "rooster_adult_idle_01"
+ ],
+ "standing": [
+  "rooster_baby_idle_01",
+  "rooster_adult_idle_01"
+ ],
+ "attacks": [
+  "claw"
+ ],
+ "sets": {
+  "baby": {
+   "top": 12,
+   "idle": {
+    "frames": [
+     "rooster_baby_idle_01",
+     "rooster_baby_idle_01"
+    ],
+    "durs": [
+     0.34,
+     0.34
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   }
+  },
+  "adult": {
+   "top": 8,
+   "idle": {
+    "frames": [
+     "rooster_adult_idle_01",
+     "rooster_adult_idle_01"
+    ],
+    "durs": [
+     0.38,
+     0.38
+    ],
+    "loop": true,
+    "fx": {
+     "bob": 1
+    }
+   },
+   "claw": {
+    "frames": [
+     "rooster_adult_idle_01",
+     "rooster_adult_idle_01",
+     "rooster_adult_idle_01",
+     "rooster_adult_idle_01",
+     "rooster_adult_idle_01",
+     "rooster_adult_idle_01"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.07,
+     0.11,
+     0.2,
+     0.28
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.31,
+      "hit"
+     ]
+    ],
+    "fx": {
+     "lunge": 4
+    }
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.8
+  },
+  "teen": {
+   "set": "baby",
+   "scale": 1
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 1
+  }
+ }
+}

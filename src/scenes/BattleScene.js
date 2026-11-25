@@ -1280,12 +1280,13 @@ export default class BattleScene extends Phaser.Scene {
           if (p.kind === 'sunbeam') { g.fillStyle(col, 0.16).fillPoints([{ x: x - 30, y: cy - 60 }, { x: x + 30, y: cy - 60 }, { x: x + w / 2, y: PATH_Y + PATH_H / 2 }, { x: x - w / 2, y: PATH_Y + PATH_H / 2 }], true); g.fillStyle(col, 0.22).fillEllipse(x, PATH_Y + 30, w, PATH_H * 0.5); }
           else { g.fillStyle(0x000000, 0.18).fillEllipse(x, PATH_Y + 30, w, PATH_H * 0.55); for (const [dx, dy, r] of [[-50, 6, 30], [-18, -8, 38], [22, -4, 34], [54, 8, 26], [0, 12, 40]]) g.fillStyle(col, 0.92).fillCircle(x + dx, cy + dy, r); for (const [dx, dy, r] of [[-30, 16, 26], [20, 18, 28]]) g.fillStyle(0x000000, p.kind === 'storm' ? 0.25 : 0.08).fillCircle(x + dx, cy + dy, r); }
         } else {
-          g.fillStyle(col, 0.3).fillEllipse(x, PATH_Y + 10, w * 1.05, PATH_H * 0.86);
-          g.fillStyle(col, 0.34).fillEllipse(x - 8, PATH_Y + 6, w * 0.8, PATH_H * 0.6);
-          g.lineStyle(2.5, col, 0.85).strokeEllipse(x, PATH_Y + 10, w * 1.05, PATH_H * 0.86);
+          // 벨트스크롤 전장에 맞춰 바닥 장판을 낮고 옅게(동물이 가리지 않게)
+          g.fillStyle(col, 0.16).fillEllipse(x, PATH_Y + 40, w * 1.0, PATH_H * 0.42);
+          g.fillStyle(col, 0.2).fillEllipse(x - 8, PATH_Y + 38, w * 0.75, PATH_H * 0.28);
+          g.lineStyle(2, col, 0.45).strokeEllipse(x, PATH_Y + 40, w * 1.0, PATH_H * 0.42);
           const r = new Phaser.Math.RandomDataGenerator([String(p.id)]);
           for (let i = 0; i < 9; i++) {
-            const px = x + r.between(-w * 0.4, w * 0.4), py = PATH_Y + 10 + r.between(-PATH_H * 0.3, PATH_H * 0.3);
+            const px = x + r.between(-w * 0.38, w * 0.38), py = PATH_Y + 40 + r.between(-PATH_H * 0.15, PATH_H * 0.15);
             if (p.kind === 'frost') { g.lineStyle(2, 0xffffff, 0.8); for (let a = 0; a < 3; a++) g.lineBetween(px - Math.cos(a * 1.05) * 9, py - Math.sin(a * 1.05) * 5, px + Math.cos(a * 1.05) * 9, py + Math.sin(a * 1.05) * 5); }
             else if (p.kind === 'rock') g.fillStyle(0x6d6258, 0.9).fillTriangle(px - 10, py + 6, px + 10, py + 6, px + r.between(-4, 4), py - 12);
             else if (p.kind === 'thicket') { g.lineStyle(3, 0x2e7d32, 0.9); g.lineBetween(px, py + 6, px - 5, py - 10).lineBetween(px, py + 6, px + 1, py - 13).lineBetween(px, py + 6, px + 6, py - 9); }

@@ -280,9 +280,9 @@
  },
  "patches": {
   "chance": {
-   "adult": 35,
-   "spirit": 100,
-   "chimera": 100
+   "adult": 25,
+   "spirit": 50,
+   "chimera": 50
   },
   "radius": 1.0,
   "dur": 6,

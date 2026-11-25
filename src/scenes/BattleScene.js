@@ -17,7 +17,7 @@ import { soundOf, ELEM_SOUND } from './onomato.js';
 import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
 import { button, panel, style, unitToken, silhouette, hex, COLORS, chip, showTip, hideTip } from './ui.js';
 
-import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX, LANE_Y, LANE_SCALE, laneAt } from './layout.js';
+import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX, LANE_Y, LANE_SCALE, laneAt, DOCK_Y } from './layout.js';
 import { gridCol, gridPos, cellUnit, campDelta } from '../logic/battle.js';
 export { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX };
 export const ZONE_COLORS = { village: 0x9c8a6b, field: 0x7fb069, forest: 0x3d6b45, plains: 0xc2b280, mountain: 0x8d8d8d, wetland: 0x4f7c6b };
@@ -211,8 +211,8 @@ export default class BattleScene extends Phaser.Scene {
     const sp = this.data2.config.spells, ids = this.state.spells ?? [];
     if (!sp || !ids.length) return;
     // 먹이 줄과 판매 칸 사이(케이지 위)에 둠: 케이지가 늘어나도 겹치지 않음
-    const X = 420, Y = 458, W = 350;
-    panel(this, X, Y, W, 90, { alpha: 0.9, plain: true });
+    const X = 455, Y = 618, W = 330;
+    panel(this, X, Y, W, 96, { alpha: 0.9, plain: true });
     this.add.text(X + 12, Y + 5, '🔮 마법', style(13, '#d7bde2'));
     this.manaBar = this.add.graphics().setDepth(2);
     this.manaText = this.add.text(X + W - 12, Y + 6, '', style(11, '#9fd8ff')).setOrigin(1, 0).setDepth(2);
@@ -239,7 +239,7 @@ export default class BattleScene extends Phaser.Scene {
 
   drawSpellBar() {
     if (!this.spellBtns) return;
-    const sp = this.data2.config.spells, s = this.state, X = 420, Y = 458, W = 350, R = 20;
+    const sp = this.data2.config.spells, s = this.state, X = 455, Y = 618, W = 330, R = 20;
     const k = Math.max(0, Math.min(1, (s.mana ?? 0) / sp.max));
     this.manaBar.clear().fillStyle(0x0b1220, 1).fillRoundedRect(X + 12, Y + 23, W - 24, 8, 4).fillStyle(0x4aa3ff, 1).fillRoundedRect(X + 12, Y + 23, Math.max(6, (W - 24) * k), 8, 4).lineStyle(1, 0x9fd8ff, 0.7).strokeRoundedRect(X + 12, Y + 23, W - 24, 8, 4);
     this.manaText.setText(`마력 ${Math.floor(s.mana ?? 0)} / ${sp.max}${s.phase !== 'wave' ? ' (전투 중에 참)' : ''}`);
@@ -453,20 +453,25 @@ export default class BattleScene extends Phaser.Scene {
   }
 
   drawBench() {
+    // 아래 조작판 한 줄: 들판을 가리지 않게 얇은 띠
+    this.dock = this.add.graphics().setDepth(0);
+    this.dock.fillGradientStyle(0x0b1016, 0x0b1016, 0x0b1016, 0x0b1016, 0.15, 0.15, 0.92, 0.92).fillRect(0, DOCK_Y - 24, 1280, 24);
+    this.dock.fillStyle(0x0b1016, 0.92).fillRect(0, DOCK_Y, 1280, 720 - DOCK_Y);
+    this.dock.lineStyle(1, 0xd4b06a, 0.45).lineBetween(0, DOCK_Y, 1280, DOCK_Y);
     const n = this.state.bench.length;
     const cageMax = n + (this.data2.talents?.branches?.find((b) => b.id === 'cage')?.nodes ?? []).filter((c) => !(this.save.talents ?? []).includes(c.id)).length;
     const shown = Math.min(cageMax, n + 1);
-    this.add.text(BENCH_X0 - SLOT / 2, BENCH_Y - SLOT / 2 - 16, `🧺 케이지 ${n}칸`, style(15)).setOrigin(0, 0.5);
-    panel(this, BENCH_X0 - SLOT / 2 - 10, BENCH_Y - SLOT / 2 - 10, benchSlotX(shown - 1) - BENCH_X0 + SLOT + 20, SLOT + 20, { alpha: 0.55, plain: true });
+    panel(this, BENCH_X0 - SLOT / 2 - 8, BENCH_Y - SLOT / 2 - 10, benchSlotX(shown - 1) - BENCH_X0 + SLOT + 16, SLOT + 20, { alpha: 0.7, plain: true });
+    this.add.text(BENCH_X0 - SLOT / 2 - 2, BENCH_Y - SLOT / 2 - 8, `🧺 ${n}칸`, style(11, '#e8d9b0')).setOrigin(0, 0).setDepth(2);
     this.benchSlots = this.state.bench.map((_, i) => this.add.rectangle(benchSlotX(i), BENCH_Y, SLOT, SLOT, 0x0b1016, 0.5).setStrokeStyle(1.5, 0xd4b06a, 0.6).setDepth(1));
     for (let i = n; i < shown; i++) {
       const r = this.add.rectangle(benchSlotX(i), BENCH_Y, SLOT, SLOT, 0x05080c, 0.55).setStrokeStyle(1.5, 0x3b4b5e, 0.8).setDepth(1).setInteractive();
       this.add.text(benchSlotX(i), BENCH_Y, '🔒', style(22)).setOrigin(0.5).setAlpha(0.6).setDepth(2);
       r.on('pointerover', () => showTip(this, '잠긴 케이지\n· 별자리 나무의 케이지 갈래에서 엶', benchSlotX(i), BENCH_Y - 50)).on('pointerout', () => hideTip(this));
     }
-    const sx = 832, sy = 503;
-    this.sellZone = this.add.rectangle(sx, sy, 108, 84, 0x3a1414, 0.85).setStrokeStyle(2, 0xc0392b, 0.9);
-    this.add.text(sx, sy, '🪙 판매\n(끌어다\n놓기)', style(12, '#ffcdd2', { align: 'center' })).setOrigin(0.5);
+    const sx = benchSlotX(shown - 1) + SLOT / 2 + 50, sy = BENCH_Y;
+    this.sellZone = this.add.rectangle(sx, sy, 72, SLOT, 0x3a1414, 0.85).setStrokeStyle(2, 0xc0392b, 0.9);
+    this.add.text(sx, sy, '🪙\n판매', style(12, '#ffcdd2', { align: 'center' })).setOrigin(0.5);
     this.buildSpellBar();
   }
 
@@ -493,7 +498,7 @@ export default class BattleScene extends Phaser.Scene {
     gh.lineStyle(2, 0xff8a65, 0.6);
     for (let k = gx0; k < gx1; k += 16) { gh.lineBetween(k, top, Math.min(k + 8, gx1), top); gh.lineBetween(k, top + PATH_H, Math.min(k + 8, gx1), top + PATH_H); }
     for (let k = top; k < top + PATH_H; k += 16) { gh.lineBetween(gx0, k, gx0, Math.min(k + 8, top + PATH_H)); gh.lineBetween(gx1, k, gx1, Math.min(k + 8, top + PATH_H)); }
-    this.ghostLabel = this.add.text((gx0 + gx1) / 2, top + PATH_H + 12, '⚔ 웨이브가 오면 이 자리에서 싸움', style(12, '#ffb199', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(7);
+    this.ghostLabel = this.add.text((gx0 + gx1) / 2, top - 14, '⚔ 웨이브가 오면 이 자리에서 싸움', style(12, '#ffb199', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(7);
   }
 
   /** Light the cell under the pointer while dragging: green free, purple someone to merge/swap, red outside. */
@@ -520,29 +525,31 @@ export default class BattleScene extends Phaser.Scene {
 
   drawBaitShop() {
     const b = this.data2.config.bait;
-    this.baitLabel = this.add.text(24, 470, '🍖 먹이  ⓘ', style(13, '#ffe2b8')).setInteractive({ useHandCursor: true });
-    this.baitLabel.on('pointerover', () => showTip(this, '준비 시간에만 · 다음 3회 소환에서 그 역할이 나올 확률 2배', 120, 466)).on('pointerout', () => hideTip(this));
+    // 먹이는 준비 시간에만 씀: 조작판 바로 위 작은 줄, 전투가 시작되면 숨김
+    const BY = DOCK_Y - 20;
+    this.baitLabel = this.add.text(24, BY, '🍖 먹이 ⓘ', style(12, '#ffe2b8', { stroke: '#000', strokeThickness: 3 })).setOrigin(0, 0.5).setInteractive({ useHandCursor: true }).setDepth(8);
+    this.baitLabel.on('pointerover', () => showTip(this, '준비 시간에만 · 다음 3회 소환에서 그 역할이 나올 확률 2배', 200, BY - 6)).on('pointerout', () => hideTip(this));
     this.baitBtns = Object.entries(b.types).map(([id, t], i) =>
-      button(this, 70 + i * 98, 512, 92, 44, `${t.name} ${b.cost}\n${ROLE_NAME[t.role]}`, () => this.doBait(id), { size: 12, fill: 0x4a3b22 }));
-    this.baitState = this.add.text(120, 470, '', style(13, '#ffd84d'));
+      button(this, 136 + i * 86, BY, 82, 28, `${t.name} ${b.cost}·${ROLE_NAME[t.role]}`, () => this.doBait(id), { size: 11, fill: 0x4a3b22 }));
+    this.baitState = this.add.text(24, BY - 22, '', style(12, '#ffd84d', { stroke: '#000', strokeThickness: 3 })).setDepth(8);
   }
 
   drawSummonPanel() {
-    panel(this, 895, 448, 375, 150, { depth: 1 });
+    panel(this, 800, DOCK_Y + 4, 472, 102, { depth: 1 });
     // real globe (Natural Earth outlines), telescope and caption
-    this.globe = new Globe(this, 966, 518, 56, this.registry.get('raw').globe);
-    this.scopeAt = [1182, 502];
-    this.add.circle(...this.scopeAt, 42, 0x6b4a2e).setDepth(4);
-    this.scope = this.add.circle(...this.scopeAt, 37, 0x0b0e12).setStrokeStyle(4, 0xd4b06a).setDepth(5);
+    this.globe = new Globe(this, 852, 666, 40, this.registry.get('raw').globe);
+    this.scopeAt = [940, 664];
+    this.add.circle(...this.scopeAt, 34, 0x6b4a2e).setDepth(4);
+    this.scope = this.add.circle(...this.scopeAt, 30, 0x0b0e12).setStrokeStyle(4, 0xd4b06a).setDepth(5);
     this.scopeLayer = this.add.container(0, 0).setDepth(6);
-    this.ribbon = this.add.text(1082, 452, '', style(18, '#ffffff', { stroke: '#000', strokeThickness: 4, backgroundColor: '#101820f0', padding: { x: 14, y: 5 }, fontStyle: 'bold' })).setOrigin(0.5).setDepth(20).setVisible(false);
-    this.globeText = this.add.text(1090, 460, '지구본을 돌려 소환', style(12, '#ddeeff', { align: 'center', wordWrap: { width: 150 } })).setOrigin(0.5, 0).setDepth(6);
-    const zone = this.add.zone(1082, 523, 375, 150).setInteractive().setDepth(7);
+    this.ribbon = this.add.text(1000, DOCK_Y - 26, '', style(18, '#ffffff', { stroke: '#000', strokeThickness: 4, backgroundColor: '#101820f0', padding: { x: 14, y: 5 }, fontStyle: 'bold' })).setOrigin(0.5).setDepth(20).setVisible(false);
+    this.globeText = this.add.text(1000, DOCK_Y - 6, '지구본을 돌려 소환', style(12, '#ddeeff', { align: 'center', wordWrap: { width: 230 }, stroke: '#000', strokeThickness: 3 })).setOrigin(0.5, 1).setDepth(8);
+    const zone = this.add.zone(896, 666, 190, 100).setInteractive().setDepth(7);
     zone.on('pointerdown', () => this.finishReveal());
     // designation
-    this.contBtn = button(this, 990, 622, 185, 36, '', () => this.cycleDesignate('continent'), { size: 13, fill: 0x2b3f55 });
-    this.habBtn = button(this, 1180, 622, 175, 36, '', () => this.cycleDesignate('habitat'), { size: 13, fill: 0x2b3f55 });
-    this.summonBtn = button(this, 1085, 680, 370, 52, '', () => this.doSummon(), { size: 21, fill: 0x1d4f8c, stroke: 0xf2cf7a });
+    this.contBtn = button(this, 1063, 643, 140, 34, '', () => this.cycleDesignate('continent'), { size: 11, fill: 0x2b3f55 });
+    this.habBtn = button(this, 1063, 687, 140, 34, '', () => this.cycleDesignate('habitat'), { size: 11, fill: 0x2b3f55 });
+    this.summonBtn = button(this, 1201, 666, 128, 86, '', () => this.doSummon(), { size: 16, fill: 0x1d4f8c, stroke: 0xf2cf7a });
     this.refreshDesignate();
   }
 
@@ -777,7 +784,7 @@ export default class BattleScene extends Phaser.Scene {
     const ux = vv?.container.x ?? 640, uy = vv?.container.y ?? 300;
     const onBench = !this.state.field.includes(u);
     let ax, ay;
-    if (onBench) { ax = Phaser.Math.Clamp(ux - w / 2, 8, 880 - w); ay = BENCH_Y - SLOT / 2 - 18 - h; }
+    if (onBench) { ax = Phaser.Math.Clamp(ux - w / 2, 8, 780 - w); ay = BENCH_Y - SLOT / 2 - 18 - h; }
     else { ax = ux + 70 + w < 1150 ? ux + 70 : ux - 70 - w; ax = Phaser.Math.Clamp(ax, 8, 1150 - w); ay = Phaser.Math.Clamp(uy - h / 2, 112, 440 - h); }
     for (const o of objs) { o.x += ax; o.y += ay - 64; }
     this.cardObjs = objs; this.cardUid = uid;
@@ -928,6 +935,7 @@ export default class BattleScene extends Phaser.Scene {
       v.bar.width = 50 * Math.max(0, u.hp) / max;
       v.bar.setFillStyle(u.hp / max < 0.3 ? 0xe74c3c : 0x2ecc71);
       v.bar.setVisible(onField); v.barBg.setVisible(onField);
+      v.name.setVisible(!onField || s.phase !== 'wave' || this.selectedUid === u.uid);
       v.container.setAlpha(this.hidden.has(u.uid) ? 0 : u.down && !v.rig ? 0.35 : 1);
       this.animateUnit(u, v, onField, this.frameDt);
       v.downText.setText(u.down ? String(Math.ceil(u.respawnLeft)) : '');
@@ -1445,13 +1453,15 @@ export default class BattleScene extends Phaser.Scene {
     this.refreshRelics();
     if (s.relicOffer && !this.relicModal) this.showRelicOffer();
     const cost = summonPrice(s, data, this.designate.habitat ? { habitat: 1 } : this.designate.continent ? { continent: 1 } : {});
-    this.summonBtn.set(`소환 ${cost}골드  (스페이스)`).setEnabled(s.gold >= cost && s.bench.includes(null));
+    this.summonBtn.set(`소환\n${cost}골드`).setEnabled(s.gold >= cost && s.bench.includes(null));
     this.skipBtn.setVisible(s.phase === 'prep');
     if (this.campGhost) { const prep = s.phase === 'prep'; this.campGhost.setVisible(prep); this.ghostLabel.setVisible(prep); this.campGfx.setAlpha(prep ? 1 : 0.45); this.campLabel.setAlpha(prep ? 1 : 0.5); }
     this.speedBtn.set(`▶×${this.speed}`);
     this.pauseBtn.set(this.paused ? '▶ 계속' : '❚❚ 정지');
     const prep = s.phase === 'prep';
-    this.baitBtns.forEach((b) => b.setEnabled(prep && s.gold >= data.config.bait.cost));
+    this.baitBtns.forEach((b) => { b.setVisible?.(prep); b.setEnabled(prep && s.gold >= data.config.bait.cost); });
+    this.baitLabel.setVisible(prep);
+    if (this.dock) this.dock.setAlpha(1);
     this.baitState.setText(s.bait ? `먹이: ${data.config.bait.types[s.bait.type].name} (남은 ${s.bait.left}회)` : '');
     // terrain glow for the selected unit
     this.zoneGlow.clear();

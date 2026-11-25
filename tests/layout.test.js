@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { tileToX, xToTile, benchSlotX, X0, TILE, BENCH_X0, BENCH_GAP, BENCH_Y, SLOT, PATH_Y, PATH_H } from '../src/scenes/layout.js';
+import { tileToX, xToTile, benchSlotPos, X0, TILE, BENCH_X0, BENCH_GAP, BENCH_Y, SLOT, PATH_Y, PATH_H } from '../src/scenes/layout.js';
 import { benchSlotAt, onPath } from '../src/scenes/dropPlan.js';
 import { sellPrice } from '../src/logic/economy.js';
 import { loadData } from './helpers.js';
@@ -18,19 +18,21 @@ test('tileToX and xToTile are inverse', () => {
 
 test('bench slot centres and hit test', () => {
   for (let i = 0; i < 5; i++) {
-    assert.strictEqual(benchSlotX(i), BENCH_X0 + i * BENCH_GAP);
-    assert.strictEqual(benchSlotAt(benchSlotX(i), BENCH_Y, 5), i);
+    const p = benchSlotPos(i);
+    assert.strictEqual(p.x, BENCH_X0 + (i % 2) * BENCH_GAP);
+    assert.strictEqual(benchSlotAt(p.x, p.y, 5), i);
   }
-  assert.strictEqual(benchSlotAt(benchSlotX(2) + SLOT / 2 - 1, BENCH_Y, 5), 2);
-  assert.strictEqual(benchSlotAt(benchSlotX(0), BENCH_Y + SLOT / 2 + 1, 5), -1);
-  assert.strictEqual(benchSlotAt(benchSlotX(5), BENCH_Y, 5), -1);
+  const p2 = benchSlotPos(2), p0 = benchSlotPos(0);
+  assert.strictEqual(benchSlotAt(p2.x + SLOT / 2 - 1, p2.y, 5), 2);
+  assert.strictEqual(benchSlotAt(p0.x, p0.y - SLOT / 2 - 1, 5), -1);
+  assert.strictEqual(benchSlotAt(benchSlotPos(5).x, benchSlotPos(5).y, 5), -1);
 });
 
 test('onPath uses half the path height', () => {
   assert.ok(onPath(PATH_Y));
   assert.ok(onPath(PATH_Y + PATH_H / 2));
   assert.strictEqual(onPath(PATH_Y - PATH_H / 2 - 1), false);
-  assert.strictEqual(onPath(BENCH_Y), false);
+  assert.strictEqual(onPath(PATH_Y + PATH_H), false);
 });
 
 test('sell price follows config for every stage and kind', () => {

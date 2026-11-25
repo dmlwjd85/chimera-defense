@@ -17,7 +17,8 @@ import { soundOf, ELEM_SOUND } from './onomato.js';
 import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
 import { button, panel, style, unitToken, silhouette, hex, COLORS, chip, showTip, hideTip } from './ui.js';
 
-import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX, LANE_Y, LANE_SCALE, laneAt, DOCK_Y } from './layout.js';
+import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX, benchSlotPos, LANE_Y, LANE_SCALE, laneAt, DOCK_Y, SIDE_L, SIDE_R, SIDE_TOP } from './layout.js';
+import { drawSidebars, Roster, Altar } from './sidebars.js';
 import { gridCol, gridPos, cellUnit, campDelta } from '../logic/battle.js';
 export { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX };
 export const ZONE_COLORS = { village: 0x9c8a6b, field: 0x7fb069, forest: 0x3d6b45, plains: 0xc2b280, mountain: 0x8d8d8d, wetland: 0x4f7c6b };
@@ -211,22 +212,23 @@ export default class BattleScene extends Phaser.Scene {
     const sp = this.data2.config.spells, ids = this.state.spells ?? [];
     if (!sp || !ids.length) return;
     // 먹이 줄과 판매 칸 사이(케이지 위)에 둠: 케이지가 늘어나도 겹치지 않음
-    const X = 455, Y = 618, W = 330;
-    panel(this, X, Y, W, 96, { alpha: 0.9, plain: true });
-    this.add.text(X + 12, Y + 5, '🔮 마법', style(13, '#d7bde2'));
+    // 오른쪽 사이드바 아래: 마력 막대와 마법 버튼(3열)
+    const X = SIDE_R + 4, Y = SIDE_TOP + 452, W = 1280 - SIDE_R - 8;
+    panel(this, X, Y, W, 712 - Y, { alpha: 0.9, plain: true });
+    this.add.text(X + 6, Y + 4, '🔮 마법', style(11, '#d7bde2')).setDepth(2);
     this.manaBar = this.add.graphics().setDepth(2);
-    this.manaText = this.add.text(X + W - 12, Y + 6, '', style(11, '#9fd8ff')).setOrigin(1, 0).setDepth(2);
+    this.manaText = this.add.text(X + W - 6, Y + 5, '', style(10, '#9fd8ff')).setOrigin(1, 0).setDepth(2);
     const KIND = { attack: 0xe05a4a, defense: 0x4a9be0, support: 0x58c070 }, KIND_NAME = { attack: '공격', defense: '방어', support: '서포트' };
     const KEYS = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U'];
-    const step = Math.min(48, (W - 16) / ids.length);
+    const col = (i) => X + W / 2 + ((i % 3) - 1) * 32, row = (i) => Y + 48 + Math.floor(i / 3) * 40;
     this.spellBtns = ids.map((id, i) => {
-      const d = spellDef(this.data2, id), x = X + W / 2 - (ids.length - 1) * step / 2 + i * step, y = Y + 56;
+      const d = spellDef(this.data2, id), x = col(i), y = row(i);
       const ring = this.add.graphics().setDepth(2);
-      const icon = this.add.text(x, y - 2, d.icon, style(21)).setOrigin(0.5).setDepth(3);
-      const cost = this.add.text(x + 13, y + 15, `${spellCost(this.state, this.data2, d)}`, style(10, '#9fd8ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
-      this.add.text(x - 20, y - 22, KEYS[i], style(9, '#8899aa')).setDepth(3);
-      const z = this.add.zone(x, y, step - 2, 50).setInteractive({ useHandCursor: true }).setDepth(4);
-      z.on('pointerover', () => showTip(this, `${d.icon} ${d.name} · ${KIND_NAME[d.kind]} · 마력 ${spellCost(this.state, this.data2, d)}\n“${d.tale}”\n· ${d.desc}`, x, y - 36));
+      const icon = this.add.text(x, y - 1, d.icon, style(16)).setOrigin(0.5).setDepth(3);
+      const cost = this.add.text(x + 11, y + 12, `${spellCost(this.state, this.data2, d)}`, style(10, '#9fd8ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
+      this.add.text(x - 15, y - 17, KEYS[i], style(9, '#8899aa')).setDepth(3);
+      const z = this.add.zone(x, y, 30, 36).setInteractive({ useHandCursor: true }).setDepth(4);
+      z.on('pointerover', () => showTip(this, `${d.icon} ${d.name} · ${KIND_NAME[d.kind]} · 마력 ${spellCost(this.state, this.data2, d)}\n“${d.tale}”\n· ${d.desc}`, SIDE_R - 160, y - 36));
       z.on('pointerout', () => hideTip(this));
       z.on('pointerdown', () => this.doSpell(id));
       this.input.keyboard.on('keydown-' + KEYS[i], () => this.doSpell(id));
@@ -239,10 +241,10 @@ export default class BattleScene extends Phaser.Scene {
 
   drawSpellBar() {
     if (!this.spellBtns) return;
-    const sp = this.data2.config.spells, s = this.state, X = 455, Y = 618, W = 330, R = 20;
+    const sp = this.data2.config.spells, s = this.state, X = SIDE_R + 4, Y = SIDE_TOP + 452, W = 1280 - SIDE_R - 8, R = 14;
     const k = Math.max(0, Math.min(1, (s.mana ?? 0) / sp.max));
-    this.manaBar.clear().fillStyle(0x0b1220, 1).fillRoundedRect(X + 12, Y + 23, W - 24, 8, 4).fillStyle(0x4aa3ff, 1).fillRoundedRect(X + 12, Y + 23, Math.max(6, (W - 24) * k), 8, 4).lineStyle(1, 0x9fd8ff, 0.7).strokeRoundedRect(X + 12, Y + 23, W - 24, 8, 4);
-    this.manaText.setText(`마력 ${Math.floor(s.mana ?? 0)} / ${sp.max}${s.phase !== 'wave' ? ' (전투 중에 참)' : ''}`);
+    this.manaBar.clear().fillStyle(0x0b1220, 1).fillRoundedRect(X + 6, Y + 20, W - 12, 6, 3).fillStyle(0x4aa3ff, 1).fillRoundedRect(X + 6, Y + 20, Math.max(6, (W - 12) * k), 6, 3).lineStyle(1, 0x9fd8ff, 0.7).strokeRoundedRect(X + 6, Y + 20, W - 12, 6, 3);
+    this.manaText.setText(`${Math.floor(s.mana ?? 0)}/${sp.max}`);
     for (const b of this.spellBtns) {
       const ok = !spellBlock(s, this.data2, b.id), has = (s.mana ?? 0) >= b.need;
       b.ring.clear().fillStyle(0x0d141d, 0.95).fillCircle(b.x, b.y, R).lineStyle(3, b.col, ok ? 1 : 0.35).strokeCircle(b.x, b.y, R);
@@ -453,25 +455,26 @@ export default class BattleScene extends Phaser.Scene {
   }
 
   drawBench() {
-    // 아래 조작판 한 줄: 들판을 가리지 않게 얇은 띠
-    this.dock = this.add.graphics().setDepth(0);
-    this.dock.fillGradientStyle(0x0b1016, 0x0b1016, 0x0b1016, 0x0b1016, 0.15, 0.15, 0.92, 0.92).fillRect(0, DOCK_Y - 24, 1280, 24);
-    this.dock.fillStyle(0x0b1016, 0.92).fillRect(0, DOCK_Y, 1280, 720 - DOCK_Y);
-    this.dock.lineStyle(1, 0xd4b06a, 0.45).lineBetween(0, DOCK_Y, 1280, DOCK_Y);
+    // 왼쪽 사이드바: 출전 초상화(Roster) · 케이지 · 판매
+    drawSidebars(this);
+    this.roster = new Roster(this);
     const n = this.state.bench.length;
     const cageMax = n + (this.data2.talents?.branches?.find((b) => b.id === 'cage')?.nodes ?? []).filter((c) => !(this.save.talents ?? []).includes(c.id)).length;
     const shown = Math.min(cageMax, n + 1);
-    panel(this, BENCH_X0 - SLOT / 2 - 8, BENCH_Y - SLOT / 2 - 10, benchSlotX(shown - 1) - BENCH_X0 + SLOT + 16, SLOT + 20, { alpha: 0.7, plain: true });
-    this.add.text(BENCH_X0 - SLOT / 2 - 2, BENCH_Y - SLOT / 2 - 8, `🧺 ${n}칸`, style(11, '#e8d9b0')).setOrigin(0, 0).setDepth(2);
-    this.benchSlots = this.state.bench.map((_, i) => this.add.rectangle(benchSlotX(i), BENCH_Y, SLOT, SLOT, 0x0b1016, 0.5).setStrokeStyle(1.5, 0xd4b06a, 0.6).setDepth(1));
+    const p0 = benchSlotPos(0);
+    this.add.text(6, p0.y - SLOT / 2 - 18, `🧺 케이지 ${n}칸`, style(12, '#e8d9b0')).setDepth(2);
+    this.benchSlots = this.state.bench.map((_, i) => { const p = benchSlotPos(i); return this.add.rectangle(p.x, p.y, SLOT - 6, SLOT, 0x0b1016, 0.5).setStrokeStyle(1.5, 0xd4b06a, 0.6).setDepth(1); });
     for (let i = n; i < shown; i++) {
-      const r = this.add.rectangle(benchSlotX(i), BENCH_Y, SLOT, SLOT, 0x05080c, 0.55).setStrokeStyle(1.5, 0x3b4b5e, 0.8).setDepth(1).setInteractive();
-      this.add.text(benchSlotX(i), BENCH_Y, '🔒', style(22)).setOrigin(0.5).setAlpha(0.6).setDepth(2);
-      r.on('pointerover', () => showTip(this, '잠긴 케이지\n· 별자리 나무의 케이지 갈래에서 엶', benchSlotX(i), BENCH_Y - 50)).on('pointerout', () => hideTip(this));
+      const p = benchSlotPos(i);
+      const r = this.add.rectangle(p.x, p.y, SLOT - 6, SLOT, 0x05080c, 0.55).setStrokeStyle(1.5, 0x3b4b5e, 0.8).setDepth(1).setInteractive();
+      this.add.text(p.x, p.y, '🔒', style(18)).setOrigin(0.5).setAlpha(0.6).setDepth(2);
+      r.on('pointerover', () => showTip(this, '잠긴 케이지\n· 별자리 나무의 케이지 갈래에서 엶', p.x + 60, p.y)).on('pointerout', () => hideTip(this));
     }
-    const sx = benchSlotX(shown - 1) + SLOT / 2 + 50, sy = BENCH_Y;
-    this.sellZone = this.add.rectangle(sx, sy, 72, SLOT, 0x3a1414, 0.85).setStrokeStyle(2, 0xc0392b, 0.9);
-    this.add.text(sx, sy, '🪙\n판매', style(12, '#ffcdd2', { align: 'center' })).setOrigin(0.5);
+    const last = benchSlotPos(shown - 1), sy = last.y + SLOT / 2 + 34;
+    this.sellZone = this.add.rectangle(SIDE_L / 2, sy, SIDE_L - 12, 40, 0x3a1414, 0.85).setStrokeStyle(2, 0xc0392b, 0.9).setDepth(1);
+    this.add.text(SIDE_L / 2, sy, '🪙 판매 (끌어다 놓기)', style(10, '#ffcdd2', { align: 'center', wordWrap: { width: SIDE_L - 16 } })).setOrigin(0.5).setDepth(2);
+    this.baitY = sy + 34;
+    this.altar = new Altar(this);
     this.buildSpellBar();
   }
 
@@ -525,31 +528,31 @@ export default class BattleScene extends Phaser.Scene {
 
   drawBaitShop() {
     const b = this.data2.config.bait;
-    // 먹이는 준비 시간에만 씀: 조작판 바로 위 작은 줄, 전투가 시작되면 숨김
-    const BY = DOCK_Y - 20;
-    this.baitLabel = this.add.text(24, BY, '🍖 먹이 ⓘ', style(12, '#ffe2b8', { stroke: '#000', strokeThickness: 3 })).setOrigin(0, 0.5).setInteractive({ useHandCursor: true }).setDepth(8);
-    this.baitLabel.on('pointerover', () => showTip(this, '준비 시간에만 · 다음 3회 소환에서 그 역할이 나올 확률 2배', 200, BY - 6)).on('pointerout', () => hideTip(this));
+    // 먹이는 준비 시간에만 씀: 왼쪽 사이드바 판매 칸 아래, 전투가 시작되면 숨김
+    const BY = this.baitY ?? 560;
+    this.baitLabel = this.add.text(6, BY - 8, '🍖 먹이 ⓘ', style(11, '#ffe2b8')).setOrigin(0, 0.5).setInteractive({ useHandCursor: true }).setDepth(8);
+    this.baitLabel.on('pointerover', () => showTip(this, '준비 시간에만 · 다음 3회 소환에서 그 역할이 나올 확률 2배', 160, BY)).on('pointerout', () => hideTip(this));
     this.baitBtns = Object.entries(b.types).map(([id, t], i) =>
-      button(this, 136 + i * 86, BY, 82, 28, `${t.name} ${b.cost}·${ROLE_NAME[t.role]}`, () => this.doBait(id), { size: 11, fill: 0x4a3b22 }));
-    this.baitState = this.add.text(24, BY - 22, '', style(12, '#ffd84d', { stroke: '#000', strokeThickness: 3 })).setDepth(8);
+      button(this, SIDE_L / 2, BY + 14 + i * 26, SIDE_L - 10, 23, `${t.name} ${b.cost}·${ROLE_NAME[t.role]}`, () => this.doBait(id), { size: 10, fill: 0x4a3b22 }));
+    this.baitState = this.add.text(SIDE_L + 8, 700, '', style(12, '#ffd84d', { stroke: '#000', strokeThickness: 3 })).setDepth(8);
   }
 
   drawSummonPanel() {
-    panel(this, 800, DOCK_Y + 4, 472, 102, { depth: 1 });
-    // real globe (Natural Earth outlines), telescope and caption
-    this.globe = new Globe(this, 852, 666, 40, this.registry.get('raw').globe);
-    this.scopeAt = [940, 664];
-    this.add.circle(...this.scopeAt, 34, 0x6b4a2e).setDepth(4);
-    this.scope = this.add.circle(...this.scopeAt, 30, 0x0b0e12).setStrokeStyle(4, 0xd4b06a).setDepth(5);
+    // 오른쪽 사이드바 가운데: 지구본 소환(지구본·망원경·지정·소환 버튼)
+    const cx = (SIDE_R + 1280) / 2, top = SIDE_TOP + 176;
+    panel(this, SIDE_R + 4, top, 1280 - SIDE_R - 8, 268, { depth: 1, plain: true, alpha: 0.9 });
+    this.globe = new Globe(this, cx, top + 46, 32, this.registry.get('raw').globe);
+    this.scopeAt = [cx, top + 124];
+    this.add.circle(...this.scopeAt, 28, 0x6b4a2e).setDepth(4);
+    this.scope = this.add.circle(...this.scopeAt, 24, 0x0b0e12).setStrokeStyle(3, 0xd4b06a).setDepth(5);
     this.scopeLayer = this.add.container(0, 0).setDepth(6);
-    this.ribbon = this.add.text(1000, DOCK_Y - 26, '', style(18, '#ffffff', { stroke: '#000', strokeThickness: 4, backgroundColor: '#101820f0', padding: { x: 14, y: 5 }, fontStyle: 'bold' })).setOrigin(0.5).setDepth(20).setVisible(false);
-    this.globeText = this.add.text(1000, DOCK_Y - 6, '지구본을 돌려 소환', style(12, '#ddeeff', { align: 'center', wordWrap: { width: 230 }, stroke: '#000', strokeThickness: 3 })).setOrigin(0.5, 1).setDepth(8);
-    const zone = this.add.zone(896, 666, 190, 100).setInteractive().setDepth(7);
+    this.ribbon = this.add.text(SIDE_R - 8, top + 90, '', style(18, '#ffffff', { stroke: '#000', strokeThickness: 4, backgroundColor: '#101820f0', padding: { x: 14, y: 5 }, fontStyle: 'bold' })).setOrigin(1, 0.5).setDepth(20).setVisible(false);
+    this.globeText = this.add.text(SIDE_R - 8, top + 124, '지구본을 돌려 소환', style(12, '#ddeeff', { align: 'right', wordWrap: { width: 220 }, stroke: '#000', strokeThickness: 3 })).setOrigin(1, 0.5).setDepth(8);
+    const zone = this.add.zone(cx, top + 90, 100, 170).setInteractive().setDepth(7);
     zone.on('pointerdown', () => this.finishReveal());
-    // designation
-    this.contBtn = button(this, 1063, 643, 140, 34, '', () => this.cycleDesignate('continent'), { size: 11, fill: 0x2b3f55 });
-    this.habBtn = button(this, 1063, 687, 140, 34, '', () => this.cycleDesignate('habitat'), { size: 11, fill: 0x2b3f55 });
-    this.summonBtn = button(this, 1201, 666, 128, 86, '', () => this.doSummon(), { size: 16, fill: 0x1d4f8c, stroke: 0xf2cf7a });
+    this.contBtn = button(this, cx, top + 170, 96, 24, '', () => this.cycleDesignate('continent'), { size: 10, fill: 0x2b3f55 });
+    this.habBtn = button(this, cx, top + 197, 96, 24, '', () => this.cycleDesignate('habitat'), { size: 10, fill: 0x2b3f55 });
+    this.summonBtn = button(this, cx, top + 238, 96, 46, '', () => this.doSummon(), { size: 14, fill: 0x1d4f8c, stroke: 0xf2cf7a });
     this.refreshDesignate();
   }
 
@@ -784,8 +787,8 @@ export default class BattleScene extends Phaser.Scene {
     const ux = vv?.container.x ?? 640, uy = vv?.container.y ?? 300;
     const onBench = !this.state.field.includes(u);
     let ax, ay;
-    if (onBench) { ax = Phaser.Math.Clamp(ux - w / 2, 8, 780 - w); ay = BENCH_Y - SLOT / 2 - 18 - h; }
-    else { ax = ux + 70 + w < 1150 ? ux + 70 : ux - 70 - w; ax = Phaser.Math.Clamp(ax, 8, 1150 - w); ay = Phaser.Math.Clamp(uy - h / 2, 112, 440 - h); }
+    if (onBench) { ax = SIDE_L + 8; ay = Phaser.Math.Clamp(uy - h / 2, 104, 712 - h); }
+    else { ax = ux + 70 + w < SIDE_R - 8 ? ux + 70 : ux - 70 - w; ax = Phaser.Math.Clamp(ax, SIDE_L + 8, SIDE_R - 8 - w); ay = Phaser.Math.Clamp(uy - h / 2, 104, 712 - h); }
     for (const o of objs) { o.x += ax; o.y += ay - 64; }
     this.cardObjs = objs; this.cardUid = uid;
   }
@@ -804,6 +807,7 @@ export default class BattleScene extends Phaser.Scene {
     if (live && !stop) step(this.state, this.data2, this.frameDt);
     this.enemyHits = new Set([...this.enemyHits, ...this.state.events.filter((e) => e.type === 'enemyAttack').map((e) => e.eid)]);
     this.globe?.update(this.realDt);
+    this.roster?.update(); this.altar?.update();
     this.drawSpellBar();
     { const want = this.state.phase === 'wave' ? this.data2.config.formation?.squeeze ?? 1 : 1; this.squeezeK = (this.squeezeK ?? 1) + (want - (this.squeezeK ?? 1)) * Math.min(1, this.realDt * 3); }
     this.preAnimate();
@@ -851,7 +855,7 @@ export default class BattleScene extends Phaser.Scene {
     if (leaf) { leaf.fillStyle(0x2e7d32, 1).fillEllipse(0, 36, 84, 18); leaf.fillStyle(0x66bb6a, 1).fillEllipse(-2, 33, 78, 13); leaf.lineStyle(2, 0x2e7d32, 1).lineBetween(-36, 34, 36, 34); leaf.lineStyle(3, 0x2e7d32, 1).lineBetween(38, 35, 52, 44); }
     c.add([foot2, leaf, glow, foot, tok, name, barBg, bar, downText, icon].filter(Boolean));
     c.unitUid = unit.uid;
-    c.setSize(64, 80).setInteractive({ draggable: true, useHandCursor: true });
+    c.setSize(84, 100).setInteractive({ draggable: true, useHandCursor: true });
     const shadow = unit.stats.flyer ? this.add.ellipse(0, 0, 54, 14, 0x000000, 0.3).setDepth(45).setVisible(false) : null;
     const v = { container: c, tok, rig, shadow, bar, barBg, downText, name, icon, foot, foot2, lastHp: unit.hp, wasDown: unit.down, key: `${unit.kind}:${unit.speciesId}:${unit.stage}` };
     if (rig && this.state.time > 0) {
@@ -885,7 +889,7 @@ export default class BattleScene extends Phaser.Scene {
     const s = this.state;
     const live = [
       ...s.field.map((u) => [u, tileToX(u.pos), u.stats.flyer ? (u.skyY ?? 200) - 30 : this.groundY(u.y ?? (u.lane ?? 1) / 2), true]),
-      ...s.bench.map((u, i) => (u ? [u, benchSlotX(i), BENCH_Y, false] : null)).filter(Boolean),
+      ...s.bench.map((u, i) => (u ? [u, benchSlotPos(i).x, benchSlotPos(i).y - 6, false] : null)).filter(Boolean),
     ];
     const seen = new Set();
     for (const [u, x, y, onField] of live) {
@@ -920,7 +924,7 @@ export default class BattleScene extends Phaser.Scene {
       } else { v.curX = undefined; v.curY = undefined; }
       v.container.setDepth(onField ? (u.stats.flyer ? 900 + y : 50 + y) : 60);
       if (v.ent && (onField || this.dragUid === u.uid)) this.endEntrance(v);
-      if (!v.ent && this.dragUid !== u.uid) { const k = (onField ? (u.stats.flyer ? LANE_SCALE[u.cell?.r ?? 1] * 0.96 : this.depthScale(u.y ?? (u.lane ?? 1) / 2)) : 1) * (u.soul && onField ? 1 + 0.3 * Math.min(1, (u.soulKills ?? 0) / this.data2.config.soul.maxKills) : 1); if (Math.abs((v.persp ?? 1) - k) > 0.001) { v.persp = k; v.container.setScale(k); } }
+      if (!v.ent && this.dragUid !== u.uid) { const k = (onField ? (u.stats.flyer ? LANE_SCALE[u.cell?.r ?? 1] * 0.96 : this.depthScale(u.y ?? (u.lane ?? 1) / 2)) : BENCH_K) * (u.soul && onField ? 1 + 0.3 * Math.min(1, (u.soulKills ?? 0) / this.data2.config.soul.maxKills) : 1); if (Math.abs((v.persp ?? 1) - k) > 0.001) { v.persp = k; v.container.setScale(k); } }
       if (v.foot2) v.foot2.setVisible(!u.stats.flyer || !onField);
       if (v.shadow) { v.shadow.setVisible(onField && u.stats.flyer && !u.down); v.shadow.setPosition(v.container.x, this.laneY(u.cell?.r ?? 1) + 34); }
       if (onField && u.hp < (v.hpSeen ?? u.hp) - 0.4 && !u.down) {
@@ -935,7 +939,7 @@ export default class BattleScene extends Phaser.Scene {
       v.bar.width = 50 * Math.max(0, u.hp) / max;
       v.bar.setFillStyle(u.hp / max < 0.3 ? 0xe74c3c : 0x2ecc71);
       v.bar.setVisible(onField); v.barBg.setVisible(onField);
-      v.name.setVisible(!onField || s.phase !== 'wave' || this.selectedUid === u.uid);
+      v.name.setVisible(onField && (s.phase !== 'wave' || this.selectedUid === u.uid));
       v.container.setAlpha(this.hidden.has(u.uid) ? 0 : u.down && !v.rig ? 0.35 : 1);
       this.animateUnit(u, v, onField, this.frameDt);
       v.downText.setText(u.down ? String(Math.ceil(u.respawnLeft)) : '');
@@ -1198,7 +1202,7 @@ export default class BattleScene extends Phaser.Scene {
     e.hole?.destroy();
     if (v.rig) v.rig.inst.silhouette = false;
     v.name.setVisible(true).setScale(1);
-    v.container.setAngle(0).setScale(v.persp ?? 1);
+    v.container.setAngle(0).setScale(v.persp ?? BENCH_K);
     v.ent = null;
   }
 
@@ -1208,13 +1212,13 @@ export default class BattleScene extends Phaser.Scene {
     const k = Math.min(1, e.t / 0.4);
     if (!e.landed) {
       const yo = 44 * (1 - k) ** 2 - Math.sin(Math.PI * k) * 62;
-      v.container.setPosition(x, y + yo).setScale(0.3 + 0.7 * Math.min(1, k * 1.7)).setAngle(Math.sin(k * Math.PI * 2) * 8);
+      v.container.setPosition(x, y + yo).setScale((0.3 + 0.7 * Math.min(1, k * 1.7)) * BENCH_K).setAngle(Math.sin(k * Math.PI * 2) * 8);
       if (k >= 1) {
         e.landed = true;
         v.container.setAngle(0);
         if (v.rig) { v.rig.inst.silhouette = false; v.rig.inst.hitFlash(0.2); v.rig.inst.play('merge_in'); }
         v.name.setVisible(true).setScale(0.3); this.tweens.add({ targets: v.name, scale: 1, duration: 200, ease: 'Back.out' });
-        this.tweens.add({ targets: v.container, scaleX: { from: 1.28, to: 1 }, scaleY: { from: 0.74, to: 1 }, duration: 260, ease: 'Back.out' });
+        this.tweens.add({ targets: v.container, scaleX: { from: 1.28 * BENCH_K, to: BENCH_K }, scaleY: { from: 0.74 * BENCH_K, to: BENCH_K }, duration: 260, ease: 'Back.out' });
         const col = u.white ? 0xffffff : u.traits?.every((t) => t.kind === 'str') ? 0x7CFC9A : 0xfff6a0;
         this.fx.ring(x, y + 30, col, 1.1, 420); this.fx.burst('star', x, y, 10, col); this.fx.burst('rise', x, y + 10, 10, col); this.fx.burst('puff', x, y + 34, 4, 0xbfae8a);
         const ed = u.stats.element ? this.data2.config.elements.defs[u.stats.element] : null;
@@ -1471,6 +1475,8 @@ export default class BattleScene extends Phaser.Scene {
 }
 
 const time = () => performance.now();
+/** Cage animals are drawn small inside the left sidebar. */
+const BENCH_K = 0.5;
 const SHOT_SFX = { monkey: 'shoot', crow: 'shoot', eagle: 'slash', fox: 'magic', rooster: 'note', grasshopper: 'note', frog: 'magic', cheese_thief: 'magic', thunderbird: 'bolt', phoenix: 'fire', bullfrog: 'magic' };
 const PATCH_TIP = { scorch: '밟은 적이 불에 뎀', puddle: '적이 느려지고 번개에 더 아파함', cloud: '나는 적이 느려지고 우리 편은 잘 피함', rock: '적이 느려지고 우리 편은 덜 다침', sand: '적의 공격이 굼떠짐', storm: '번개가 적을 때림', frost: '적이 크게 느려짐', thicket: '우리 편이 잘 피하고 기운을 차림', sunbeam: '우리 편 손발이 빨라짐' };
 const PATCH_COL = { scorch: 0xff6a2a, puddle: 0x4fc3ff, cloud: 0xdfe9f2, rock: 0x9a8a78, sand: 0xe2c078, storm: 0x6b6fa8, frost: 0xbfeaff, thicket: 0x5fbf5a, sunbeam: 0xfff1a8 };

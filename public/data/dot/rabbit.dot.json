@@ -108,7 +108,7 @@
   },
   "teen": {
    "set": "baby",
-   "scale": 1
+   "scale": 0.95
   },
   "adult": {
    "set": "adult",

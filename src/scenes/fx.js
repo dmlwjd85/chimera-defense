@@ -1,4 +1,9 @@
 import { dotOn, dotify } from './dotfx.js';
+import { DOT_PX } from '../rig/dotData.js';
+
+/** pixelfx 시트 이름(assets/fx/pfx/<이름>.png + .json)과 기준점(시트 JSON의 pivot ÷ 칸 크기). */
+export const PFX = ['hit-spark', 'blunt-hit', 'crit-hit', 'claw-swipe', 'poof'];
+const PFX_PIVOT = { 'hit-spark': [0.43, 0.56], 'blunt-hit': [0.5, 0.53], 'crit-hit': [0.39, 0.51], 'claw-swipe': [0.53, 0.68], poof: [0.5, 0.6] };   // 처음 8장의 그림 한가운데
 // Battle effects: hit sparks, projectiles, area rings, status particles, evolution beams, kills, banners, ambient weather.
 // Uses textures fx-* (tools/gen_bg.py). Every call is cheap: emitters are created once and `explode`d.
 import Phaser from 'phaser';
@@ -35,6 +40,27 @@ export const STRIKE = {
 };
 
 export class FX {
+  /** 도트 이펙트 한 번 재생(pixelfx 시트). 도트 1칸 = 화면 2px(DOT_PX)로 캐릭터와 같은 크기. 없으면 false. */
+  pfx(name, x, y, opts = {}) {
+    const sc = this.scene, key = 'pfx-' + name;
+    if (!sc.textures.exists(key)) return false;
+    sc.pfxLive ??= 0;
+    if (sc.pfxLive > (opts.cap ?? 16)) return true;   // 너무 많으면 건너뜀(가림·성능)
+    if (!sc.anims.exists(key)) {
+      const names = sc.textures.get(key).getFrameNames().filter((f) => f !== '__BASE').sort((a, b) => +a.split(' ').pop() - +b.split(' ').pop());
+      sc.anims.create({ key, frames: names.map((frame) => ({ key, frame })), frameRate: 30 });
+    }
+    const piv = PFX_PIVOT[name] ?? [0.5, 0.5];
+    const sp = sc.add.sprite(x, y, key).setOrigin(piv[0], piv[1]).setScale((opts.scale ?? 1) * DOT_PX).setDepth(opts.depth ?? 1600);
+    if (opts.flip) sp.setFlipX(true);
+    if (opts.tint != null) sp.setTint(opts.tint);
+    if (opts.alpha != null) sp.setAlpha(opts.alpha);
+    sc.pfxLive++;
+    sp.play({ key, frameRate: opts.fps ?? 30 });
+    sp.once('animationcomplete', () => { sc.pfxLive--; sp.destroy(); });
+    return true;
+  }
+
   constructor(scene) {
     this.scene = scene;
     this.emitters = {};
@@ -65,6 +91,8 @@ export class FX {
   }
 
   hit(x, y, color = 'white', big = false) {
+    const t = TINT[color] ?? color, tint = t === 0xffffff || color === 'white' ? null : t;
+    if (this.pfx(big ? 'blunt-hit' : 'hit-spark', x, y, { tint, flip: Math.random() < 0.5, fps: big ? 40 : 30 })) return;
     this.burst('flare', x, y, 1, TINT[color] ?? color);
     this.burst('spark', x, y, big ? 10 : 5, TINT[color] ?? color);
   }
@@ -122,8 +150,10 @@ export class FX {
   }
 
   kill(x, y, gold, boss) {
-    this.burst('puff', x, y, boss ? 14 : 5, 0xdddddd);
-    this.burst('spark', x, y, boss ? 24 : 6, 0xffe066);
+    if (!this.pfx('poof', x, y, { fps: 45, scale: boss ? 1.5 : 1, cap: 22 })) {
+      this.burst('puff', x, y, boss ? 14 : 5, 0xdddddd);
+      this.burst('spark', x, y, boss ? 24 : 6, 0xffe066);
+    }
     if (gold > 0 && this.ok) {
       for (let i = 0; i < Math.min(3, Math.ceil(gold / 3)); i++) {
         const c = this.scene.add.image(x, y, 'fx-coin').setDepth(1700).setScale(0.7);
@@ -189,6 +219,7 @@ export class FX {
   }
 
   claws(x, y, color = 0xffa040) {
+    if (this.pfx('claw-swipe', x, y, { fps: 40 })) return;
     if (!this.ok) return;
     for (let i = 0; i < 3; i++) {
       const s = this.scene.add.image(x - 14 + i * 14, y - 10 + i * 6, 'fx-slash').setDepth(1600).setBlendMode('ADD').setTint(color).setScale(0.3).setAngle(-55);
@@ -337,6 +368,7 @@ export class FX {
 
   /** Impact star (cartoon "pow") on a heavy hit. */
   impact(x, y, color = 0xffe066, size = 1) {
+    if (this.pfx('crit-hit', x, y, { scale: 0.75, fps: 40, alpha: 0.9 })) return;
     const sc = this.scene;
     const g = sc.add.graphics().setDepth(1606);
     size *= 0.65;

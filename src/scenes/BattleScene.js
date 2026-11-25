@@ -855,6 +855,7 @@ export default class BattleScene extends Phaser.Scene {
       seen.add(u.uid);
       let v = this.unitViews.get(u.uid);
       if (!v) this.unitViews.set(u.uid, (v = this.makeUnitView(u)));
+      if (onField && v.wasDown && !u.down && u.inGate) { v.curX = null; v.curY = null; }   // 성문에서 부활: 쓰러진 자리에서 미끄러지지 않고 문에서 나타남
       if (onField !== v.wasField) { if (onField) { v.curX = null; v.curY = null; } v.wasField = onField; }   // 케이지 → 출전: 케이지 자리에서 끌려가지 않게
       if (this.dragUid !== u.uid) {
         if (onField && u.stats.flyer) {

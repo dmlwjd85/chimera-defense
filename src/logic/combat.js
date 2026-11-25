@@ -6,7 +6,7 @@ import { makeEnemy } from './waves.js';
 import { soulOnHit, soulOnKill } from './soul.js';
 import { guardShare, moveMult, dealerCombo, tickRoles } from './roles.js';
 import { dist, steer, driftEnemies } from './arena.js';
-import { tickMuster, rushMult } from './muster.js';
+import { tickMuster, rushMult, intoGate } from './muster.js';
 
 // 2D 거리(앞뒤 깊이 포함). state.arenaCfg 는 combatTick 이 넣어 둠
 const gap = (state, a, b) => dist(a, b, { arena: state.arenaCfg });
@@ -340,7 +340,11 @@ export function combatTick(state, data, dt) {
   for (const u of state.field) {
     if (!u.down) continue;
     u.respawnLeft -= dt;
-    if (u.respawnLeft <= 0) Object.assign(u, { down: false, hp: u.maxHp ?? u.stats.hp, respawnLeft: 0, lastHitAt: state.time, attackCd: 0 });
+    if (u.respawnLeft <= 0) {
+      Object.assign(u, { down: false, hp: u.maxHp ?? u.stats.hp, respawnLeft: 0, lastHitAt: state.time, attackCd: 0 });
+      // 성문 출전: 쓰러졌던 동물은 성문 안에서 다시 일어나 자기 자리로 달려 나감
+      if (cfg.muster && state.phase === 'wave') { releaseBy(state, u.uid); intoGate(u, cfg, state); }
+    }
   }
 
   tickEnemyTimers(state, dt);

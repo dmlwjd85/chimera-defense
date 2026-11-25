@@ -78,6 +78,19 @@ test('wave start: animals run out of the gate one by one in a line, spread to th
   assert.ok(s.field.every((u) => u.inGate && u.pos === D.config.muster.gate), 'back inside the gate');
 });
 
+test('a fallen animal gets up inside the gate and runs back out', () => {
+  const s = B.createBattle(D, STAGE, 7);
+  s.bench = [B.makeUnit(s, D, { kind: 'base', speciesId: 'bear', stage: 'young', parts: null })];
+  B.deploy(s, D, 0); B.skipPrep(s, D);
+  for (let i = 0; i < 40; i++) B.step(s, D, 0.1);
+  const bear = s.field[0];
+  Object.assign(bear, { down: true, hp: 0, respawnLeft: 0.05 });
+  B.step(s, D, 0.1);
+  assert.ok(!bear.down && (bear.inGate || bear.rushing), 'back from the gate');
+  for (let i = 0; i < 60; i++) B.step(s, D, 0.1);
+  assert.ok(!bear.inGate && !bear.rushing && bear.pos > 3, 'and back at the front');
+});
+
 test('enemies come out of the portal in a line, then spread to their own depth', () => {
   const s = B.createBattle(D, STAGE, 9);
   B.skipPrep(s, D);

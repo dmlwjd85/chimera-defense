@@ -1,0 +1,846 @@
+{
+ "note": "bison 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "bison_spirit",
+ "sheet": "dot-m-bison_spirit",
+ "file": "assets/dotm/bison_spirit.png",
+ "frameW": 129,
+ "frameH": 151,
+ "foot": 148,
+ "cols": 1,
+ "anchorX": 66,
+ "palette": [
+  "#0c0421",
+  "#161038",
+  "#25295e",
+  "#291a1f",
+  "#364d88",
+  "#4d6052",
+  "#4e7399",
+  "#5a312c",
+  "#5b8eb6",
+  "#7eb0d3",
+  "#86503e",
+  "#a56b4d",
+  "#bd8558",
+  "#d59e61",
+  "#f2ca81",
+  "#feebac"
+ ],
+ "rects": {
+  "bison_myth_a1_00": [
+   895,
+   253,
+   100,
+   105,
+   -49,
+   -105
+  ],
+  "bison_myth_a1_01": [
+   1709,
+   253,
+   103,
+   103,
+   -52,
+   -103
+  ],
+  "bison_myth_a1_02": [
+   302,
+   0,
+   102,
+   122,
+   -53,
+   -124
+  ],
+  "bison_myth_a1_03": [
+   405,
+   0,
+   99,
+   122,
+   -46,
+   -131
+  ],
+  "bison_myth_a1_04": [
+   108,
+   0,
+   95,
+   128,
+   -49,
+   -138
+  ],
+  "bison_myth_a1_05": [
+   204,
+   0,
+   97,
+   128,
+   -52,
+   -128
+  ],
+  "bison_myth_a1_06": [
+   211,
+   140,
+   110,
+   111,
+   -58,
+   -111
+  ],
+  "bison_myth_a1_07": [
+   0,
+   253,
+   96,
+   107,
+   -48,
+   -107
+  ],
+  "bison_myth_a2_00": [
+   202,
+   361,
+   99,
+   101,
+   -51,
+   -101
+  ],
+  "bison_myth_a2_01": [
+   97,
+   253,
+   99,
+   107,
+   -51,
+   -107
+  ],
+  "bison_myth_a2_02": [
+   322,
+   140,
+   99,
+   111,
+   -50,
+   -117
+  ],
+  "bison_myth_a2_03": [
+   1279,
+   0,
+   106,
+   113,
+   -54,
+   -124
+  ],
+  "bison_myth_a2_04": [
+   1062,
+   0,
+   109,
+   114,
+   -57,
+   -126
+  ],
+  "bison_myth_a2_05": [
+   505,
+   0,
+   106,
+   120,
+   -56,
+   -127
+  ],
+  "bison_myth_a2_06": [
+   660,
+   140,
+   110,
+   110,
+   -60,
+   -111
+  ],
+  "bison_myth_a2_07": [
+   1489,
+   253,
+   100,
+   104,
+   -52,
+   -104
+  ],
+  "bison_myth_down_00": [
+   874,
+   140,
+   101,
+   109,
+   -51,
+   -109
+  ],
+  "bison_myth_down_01": [
+   1386,
+   0,
+   107,
+   113,
+   -55,
+   -113
+  ],
+  "bison_myth_down_02": [
+   422,
+   140,
+   112,
+   111,
+   -59,
+   -111
+  ],
+  "bison_myth_down_03": [
+   1380,
+   140,
+   114,
+   108,
+   -61,
+   -108
+  ],
+  "bison_myth_down_04": [
+   1590,
+   253,
+   118,
+   104,
+   -63,
+   -104
+  ],
+  "bison_myth_down_05": [
+   302,
+   361,
+   119,
+   95,
+   -64,
+   -95
+  ],
+  "bison_myth_down_06": [
+   422,
+   361,
+   125,
+   47,
+   -62,
+   -46
+  ],
+  "bison_myth_el_00": [
+   996,
+   253,
+   97,
+   105,
+   -50,
+   -105
+  ],
+  "bison_myth_el_01": [
+   771,
+   140,
+   102,
+   110,
+   -52,
+   -110
+  ],
+  "bison_myth_el_02": [
+   1494,
+   0,
+   105,
+   113,
+   -57,
+   -113
+  ],
+  "bison_myth_el_03": [
+   1600,
+   0,
+   107,
+   113,
+   -61,
+   -113
+  ],
+  "bison_myth_el_04": [
+   1708,
+   0,
+   109,
+   113,
+   -61,
+   -113
+  ],
+  "bison_myth_el_05": [
+   0,
+   140,
+   108,
+   112,
+   -58,
+   -112
+  ],
+  "bison_myth_el_06": [
+   976,
+   140,
+   105,
+   109,
+   -54,
+   -109
+  ],
+  "bison_myth_el_07": [
+   603,
+   253,
+   97,
+   106,
+   -49,
+   -106
+  ],
+  "bison_myth_hit_00": [
+   0,
+   361,
+   100,
+   102,
+   -51,
+   -102
+  ],
+  "bison_myth_hit_01": [
+   0,
+   0,
+   107,
+   139,
+   -54,
+   -149
+  ],
+  "bison_myth_hit_02": [
+   1818,
+   0,
+   98,
+   113,
+   -56,
+   -125
+  ],
+  "bison_myth_hit_03": [
+   1917,
+   0,
+   110,
+   113,
+   -63,
+   -113
+  ],
+  "bison_myth_idle_00": [
+   1094,
+   253,
+   96,
+   105,
+   -48,
+   -105
+  ],
+  "bison_myth_idle_01": [
+   1191,
+   253,
+   95,
+   105,
+   -48,
+   -105
+  ],
+  "bison_myth_idle_02": [
+   1287,
+   253,
+   95,
+   105,
+   -48,
+   -105
+  ],
+  "bison_myth_idle_03": [
+   701,
+   253,
+   96,
+   106,
+   -48,
+   -106
+  ],
+  "bison_myth_ult_00": [
+   101,
+   361,
+   100,
+   102,
+   -51,
+   -102
+  ],
+  "bison_myth_ult_01": [
+   109,
+   140,
+   101,
+   112,
+   -50,
+   -111
+  ],
+  "bison_myth_ult_02": [
+   612,
+   0,
+   99,
+   120,
+   -45,
+   -131
+  ],
+  "bison_myth_ult_03": [
+   1172,
+   0,
+   106,
+   114,
+   -48,
+   -140
+  ],
+  "bison_myth_ult_04": [
+   950,
+   0,
+   111,
+   117,
+   -54,
+   -144
+  ],
+  "bison_myth_ult_05": [
+   712,
+   0,
+   118,
+   119,
+   -60,
+   -138
+  ],
+  "bison_myth_ult_06": [
+   831,
+   0,
+   118,
+   119,
+   -62,
+   -125
+  ],
+  "bison_myth_ult_07": [
+   535,
+   140,
+   124,
+   111,
+   -66,
+   -111
+  ],
+  "bison_myth_ult_08": [
+   1495,
+   140,
+   110,
+   108,
+   -58,
+   -108
+  ],
+  "bison_myth_ult_09": [
+   1813,
+   253,
+   110,
+   103,
+   -61,
+   -103
+  ],
+  "bison_myth_ult_10": [
+   1924,
+   253,
+   102,
+   103,
+   -54,
+   -103
+  ],
+  "bison_myth_ult_11": [
+   197,
+   253,
+   97,
+   107,
+   -49,
+   -107
+  ],
+  "bison_myth_ult_12": [
+   1606,
+   140,
+   98,
+   108,
+   -46,
+   -108
+  ],
+  "bison_myth_ult_13": [
+   1082,
+   140,
+   97,
+   109,
+   -45,
+   -109
+  ],
+  "bison_myth_ult_14": [
+   1705,
+   140,
+   97,
+   108,
+   -46,
+   -108
+  ],
+  "bison_myth_ult_15": [
+   1180,
+   140,
+   99,
+   109,
+   -49,
+   -109
+  ],
+  "bison_myth_walk_00": [
+   295,
+   253,
+   98,
+   107,
+   -49,
+   -108
+  ],
+  "bison_myth_walk_01": [
+   1803,
+   140,
+   101,
+   108,
+   -51,
+   -110
+  ],
+  "bison_myth_walk_02": [
+   394,
+   253,
+   104,
+   107,
+   -52,
+   -108
+  ],
+  "bison_myth_walk_03": [
+   1383,
+   253,
+   105,
+   105,
+   -53,
+   -105
+  ],
+  "bison_myth_walk_04": [
+   499,
+   253,
+   103,
+   107,
+   -52,
+   -107
+  ],
+  "bison_myth_walk_05": [
+   1280,
+   140,
+   99,
+   109,
+   -50,
+   -109
+  ],
+  "bison_myth_walk_06": [
+   1905,
+   140,
+   96,
+   108,
+   -48,
+   -108
+  ],
+  "bison_myth_walk_07": [
+   798,
+   253,
+   96,
+   106,
+   -48,
+   -106
+  ]
+ },
+ "frames": [
+  "bison_myth_a1_00",
+  "bison_myth_a1_01",
+  "bison_myth_a1_02",
+  "bison_myth_a1_03",
+  "bison_myth_a1_04",
+  "bison_myth_a1_05",
+  "bison_myth_a1_06",
+  "bison_myth_a1_07",
+  "bison_myth_a2_00",
+  "bison_myth_a2_01",
+  "bison_myth_a2_02",
+  "bison_myth_a2_03",
+  "bison_myth_a2_04",
+  "bison_myth_a2_05",
+  "bison_myth_a2_06",
+  "bison_myth_a2_07",
+  "bison_myth_down_00",
+  "bison_myth_down_01",
+  "bison_myth_down_02",
+  "bison_myth_down_03",
+  "bison_myth_down_04",
+  "bison_myth_down_05",
+  "bison_myth_down_06",
+  "bison_myth_el_00",
+  "bison_myth_el_01",
+  "bison_myth_el_02",
+  "bison_myth_el_03",
+  "bison_myth_el_04",
+  "bison_myth_el_05",
+  "bison_myth_el_06",
+  "bison_myth_el_07",
+  "bison_myth_hit_00",
+  "bison_myth_hit_01",
+  "bison_myth_hit_02",
+  "bison_myth_hit_03",
+  "bison_myth_idle_00",
+  "bison_myth_idle_01",
+  "bison_myth_idle_02",
+  "bison_myth_idle_03",
+  "bison_myth_ult_00",
+  "bison_myth_ult_01",
+  "bison_myth_ult_02",
+  "bison_myth_ult_03",
+  "bison_myth_ult_04",
+  "bison_myth_ult_05",
+  "bison_myth_ult_06",
+  "bison_myth_ult_07",
+  "bison_myth_ult_08",
+  "bison_myth_ult_09",
+  "bison_myth_ult_10",
+  "bison_myth_ult_11",
+  "bison_myth_ult_12",
+  "bison_myth_ult_13",
+  "bison_myth_ult_14",
+  "bison_myth_ult_15",
+  "bison_myth_walk_00",
+  "bison_myth_walk_01",
+  "bison_myth_walk_02",
+  "bison_myth_walk_03",
+  "bison_myth_walk_04",
+  "bison_myth_walk_05",
+  "bison_myth_walk_06",
+  "bison_myth_walk_07"
+ ],
+ "standing": [
+  "bison_myth_idle_00",
+  "bison_myth_idle_01",
+  "bison_myth_idle_02",
+  "bison_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 43,
+   "attack": {
+    "frames": [
+     "bison_myth_a1_00",
+     "bison_myth_a1_01",
+     "bison_myth_a1_02",
+     "bison_myth_a1_03",
+     "bison_myth_a1_04",
+     "bison_myth_a1_05",
+     "bison_myth_a1_06",
+     "bison_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "bison_myth_a2_00",
+     "bison_myth_a2_01",
+     "bison_myth_a2_02",
+     "bison_myth_a2_03",
+     "bison_myth_a2_04",
+     "bison_myth_a2_05",
+     "bison_myth_a2_06",
+     "bison_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "bison_myth_down_00",
+     "bison_myth_down_01",
+     "bison_myth_down_02",
+     "bison_myth_down_03",
+     "bison_myth_down_04",
+     "bison_myth_down_05",
+     "bison_myth_down_06"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "bison_myth_el_00",
+     "bison_myth_el_01",
+     "bison_myth_el_02",
+     "bison_myth_el_03",
+     "bison_myth_el_04",
+     "bison_myth_el_05",
+     "bison_myth_el_06",
+     "bison_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.08,
+      "cast"
+     ],
+     [
+      0.09,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "bison_myth_hit_00",
+     "bison_myth_hit_01",
+     "bison_myth_hit_02",
+     "bison_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "bison_myth_idle_00",
+     "bison_myth_idle_01",
+     "bison_myth_idle_02",
+     "bison_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "bison_myth_ult_00",
+     "bison_myth_ult_01",
+     "bison_myth_ult_02",
+     "bison_myth_ult_03",
+     "bison_myth_ult_04",
+     "bison_myth_ult_05",
+     "bison_myth_ult_06",
+     "bison_myth_ult_07",
+     "bison_myth_ult_08",
+     "bison_myth_ult_09",
+     "bison_myth_ult_10",
+     "bison_myth_ult_11",
+     "bison_myth_ult_12",
+     "bison_myth_ult_13",
+     "bison_myth_ult_14",
+     "bison_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.22,
+      "cast"
+     ],
+     [
+      0.23,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "bison_myth_walk_00",
+     "bison_myth_walk_01",
+     "bison_myth_walk_02",
+     "bison_myth_walk_03",
+     "bison_myth_walk_04",
+     "bison_myth_walk_05",
+     "bison_myth_walk_06",
+     "bison_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

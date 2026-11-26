@@ -1,0 +1,1511 @@
+{
+ "note": "frog 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "frog",
+ "sheet": "dot-m-frog",
+ "file": "assets/dotm/frog.png",
+ "frameW": 117,
+ "frameH": 119,
+ "foot": 116,
+ "cols": 1,
+ "anchorX": 58,
+ "palette": [
+  "#03080a",
+  "#1f3f24",
+  "#291a1f",
+  "#326534",
+  "#3b723c",
+  "#498934",
+  "#69b42f",
+  "#6ebe39",
+  "#73b155",
+  "#793c3a",
+  "#84be64",
+  "#8ed645",
+  "#a4ab44",
+  "#bfb390",
+  "#e1ed6d",
+  "#eff8f4"
+ ],
+ "rects": {
+  "frog_baby_a1_00": [
+   1963,
+   277,
+   50,
+   47,
+   -26,
+   -47
+  ],
+  "frog_baby_a1_01": [
+   1458,
+   277,
+   62,
+   54,
+   -27,
+   -54
+  ],
+  "frog_baby_a1_02": [
+   1634,
+   277,
+   47,
+   52,
+   -27,
+   -52
+  ],
+  "frog_baby_a1_03": [
+   1865,
+   277,
+   48,
+   50,
+   -27,
+   -50
+  ],
+  "frog_baby_a1_04": [
+   1914,
+   277,
+   48,
+   48,
+   -26,
+   -48
+  ],
+  "frog_baby_a1_05": [
+   153,
+   342,
+   50,
+   44,
+   -25,
+   -44
+  ],
+  "frog_baby_a1_06": [
+   204,
+   342,
+   50,
+   44,
+   -25,
+   -44
+  ],
+  "frog_baby_a1_07": [
+   0,
+   342,
+   50,
+   45,
+   -25,
+   -45
+  ],
+  "frog_baby_down_00": [
+   255,
+   342,
+   52,
+   44,
+   -24,
+   -44
+  ],
+  "frog_baby_down_01": [
+   626,
+   342,
+   52,
+   42,
+   -24,
+   -42
+  ],
+  "frog_baby_down_02": [
+   872,
+   342,
+   60,
+   38,
+   -28,
+   -38
+  ],
+  "frog_baby_down_03": [
+   1029,
+   342,
+   71,
+   27,
+   -35,
+   -27
+  ],
+  "frog_baby_hit_00": [
+   412,
+   342,
+   53,
+   43,
+   -26,
+   -43
+  ],
+  "frog_baby_hit_01": [
+   466,
+   342,
+   53,
+   43,
+   -26,
+   -43
+  ],
+  "frog_baby_hit_02": [
+   520,
+   342,
+   53,
+   43,
+   -26,
+   -43
+  ],
+  "frog_baby_hit_03": [
+   308,
+   342,
+   51,
+   44,
+   -25,
+   -44
+  ],
+  "frog_baby_idle_00": [
+   1379,
+   198,
+   51,
+   68,
+   -25,
+   -68
+  ],
+  "frog_baby_idle_01": [
+   574,
+   342,
+   51,
+   43,
+   -25,
+   -43
+  ],
+  "frog_baby_idle_02": [
+   360,
+   342,
+   51,
+   44,
+   -25,
+   -44
+  ],
+  "frog_baby_idle_03": [
+   51,
+   342,
+   50,
+   45,
+   -25,
+   -45
+  ],
+  "frog_baby_walk_00": [
+   1682,
+   277,
+   49,
+   52,
+   -25,
+   -52
+  ],
+  "frog_baby_walk_01": [
+   544,
+   277,
+   49,
+   62,
+   -25,
+   -64
+  ],
+  "frog_baby_walk_02": [
+   594,
+   277,
+   49,
+   62,
+   -25,
+   -77
+  ],
+  "frog_baby_walk_03": [
+   1963,
+   198,
+   49,
+   64,
+   -25,
+   -82
+  ],
+  "frog_baby_walk_04": [
+   1295,
+   277,
+   49,
+   57,
+   -25,
+   -71
+  ],
+  "frog_baby_walk_05": [
+   1245,
+   277,
+   49,
+   59,
+   -25,
+   -61
+  ],
+  "frog_baby_walk_06": [
+   1732,
+   277,
+   50,
+   51,
+   -25,
+   -51
+  ],
+  "frog_baby_walk_07": [
+   102,
+   342,
+   50,
+   45,
+   -25,
+   -45
+  ],
+  "frog_teen_a1_00": [
+   847,
+   277,
+   77,
+   61,
+   -32,
+   -61
+  ],
+  "frog_teen_a1_01": [
+   330,
+   277,
+   81,
+   63,
+   -32,
+   -63
+  ],
+  "frog_teen_a1_02": [
+   1431,
+   198,
+   79,
+   68,
+   -32,
+   -68
+  ],
+  "frog_teen_a1_03": [
+   1316,
+   198,
+   62,
+   69,
+   -32,
+   -69
+  ],
+  "frog_teen_a1_04": [
+   1511,
+   198,
+   62,
+   67,
+   -32,
+   -69
+  ],
+  "frog_teen_a1_05": [
+   1574,
+   198,
+   63,
+   67,
+   -32,
+   -67
+  ],
+  "frog_teen_a1_06": [
+   0,
+   277,
+   65,
+   64,
+   -32,
+   -64
+  ],
+  "frog_teen_a1_07": [
+   644,
+   277,
+   65,
+   62,
+   -32,
+   -62
+  ],
+  "frog_teen_a2_00": [
+   925,
+   277,
+   65,
+   61,
+   -32,
+   -60
+  ],
+  "frog_teen_a2_01": [
+   0,
+   115,
+   58,
+   82,
+   -27,
+   -81
+  ],
+  "frog_teen_a2_02": [
+   1679,
+   0,
+   64,
+   84,
+   -33,
+   -95
+  ],
+  "frog_teen_a2_03": [
+   474,
+   115,
+   67,
+   81,
+   -37,
+   -97
+  ],
+  "frog_teen_a2_04": [
+   972,
+   198,
+   63,
+   74,
+   -32,
+   -77
+  ],
+  "frog_teen_a2_05": [
+   1767,
+   198,
+   66,
+   65,
+   -33,
+   -65
+  ],
+  "frog_teen_a2_06": [
+   710,
+   277,
+   66,
+   62,
+   -33,
+   -61
+  ],
+  "frog_teen_a2_07": [
+   412,
+   277,
+   65,
+   63,
+   -32,
+   -63
+  ],
+  "frog_teen_down_00": [
+   777,
+   277,
+   69,
+   62,
+   -33,
+   -62
+  ],
+  "frog_teen_down_01": [
+   1059,
+   277,
+   72,
+   60,
+   -34,
+   -60
+  ],
+  "frog_teen_down_02": [
+   1783,
+   277,
+   81,
+   51,
+   -38,
+   -51
+  ],
+  "frog_teen_down_03": [
+   679,
+   342,
+   94,
+   41,
+   -46,
+   -40
+  ],
+  "frog_teen_down_04": [
+   774,
+   342,
+   97,
+   39,
+   -48,
+   -38
+  ],
+  "frog_teen_down_05": [
+   933,
+   342,
+   95,
+   38,
+   -46,
+   -37
+  ],
+  "frog_teen_hit_00": [
+   991,
+   277,
+   67,
+   61,
+   -32,
+   -61
+  ],
+  "frog_teen_hit_01": [
+   1702,
+   198,
+   64,
+   66,
+   -32,
+   -66
+  ],
+  "frog_teen_hit_02": [
+   66,
+   277,
+   65,
+   64,
+   -32,
+   -64
+  ],
+  "frog_teen_hit_03": [
+   478,
+   277,
+   65,
+   63,
+   -32,
+   -63
+  ],
+  "frog_teen_idle_00": [
+   1834,
+   198,
+   64,
+   65,
+   -32,
+   -65
+  ],
+  "frog_teen_idle_01": [
+   1899,
+   198,
+   63,
+   65,
+   -31,
+   -65
+  ],
+  "frog_teen_idle_02": [
+   132,
+   277,
+   65,
+   64,
+   -32,
+   -64
+  ],
+  "frog_teen_idle_03": [
+   198,
+   277,
+   65,
+   64,
+   -32,
+   -64
+  ],
+  "frog_teen_walk_00": [
+   1638,
+   198,
+   63,
+   67,
+   -30,
+   -67
+  ],
+  "frog_teen_walk_01": [
+   526,
+   198,
+   63,
+   76,
+   -30,
+   -76
+  ],
+  "frog_teen_walk_02": [
+   1614,
+   0,
+   64,
+   85,
+   -31,
+   -89
+  ],
+  "frog_teen_walk_03": [
+   825,
+   0,
+   69,
+   91,
+   -36,
+   -98
+  ],
+  "frog_teen_walk_04": [
+   1844,
+   0,
+   64,
+   83,
+   -31,
+   -87
+  ],
+  "frog_teen_walk_05": [
+   590,
+   198,
+   64,
+   76,
+   -31,
+   -76
+  ],
+  "frog_teen_walk_06": [
+   1251,
+   198,
+   64,
+   70,
+   -31,
+   -70
+  ],
+  "frog_teen_walk_07": [
+   264,
+   277,
+   65,
+   64,
+   -32,
+   -64
+  ],
+  "frog_adult_a1_00": [
+   957,
+   115,
+   107,
+   79,
+   -52,
+   -79
+  ],
+  "frog_adult_a1_01": [
+   1091,
+   0,
+   111,
+   87,
+   -52,
+   -87
+  ],
+  "frog_adult_a1_02": [
+   542,
+   115,
+   104,
+   81,
+   -52,
+   -81
+  ],
+  "frog_adult_a1_03": [
+   647,
+   115,
+   104,
+   80,
+   -52,
+   -80
+  ],
+  "frog_adult_a1_04": [
+   1065,
+   115,
+   104,
+   79,
+   -52,
+   -79
+  ],
+  "frog_adult_a1_05": [
+   1379,
+   115,
+   104,
+   78,
+   -52,
+   -78
+  ],
+  "frog_adult_a1_06": [
+   105,
+   198,
+   104,
+   77,
+   -51,
+   -77
+  ],
+  "frog_adult_a1_07": [
+   210,
+   198,
+   104,
+   77,
+   -52,
+   -77
+  ],
+  "frog_adult_a2_00": [
+   1484,
+   115,
+   105,
+   78,
+   -52,
+   -78
+  ],
+  "frog_adult_a2_01": [
+   1170,
+   115,
+   104,
+   79,
+   -52,
+   -80
+  ],
+  "frog_adult_a2_02": [
+   405,
+   0,
+   103,
+   94,
+   -52,
+   -96
+  ],
+  "frog_adult_a2_03": [
+   0,
+   0,
+   104,
+   114,
+   -53,
+   -116
+  ],
+  "frog_adult_a2_04": [
+   197,
+   0,
+   105,
+   106,
+   -52,
+   -108
+  ],
+  "frog_adult_a2_05": [
+   1203,
+   0,
+   106,
+   87,
+   -52,
+   -89
+  ],
+  "frog_adult_a2_06": [
+   1590,
+   115,
+   106,
+   78,
+   -52,
+   -80
+  ],
+  "frog_adult_a2_07": [
+   315,
+   198,
+   105,
+   77,
+   -52,
+   -77
+  ],
+  "frog_adult_down_00": [
+   1275,
+   115,
+   103,
+   79,
+   -52,
+   -79
+  ],
+  "frog_adult_down_01": [
+   1744,
+   0,
+   99,
+   84,
+   -52,
+   -85
+  ],
+  "frog_adult_down_02": [
+   994,
+   0,
+   96,
+   88,
+   -52,
+   -90
+  ],
+  "frog_adult_down_03": [
+   105,
+   0,
+   91,
+   114,
+   -53,
+   -116
+  ],
+  "frog_adult_down_04": [
+   1310,
+   0,
+   103,
+   87,
+   -52,
+   -89
+  ],
+  "frog_adult_down_05": [
+   1132,
+   277,
+   112,
+   60,
+   -54,
+   -59
+  ],
+  "frog_adult_down_06": [
+   1345,
+   277,
+   112,
+   57,
+   -54,
+   -56
+  ],
+  "frog_adult_down_07": [
+   1521,
+   277,
+   112,
+   54,
+   -54,
+   -53
+  ],
+  "frog_adult_el_00": [
+   1697,
+   115,
+   101,
+   78,
+   -50,
+   -78
+  ],
+  "frog_adult_el_01": [
+   509,
+   0,
+   97,
+   94,
+   -50,
+   -96
+  ],
+  "frog_adult_el_02": [
+   303,
+   0,
+   101,
+   96,
+   -52,
+   -110
+  ],
+  "frog_adult_el_03": [
+   607,
+   0,
+   111,
+   94,
+   -58,
+   -117
+  ],
+  "frog_adult_el_04": [
+   719,
+   0,
+   105,
+   93,
+   -53,
+   -98
+  ],
+  "frog_adult_el_05": [
+   1036,
+   198,
+   107,
+   73,
+   -52,
+   -73
+  ],
+  "frog_adult_el_06": [
+   1144,
+   198,
+   106,
+   73,
+   -52,
+   -73
+  ],
+  "frog_adult_el_07": [
+   59,
+   115,
+   105,
+   82,
+   -52,
+   -82
+  ],
+  "frog_adult_hit_00": [
+   655,
+   198,
+   104,
+   76,
+   -53,
+   -76
+  ],
+  "frog_adult_hit_01": [
+   165,
+   115,
+   105,
+   82,
+   -54,
+   -84
+  ],
+  "frog_adult_hit_02": [
+   865,
+   198,
+   106,
+   75,
+   -53,
+   -77
+  ],
+  "frog_adult_hit_03": [
+   1909,
+   0,
+   103,
+   83,
+   -51,
+   -83
+  ],
+  "frog_adult_idle_00": [
+   421,
+   198,
+   104,
+   77,
+   -52,
+   -77
+  ],
+  "frog_adult_idle_01": [
+   760,
+   198,
+   104,
+   76,
+   -52,
+   -76
+  ],
+  "frog_adult_idle_02": [
+   1799,
+   115,
+   104,
+   78,
+   -52,
+   -78
+  ],
+  "frog_adult_idle_03": [
+   1904,
+   115,
+   104,
+   78,
+   -52,
+   -78
+  ],
+  "frog_adult_walk_00": [
+   752,
+   115,
+   101,
+   80,
+   -51,
+   -80
+  ],
+  "frog_adult_walk_01": [
+   271,
+   115,
+   100,
+   82,
+   -51,
+   -84
+  ],
+  "frog_adult_walk_02": [
+   1414,
+   0,
+   98,
+   86,
+   -50,
+   -88
+  ],
+  "frog_adult_walk_03": [
+   895,
+   0,
+   98,
+   89,
+   -50,
+   -91
+  ],
+  "frog_adult_walk_04": [
+   1513,
+   0,
+   100,
+   86,
+   -51,
+   -88
+  ],
+  "frog_adult_walk_05": [
+   372,
+   115,
+   101,
+   82,
+   -51,
+   -84
+  ],
+  "frog_adult_walk_06": [
+   854,
+   115,
+   102,
+   80,
+   -51,
+   -81
+  ],
+  "frog_adult_walk_07": [
+   0,
+   198,
+   104,
+   78,
+   -52,
+   -78
+  ]
+ },
+ "frames": [
+  "frog_baby_a1_00",
+  "frog_baby_a1_01",
+  "frog_baby_a1_02",
+  "frog_baby_a1_03",
+  "frog_baby_a1_04",
+  "frog_baby_a1_05",
+  "frog_baby_a1_06",
+  "frog_baby_a1_07",
+  "frog_baby_down_00",
+  "frog_baby_down_01",
+  "frog_baby_down_02",
+  "frog_baby_down_03",
+  "frog_baby_hit_00",
+  "frog_baby_hit_01",
+  "frog_baby_hit_02",
+  "frog_baby_hit_03",
+  "frog_baby_idle_00",
+  "frog_baby_idle_01",
+  "frog_baby_idle_02",
+  "frog_baby_idle_03",
+  "frog_baby_walk_00",
+  "frog_baby_walk_01",
+  "frog_baby_walk_02",
+  "frog_baby_walk_03",
+  "frog_baby_walk_04",
+  "frog_baby_walk_05",
+  "frog_baby_walk_06",
+  "frog_baby_walk_07",
+  "frog_teen_a1_00",
+  "frog_teen_a1_01",
+  "frog_teen_a1_02",
+  "frog_teen_a1_03",
+  "frog_teen_a1_04",
+  "frog_teen_a1_05",
+  "frog_teen_a1_06",
+  "frog_teen_a1_07",
+  "frog_teen_a2_00",
+  "frog_teen_a2_01",
+  "frog_teen_a2_02",
+  "frog_teen_a2_03",
+  "frog_teen_a2_04",
+  "frog_teen_a2_05",
+  "frog_teen_a2_06",
+  "frog_teen_a2_07",
+  "frog_teen_down_00",
+  "frog_teen_down_01",
+  "frog_teen_down_02",
+  "frog_teen_down_03",
+  "frog_teen_down_04",
+  "frog_teen_down_05",
+  "frog_teen_hit_00",
+  "frog_teen_hit_01",
+  "frog_teen_hit_02",
+  "frog_teen_hit_03",
+  "frog_teen_idle_00",
+  "frog_teen_idle_01",
+  "frog_teen_idle_02",
+  "frog_teen_idle_03",
+  "frog_teen_walk_00",
+  "frog_teen_walk_01",
+  "frog_teen_walk_02",
+  "frog_teen_walk_03",
+  "frog_teen_walk_04",
+  "frog_teen_walk_05",
+  "frog_teen_walk_06",
+  "frog_teen_walk_07",
+  "frog_adult_a1_00",
+  "frog_adult_a1_01",
+  "frog_adult_a1_02",
+  "frog_adult_a1_03",
+  "frog_adult_a1_04",
+  "frog_adult_a1_05",
+  "frog_adult_a1_06",
+  "frog_adult_a1_07",
+  "frog_adult_a2_00",
+  "frog_adult_a2_01",
+  "frog_adult_a2_02",
+  "frog_adult_a2_03",
+  "frog_adult_a2_04",
+  "frog_adult_a2_05",
+  "frog_adult_a2_06",
+  "frog_adult_a2_07",
+  "frog_adult_down_00",
+  "frog_adult_down_01",
+  "frog_adult_down_02",
+  "frog_adult_down_03",
+  "frog_adult_down_04",
+  "frog_adult_down_05",
+  "frog_adult_down_06",
+  "frog_adult_down_07",
+  "frog_adult_el_00",
+  "frog_adult_el_01",
+  "frog_adult_el_02",
+  "frog_adult_el_03",
+  "frog_adult_el_04",
+  "frog_adult_el_05",
+  "frog_adult_el_06",
+  "frog_adult_el_07",
+  "frog_adult_hit_00",
+  "frog_adult_hit_01",
+  "frog_adult_hit_02",
+  "frog_adult_hit_03",
+  "frog_adult_idle_00",
+  "frog_adult_idle_01",
+  "frog_adult_idle_02",
+  "frog_adult_idle_03",
+  "frog_adult_walk_00",
+  "frog_adult_walk_01",
+  "frog_adult_walk_02",
+  "frog_adult_walk_03",
+  "frog_adult_walk_04",
+  "frog_adult_walk_05",
+  "frog_adult_walk_06",
+  "frog_adult_walk_07"
+ ],
+ "standing": [
+  "frog_baby_idle_00",
+  "frog_baby_idle_01",
+  "frog_baby_idle_02",
+  "frog_baby_idle_03",
+  "frog_teen_idle_00",
+  "frog_teen_idle_01",
+  "frog_teen_idle_02",
+  "frog_teen_idle_03",
+  "frog_adult_idle_00",
+  "frog_adult_idle_01",
+  "frog_adult_idle_02",
+  "frog_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "baby": {
+   "top": 49,
+   "attack": {
+    "frames": [
+     "frog_baby_a1_00",
+     "frog_baby_a1_01",
+     "frog_baby_a1_02",
+     "frog_baby_a1_03",
+     "frog_baby_a1_04",
+     "frog_baby_a1_05",
+     "frog_baby_a1_06",
+     "frog_baby_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "frog_baby_down_00",
+     "frog_baby_down_01",
+     "frog_baby_down_02",
+     "frog_baby_down_03"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "frog_baby_hit_00",
+     "frog_baby_hit_01",
+     "frog_baby_hit_02",
+     "frog_baby_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "frog_baby_idle_00",
+     "frog_baby_idle_01",
+     "frog_baby_idle_02",
+     "frog_baby_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "frog_baby_walk_00",
+     "frog_baby_walk_01",
+     "frog_baby_walk_02",
+     "frog_baby_walk_03",
+     "frog_baby_walk_04",
+     "frog_baby_walk_05",
+     "frog_baby_walk_06",
+     "frog_baby_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "teen": {
+   "top": 52,
+   "attack": {
+    "frames": [
+     "frog_teen_a1_00",
+     "frog_teen_a1_01",
+     "frog_teen_a1_02",
+     "frog_teen_a1_03",
+     "frog_teen_a1_04",
+     "frog_teen_a1_05",
+     "frog_teen_a1_06",
+     "frog_teen_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "frog_teen_a2_00",
+     "frog_teen_a2_01",
+     "frog_teen_a2_02",
+     "frog_teen_a2_03",
+     "frog_teen_a2_04",
+     "frog_teen_a2_05",
+     "frog_teen_a2_06",
+     "frog_teen_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "frog_teen_down_00",
+     "frog_teen_down_01",
+     "frog_teen_down_02",
+     "frog_teen_down_03",
+     "frog_teen_down_04",
+     "frog_teen_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "frog_teen_hit_00",
+     "frog_teen_hit_01",
+     "frog_teen_hit_02",
+     "frog_teen_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "frog_teen_idle_00",
+     "frog_teen_idle_01",
+     "frog_teen_idle_02",
+     "frog_teen_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "frog_teen_walk_00",
+     "frog_teen_walk_01",
+     "frog_teen_walk_02",
+     "frog_teen_walk_03",
+     "frog_teen_walk_04",
+     "frog_teen_walk_05",
+     "frog_teen_walk_06",
+     "frog_teen_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "adult": {
+   "top": 39,
+   "attack": {
+    "frames": [
+     "frog_adult_a1_00",
+     "frog_adult_a1_01",
+     "frog_adult_a1_02",
+     "frog_adult_a1_03",
+     "frog_adult_a1_04",
+     "frog_adult_a1_05",
+     "frog_adult_a1_06",
+     "frog_adult_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "frog_adult_a2_00",
+     "frog_adult_a2_01",
+     "frog_adult_a2_02",
+     "frog_adult_a2_03",
+     "frog_adult_a2_04",
+     "frog_adult_a2_05",
+     "frog_adult_a2_06",
+     "frog_adult_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.335,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "frog_adult_down_00",
+     "frog_adult_down_01",
+     "frog_adult_down_02",
+     "frog_adult_down_03",
+     "frog_adult_down_04",
+     "frog_adult_down_05",
+     "frog_adult_down_06",
+     "frog_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "frog_adult_el_00",
+     "frog_adult_el_01",
+     "frog_adult_el_02",
+     "frog_adult_el_03",
+     "frog_adult_el_04",
+     "frog_adult_el_05",
+     "frog_adult_el_06",
+     "frog_adult_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.36,
+      "cast"
+     ],
+     [
+      0.37,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "frog_adult_hit_00",
+     "frog_adult_hit_01",
+     "frog_adult_hit_02",
+     "frog_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "frog_adult_idle_00",
+     "frog_adult_idle_01",
+     "frog_adult_idle_02",
+     "frog_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "frog_adult_walk_00",
+     "frog_adult_walk_01",
+     "frog_adult_walk_02",
+     "frog_adult_walk_03",
+     "frog_adult_walk_04",
+     "frog_adult_walk_05",
+     "frog_adult_walk_06",
+     "frog_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
+}

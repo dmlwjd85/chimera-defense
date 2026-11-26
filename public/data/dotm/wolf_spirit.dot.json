@@ -1,0 +1,857 @@
+{
+ "note": "wolf 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "wolf_spirit",
+ "sheet": "dot-m-wolf_spirit",
+ "file": "assets/dotm/wolf_spirit.png",
+ "frameW": 133,
+ "frameH": 154,
+ "foot": 150,
+ "cols": 1,
+ "anchorX": 62,
+ "palette": [
+  "#110418",
+  "#291a1f",
+  "#333041",
+  "#3f3d4f",
+  "#552e23",
+  "#56596d",
+  "#727a8c",
+  "#794e38",
+  "#8f99a7",
+  "#9ca8b5",
+  "#ac7142",
+  "#d49c55",
+  "#f0c46c",
+  "#f4ebb7",
+  "#f7fcfe",
+  "#f9de8c"
+ ],
+ "rects": {
+  "wolf_myth_a1_00": [
+   195,
+   260,
+   94,
+   104,
+   -45,
+   -104
+  ],
+  "wolf_myth_a1_01": [
+   588,
+   260,
+   94,
+   103,
+   -45,
+   -103
+  ],
+  "wolf_myth_a1_02": [
+   1287,
+   152,
+   102,
+   105,
+   -52,
+   -105
+  ],
+  "wolf_myth_a1_03": [
+   214,
+   0,
+   104,
+   126,
+   -54,
+   -126
+  ],
+  "wolf_myth_a1_04": [
+   1402,
+   260,
+   104,
+   101,
+   -54,
+   -101
+  ],
+  "wolf_myth_a1_05": [
+   683,
+   260,
+   100,
+   103,
+   -50,
+   -103
+  ],
+  "wolf_myth_a1_06": [
+   1390,
+   152,
+   101,
+   105,
+   -51,
+   -105
+  ],
+  "wolf_myth_a1_07": [
+   1408,
+   0,
+   98,
+   108,
+   -49,
+   -108
+  ],
+  "wolf_myth_a2_00": [
+   1492,
+   152,
+   90,
+   105,
+   -46,
+   -105
+  ],
+  "wolf_myth_a2_01": [
+   1583,
+   152,
+   84,
+   105,
+   -47,
+   -105
+  ],
+  "wolf_myth_a2_02": [
+   479,
+   152,
+   121,
+   106,
+   -50,
+   -106
+  ],
+  "wolf_myth_a2_03": [
+   601,
+   152,
+   108,
+   106,
+   -49,
+   -106
+  ],
+  "wolf_myth_a2_04": [
+   710,
+   152,
+   99,
+   106,
+   -45,
+   -106
+  ],
+  "wolf_myth_a2_05": [
+   0,
+   152,
+   90,
+   107,
+   -46,
+   -107
+  ],
+  "wolf_myth_a2_06": [
+   1507,
+   0,
+   91,
+   108,
+   -47,
+   -108
+  ],
+  "wolf_myth_a2_07": [
+   1599,
+   0,
+   97,
+   108,
+   -51,
+   -108
+  ],
+  "wolf_myth_down_00": [
+   1668,
+   152,
+   99,
+   105,
+   -48,
+   -105
+  ],
+  "wolf_myth_down_01": [
+   784,
+   260,
+   103,
+   103,
+   -49,
+   -103
+  ],
+  "wolf_myth_down_02": [
+   1507,
+   260,
+   103,
+   101,
+   -49,
+   -101
+  ],
+  "wolf_myth_down_03": [
+   1917,
+   260,
+   111,
+   100,
+   -60,
+   -100
+  ],
+  "wolf_myth_down_04": [
+   0,
+   366,
+   111,
+   91,
+   -60,
+   -91
+  ],
+  "wolf_myth_down_05": [
+   112,
+   366,
+   101,
+   79,
+   -55,
+   -79
+  ],
+  "wolf_myth_down_06": [
+   214,
+   366,
+   112,
+   57,
+   -54,
+   -55
+  ],
+  "wolf_myth_down_07": [
+   327,
+   366,
+   130,
+   41,
+   -62,
+   -39
+  ],
+  "wolf_myth_el_00": [
+   810,
+   152,
+   95,
+   106,
+   -45,
+   -106
+  ],
+  "wolf_myth_el_01": [
+   990,
+   0,
+   96,
+   111,
+   -45,
+   -111
+  ],
+  "wolf_myth_el_02": [
+   319,
+   0,
+   98,
+   122,
+   -48,
+   -122
+  ],
+  "wolf_myth_el_03": [
+   107,
+   0,
+   106,
+   146,
+   -56,
+   -146
+  ],
+  "wolf_myth_el_04": [
+   0,
+   0,
+   106,
+   151,
+   -56,
+   -151
+  ],
+  "wolf_myth_el_05": [
+   418,
+   0,
+   105,
+   118,
+   -55,
+   -118
+  ],
+  "wolf_myth_el_06": [
+   1206,
+   0,
+   102,
+   110,
+   -49,
+   -110
+  ],
+  "wolf_myth_el_07": [
+   906,
+   152,
+   94,
+   106,
+   -46,
+   -106
+  ],
+  "wolf_myth_hit_00": [
+   888,
+   260,
+   98,
+   103,
+   -48,
+   -103
+  ],
+  "wolf_myth_hit_01": [
+   1201,
+   260,
+   99,
+   102,
+   -49,
+   -102
+  ],
+  "wolf_myth_hit_02": [
+   1768,
+   152,
+   97,
+   105,
+   -49,
+   -105
+  ],
+  "wolf_myth_hit_03": [
+   91,
+   152,
+   95,
+   107,
+   -48,
+   -107
+  ],
+  "wolf_myth_idle_00": [
+   1866,
+   152,
+   96,
+   105,
+   -47,
+   -105
+  ],
+  "wolf_myth_idle_01": [
+   290,
+   260,
+   97,
+   104,
+   -48,
+   -104
+  ],
+  "wolf_myth_idle_02": [
+   0,
+   260,
+   96,
+   105,
+   -48,
+   -105
+  ],
+  "wolf_myth_idle_03": [
+   1001,
+   152,
+   95,
+   106,
+   -47,
+   -106
+  ],
+  "wolf_myth_ult_00": [
+   97,
+   260,
+   97,
+   105,
+   -49,
+   -105
+  ],
+  "wolf_myth_ult_01": [
+   1611,
+   260,
+   98,
+   101,
+   -50,
+   -101
+  ],
+  "wolf_myth_ult_02": [
+   895,
+   0,
+   94,
+   112,
+   -46,
+   -118
+  ],
+  "wolf_myth_ult_03": [
+   524,
+   0,
+   86,
+   117,
+   -37,
+   -137
+  ],
+  "wolf_myth_ult_04": [
+   611,
+   0,
+   88,
+   114,
+   -38,
+   -139
+  ],
+  "wolf_myth_ult_05": [
+   802,
+   0,
+   92,
+   113,
+   -43,
+   -141
+  ],
+  "wolf_myth_ult_06": [
+   700,
+   0,
+   101,
+   114,
+   -48,
+   -133
+  ],
+  "wolf_myth_ult_07": [
+   1087,
+   0,
+   118,
+   111,
+   -54,
+   -113
+  ],
+  "wolf_myth_ult_08": [
+   987,
+   260,
+   111,
+   103,
+   -51,
+   -105
+  ],
+  "wolf_myth_ult_09": [
+   1710,
+   260,
+   105,
+   101,
+   -49,
+   -101
+  ],
+  "wolf_myth_ult_10": [
+   1816,
+   260,
+   100,
+   101,
+   -50,
+   -101
+  ],
+  "wolf_myth_ult_11": [
+   388,
+   260,
+   98,
+   104,
+   -48,
+   -104
+  ],
+  "wolf_myth_ult_12": [
+   487,
+   260,
+   100,
+   104,
+   -50,
+   -104
+  ],
+  "wolf_myth_ult_13": [
+   1301,
+   260,
+   100,
+   102,
+   -50,
+   -102
+  ],
+  "wolf_myth_ult_14": [
+   1099,
+   260,
+   101,
+   103,
+   -50,
+   -103
+  ],
+  "wolf_myth_ult_15": [
+   1309,
+   0,
+   98,
+   109,
+   -47,
+   -109
+  ],
+  "wolf_myth_walk_00": [
+   1097,
+   152,
+   93,
+   106,
+   -45,
+   -107
+  ],
+  "wolf_myth_walk_01": [
+   1697,
+   0,
+   92,
+   108,
+   -45,
+   -109
+  ],
+  "wolf_myth_walk_02": [
+   187,
+   152,
+   95,
+   107,
+   -47,
+   -108
+  ],
+  "wolf_myth_walk_03": [
+   283,
+   152,
+   97,
+   107,
+   -48,
+   -106
+  ],
+  "wolf_myth_walk_04": [
+   381,
+   152,
+   97,
+   107,
+   -48,
+   -107
+  ],
+  "wolf_myth_walk_05": [
+   1790,
+   0,
+   93,
+   108,
+   -46,
+   -108
+  ],
+  "wolf_myth_walk_06": [
+   1884,
+   0,
+   92,
+   108,
+   -46,
+   -108
+  ],
+  "wolf_myth_walk_07": [
+   1191,
+   152,
+   95,
+   106,
+   -47,
+   -106
+  ]
+ },
+ "frames": [
+  "wolf_myth_a1_00",
+  "wolf_myth_a1_01",
+  "wolf_myth_a1_02",
+  "wolf_myth_a1_03",
+  "wolf_myth_a1_04",
+  "wolf_myth_a1_05",
+  "wolf_myth_a1_06",
+  "wolf_myth_a1_07",
+  "wolf_myth_a2_00",
+  "wolf_myth_a2_01",
+  "wolf_myth_a2_02",
+  "wolf_myth_a2_03",
+  "wolf_myth_a2_04",
+  "wolf_myth_a2_05",
+  "wolf_myth_a2_06",
+  "wolf_myth_a2_07",
+  "wolf_myth_down_00",
+  "wolf_myth_down_01",
+  "wolf_myth_down_02",
+  "wolf_myth_down_03",
+  "wolf_myth_down_04",
+  "wolf_myth_down_05",
+  "wolf_myth_down_06",
+  "wolf_myth_down_07",
+  "wolf_myth_el_00",
+  "wolf_myth_el_01",
+  "wolf_myth_el_02",
+  "wolf_myth_el_03",
+  "wolf_myth_el_04",
+  "wolf_myth_el_05",
+  "wolf_myth_el_06",
+  "wolf_myth_el_07",
+  "wolf_myth_hit_00",
+  "wolf_myth_hit_01",
+  "wolf_myth_hit_02",
+  "wolf_myth_hit_03",
+  "wolf_myth_idle_00",
+  "wolf_myth_idle_01",
+  "wolf_myth_idle_02",
+  "wolf_myth_idle_03",
+  "wolf_myth_ult_00",
+  "wolf_myth_ult_01",
+  "wolf_myth_ult_02",
+  "wolf_myth_ult_03",
+  "wolf_myth_ult_04",
+  "wolf_myth_ult_05",
+  "wolf_myth_ult_06",
+  "wolf_myth_ult_07",
+  "wolf_myth_ult_08",
+  "wolf_myth_ult_09",
+  "wolf_myth_ult_10",
+  "wolf_myth_ult_11",
+  "wolf_myth_ult_12",
+  "wolf_myth_ult_13",
+  "wolf_myth_ult_14",
+  "wolf_myth_ult_15",
+  "wolf_myth_walk_00",
+  "wolf_myth_walk_01",
+  "wolf_myth_walk_02",
+  "wolf_myth_walk_03",
+  "wolf_myth_walk_04",
+  "wolf_myth_walk_05",
+  "wolf_myth_walk_06",
+  "wolf_myth_walk_07"
+ ],
+ "standing": [
+  "wolf_myth_idle_00",
+  "wolf_myth_idle_01",
+  "wolf_myth_idle_02",
+  "wolf_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 45,
+   "attack": {
+    "frames": [
+     "wolf_myth_a1_00",
+     "wolf_myth_a1_01",
+     "wolf_myth_a1_02",
+     "wolf_myth_a1_03",
+     "wolf_myth_a1_04",
+     "wolf_myth_a1_05",
+     "wolf_myth_a1_06",
+     "wolf_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "wolf_myth_a2_00",
+     "wolf_myth_a2_01",
+     "wolf_myth_a2_02",
+     "wolf_myth_a2_03",
+     "wolf_myth_a2_04",
+     "wolf_myth_a2_05",
+     "wolf_myth_a2_06",
+     "wolf_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "wolf_myth_down_00",
+     "wolf_myth_down_01",
+     "wolf_myth_down_02",
+     "wolf_myth_down_03",
+     "wolf_myth_down_04",
+     "wolf_myth_down_05",
+     "wolf_myth_down_06",
+     "wolf_myth_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "wolf_myth_el_00",
+     "wolf_myth_el_01",
+     "wolf_myth_el_02",
+     "wolf_myth_el_03",
+     "wolf_myth_el_04",
+     "wolf_myth_el_05",
+     "wolf_myth_el_06",
+     "wolf_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.08,
+      "cast"
+     ],
+     [
+      0.09,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "wolf_myth_hit_00",
+     "wolf_myth_hit_01",
+     "wolf_myth_hit_02",
+     "wolf_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "wolf_myth_idle_00",
+     "wolf_myth_idle_01",
+     "wolf_myth_idle_02",
+     "wolf_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "wolf_myth_ult_00",
+     "wolf_myth_ult_01",
+     "wolf_myth_ult_02",
+     "wolf_myth_ult_03",
+     "wolf_myth_ult_04",
+     "wolf_myth_ult_05",
+     "wolf_myth_ult_06",
+     "wolf_myth_ult_07",
+     "wolf_myth_ult_08",
+     "wolf_myth_ult_09",
+     "wolf_myth_ult_10",
+     "wolf_myth_ult_11",
+     "wolf_myth_ult_12",
+     "wolf_myth_ult_13",
+     "wolf_myth_ult_14",
+     "wolf_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 7,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.5,
+      "cast"
+     ],
+     [
+      0.51,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "wolf_myth_walk_00",
+     "wolf_myth_walk_01",
+     "wolf_myth_walk_02",
+     "wolf_myth_walk_03",
+     "wolf_myth_walk_04",
+     "wolf_myth_walk_05",
+     "wolf_myth_walk_06",
+     "wolf_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

@@ -1,0 +1,835 @@
+{
+ "note": "fox 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "fox_spirit",
+ "sheet": "dot-m-fox_spirit",
+ "file": "assets/dotm/fox_spirit.png",
+ "frameW": 134,
+ "frameH": 136,
+ "foot": 134,
+ "cols": 1,
+ "anchorX": 57,
+ "palette": [
+  "#14042b",
+  "#291a1f",
+  "#42bdef",
+  "#4b7bb4",
+  "#624f6c",
+  "#87bfe9",
+  "#9490ae",
+  "#b8b7cd",
+  "#b9823d",
+  "#d08a8f",
+  "#d4e3ed",
+  "#e5a8a9",
+  "#f0c16a",
+  "#f1f4fa",
+  "#fbc6bd",
+  "#fefefe"
+ ],
+ "rects": {
+  "fox_myth_a1_00": [
+   1148,
+   136,
+   96,
+   103,
+   -48,
+   -103
+  ],
+  "fox_myth_a1_01": [
+   97,
+   242,
+   98,
+   102,
+   -48,
+   -103
+  ],
+  "fox_myth_a1_02": [
+   1166,
+   0,
+   101,
+   105,
+   -46,
+   -106
+  ],
+  "fox_myth_a1_03": [
+   680,
+   0,
+   97,
+   106,
+   -46,
+   -107
+  ],
+  "fox_myth_a1_04": [
+   1268,
+   0,
+   96,
+   105,
+   -46,
+   -107
+  ],
+  "fox_myth_a1_05": [
+   1245,
+   136,
+   95,
+   103,
+   -47,
+   -104
+  ],
+  "fox_myth_a1_06": [
+   691,
+   242,
+   91,
+   101,
+   -48,
+   -102
+  ],
+  "fox_myth_a1_07": [
+   1341,
+   136,
+   87,
+   103,
+   -48,
+   -103
+  ],
+  "fox_myth_a2_00": [
+   1429,
+   136,
+   92,
+   103,
+   -46,
+   -103
+  ],
+  "fox_myth_a2_01": [
+   196,
+   242,
+   94,
+   102,
+   -46,
+   -103
+  ],
+  "fox_myth_a2_02": [
+   1522,
+   136,
+   123,
+   103,
+   -46,
+   -104
+  ],
+  "fox_myth_a2_03": [
+   291,
+   242,
+   118,
+   102,
+   -47,
+   -103
+  ],
+  "fox_myth_a2_04": [
+   1646,
+   136,
+   112,
+   103,
+   -47,
+   -104
+  ],
+  "fox_myth_a2_05": [
+   1365,
+   0,
+   107,
+   105,
+   -46,
+   -106
+  ],
+  "fox_myth_a2_06": [
+   1473,
+   0,
+   102,
+   105,
+   -46,
+   -106
+  ],
+  "fox_myth_a2_07": [
+   1576,
+   0,
+   100,
+   105,
+   -47,
+   -105
+  ],
+  "fox_myth_down_00": [
+   783,
+   242,
+   96,
+   101,
+   -46,
+   -102
+  ],
+  "fox_myth_down_01": [
+   1067,
+   242,
+   97,
+   99,
+   -45,
+   -100
+  ],
+  "fox_myth_down_02": [
+   1525,
+   242,
+   96,
+   98,
+   -46,
+   -99
+  ],
+  "fox_myth_down_03": [
+   1707,
+   242,
+   96,
+   97,
+   -49,
+   -97
+  ],
+  "fox_myth_down_04": [
+   1919,
+   242,
+   92,
+   88,
+   -53,
+   -89
+  ],
+  "fox_myth_down_05": [
+   0,
+   346,
+   101,
+   82,
+   -57,
+   -82
+  ],
+  "fox_myth_el_00": [
+   778,
+   0,
+   98,
+   106,
+   -49,
+   -106
+  ],
+  "fox_myth_el_01": [
+   197,
+   0,
+   96,
+   114,
+   -49,
+   -114
+  ],
+  "fox_myth_el_02": [
+   0,
+   0,
+   95,
+   135,
+   -48,
+   -135
+  ],
+  "fox_myth_el_03": [
+   96,
+   0,
+   100,
+   115,
+   -51,
+   -115
+  ],
+  "fox_myth_el_04": [
+   294,
+   0,
+   95,
+   110,
+   -48,
+   -110
+  ],
+  "fox_myth_el_05": [
+   877,
+   0,
+   93,
+   106,
+   -48,
+   -106
+  ],
+  "fox_myth_el_06": [
+   388,
+   136,
+   96,
+   104,
+   -48,
+   -104
+  ],
+  "fox_myth_el_07": [
+   1759,
+   136,
+   95,
+   103,
+   -47,
+   -103
+  ],
+  "fox_myth_hit_00": [
+   880,
+   242,
+   94,
+   101,
+   -45,
+   -102
+  ],
+  "fox_myth_hit_01": [
+   1165,
+   242,
+   96,
+   99,
+   -47,
+   -100
+  ],
+  "fox_myth_hit_02": [
+   1677,
+   0,
+   96,
+   105,
+   -49,
+   -106
+  ],
+  "fox_myth_hit_03": [
+   971,
+   0,
+   98,
+   106,
+   -52,
+   -107
+  ],
+  "fox_myth_idle_00": [
+   1855,
+   136,
+   96,
+   103,
+   -47,
+   -103
+  ],
+  "fox_myth_idle_01": [
+   410,
+   242,
+   96,
+   102,
+   -47,
+   -102
+  ],
+  "fox_myth_idle_02": [
+   0,
+   242,
+   96,
+   103,
+   -47,
+   -103
+  ],
+  "fox_myth_idle_03": [
+   485,
+   136,
+   95,
+   104,
+   -47,
+   -104
+  ],
+  "fox_myth_ult_00": [
+   581,
+   136,
+   94,
+   104,
+   -45,
+   -104
+  ],
+  "fox_myth_ult_01": [
+   676,
+   136,
+   94,
+   104,
+   -44,
+   -104
+  ],
+  "fox_myth_ult_02": [
+   1774,
+   0,
+   94,
+   105,
+   -44,
+   -105
+  ],
+  "fox_myth_ult_03": [
+   1869,
+   0,
+   95,
+   105,
+   -45,
+   -105
+  ],
+  "fox_myth_ult_04": [
+   0,
+   136,
+   95,
+   105,
+   -45,
+   -105
+  ],
+  "fox_myth_ult_05": [
+   96,
+   136,
+   97,
+   105,
+   -47,
+   -105
+  ],
+  "fox_myth_ult_06": [
+   771,
+   136,
+   98,
+   104,
+   -50,
+   -104
+  ],
+  "fox_myth_ult_07": [
+   507,
+   242,
+   96,
+   102,
+   -52,
+   -102
+  ],
+  "fox_myth_ult_08": [
+   975,
+   242,
+   91,
+   100,
+   -50,
+   -100
+  ],
+  "fox_myth_ult_09": [
+   1262,
+   242,
+   87,
+   99,
+   -48,
+   -99
+  ],
+  "fox_myth_ult_10": [
+   1350,
+   242,
+   86,
+   99,
+   -47,
+   -99
+  ],
+  "fox_myth_ult_11": [
+   1437,
+   242,
+   87,
+   99,
+   -48,
+   -99
+  ],
+  "fox_myth_ult_12": [
+   604,
+   242,
+   86,
+   102,
+   -48,
+   -102
+  ],
+  "fox_myth_ult_13": [
+   870,
+   136,
+   85,
+   104,
+   -48,
+   -104
+  ],
+  "fox_myth_ult_14": [
+   1622,
+   242,
+   84,
+   98,
+   -46,
+   -99
+  ],
+  "fox_myth_ult_15": [
+   1804,
+   242,
+   114,
+   97,
+   -45,
+   -98
+  ],
+  "fox_myth_walk_00": [
+   194,
+   136,
+   96,
+   105,
+   -47,
+   -106
+  ],
+  "fox_myth_walk_01": [
+   390,
+   0,
+   96,
+   107,
+   -47,
+   -108
+  ],
+  "fox_myth_walk_02": [
+   1070,
+   0,
+   95,
+   106,
+   -47,
+   -107
+  ],
+  "fox_myth_walk_03": [
+   956,
+   136,
+   95,
+   104,
+   -47,
+   -104
+  ],
+  "fox_myth_walk_04": [
+   291,
+   136,
+   96,
+   105,
+   -47,
+   -105
+  ],
+  "fox_myth_walk_05": [
+   487,
+   0,
+   96,
+   107,
+   -47,
+   -107
+  ],
+  "fox_myth_walk_06": [
+   584,
+   0,
+   95,
+   107,
+   -47,
+   -107
+  ],
+  "fox_myth_walk_07": [
+   1052,
+   136,
+   95,
+   104,
+   -47,
+   -104
+  ]
+ },
+ "frames": [
+  "fox_myth_a1_00",
+  "fox_myth_a1_01",
+  "fox_myth_a1_02",
+  "fox_myth_a1_03",
+  "fox_myth_a1_04",
+  "fox_myth_a1_05",
+  "fox_myth_a1_06",
+  "fox_myth_a1_07",
+  "fox_myth_a2_00",
+  "fox_myth_a2_01",
+  "fox_myth_a2_02",
+  "fox_myth_a2_03",
+  "fox_myth_a2_04",
+  "fox_myth_a2_05",
+  "fox_myth_a2_06",
+  "fox_myth_a2_07",
+  "fox_myth_down_00",
+  "fox_myth_down_01",
+  "fox_myth_down_02",
+  "fox_myth_down_03",
+  "fox_myth_down_04",
+  "fox_myth_down_05",
+  "fox_myth_el_00",
+  "fox_myth_el_01",
+  "fox_myth_el_02",
+  "fox_myth_el_03",
+  "fox_myth_el_04",
+  "fox_myth_el_05",
+  "fox_myth_el_06",
+  "fox_myth_el_07",
+  "fox_myth_hit_00",
+  "fox_myth_hit_01",
+  "fox_myth_hit_02",
+  "fox_myth_hit_03",
+  "fox_myth_idle_00",
+  "fox_myth_idle_01",
+  "fox_myth_idle_02",
+  "fox_myth_idle_03",
+  "fox_myth_ult_00",
+  "fox_myth_ult_01",
+  "fox_myth_ult_02",
+  "fox_myth_ult_03",
+  "fox_myth_ult_04",
+  "fox_myth_ult_05",
+  "fox_myth_ult_06",
+  "fox_myth_ult_07",
+  "fox_myth_ult_08",
+  "fox_myth_ult_09",
+  "fox_myth_ult_10",
+  "fox_myth_ult_11",
+  "fox_myth_ult_12",
+  "fox_myth_ult_13",
+  "fox_myth_ult_14",
+  "fox_myth_ult_15",
+  "fox_myth_walk_00",
+  "fox_myth_walk_01",
+  "fox_myth_walk_02",
+  "fox_myth_walk_03",
+  "fox_myth_walk_04",
+  "fox_myth_walk_05",
+  "fox_myth_walk_06",
+  "fox_myth_walk_07"
+ ],
+ "standing": [
+  "fox_myth_idle_00",
+  "fox_myth_idle_01",
+  "fox_myth_idle_02",
+  "fox_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 31,
+   "attack": {
+    "frames": [
+     "fox_myth_a1_00",
+     "fox_myth_a1_01",
+     "fox_myth_a1_02",
+     "fox_myth_a1_03",
+     "fox_myth_a1_04",
+     "fox_myth_a1_05",
+     "fox_myth_a1_06",
+     "fox_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "fox_myth_a2_00",
+     "fox_myth_a2_01",
+     "fox_myth_a2_02",
+     "fox_myth_a2_03",
+     "fox_myth_a2_04",
+     "fox_myth_a2_05",
+     "fox_myth_a2_06",
+     "fox_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "fox_myth_down_00",
+     "fox_myth_down_01",
+     "fox_myth_down_02",
+     "fox_myth_down_03",
+     "fox_myth_down_04",
+     "fox_myth_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "fox_myth_el_00",
+     "fox_myth_el_01",
+     "fox_myth_el_02",
+     "fox_myth_el_03",
+     "fox_myth_el_04",
+     "fox_myth_el_05",
+     "fox_myth_el_06",
+     "fox_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "fox_myth_hit_00",
+     "fox_myth_hit_01",
+     "fox_myth_hit_02",
+     "fox_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "fox_myth_idle_00",
+     "fox_myth_idle_01",
+     "fox_myth_idle_02",
+     "fox_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "fox_myth_ult_00",
+     "fox_myth_ult_01",
+     "fox_myth_ult_02",
+     "fox_myth_ult_03",
+     "fox_myth_ult_04",
+     "fox_myth_ult_05",
+     "fox_myth_ult_06",
+     "fox_myth_ult_07",
+     "fox_myth_ult_08",
+     "fox_myth_ult_09",
+     "fox_myth_ult_10",
+     "fox_myth_ult_11",
+     "fox_myth_ult_12",
+     "fox_myth_ult_13",
+     "fox_myth_ult_14",
+     "fox_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.08,
+      "cast"
+     ],
+     [
+      0.09,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "fox_myth_walk_00",
+     "fox_myth_walk_01",
+     "fox_myth_walk_02",
+     "fox_myth_walk_03",
+     "fox_myth_walk_04",
+     "fox_myth_walk_05",
+     "fox_myth_walk_06",
+     "fox_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

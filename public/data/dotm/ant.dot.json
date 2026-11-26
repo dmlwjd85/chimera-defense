@@ -1,0 +1,1544 @@
+{
+ "note": "ant 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "ant",
+ "sheet": "dot-m-ant",
+ "file": "assets/dotm/ant.png",
+ "frameW": 113,
+ "frameH": 115,
+ "foot": 112,
+ "cols": 1,
+ "anchorX": 57,
+ "palette": [
+  "#0c0103",
+  "#260305",
+  "#291a1f",
+  "#420c0f",
+  "#681324",
+  "#772d2f",
+  "#92312d",
+  "#981e22",
+  "#b43f2c",
+  "#c44e3e",
+  "#c9bdbc",
+  "#d04a20",
+  "#d65d3b",
+  "#e38052",
+  "#ef9d76",
+  "#fdfaf7"
+ ],
+ "rects": {
+  "ant_baby_a1_00": [
+   364,
+   345,
+   50,
+   49,
+   -21,
+   -49
+  ],
+  "ant_baby_a1_01": [
+   716,
+   345,
+   52,
+   47,
+   -20,
+   -47
+  ],
+  "ant_baby_a1_02": [
+   1212,
+   345,
+   51,
+   45,
+   -21,
+   -45
+  ],
+  "ant_baby_a1_03": [
+   971,
+   345,
+   50,
+   46,
+   -22,
+   -46
+  ],
+  "ant_baby_a1_04": [
+   769,
+   345,
+   49,
+   47,
+   -23,
+   -47
+  ],
+  "ant_baby_a1_05": [
+   819,
+   345,
+   48,
+   47,
+   -24,
+   -47
+  ],
+  "ant_baby_a1_06": [
+   1022,
+   345,
+   49,
+   46,
+   -25,
+   -46
+  ],
+  "ant_baby_a1_07": [
+   1072,
+   345,
+   49,
+   46,
+   -24,
+   -46
+  ],
+  "ant_baby_down_00": [
+   565,
+   345,
+   50,
+   48,
+   -23,
+   -48
+  ],
+  "ant_baby_down_01": [
+   868,
+   345,
+   50,
+   47,
+   -22,
+   -47
+  ],
+  "ant_baby_down_02": [
+   1514,
+   345,
+   54,
+   40,
+   -24,
+   -40
+  ],
+  "ant_baby_down_03": [
+   1662,
+   345,
+   57,
+   38,
+   -26,
+   -38
+  ],
+  "ant_baby_down_04": [
+   1720,
+   345,
+   57,
+   36,
+   -26,
+   -36
+  ],
+  "ant_baby_down_05": [
+   1778,
+   345,
+   58,
+   34,
+   -26,
+   -34
+  ],
+  "ant_baby_down_06": [
+   1837,
+   345,
+   58,
+   33,
+   -26,
+   -33
+  ],
+  "ant_baby_hit_00": [
+   919,
+   345,
+   51,
+   47,
+   -24,
+   -47
+  ],
+  "ant_baby_hit_01": [
+   1264,
+   345,
+   51,
+   44,
+   -23,
+   -44
+  ],
+  "ant_baby_hit_02": [
+   1316,
+   345,
+   50,
+   44,
+   -23,
+   -44
+  ],
+  "ant_baby_hit_03": [
+   1367,
+   345,
+   50,
+   44,
+   -24,
+   -44
+  ],
+  "ant_baby_idle_00": [
+   871,
+   109,
+   49,
+   83,
+   -24,
+   -83
+  ],
+  "ant_baby_idle_01": [
+   1955,
+   279,
+   49,
+   52,
+   -24,
+   -52
+  ],
+  "ant_baby_idle_02": [
+   0,
+   345,
+   49,
+   51,
+   -24,
+   -51
+  ],
+  "ant_baby_idle_03": [
+   616,
+   345,
+   49,
+   48,
+   -24,
+   -48
+  ],
+  "ant_baby_walk_00": [
+   415,
+   345,
+   49,
+   49,
+   -24,
+   -49
+  ],
+  "ant_baby_walk_01": [
+   50,
+   345,
+   49,
+   51,
+   -24,
+   -51
+  ],
+  "ant_baby_walk_02": [
+   465,
+   345,
+   49,
+   49,
+   -24,
+   -49
+  ],
+  "ant_baby_walk_03": [
+   150,
+   345,
+   49,
+   50,
+   -24,
+   -50
+  ],
+  "ant_baby_walk_04": [
+   200,
+   345,
+   49,
+   50,
+   -24,
+   -50
+  ],
+  "ant_baby_walk_05": [
+   100,
+   345,
+   49,
+   51,
+   -24,
+   -51
+  ],
+  "ant_baby_walk_06": [
+   515,
+   345,
+   49,
+   49,
+   -24,
+   -49
+  ],
+  "ant_baby_walk_07": [
+   666,
+   345,
+   49,
+   48,
+   -24,
+   -48
+  ],
+  "ant_teen_a1_00": [
+   834,
+   198,
+   78,
+   70,
+   -39,
+   -70
+  ],
+  "ant_teen_a1_01": [
+   913,
+   198,
+   75,
+   70,
+   -39,
+   -70
+  ],
+  "ant_teen_a1_02": [
+   315,
+   279,
+   79,
+   63,
+   -41,
+   -63
+  ],
+  "ant_teen_a1_03": [
+   1873,
+   279,
+   81,
+   53,
+   -43,
+   -53
+  ],
+  "ant_teen_a1_04": [
+   1707,
+   279,
+   82,
+   55,
+   -42,
+   -55
+  ],
+  "ant_teen_a1_05": [
+   109,
+   198,
+   72,
+   79,
+   -41,
+   -79
+  ],
+  "ant_teen_a1_06": [
+   989,
+   198,
+   78,
+   70,
+   -42,
+   -70
+  ],
+  "ant_teen_a1_07": [
+   799,
+   279,
+   80,
+   61,
+   -40,
+   -61
+  ],
+  "ant_teen_a2_00": [
+   1254,
+   198,
+   79,
+   67,
+   -40,
+   -68
+  ],
+  "ant_teen_a2_01": [
+   1731,
+   198,
+   77,
+   66,
+   -40,
+   -68
+  ],
+  "ant_teen_a2_02": [
+   157,
+   279,
+   77,
+   64,
+   -40,
+   -68
+  ],
+  "ant_teen_a2_03": [
+   1400,
+   279,
+   80,
+   58,
+   -43,
+   -66
+  ],
+  "ant_teen_a2_04": [
+   1071,
+   279,
+   79,
+   60,
+   -42,
+   -67
+  ],
+  "ant_teen_a2_05": [
+   0,
+   279,
+   77,
+   65,
+   -40,
+   -68
+  ],
+  "ant_teen_a2_06": [
+   556,
+   279,
+   81,
+   62,
+   -40,
+   -62
+  ],
+  "ant_teen_a2_07": [
+   395,
+   279,
+   79,
+   63,
+   -40,
+   -63
+  ],
+  "ant_teen_down_00": [
+   1334,
+   198,
+   81,
+   67,
+   -39,
+   -67
+  ],
+  "ant_teen_down_01": [
+   1068,
+   198,
+   79,
+   69,
+   -39,
+   -69
+  ],
+  "ant_teen_down_02": [
+   1231,
+   279,
+   86,
+   59,
+   -44,
+   -58
+  ],
+  "ant_teen_down_03": [
+   1122,
+   345,
+   89,
+   46,
+   -47,
+   -45
+  ],
+  "ant_teen_down_04": [
+   1418,
+   345,
+   95,
+   44,
+   -47,
+   -43
+  ],
+  "ant_teen_down_05": [
+   1569,
+   345,
+   92,
+   39,
+   -47,
+   -38
+  ],
+  "ant_teen_hit_00": [
+   1151,
+   279,
+   79,
+   60,
+   -38,
+   -60
+  ],
+  "ant_teen_hit_01": [
+   1790,
+   279,
+   82,
+   54,
+   -40,
+   -57
+  ],
+  "ant_teen_hit_02": [
+   1318,
+   279,
+   81,
+   59,
+   -40,
+   -60
+  ],
+  "ant_teen_hit_03": [
+   880,
+   279,
+   77,
+   61,
+   -40,
+   -61
+  ],
+  "ant_teen_idle_00": [
+   1496,
+   0,
+   78,
+   90,
+   -40,
+   -90
+  ],
+  "ant_teen_idle_01": [
+   1416,
+   198,
+   77,
+   67,
+   -40,
+   -67
+  ],
+  "ant_teen_idle_02": [
+   1494,
+   198,
+   80,
+   67,
+   -40,
+   -67
+  ],
+  "ant_teen_idle_03": [
+   1809,
+   198,
+   80,
+   66,
+   -40,
+   -66
+  ],
+  "ant_teen_walk_00": [
+   638,
+   279,
+   80,
+   62,
+   -40,
+   -63
+  ],
+  "ant_teen_walk_01": [
+   719,
+   279,
+   79,
+   62,
+   -40,
+   -63
+  ],
+  "ant_teen_walk_02": [
+   78,
+   279,
+   78,
+   65,
+   -40,
+   -65
+  ],
+  "ant_teen_walk_03": [
+   1575,
+   198,
+   77,
+   67,
+   -40,
+   -67
+  ],
+  "ant_teen_walk_04": [
+   1653,
+   198,
+   77,
+   67,
+   -40,
+   -67
+  ],
+  "ant_teen_walk_05": [
+   235,
+   279,
+   79,
+   64,
+   -40,
+   -64
+  ],
+  "ant_teen_walk_06": [
+   475,
+   279,
+   80,
+   63,
+   -40,
+   -63
+  ],
+  "ant_teen_walk_07": [
+   1890,
+   198,
+   80,
+   66,
+   -40,
+   -66
+  ],
+  "ant_adult_a1_00": [
+   614,
+   198,
+   109,
+   78,
+   -54,
+   -79
+  ],
+  "ant_adult_a1_01": [
+   724,
+   198,
+   109,
+   78,
+   -54,
+   -80
+  ],
+  "ant_adult_a1_02": [
+   921,
+   109,
+   106,
+   83,
+   -53,
+   -85
+  ],
+  "ant_adult_a1_03": [
+   1793,
+   0,
+   103,
+   89,
+   -53,
+   -91
+  ],
+  "ant_adult_a1_04": [
+   754,
+   0,
+   100,
+   93,
+   -54,
+   -95
+  ],
+  "ant_adult_a1_05": [
+   546,
+   0,
+   101,
+   94,
+   -54,
+   -96
+  ],
+  "ant_adult_a1_06": [
+   1177,
+   0,
+   104,
+   91,
+   -54,
+   -91
+  ],
+  "ant_adult_a1_07": [
+   438,
+   109,
+   108,
+   86,
+   -54,
+   -86
+  ],
+  "ant_adult_a2_00": [
+   547,
+   109,
+   111,
+   85,
+   -55,
+   -85
+  ],
+  "ant_adult_a2_01": [
+   0,
+   109,
+   111,
+   88,
+   -55,
+   -89
+  ],
+  "ant_adult_a2_02": [
+   1575,
+   0,
+   109,
+   90,
+   -55,
+   -93
+  ],
+  "ant_adult_a2_03": [
+   962,
+   0,
+   105,
+   92,
+   -55,
+   -98
+  ],
+  "ant_adult_a2_04": [
+   1282,
+   0,
+   106,
+   91,
+   -54,
+   -101
+  ],
+  "ant_adult_a2_05": [
+   1685,
+   0,
+   107,
+   90,
+   -56,
+   -105
+  ],
+  "ant_adult_a2_06": [
+   1389,
+   0,
+   106,
+   91,
+   -54,
+   -100
+  ],
+  "ant_adult_a2_07": [
+   1897,
+   0,
+   107,
+   89,
+   -55,
+   -90
+  ],
+  "ant_adult_down_00": [
+   659,
+   109,
+   108,
+   85,
+   -54,
+   -85
+  ],
+  "ant_adult_down_01": [
+   112,
+   109,
+   107,
+   87,
+   -55,
+   -87
+  ],
+  "ant_adult_down_02": [
+   768,
+   109,
+   102,
+   84,
+   -55,
+   -84
+  ],
+  "ant_adult_down_03": [
+   1148,
+   198,
+   105,
+   69,
+   -55,
+   -70
+  ],
+  "ant_adult_down_04": [
+   1481,
+   279,
+   112,
+   57,
+   -57,
+   -59
+  ],
+  "ant_adult_down_05": [
+   958,
+   279,
+   112,
+   61,
+   -57,
+   -63
+  ],
+  "ant_adult_down_06": [
+   1594,
+   279,
+   112,
+   57,
+   -57,
+   -59
+  ],
+  "ant_adult_down_07": [
+   250,
+   345,
+   113,
+   50,
+   -57,
+   -52
+  ],
+  "ant_adult_el_00": [
+   1028,
+   109,
+   108,
+   83,
+   -54,
+   -83
+  ],
+  "ant_adult_el_01": [
+   648,
+   0,
+   105,
+   94,
+   -55,
+   -94
+  ],
+  "ant_adult_el_02": [
+   0,
+   0,
+   106,
+   108,
+   -56,
+   -113
+  ],
+  "ant_adult_el_03": [
+   329,
+   0,
+   109,
+   105,
+   -56,
+   -110
+  ],
+  "ant_adult_el_04": [
+   107,
+   0,
+   110,
+   106,
+   -57,
+   -110
+  ],
+  "ant_adult_el_05": [
+   218,
+   0,
+   110,
+   106,
+   -57,
+   -106
+  ],
+  "ant_adult_el_06": [
+   439,
+   0,
+   106,
+   100,
+   -56,
+   -100
+  ],
+  "ant_adult_el_07": [
+   1068,
+   0,
+   108,
+   92,
+   -55,
+   -92
+  ],
+  "ant_adult_hit_00": [
+   1137,
+   109,
+   109,
+   83,
+   -56,
+   -83
+  ],
+  "ant_adult_hit_01": [
+   1355,
+   109,
+   107,
+   82,
+   -56,
+   -82
+  ],
+  "ant_adult_hit_02": [
+   182,
+   198,
+   108,
+   79,
+   -56,
+   -81
+  ],
+  "ant_adult_hit_03": [
+   291,
+   198,
+   104,
+   79,
+   -56,
+   -81
+  ],
+  "ant_adult_idle_00": [
+   220,
+   109,
+   108,
+   87,
+   -54,
+   -87
+  ],
+  "ant_adult_idle_01": [
+   855,
+   0,
+   106,
+   93,
+   -54,
+   -93
+  ],
+  "ant_adult_idle_02": [
+   329,
+   109,
+   108,
+   87,
+   -54,
+   -87
+  ],
+  "ant_adult_idle_03": [
+   1681,
+   109,
+   108,
+   81,
+   -54,
+   -81
+  ],
+  "ant_adult_walk_00": [
+   1790,
+   109,
+   108,
+   81,
+   -54,
+   -81
+  ],
+  "ant_adult_walk_01": [
+   1463,
+   109,
+   108,
+   82,
+   -54,
+   -84
+  ],
+  "ant_adult_walk_02": [
+   0,
+   198,
+   108,
+   80,
+   -54,
+   -86
+  ],
+  "ant_adult_walk_03": [
+   1247,
+   109,
+   107,
+   83,
+   -54,
+   -87
+  ],
+  "ant_adult_walk_04": [
+   1572,
+   109,
+   108,
+   82,
+   -54,
+   -86
+  ],
+  "ant_adult_walk_05": [
+   396,
+   198,
+   108,
+   79,
+   -54,
+   -82
+  ],
+  "ant_adult_walk_06": [
+   505,
+   198,
+   108,
+   79,
+   -54,
+   -79
+  ],
+  "ant_adult_walk_07": [
+   1899,
+   109,
+   108,
+   81,
+   -54,
+   -81
+  ]
+ },
+ "frames": [
+  "ant_baby_a1_00",
+  "ant_baby_a1_01",
+  "ant_baby_a1_02",
+  "ant_baby_a1_03",
+  "ant_baby_a1_04",
+  "ant_baby_a1_05",
+  "ant_baby_a1_06",
+  "ant_baby_a1_07",
+  "ant_baby_down_00",
+  "ant_baby_down_01",
+  "ant_baby_down_02",
+  "ant_baby_down_03",
+  "ant_baby_down_04",
+  "ant_baby_down_05",
+  "ant_baby_down_06",
+  "ant_baby_hit_00",
+  "ant_baby_hit_01",
+  "ant_baby_hit_02",
+  "ant_baby_hit_03",
+  "ant_baby_idle_00",
+  "ant_baby_idle_01",
+  "ant_baby_idle_02",
+  "ant_baby_idle_03",
+  "ant_baby_walk_00",
+  "ant_baby_walk_01",
+  "ant_baby_walk_02",
+  "ant_baby_walk_03",
+  "ant_baby_walk_04",
+  "ant_baby_walk_05",
+  "ant_baby_walk_06",
+  "ant_baby_walk_07",
+  "ant_teen_a1_00",
+  "ant_teen_a1_01",
+  "ant_teen_a1_02",
+  "ant_teen_a1_03",
+  "ant_teen_a1_04",
+  "ant_teen_a1_05",
+  "ant_teen_a1_06",
+  "ant_teen_a1_07",
+  "ant_teen_a2_00",
+  "ant_teen_a2_01",
+  "ant_teen_a2_02",
+  "ant_teen_a2_03",
+  "ant_teen_a2_04",
+  "ant_teen_a2_05",
+  "ant_teen_a2_06",
+  "ant_teen_a2_07",
+  "ant_teen_down_00",
+  "ant_teen_down_01",
+  "ant_teen_down_02",
+  "ant_teen_down_03",
+  "ant_teen_down_04",
+  "ant_teen_down_05",
+  "ant_teen_hit_00",
+  "ant_teen_hit_01",
+  "ant_teen_hit_02",
+  "ant_teen_hit_03",
+  "ant_teen_idle_00",
+  "ant_teen_idle_01",
+  "ant_teen_idle_02",
+  "ant_teen_idle_03",
+  "ant_teen_walk_00",
+  "ant_teen_walk_01",
+  "ant_teen_walk_02",
+  "ant_teen_walk_03",
+  "ant_teen_walk_04",
+  "ant_teen_walk_05",
+  "ant_teen_walk_06",
+  "ant_teen_walk_07",
+  "ant_adult_a1_00",
+  "ant_adult_a1_01",
+  "ant_adult_a1_02",
+  "ant_adult_a1_03",
+  "ant_adult_a1_04",
+  "ant_adult_a1_05",
+  "ant_adult_a1_06",
+  "ant_adult_a1_07",
+  "ant_adult_a2_00",
+  "ant_adult_a2_01",
+  "ant_adult_a2_02",
+  "ant_adult_a2_03",
+  "ant_adult_a2_04",
+  "ant_adult_a2_05",
+  "ant_adult_a2_06",
+  "ant_adult_a2_07",
+  "ant_adult_down_00",
+  "ant_adult_down_01",
+  "ant_adult_down_02",
+  "ant_adult_down_03",
+  "ant_adult_down_04",
+  "ant_adult_down_05",
+  "ant_adult_down_06",
+  "ant_adult_down_07",
+  "ant_adult_el_00",
+  "ant_adult_el_01",
+  "ant_adult_el_02",
+  "ant_adult_el_03",
+  "ant_adult_el_04",
+  "ant_adult_el_05",
+  "ant_adult_el_06",
+  "ant_adult_el_07",
+  "ant_adult_hit_00",
+  "ant_adult_hit_01",
+  "ant_adult_hit_02",
+  "ant_adult_hit_03",
+  "ant_adult_idle_00",
+  "ant_adult_idle_01",
+  "ant_adult_idle_02",
+  "ant_adult_idle_03",
+  "ant_adult_walk_00",
+  "ant_adult_walk_01",
+  "ant_adult_walk_02",
+  "ant_adult_walk_03",
+  "ant_adult_walk_04",
+  "ant_adult_walk_05",
+  "ant_adult_walk_06",
+  "ant_adult_walk_07"
+ ],
+ "standing": [
+  "ant_baby_idle_00",
+  "ant_baby_idle_01",
+  "ant_baby_idle_02",
+  "ant_baby_idle_03",
+  "ant_teen_idle_00",
+  "ant_teen_idle_01",
+  "ant_teen_idle_02",
+  "ant_teen_idle_03",
+  "ant_adult_idle_00",
+  "ant_adult_idle_01",
+  "ant_adult_idle_02",
+  "ant_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "baby": {
+   "top": 30,
+   "attack": {
+    "frames": [
+     "ant_baby_a1_00",
+     "ant_baby_a1_01",
+     "ant_baby_a1_02",
+     "ant_baby_a1_03",
+     "ant_baby_a1_04",
+     "ant_baby_a1_05",
+     "ant_baby_a1_06",
+     "ant_baby_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ant_baby_down_00",
+     "ant_baby_down_01",
+     "ant_baby_down_02",
+     "ant_baby_down_03",
+     "ant_baby_down_04",
+     "ant_baby_down_05",
+     "ant_baby_down_06"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "ant_baby_hit_00",
+     "ant_baby_hit_01",
+     "ant_baby_hit_02",
+     "ant_baby_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ant_baby_idle_00",
+     "ant_baby_idle_01",
+     "ant_baby_idle_02",
+     "ant_baby_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ant_baby_walk_00",
+     "ant_baby_walk_01",
+     "ant_baby_walk_02",
+     "ant_baby_walk_03",
+     "ant_baby_walk_04",
+     "ant_baby_walk_05",
+     "ant_baby_walk_06",
+     "ant_baby_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "teen": {
+   "top": 23,
+   "attack": {
+    "frames": [
+     "ant_teen_a1_00",
+     "ant_teen_a1_01",
+     "ant_teen_a1_02",
+     "ant_teen_a1_03",
+     "ant_teen_a1_04",
+     "ant_teen_a1_05",
+     "ant_teen_a1_06",
+     "ant_teen_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.27,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ant_teen_a2_00",
+     "ant_teen_a2_01",
+     "ant_teen_a2_02",
+     "ant_teen_a2_03",
+     "ant_teen_a2_04",
+     "ant_teen_a2_05",
+     "ant_teen_a2_06",
+     "ant_teen_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ant_teen_down_00",
+     "ant_teen_down_01",
+     "ant_teen_down_02",
+     "ant_teen_down_03",
+     "ant_teen_down_04",
+     "ant_teen_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "ant_teen_hit_00",
+     "ant_teen_hit_01",
+     "ant_teen_hit_02",
+     "ant_teen_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ant_teen_idle_00",
+     "ant_teen_idle_01",
+     "ant_teen_idle_02",
+     "ant_teen_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ant_teen_walk_00",
+     "ant_teen_walk_01",
+     "ant_teen_walk_02",
+     "ant_teen_walk_03",
+     "ant_teen_walk_04",
+     "ant_teen_walk_05",
+     "ant_teen_walk_06",
+     "ant_teen_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "adult": {
+   "top": 20,
+   "attack": {
+    "frames": [
+     "ant_adult_a1_00",
+     "ant_adult_a1_01",
+     "ant_adult_a1_02",
+     "ant_adult_a1_03",
+     "ant_adult_a1_04",
+     "ant_adult_a1_05",
+     "ant_adult_a1_06",
+     "ant_adult_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ant_adult_a2_00",
+     "ant_adult_a2_01",
+     "ant_adult_a2_02",
+     "ant_adult_a2_03",
+     "ant_adult_a2_04",
+     "ant_adult_a2_05",
+     "ant_adult_a2_06",
+     "ant_adult_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ant_adult_down_00",
+     "ant_adult_down_01",
+     "ant_adult_down_02",
+     "ant_adult_down_03",
+     "ant_adult_down_04",
+     "ant_adult_down_05",
+     "ant_adult_down_06",
+     "ant_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ant_adult_el_00",
+     "ant_adult_el_01",
+     "ant_adult_el_02",
+     "ant_adult_el_03",
+     "ant_adult_el_04",
+     "ant_adult_el_05",
+     "ant_adult_el_06",
+     "ant_adult_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ant_adult_hit_00",
+     "ant_adult_hit_01",
+     "ant_adult_hit_02",
+     "ant_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ant_adult_idle_00",
+     "ant_adult_idle_01",
+     "ant_adult_idle_02",
+     "ant_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ant_adult_walk_00",
+     "ant_adult_walk_01",
+     "ant_adult_walk_02",
+     "ant_adult_walk_03",
+     "ant_adult_walk_04",
+     "ant_adult_walk_05",
+     "ant_adult_walk_06",
+     "ant_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
+}

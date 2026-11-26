@@ -1,0 +1,1522 @@
+{
+ "note": "bighorn 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "bighorn",
+ "sheet": "dot-m-bighorn",
+ "file": "assets/dotm/bighorn.png",
+ "frameW": 113,
+ "frameH": 117,
+ "foot": 114,
+ "cols": 1,
+ "anchorX": 57,
+ "palette": [
+  "#1c040e",
+  "#291a1f",
+  "#4d2a21",
+  "#663d33",
+  "#7d5042",
+  "#93624f",
+  "#ac7b61",
+  "#be8d74",
+  "#c18b62",
+  "#d2a592",
+  "#dfac81",
+  "#e1bc9d",
+  "#eebe81",
+  "#f6d7a1",
+  "#faebc8",
+  "#fdf8f3"
+ ],
+ "rects": {
+  "bighorn_baby_a1_00": [
+   1860,
+   270,
+   55,
+   46,
+   -26,
+   -46
+  ],
+  "bighorn_baby_a1_01": [
+   0,
+   334,
+   57,
+   45,
+   -27,
+   -45
+  ],
+  "bighorn_baby_a1_02": [
+   58,
+   334,
+   57,
+   45,
+   -26,
+   -45
+  ],
+  "bighorn_baby_a1_03": [
+   173,
+   334,
+   56,
+   44,
+   -25,
+   -44
+  ],
+  "bighorn_baby_a1_04": [
+   116,
+   334,
+   56,
+   45,
+   -25,
+   -45
+  ],
+  "bighorn_baby_a1_05": [
+   1916,
+   270,
+   56,
+   46,
+   -26,
+   -46
+  ],
+  "bighorn_baby_a1_06": [
+   1400,
+   270,
+   55,
+   47,
+   -27,
+   -47
+  ],
+  "bighorn_baby_a1_07": [
+   974,
+   270,
+   51,
+   48,
+   -25,
+   -48
+  ],
+  "bighorn_baby_down_00": [
+   1456,
+   270,
+   54,
+   47,
+   -26,
+   -47
+  ],
+  "bighorn_baby_down_01": [
+   1973,
+   270,
+   54,
+   46,
+   -26,
+   -46
+  ],
+  "bighorn_baby_down_02": [
+   665,
+   334,
+   60,
+   37,
+   -29,
+   -39
+  ],
+  "bighorn_baby_down_03": [
+   726,
+   334,
+   67,
+   29,
+   -33,
+   -29
+  ],
+  "bighorn_baby_hit_00": [
+   230,
+   334,
+   54,
+   44,
+   -25,
+   -44
+  ],
+  "bighorn_baby_hit_01": [
+   1511,
+   270,
+   55,
+   47,
+   -28,
+   -47
+  ],
+  "bighorn_baby_hit_02": [
+   714,
+   270,
+   53,
+   52,
+   -26,
+   -52
+  ],
+  "bighorn_baby_hit_03": [
+   871,
+   270,
+   50,
+   49,
+   -24,
+   -49
+  ],
+  "bighorn_baby_idle_00": [
+   768,
+   270,
+   51,
+   50,
+   -25,
+   -50
+  ],
+  "bighorn_baby_idle_01": [
+   820,
+   270,
+   50,
+   50,
+   -25,
+   -50
+  ],
+  "bighorn_baby_idle_02": [
+   922,
+   270,
+   51,
+   49,
+   -25,
+   -49
+  ],
+  "bighorn_baby_idle_03": [
+   1026,
+   270,
+   51,
+   48,
+   -25,
+   -48
+  ],
+  "bighorn_baby_walk_00": [
+   1078,
+   270,
+   51,
+   48,
+   -25,
+   -48
+  ],
+  "bighorn_baby_walk_01": [
+   1567,
+   270,
+   51,
+   47,
+   -25,
+   -47
+  ],
+  "bighorn_baby_walk_02": [
+   1619,
+   270,
+   51,
+   47,
+   -25,
+   -47
+  ],
+  "bighorn_baby_walk_03": [
+   1130,
+   270,
+   51,
+   48,
+   -25,
+   -48
+  ],
+  "bighorn_baby_walk_04": [
+   1182,
+   270,
+   51,
+   48,
+   -25,
+   -48
+  ],
+  "bighorn_baby_walk_05": [
+   1671,
+   270,
+   51,
+   47,
+   -25,
+   -47
+  ],
+  "bighorn_baby_walk_06": [
+   1723,
+   270,
+   51,
+   47,
+   -25,
+   -47
+  ],
+  "bighorn_baby_walk_07": [
+   1234,
+   270,
+   51,
+   48,
+   -25,
+   -48
+  ],
+  "bighorn_teen_a1_00": [
+   336,
+   270,
+   72,
+   61,
+   -35,
+   -61
+  ],
+  "bighorn_teen_a1_01": [
+   639,
+   270,
+   74,
+   58,
+   -37,
+   -58
+  ],
+  "bighorn_teen_a1_02": [
+   563,
+   270,
+   75,
+   59,
+   -38,
+   -59
+  ],
+  "bighorn_teen_a1_03": [
+   409,
+   270,
+   77,
+   61,
+   -40,
+   -61
+  ],
+  "bighorn_teen_a1_04": [
+   0,
+   270,
+   78,
+   63,
+   -41,
+   -63
+  ],
+  "bighorn_teen_a1_05": [
+   808,
+   196,
+   76,
+   66,
+   -40,
+   -66
+  ],
+  "bighorn_teen_a1_06": [
+   885,
+   196,
+   74,
+   66,
+   -38,
+   -66
+  ],
+  "bighorn_teen_a1_07": [
+   421,
+   196,
+   70,
+   67,
+   -34,
+   -67
+  ],
+  "bighorn_teen_a2_00": [
+   93,
+   196,
+   70,
+   72,
+   -35,
+   -72
+  ],
+  "bighorn_teen_a2_01": [
+   1143,
+   0,
+   69,
+   85,
+   -37,
+   -85
+  ],
+  "bighorn_teen_a2_02": [
+   913,
+   0,
+   69,
+   94,
+   -40,
+   -94
+  ],
+  "bighorn_teen_a2_03": [
+   515,
+   0,
+   69,
+   100,
+   -41,
+   -100
+  ],
+  "bighorn_teen_a2_04": [
+   671,
+   0,
+   71,
+   98,
+   -40,
+   -98
+  ],
+  "bighorn_teen_a2_05": [
+   983,
+   0,
+   73,
+   88,
+   -40,
+   -88
+  ],
+  "bighorn_teen_a2_06": [
+   1646,
+   115,
+   73,
+   75,
+   -38,
+   -75
+  ],
+  "bighorn_teen_a2_07": [
+   1181,
+   196,
+   75,
+   65,
+   -39,
+   -65
+  ],
+  "bighorn_teen_down_00": [
+   1692,
+   196,
+   73,
+   64,
+   -35,
+   -64
+  ],
+  "bighorn_teen_down_01": [
+   1766,
+   196,
+   74,
+   64,
+   -35,
+   -64
+  ],
+  "bighorn_teen_down_02": [
+   1841,
+   196,
+   73,
+   64,
+   -35,
+   -64
+  ],
+  "bighorn_teen_down_03": [
+   487,
+   270,
+   75,
+   60,
+   -36,
+   -61
+  ],
+  "bighorn_teen_down_04": [
+   1775,
+   270,
+   84,
+   47,
+   -42,
+   -49
+  ],
+  "bighorn_teen_down_05": [
+   373,
+   334,
+   89,
+   43,
+   -45,
+   -43
+  ],
+  "bighorn_teen_down_06": [
+   285,
+   334,
+   87,
+   44,
+   -43,
+   -44
+  ],
+  "bighorn_teen_down_07": [
+   463,
+   334,
+   87,
+   42,
+   -43,
+   -42
+  ],
+  "bighorn_teen_hit_00": [
+   151,
+   270,
+   79,
+   62,
+   -38,
+   -62
+  ],
+  "bighorn_teen_hit_01": [
+   1915,
+   196,
+   77,
+   64,
+   -42,
+   -72
+  ],
+  "bighorn_teen_hit_02": [
+   960,
+   196,
+   70,
+   66,
+   -37,
+   -72
+  ],
+  "bighorn_teen_hit_03": [
+   492,
+   196,
+   72,
+   67,
+   -37,
+   -67
+  ],
+  "bighorn_teen_idle_00": [
+   347,
+   196,
+   73,
+   70,
+   -37,
+   -70
+  ],
+  "bighorn_teen_idle_01": [
+   1257,
+   196,
+   73,
+   65,
+   -37,
+   -65
+  ],
+  "bighorn_teen_idle_02": [
+   565,
+   196,
+   73,
+   67,
+   -37,
+   -67
+  ],
+  "bighorn_teen_idle_03": [
+   1331,
+   196,
+   71,
+   65,
+   -35,
+   -65
+  ],
+  "bighorn_teen_walk_00": [
+   1403,
+   196,
+   71,
+   65,
+   -35,
+   -65
+  ],
+  "bighorn_teen_walk_01": [
+   1475,
+   196,
+   71,
+   65,
+   -35,
+   -65
+  ],
+  "bighorn_teen_walk_02": [
+   79,
+   270,
+   71,
+   63,
+   -35,
+   -65
+  ],
+  "bighorn_teen_walk_03": [
+   1031,
+   196,
+   74,
+   66,
+   -38,
+   -66
+  ],
+  "bighorn_teen_walk_04": [
+   639,
+   196,
+   75,
+   67,
+   -39,
+   -67
+  ],
+  "bighorn_teen_walk_05": [
+   1106,
+   196,
+   74,
+   66,
+   -38,
+   -66
+  ],
+  "bighorn_teen_walk_06": [
+   1547,
+   196,
+   72,
+   65,
+   -36,
+   -65
+  ],
+  "bighorn_teen_walk_07": [
+   1620,
+   196,
+   71,
+   65,
+   -35,
+   -65
+  ],
+  "bighorn_adult_a1_00": [
+   1278,
+   115,
+   92,
+   77,
+   -46,
+   -77
+  ],
+  "bighorn_adult_a1_01": [
+   1812,
+   115,
+   90,
+   74,
+   -45,
+   -74
+  ],
+  "bighorn_adult_a1_02": [
+   164,
+   196,
+   90,
+   72,
+   -45,
+   -72
+  ],
+  "bighorn_adult_a1_03": [
+   255,
+   196,
+   91,
+   72,
+   -46,
+   -75
+  ],
+  "bighorn_adult_a1_04": [
+   715,
+   196,
+   92,
+   67,
+   -47,
+   -78
+  ],
+  "bighorn_adult_a1_05": [
+   0,
+   196,
+   92,
+   73,
+   -47,
+   -81
+  ],
+  "bighorn_adult_a1_06": [
+   93,
+   115,
+   90,
+   79,
+   -45,
+   -80
+  ],
+  "bighorn_adult_a1_07": [
+   184,
+   115,
+   92,
+   79,
+   -47,
+   -79
+  ],
+  "bighorn_adult_a2_00": [
+   1302,
+   0,
+   91,
+   82,
+   -47,
+   -83
+  ],
+  "bighorn_adult_a2_01": [
+   826,
+   0,
+   86,
+   95,
+   -45,
+   -96
+  ],
+  "bighorn_adult_a2_02": [
+   172,
+   0,
+   83,
+   108,
+   -45,
+   -109
+  ],
+  "bighorn_adult_a2_03": [
+   256,
+   0,
+   81,
+   107,
+   -45,
+   -108
+  ],
+  "bighorn_adult_a2_04": [
+   585,
+   0,
+   85,
+   99,
+   -46,
+   -100
+  ],
+  "bighorn_adult_a2_05": [
+   1394,
+   0,
+   90,
+   82,
+   -46,
+   -82
+  ],
+  "bighorn_adult_a2_06": [
+   1485,
+   0,
+   92,
+   81,
+   -47,
+   -81
+  ],
+  "bighorn_adult_a2_07": [
+   823,
+   115,
+   90,
+   78,
+   -44,
+   -78
+  ],
+  "bighorn_adult_down_00": [
+   914,
+   115,
+   92,
+   78,
+   -45,
+   -78
+  ],
+  "bighorn_adult_down_01": [
+   1553,
+   115,
+   92,
+   76,
+   -44,
+   -76
+  ],
+  "bighorn_adult_down_02": [
+   1720,
+   115,
+   91,
+   75,
+   -43,
+   -75
+  ],
+  "bighorn_adult_down_03": [
+   1903,
+   115,
+   92,
+   74,
+   -43,
+   -74
+  ],
+  "bighorn_adult_down_04": [
+   231,
+   270,
+   104,
+   62,
+   -53,
+   -63
+  ],
+  "bighorn_adult_down_05": [
+   1286,
+   270,
+   113,
+   48,
+   -57,
+   -47
+  ],
+  "bighorn_adult_down_06": [
+   551,
+   334,
+   113,
+   42,
+   -57,
+   -41
+  ],
+  "bighorn_adult_el_00": [
+   1665,
+   0,
+   89,
+   80,
+   -46,
+   -80
+  ],
+  "bighorn_adult_el_01": [
+   743,
+   0,
+   82,
+   98,
+   -48,
+   -99
+  ],
+  "bighorn_adult_el_02": [
+   338,
+   0,
+   86,
+   107,
+   -49,
+   -108
+  ],
+  "bighorn_adult_el_03": [
+   0,
+   0,
+   84,
+   114,
+   -47,
+   -115
+  ],
+  "bighorn_adult_el_04": [
+   85,
+   0,
+   86,
+   113,
+   -47,
+   -114
+  ],
+  "bighorn_adult_el_05": [
+   425,
+   0,
+   89,
+   102,
+   -49,
+   -103
+  ],
+  "bighorn_adult_el_06": [
+   1213,
+   0,
+   88,
+   84,
+   -46,
+   -85
+  ],
+  "bighorn_adult_el_07": [
+   277,
+   115,
+   89,
+   79,
+   -44,
+   -79
+  ],
+  "bighorn_adult_hit_00": [
+   1371,
+   115,
+   91,
+   77,
+   -45,
+   -76
+  ],
+  "bighorn_adult_hit_01": [
+   1755,
+   0,
+   88,
+   80,
+   -46,
+   -86
+  ],
+  "bighorn_adult_hit_02": [
+   1578,
+   0,
+   86,
+   81,
+   -46,
+   -91
+  ],
+  "bighorn_adult_hit_03": [
+   1057,
+   0,
+   85,
+   87,
+   -44,
+   -88
+  ],
+  "bighorn_adult_idle_00": [
+   1844,
+   0,
+   90,
+   80,
+   -46,
+   -80
+  ],
+  "bighorn_adult_idle_01": [
+   1935,
+   0,
+   91,
+   80,
+   -47,
+   -80
+  ],
+  "bighorn_adult_idle_02": [
+   0,
+   115,
+   92,
+   80,
+   -47,
+   -80
+  ],
+  "bighorn_adult_idle_03": [
+   367,
+   115,
+   90,
+   79,
+   -45,
+   -79
+  ],
+  "bighorn_adult_walk_00": [
+   1007,
+   115,
+   89,
+   78,
+   -44,
+   -78
+  ],
+  "bighorn_adult_walk_01": [
+   1463,
+   115,
+   89,
+   77,
+   -44,
+   -77
+  ],
+  "bighorn_adult_walk_02": [
+   1097,
+   115,
+   89,
+   78,
+   -44,
+   -78
+  ],
+  "bighorn_adult_walk_03": [
+   1187,
+   115,
+   90,
+   78,
+   -45,
+   -79
+  ],
+  "bighorn_adult_walk_04": [
+   458,
+   115,
+   90,
+   79,
+   -45,
+   -80
+  ],
+  "bighorn_adult_walk_05": [
+   549,
+   115,
+   90,
+   79,
+   -46,
+   -80
+  ],
+  "bighorn_adult_walk_06": [
+   640,
+   115,
+   91,
+   79,
+   -46,
+   -79
+  ],
+  "bighorn_adult_walk_07": [
+   732,
+   115,
+   90,
+   79,
+   -45,
+   -79
+  ]
+ },
+ "frames": [
+  "bighorn_baby_a1_00",
+  "bighorn_baby_a1_01",
+  "bighorn_baby_a1_02",
+  "bighorn_baby_a1_03",
+  "bighorn_baby_a1_04",
+  "bighorn_baby_a1_05",
+  "bighorn_baby_a1_06",
+  "bighorn_baby_a1_07",
+  "bighorn_baby_down_00",
+  "bighorn_baby_down_01",
+  "bighorn_baby_down_02",
+  "bighorn_baby_down_03",
+  "bighorn_baby_hit_00",
+  "bighorn_baby_hit_01",
+  "bighorn_baby_hit_02",
+  "bighorn_baby_hit_03",
+  "bighorn_baby_idle_00",
+  "bighorn_baby_idle_01",
+  "bighorn_baby_idle_02",
+  "bighorn_baby_idle_03",
+  "bighorn_baby_walk_00",
+  "bighorn_baby_walk_01",
+  "bighorn_baby_walk_02",
+  "bighorn_baby_walk_03",
+  "bighorn_baby_walk_04",
+  "bighorn_baby_walk_05",
+  "bighorn_baby_walk_06",
+  "bighorn_baby_walk_07",
+  "bighorn_teen_a1_00",
+  "bighorn_teen_a1_01",
+  "bighorn_teen_a1_02",
+  "bighorn_teen_a1_03",
+  "bighorn_teen_a1_04",
+  "bighorn_teen_a1_05",
+  "bighorn_teen_a1_06",
+  "bighorn_teen_a1_07",
+  "bighorn_teen_a2_00",
+  "bighorn_teen_a2_01",
+  "bighorn_teen_a2_02",
+  "bighorn_teen_a2_03",
+  "bighorn_teen_a2_04",
+  "bighorn_teen_a2_05",
+  "bighorn_teen_a2_06",
+  "bighorn_teen_a2_07",
+  "bighorn_teen_down_00",
+  "bighorn_teen_down_01",
+  "bighorn_teen_down_02",
+  "bighorn_teen_down_03",
+  "bighorn_teen_down_04",
+  "bighorn_teen_down_05",
+  "bighorn_teen_down_06",
+  "bighorn_teen_down_07",
+  "bighorn_teen_hit_00",
+  "bighorn_teen_hit_01",
+  "bighorn_teen_hit_02",
+  "bighorn_teen_hit_03",
+  "bighorn_teen_idle_00",
+  "bighorn_teen_idle_01",
+  "bighorn_teen_idle_02",
+  "bighorn_teen_idle_03",
+  "bighorn_teen_walk_00",
+  "bighorn_teen_walk_01",
+  "bighorn_teen_walk_02",
+  "bighorn_teen_walk_03",
+  "bighorn_teen_walk_04",
+  "bighorn_teen_walk_05",
+  "bighorn_teen_walk_06",
+  "bighorn_teen_walk_07",
+  "bighorn_adult_a1_00",
+  "bighorn_adult_a1_01",
+  "bighorn_adult_a1_02",
+  "bighorn_adult_a1_03",
+  "bighorn_adult_a1_04",
+  "bighorn_adult_a1_05",
+  "bighorn_adult_a1_06",
+  "bighorn_adult_a1_07",
+  "bighorn_adult_a2_00",
+  "bighorn_adult_a2_01",
+  "bighorn_adult_a2_02",
+  "bighorn_adult_a2_03",
+  "bighorn_adult_a2_04",
+  "bighorn_adult_a2_05",
+  "bighorn_adult_a2_06",
+  "bighorn_adult_a2_07",
+  "bighorn_adult_down_00",
+  "bighorn_adult_down_01",
+  "bighorn_adult_down_02",
+  "bighorn_adult_down_03",
+  "bighorn_adult_down_04",
+  "bighorn_adult_down_05",
+  "bighorn_adult_down_06",
+  "bighorn_adult_el_00",
+  "bighorn_adult_el_01",
+  "bighorn_adult_el_02",
+  "bighorn_adult_el_03",
+  "bighorn_adult_el_04",
+  "bighorn_adult_el_05",
+  "bighorn_adult_el_06",
+  "bighorn_adult_el_07",
+  "bighorn_adult_hit_00",
+  "bighorn_adult_hit_01",
+  "bighorn_adult_hit_02",
+  "bighorn_adult_hit_03",
+  "bighorn_adult_idle_00",
+  "bighorn_adult_idle_01",
+  "bighorn_adult_idle_02",
+  "bighorn_adult_idle_03",
+  "bighorn_adult_walk_00",
+  "bighorn_adult_walk_01",
+  "bighorn_adult_walk_02",
+  "bighorn_adult_walk_03",
+  "bighorn_adult_walk_04",
+  "bighorn_adult_walk_05",
+  "bighorn_adult_walk_06",
+  "bighorn_adult_walk_07"
+ ],
+ "standing": [
+  "bighorn_baby_idle_00",
+  "bighorn_baby_idle_01",
+  "bighorn_baby_idle_02",
+  "bighorn_baby_idle_03",
+  "bighorn_teen_idle_00",
+  "bighorn_teen_idle_01",
+  "bighorn_teen_idle_02",
+  "bighorn_teen_idle_03",
+  "bighorn_adult_idle_00",
+  "bighorn_adult_idle_01",
+  "bighorn_adult_idle_02",
+  "bighorn_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "baby": {
+   "top": 65,
+   "attack": {
+    "frames": [
+     "bighorn_baby_a1_00",
+     "bighorn_baby_a1_01",
+     "bighorn_baby_a1_02",
+     "bighorn_baby_a1_03",
+     "bighorn_baby_a1_04",
+     "bighorn_baby_a1_05",
+     "bighorn_baby_a1_06",
+     "bighorn_baby_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "bighorn_baby_down_00",
+     "bighorn_baby_down_01",
+     "bighorn_baby_down_02",
+     "bighorn_baby_down_03"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "bighorn_baby_hit_00",
+     "bighorn_baby_hit_01",
+     "bighorn_baby_hit_02",
+     "bighorn_baby_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "bighorn_baby_idle_00",
+     "bighorn_baby_idle_01",
+     "bighorn_baby_idle_02",
+     "bighorn_baby_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "bighorn_baby_walk_00",
+     "bighorn_baby_walk_01",
+     "bighorn_baby_walk_02",
+     "bighorn_baby_walk_03",
+     "bighorn_baby_walk_04",
+     "bighorn_baby_walk_05",
+     "bighorn_baby_walk_06",
+     "bighorn_baby_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "teen": {
+   "top": 45,
+   "attack": {
+    "frames": [
+     "bighorn_teen_a1_00",
+     "bighorn_teen_a1_01",
+     "bighorn_teen_a1_02",
+     "bighorn_teen_a1_03",
+     "bighorn_teen_a1_04",
+     "bighorn_teen_a1_05",
+     "bighorn_teen_a1_06",
+     "bighorn_teen_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "bighorn_teen_a2_00",
+     "bighorn_teen_a2_01",
+     "bighorn_teen_a2_02",
+     "bighorn_teen_a2_03",
+     "bighorn_teen_a2_04",
+     "bighorn_teen_a2_05",
+     "bighorn_teen_a2_06",
+     "bighorn_teen_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "bighorn_teen_down_00",
+     "bighorn_teen_down_01",
+     "bighorn_teen_down_02",
+     "bighorn_teen_down_03",
+     "bighorn_teen_down_04",
+     "bighorn_teen_down_05",
+     "bighorn_teen_down_06",
+     "bighorn_teen_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "bighorn_teen_hit_00",
+     "bighorn_teen_hit_01",
+     "bighorn_teen_hit_02",
+     "bighorn_teen_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "bighorn_teen_idle_00",
+     "bighorn_teen_idle_01",
+     "bighorn_teen_idle_02",
+     "bighorn_teen_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "bighorn_teen_walk_00",
+     "bighorn_teen_walk_01",
+     "bighorn_teen_walk_02",
+     "bighorn_teen_walk_03",
+     "bighorn_teen_walk_04",
+     "bighorn_teen_walk_05",
+     "bighorn_teen_walk_06",
+     "bighorn_teen_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "adult": {
+   "top": 35,
+   "attack": {
+    "frames": [
+     "bighorn_adult_a1_00",
+     "bighorn_adult_a1_01",
+     "bighorn_adult_a1_02",
+     "bighorn_adult_a1_03",
+     "bighorn_adult_a1_04",
+     "bighorn_adult_a1_05",
+     "bighorn_adult_a1_06",
+     "bighorn_adult_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "bighorn_adult_a2_00",
+     "bighorn_adult_a2_01",
+     "bighorn_adult_a2_02",
+     "bighorn_adult_a2_03",
+     "bighorn_adult_a2_04",
+     "bighorn_adult_a2_05",
+     "bighorn_adult_a2_06",
+     "bighorn_adult_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "bighorn_adult_down_00",
+     "bighorn_adult_down_01",
+     "bighorn_adult_down_02",
+     "bighorn_adult_down_03",
+     "bighorn_adult_down_04",
+     "bighorn_adult_down_05",
+     "bighorn_adult_down_06"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "bighorn_adult_el_00",
+     "bighorn_adult_el_01",
+     "bighorn_adult_el_02",
+     "bighorn_adult_el_03",
+     "bighorn_adult_el_04",
+     "bighorn_adult_el_05",
+     "bighorn_adult_el_06",
+     "bighorn_adult_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "bighorn_adult_hit_00",
+     "bighorn_adult_hit_01",
+     "bighorn_adult_hit_02",
+     "bighorn_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "bighorn_adult_idle_00",
+     "bighorn_adult_idle_01",
+     "bighorn_adult_idle_02",
+     "bighorn_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "bighorn_adult_walk_00",
+     "bighorn_adult_walk_01",
+     "bighorn_adult_walk_02",
+     "bighorn_adult_walk_03",
+     "bighorn_adult_walk_04",
+     "bighorn_adult_walk_05",
+     "bighorn_adult_walk_06",
+     "bighorn_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
+}

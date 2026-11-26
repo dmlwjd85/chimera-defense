@@ -1,0 +1,857 @@
+{
+ "note": "frog 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "frog_spirit",
+ "sheet": "dot-m-frog_spirit",
+ "file": "assets/dotm/frog_spirit.png",
+ "frameW": 133,
+ "frameH": 150,
+ "foot": 146,
+ "cols": 1,
+ "anchorX": 69,
+ "palette": [
+  "#070204",
+  "#291a1f",
+  "#33113f",
+  "#554523",
+  "#59265e",
+  "#6b5923",
+  "#776829",
+  "#7a3075",
+  "#917b2c",
+  "#9a4e94",
+  "#afa025",
+  "#be9848",
+  "#d9ba4e",
+  "#edda5d",
+  "#f8e382",
+  "#fefefe"
+ ],
+ "rects": {
+  "frog_myth_a1_00": [
+   612,
+   258,
+   94,
+   103,
+   -45,
+   -103
+  ],
+  "frog_myth_a1_01": [
+   855,
+   149,
+   99,
+   106,
+   -47,
+   -106
+  ],
+  "frog_myth_a1_02": [
+   510,
+   0,
+   105,
+   129,
+   -51,
+   -129
+  ],
+  "frog_myth_a1_03": [
+   1473,
+   0,
+   106,
+   110,
+   -56,
+   -110
+  ],
+  "frog_myth_a1_04": [
+   1580,
+   0,
+   110,
+   110,
+   -59,
+   -110
+  ],
+  "frog_myth_a1_05": [
+   1796,
+   0,
+   108,
+   109,
+   -56,
+   -109
+  ],
+  "frog_myth_a1_06": [
+   955,
+   149,
+   103,
+   106,
+   -53,
+   -106
+  ],
+  "frog_myth_a1_07": [
+   1544,
+   149,
+   95,
+   105,
+   -48,
+   -105
+  ],
+  "frog_myth_a2_00": [
+   89,
+   258,
+   105,
+   104,
+   -49,
+   -104
+  ],
+  "frog_myth_a2_01": [
+   195,
+   258,
+   117,
+   104,
+   -53,
+   -104
+  ],
+  "frog_myth_a2_02": [
+   0,
+   149,
+   109,
+   108,
+   -57,
+   -108
+  ],
+  "frog_myth_a2_03": [
+   1691,
+   0,
+   104,
+   110,
+   -56,
+   -113
+  ],
+  "frog_myth_a2_04": [
+   707,
+   258,
+   99,
+   103,
+   -50,
+   -114
+  ],
+  "frog_myth_a2_05": [
+   110,
+   149,
+   102,
+   108,
+   -54,
+   -111
+  ],
+  "frog_myth_a2_06": [
+   1059,
+   149,
+   106,
+   106,
+   -59,
+   -106
+  ],
+  "frog_myth_a2_07": [
+   807,
+   258,
+   105,
+   103,
+   -59,
+   -103
+  ],
+  "frog_myth_down_00": [
+   313,
+   258,
+   90,
+   104,
+   -45,
+   -104
+  ],
+  "frog_myth_down_01": [
+   1644,
+   258,
+   92,
+   102,
+   -46,
+   -102
+  ],
+  "frog_myth_down_02": [
+   1737,
+   258,
+   94,
+   101,
+   -47,
+   -101
+  ],
+  "frog_myth_down_03": [
+   1938,
+   258,
+   97,
+   99,
+   -47,
+   -99
+  ],
+  "frog_myth_down_04": [
+   0,
+   364,
+   98,
+   96,
+   -44,
+   -96
+  ],
+  "frog_myth_down_05": [
+   99,
+   364,
+   108,
+   77,
+   -54,
+   -76
+  ],
+  "frog_myth_down_06": [
+   208,
+   364,
+   120,
+   53,
+   -62,
+   -52
+  ],
+  "frog_myth_down_07": [
+   329,
+   364,
+   133,
+   45,
+   -69,
+   -43
+  ],
+  "frog_myth_el_00": [
+   1832,
+   258,
+   105,
+   101,
+   -46,
+   -102
+  ],
+  "frog_myth_el_01": [
+   320,
+   0,
+   88,
+   141,
+   -46,
+   -140
+  ],
+  "frog_myth_el_02": [
+   0,
+   0,
+   100,
+   148,
+   -56,
+   -147
+  ],
+  "frog_myth_el_03": [
+   210,
+   0,
+   109,
+   145,
+   -61,
+   -144
+  ],
+  "frog_myth_el_04": [
+   101,
+   0,
+   108,
+   146,
+   -63,
+   -145
+  ],
+  "frog_myth_el_05": [
+   616,
+   0,
+   104,
+   122,
+   -58,
+   -121
+  ],
+  "frog_myth_el_06": [
+   213,
+   149,
+   106,
+   108,
+   -57,
+   -108
+  ],
+  "frog_myth_el_07": [
+   404,
+   258,
+   94,
+   104,
+   -56,
+   -104
+  ],
+  "frog_myth_hit_00": [
+   1640,
+   149,
+   88,
+   105,
+   -45,
+   -105
+  ],
+  "frog_myth_hit_01": [
+   409,
+   0,
+   100,
+   133,
+   -52,
+   -146
+  ],
+  "frog_myth_hit_02": [
+   913,
+   258,
+   106,
+   103,
+   -60,
+   -112
+  ],
+  "frog_myth_hit_03": [
+   1020,
+   258,
+   89,
+   103,
+   -45,
+   -104
+  ],
+  "frog_myth_idle_00": [
+   1729,
+   149,
+   91,
+   105,
+   -47,
+   -105
+  ],
+  "frog_myth_idle_01": [
+   1166,
+   149,
+   92,
+   106,
+   -48,
+   -106
+  ],
+  "frog_myth_idle_02": [
+   1821,
+   149,
+   90,
+   105,
+   -46,
+   -105
+  ],
+  "frog_myth_idle_03": [
+   1912,
+   149,
+   88,
+   105,
+   -44,
+   -105
+  ],
+  "frog_myth_ult_00": [
+   1110,
+   258,
+   89,
+   103,
+   -43,
+   -103
+  ],
+  "frog_myth_ult_01": [
+   1048,
+   0,
+   103,
+   114,
+   -47,
+   -116
+  ],
+  "frog_myth_ult_02": [
+   827,
+   0,
+   110,
+   118,
+   -54,
+   -132
+  ],
+  "frog_myth_ult_03": [
+   938,
+   0,
+   109,
+   118,
+   -57,
+   -139
+  ],
+  "frog_myth_ult_04": [
+   1152,
+   0,
+   104,
+   113,
+   -57,
+   -139
+  ],
+  "frog_myth_ult_05": [
+   1257,
+   0,
+   100,
+   112,
+   -55,
+   -137
+  ],
+  "frog_myth_ult_06": [
+   721,
+   0,
+   105,
+   119,
+   -58,
+   -130
+  ],
+  "frog_myth_ult_07": [
+   1358,
+   0,
+   114,
+   111,
+   -62,
+   -111
+  ],
+  "frog_myth_ult_08": [
+   499,
+   258,
+   112,
+   104,
+   -60,
+   -104
+  ],
+  "frog_myth_ult_09": [
+   1200,
+   258,
+   110,
+   103,
+   -58,
+   -103
+  ],
+  "frog_myth_ult_10": [
+   1311,
+   258,
+   110,
+   103,
+   -58,
+   -103
+  ],
+  "frog_myth_ult_11": [
+   1422,
+   258,
+   110,
+   103,
+   -58,
+   -103
+  ],
+  "frog_myth_ult_12": [
+   1533,
+   258,
+   110,
+   103,
+   -58,
+   -103
+  ],
+  "frog_myth_ult_13": [
+   1259,
+   149,
+   105,
+   106,
+   -55,
+   -106
+  ],
+  "frog_myth_ult_14": [
+   492,
+   149,
+   93,
+   107,
+   -47,
+   -107
+  ],
+  "frog_myth_ult_15": [
+   320,
+   149,
+   82,
+   108,
+   -40,
+   -108
+  ],
+  "frog_myth_walk_00": [
+   1365,
+   149,
+   89,
+   106,
+   -45,
+   -107
+  ],
+  "frog_myth_walk_01": [
+   586,
+   149,
+   88,
+   107,
+   -46,
+   -109
+  ],
+  "frog_myth_walk_02": [
+   675,
+   149,
+   89,
+   107,
+   -48,
+   -109
+  ],
+  "frog_myth_walk_03": [
+   1455,
+   149,
+   88,
+   106,
+   -48,
+   -106
+  ],
+  "frog_myth_walk_04": [
+   403,
+   149,
+   88,
+   108,
+   -46,
+   -108
+  ],
+  "frog_myth_walk_05": [
+   1905,
+   0,
+   89,
+   109,
+   -45,
+   -109
+  ],
+  "frog_myth_walk_06": [
+   765,
+   149,
+   89,
+   107,
+   -44,
+   -107
+  ],
+  "frog_myth_walk_07": [
+   0,
+   258,
+   88,
+   105,
+   -44,
+   -105
+  ]
+ },
+ "frames": [
+  "frog_myth_a1_00",
+  "frog_myth_a1_01",
+  "frog_myth_a1_02",
+  "frog_myth_a1_03",
+  "frog_myth_a1_04",
+  "frog_myth_a1_05",
+  "frog_myth_a1_06",
+  "frog_myth_a1_07",
+  "frog_myth_a2_00",
+  "frog_myth_a2_01",
+  "frog_myth_a2_02",
+  "frog_myth_a2_03",
+  "frog_myth_a2_04",
+  "frog_myth_a2_05",
+  "frog_myth_a2_06",
+  "frog_myth_a2_07",
+  "frog_myth_down_00",
+  "frog_myth_down_01",
+  "frog_myth_down_02",
+  "frog_myth_down_03",
+  "frog_myth_down_04",
+  "frog_myth_down_05",
+  "frog_myth_down_06",
+  "frog_myth_down_07",
+  "frog_myth_el_00",
+  "frog_myth_el_01",
+  "frog_myth_el_02",
+  "frog_myth_el_03",
+  "frog_myth_el_04",
+  "frog_myth_el_05",
+  "frog_myth_el_06",
+  "frog_myth_el_07",
+  "frog_myth_hit_00",
+  "frog_myth_hit_01",
+  "frog_myth_hit_02",
+  "frog_myth_hit_03",
+  "frog_myth_idle_00",
+  "frog_myth_idle_01",
+  "frog_myth_idle_02",
+  "frog_myth_idle_03",
+  "frog_myth_ult_00",
+  "frog_myth_ult_01",
+  "frog_myth_ult_02",
+  "frog_myth_ult_03",
+  "frog_myth_ult_04",
+  "frog_myth_ult_05",
+  "frog_myth_ult_06",
+  "frog_myth_ult_07",
+  "frog_myth_ult_08",
+  "frog_myth_ult_09",
+  "frog_myth_ult_10",
+  "frog_myth_ult_11",
+  "frog_myth_ult_12",
+  "frog_myth_ult_13",
+  "frog_myth_ult_14",
+  "frog_myth_ult_15",
+  "frog_myth_walk_00",
+  "frog_myth_walk_01",
+  "frog_myth_walk_02",
+  "frog_myth_walk_03",
+  "frog_myth_walk_04",
+  "frog_myth_walk_05",
+  "frog_myth_walk_06",
+  "frog_myth_walk_07"
+ ],
+ "standing": [
+  "frog_myth_idle_00",
+  "frog_myth_idle_01",
+  "frog_myth_idle_02",
+  "frog_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 41,
+   "attack": {
+    "frames": [
+     "frog_myth_a1_00",
+     "frog_myth_a1_01",
+     "frog_myth_a1_02",
+     "frog_myth_a1_03",
+     "frog_myth_a1_04",
+     "frog_myth_a1_05",
+     "frog_myth_a1_06",
+     "frog_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "frog_myth_a2_00",
+     "frog_myth_a2_01",
+     "frog_myth_a2_02",
+     "frog_myth_a2_03",
+     "frog_myth_a2_04",
+     "frog_myth_a2_05",
+     "frog_myth_a2_06",
+     "frog_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "frog_myth_down_00",
+     "frog_myth_down_01",
+     "frog_myth_down_02",
+     "frog_myth_down_03",
+     "frog_myth_down_04",
+     "frog_myth_down_05",
+     "frog_myth_down_06",
+     "frog_myth_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "frog_myth_el_00",
+     "frog_myth_el_01",
+     "frog_myth_el_02",
+     "frog_myth_el_03",
+     "frog_myth_el_04",
+     "frog_myth_el_05",
+     "frog_myth_el_06",
+     "frog_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "frog_myth_hit_00",
+     "frog_myth_hit_01",
+     "frog_myth_hit_02",
+     "frog_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "frog_myth_idle_00",
+     "frog_myth_idle_01",
+     "frog_myth_idle_02",
+     "frog_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "frog_myth_ult_00",
+     "frog_myth_ult_01",
+     "frog_myth_ult_02",
+     "frog_myth_ult_03",
+     "frog_myth_ult_04",
+     "frog_myth_ult_05",
+     "frog_myth_ult_06",
+     "frog_myth_ult_07",
+     "frog_myth_ult_08",
+     "frog_myth_ult_09",
+     "frog_myth_ult_10",
+     "frog_myth_ult_11",
+     "frog_myth_ult_12",
+     "frog_myth_ult_13",
+     "frog_myth_ult_14",
+     "frog_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.08,
+      "cast"
+     ],
+     [
+      0.09,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "frog_myth_walk_00",
+     "frog_myth_walk_01",
+     "frog_myth_walk_02",
+     "frog_myth_walk_03",
+     "frog_myth_walk_04",
+     "frog_myth_walk_05",
+     "frog_myth_walk_06",
+     "frog_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

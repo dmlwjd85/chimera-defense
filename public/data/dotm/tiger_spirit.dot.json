@@ -1,0 +1,661 @@
+{
+ "note": "tiger 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "tiger_spirit",
+ "sheet": "dot-m-tiger_spirit",
+ "file": "assets/dotm/tiger_spirit.png",
+ "frameW": 136,
+ "frameH": 151,
+ "foot": 148,
+ "cols": 1,
+ "anchorX": 64,
+ "palette": [
+  "#190632",
+  "#291a1f",
+  "#445c8b",
+  "#4c0d1e",
+  "#5b8dc1",
+  "#77bdf4",
+  "#89152f",
+  "#954923",
+  "#b56339",
+  "#b60828",
+  "#bfbdd2",
+  "#c5e7fc",
+  "#df8935",
+  "#f80307",
+  "#fcaf38",
+  "#fcd765"
+ ],
+ "rects": {
+  "tiger_myth_a1_00": [
+   1067,
+   150,
+   103,
+   104,
+   -49,
+   -103
+  ],
+  "tiger_myth_a1_01": [
+   0,
+   258,
+   104,
+   101,
+   -50,
+   -100
+  ],
+  "tiger_myth_a1_02": [
+   1270,
+   0,
+   106,
+   111,
+   -50,
+   -114
+  ],
+  "tiger_myth_a1_03": [
+   1168,
+   0,
+   101,
+   115,
+   -46,
+   -127
+  ],
+  "tiger_myth_a1_04": [
+   291,
+   0,
+   103,
+   138,
+   -50,
+   -146
+  ],
+  "tiger_myth_a1_05": [
+   585,
+   0,
+   102,
+   136,
+   -49,
+   -136
+  ],
+  "tiger_myth_a1_06": [
+   1581,
+   150,
+   92,
+   103,
+   -46,
+   -103
+  ],
+  "tiger_myth_a1_07": [
+   284,
+   150,
+   95,
+   106,
+   -49,
+   -106
+  ],
+  "tiger_myth_a2_00": [
+   1674,
+   150,
+   102,
+   103,
+   -45,
+   -103
+  ],
+  "tiger_myth_a2_01": [
+   1171,
+   150,
+   111,
+   104,
+   -45,
+   -104
+  ],
+  "tiger_myth_a2_02": [
+   1073,
+   0,
+   94,
+   117,
+   -44,
+   -117
+  ],
+  "tiger_myth_a2_03": [
+   783,
+   0,
+   96,
+   132,
+   -49,
+   -147
+  ],
+  "tiger_myth_a2_04": [
+   395,
+   0,
+   93,
+   138,
+   -42,
+   -147
+  ],
+  "tiger_myth_a2_05": [
+   975,
+   0,
+   97,
+   118,
+   -46,
+   -118
+  ],
+  "tiger_myth_a2_06": [
+   1377,
+   0,
+   97,
+   111,
+   -48,
+   -111
+  ],
+  "tiger_myth_a2_07": [
+   380,
+   150,
+   96,
+   106,
+   -47,
+   -106
+  ],
+  "tiger_myth_down_00": [
+   1876,
+   150,
+   102,
+   102,
+   -51,
+   -102
+  ],
+  "tiger_myth_down_01": [
+   211,
+   258,
+   104,
+   98,
+   -51,
+   -98
+  ],
+  "tiger_myth_down_02": [
+   316,
+   258,
+   105,
+   98,
+   -51,
+   -98
+  ],
+  "tiger_myth_down_03": [
+   105,
+   258,
+   105,
+   100,
+   -51,
+   -100
+  ],
+  "tiger_myth_down_04": [
+   422,
+   258,
+   106,
+   96,
+   -51,
+   -96
+  ],
+  "tiger_myth_down_05": [
+   529,
+   258,
+   109,
+   89,
+   -51,
+   -89
+  ],
+  "tiger_myth_down_06": [
+   639,
+   258,
+   129,
+   53,
+   -60,
+   -53
+  ],
+  "tiger_myth_down_07": [
+   769,
+   258,
+   136,
+   44,
+   -64,
+   -44
+  ],
+  "tiger_myth_el_00": [
+   1775,
+   0,
+   108,
+   107,
+   -51,
+   -107
+  ],
+  "tiger_myth_el_01": [
+   688,
+   0,
+   94,
+   134,
+   -47,
+   -134
+  ],
+  "tiger_myth_el_02": [
+   199,
+   0,
+   91,
+   144,
+   -49,
+   -144
+  ],
+  "tiger_myth_el_03": [
+   97,
+   0,
+   101,
+   147,
+   -53,
+   -147
+  ],
+  "tiger_myth_el_04": [
+   489,
+   0,
+   95,
+   137,
+   -49,
+   -137
+  ],
+  "tiger_myth_el_05": [
+   1475,
+   0,
+   105,
+   108,
+   -49,
+   -108
+  ],
+  "tiger_myth_el_06": [
+   1884,
+   0,
+   106,
+   107,
+   -53,
+   -107
+  ],
+  "tiger_myth_el_07": [
+   477,
+   150,
+   101,
+   106,
+   -51,
+   -106
+  ],
+  "tiger_myth_hit_00": [
+   0,
+   0,
+   96,
+   149,
+   -48,
+   -149
+  ],
+  "tiger_myth_hit_01": [
+   880,
+   0,
+   94,
+   132,
+   -49,
+   -132
+  ],
+  "tiger_myth_hit_02": [
+   0,
+   150,
+   94,
+   107,
+   -47,
+   -107
+  ],
+  "tiger_myth_hit_03": [
+   1283,
+   150,
+   100,
+   104,
+   -52,
+   -104
+  ],
+  "tiger_myth_idle_00": [
+   1384,
+   150,
+   98,
+   104,
+   -49,
+   -104
+  ],
+  "tiger_myth_idle_01": [
+   1777,
+   150,
+   98,
+   103,
+   -49,
+   -103
+  ],
+  "tiger_myth_idle_02": [
+   1483,
+   150,
+   97,
+   104,
+   -48,
+   -104
+  ],
+  "tiger_myth_idle_03": [
+   776,
+   150,
+   97,
+   105,
+   -48,
+   -105
+  ],
+  "tiger_myth_walk_00": [
+   579,
+   150,
+   98,
+   106,
+   -50,
+   -106
+  ],
+  "tiger_myth_walk_01": [
+   1581,
+   0,
+   95,
+   108,
+   -48,
+   -108
+  ],
+  "tiger_myth_walk_02": [
+   95,
+   150,
+   92,
+   107,
+   -47,
+   -107
+  ],
+  "tiger_myth_walk_03": [
+   874,
+   150,
+   94,
+   105,
+   -49,
+   -105
+  ],
+  "tiger_myth_walk_04": [
+   678,
+   150,
+   97,
+   106,
+   -53,
+   -106
+  ],
+  "tiger_myth_walk_05": [
+   1677,
+   0,
+   97,
+   108,
+   -51,
+   -108
+  ],
+  "tiger_myth_walk_06": [
+   188,
+   150,
+   95,
+   107,
+   -48,
+   -107
+  ],
+  "tiger_myth_walk_07": [
+   969,
+   150,
+   97,
+   105,
+   -48,
+   -105
+  ]
+ },
+ "frames": [
+  "tiger_myth_a1_00",
+  "tiger_myth_a1_01",
+  "tiger_myth_a1_02",
+  "tiger_myth_a1_03",
+  "tiger_myth_a1_04",
+  "tiger_myth_a1_05",
+  "tiger_myth_a1_06",
+  "tiger_myth_a1_07",
+  "tiger_myth_a2_00",
+  "tiger_myth_a2_01",
+  "tiger_myth_a2_02",
+  "tiger_myth_a2_03",
+  "tiger_myth_a2_04",
+  "tiger_myth_a2_05",
+  "tiger_myth_a2_06",
+  "tiger_myth_a2_07",
+  "tiger_myth_down_00",
+  "tiger_myth_down_01",
+  "tiger_myth_down_02",
+  "tiger_myth_down_03",
+  "tiger_myth_down_04",
+  "tiger_myth_down_05",
+  "tiger_myth_down_06",
+  "tiger_myth_down_07",
+  "tiger_myth_el_00",
+  "tiger_myth_el_01",
+  "tiger_myth_el_02",
+  "tiger_myth_el_03",
+  "tiger_myth_el_04",
+  "tiger_myth_el_05",
+  "tiger_myth_el_06",
+  "tiger_myth_el_07",
+  "tiger_myth_hit_00",
+  "tiger_myth_hit_01",
+  "tiger_myth_hit_02",
+  "tiger_myth_hit_03",
+  "tiger_myth_idle_00",
+  "tiger_myth_idle_01",
+  "tiger_myth_idle_02",
+  "tiger_myth_idle_03",
+  "tiger_myth_walk_00",
+  "tiger_myth_walk_01",
+  "tiger_myth_walk_02",
+  "tiger_myth_walk_03",
+  "tiger_myth_walk_04",
+  "tiger_myth_walk_05",
+  "tiger_myth_walk_06",
+  "tiger_myth_walk_07"
+ ],
+ "standing": [
+  "tiger_myth_idle_00",
+  "tiger_myth_idle_01",
+  "tiger_myth_idle_02",
+  "tiger_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 44,
+   "attack": {
+    "frames": [
+     "tiger_myth_a1_00",
+     "tiger_myth_a1_01",
+     "tiger_myth_a1_02",
+     "tiger_myth_a1_03",
+     "tiger_myth_a1_04",
+     "tiger_myth_a1_05",
+     "tiger_myth_a1_06",
+     "tiger_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "tiger_myth_a2_00",
+     "tiger_myth_a2_01",
+     "tiger_myth_a2_02",
+     "tiger_myth_a2_03",
+     "tiger_myth_a2_04",
+     "tiger_myth_a2_05",
+     "tiger_myth_a2_06",
+     "tiger_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "tiger_myth_down_00",
+     "tiger_myth_down_01",
+     "tiger_myth_down_02",
+     "tiger_myth_down_03",
+     "tiger_myth_down_04",
+     "tiger_myth_down_05",
+     "tiger_myth_down_06",
+     "tiger_myth_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "tiger_myth_el_00",
+     "tiger_myth_el_01",
+     "tiger_myth_el_02",
+     "tiger_myth_el_03",
+     "tiger_myth_el_04",
+     "tiger_myth_el_05",
+     "tiger_myth_el_06",
+     "tiger_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "tiger_myth_hit_00",
+     "tiger_myth_hit_01",
+     "tiger_myth_hit_02",
+     "tiger_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "tiger_myth_idle_00",
+     "tiger_myth_idle_01",
+     "tiger_myth_idle_02",
+     "tiger_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "tiger_myth_walk_00",
+     "tiger_myth_walk_01",
+     "tiger_myth_walk_02",
+     "tiger_myth_walk_03",
+     "tiger_myth_walk_04",
+     "tiger_myth_walk_05",
+     "tiger_myth_walk_06",
+     "tiger_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

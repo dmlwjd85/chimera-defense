@@ -1,0 +1,857 @@
+{
+ "note": "rabbit 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "rabbit_spirit",
+ "sheet": "dot-m-rabbit_spirit",
+ "file": "assets/dotm/rabbit_spirit.png",
+ "frameW": 113,
+ "frameH": 149,
+ "foot": 147,
+ "cols": 1,
+ "anchorX": 56,
+ "palette": [
+  "#120624",
+  "#200837",
+  "#291a1f",
+  "#2d5b48",
+  "#407758",
+  "#559659",
+  "#6bb77d",
+  "#6d4c64",
+  "#8dd69b",
+  "#a29bb6",
+  "#b56a73",
+  "#bc824b",
+  "#c5c5d4",
+  "#e9ba64",
+  "#f6a2a1",
+  "#fefefe"
+ ],
+ "rects": {
+  "rabbit_myth_a1_00": [
+   755,
+   145,
+   61,
+   103,
+   -31,
+   -103
+  ],
+  "rabbit_myth_a1_01": [
+   1518,
+   145,
+   61,
+   100,
+   -31,
+   -101
+  ],
+  "rabbit_myth_a1_02": [
+   134,
+   145,
+   65,
+   104,
+   -33,
+   -105
+  ],
+  "rabbit_myth_a1_03": [
+   1370,
+   145,
+   74,
+   101,
+   -32,
+   -102
+  ],
+  "rabbit_myth_a1_04": [
+   1024,
+   145,
+   69,
+   102,
+   -32,
+   -103
+  ],
+  "rabbit_myth_a1_05": [
+   1055,
+   0,
+   65,
+   106,
+   -31,
+   -107
+  ],
+  "rabbit_myth_a1_06": [
+   593,
+   0,
+   65,
+   107,
+   -31,
+   -107
+  ],
+  "rabbit_myth_a1_07": [
+   200,
+   145,
+   65,
+   104,
+   -32,
+   -104
+  ],
+  "rabbit_myth_a2_00": [
+   1094,
+   145,
+   67,
+   102,
+   -29,
+   -102
+  ],
+  "rabbit_myth_a2_01": [
+   1805,
+   145,
+   75,
+   94,
+   -29,
+   -94
+  ],
+  "rabbit_myth_a2_02": [
+   1881,
+   145,
+   91,
+   93,
+   -37,
+   -93
+  ],
+  "rabbit_myth_a2_03": [
+   0,
+   0,
+   54,
+   144,
+   -35,
+   -148
+  ],
+  "rabbit_myth_a2_04": [
+   202,
+   0,
+   51,
+   135,
+   -30,
+   -140
+  ],
+  "rabbit_myth_a2_05": [
+   659,
+   0,
+   58,
+   107,
+   -29,
+   -111
+  ],
+  "rabbit_myth_a2_06": [
+   718,
+   0,
+   62,
+   107,
+   -31,
+   -107
+  ],
+  "rabbit_myth_a2_07": [
+   266,
+   145,
+   65,
+   104,
+   -33,
+   -104
+  ],
+  "rabbit_myth_down_00": [
+   1162,
+   145,
+   65,
+   102,
+   -30,
+   -102
+  ],
+  "rabbit_myth_down_01": [
+   1657,
+   145,
+   70,
+   99,
+   -32,
+   -99
+  ],
+  "rabbit_myth_down_02": [
+   0,
+   251,
+   95,
+   93,
+   -43,
+   -93
+  ],
+  "rabbit_myth_down_03": [
+   189,
+   251,
+   94,
+   86,
+   -45,
+   -86
+  ],
+  "rabbit_myth_down_04": [
+   96,
+   251,
+   92,
+   90,
+   -45,
+   -90
+  ],
+  "rabbit_myth_down_05": [
+   284,
+   251,
+   97,
+   86,
+   -48,
+   -86
+  ],
+  "rabbit_myth_down_06": [
+   382,
+   251,
+   108,
+   55,
+   -56,
+   -55
+  ],
+  "rabbit_myth_down_07": [
+   491,
+   251,
+   109,
+   45,
+   -52,
+   -45
+  ],
+  "rabbit_myth_el_00": [
+   1445,
+   145,
+   72,
+   101,
+   -32,
+   -101
+  ],
+  "rabbit_myth_el_01": [
+   332,
+   145,
+   66,
+   104,
+   -37,
+   -104
+  ],
+  "rabbit_myth_el_02": [
+   55,
+   0,
+   75,
+   140,
+   -42,
+   -140
+  ],
+  "rabbit_myth_el_03": [
+   131,
+   0,
+   70,
+   137,
+   -44,
+   -137
+  ],
+  "rabbit_myth_el_04": [
+   1121,
+   0,
+   67,
+   106,
+   -41,
+   -106
+  ],
+  "rabbit_myth_el_05": [
+   1189,
+   0,
+   63,
+   106,
+   -36,
+   -106
+  ],
+  "rabbit_myth_el_06": [
+   781,
+   0,
+   66,
+   107,
+   -32,
+   -107
+  ],
+  "rabbit_myth_el_07": [
+   1591,
+   0,
+   66,
+   105,
+   -32,
+   -105
+  ],
+  "rabbit_myth_hit_00": [
+   1253,
+   0,
+   66,
+   106,
+   -34,
+   -106
+  ],
+  "rabbit_myth_hit_01": [
+   380,
+   0,
+   71,
+   108,
+   -39,
+   -111
+  ],
+  "rabbit_myth_hit_02": [
+   1320,
+   0,
+   70,
+   106,
+   -38,
+   -110
+  ],
+  "rabbit_myth_hit_03": [
+   399,
+   145,
+   71,
+   104,
+   -35,
+   -104
+  ],
+  "rabbit_myth_idle_00": [
+   817,
+   145,
+   64,
+   103,
+   -31,
+   -103
+  ],
+  "rabbit_myth_idle_01": [
+   471,
+   145,
+   66,
+   104,
+   -31,
+   -104
+  ],
+  "rabbit_myth_idle_02": [
+   1658,
+   0,
+   66,
+   105,
+   -31,
+   -105
+  ],
+  "rabbit_myth_idle_03": [
+   1725,
+   0,
+   65,
+   105,
+   -32,
+   -105
+  ],
+  "rabbit_myth_ult_00": [
+   1228,
+   145,
+   65,
+   102,
+   -32,
+   -102
+  ],
+  "rabbit_myth_ult_01": [
+   882,
+   145,
+   66,
+   103,
+   -32,
+   -103
+  ],
+  "rabbit_myth_ult_02": [
+   318,
+   0,
+   61,
+   110,
+   -35,
+   -113
+  ],
+  "rabbit_myth_ult_03": [
+   254,
+   0,
+   63,
+   115,
+   -41,
+   -137
+  ],
+  "rabbit_myth_ult_04": [
+   452,
+   0,
+   74,
+   108,
+   -41,
+   -144
+  ],
+  "rabbit_myth_ult_05": [
+   848,
+   0,
+   73,
+   107,
+   -42,
+   -134
+  ],
+  "rabbit_myth_ult_06": [
+   1391,
+   0,
+   67,
+   106,
+   -37,
+   -123
+  ],
+  "rabbit_myth_ult_07": [
+   1791,
+   0,
+   75,
+   105,
+   -33,
+   -105
+  ],
+  "rabbit_myth_ult_08": [
+   1728,
+   145,
+   76,
+   97,
+   -33,
+   -97
+  ],
+  "rabbit_myth_ult_09": [
+   1580,
+   145,
+   76,
+   100,
+   -33,
+   -100
+  ],
+  "rabbit_myth_ult_10": [
+   1294,
+   145,
+   75,
+   102,
+   -32,
+   -102
+  ],
+  "rabbit_myth_ult_11": [
+   949,
+   145,
+   74,
+   103,
+   -31,
+   -103
+  ],
+  "rabbit_myth_ult_12": [
+   1867,
+   0,
+   74,
+   105,
+   -31,
+   -105
+  ],
+  "rabbit_myth_ult_13": [
+   538,
+   145,
+   74,
+   104,
+   -33,
+   -104
+  ],
+  "rabbit_myth_ult_14": [
+   613,
+   145,
+   74,
+   104,
+   -33,
+   -104
+  ],
+  "rabbit_myth_ult_15": [
+   1942,
+   0,
+   74,
+   105,
+   -33,
+   -105
+  ],
+  "rabbit_myth_walk_00": [
+   922,
+   0,
+   65,
+   107,
+   -32,
+   -107
+  ],
+  "rabbit_myth_walk_01": [
+   988,
+   0,
+   66,
+   107,
+   -32,
+   -108
+  ],
+  "rabbit_myth_walk_02": [
+   0,
+   145,
+   67,
+   105,
+   -32,
+   -106
+  ],
+  "rabbit_myth_walk_03": [
+   688,
+   145,
+   66,
+   104,
+   -32,
+   -104
+  ],
+  "rabbit_myth_walk_04": [
+   1459,
+   0,
+   65,
+   106,
+   -32,
+   -106
+  ],
+  "rabbit_myth_walk_05": [
+   527,
+   0,
+   65,
+   108,
+   -32,
+   -108
+  ],
+  "rabbit_myth_walk_06": [
+   1525,
+   0,
+   65,
+   106,
+   -32,
+   -106
+  ],
+  "rabbit_myth_walk_07": [
+   68,
+   145,
+   65,
+   105,
+   -32,
+   -105
+  ]
+ },
+ "frames": [
+  "rabbit_myth_a1_00",
+  "rabbit_myth_a1_01",
+  "rabbit_myth_a1_02",
+  "rabbit_myth_a1_03",
+  "rabbit_myth_a1_04",
+  "rabbit_myth_a1_05",
+  "rabbit_myth_a1_06",
+  "rabbit_myth_a1_07",
+  "rabbit_myth_a2_00",
+  "rabbit_myth_a2_01",
+  "rabbit_myth_a2_02",
+  "rabbit_myth_a2_03",
+  "rabbit_myth_a2_04",
+  "rabbit_myth_a2_05",
+  "rabbit_myth_a2_06",
+  "rabbit_myth_a2_07",
+  "rabbit_myth_down_00",
+  "rabbit_myth_down_01",
+  "rabbit_myth_down_02",
+  "rabbit_myth_down_03",
+  "rabbit_myth_down_04",
+  "rabbit_myth_down_05",
+  "rabbit_myth_down_06",
+  "rabbit_myth_down_07",
+  "rabbit_myth_el_00",
+  "rabbit_myth_el_01",
+  "rabbit_myth_el_02",
+  "rabbit_myth_el_03",
+  "rabbit_myth_el_04",
+  "rabbit_myth_el_05",
+  "rabbit_myth_el_06",
+  "rabbit_myth_el_07",
+  "rabbit_myth_hit_00",
+  "rabbit_myth_hit_01",
+  "rabbit_myth_hit_02",
+  "rabbit_myth_hit_03",
+  "rabbit_myth_idle_00",
+  "rabbit_myth_idle_01",
+  "rabbit_myth_idle_02",
+  "rabbit_myth_idle_03",
+  "rabbit_myth_ult_00",
+  "rabbit_myth_ult_01",
+  "rabbit_myth_ult_02",
+  "rabbit_myth_ult_03",
+  "rabbit_myth_ult_04",
+  "rabbit_myth_ult_05",
+  "rabbit_myth_ult_06",
+  "rabbit_myth_ult_07",
+  "rabbit_myth_ult_08",
+  "rabbit_myth_ult_09",
+  "rabbit_myth_ult_10",
+  "rabbit_myth_ult_11",
+  "rabbit_myth_ult_12",
+  "rabbit_myth_ult_13",
+  "rabbit_myth_ult_14",
+  "rabbit_myth_ult_15",
+  "rabbit_myth_walk_00",
+  "rabbit_myth_walk_01",
+  "rabbit_myth_walk_02",
+  "rabbit_myth_walk_03",
+  "rabbit_myth_walk_04",
+  "rabbit_myth_walk_05",
+  "rabbit_myth_walk_06",
+  "rabbit_myth_walk_07"
+ ],
+ "standing": [
+  "rabbit_myth_idle_00",
+  "rabbit_myth_idle_01",
+  "rabbit_myth_idle_02",
+  "rabbit_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 43,
+   "attack": {
+    "frames": [
+     "rabbit_myth_a1_00",
+     "rabbit_myth_a1_01",
+     "rabbit_myth_a1_02",
+     "rabbit_myth_a1_03",
+     "rabbit_myth_a1_04",
+     "rabbit_myth_a1_05",
+     "rabbit_myth_a1_06",
+     "rabbit_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "rabbit_myth_a2_00",
+     "rabbit_myth_a2_01",
+     "rabbit_myth_a2_02",
+     "rabbit_myth_a2_03",
+     "rabbit_myth_a2_04",
+     "rabbit_myth_a2_05",
+     "rabbit_myth_a2_06",
+     "rabbit_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "rabbit_myth_down_00",
+     "rabbit_myth_down_01",
+     "rabbit_myth_down_02",
+     "rabbit_myth_down_03",
+     "rabbit_myth_down_04",
+     "rabbit_myth_down_05",
+     "rabbit_myth_down_06",
+     "rabbit_myth_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "rabbit_myth_el_00",
+     "rabbit_myth_el_01",
+     "rabbit_myth_el_02",
+     "rabbit_myth_el_03",
+     "rabbit_myth_el_04",
+     "rabbit_myth_el_05",
+     "rabbit_myth_el_06",
+     "rabbit_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "rabbit_myth_hit_00",
+     "rabbit_myth_hit_01",
+     "rabbit_myth_hit_02",
+     "rabbit_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "rabbit_myth_idle_00",
+     "rabbit_myth_idle_01",
+     "rabbit_myth_idle_02",
+     "rabbit_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "rabbit_myth_ult_00",
+     "rabbit_myth_ult_01",
+     "rabbit_myth_ult_02",
+     "rabbit_myth_ult_03",
+     "rabbit_myth_ult_04",
+     "rabbit_myth_ult_05",
+     "rabbit_myth_ult_06",
+     "rabbit_myth_ult_07",
+     "rabbit_myth_ult_08",
+     "rabbit_myth_ult_09",
+     "rabbit_myth_ult_10",
+     "rabbit_myth_ult_11",
+     "rabbit_myth_ult_12",
+     "rabbit_myth_ult_13",
+     "rabbit_myth_ult_14",
+     "rabbit_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 8,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.57,
+      "cast"
+     ],
+     [
+      0.58,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "rabbit_myth_walk_00",
+     "rabbit_myth_walk_01",
+     "rabbit_myth_walk_02",
+     "rabbit_myth_walk_03",
+     "rabbit_myth_walk_04",
+     "rabbit_myth_walk_05",
+     "rabbit_myth_walk_06",
+     "rabbit_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

@@ -1,0 +1,1502 @@
+{
+ "note": "crow 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "crow",
+ "sheet": "dot-m-crow",
+ "file": "assets/dotm/crow.png",
+ "frameW": 113,
+ "frameH": 111,
+ "foot": 102,
+ "cols": 1,
+ "anchorX": 55,
+ "palette": [
+  "#010208",
+  "#040818",
+  "#060e24",
+  "#212d40",
+  "#213349",
+  "#253c50",
+  "#291a1f",
+  "#294d5e",
+  "#365f73",
+  "#484246",
+  "#577892",
+  "#655e66",
+  "#747378",
+  "#929aa6",
+  "#c1b2af",
+  "#fcfdfd"
+ ],
+ "rects": {
+  "crow_baby_a1_00": [
+   1199,
+   337,
+   65,
+   50,
+   -35,
+   -51
+  ],
+  "crow_baby_a1_01": [
+   757,
+   337,
+   67,
+   51,
+   -30,
+   -55
+  ],
+  "crow_baby_a1_02": [
+   110,
+   337,
+   53,
+   54,
+   -26,
+   -58
+  ],
+  "crow_baby_a1_03": [
+   1947,
+   269,
+   53,
+   55,
+   -26,
+   -59
+  ],
+  "crow_baby_a1_04": [
+   825,
+   337,
+   58,
+   51,
+   -26,
+   -58
+  ],
+  "crow_baby_a1_05": [
+   884,
+   337,
+   74,
+   51,
+   -37,
+   -55
+  ],
+  "crow_baby_a1_06": [
+   959,
+   337,
+   63,
+   51,
+   -34,
+   -52
+  ],
+  "crow_baby_a1_07": [
+   645,
+   269,
+   54,
+   60,
+   -27,
+   -59
+  ],
+  "crow_baby_down_00": [
+   1265,
+   337,
+   66,
+   50,
+   -31,
+   -52
+  ],
+  "crow_baby_down_01": [
+   1448,
+   337,
+   62,
+   47,
+   -26,
+   -55
+  ],
+  "crow_baby_down_02": [
+   1389,
+   337,
+   58,
+   49,
+   -26,
+   -54
+  ],
+  "crow_baby_down_03": [
+   1332,
+   337,
+   56,
+   50,
+   -26,
+   -52
+  ],
+  "crow_baby_down_04": [
+   1601,
+   337,
+   60,
+   42,
+   -27,
+   -45
+  ],
+  "crow_baby_down_05": [
+   1843,
+   337,
+   65,
+   31,
+   -28,
+   -31
+  ],
+  "crow_baby_hit_00": [
+   277,
+   337,
+   56,
+   53,
+   -29,
+   -54
+  ],
+  "crow_baby_hit_01": [
+   454,
+   337,
+   64,
+   52,
+   -32,
+   -55
+  ],
+  "crow_baby_hit_02": [
+   519,
+   337,
+   55,
+   52,
+   -28,
+   -54
+  ],
+  "crow_baby_hit_03": [
+   700,
+   269,
+   54,
+   60,
+   -27,
+   -59
+  ],
+  "crow_baby_idle_00": [
+   575,
+   337,
+   56,
+   52,
+   -29,
+   -52
+  ],
+  "crow_baby_idle_01": [
+   1023,
+   337,
+   56,
+   51,
+   -29,
+   -53
+  ],
+  "crow_baby_idle_02": [
+   1080,
+   337,
+   56,
+   51,
+   -29,
+   -52
+  ],
+  "crow_baby_idle_03": [
+   755,
+   269,
+   54,
+   60,
+   -27,
+   -59
+  ],
+  "crow_baby_walk_00": [
+   334,
+   337,
+   56,
+   53,
+   -29,
+   -54
+  ],
+  "crow_baby_walk_01": [
+   1137,
+   337,
+   61,
+   51,
+   -33,
+   -54
+  ],
+  "crow_baby_walk_02": [
+   632,
+   337,
+   62,
+   52,
+   -31,
+   -56
+  ],
+  "crow_baby_walk_03": [
+   164,
+   337,
+   55,
+   54,
+   -27,
+   -58
+  ],
+  "crow_baby_walk_04": [
+   391,
+   337,
+   62,
+   53,
+   -30,
+   -57
+  ],
+  "crow_baby_walk_05": [
+   695,
+   337,
+   61,
+   52,
+   -33,
+   -54
+  ],
+  "crow_baby_walk_06": [
+   220,
+   337,
+   56,
+   54,
+   -29,
+   -55
+  ],
+  "crow_baby_walk_07": [
+   810,
+   269,
+   54,
+   60,
+   -27,
+   -59
+  ],
+  "crow_teen_a1_00": [
+   1555,
+   107,
+   89,
+   74,
+   -43,
+   -75
+  ],
+  "crow_teen_a1_01": [
+   1767,
+   269,
+   88,
+   56,
+   -42,
+   -60
+  ],
+  "crow_teen_a1_02": [
+   289,
+   269,
+   88,
+   64,
+   -42,
+   -63
+  ],
+  "crow_teen_a1_03": [
+   0,
+   269,
+   88,
+   67,
+   -42,
+   -64
+  ],
+  "crow_teen_a1_04": [
+   1856,
+   269,
+   90,
+   56,
+   -43,
+   -63
+  ],
+  "crow_teen_a1_05": [
+   1314,
+   269,
+   91,
+   58,
+   -45,
+   -60
+  ],
+  "crow_teen_a1_06": [
+   1464,
+   107,
+   90,
+   75,
+   -44,
+   -74
+  ],
+  "crow_teen_a1_07": [
+   1889,
+   0,
+   90,
+   87,
+   -44,
+   -84
+  ],
+  "crow_teen_a2_00": [
+   982,
+   107,
+   89,
+   78,
+   -43,
+   -77
+  ],
+  "crow_teen_a2_01": [
+   1406,
+   269,
+   93,
+   58,
+   -47,
+   -60
+  ],
+  "crow_teen_a2_02": [
+   1500,
+   269,
+   85,
+   58,
+   -39,
+   -63
+  ],
+  "crow_teen_a2_03": [
+   1749,
+   107,
+   84,
+   73,
+   -38,
+   -66
+  ],
+  "crow_teen_a2_04": [
+   467,
+   269,
+   87,
+   61,
+   -41,
+   -64
+  ],
+  "crow_teen_a2_05": [
+   1672,
+   269,
+   94,
+   57,
+   -48,
+   -61
+  ],
+  "crow_teen_a2_06": [
+   1176,
+   107,
+   89,
+   77,
+   -43,
+   -77
+  ],
+  "crow_teen_a2_07": [
+   0,
+   107,
+   90,
+   87,
+   -44,
+   -84
+  ],
+  "crow_teen_down_00": [
+   1266,
+   107,
+   89,
+   77,
+   -43,
+   -79
+  ],
+  "crow_teen_down_01": [
+   201,
+   269,
+   87,
+   66,
+   -42,
+   -69
+  ],
+  "crow_teen_down_02": [
+   1511,
+   337,
+   89,
+   44,
+   -43,
+   -48
+  ],
+  "crow_teen_down_03": [
+   1662,
+   337,
+   90,
+   39,
+   -45,
+   -43
+  ],
+  "crow_teen_down_04": [
+   1753,
+   337,
+   89,
+   38,
+   -44,
+   -42
+  ],
+  "crow_teen_hit_00": [
+   555,
+   269,
+   89,
+   61,
+   -43,
+   -61
+  ],
+  "crow_teen_hit_01": [
+   865,
+   269,
+   88,
+   60,
+   -41,
+   -61
+  ],
+  "crow_teen_hit_02": [
+   322,
+   195,
+   90,
+   72,
+   -43,
+   -73
+  ],
+  "crow_teen_hit_03": [
+   91,
+   107,
+   90,
+   87,
+   -44,
+   -84
+  ],
+  "crow_teen_idle_00": [
+   1226,
+   269,
+   87,
+   59,
+   -41,
+   -59
+  ],
+  "crow_teen_idle_01": [
+   1586,
+   269,
+   85,
+   58,
+   -39,
+   -61
+  ],
+  "crow_teen_idle_02": [
+   378,
+   269,
+   88,
+   64,
+   -42,
+   -65
+  ],
+  "crow_teen_idle_03": [
+   182,
+   107,
+   90,
+   87,
+   -44,
+   -84
+  ],
+  "crow_teen_walk_00": [
+   891,
+   107,
+   90,
+   80,
+   -44,
+   -77
+  ],
+  "crow_teen_walk_01": [
+   954,
+   269,
+   92,
+   60,
+   -46,
+   -59
+  ],
+  "crow_teen_walk_02": [
+   1047,
+   269,
+   89,
+   60,
+   -43,
+   -60
+  ],
+  "crow_teen_walk_03": [
+   1934,
+   195,
+   86,
+   68,
+   -40,
+   -62
+  ],
+  "crow_teen_walk_04": [
+   1137,
+   269,
+   88,
+   60,
+   -42,
+   -62
+  ],
+  "crow_teen_walk_05": [
+   851,
+   195,
+   90,
+   71,
+   -44,
+   -71
+  ],
+  "crow_teen_walk_06": [
+   584,
+   107,
+   90,
+   82,
+   -44,
+   -81
+  ],
+  "crow_teen_walk_07": [
+   273,
+   107,
+   90,
+   87,
+   -44,
+   -84
+  ],
+  "crow_adult_a1_00": [
+   888,
+   0,
+   110,
+   94,
+   -54,
+   -93
+  ],
+  "crow_adult_a1_01": [
+   1275,
+   195,
+   112,
+   70,
+   -54,
+   -72
+  ],
+  "crow_adult_a1_02": [
+   782,
+   107,
+   108,
+   81,
+   -52,
+   -84
+  ],
+  "crow_adult_a1_03": [
+   1834,
+   107,
+   104,
+   73,
+   -48,
+   -77
+  ],
+  "crow_adult_a1_04": [
+   413,
+   195,
+   107,
+   72,
+   -51,
+   -76
+  ],
+  "crow_adult_a1_05": [
+   942,
+   195,
+   110,
+   71,
+   -54,
+   -73
+  ],
+  "crow_adult_a1_06": [
+   364,
+   107,
+   110,
+   85,
+   -54,
+   -84
+  ],
+  "crow_adult_a1_07": [
+   0,
+   0,
+   110,
+   106,
+   -54,
+   -103
+  ],
+  "crow_adult_a2_00": [
+   1333,
+   0,
+   111,
+   91,
+   -55,
+   -91
+  ],
+  "crow_adult_a2_01": [
+   1715,
+   195,
+   111,
+   69,
+   -55,
+   -73
+  ],
+  "crow_adult_a2_02": [
+   1939,
+   107,
+   107,
+   73,
+   -51,
+   -76
+  ],
+  "crow_adult_a2_03": [
+   1645,
+   107,
+   103,
+   74,
+   -48,
+   -78
+  ],
+  "crow_adult_a2_04": [
+   0,
+   195,
+   106,
+   73,
+   -51,
+   -77
+  ],
+  "crow_adult_a2_05": [
+   1053,
+   195,
+   110,
+   71,
+   -55,
+   -74
+  ],
+  "crow_adult_a2_06": [
+   1110,
+   0,
+   111,
+   93,
+   -55,
+   -92
+  ],
+  "crow_adult_a2_07": [
+   111,
+   0,
+   110,
+   106,
+   -54,
+   -103
+  ],
+  "crow_adult_down_00": [
+   777,
+   0,
+   110,
+   97,
+   -54,
+   -95
+  ],
+  "crow_adult_down_01": [
+   1445,
+   0,
+   110,
+   91,
+   -54,
+   -91
+  ],
+  "crow_adult_down_02": [
+   89,
+   269,
+   111,
+   67,
+   -53,
+   -74
+  ],
+  "crow_adult_down_03": [
+   0,
+   337,
+   109,
+   55,
+   -51,
+   -53
+  ],
+  "crow_adult_el_00": [
+   999,
+   0,
+   110,
+   94,
+   -54,
+   -93
+  ],
+  "crow_adult_el_01": [
+   521,
+   195,
+   109,
+   72,
+   -53,
+   -76
+  ],
+  "crow_adult_el_02": [
+   1356,
+   107,
+   107,
+   77,
+   -51,
+   -80
+  ],
+  "crow_adult_el_03": [
+   675,
+   107,
+   106,
+   82,
+   -50,
+   -83
+  ],
+  "crow_adult_el_04": [
+   631,
+   195,
+   108,
+   72,
+   -52,
+   -81
+  ],
+  "crow_adult_el_05": [
+   740,
+   195,
+   110,
+   72,
+   -54,
+   -77
+  ],
+  "crow_adult_el_06": [
+   1222,
+   0,
+   110,
+   92,
+   -54,
+   -92
+  ],
+  "crow_adult_el_07": [
+   222,
+   0,
+   110,
+   106,
+   -54,
+   -103
+  ],
+  "crow_adult_hit_00": [
+   1556,
+   0,
+   110,
+   91,
+   -54,
+   -91
+  ],
+  "crow_adult_hit_01": [
+   1164,
+   195,
+   110,
+   71,
+   -54,
+   -72
+  ],
+  "crow_adult_hit_02": [
+   1778,
+   0,
+   110,
+   88,
+   -54,
+   -89
+  ],
+  "crow_adult_hit_03": [
+   333,
+   0,
+   110,
+   106,
+   -54,
+   -103
+  ],
+  "crow_adult_idle_00": [
+   475,
+   107,
+   108,
+   83,
+   -52,
+   -83
+  ],
+  "crow_adult_idle_01": [
+   1388,
+   195,
+   105,
+   70,
+   -49,
+   -73
+  ],
+  "crow_adult_idle_02": [
+   107,
+   195,
+   108,
+   73,
+   -52,
+   -75
+  ],
+  "crow_adult_idle_03": [
+   444,
+   0,
+   110,
+   106,
+   -54,
+   -103
+  ],
+  "crow_adult_walk_00": [
+   666,
+   0,
+   110,
+   98,
+   -54,
+   -97
+  ],
+  "crow_adult_walk_01": [
+   1494,
+   195,
+   110,
+   70,
+   -54,
+   -73
+  ],
+  "crow_adult_walk_02": [
+   1827,
+   195,
+   106,
+   69,
+   -50,
+   -75
+  ],
+  "crow_adult_walk_03": [
+   1072,
+   107,
+   103,
+   78,
+   -47,
+   -77
+  ],
+  "crow_adult_walk_04": [
+   216,
+   195,
+   105,
+   73,
+   -49,
+   -76
+  ],
+  "crow_adult_walk_05": [
+   1605,
+   195,
+   109,
+   70,
+   -53,
+   -73
+  ],
+  "crow_adult_walk_06": [
+   1667,
+   0,
+   110,
+   89,
+   -54,
+   -88
+  ],
+  "crow_adult_walk_07": [
+   555,
+   0,
+   110,
+   106,
+   -54,
+   -103
+  ]
+ },
+ "frames": [
+  "crow_baby_a1_00",
+  "crow_baby_a1_01",
+  "crow_baby_a1_02",
+  "crow_baby_a1_03",
+  "crow_baby_a1_04",
+  "crow_baby_a1_05",
+  "crow_baby_a1_06",
+  "crow_baby_a1_07",
+  "crow_baby_down_00",
+  "crow_baby_down_01",
+  "crow_baby_down_02",
+  "crow_baby_down_03",
+  "crow_baby_down_04",
+  "crow_baby_down_05",
+  "crow_baby_hit_00",
+  "crow_baby_hit_01",
+  "crow_baby_hit_02",
+  "crow_baby_hit_03",
+  "crow_baby_idle_00",
+  "crow_baby_idle_01",
+  "crow_baby_idle_02",
+  "crow_baby_idle_03",
+  "crow_baby_walk_00",
+  "crow_baby_walk_01",
+  "crow_baby_walk_02",
+  "crow_baby_walk_03",
+  "crow_baby_walk_04",
+  "crow_baby_walk_05",
+  "crow_baby_walk_06",
+  "crow_baby_walk_07",
+  "crow_teen_a1_00",
+  "crow_teen_a1_01",
+  "crow_teen_a1_02",
+  "crow_teen_a1_03",
+  "crow_teen_a1_04",
+  "crow_teen_a1_05",
+  "crow_teen_a1_06",
+  "crow_teen_a1_07",
+  "crow_teen_a2_00",
+  "crow_teen_a2_01",
+  "crow_teen_a2_02",
+  "crow_teen_a2_03",
+  "crow_teen_a2_04",
+  "crow_teen_a2_05",
+  "crow_teen_a2_06",
+  "crow_teen_a2_07",
+  "crow_teen_down_00",
+  "crow_teen_down_01",
+  "crow_teen_down_02",
+  "crow_teen_down_03",
+  "crow_teen_down_04",
+  "crow_teen_hit_00",
+  "crow_teen_hit_01",
+  "crow_teen_hit_02",
+  "crow_teen_hit_03",
+  "crow_teen_idle_00",
+  "crow_teen_idle_01",
+  "crow_teen_idle_02",
+  "crow_teen_idle_03",
+  "crow_teen_walk_00",
+  "crow_teen_walk_01",
+  "crow_teen_walk_02",
+  "crow_teen_walk_03",
+  "crow_teen_walk_04",
+  "crow_teen_walk_05",
+  "crow_teen_walk_06",
+  "crow_teen_walk_07",
+  "crow_adult_a1_00",
+  "crow_adult_a1_01",
+  "crow_adult_a1_02",
+  "crow_adult_a1_03",
+  "crow_adult_a1_04",
+  "crow_adult_a1_05",
+  "crow_adult_a1_06",
+  "crow_adult_a1_07",
+  "crow_adult_a2_00",
+  "crow_adult_a2_01",
+  "crow_adult_a2_02",
+  "crow_adult_a2_03",
+  "crow_adult_a2_04",
+  "crow_adult_a2_05",
+  "crow_adult_a2_06",
+  "crow_adult_a2_07",
+  "crow_adult_down_00",
+  "crow_adult_down_01",
+  "crow_adult_down_02",
+  "crow_adult_down_03",
+  "crow_adult_el_00",
+  "crow_adult_el_01",
+  "crow_adult_el_02",
+  "crow_adult_el_03",
+  "crow_adult_el_04",
+  "crow_adult_el_05",
+  "crow_adult_el_06",
+  "crow_adult_el_07",
+  "crow_adult_hit_00",
+  "crow_adult_hit_01",
+  "crow_adult_hit_02",
+  "crow_adult_hit_03",
+  "crow_adult_idle_00",
+  "crow_adult_idle_01",
+  "crow_adult_idle_02",
+  "crow_adult_idle_03",
+  "crow_adult_walk_00",
+  "crow_adult_walk_01",
+  "crow_adult_walk_02",
+  "crow_adult_walk_03",
+  "crow_adult_walk_04",
+  "crow_adult_walk_05",
+  "crow_adult_walk_06",
+  "crow_adult_walk_07"
+ ],
+ "standing": [
+  "crow_baby_idle_00",
+  "crow_baby_idle_01",
+  "crow_baby_idle_02",
+  "crow_baby_idle_03",
+  "crow_teen_idle_00",
+  "crow_teen_idle_01",
+  "crow_teen_idle_02",
+  "crow_teen_idle_03",
+  "crow_adult_idle_00",
+  "crow_adult_idle_01",
+  "crow_adult_idle_02",
+  "crow_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "baby": {
+   "top": 44,
+   "attack": {
+    "frames": [
+     "crow_baby_a1_00",
+     "crow_baby_a1_01",
+     "crow_baby_a1_02",
+     "crow_baby_a1_03",
+     "crow_baby_a1_04",
+     "crow_baby_a1_05",
+     "crow_baby_a1_06",
+     "crow_baby_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "crow_baby_down_00",
+     "crow_baby_down_01",
+     "crow_baby_down_02",
+     "crow_baby_down_03",
+     "crow_baby_down_04",
+     "crow_baby_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "crow_baby_hit_00",
+     "crow_baby_hit_01",
+     "crow_baby_hit_02",
+     "crow_baby_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "crow_baby_walk_00",
+     "crow_baby_walk_01",
+     "crow_baby_walk_02",
+     "crow_baby_walk_03",
+     "crow_baby_walk_04",
+     "crow_baby_walk_05",
+     "crow_baby_walk_06",
+     "crow_baby_walk_07"
+    ],
+    "durs": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "crow_baby_walk_00",
+     "crow_baby_walk_01",
+     "crow_baby_walk_02",
+     "crow_baby_walk_03",
+     "crow_baby_walk_04",
+     "crow_baby_walk_05",
+     "crow_baby_walk_06",
+     "crow_baby_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "teen": {
+   "top": 19,
+   "attack": {
+    "frames": [
+     "crow_teen_a1_00",
+     "crow_teen_a1_01",
+     "crow_teen_a1_02",
+     "crow_teen_a1_03",
+     "crow_teen_a1_04",
+     "crow_teen_a1_05",
+     "crow_teen_a1_06",
+     "crow_teen_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.27,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "crow_teen_a2_00",
+     "crow_teen_a2_01",
+     "crow_teen_a2_02",
+     "crow_teen_a2_03",
+     "crow_teen_a2_04",
+     "crow_teen_a2_05",
+     "crow_teen_a2_06",
+     "crow_teen_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "crow_teen_down_00",
+     "crow_teen_down_01",
+     "crow_teen_down_02",
+     "crow_teen_down_03",
+     "crow_teen_down_04"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "crow_teen_hit_00",
+     "crow_teen_hit_01",
+     "crow_teen_hit_02",
+     "crow_teen_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "crow_teen_walk_00",
+     "crow_teen_walk_01",
+     "crow_teen_walk_02",
+     "crow_teen_walk_03",
+     "crow_teen_walk_04",
+     "crow_teen_walk_05",
+     "crow_teen_walk_06",
+     "crow_teen_walk_07"
+    ],
+    "durs": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "crow_teen_walk_00",
+     "crow_teen_walk_01",
+     "crow_teen_walk_02",
+     "crow_teen_walk_03",
+     "crow_teen_walk_04",
+     "crow_teen_walk_05",
+     "crow_teen_walk_06",
+     "crow_teen_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "adult": {
+   "top": 0,
+   "attack": {
+    "frames": [
+     "crow_adult_a1_00",
+     "crow_adult_a1_01",
+     "crow_adult_a1_02",
+     "crow_adult_a1_03",
+     "crow_adult_a1_04",
+     "crow_adult_a1_05",
+     "crow_adult_a1_06",
+     "crow_adult_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "crow_adult_a2_00",
+     "crow_adult_a2_01",
+     "crow_adult_a2_02",
+     "crow_adult_a2_03",
+     "crow_adult_a2_04",
+     "crow_adult_a2_05",
+     "crow_adult_a2_06",
+     "crow_adult_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "crow_adult_down_00",
+     "crow_adult_down_01",
+     "crow_adult_down_02",
+     "crow_adult_down_03"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "crow_adult_el_00",
+     "crow_adult_el_01",
+     "crow_adult_el_02",
+     "crow_adult_el_03",
+     "crow_adult_el_04",
+     "crow_adult_el_05",
+     "crow_adult_el_06",
+     "crow_adult_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "crow_adult_hit_00",
+     "crow_adult_hit_01",
+     "crow_adult_hit_02",
+     "crow_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "crow_adult_walk_00",
+     "crow_adult_walk_01",
+     "crow_adult_walk_02",
+     "crow_adult_walk_03",
+     "crow_adult_walk_04",
+     "crow_adult_walk_05",
+     "crow_adult_walk_06",
+     "crow_adult_walk_07"
+    ],
+    "durs": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "crow_adult_walk_00",
+     "crow_adult_walk_01",
+     "crow_adult_walk_02",
+     "crow_adult_walk_03",
+     "crow_adult_walk_04",
+     "crow_adult_walk_05",
+     "crow_adult_walk_06",
+     "crow_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
+}

@@ -1,0 +1,846 @@
+{
+ "note": "rooster 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "rooster_spirit",
+ "sheet": "dot-m-rooster_spirit",
+ "file": "assets/dotm/rooster_spirit.png",
+ "frameW": 134,
+ "frameH": 150,
+ "foot": 147,
+ "cols": 1,
+ "anchorX": 67,
+ "palette": [
+  "#140202",
+  "#291a1f",
+  "#5a2517",
+  "#8b4b2a",
+  "#951b20",
+  "#a75f26",
+  "#c16b21",
+  "#c58537",
+  "#cb2d27",
+  "#e1952d",
+  "#e2703e",
+  "#e6b961",
+  "#e85518",
+  "#fdb235",
+  "#fdcf50",
+  "#fdf1a4"
+ ],
+ "rects": {
+  "rooster_myth_a1_00": [
+   1656,
+   148,
+   101,
+   106,
+   -51,
+   -106
+  ],
+  "rooster_myth_a1_01": [
+   918,
+   263,
+   105,
+   104,
+   -53,
+   -104
+  ],
+  "rooster_myth_a1_02": [
+   1024,
+   0,
+   117,
+   129,
+   -53,
+   -129
+  ],
+  "rooster_myth_a1_03": [
+   1353,
+   0,
+   112,
+   120,
+   -50,
+   -120
+  ],
+  "rooster_myth_a1_04": [
+   0,
+   0,
+   108,
+   147,
+   -51,
+   -147
+  ],
+  "rooster_myth_a1_05": [
+   1231,
+   148,
+   107,
+   107,
+   -55,
+   -107
+  ],
+  "rooster_myth_a1_06": [
+   1339,
+   148,
+   108,
+   107,
+   -56,
+   -107
+  ],
+  "rooster_myth_a1_07": [
+   1758,
+   148,
+   104,
+   106,
+   -53,
+   -106
+  ],
+  "rooster_myth_a2_00": [
+   1447,
+   263,
+   104,
+   103,
+   -54,
+   -103
+  ],
+  "rooster_myth_a2_01": [
+   1024,
+   263,
+   117,
+   104,
+   -59,
+   -104
+  ],
+  "rooster_myth_a2_02": [
+   439,
+   0,
+   129,
+   142,
+   -65,
+   -144
+  ],
+  "rooster_myth_a2_03": [
+   569,
+   0,
+   132,
+   140,
+   -67,
+   -147
+  ],
+  "rooster_myth_a2_04": [
+   115,
+   148,
+   128,
+   113,
+   -63,
+   -121
+  ],
+  "rooster_myth_a2_05": [
+   1893,
+   0,
+   125,
+   114,
+   -61,
+   -121
+  ],
+  "rooster_myth_a2_06": [
+   467,
+   148,
+   119,
+   112,
+   -57,
+   -114
+  ],
+  "rooster_myth_a2_07": [
+   908,
+   148,
+   115,
+   108,
+   -59,
+   -108
+  ],
+  "rooster_myth_down_00": [
+   1142,
+   263,
+   103,
+   104,
+   -50,
+   -104
+  ],
+  "rooster_myth_down_01": [
+   1552,
+   263,
+   104,
+   103,
+   -49,
+   -103
+  ],
+  "rooster_myth_down_02": [
+   191,
+   370,
+   91,
+   100,
+   -48,
+   -100
+  ],
+  "rooster_myth_down_03": [
+   0,
+   370,
+   88,
+   101,
+   -50,
+   -101
+  ],
+  "rooster_myth_down_04": [
+   483,
+   370,
+   86,
+   95,
+   -45,
+   -95
+  ],
+  "rooster_myth_down_05": [
+   570,
+   370,
+   108,
+   83,
+   -52,
+   -82
+  ],
+  "rooster_myth_down_06": [
+   679,
+   370,
+   127,
+   75,
+   -60,
+   -74
+  ],
+  "rooster_myth_el_00": [
+   1863,
+   148,
+   101,
+   106,
+   -51,
+   -106
+  ],
+  "rooster_myth_el_01": [
+   694,
+   148,
+   108,
+   110,
+   -57,
+   -110
+  ],
+  "rooster_myth_el_02": [
+   702,
+   0,
+   108,
+   136,
+   -58,
+   -136
+  ],
+  "rooster_myth_el_03": [
+   329,
+   0,
+   109,
+   144,
+   -59,
+   -144
+  ],
+  "rooster_myth_el_04": [
+   587,
+   148,
+   106,
+   111,
+   -56,
+   -111
+  ],
+  "rooster_myth_el_05": [
+   803,
+   148,
+   104,
+   109,
+   -53,
+   -109
+  ],
+  "rooster_myth_el_06": [
+   1024,
+   148,
+   102,
+   108,
+   -52,
+   -108
+  ],
+  "rooster_myth_el_07": [
+   0,
+   263,
+   99,
+   106,
+   -49,
+   -106
+  ],
+  "rooster_myth_hit_00": [
+   222,
+   0,
+   106,
+   146,
+   -51,
+   -145
+  ],
+  "rooster_myth_hit_01": [
+   1466,
+   0,
+   105,
+   120,
+   -52,
+   -119
+  ],
+  "rooster_myth_hit_02": [
+   1657,
+   263,
+   104,
+   102,
+   -54,
+   -101
+  ],
+  "rooster_myth_hit_03": [
+   1762,
+   263,
+   106,
+   102,
+   -57,
+   -101
+  ],
+  "rooster_myth_idle_00": [
+   1448,
+   148,
+   104,
+   107,
+   -54,
+   -107
+  ],
+  "rooster_myth_idle_01": [
+   1127,
+   148,
+   103,
+   108,
+   -53,
+   -108
+  ],
+  "rooster_myth_idle_02": [
+   100,
+   263,
+   104,
+   106,
+   -53,
+   -106
+  ],
+  "rooster_myth_idle_03": [
+   205,
+   263,
+   100,
+   106,
+   -50,
+   -106
+  ],
+  "rooster_myth_ult_00": [
+   1869,
+   263,
+   100,
+   102,
+   -50,
+   -102
+  ],
+  "rooster_myth_ult_01": [
+   283,
+   370,
+   99,
+   99,
+   -50,
+   -99
+  ],
+  "rooster_myth_ult_02": [
+   1553,
+   148,
+   102,
+   107,
+   -54,
+   -107
+  ],
+  "rooster_myth_ult_03": [
+   244,
+   148,
+   119,
+   113,
+   -61,
+   -124
+  ],
+  "rooster_myth_ult_04": [
+   0,
+   148,
+   114,
+   114,
+   -58,
+   -128
+  ],
+  "rooster_myth_ult_05": [
+   1675,
+   0,
+   113,
+   115,
+   -58,
+   -134
+  ],
+  "rooster_myth_ult_06": [
+   1142,
+   0,
+   109,
+   127,
+   -52,
+   -143
+  ],
+  "rooster_myth_ult_07": [
+   109,
+   0,
+   112,
+   147,
+   -54,
+   -148
+  ],
+  "rooster_myth_ult_08": [
+   916,
+   0,
+   107,
+   131,
+   -51,
+   -131
+  ],
+  "rooster_myth_ult_09": [
+   811,
+   0,
+   104,
+   133,
+   -49,
+   -133
+  ],
+  "rooster_myth_ult_10": [
+   1789,
+   0,
+   103,
+   115,
+   -48,
+   -115
+  ],
+  "rooster_myth_ult_11": [
+   364,
+   148,
+   102,
+   113,
+   -47,
+   -113
+  ],
+  "rooster_myth_ult_12": [
+   1572,
+   0,
+   102,
+   118,
+   -47,
+   -118
+  ],
+  "rooster_myth_ult_13": [
+   509,
+   263,
+   102,
+   105,
+   -47,
+   -105
+  ],
+  "rooster_myth_ult_14": [
+   1246,
+   263,
+   103,
+   104,
+   -48,
+   -104
+  ],
+  "rooster_myth_ult_15": [
+   1350,
+   263,
+   96,
+   104,
+   -47,
+   -104
+  ],
+  "rooster_myth_walk_00": [
+   612,
+   263,
+   101,
+   105,
+   -51,
+   -105
+  ],
+  "rooster_myth_walk_01": [
+   714,
+   263,
+   102,
+   105,
+   -54,
+   -106
+  ],
+  "rooster_myth_walk_02": [
+   306,
+   263,
+   101,
+   106,
+   -53,
+   -108
+  ],
+  "rooster_myth_walk_03": [
+   1252,
+   0,
+   100,
+   127,
+   -52,
+   -136
+  ],
+  "rooster_myth_walk_04": [
+   383,
+   370,
+   99,
+   97,
+   -51,
+   -108
+  ],
+  "rooster_myth_walk_05": [
+   89,
+   370,
+   101,
+   101,
+   -53,
+   -108
+  ],
+  "rooster_myth_walk_06": [
+   817,
+   263,
+   100,
+   105,
+   -51,
+   -106
+  ],
+  "rooster_myth_walk_07": [
+   408,
+   263,
+   100,
+   106,
+   -50,
+   -106
+  ]
+ },
+ "frames": [
+  "rooster_myth_a1_00",
+  "rooster_myth_a1_01",
+  "rooster_myth_a1_02",
+  "rooster_myth_a1_03",
+  "rooster_myth_a1_04",
+  "rooster_myth_a1_05",
+  "rooster_myth_a1_06",
+  "rooster_myth_a1_07",
+  "rooster_myth_a2_00",
+  "rooster_myth_a2_01",
+  "rooster_myth_a2_02",
+  "rooster_myth_a2_03",
+  "rooster_myth_a2_04",
+  "rooster_myth_a2_05",
+  "rooster_myth_a2_06",
+  "rooster_myth_a2_07",
+  "rooster_myth_down_00",
+  "rooster_myth_down_01",
+  "rooster_myth_down_02",
+  "rooster_myth_down_03",
+  "rooster_myth_down_04",
+  "rooster_myth_down_05",
+  "rooster_myth_down_06",
+  "rooster_myth_el_00",
+  "rooster_myth_el_01",
+  "rooster_myth_el_02",
+  "rooster_myth_el_03",
+  "rooster_myth_el_04",
+  "rooster_myth_el_05",
+  "rooster_myth_el_06",
+  "rooster_myth_el_07",
+  "rooster_myth_hit_00",
+  "rooster_myth_hit_01",
+  "rooster_myth_hit_02",
+  "rooster_myth_hit_03",
+  "rooster_myth_idle_00",
+  "rooster_myth_idle_01",
+  "rooster_myth_idle_02",
+  "rooster_myth_idle_03",
+  "rooster_myth_ult_00",
+  "rooster_myth_ult_01",
+  "rooster_myth_ult_02",
+  "rooster_myth_ult_03",
+  "rooster_myth_ult_04",
+  "rooster_myth_ult_05",
+  "rooster_myth_ult_06",
+  "rooster_myth_ult_07",
+  "rooster_myth_ult_08",
+  "rooster_myth_ult_09",
+  "rooster_myth_ult_10",
+  "rooster_myth_ult_11",
+  "rooster_myth_ult_12",
+  "rooster_myth_ult_13",
+  "rooster_myth_ult_14",
+  "rooster_myth_ult_15",
+  "rooster_myth_walk_00",
+  "rooster_myth_walk_01",
+  "rooster_myth_walk_02",
+  "rooster_myth_walk_03",
+  "rooster_myth_walk_04",
+  "rooster_myth_walk_05",
+  "rooster_myth_walk_06",
+  "rooster_myth_walk_07"
+ ],
+ "standing": [
+  "rooster_myth_idle_00",
+  "rooster_myth_idle_01",
+  "rooster_myth_idle_02",
+  "rooster_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 40,
+   "attack": {
+    "frames": [
+     "rooster_myth_a1_00",
+     "rooster_myth_a1_01",
+     "rooster_myth_a1_02",
+     "rooster_myth_a1_03",
+     "rooster_myth_a1_04",
+     "rooster_myth_a1_05",
+     "rooster_myth_a1_06",
+     "rooster_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "rooster_myth_a2_00",
+     "rooster_myth_a2_01",
+     "rooster_myth_a2_02",
+     "rooster_myth_a2_03",
+     "rooster_myth_a2_04",
+     "rooster_myth_a2_05",
+     "rooster_myth_a2_06",
+     "rooster_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "rooster_myth_down_00",
+     "rooster_myth_down_01",
+     "rooster_myth_down_02",
+     "rooster_myth_down_03",
+     "rooster_myth_down_04",
+     "rooster_myth_down_05",
+     "rooster_myth_down_06"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "rooster_myth_el_00",
+     "rooster_myth_el_01",
+     "rooster_myth_el_02",
+     "rooster_myth_el_03",
+     "rooster_myth_el_04",
+     "rooster_myth_el_05",
+     "rooster_myth_el_06",
+     "rooster_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.08,
+      "cast"
+     ],
+     [
+      0.09,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "rooster_myth_hit_00",
+     "rooster_myth_hit_01",
+     "rooster_myth_hit_02",
+     "rooster_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "rooster_myth_idle_00",
+     "rooster_myth_idle_01",
+     "rooster_myth_idle_02",
+     "rooster_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "rooster_myth_ult_00",
+     "rooster_myth_ult_01",
+     "rooster_myth_ult_02",
+     "rooster_myth_ult_03",
+     "rooster_myth_ult_04",
+     "rooster_myth_ult_05",
+     "rooster_myth_ult_06",
+     "rooster_myth_ult_07",
+     "rooster_myth_ult_08",
+     "rooster_myth_ult_09",
+     "rooster_myth_ult_10",
+     "rooster_myth_ult_11",
+     "rooster_myth_ult_12",
+     "rooster_myth_ult_13",
+     "rooster_myth_ult_14",
+     "rooster_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.22,
+      "cast"
+     ],
+     [
+      0.23,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "rooster_myth_walk_00",
+     "rooster_myth_walk_01",
+     "rooster_myth_walk_02",
+     "rooster_myth_walk_03",
+     "rooster_myth_walk_04",
+     "rooster_myth_walk_05",
+     "rooster_myth_walk_06",
+     "rooster_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

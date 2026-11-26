@@ -1,0 +1,846 @@
+{
+ "note": "bighorn 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "bighorn_spirit",
+ "sheet": "dot-m-bighorn_spirit",
+ "file": "assets/dotm/bighorn_spirit.png",
+ "frameW": 135,
+ "frameH": 157,
+ "foot": 153,
+ "cols": 1,
+ "anchorX": 68,
+ "palette": [
+  "#1e0309",
+  "#291a1f",
+  "#4e2014",
+  "#6b3517",
+  "#894c30",
+  "#92521d",
+  "#ac6b2e",
+  "#bf7e2b",
+  "#d3ab89",
+  "#d79c46",
+  "#ecaa2c",
+  "#edb53e",
+  "#f3e0c4",
+  "#f8c44c",
+  "#fddc5e",
+  "#fdf8e8"
+ ],
+ "rects": {
+  "bighorn_myth_a1_00": [
+   0,
+   264,
+   89,
+   105,
+   -48,
+   -105
+  ],
+  "bighorn_myth_a1_01": [
+   1251,
+   264,
+   83,
+   103,
+   -50,
+   -103
+  ],
+  "bighorn_myth_a1_02": [
+   1710,
+   264,
+   88,
+   100,
+   -52,
+   -100
+  ],
+  "bighorn_myth_a1_03": [
+   1895,
+   264,
+   91,
+   97,
+   -53,
+   -97
+  ],
+  "bighorn_myth_a1_04": [
+   1799,
+   264,
+   95,
+   99,
+   -55,
+   -99
+  ],
+  "bighorn_myth_a1_05": [
+   1335,
+   264,
+   91,
+   103,
+   -53,
+   -103
+  ],
+  "bighorn_myth_a1_06": [
+   90,
+   264,
+   91,
+   105,
+   -50,
+   -105
+  ],
+  "bighorn_myth_a1_07": [
+   592,
+   155,
+   90,
+   107,
+   -47,
+   -107
+  ],
+  "bighorn_myth_a2_00": [
+   1427,
+   264,
+   91,
+   103,
+   -47,
+   -103
+  ],
+  "bighorn_myth_a2_01": [
+   0,
+   155,
+   87,
+   108,
+   -48,
+   -108
+  ],
+  "bighorn_myth_a2_02": [
+   1441,
+   0,
+   86,
+   112,
+   -47,
+   -118
+  ],
+  "bighorn_myth_a2_03": [
+   924,
+   0,
+   95,
+   118,
+   -53,
+   -136
+  ],
+  "bighorn_myth_a2_04": [
+   1020,
+   0,
+   106,
+   117,
+   -60,
+   -128
+  ],
+  "bighorn_myth_a2_05": [
+   88,
+   155,
+   113,
+   108,
+   -67,
+   -108
+  ],
+  "bighorn_myth_a2_06": [
+   182,
+   264,
+   108,
+   105,
+   -67,
+   -105
+  ],
+  "bighorn_myth_a2_07": [
+   202,
+   155,
+   98,
+   108,
+   -58,
+   -108
+  ],
+  "bighorn_myth_down_00": [
+   0,
+   0,
+   93,
+   154,
+   -48,
+   -154
+  ],
+  "bighorn_myth_down_01": [
+   1617,
+   264,
+   92,
+   102,
+   -49,
+   -102
+  ],
+  "bighorn_myth_down_02": [
+   94,
+   0,
+   95,
+   154,
+   -53,
+   -154
+  ],
+  "bighorn_myth_down_03": [
+   403,
+   0,
+   85,
+   137,
+   -55,
+   -137
+  ],
+  "bighorn_myth_down_04": [
+   306,
+   0,
+   96,
+   142,
+   -61,
+   -142
+  ],
+  "bighorn_myth_down_05": [
+   190,
+   0,
+   115,
+   153,
+   -68,
+   -154
+  ],
+  "bighorn_myth_down_06": [
+   0,
+   370,
+   129,
+   57,
+   -62,
+   -55
+  ],
+  "bighorn_myth_el_00": [
+   677,
+   264,
+   94,
+   104,
+   -48,
+   -104
+  ],
+  "bighorn_myth_el_01": [
+   1519,
+   264,
+   97,
+   103,
+   -52,
+   -103
+  ],
+  "bighorn_myth_el_02": [
+   1726,
+   0,
+   93,
+   109,
+   -52,
+   -109
+  ],
+  "bighorn_myth_el_03": [
+   1820,
+   0,
+   98,
+   109,
+   -51,
+   -109
+  ],
+  "bighorn_myth_el_04": [
+   1919,
+   0,
+   98,
+   109,
+   -57,
+   -109
+  ],
+  "bighorn_myth_el_05": [
+   301,
+   155,
+   100,
+   108,
+   -58,
+   -108
+  ],
+  "bighorn_myth_el_06": [
+   683,
+   155,
+   104,
+   107,
+   -58,
+   -107
+  ],
+  "bighorn_myth_el_07": [
+   291,
+   264,
+   99,
+   105,
+   -53,
+   -105
+  ],
+  "bighorn_myth_hit_00": [
+   1454,
+   155,
+   92,
+   106,
+   -46,
+   -107
+  ],
+  "bighorn_myth_hit_01": [
+   1127,
+   0,
+   93,
+   117,
+   -51,
+   -124
+  ],
+  "bighorn_myth_hit_02": [
+   832,
+   0,
+   91,
+   122,
+   -53,
+   -121
+  ],
+  "bighorn_myth_hit_03": [
+   1528,
+   0,
+   91,
+   110,
+   -55,
+   -109
+  ],
+  "bighorn_myth_idle_00": [
+   391,
+   264,
+   92,
+   105,
+   -47,
+   -105
+  ],
+  "bighorn_myth_idle_01": [
+   772,
+   264,
+   94,
+   104,
+   -49,
+   -104
+  ],
+  "bighorn_myth_idle_02": [
+   1547,
+   155,
+   93,
+   106,
+   -48,
+   -106
+  ],
+  "bighorn_myth_idle_03": [
+   1641,
+   155,
+   92,
+   106,
+   -46,
+   -106
+  ],
+  "bighorn_myth_ult_00": [
+   788,
+   155,
+   92,
+   107,
+   -47,
+   -107
+  ],
+  "bighorn_myth_ult_01": [
+   881,
+   155,
+   91,
+   107,
+   -49,
+   -107
+  ],
+  "bighorn_myth_ult_02": [
+   973,
+   155,
+   93,
+   107,
+   -51,
+   -107
+  ],
+  "bighorn_myth_ult_03": [
+   1067,
+   155,
+   94,
+   107,
+   -52,
+   -107
+  ],
+  "bighorn_myth_ult_04": [
+   1162,
+   155,
+   94,
+   107,
+   -52,
+   -107
+  ],
+  "bighorn_myth_ult_05": [
+   1221,
+   0,
+   98,
+   115,
+   -52,
+   -115
+  ],
+  "bighorn_myth_ult_06": [
+   489,
+   0,
+   96,
+   137,
+   -49,
+   -137
+  ],
+  "bighorn_myth_ult_07": [
+   867,
+   264,
+   92,
+   104,
+   -45,
+   -104
+  ],
+  "bighorn_myth_ult_08": [
+   960,
+   264,
+   95,
+   104,
+   -48,
+   -104
+  ],
+  "bighorn_myth_ult_09": [
+   1056,
+   264,
+   96,
+   104,
+   -49,
+   -104
+  ],
+  "bighorn_myth_ult_10": [
+   1153,
+   264,
+   97,
+   104,
+   -51,
+   -104
+  ],
+  "bighorn_myth_ult_11": [
+   484,
+   264,
+   91,
+   105,
+   -53,
+   -105
+  ],
+  "bighorn_myth_ult_12": [
+   1620,
+   0,
+   105,
+   110,
+   -57,
+   -110
+  ],
+  "bighorn_myth_ult_13": [
+   586,
+   0,
+   126,
+   128,
+   -67,
+   -131
+  ],
+  "bighorn_myth_ult_14": [
+   713,
+   0,
+   118,
+   124,
+   -63,
+   -126
+  ],
+  "bighorn_myth_ult_15": [
+   1320,
+   0,
+   120,
+   114,
+   -67,
+   -116
+  ],
+  "bighorn_myth_walk_00": [
+   1734,
+   155,
+   94,
+   106,
+   -47,
+   -106
+  ],
+  "bighorn_myth_walk_01": [
+   1257,
+   155,
+   96,
+   107,
+   -48,
+   -108
+  ],
+  "bighorn_myth_walk_02": [
+   1354,
+   155,
+   99,
+   107,
+   -50,
+   -108
+  ],
+  "bighorn_myth_walk_03": [
+   576,
+   264,
+   100,
+   105,
+   -51,
+   -105
+  ],
+  "bighorn_myth_walk_04": [
+   1829,
+   155,
+   98,
+   106,
+   -50,
+   -106
+  ],
+  "bighorn_myth_walk_05": [
+   402,
+   155,
+   95,
+   108,
+   -48,
+   -108
+  ],
+  "bighorn_myth_walk_06": [
+   498,
+   155,
+   93,
+   108,
+   -46,
+   -108
+  ],
+  "bighorn_myth_walk_07": [
+   1928,
+   155,
+   92,
+   106,
+   -46,
+   -106
+  ]
+ },
+ "frames": [
+  "bighorn_myth_a1_00",
+  "bighorn_myth_a1_01",
+  "bighorn_myth_a1_02",
+  "bighorn_myth_a1_03",
+  "bighorn_myth_a1_04",
+  "bighorn_myth_a1_05",
+  "bighorn_myth_a1_06",
+  "bighorn_myth_a1_07",
+  "bighorn_myth_a2_00",
+  "bighorn_myth_a2_01",
+  "bighorn_myth_a2_02",
+  "bighorn_myth_a2_03",
+  "bighorn_myth_a2_04",
+  "bighorn_myth_a2_05",
+  "bighorn_myth_a2_06",
+  "bighorn_myth_a2_07",
+  "bighorn_myth_down_00",
+  "bighorn_myth_down_01",
+  "bighorn_myth_down_02",
+  "bighorn_myth_down_03",
+  "bighorn_myth_down_04",
+  "bighorn_myth_down_05",
+  "bighorn_myth_down_06",
+  "bighorn_myth_el_00",
+  "bighorn_myth_el_01",
+  "bighorn_myth_el_02",
+  "bighorn_myth_el_03",
+  "bighorn_myth_el_04",
+  "bighorn_myth_el_05",
+  "bighorn_myth_el_06",
+  "bighorn_myth_el_07",
+  "bighorn_myth_hit_00",
+  "bighorn_myth_hit_01",
+  "bighorn_myth_hit_02",
+  "bighorn_myth_hit_03",
+  "bighorn_myth_idle_00",
+  "bighorn_myth_idle_01",
+  "bighorn_myth_idle_02",
+  "bighorn_myth_idle_03",
+  "bighorn_myth_ult_00",
+  "bighorn_myth_ult_01",
+  "bighorn_myth_ult_02",
+  "bighorn_myth_ult_03",
+  "bighorn_myth_ult_04",
+  "bighorn_myth_ult_05",
+  "bighorn_myth_ult_06",
+  "bighorn_myth_ult_07",
+  "bighorn_myth_ult_08",
+  "bighorn_myth_ult_09",
+  "bighorn_myth_ult_10",
+  "bighorn_myth_ult_11",
+  "bighorn_myth_ult_12",
+  "bighorn_myth_ult_13",
+  "bighorn_myth_ult_14",
+  "bighorn_myth_ult_15",
+  "bighorn_myth_walk_00",
+  "bighorn_myth_walk_01",
+  "bighorn_myth_walk_02",
+  "bighorn_myth_walk_03",
+  "bighorn_myth_walk_04",
+  "bighorn_myth_walk_05",
+  "bighorn_myth_walk_06",
+  "bighorn_myth_walk_07"
+ ],
+ "standing": [
+  "bighorn_myth_idle_00",
+  "bighorn_myth_idle_01",
+  "bighorn_myth_idle_02",
+  "bighorn_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 48,
+   "attack": {
+    "frames": [
+     "bighorn_myth_a1_00",
+     "bighorn_myth_a1_01",
+     "bighorn_myth_a1_02",
+     "bighorn_myth_a1_03",
+     "bighorn_myth_a1_04",
+     "bighorn_myth_a1_05",
+     "bighorn_myth_a1_06",
+     "bighorn_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "bighorn_myth_a2_00",
+     "bighorn_myth_a2_01",
+     "bighorn_myth_a2_02",
+     "bighorn_myth_a2_03",
+     "bighorn_myth_a2_04",
+     "bighorn_myth_a2_05",
+     "bighorn_myth_a2_06",
+     "bighorn_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.27,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "bighorn_myth_down_00",
+     "bighorn_myth_down_01",
+     "bighorn_myth_down_02",
+     "bighorn_myth_down_03",
+     "bighorn_myth_down_04",
+     "bighorn_myth_down_05",
+     "bighorn_myth_down_06"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "bighorn_myth_el_00",
+     "bighorn_myth_el_01",
+     "bighorn_myth_el_02",
+     "bighorn_myth_el_03",
+     "bighorn_myth_el_04",
+     "bighorn_myth_el_05",
+     "bighorn_myth_el_06",
+     "bighorn_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.22,
+      "cast"
+     ],
+     [
+      0.23,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "bighorn_myth_hit_00",
+     "bighorn_myth_hit_01",
+     "bighorn_myth_hit_02",
+     "bighorn_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "bighorn_myth_idle_00",
+     "bighorn_myth_idle_01",
+     "bighorn_myth_idle_02",
+     "bighorn_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "bighorn_myth_ult_00",
+     "bighorn_myth_ult_01",
+     "bighorn_myth_ult_02",
+     "bighorn_myth_ult_03",
+     "bighorn_myth_ult_04",
+     "bighorn_myth_ult_05",
+     "bighorn_myth_ult_06",
+     "bighorn_myth_ult_07",
+     "bighorn_myth_ult_08",
+     "bighorn_myth_ult_09",
+     "bighorn_myth_ult_10",
+     "bighorn_myth_ult_11",
+     "bighorn_myth_ult_12",
+     "bighorn_myth_ult_13",
+     "bighorn_myth_ult_14",
+     "bighorn_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 6,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.43,
+      "cast"
+     ],
+     [
+      0.44,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "bighorn_myth_walk_00",
+     "bighorn_myth_walk_01",
+     "bighorn_myth_walk_02",
+     "bighorn_myth_walk_03",
+     "bighorn_myth_walk_04",
+     "bighorn_myth_walk_05",
+     "bighorn_myth_walk_06",
+     "bighorn_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

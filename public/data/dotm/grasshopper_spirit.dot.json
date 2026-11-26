@@ -1,0 +1,857 @@
+{
+ "note": "grasshopper 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "grasshopper_spirit",
+ "sheet": "dot-m-grasshopper_spirit",
+ "file": "assets/dotm/grasshopper_spirit.png",
+ "frameW": 120,
+ "frameH": 150,
+ "foot": 147,
+ "cols": 1,
+ "anchorX": 57,
+ "palette": [
+  "#200509",
+  "#291a1f",
+  "#50240f",
+  "#512a2b",
+  "#623328",
+  "#72422f",
+  "#845437",
+  "#9f6736",
+  "#b07529",
+  "#c28940",
+  "#cea05b",
+  "#dda652",
+  "#e8b869",
+  "#f8d27c",
+  "#fbf4d4",
+  "#fde997"
+ ],
+ "rects": {
+  "grasshopper_myth_a1_00": [
+   382,
+   149,
+   86,
+   100,
+   -42,
+   -100
+  ],
+  "grasshopper_myth_a1_01": [
+   393,
+   251,
+   89,
+   96,
+   -43,
+   -96
+  ],
+  "grasshopper_myth_a1_02": [
+   1167,
+   251,
+   96,
+   94,
+   -46,
+   -94
+  ],
+  "grasshopper_myth_a1_03": [
+   972,
+   251,
+   105,
+   95,
+   -47,
+   -95
+  ],
+  "grasshopper_myth_a1_04": [
+   0,
+   251,
+   111,
+   97,
+   -48,
+   -97
+  ],
+  "grasshopper_myth_a1_05": [
+   1041,
+   149,
+   105,
+   99,
+   -50,
+   -99
+  ],
+  "grasshopper_myth_a1_06": [
+   1147,
+   149,
+   100,
+   99,
+   -51,
+   -99
+  ],
+  "grasshopper_myth_a1_07": [
+   469,
+   149,
+   97,
+   100,
+   -51,
+   -100
+  ],
+  "grasshopper_myth_a2_00": [
+   1248,
+   149,
+   96,
+   99,
+   -47,
+   -99
+  ],
+  "grasshopper_myth_a2_01": [
+   567,
+   149,
+   100,
+   100,
+   -50,
+   -100
+  ],
+  "grasshopper_myth_a2_02": [
+   1351,
+   251,
+   103,
+   91,
+   -52,
+   -99
+  ],
+  "grasshopper_myth_a2_03": [
+   1789,
+   251,
+   103,
+   84,
+   -52,
+   -98
+  ],
+  "grasshopper_myth_a2_04": [
+   1609,
+   251,
+   104,
+   89,
+   -51,
+   -98
+  ],
+  "grasshopper_myth_a2_05": [
+   483,
+   251,
+   106,
+   96,
+   -52,
+   -96
+  ],
+  "grasshopper_myth_a2_06": [
+   590,
+   251,
+   100,
+   96,
+   -50,
+   -96
+  ],
+  "grasshopper_myth_a2_07": [
+   1800,
+   149,
+   90,
+   98,
+   -44,
+   -98
+  ],
+  "grasshopper_myth_down_00": [
+   112,
+   251,
+   90,
+   97,
+   -45,
+   -97
+  ],
+  "grasshopper_myth_down_01": [
+   1078,
+   251,
+   88,
+   95,
+   -44,
+   -95
+  ],
+  "grasshopper_myth_down_02": [
+   1264,
+   251,
+   86,
+   92,
+   -44,
+   -92
+  ],
+  "grasshopper_myth_down_03": [
+   1455,
+   251,
+   80,
+   91,
+   -39,
+   -91
+  ],
+  "grasshopper_myth_down_04": [
+   1536,
+   251,
+   72,
+   90,
+   -32,
+   -90
+  ],
+  "grasshopper_myth_down_05": [
+   1714,
+   251,
+   74,
+   86,
+   -31,
+   -86
+  ],
+  "grasshopper_myth_down_06": [
+   1893,
+   251,
+   94,
+   69,
+   -39,
+   -71
+  ],
+  "grasshopper_myth_down_07": [
+   0,
+   349,
+   103,
+   52,
+   -44,
+   -53
+  ],
+  "grasshopper_myth_el_00": [
+   1345,
+   149,
+   94,
+   99,
+   -48,
+   -99
+  ],
+  "grasshopper_myth_el_01": [
+   1890,
+   0,
+   98,
+   101,
+   -51,
+   -101
+  ],
+  "grasshopper_myth_el_02": [
+   555,
+   0,
+   89,
+   119,
+   -46,
+   -119
+  ],
+  "grasshopper_myth_el_03": [
+   0,
+   0,
+   98,
+   148,
+   -41,
+   -148
+  ],
+  "grasshopper_myth_el_04": [
+   933,
+   0,
+   86,
+   112,
+   -44,
+   -112
+  ],
+  "grasshopper_myth_el_05": [
+   1120,
+   0,
+   96,
+   106,
+   -49,
+   -106
+  ],
+  "grasshopper_myth_el_06": [
+   0,
+   149,
+   101,
+   101,
+   -51,
+   -101
+  ],
+  "grasshopper_myth_el_07": [
+   1440,
+   149,
+   96,
+   99,
+   -49,
+   -99
+  ],
+  "grasshopper_myth_hit_00": [
+   1537,
+   149,
+   86,
+   99,
+   -43,
+   -99
+  ],
+  "grasshopper_myth_hit_01": [
+   102,
+   149,
+   91,
+   101,
+   -49,
+   -101
+  ],
+  "grasshopper_myth_hit_02": [
+   194,
+   149,
+   89,
+   101,
+   -48,
+   -105
+  ],
+  "grasshopper_myth_hit_03": [
+   1217,
+   0,
+   92,
+   106,
+   -50,
+   -107
+  ],
+  "grasshopper_myth_idle_00": [
+   691,
+   251,
+   88,
+   96,
+   -44,
+   -96
+  ],
+  "grasshopper_myth_idle_01": [
+   780,
+   251,
+   97,
+   96,
+   -46,
+   -96
+  ],
+  "grasshopper_myth_idle_02": [
+   203,
+   251,
+   89,
+   97,
+   -45,
+   -97
+  ],
+  "grasshopper_myth_idle_03": [
+   1624,
+   149,
+   87,
+   99,
+   -43,
+   -99
+  ],
+  "grasshopper_myth_ult_00": [
+   1608,
+   0,
+   87,
+   103,
+   -43,
+   -102
+  ],
+  "grasshopper_myth_ult_01": [
+   1696,
+   0,
+   93,
+   103,
+   -49,
+   -104
+  ],
+  "grasshopper_myth_ult_02": [
+   1410,
+   0,
+   97,
+   104,
+   -53,
+   -109
+  ],
+  "grasshopper_myth_ult_03": [
+   1790,
+   0,
+   99,
+   103,
+   -55,
+   -111
+  ],
+  "grasshopper_myth_ult_04": [
+   1508,
+   0,
+   99,
+   104,
+   -55,
+   -114
+  ],
+  "grasshopper_myth_ult_05": [
+   1310,
+   0,
+   99,
+   105,
+   -55,
+   -119
+  ],
+  "grasshopper_myth_ult_06": [
+   1020,
+   0,
+   99,
+   110,
+   -57,
+   -127
+  ],
+  "grasshopper_myth_ult_07": [
+   645,
+   0,
+   92,
+   119,
+   -55,
+   -139
+  ],
+  "grasshopper_myth_ult_08": [
+   286,
+   0,
+   88,
+   121,
+   -53,
+   -142
+  ],
+  "grasshopper_myth_ult_09": [
+   375,
+   0,
+   86,
+   121,
+   -52,
+   -143
+  ],
+  "grasshopper_myth_ult_10": [
+   198,
+   0,
+   87,
+   122,
+   -53,
+   -144
+  ],
+  "grasshopper_myth_ult_11": [
+   462,
+   0,
+   92,
+   121,
+   -56,
+   -142
+  ],
+  "grasshopper_myth_ult_12": [
+   738,
+   0,
+   95,
+   119,
+   -57,
+   -138
+  ],
+  "grasshopper_myth_ult_13": [
+   834,
+   0,
+   98,
+   114,
+   -57,
+   -131
+  ],
+  "grasshopper_myth_ult_14": [
+   668,
+   149,
+   99,
+   100,
+   -42,
+   -101
+  ],
+  "grasshopper_myth_ult_15": [
+   284,
+   149,
+   97,
+   101,
+   -37,
+   -100
+  ],
+  "grasshopper_myth_walk_00": [
+   768,
+   149,
+   90,
+   100,
+   -46,
+   -100
+  ],
+  "grasshopper_myth_walk_01": [
+   293,
+   251,
+   99,
+   97,
+   -48,
+   -99
+  ],
+  "grasshopper_myth_walk_02": [
+   99,
+   0,
+   98,
+   142,
+   -50,
+   -144
+  ],
+  "grasshopper_myth_walk_03": [
+   878,
+   251,
+   93,
+   96,
+   -51,
+   -96
+  ],
+  "grasshopper_myth_walk_04": [
+   1891,
+   149,
+   92,
+   98,
+   -50,
+   -98
+  ],
+  "grasshopper_myth_walk_05": [
+   859,
+   149,
+   91,
+   100,
+   -48,
+   -100
+  ],
+  "grasshopper_myth_walk_06": [
+   951,
+   149,
+   89,
+   100,
+   -45,
+   -100
+  ],
+  "grasshopper_myth_walk_07": [
+   1712,
+   149,
+   87,
+   99,
+   -43,
+   -99
+  ]
+ },
+ "frames": [
+  "grasshopper_myth_a1_00",
+  "grasshopper_myth_a1_01",
+  "grasshopper_myth_a1_02",
+  "grasshopper_myth_a1_03",
+  "grasshopper_myth_a1_04",
+  "grasshopper_myth_a1_05",
+  "grasshopper_myth_a1_06",
+  "grasshopper_myth_a1_07",
+  "grasshopper_myth_a2_00",
+  "grasshopper_myth_a2_01",
+  "grasshopper_myth_a2_02",
+  "grasshopper_myth_a2_03",
+  "grasshopper_myth_a2_04",
+  "grasshopper_myth_a2_05",
+  "grasshopper_myth_a2_06",
+  "grasshopper_myth_a2_07",
+  "grasshopper_myth_down_00",
+  "grasshopper_myth_down_01",
+  "grasshopper_myth_down_02",
+  "grasshopper_myth_down_03",
+  "grasshopper_myth_down_04",
+  "grasshopper_myth_down_05",
+  "grasshopper_myth_down_06",
+  "grasshopper_myth_down_07",
+  "grasshopper_myth_el_00",
+  "grasshopper_myth_el_01",
+  "grasshopper_myth_el_02",
+  "grasshopper_myth_el_03",
+  "grasshopper_myth_el_04",
+  "grasshopper_myth_el_05",
+  "grasshopper_myth_el_06",
+  "grasshopper_myth_el_07",
+  "grasshopper_myth_hit_00",
+  "grasshopper_myth_hit_01",
+  "grasshopper_myth_hit_02",
+  "grasshopper_myth_hit_03",
+  "grasshopper_myth_idle_00",
+  "grasshopper_myth_idle_01",
+  "grasshopper_myth_idle_02",
+  "grasshopper_myth_idle_03",
+  "grasshopper_myth_ult_00",
+  "grasshopper_myth_ult_01",
+  "grasshopper_myth_ult_02",
+  "grasshopper_myth_ult_03",
+  "grasshopper_myth_ult_04",
+  "grasshopper_myth_ult_05",
+  "grasshopper_myth_ult_06",
+  "grasshopper_myth_ult_07",
+  "grasshopper_myth_ult_08",
+  "grasshopper_myth_ult_09",
+  "grasshopper_myth_ult_10",
+  "grasshopper_myth_ult_11",
+  "grasshopper_myth_ult_12",
+  "grasshopper_myth_ult_13",
+  "grasshopper_myth_ult_14",
+  "grasshopper_myth_ult_15",
+  "grasshopper_myth_walk_00",
+  "grasshopper_myth_walk_01",
+  "grasshopper_myth_walk_02",
+  "grasshopper_myth_walk_03",
+  "grasshopper_myth_walk_04",
+  "grasshopper_myth_walk_05",
+  "grasshopper_myth_walk_06",
+  "grasshopper_myth_walk_07"
+ ],
+ "standing": [
+  "grasshopper_myth_idle_00",
+  "grasshopper_myth_idle_01",
+  "grasshopper_myth_idle_02",
+  "grasshopper_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 49,
+   "attack": {
+    "frames": [
+     "grasshopper_myth_a1_00",
+     "grasshopper_myth_a1_01",
+     "grasshopper_myth_a1_02",
+     "grasshopper_myth_a1_03",
+     "grasshopper_myth_a1_04",
+     "grasshopper_myth_a1_05",
+     "grasshopper_myth_a1_06",
+     "grasshopper_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.27,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "grasshopper_myth_a2_00",
+     "grasshopper_myth_a2_01",
+     "grasshopper_myth_a2_02",
+     "grasshopper_myth_a2_03",
+     "grasshopper_myth_a2_04",
+     "grasshopper_myth_a2_05",
+     "grasshopper_myth_a2_06",
+     "grasshopper_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.335,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "grasshopper_myth_down_00",
+     "grasshopper_myth_down_01",
+     "grasshopper_myth_down_02",
+     "grasshopper_myth_down_03",
+     "grasshopper_myth_down_04",
+     "grasshopper_myth_down_05",
+     "grasshopper_myth_down_06",
+     "grasshopper_myth_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "grasshopper_myth_el_00",
+     "grasshopper_myth_el_01",
+     "grasshopper_myth_el_02",
+     "grasshopper_myth_el_03",
+     "grasshopper_myth_el_04",
+     "grasshopper_myth_el_05",
+     "grasshopper_myth_el_06",
+     "grasshopper_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.22,
+      "cast"
+     ],
+     [
+      0.23,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "grasshopper_myth_hit_00",
+     "grasshopper_myth_hit_01",
+     "grasshopper_myth_hit_02",
+     "grasshopper_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "grasshopper_myth_idle_00",
+     "grasshopper_myth_idle_01",
+     "grasshopper_myth_idle_02",
+     "grasshopper_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "grasshopper_myth_ult_00",
+     "grasshopper_myth_ult_01",
+     "grasshopper_myth_ult_02",
+     "grasshopper_myth_ult_03",
+     "grasshopper_myth_ult_04",
+     "grasshopper_myth_ult_05",
+     "grasshopper_myth_ult_06",
+     "grasshopper_myth_ult_07",
+     "grasshopper_myth_ult_08",
+     "grasshopper_myth_ult_09",
+     "grasshopper_myth_ult_10",
+     "grasshopper_myth_ult_11",
+     "grasshopper_myth_ult_12",
+     "grasshopper_myth_ult_13",
+     "grasshopper_myth_ult_14",
+     "grasshopper_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "grasshopper_myth_walk_00",
+     "grasshopper_myth_walk_01",
+     "grasshopper_myth_walk_02",
+     "grasshopper_myth_walk_03",
+     "grasshopper_myth_walk_04",
+     "grasshopper_myth_walk_05",
+     "grasshopper_myth_walk_06",
+     "grasshopper_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

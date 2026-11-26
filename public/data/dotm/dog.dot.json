@@ -1,0 +1,1489 @@
+{
+ "note": "dog 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "dog",
+ "sheet": "dot-m-dog",
+ "file": "assets/dotm/dog.png",
+ "frameW": 114,
+ "frameH": 110,
+ "foot": 107,
+ "cols": 1,
+ "anchorX": 56,
+ "palette": [
+  "#150408",
+  "#291a1f",
+  "#5d2d1f",
+  "#7f432b",
+  "#9d5734",
+  "#9f6c53",
+  "#ba6b3c",
+  "#c98358",
+  "#d8a888",
+  "#dcb79f",
+  "#eb9f60",
+  "#f6a35e",
+  "#f6b87d",
+  "#f79d4f",
+  "#fde5c3",
+  "#feedd4"
+ ],
+ "rects": {
+  "dog_baby_a1_00": [
+   110,
+   323,
+   53,
+   44,
+   -24,
+   -44
+  ],
+  "dog_baby_a1_01": [
+   947,
+   263,
+   55,
+   49,
+   -28,
+   -49
+  ],
+  "dog_baby_a1_02": [
+   640,
+   263,
+   57,
+   53,
+   -30,
+   -57
+  ],
+  "dog_baby_a1_03": [
+   776,
+   263,
+   56,
+   52,
+   -29,
+   -59
+  ],
+  "dog_baby_a1_04": [
+   1114,
+   263,
+   54,
+   48,
+   -24,
+   -48
+  ],
+  "dog_baby_a1_05": [
+   249,
+   323,
+   55,
+   43,
+   -24,
+   -43
+  ],
+  "dog_baby_a1_06": [
+   1889,
+   263,
+   55,
+   45,
+   -25,
+   -45
+  ],
+  "dog_baby_a1_07": [
+   1445,
+   263,
+   56,
+   47,
+   -29,
+   -47
+  ],
+  "dog_baby_down_00": [
+   1945,
+   263,
+   56,
+   45,
+   -26,
+   -45
+  ],
+  "dog_baby_down_01": [
+   305,
+   323,
+   56,
+   43,
+   -25,
+   -43
+  ],
+  "dog_baby_down_02": [
+   453,
+   323,
+   57,
+   38,
+   -25,
+   -38
+  ],
+  "dog_baby_down_03": [
+   605,
+   323,
+   60,
+   33,
+   -27,
+   -33
+  ],
+  "dog_baby_hit_00": [
+   0,
+   323,
+   54,
+   45,
+   -26,
+   -45
+  ],
+  "dog_baby_hit_01": [
+   55,
+   323,
+   54,
+   45,
+   -27,
+   -45
+  ],
+  "dog_baby_hit_02": [
+   1502,
+   263,
+   56,
+   47,
+   -29,
+   -48
+  ],
+  "dog_baby_hit_03": [
+   1003,
+   263,
+   54,
+   49,
+   -28,
+   -49
+  ],
+  "dog_baby_idle_00": [
+   1559,
+   263,
+   54,
+   47,
+   -27,
+   -47
+  ],
+  "dog_baby_idle_01": [
+   1169,
+   263,
+   55,
+   48,
+   -29,
+   -49
+  ],
+  "dog_baby_idle_02": [
+   1058,
+   263,
+   55,
+   49,
+   -29,
+   -49
+  ],
+  "dog_baby_idle_03": [
+   1614,
+   263,
+   54,
+   47,
+   -27,
+   -47
+  ],
+  "dog_baby_walk_00": [
+   1669,
+   263,
+   54,
+   47,
+   -27,
+   -47
+  ],
+  "dog_baby_walk_01": [
+   1225,
+   263,
+   54,
+   48,
+   -27,
+   -48
+  ],
+  "dog_baby_walk_02": [
+   1280,
+   263,
+   54,
+   48,
+   -27,
+   -48
+  ],
+  "dog_baby_walk_03": [
+   1724,
+   263,
+   54,
+   47,
+   -27,
+   -47
+  ],
+  "dog_baby_walk_04": [
+   1779,
+   263,
+   54,
+   47,
+   -27,
+   -47
+  ],
+  "dog_baby_walk_05": [
+   1335,
+   263,
+   54,
+   48,
+   -27,
+   -48
+  ],
+  "dog_baby_walk_06": [
+   1390,
+   263,
+   54,
+   48,
+   -27,
+   -48
+  ],
+  "dog_baby_walk_07": [
+   1834,
+   263,
+   54,
+   47,
+   -27,
+   -47
+  ],
+  "dog_teen_a1_00": [
+   1698,
+   190,
+   69,
+   60,
+   -33,
+   -60
+  ],
+  "dog_teen_a1_01": [
+   1768,
+   190,
+   74,
+   60,
+   -36,
+   -60
+  ],
+  "dog_teen_a1_02": [
+   244,
+   190,
+   75,
+   66,
+   -37,
+   -70
+  ],
+  "dog_teen_a1_03": [
+   418,
+   190,
+   78,
+   65,
+   -42,
+   -72
+  ],
+  "dog_teen_a1_04": [
+   218,
+   263,
+   81,
+   58,
+   -42,
+   -67
+  ],
+  "dog_teen_a1_05": [
+   300,
+   263,
+   86,
+   57,
+   -44,
+   -57
+  ],
+  "dog_teen_a1_06": [
+   0,
+   263,
+   72,
+   59,
+   -34,
+   -59
+  ],
+  "dog_teen_a1_07": [
+   568,
+   190,
+   66,
+   62,
+   -31,
+   -62
+  ],
+  "dog_teen_a2_00": [
+   73,
+   263,
+   70,
+   59,
+   -35,
+   -59
+  ],
+  "dog_teen_a2_01": [
+   102,
+   190,
+   70,
+   68,
+   -38,
+   -68
+  ],
+  "dog_teen_a2_02": [
+   1261,
+   108,
+   70,
+   77,
+   -41,
+   -77
+  ],
+  "dog_teen_a2_03": [
+   1535,
+   0,
+   70,
+   81,
+   -42,
+   -81
+  ],
+  "dog_teen_a2_04": [
+   173,
+   190,
+   70,
+   67,
+   -37,
+   -67
+  ],
+  "dog_teen_a2_05": [
+   1843,
+   190,
+   71,
+   60,
+   -36,
+   -60
+  ],
+  "dog_teen_a2_06": [
+   1915,
+   190,
+   68,
+   60,
+   -33,
+   -60
+  ],
+  "dog_teen_a2_07": [
+   635,
+   190,
+   68,
+   62,
+   -34,
+   -62
+  ],
+  "dog_teen_down_00": [
+   1200,
+   190,
+   71,
+   61,
+   -35,
+   -61
+  ],
+  "dog_teen_down_01": [
+   144,
+   263,
+   73,
+   59,
+   -36,
+   -59
+  ],
+  "dog_teen_down_02": [
+   698,
+   263,
+   77,
+   53,
+   -36,
+   -53
+  ],
+  "dog_teen_down_03": [
+   164,
+   323,
+   84,
+   44,
+   -41,
+   -44
+  ],
+  "dog_teen_down_04": [
+   362,
+   323,
+   90,
+   39,
+   -45,
+   -39
+  ],
+  "dog_teen_down_05": [
+   511,
+   323,
+   93,
+   38,
+   -47,
+   -38
+  ],
+  "dog_teen_hit_00": [
+   499,
+   263,
+   68,
+   56,
+   -33,
+   -56
+  ],
+  "dog_teen_hit_01": [
+   568,
+   263,
+   71,
+   54,
+   -39,
+   -54
+  ],
+  "dog_teen_hit_02": [
+   497,
+   190,
+   70,
+   63,
+   -39,
+   -63
+  ],
+  "dog_teen_hit_03": [
+   1272,
+   190,
+   68,
+   61,
+   -33,
+   -61
+  ],
+  "dog_teen_idle_00": [
+   1341,
+   190,
+   70,
+   61,
+   -35,
+   -61
+  ],
+  "dog_teen_idle_01": [
+   1412,
+   190,
+   71,
+   61,
+   -36,
+   -61
+  ],
+  "dog_teen_idle_02": [
+   704,
+   190,
+   70,
+   62,
+   -35,
+   -62
+  ],
+  "dog_teen_idle_03": [
+   775,
+   190,
+   68,
+   62,
+   -34,
+   -62
+  ],
+  "dog_teen_walk_00": [
+   844,
+   190,
+   70,
+   62,
+   -36,
+   -62
+  ],
+  "dog_teen_walk_01": [
+   1484,
+   190,
+   70,
+   61,
+   -36,
+   -61
+  ],
+  "dog_teen_walk_02": [
+   1555,
+   190,
+   71,
+   61,
+   -37,
+   -61
+  ],
+  "dog_teen_walk_03": [
+   915,
+   190,
+   72,
+   62,
+   -38,
+   -62
+  ],
+  "dog_teen_walk_04": [
+   988,
+   190,
+   72,
+   62,
+   -37,
+   -62
+  ],
+  "dog_teen_walk_05": [
+   1627,
+   190,
+   70,
+   61,
+   -36,
+   -61
+  ],
+  "dog_teen_walk_06": [
+   1061,
+   190,
+   69,
+   62,
+   -35,
+   -62
+  ],
+  "dog_teen_walk_07": [
+   1131,
+   190,
+   68,
+   62,
+   -34,
+   -62
+  ],
+  "dog_adult_a1_00": [
+   1332,
+   108,
+   88,
+   77,
+   -42,
+   -77
+  ],
+  "dog_adult_a1_01": [
+   1180,
+   0,
+   88,
+   83,
+   -45,
+   -84
+  ],
+  "dog_adult_a1_02": [
+   635,
+   0,
+   92,
+   94,
+   -51,
+   -95
+  ],
+  "dog_adult_a1_03": [
+   536,
+   0,
+   98,
+   97,
+   -54,
+   -98
+  ],
+  "dog_adult_a1_04": [
+   909,
+   0,
+   90,
+   88,
+   -47,
+   -89
+  ],
+  "dog_adult_a1_05": [
+   1600,
+   108,
+   88,
+   74,
+   -42,
+   -74
+  ],
+  "dog_adult_a1_06": [
+   993,
+   108,
+   88,
+   78,
+   -43,
+   -78
+  ],
+  "dog_adult_a1_07": [
+   1357,
+   0,
+   88,
+   82,
+   -44,
+   -82
+  ],
+  "dog_adult_a2_00": [
+   1082,
+   108,
+   88,
+   78,
+   -43,
+   -78
+  ],
+  "dog_adult_a2_01": [
+   728,
+   0,
+   89,
+   92,
+   -50,
+   -93
+  ],
+  "dog_adult_a2_02": [
+   358,
+   0,
+   91,
+   100,
+   -54,
+   -101
+  ],
+  "dog_adult_a2_03": [
+   178,
+   0,
+   90,
+   104,
+   -55,
+   -105
+  ],
+  "dog_adult_a2_04": [
+   818,
+   0,
+   90,
+   90,
+   -50,
+   -91
+  ],
+  "dog_adult_a2_05": [
+   1421,
+   108,
+   86,
+   76,
+   -41,
+   -76
+  ],
+  "dog_adult_a2_06": [
+   1171,
+   108,
+   89,
+   78,
+   -44,
+   -78
+  ],
+  "dog_adult_a2_07": [
+   630,
+   108,
+   91,
+   80,
+   -47,
+   -80
+  ],
+  "dog_adult_down_00": [
+   1606,
+   0,
+   90,
+   81,
+   -44,
+   -81
+  ],
+  "dog_adult_down_01": [
+   812,
+   108,
+   92,
+   79,
+   -44,
+   -79
+  ],
+  "dog_adult_down_02": [
+   1781,
+   108,
+   89,
+   73,
+   -39,
+   -73
+  ],
+  "dog_adult_down_03": [
+   320,
+   190,
+   97,
+   66,
+   -44,
+   -66
+  ],
+  "dog_adult_down_04": [
+   387,
+   263,
+   111,
+   57,
+   -54,
+   -57
+  ],
+  "dog_adult_down_05": [
+   833,
+   263,
+   113,
+   50,
+   -55,
+   -50
+  ],
+  "dog_adult_el_00": [
+   905,
+   108,
+   87,
+   79,
+   -43,
+   -79
+  ],
+  "dog_adult_el_01": [
+   1090,
+   0,
+   89,
+   85,
+   -46,
+   -86
+  ],
+  "dog_adult_el_02": [
+   450,
+   0,
+   85,
+   98,
+   -48,
+   -99
+  ],
+  "dog_adult_el_03": [
+   0,
+   0,
+   86,
+   107,
+   -50,
+   -108
+  ],
+  "dog_adult_el_04": [
+   87,
+   0,
+   90,
+   107,
+   -51,
+   -108
+  ],
+  "dog_adult_el_05": [
+   269,
+   0,
+   88,
+   104,
+   -50,
+   -105
+  ],
+  "dog_adult_el_06": [
+   1000,
+   0,
+   89,
+   88,
+   -47,
+   -89
+  ],
+  "dog_adult_el_07": [
+   1697,
+   0,
+   87,
+   81,
+   -43,
+   -81
+  ],
+  "dog_adult_hit_00": [
+   1508,
+   108,
+   91,
+   76,
+   -47,
+   -76
+  ],
+  "dog_adult_hit_01": [
+   0,
+   190,
+   101,
+   72,
+   -56,
+   -72
+  ],
+  "dog_adult_hit_02": [
+   1871,
+   108,
+   95,
+   73,
+   -48,
+   -73
+  ],
+  "dog_adult_hit_03": [
+   1689,
+   108,
+   91,
+   74,
+   -43,
+   -76
+  ],
+  "dog_adult_idle_00": [
+   1269,
+   0,
+   87,
+   83,
+   -43,
+   -83
+  ],
+  "dog_adult_idle_01": [
+   1446,
+   0,
+   88,
+   82,
+   -44,
+   -82
+  ],
+  "dog_adult_idle_02": [
+   1785,
+   0,
+   87,
+   81,
+   -43,
+   -81
+  ],
+  "dog_adult_idle_03": [
+   1873,
+   0,
+   87,
+   81,
+   -43,
+   -81
+  ],
+  "dog_adult_walk_00": [
+   0,
+   108,
+   89,
+   81,
+   -45,
+   -81
+  ],
+  "dog_adult_walk_01": [
+   90,
+   108,
+   90,
+   81,
+   -45,
+   -81
+  ],
+  "dog_adult_walk_02": [
+   181,
+   108,
+   90,
+   81,
+   -45,
+   -82
+  ],
+  "dog_adult_walk_03": [
+   272,
+   108,
+   89,
+   81,
+   -45,
+   -81
+  ],
+  "dog_adult_walk_04": [
+   362,
+   108,
+   90,
+   81,
+   -46,
+   -80
+  ],
+  "dog_adult_walk_05": [
+   722,
+   108,
+   89,
+   80,
+   -45,
+   -80
+  ],
+  "dog_adult_walk_06": [
+   453,
+   108,
+   88,
+   81,
+   -44,
+   -81
+  ],
+  "dog_adult_walk_07": [
+   542,
+   108,
+   87,
+   81,
+   -43,
+   -81
+  ]
+ },
+ "frames": [
+  "dog_baby_a1_00",
+  "dog_baby_a1_01",
+  "dog_baby_a1_02",
+  "dog_baby_a1_03",
+  "dog_baby_a1_04",
+  "dog_baby_a1_05",
+  "dog_baby_a1_06",
+  "dog_baby_a1_07",
+  "dog_baby_down_00",
+  "dog_baby_down_01",
+  "dog_baby_down_02",
+  "dog_baby_down_03",
+  "dog_baby_hit_00",
+  "dog_baby_hit_01",
+  "dog_baby_hit_02",
+  "dog_baby_hit_03",
+  "dog_baby_idle_00",
+  "dog_baby_idle_01",
+  "dog_baby_idle_02",
+  "dog_baby_idle_03",
+  "dog_baby_walk_00",
+  "dog_baby_walk_01",
+  "dog_baby_walk_02",
+  "dog_baby_walk_03",
+  "dog_baby_walk_04",
+  "dog_baby_walk_05",
+  "dog_baby_walk_06",
+  "dog_baby_walk_07",
+  "dog_teen_a1_00",
+  "dog_teen_a1_01",
+  "dog_teen_a1_02",
+  "dog_teen_a1_03",
+  "dog_teen_a1_04",
+  "dog_teen_a1_05",
+  "dog_teen_a1_06",
+  "dog_teen_a1_07",
+  "dog_teen_a2_00",
+  "dog_teen_a2_01",
+  "dog_teen_a2_02",
+  "dog_teen_a2_03",
+  "dog_teen_a2_04",
+  "dog_teen_a2_05",
+  "dog_teen_a2_06",
+  "dog_teen_a2_07",
+  "dog_teen_down_00",
+  "dog_teen_down_01",
+  "dog_teen_down_02",
+  "dog_teen_down_03",
+  "dog_teen_down_04",
+  "dog_teen_down_05",
+  "dog_teen_hit_00",
+  "dog_teen_hit_01",
+  "dog_teen_hit_02",
+  "dog_teen_hit_03",
+  "dog_teen_idle_00",
+  "dog_teen_idle_01",
+  "dog_teen_idle_02",
+  "dog_teen_idle_03",
+  "dog_teen_walk_00",
+  "dog_teen_walk_01",
+  "dog_teen_walk_02",
+  "dog_teen_walk_03",
+  "dog_teen_walk_04",
+  "dog_teen_walk_05",
+  "dog_teen_walk_06",
+  "dog_teen_walk_07",
+  "dog_adult_a1_00",
+  "dog_adult_a1_01",
+  "dog_adult_a1_02",
+  "dog_adult_a1_03",
+  "dog_adult_a1_04",
+  "dog_adult_a1_05",
+  "dog_adult_a1_06",
+  "dog_adult_a1_07",
+  "dog_adult_a2_00",
+  "dog_adult_a2_01",
+  "dog_adult_a2_02",
+  "dog_adult_a2_03",
+  "dog_adult_a2_04",
+  "dog_adult_a2_05",
+  "dog_adult_a2_06",
+  "dog_adult_a2_07",
+  "dog_adult_down_00",
+  "dog_adult_down_01",
+  "dog_adult_down_02",
+  "dog_adult_down_03",
+  "dog_adult_down_04",
+  "dog_adult_down_05",
+  "dog_adult_el_00",
+  "dog_adult_el_01",
+  "dog_adult_el_02",
+  "dog_adult_el_03",
+  "dog_adult_el_04",
+  "dog_adult_el_05",
+  "dog_adult_el_06",
+  "dog_adult_el_07",
+  "dog_adult_hit_00",
+  "dog_adult_hit_01",
+  "dog_adult_hit_02",
+  "dog_adult_hit_03",
+  "dog_adult_idle_00",
+  "dog_adult_idle_01",
+  "dog_adult_idle_02",
+  "dog_adult_idle_03",
+  "dog_adult_walk_00",
+  "dog_adult_walk_01",
+  "dog_adult_walk_02",
+  "dog_adult_walk_03",
+  "dog_adult_walk_04",
+  "dog_adult_walk_05",
+  "dog_adult_walk_06",
+  "dog_adult_walk_07"
+ ],
+ "standing": [
+  "dog_baby_idle_00",
+  "dog_baby_idle_01",
+  "dog_baby_idle_02",
+  "dog_baby_idle_03",
+  "dog_teen_idle_00",
+  "dog_teen_idle_01",
+  "dog_teen_idle_02",
+  "dog_teen_idle_03",
+  "dog_adult_idle_00",
+  "dog_adult_idle_01",
+  "dog_adult_idle_02",
+  "dog_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "baby": {
+   "top": 59,
+   "attack": {
+    "frames": [
+     "dog_baby_a1_00",
+     "dog_baby_a1_01",
+     "dog_baby_a1_02",
+     "dog_baby_a1_03",
+     "dog_baby_a1_04",
+     "dog_baby_a1_05",
+     "dog_baby_a1_06",
+     "dog_baby_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.335,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "dog_baby_down_00",
+     "dog_baby_down_01",
+     "dog_baby_down_02",
+     "dog_baby_down_03"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "dog_baby_hit_00",
+     "dog_baby_hit_01",
+     "dog_baby_hit_02",
+     "dog_baby_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "dog_baby_idle_00",
+     "dog_baby_idle_01",
+     "dog_baby_idle_02",
+     "dog_baby_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "dog_baby_walk_00",
+     "dog_baby_walk_01",
+     "dog_baby_walk_02",
+     "dog_baby_walk_03",
+     "dog_baby_walk_04",
+     "dog_baby_walk_05",
+     "dog_baby_walk_06",
+     "dog_baby_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "teen": {
+   "top": 46,
+   "attack": {
+    "frames": [
+     "dog_teen_a1_00",
+     "dog_teen_a1_01",
+     "dog_teen_a1_02",
+     "dog_teen_a1_03",
+     "dog_teen_a1_04",
+     "dog_teen_a1_05",
+     "dog_teen_a1_06",
+     "dog_teen_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.335,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "dog_teen_a2_00",
+     "dog_teen_a2_01",
+     "dog_teen_a2_02",
+     "dog_teen_a2_03",
+     "dog_teen_a2_04",
+     "dog_teen_a2_05",
+     "dog_teen_a2_06",
+     "dog_teen_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "dog_teen_down_00",
+     "dog_teen_down_01",
+     "dog_teen_down_02",
+     "dog_teen_down_03",
+     "dog_teen_down_04",
+     "dog_teen_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "dog_teen_hit_00",
+     "dog_teen_hit_01",
+     "dog_teen_hit_02",
+     "dog_teen_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "dog_teen_idle_00",
+     "dog_teen_idle_01",
+     "dog_teen_idle_02",
+     "dog_teen_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "dog_teen_walk_00",
+     "dog_teen_walk_01",
+     "dog_teen_walk_02",
+     "dog_teen_walk_03",
+     "dog_teen_walk_04",
+     "dog_teen_walk_05",
+     "dog_teen_walk_06",
+     "dog_teen_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "adult": {
+   "top": 25,
+   "attack": {
+    "frames": [
+     "dog_adult_a1_00",
+     "dog_adult_a1_01",
+     "dog_adult_a1_02",
+     "dog_adult_a1_03",
+     "dog_adult_a1_04",
+     "dog_adult_a1_05",
+     "dog_adult_a1_06",
+     "dog_adult_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "dog_adult_a2_00",
+     "dog_adult_a2_01",
+     "dog_adult_a2_02",
+     "dog_adult_a2_03",
+     "dog_adult_a2_04",
+     "dog_adult_a2_05",
+     "dog_adult_a2_06",
+     "dog_adult_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "dog_adult_down_00",
+     "dog_adult_down_01",
+     "dog_adult_down_02",
+     "dog_adult_down_03",
+     "dog_adult_down_04",
+     "dog_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "dog_adult_el_00",
+     "dog_adult_el_01",
+     "dog_adult_el_02",
+     "dog_adult_el_03",
+     "dog_adult_el_04",
+     "dog_adult_el_05",
+     "dog_adult_el_06",
+     "dog_adult_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "dog_adult_hit_00",
+     "dog_adult_hit_01",
+     "dog_adult_hit_02",
+     "dog_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "dog_adult_idle_00",
+     "dog_adult_idle_01",
+     "dog_adult_idle_02",
+     "dog_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "dog_adult_walk_00",
+     "dog_adult_walk_01",
+     "dog_adult_walk_02",
+     "dog_adult_walk_03",
+     "dog_adult_walk_04",
+     "dog_adult_walk_05",
+     "dog_adult_walk_06",
+     "dog_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
+}

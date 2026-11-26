@@ -121,7 +121,9 @@ export function deckOf(save, data, unlocked) {
   const soul = unlocked.includes(save.soulPet) ? save.soulPet : null;
   if (soul && !deck.includes(soul)) deck = [soul, ...deck];
   deck = deck.slice(0, size);
-  for (const id of unlocked) { if (deck.length >= size) break; if (!deck.includes(id)) deck.push(id); }
+  // 처음(덱을 안 짠 저장)이거나 3마리보다 적을 때만 자동으로 채움 — 직접 뺀 자리는 비워 둠(빼기가 먹통이던 것)
+  const min = save.deck ? 3 : size;
+  for (const id of unlocked) { if (deck.length >= min) break; if (!deck.includes(id)) deck.push(id); }
   return deck;
 }
 

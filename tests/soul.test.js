@@ -53,7 +53,8 @@ test('deck: saved picks, soul pet always in, gaps tell what to bring; horde wave
   const unlocked = ['dog', 'rabbit', 'fox', 'rooster', 'crow', 'bighorn', 'ant', 'frog'];
   const save = defaultSave(); save.deck = ['ant', 'frog', 'tiger']; save.soulPet = 'crow';
   const deck = deckOf(save, D, unlocked);
-  assert.equal(deck[0], 'crow'); assert.ok(deck.includes('ant') && !deck.includes('tiger')); assert.equal(deck.length, 6);
+  assert.equal(deck[0], 'crow'); assert.ok(deck.includes('ant') && !deck.includes('tiger')); assert.equal(deck.length, 3, '직접 짠 덱은 빈자리를 그대로 둠');
+  assert.equal(deckOf(defaultSave(), D, unlocked).length, 6, '처음엔 6마리로 채움');
   assert.ok(soulGaps(D, 'dog').some((g) => g.key === 'air')); assert.ok(soulGaps(D, 'crow').some((g) => g.key === 'bone'));
   assert.ok(soulGaps(D, 'fox', D.stageById['forest-2']).some((g) => g.key === 'climate'));
   const st = D.stageById['forest-1'];

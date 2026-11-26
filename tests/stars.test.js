@@ -5,12 +5,12 @@ import { createBattle } from '../src/logic/battle.js';
 import { makeEnemy } from '../src/logic/waves.js';
 import { hitDamage } from '../src/logic/combat.js';
 import { elementChance } from '../src/logic/elements.js';
-import { defaultSave, rosterPool, nextUnlock, totalStars, starsFor, settleRun, battleOptions } from '../src/logic/meta.js';
+import { defaultSave, rosterPool, nextUnlock, totalStars, starsFor, settleRun, battleOptions, unlockCandidates, pickUnlock } from '../src/logic/meta.js';
 import { unitChances, newRollCtx } from '../src/logic/roulette.js';
 
 const D = loadData();
 
-test('roster: six starters cover six attack styles, stars call the others in order', () => {
+test('roster: six starters cover six attack styles, the unlock gauge calls the others (pick 1 of 2)', () => {
   const save = defaultSave(), r = D.config.roster;
   assert.equal(r.starter.length, 6);
   assert.deepEqual(rosterPool(save, D), r.starter);
@@ -18,9 +18,18 @@ test('roster: six starters cover six attack styles, stars call the others in ord
   assert.equal(nextUnlock(save, D).id, r.unlocks[0].id);
   save.stages['forest-1'] = { cleared: true, bestWave: 15, stars: 3 };
   assert.equal(totalStars(save), 3);
-  assert.ok(rosterPool(save, D).includes('ant') && !rosterPool(save, D).includes('tiger'));
+  assert.ok(!rosterPool(save, D).includes('ant'), '별만으로는 안 열림');
+  save.unlockGauge = { pts: 0, level: 0, pending: 1 };
+  const cands = unlockCandidates(save, D);
+  assert.equal(cands.length, 2);
+  assert.ok(pickUnlock(save, D, cands[1]).ok);
+  assert.ok(rosterPool(save, D).includes(cands[1]) && !rosterPool(save, D).includes(cands[0]));
+  assert.equal(pickUnlock(save, D, cands[0]).ok, false, '한 번에 하나');
   const ch = unitChances(newRollCtx(), 5, D, null, { pool: battleOptions(save, D, 'forest-1').pool });
   assert.ok(!('tiger' in ch) && ch.dog > 0);
+  // 예전 저장: 별로 이미 열린 동물은 그대로
+  const old = defaultSave(); old.stages['forest-1'] = { cleared: true, stars: 3 };
+  assert.ok(rosterPool(old, D).includes('ant'));
   // old saves: a clear without stars still counts as one
   save.stages['forest-2'] = { cleared: true, bestWave: 15 };
   assert.equal(totalStars(save), 4);
@@ -38,7 +47,10 @@ test('stars: clear, life kept and time each give one', () => {
   const save = defaultSave();
   const rep = settleRun(save, s, D);
   assert.equal(rep.stars, 3); assert.equal(save.stages['forest-1'].stars, 3);
-  assert.deepEqual(rep.joined, D.config.roster.unlocks.filter((u) => u.stars <= 3).map((u) => u.id));
+  assert.deepEqual(rep.joined, []);
+  assert.ok(rep.gauge.gain >= 100 + 3 * 30, '클리어 + 별 3개');
+  assert.equal(rep.gauge.filled, 1, '첫 칸(150)이 다 참');
+  assert.equal(save.unlockGauge.pending, 1);
 });
 
 test('undead resist one attack style and fear an element; climate tilts elements', async () => {

@@ -3,6 +3,9 @@ import { speciesImage, button, title, style, panel } from './ui.js';
 import { buildData } from '../logic/data.js';
 import { rosterPool, favorState, buyFavor, writeSave } from '../logic/meta.js';
 import { deckOf, soulGaps, soulSig } from '../logic/soul.js';
+import { speciesFit, stageProfile } from '../logic/matchup.js';
+import { previewStats, BUILDS, BUILD_SETS } from '../logic/gauntlet.js';
+import { levelsOf } from '../logic/meta.js';
 
 const ROLE = { bruiser: '🛡 막기', dealer: '⚔ 딜러', technician: '🎯 기술', buffer: '🎺 응원' };
 
@@ -20,7 +23,7 @@ export default class DeckScene extends Phaser.Scene {
     this.layer = this.add.container(0, 0);
     this.btns = [];
     this.sel = d?.sel ?? this.S.soulPet ?? this.D.config.roster.starter[0];
-    button(this, 120, 676, 180, 44, '← 세계 지도', () => this.scene.start('StageSelect'));
+    button(this, 120, 676, 180, 44, '← 지도', () => this.scene.start('StageSelect'));
     this.paint();
   }
 
@@ -43,10 +46,14 @@ export default class DeckScene extends Phaser.Scene {
     { const im0 = speciesImage(this, u.id, 'adult', 110, 150, 120); if (im0) { const im = add(im0); if (!open) im.setTint(0x000000).setAlpha(0.5); } }
     add(this.add.text(180, 96, `${isSoul ? '👑 ' : ''}${open ? u.name : '???'}`, style(26, isSoul ? '#ffd84d' : '#ffffff')));
     add(this.add.text(180, 132, `${ROLE[u.role]}   ${E[u.element]?.icon ?? ''} ${E[u.element]?.name ?? ''}   사거리 ${u.range}`, style(14, '#cfe8ff')));
-    add(this.add.text(180, 156, open ? u.baseSkillDesc : `⭐ ${cfg.roster.unlocks.find((x) => x.id === u.id)?.stars ?? 0}개에 합류`, style(12, '#aabbcc', { wordWrap: { width: 265 } })));
-    let y = 222;
+    add(this.add.text(180, 156, open ? u.baseSkillDesc : '🔒 해금 게이지가 차면 고를 수 있음', style(12, '#aabbcc', { wordWrap: { width: 265 } })));
+    // 수치 한 줄(출전 단계 기준, 고급 모드면 고른 빌드 반영): ❤ 체력 ⚔ 공격 ⚡ 빠르기 🛡 막기 💨 피하기
+    { const lvl = levelsOf(S, D)[u.id] ?? 1, gl = cfg.gauntlet?.growLv ?? { teen: 3, adult: 6 };
+      const stg = lvl >= gl.adult ? 'adult' : lvl >= gl.teen ? 'teen' : 'young';
+      const b = S.advanced ? S.builds?.[u.id] ?? null : null, p = previewStats(D, u.id, stg, b);
+      add(this.add.text(50, 204, `❤${p.hp}  ⚔${p.atk}  ⚡${p.spd}/초${p.def ? `  🛡${p.def}%` : ''}${p.dodge ? `  💨${p.dodge}%` : ''}   Lv${lvl}`, style(15, '#ffffff', { stroke: '#000', strokeThickness: 3 }))); }
+    let y = 232;
     add(this.add.text(50, y, `🔥 소울 기술 · ${sig.name}`, style(18, '#ffb27a'))); y += 28;
-    add(this.add.text(50, y, `“${sig.tale}”`, style(12, '#9fb3c8', { fontStyle: 'italic', wordWrap: { width: 390 } }))); y += 38;
     add(this.add.text(50, y, `· ${sig.desc}`, style(14, '#ffffff', { wordWrap: { width: 390 } }))); y += 40;
     add(this.add.text(50, y, `▶ ${sig.feel}`, style(14, '#9cff6b'))); y += 26;
     const aw = sc.awaken.defs[u.element];
@@ -68,22 +75,25 @@ export default class DeckScene extends Phaser.Scene {
     const st = favorState(S, D, u.id);
     const fb = button(this, 135, 624, 180, 34, st.reason === 'max' ? '정 가득 참' : `정 붙이기 · 💠${st.cost ?? cfg.favor.costs[lv] ?? '-'}`, () => { if (buyFavor(S, D, u.id).ok) { this.save(); this.paint(); } }, { size: 14, fill: 0x5a2a4a, stroke: 0xff9fbf, tip: `가진 에센스 ${S.essence}` });
     fb.setEnabled(st.ok && open);
-    const sb = button(this, 345, 624, 200, 34, isSoul ? '👑 지금 소울펫' : '소울펫으로 삼기', () => { S.soulPet = u.id; if (!deck.includes(u.id)) S.deck = [u.id, ...deck.filter((x) => x !== u.id)].slice(0, sc.deckSize); else S.deck = deck; this.save(); this.paint(); }, { size: 15, fill: isSoul ? 0x6b5a1a : 0x2e5a3a, stroke: 0xffd84d });
+    const sb = button(this, 345, 624, 200, 34, isSoul ? '👑 소울펫' : '👑 지정', () => { S.soulPet = u.id; if (!deck.includes(u.id)) S.deck = [u.id, ...deck.filter((x) => x !== u.id)].slice(0, sc.deckSize); else S.deck = deck; this.save(); this.paint(); }, { size: 15, fill: isSoul ? 0x6b5a1a : 0x2e5a3a, stroke: 0xffd84d });
     sb.setEnabled(open && !isSoul);
     this.btns.push(fb, sb);
 
     // ---- right: roster grid ----
     g.fillStyle(0x0d141d, 0.92).fillRoundedRect(476, 76, 774, 572, 16).lineStyle(2, 0xd4b06a, 0.8).strokeRoundedRect(476, 76, 774, 572, 16);
-    add(this.add.text(496, 88, `덱 ${deck.length}/${sc.deckSize}  — 눌러서 살펴보고, 아래 버튼으로 넣고 빼기`, style(14, '#ffe2b8')));
+    add(this.add.text(496, 88, `덱 ${deck.length}/${sc.deckSize}${S.legend ? `   ⭐ 전설 ${S.legend.name} (한 칸 차지, 성체로 출전)` : ''}`, style(14, '#ffe2b8')));
+    if (S.legend) this.btns.push(button(this, 1180, 96, 110, 26, '⭐ 내리기', () => { S.legend = null; this.save(); this.paint(); }, { size: 12, fill: 0x4a3d14 }));
     order.forEach((id, i) => {
       const a = D.unitById[id]; if (!a) return;
       const cx = 496 + (i % 5) * 150, cy = 116 + Math.floor(i / 5) * 138, has = unlocked.includes(id), inDeck = deck.includes(id), soul = S.soulPet === id;
       g.fillStyle(inDeck ? 0x1d3346 : 0x141b24, 1).fillRoundedRect(cx, cy, 140, 128, 10);
       g.lineStyle(this.sel === id ? 4 : 2, soul ? 0xffd84d : this.sel === id ? 0xffffff : inDeck ? 0x7fd1ff : 0x3b4b5e, 1).strokeRoundedRect(cx, cy, 140, 128, 10);
       { const im0 = speciesImage(this, id, 'adult', cx + 70, cy + 46, 72); if (im0) { const im = add(im0); if (!has) im.setTint(0x000000).setAlpha(0.45); else if (!inDeck) im.setAlpha(0.55); } }
-      add(this.add.text(cx + 70, cy + 92, has ? `${soul ? '👑 ' : ''}${a.name}` : `⭐${cfg.roster.unlocks.find((x) => x.id === id)?.stars}`, style(14, soul ? '#ffd84d' : has ? '#ffffff' : '#8899aa')).setOrigin(0.5));
+      add(this.add.text(cx + 70, cy + 92, has ? `${soul ? '👑 ' : ''}${a.name}` : '🔒 해금 게이지', style(14, soul ? '#ffd84d' : has ? '#ffffff' : '#8899aa')).setOrigin(0.5));
       add(this.add.text(cx + 70, cy + 112, has ? `${ROLE[a.role].split(' ')[0]}${E[a.element]?.icon ?? ''} ${soulSig(D, id).name}` : '', style(11, '#aabbcc')).setOrigin(0.5));
       if (inDeck) add(this.add.text(cx + 8, cy + 6, '✔', style(14, '#7CFC9A')));
+      if (S.advanced && S.builds?.[id]) add(this.add.text(cx + 8, cy + 26, BUILDS[S.builds[id]].icon, style(14)));
+      if (stage && has) { const f = speciesFit(id, stage, D); if (f.label !== 'mid') add(this.add.text(cx + 132, cy + 8, f.label === 'good' ? '▲좋음' : '▼별로', style(12, f.label === 'good' ? '#7CFC9A' : '#ff8a80', { stroke: '#000', strokeThickness: 3 })).setOrigin(1, 0)); }
       const z = add(this.add.zone(cx + 70, cy + 64, 140, 128).setInteractive({ useHandCursor: true }));
       z.on('pointerdown', () => { this.sel = id; this.paint(); });
     });
@@ -94,14 +104,30 @@ export default class DeckScene extends Phaser.Scene {
     cover.forEach(([name, ok], i) => add(this.add.text(566 + i * 112, 540, `${ok ? '✔' : '✘'} ${name}`, style(13, ok ? '#7CFC9A' : '#ff8a80'))));
     const rec = D.recipes.filter((r) => r.parts.every((p) => deck.includes(p)));
     add(this.add.text(496, 566, `만들 수 있는 키메라: ${rec.length ? rec.map((r) => (S.codex.recipes.includes(r.id) ? r.name : '???')).join(', ') : '없음'}`, style(13, '#d7bde2')));
-    if (stage) { const c = cfg.climates[stage.climate]; add(this.add.text(496, 590, `${stage.name} · ${c.icon} ${c.name}  ${(c.strong ?? []).map((e) => E[e]?.icon).join('')}▲ ${(c.weak ?? []).map((e) => E[e]?.icon).join('')}▼`, style(13, '#cfe8ff'))); }
+    if (stage) {
+      const c = cfg.climates[stage.climate];
+      add(this.add.text(496, 590, `${stage.name} · ${c.icon} ${c.name} · ${stageProfile(stage, D).tags.join('  ')}`, style(13, '#cfe8ff')));
+      const f = speciesFit(u.id, stage, D);
+      add(this.add.text(496, 612, `${u.name}: ${f.label === 'good' ? '▲ 이 판에 좋음' : f.label === 'bad' ? '▼ 이 판엔 별로' : '보통'}${f.why.length ? '  · ' + f.why.slice(0, 3).join('  · ') : ''}`, style(12, f.label === 'good' ? '#7CFC9A' : f.label === 'bad' ? '#ff8a80' : '#aabbcc', { wordWrap: { width: 520 } })));
+    }
     const inDeck = deck.includes(u.id), full = deck.length >= sc.deckSize;
-    const tb = button(this, 1130, 604, 200, 40, isSoul ? '소울펫은 못 뺌' : inDeck ? '덱에서 빼기' : full ? '덱이 가득 참' : '덱에 넣기', () => {
+    const tb = button(this, 1130, 604, 200, 40, isSoul ? '👑 소울펫' : inDeck ? '➖ 빼기' : full ? '가득 참' : '➕ 넣기', () => {
       S.deck = inDeck ? deck.filter((x) => x !== u.id) : [...deck, u.id];
       this.save(); this.paint();
     }, { size: 15, fill: inDeck ? 0x4a2a2a : 0x2a4a6a });
     tb.setEnabled(open && !isSoul && (inDeck ? deck.length > 3 : !full));
     this.btns.push(tb);
-    if (this.stageId) this.btns.push(button(this, 1140, 676, 200, 44, '이 덱으로 출발', () => this.scene.start('Gauntlet', { stageId: this.stageId }), { size: 17, fill: 0x3a7bd5 }));
+    // 고급: 역할을 내 취향대로(추천 → 탱커·탱딜·회피탱·딜탱·딜러 / 원딜·저격·응원·전투응원)
+    this.btns.push(button(this, 1190, 40, 120, 36, S.advanced ? '⚙ 고급 켜짐' : '⚙ 고급', () => { S.advanced = !S.advanced; this.save(); this.paint(); }, { size: 14, fill: S.advanced ? 0x5a3a8a : 0x24303f, tip: '역할을 내 마음대로 바꾸기(고급자용)' }));
+    if (S.advanced && open) {
+      const set = u.range > 1 || u.role === 'buffer' ? 'ranged' : 'melee', cur = S.builds?.[u.id] ?? null, B = cur ? BUILDS[cur] : null;
+      this.btns.push(button(this, 990, 40, 250, 36, `🔧 ${B ? `${B.icon} ${B.name}` : '추천(기본)'}`, () => {
+        const list = [null, ...BUILD_SETS[set]], nx = list[(list.indexOf(cur) + 1) % list.length];
+        S.builds ??= {}; if (nx) S.builds[u.id] = nx; else delete S.builds[u.id];
+        this.save(); this.paint();
+      }, { size: 15, fill: 0x3a2a5a, stroke: 0xc4a6ff, tip: B ? B.tip : '이 동물에게 맞는 역할' }));
+      if (B) add(this.add.text(990, 64, B.tip, style(12, '#c4a6ff')).setOrigin(0.5, 0));
+    }
+    if (this.stageId) this.btns.push(button(this, 1140, 676, 200, 44, '▶ 출발', () => this.scene.start('Gauntlet', { stageId: this.stageId }), { size: 17, fill: 0x3a7bd5 }));
   }
 }

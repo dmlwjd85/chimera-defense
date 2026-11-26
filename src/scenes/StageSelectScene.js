@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import { button, title, style, panel, showTip, hideTip , speciesImage } from './ui.js';
 import { buildData } from '../logic/data.js';
-import { stageUnlocked, starsOf, totalStars, nextUnlock } from '../logic/meta.js';
+import { stageUnlocked, starsOf, totalStars, nextUnlock, unlockedAnimals, unlockGauge } from '../logic/meta.js';
+import { drawGauge, showUnlockPicker } from './unlockFx.js';
 import { soulGaps, soulSig } from '../logic/soul.js';
 
 const ZONE_NAME = { village: '마을', field: '들판', forest: '숲', plains: '대평원', mountain: '산', wetland: '습지' };
@@ -31,18 +32,19 @@ export default class StageSelectScene extends Phaser.Scene {
     const nx = nextUnlock(save, data);
     const track = cfg.roster?.unlocks ?? [];
     track.forEach((u, i) => {
-      const x = 420 + i * 62, got = total >= u.stars, unit = data.unitById[u.id];
+      const x = 420 + i * 62, got = unlockedAnimals(save, data).includes(u.id), unit = data.unitById[u.id];
       const key = 'unit-' + u.id;
       this.add.circle(x, 40, 23, got ? 0x24384a : 0x161c24).setStrokeStyle(2, got ? 0xffd84d : nx?.id === u.id ? 0x9cff6b : 0x3b4b5e);
       const im0 = speciesImage(this, u.id, 'young', x, 40, 40); if (im0) { if (!got) im0.setTint(0x000000).setAlpha(0.55); }
       if (!im0) this.add.text(x, 40, got ? unit.name[0] : '?', style(18)).setOrigin(0.5);
-      this.add.text(x, 73, got ? '합류' : `⭐${u.stars}`, style(11, got ? '#58d68d' : nx?.id === u.id ? '#9cff6b' : '#8899aa')).setOrigin(0.5);
+      this.add.text(x, 73, got ? '합류' : '🔒', style(11, got ? '#58d68d' : nx?.id === u.id ? '#9cff6b' : '#8899aa')).setOrigin(0.5);
       const z = this.add.zone(x, 44, 56, 66).setInteractive();
-      z.on('pointerover', () => showTip(this, got ? `${unit.name} · 합류함` : `별 ${u.stars}개를 모으면 ${nx?.id === u.id ? unit.name : '새 친구'} 합류`, x, 14));
+      z.on('pointerover', () => showTip(this, got ? `${unit.name} · 합류함` : '해금 게이지가 차면 그림자 속 친구를 고를 수 있음', x, 14));
       z.on('pointerout', () => hideTip(this));
     });
-    this.add.text(420 + track.length * 62 - 10, 30, nx ? `다음 친구까지 ⭐${nx.stars - total}` : '모두 모임', style(14, '#9cff6b'));
-    this.add.text(420 + track.length * 62 - 10, 52, '★ 클리어  ★ 생명 ' + (cfg.stars?.life ?? 60) + '% 이상  ★ 제한 시간', style(11, '#aabbcc'));
+    // 해금 게이지(별 대신): 다 차면 새 친구 고르기
+    { const gx = 420 + track.length * 62 - 10; drawGauge(this, gx, 40, 1270 - gx - 10, data, save, null, 20);
+      if (unlockGauge(save, data).pending > 0) { const pb = button(this, gx + (1270 - gx - 10) / 2, 76, 200, 28, '🎁 새 친구 고르기', () => showUnlockPicker(this, data, save, this.registry.get('storage'), () => this.scene.restart()), { size: 13, fill: 0x2e5a3a, stroke: 0x9cff6b, depth: 30 }); this.tweens.add({ targets: pb.text, scale: { from: 1, to: 1.08 }, yoyo: true, repeat: -1, duration: 600 }); } }
 
     // 12 cards, 4 x 3
     const W = 294, H = 122, GX = 12, GY = 10, X0 = 640 - (4 * W + 3 * GX) / 2, Y0 = 92;
@@ -89,10 +91,10 @@ export default class StageSelectScene extends Phaser.Scene {
     this.cards = cards;
     this.pick(lastOpen, cards[lastOpen]);
 
-    button(this, 120, 672, 160, 46, '← 타이틀', () => this.scene.start('Title'));
+    button(this, 120, 672, 160, 46, '← 처음', () => this.scene.start('Title'));
     const sp = data.unitById[save.soulPet];
-    button(this, 640, 672, 420, 46, sp ? `👑 소울펫 ${sp.name} · ${soulSig(data, sp.id).name}   |   덱 짜기` : '👑 소울펫을 정하고 덱 짜기', () => this.scene.start('Deck', { stageId: this.picked ?? null }), { fill: sp ? 0x4a3d14 : 0x2e5a3a, stroke: 0xffd84d, size: 16, tip: '주인공 한 마리와 약점을 메울 동료 고르기' });
-    button(this, 1120, 672, 250, 46, `✨ 별자리 나무  💎${save.shards ?? 0}`, () => this.scene.start('Talent', { back: 'StageSelect' }), { fill: 0x3a2466, stroke: 0xc77dff, size: 17, tip: '유물 조각으로 특성 찍기' });
+    button(this, 640, 672, 420, 46, sp ? `🐾 덱 · 👑${sp.name}` : '🐾 덱', () => this.scene.start('Deck', { stageId: this.picked ?? null }), { fill: sp ? 0x4a3d14 : 0x2e5a3a, stroke: 0xffd84d, size: 16, tip: '주인공 한 마리와 약점을 메울 동료 고르기' });
+    button(this, 1120, 672, 250, 46, `✨ 강화 💎${save.shards ?? 0}`, () => this.scene.start('Talent', { back: 'StageSelect' }), { fill: 0x3a2466, stroke: 0xc77dff, size: 17, tip: '유물 조각으로 특성 찍기' });
   }
 
   /** Show one stage in the detail strip. */
@@ -124,11 +126,11 @@ export default class StageSelectScene extends Phaser.Scene {
     const mid = 760;
     add(this.add.text(mid, y + 4, `${stars(starsOf(rec))}`, style(26, '#ffd84d', { stroke: '#000', strokeThickness: 4 })));
     add(this.add.text(mid, y + 42, rec?.cleared ? `클리어 ✔${rec.bestTime ? `  최고 ${mmss(rec.bestTime)}` : ''}` : rec ? `최고 웨이브 ${rec.bestWave}` : '처음', style(14, rec?.cleared ? '#58d68d' : '#cccccc')));
-    add(this.add.text(mid, y + 64, `★ 제한 시간 ${mmss(st.par ?? cfg.stars.par)}`, style(13, '#aabbcc')));
+    add(this.add.text(mid, y + 64, `★ 클리어  ★ 생명 ${cfg.stars?.life ?? 60}% 이상  ★ 쓰러진 아군 ${cfg.gauntlet?.lowStars ?? 3} 이하${rec?.hard ? '  👑 하드' : ''}`, style(13, '#aabbcc')));
     const sp = (cfg.spells?.list ?? []).find((s) => s.stage === st.id);
     if (sp) add(this.add.text(mid, y + 106, rec?.cleared ? `🔮 배운 마법: ${sp.icon} ${sp.name}` : `🔮 깨면 배우는 마법: ${sp.icon} ${sp.name}`, style(13, '#d7bde2')));
-    if (i > 0 && open) add(this.add.text(mid, y + 86, carry ? `데려갈 동물: ${carry.white ? '흰 ' : ''}${carry.stage === 'teen' ? '성장기' : '어린'} ${data.unitById[carry.speciesId].name}` : `데려갈 동물 없음 → 시작 골드 +${cfg.carry.fallbackGold}`, style(13, carry ? '#9cff6b' : '#aaaaaa')));
-    this.goBtn = button(this, 1130, y + 58, 190, 60, open ? '출발' : '잠김', () => this.scene.start('Gauntlet', { stageId: st.id }), { size: open ? 24 : 16, fill: open ? 0x3a7bd5 : 0x333333 });
+    if (false && i > 0 && open) add(this.add.text(mid, y + 86, carry ? `데려갈 동물: ${carry.white ? '흰 ' : ''}${carry.stage === 'teen' ? '성장기' : '어린'} ${data.unitById[carry.speciesId].name}` : `데려갈 동물 없음 → 시작 골드 +${cfg.carry.fallbackGold}`, style(13, carry ? '#9cff6b' : '#aaaaaa')));
+    this.goBtn = button(this, 1130, y + 58, 190, 60, open ? '▶ 출발' : '🔒', () => this.scene.start('Gauntlet', { stageId: st.id }), { size: open ? 24 : 16, fill: open ? 0x3a7bd5 : 0x333333 });
     this.goBtn.setEnabled(open);
   }
 }

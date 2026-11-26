@@ -16,7 +16,7 @@ import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropM
 import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
 import { soundOf, ELEM_SOUND } from './onomato.js';
-import { sfx, unlockAudio, isMuted, setMuted, ENEMY_HIT_DB } from './sfx.js';
+import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
 import { button, panel, style, unitToken, silhouette, hex, COLORS, chip, showTip, hideTip } from './ui.js';
 
 import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX, benchSlotPos, LANE_Y, LANE_SCALE, laneAt, DOCK_Y, SIDE_L, SIDE_R, SIDE_TOP } from './layout.js';
@@ -1359,7 +1359,7 @@ export default class BattleScene extends Phaser.Scene {
     uv.kbU = e.boss ? -16 : -10;
     uv.rig?.inst?.hitFlash?.(0.1);
     if (uv.rig?.dot && !(uv.rig.inst.motion?.startsWith('attack') && !uv.rig.inst.finished)) uv.rig.inst.play('hit');
-    if (e.boss) { this.cameras.main.shake(90, 0.003); sfx('slam', ENEMY_HIT_DB); } else sfx('hit', ENEMY_HIT_DB);
+    if (e.boss) { this.cameras.main.shake(90, 0.003); sfx('slam'); } else sfx('hit');
   }
 
   /** 맞부딪힘 불꽃: 서로 휘두른 게 겹치면 가운데서 쨍! 하고 둘 다 튕겨남. */

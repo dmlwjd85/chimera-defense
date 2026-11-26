@@ -90,6 +90,7 @@ export function battleOptions(save, data, stageId = null) {
     pool: deckOf(save, data, rosterPool(save, data) ?? data.units.map((u) => u.id)),
     soul: save.soulPet && (rosterPool(save, data) ?? []).includes(save.soulPet) ? { id: save.soulPet, favor: save.favor?.[save.soulPet] ?? 0, path: save.soulPath?.[save.soulPet] ?? null } : null,
     spells: spellsUnlocked(save, data),
+    legend: save.legend ?? null,
   };
 }
 
@@ -127,6 +128,13 @@ export function rosterPool(save, data) {
 export const lockedAnimals = (save, data) => (data.config.roster?.unlocks ?? []).map((u) => u.id).filter((id) => !unlockedAnimals(save, data).includes(id) && data.unitById[id]);
 /** The next animal waiting, or null when everyone has joined (첫 후보). */
 export const nextUnlock = (save, data) => { const id = lockedAnimals(save, data)[0]; return id ? { id } : null; };
+
+/** 전설 카드(1장): 판에서 만든 신화급·키메라를 새겨 다음 판 덱 한 칸에 데려감. */
+export function legendCandidates(state) {
+  return [...state.field, ...state.bench].filter((u) => u && (u.kind === 'chimera' || (u.kind === 'base' && u.stage === 'spirit')))
+    .map((u) => ({ kind: u.kind, speciesId: u.speciesId, parts: u.parts ? [...u.parts] : null, traits: (u.traits ?? []).map((t) => ({ ...t, locked: false })), name: u.stats.name }));
+}
+export function setLegend(save, card) { save.legend = card ? { ...card } : null; return true; }
 
 /** 해금 게이지: { pts, level, need, pending } — need = base + step × level */
 export function unlockGauge(save, data) {
@@ -271,7 +279,7 @@ export function settleRun(save, state, data) {
   save.shards = (save.shards ?? 0) + shards;
   return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
     mvp: Object.values(state.dmgRun ?? {}).sort((a, b) => b.dmg - a.dmg).slice(0, 3).map((r) => ({ ...r, dmg: Math.round(r.dmg) })),
-    stars, goals, totalStars: starsAfter, joined, gauge, newSpells: spellsUnlocked(save, data).filter((id) => !spellsBefore.includes(id)), time: Math.round(state.time) };
+    stars, goals, totalStars: starsAfter, joined, gauge, legends: clear && state.mode === 'gauntlet' ? legendCandidates(state) : [], newSpells: spellsUnlocked(save, data).filter((id) => !spellsBefore.includes(id)), time: Math.round(state.time) };
 }
 
 /** Reveal one material of an undiscovered recipe. Returns { recipe, part } or null. */

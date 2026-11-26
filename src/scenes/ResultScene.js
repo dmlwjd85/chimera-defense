@@ -1,107 +1,103 @@
 import Phaser from 'phaser';
 import { button, title, style, panel } from './ui.js';
 import { buildData } from '../logic/data.js';
-import { setCarry, writeSave, unlockGauge } from '../logic/meta.js';
+import { writeSave, unlockGauge, setLegend } from '../logic/meta.js';
 import { drawGauge, showUnlockPicker } from './unlockFx.js';
 
 const ACH = { firstSummon: '첫 소환', firstSpirit: '첫 영물', firstChimera: '첫 키메라', allRecipes: '레시피 7개 모두 발견', flawlessBoss: '무결점 보스 처치' };
 
-/** Result screen: clear/lose, essence lines, species xp and level-ups, new finds. */
+/**
+ * 결과 화면(2026-11-26 단순화): 별 → 받은 것 한 줄 → 전설 새기기 → 해금 게이지 → 버튼 셋.
+ * 자세한 내역(에센스 줄·종 경험치·주인공)은 '자세히'를 눌러야 펼쳐짐.
+ */
 export default class ResultScene extends Phaser.Scene {
   constructor() { super('Result'); }
 
   create(d) {
-    d = d?.report ? d : { report: { clear: false, essence: 0, lines: [], xp: [], newRecipes: [], newSpecies: [], newFlops: [], achievements: [], hintsMade: [] }, wave: 0, total: 15, life: 0, stageId: 'forest-1' };
-    const D = buildData(this.registry.get('raw'));
-    const r = d.report;
+    d = d?.report ? d : { report: { clear: false, essence: 0, lines: [], xp: [], newRecipes: [], newSpecies: [], newFlops: [], achievements: [], hintsMade: [] }, wave: 0, total: 8, life: 0, stageId: 'forest-1' };
+    const D = this.D = buildData(this.registry.get('raw'));
+    const r = d.report, save = this.registry.get('save'), storage = this.registry.get('storage');
     this.cameras.main.setBackgroundColor('#141a21');
-    if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.45);
-    title(this, 640, r.clear ? 44 : 70, r.clear ? '스테이지 클리어!' : '패배', r.clear ? 40 : 56).setColor(r.clear ? '#7CFC9A' : '#ff6b6b');
-    if (r.clear && r.goals) {
-      const g = r.goals, mm = (t) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
-      const st = this.add.text(640, 112, '★'.repeat(r.stars) + '☆'.repeat(3 - r.stars), style(34, '#ffd84d', { stroke: '#000', strokeThickness: 5 })).setOrigin(0.5).setScale(0.2);
+    if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.35);
+    title(this, 640, 70, r.clear ? '클리어!' : '패배', 56).setColor(r.clear ? '#7CFC9A' : '#ff6b6b');
+    this.add.text(640, 118, `${D.stageById[d.stageId]?.name ?? ''}${d.hard ? ' · 하드' : ''}`, style(16, '#cfd6e6')).setOrigin(0.5);
+
+    // 별
+    if (r.clear) {
+      const st = this.add.text(640, 168, '★'.repeat(r.stars) + '☆'.repeat(3 - r.stars), style(56, '#ffd84d', { stroke: '#000', strokeThickness: 6 })).setOrigin(0.5).setScale(0.2);
       this.tweens.add({ targets: st, scale: 1, duration: 500, ease: 'Back.out' });
-      const goalLine = g.gauntlet
-        ? `✔ 클리어    ${g.life ? '✔' : '✘'} ${g.hard ? '하드(생명 자동)' : `생명 ${g.lifeNeed}% 이상`}    ${g.time ? '✔' : '✘'} 쓰러진 아군 ${g.downNeed} 이하 (${g.downs})    ·    모은 별 ⭐${r.totalStars}${g.hard ? '    👑 하드 클리어' : ''}`
-        : `✔ 클리어    ${g.life ? '✔' : '✘'} 생명 ${g.lifeNeed}% 이상    ${g.time ? '✔' : '✘'} ${mm(g.par)} 안에 (걸린 시간 ${mm(r.time)})    ·    모은 별 ⭐${r.totalStars}`;
-      this.add.text(640, 150, goalLine, style(14, '#cfe8ff')).setOrigin(0.5);
-      if (r.newSpells?.length) {
-        const sp = D.config.spells.list.filter((x) => r.newSpells.includes(x.id));
-        this.add.text(640, 172, `🔮 새 마법을 배웠어요: ${sp.map((x) => `${x.icon} ${x.name}`).join(', ')} — ${sp[0].desc}`, style(15, '#d7bde2', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
-      }
-      if (false && r.joined?.length) {
-        const t = this.add.text(640, 548, `🎉 새 친구 합류: ${r.joined.map((id) => D.unitById[id]?.name).join(', ')} — 이제 지구본에서 만남`, style(17, '#9cff6b', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
-        this.tweens.add({ targets: t, scale: { from: 1, to: 1.06 }, yoyo: true, repeat: -1, duration: 700 });
-      }
-    }
-    this.add.text(640, r.clear && r.goals ? 84 : 130, `${D.stageById[d.stageId]?.name ?? ''} · ${d.gauntlet ? `${d.hard ? '하드 · ' : ''}도달 교전` : '도달 웨이브'} ${d.wave}/${d.total}${d.gauntlet && d.hard ? '' : ` · 남은 생명 ${d.life}`}${d.bossLeaked ? ' · 보스가 방어선을 넘음(보스 처치 보상 없음)' : ''}`, style(r.clear ? 13 : 18, '#dddddd')).setOrigin(0.5);
-
-    panel(this, 60, 165, 560, 375);
-    this.add.text(85, 180, `에센스 +${r.essence}`, style(24, '#ffd84d'));
-    if (r.shards) this.add.text(595, 184, `💎 유물 조각 +${r.shards}${r.shardRelics ? ` (유물 ${r.shardRelics}개가 조각으로)` : ''}`, style(15, '#e0c3ff')).setOrigin(1, 0);
-    r.lines.forEach(([t, v], i) => this.add.text(95, 222 + i * 26, `${t}`, style(16)).setData('v', v) && this.add.text(560, 222 + i * 26, `+${v}`, style(16, '#ffd84d')).setOrigin(1, 0));
-    let y = 230 + r.lines.length * 26 + 10;
-    const finds = [
-      ...r.newRecipes.map((id) => `새 키메라: ${D.recipeById[id].name}`),
-      ...r.newFlops.map((k) => `흑역사: 어설픈 ${k.split('+').map((p) => D.unitById[p]?.name).join('')}`),
-      ...r.hintsMade.map((h) => `힌트 공개: ${D.unitById[h.part].name}이(가) 들어가는 레시피`),
-      ...r.achievements.map((a) => `업적 달성: ${ACH[a]}`),
-    ];
-    const hl = this.registry.get('highlight');
-    finds.slice(0, hl ? 3 : 6).forEach((t, i) => this.add.text(95, y + i * 24, t, style(15, '#d7bde2')));
-    if (hl && this.textures.exists('highlight')) {
-      this.add.text(85, 372, `📸 명장면 · 웨이브 ${hl.wave}`, style(14, '#ffd84d'));
-      this.add.rectangle(215, 462, 248, 142, 0x000000).setStrokeStyle(2, 0xd4b06a);
-      this.add.image(215, 462, 'highlight').setDisplaySize(244, 138);
-      this.add.text(350, 420, hl.caption, style(14, '#ffffff', { wordWrap: { width: 250 } }));
+      const g = r.goals ?? {};
+      this.add.text(640, 214, `${g.clear ? '✔' : '✘'} 클리어   ${g.life ? '✔' : '✘'} 생명   ${g.time ? '✔' : '✘'} 쓰러짐 ${g.downNeed ?? 3}↓`, style(15, '#aabbcc')).setOrigin(0.5);
     }
 
-    panel(this, 660, 165, 560, 375);
-    this.add.text(685, 180, r.clear ? '종 경험치' : '패배한 판은 경험치 없음', style(22, '#ffe2b8'));
-    r.xp.slice(0, r.mvp?.length ? 6 : 10).forEach((x, i) => {
-      const up = x.after > x.before;
-      this.add.text(700, 222 + i * 28, `${D.unitById[x.id].name}  +${x.gain}`, style(16));
-      this.add.text(1190, 222 + i * 28, up ? `Lv.${x.before} → Lv.${x.after} ▲` : `Lv.${x.after}`, style(16, up ? '#58d68d' : '#aaaaaa')).setOrigin(1, 0);
-    });
-    if (r.mvp?.length) {
-      const top = r.mvp[0].dmg || 1;
-      this.add.text(700, 418, '🏆 이번 판 주인공', style(15, '#ffd84d'));
-      r.mvp.forEach((m, i) => {
-        const y = 444 + i * 22;
-        this.add.text(700, y, `${i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'} ${m.soul ? '👑' : ''}${m.name}`, style(13, m.soul ? '#ffd84d' : '#ffffff'));
-        this.add.rectangle(880, y + 8, 220 * m.dmg / top, 10, m.soul ? 0xffd84d : 0x7fd1ff).setOrigin(0, 0.5);
-        this.add.text(1190, y, `${m.dmg.toLocaleString()}`, style(12, '#cfe8ff')).setOrigin(1, 0);
-      });
-    }
-    if (r.clear) this.add.text(700, 512, '레벨마다 그 종의 피해 +2%, 레벨 5부터 10%로 성장기 등장', style(13, '#8899aa'));
+    // 받은 것 한 줄
+    const ups = (r.xp ?? []).filter((x) => x.after > x.before);
+    const got = [`💠 ${r.essence}`, r.shards ? `💎 ${r.shards}` : null, ups.length ? `⬆ ${ups.map((x) => D.unitById[x.id]?.name).slice(0, 3).join('·')}` : null, r.newRecipes?.length ? `🧬 ${r.newRecipes.map((id) => D.recipeById[id]?.name).join('·')}` : null].filter(Boolean);
+    this.add.text(640, 262, got.join('     '), style(22, '#ffe2b8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5);
 
-    const next = D.stages[D.stages.findIndex((x) => x.id === d.stageId) + 1];
-    if (r.clear && next && d.candidates?.length) {
-      const save = this.registry.get('save');
-      const stageName = { young: '어린', teen: '성장기' };
-      this.add.text(640, r.joined?.length ? 572 : 562, `${next.name}에 데려갈 동물 1마리 (성장기까지, 특성 유지)`, style(15, '#9cff6b')).setOrigin(0.5);
-      const picks = d.candidates.slice(0, 6);
-      const btns = [];
-      const mark = (k) => btns.forEach((b, i) => b.set((i === k ? '✔ ' : '') + label(picks[i])));
-      const label = (c) => `${c.white ? '흰 ' : ''}${stageName[c.stage]} ${D.unitById[c.speciesId].name}`;
-      picks.forEach((c, i) => btns.push(button(this, 640 - (picks.length - 1) * 75 + i * 150, 598, 140, 34, label(c), () => { setCarry(save, D, d.stageId, c); writeSave(this.registry.get('storage'), save); mark(i); }, { size: 13, fill: 0x2e5a3a })));
-      mark(0);
+    // 전설 새기기(1장): 이번 판에 만든 신화급·키메라
+    let y = 318;
+    if (r.legends?.length) {
+      const cur = save.legend;
+      this.add.text(640, y, `⭐ 전설로 새기기${cur ? `  (지금: ${cur.name})` : ''}`, style(17, '#ffd84d')).setOrigin(0.5);
+      const list = r.legends.slice(0, 3);
+      const btns = list.map((c, i) => button(this, 640 - (list.length - 1) * 110 + i * 220, y + 40, 200, 40, c.name, () => {
+        setLegend(save, c); writeSave(storage, save);
+        btns.forEach((b, k) => b.set((k === i ? '✔ ' : '') + list[k].name));
+        this.cameras.main.flash(200, 255, 230, 150);
+      }, { size: 15, fill: 0x4a3d14, stroke: 0xffd84d }));
+      y += 96;
     }
-    // 해금 게이지: 이번 판 점수만큼 차오름, 다 차면 새 친구 고르기
+
+    // 해금 게이지
     if (r.gauge) {
-      const saveG = this.registry.get('save');
-      drawGauge(this, 340, 540, 600, D, saveG, r.gauge, 25);
-      this.add.text(340, 562, r.gauge.parts.map(([t, v]) => `${t} +${v}`).join('  ·  '), style(12, '#aabbcc')).setDepth(25);
-      if (unlockGauge(saveG, D).pending > 0) {
-        const pb = button(this, 1060, 548, 220, 44, '🎁 새 친구 고르기', () => showUnlockPicker(this, D, saveG, this.registry.get('storage'), () => { pb.destroy(); }), { size: 17, fill: 0x2e5a3a, stroke: 0x9cff6b, depth: 30 });
+      drawGauge(this, 340, y + 20, 600, D, save, r.gauge, 25);
+      if (unlockGauge(save, D).pending > 0) {
+        const pb = button(this, 640, y + 74, 240, 46, '🎁 새 친구', () => showUnlockPicker(this, D, save, storage, () => pb.destroy()), { size: 20, fill: 0x2e5a3a, stroke: 0x9cff6b, depth: 30 });
         this.tweens.add({ targets: pb.text, scale: { from: 1, to: 1.08 }, yoyo: true, repeat: -1, duration: 600 });
       }
     }
-    button(this, 440, 650, 200, 56, '다시 하기 (R)', () => this.scene.start(d.gauntlet ? 'Gauntlet' : 'Battle', { stageId: d.stageId, hard: d.gauntlet ? !!d.hard : undefined }), { size: 20 });
-    button(this, 660, 650, 200, 56, '스테이지 선택', () => this.scene.start('StageSelect'), { size: 20, fill: 0x3a7bd5 });
-    button(this, 870, 650, 140, 56, '타이틀 (ESC)', () => this.scene.start('Title'), { size: 16 });
-    button(this, 1050, 650, 200, 56, '✨ 별자리 나무', () => this.scene.start('Talent', { back: 'StageSelect' }), { size: 18, fill: 0x3a2466, stroke: 0xc77dff });
-    this.input.keyboard.on('keydown-R', () => this.scene.start(d.gauntlet ? 'Gauntlet' : 'Battle', { stageId: d.stageId, hard: d.gauntlet ? !!d.hard : undefined }));
+
+    // 버튼 셋
+    const retry = () => this.scene.start(d.gauntlet ? 'Gauntlet' : 'Battle', { stageId: d.stageId, hard: d.gauntlet ? !!d.hard : undefined });
+    button(this, 440, 650, 200, 56, '▶ 지도', () => this.scene.start('StageSelect'), { size: 22, fill: 0x3a7bd5 });
+    button(this, 660, 650, 200, 56, '↻ 다시', retry, { size: 22 });
+    button(this, 880, 650, 200, 56, '📋 자세히', () => this.details(r), { size: 20 });
+    this.input.keyboard.on('keydown-R', retry);
     this.input.keyboard.on('keydown-ESC', () => this.scene.start('Title'));
+  }
+
+  /** 자세한 내역: 에센스 줄, 종 경험치, 주인공, 새로 찾은 것 */
+  details(r) {
+    if (this.detailObjs) { this.detailObjs.forEach((o) => o.destroy()); this.detailObjs = null; return; }
+    const D = this.D, objs = [];
+    const add = (o) => { objs.push(o.setDepth?.(4000) ?? o); return o; };
+    add(this.add.rectangle(640, 360, 1280, 720, 0x000000, 0.75).setInteractive().on('pointerdown', () => this.details(r)));
+    add(panel(this, 60, 80, 560, 520)).setDepth?.(4001);
+    add(this.add.text(85, 96, `💠 에센스 +${r.essence}`, style(22, '#ffd84d')));
+    (r.lines ?? []).forEach(([t, v], i) => { add(this.add.text(95, 136 + i * 26, t, style(16))); add(this.add.text(590, 136 + i * 26, `+${v}`, style(16, '#ffd84d')).setOrigin(1, 0)); });
+    let y = 146 + (r.lines?.length ?? 0) * 26;
+    if (r.gauge) { add(this.add.text(85, y, `🎁 해금 게이지 +${r.gauge.gain}`, style(18, '#9cff6b'))); y += 28; r.gauge.parts.forEach(([t, v]) => { add(this.add.text(95, y, `${t} +${v}`, style(14, '#cfe8ff'))); y += 22; }); }
+    const finds = [...(r.newRecipes ?? []).map((id) => `새 키메라: ${D.recipeById[id].name}`), ...(r.achievements ?? []).map((a) => `업적: ${ACH[a]}`)];
+    finds.slice(0, 5).forEach((t, i) => add(this.add.text(95, y + 10 + i * 22, t, style(14, '#d7bde2'))));
+    add(panel(this, 660, 80, 560, 520)).setDepth?.(4001);
+    add(this.add.text(685, 96, '종 경험치', style(22, '#ffe2b8')));
+    (r.xp ?? []).slice(0, 8).forEach((x, i) => {
+      const up = x.after > x.before;
+      add(this.add.text(700, 136 + i * 28, `${D.unitById[x.id]?.name}  +${x.gain}`, style(16)));
+      add(this.add.text(1190, 136 + i * 28, up ? `Lv.${x.before} → ${x.after} ▲` : `Lv.${x.after}`, style(16, up ? '#58d68d' : '#aaaaaa')).setOrigin(1, 0));
+    });
+    add(this.add.text(700, 380, 'Lv3 성장기 · Lv6 성체로 출전 (신화급은 합성만)', style(13, '#8899aa')));
+    if (r.mvp?.length) {
+      const top = r.mvp[0].dmg || 1;
+      add(this.add.text(700, 420, '🏆 주인공', style(15, '#ffd84d')));
+      r.mvp.forEach((m, i) => {
+        const yy = 448 + i * 24;
+        add(this.add.text(700, yy, `${['🥇', '🥈', '🥉'][i]} ${m.name}`, style(14)));
+        add(this.add.rectangle(880, yy + 9, 220 * m.dmg / top, 10, 0x7fd1ff).setOrigin(0, 0.5));
+      });
+    }
+    objs.forEach((o) => o.setDepth?.(Math.max(o.depth ?? 0, 4000)));
+    this.detailObjs = objs;
   }
 }

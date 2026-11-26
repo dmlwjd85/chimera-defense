@@ -91,10 +91,10 @@ export default class StageSelectScene extends Phaser.Scene {
     this.cards = cards;
     this.pick(lastOpen, cards[lastOpen]);
 
-    button(this, 120, 672, 160, 46, '← 타이틀', () => this.scene.start('Title'));
+    button(this, 120, 672, 160, 46, '← 처음', () => this.scene.start('Title'));
     const sp = data.unitById[save.soulPet];
-    button(this, 640, 672, 420, 46, sp ? `👑 소울펫 ${sp.name} · ${soulSig(data, sp.id).name}   |   덱 짜기` : '👑 소울펫을 정하고 덱 짜기', () => this.scene.start('Deck', { stageId: this.picked ?? null }), { fill: sp ? 0x4a3d14 : 0x2e5a3a, stroke: 0xffd84d, size: 16, tip: '주인공 한 마리와 약점을 메울 동료 고르기' });
-    button(this, 1120, 672, 250, 46, `✨ 별자리 나무  💎${save.shards ?? 0}`, () => this.scene.start('Talent', { back: 'StageSelect' }), { fill: 0x3a2466, stroke: 0xc77dff, size: 17, tip: '유물 조각으로 특성 찍기' });
+    button(this, 640, 672, 420, 46, sp ? `🐾 덱 · 👑${sp.name}` : '🐾 덱', () => this.scene.start('Deck', { stageId: this.picked ?? null }), { fill: sp ? 0x4a3d14 : 0x2e5a3a, stroke: 0xffd84d, size: 16, tip: '주인공 한 마리와 약점을 메울 동료 고르기' });
+    button(this, 1120, 672, 250, 46, `✨ 강화 💎${save.shards ?? 0}`, () => this.scene.start('Talent', { back: 'StageSelect' }), { fill: 0x3a2466, stroke: 0xc77dff, size: 17, tip: '유물 조각으로 특성 찍기' });
   }
 
   /** Show one stage in the detail strip. */
@@ -130,7 +130,7 @@ export default class StageSelectScene extends Phaser.Scene {
     const sp = (cfg.spells?.list ?? []).find((s) => s.stage === st.id);
     if (sp) add(this.add.text(mid, y + 106, rec?.cleared ? `🔮 배운 마법: ${sp.icon} ${sp.name}` : `🔮 깨면 배우는 마법: ${sp.icon} ${sp.name}`, style(13, '#d7bde2')));
     if (false && i > 0 && open) add(this.add.text(mid, y + 86, carry ? `데려갈 동물: ${carry.white ? '흰 ' : ''}${carry.stage === 'teen' ? '성장기' : '어린'} ${data.unitById[carry.speciesId].name}` : `데려갈 동물 없음 → 시작 골드 +${cfg.carry.fallbackGold}`, style(13, carry ? '#9cff6b' : '#aaaaaa')));
-    this.goBtn = button(this, 1130, y + 58, 190, 60, open ? '출발' : '잠김', () => this.scene.start('Gauntlet', { stageId: st.id }), { size: open ? 24 : 16, fill: open ? 0x3a7bd5 : 0x333333 });
+    this.goBtn = button(this, 1130, y + 58, 190, 60, open ? '▶ 출발' : '🔒', () => this.scene.start('Gauntlet', { stageId: st.id }), { size: open ? 24 : 16, fill: open ? 0x3a7bd5 : 0x333333 });
     this.goBtn.setEnabled(open);
   }
 }

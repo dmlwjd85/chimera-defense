@@ -21,7 +21,7 @@ export default class DeckScene extends Phaser.Scene {
     this.layer = this.add.container(0, 0);
     this.btns = [];
     this.sel = d?.sel ?? this.S.soulPet ?? this.D.config.roster.starter[0];
-    button(this, 120, 676, 180, 44, '← 세계 지도', () => this.scene.start('StageSelect'));
+    button(this, 120, 676, 180, 44, '← 지도', () => this.scene.start('StageSelect'));
     this.paint();
   }
 
@@ -47,7 +47,6 @@ export default class DeckScene extends Phaser.Scene {
     add(this.add.text(180, 156, open ? u.baseSkillDesc : '🔒 해금 게이지가 차면 고를 수 있음', style(12, '#aabbcc', { wordWrap: { width: 265 } })));
     let y = 222;
     add(this.add.text(50, y, `🔥 소울 기술 · ${sig.name}`, style(18, '#ffb27a'))); y += 28;
-    add(this.add.text(50, y, `“${sig.tale}”`, style(12, '#9fb3c8', { fontStyle: 'italic', wordWrap: { width: 390 } }))); y += 38;
     add(this.add.text(50, y, `· ${sig.desc}`, style(14, '#ffffff', { wordWrap: { width: 390 } }))); y += 40;
     add(this.add.text(50, y, `▶ ${sig.feel}`, style(14, '#9cff6b'))); y += 26;
     const aw = sc.awaken.defs[u.element];
@@ -69,13 +68,14 @@ export default class DeckScene extends Phaser.Scene {
     const st = favorState(S, D, u.id);
     const fb = button(this, 135, 624, 180, 34, st.reason === 'max' ? '정 가득 참' : `정 붙이기 · 💠${st.cost ?? cfg.favor.costs[lv] ?? '-'}`, () => { if (buyFavor(S, D, u.id).ok) { this.save(); this.paint(); } }, { size: 14, fill: 0x5a2a4a, stroke: 0xff9fbf, tip: `가진 에센스 ${S.essence}` });
     fb.setEnabled(st.ok && open);
-    const sb = button(this, 345, 624, 200, 34, isSoul ? '👑 지금 소울펫' : '소울펫으로 삼기', () => { S.soulPet = u.id; if (!deck.includes(u.id)) S.deck = [u.id, ...deck.filter((x) => x !== u.id)].slice(0, sc.deckSize); else S.deck = deck; this.save(); this.paint(); }, { size: 15, fill: isSoul ? 0x6b5a1a : 0x2e5a3a, stroke: 0xffd84d });
+    const sb = button(this, 345, 624, 200, 34, isSoul ? '👑 소울펫' : '👑 지정', () => { S.soulPet = u.id; if (!deck.includes(u.id)) S.deck = [u.id, ...deck.filter((x) => x !== u.id)].slice(0, sc.deckSize); else S.deck = deck; this.save(); this.paint(); }, { size: 15, fill: isSoul ? 0x6b5a1a : 0x2e5a3a, stroke: 0xffd84d });
     sb.setEnabled(open && !isSoul);
     this.btns.push(fb, sb);
 
     // ---- right: roster grid ----
     g.fillStyle(0x0d141d, 0.92).fillRoundedRect(476, 76, 774, 572, 16).lineStyle(2, 0xd4b06a, 0.8).strokeRoundedRect(476, 76, 774, 572, 16);
-    add(this.add.text(496, 88, `덱 ${deck.length}/${sc.deckSize}  — 눌러서 살펴보고, 아래 버튼으로 넣고 빼기`, style(14, '#ffe2b8')));
+    add(this.add.text(496, 88, `덱 ${deck.length}/${sc.deckSize}${S.legend ? `   ⭐ 전설 ${S.legend.name} (한 칸 차지, 성체로 출전)` : ''}`, style(14, '#ffe2b8')));
+    if (S.legend) this.btns.push(button(this, 1180, 96, 110, 26, '⭐ 내리기', () => { S.legend = null; this.save(); this.paint(); }, { size: 12, fill: 0x4a3d14 }));
     order.forEach((id, i) => {
       const a = D.unitById[id]; if (!a) return;
       const cx = 496 + (i % 5) * 150, cy = 116 + Math.floor(i / 5) * 138, has = unlocked.includes(id), inDeck = deck.includes(id), soul = S.soulPet === id;
@@ -103,12 +103,12 @@ export default class DeckScene extends Phaser.Scene {
       add(this.add.text(496, 612, `${u.name}: ${f.label === 'good' ? '▲ 이 판에 좋음' : f.label === 'bad' ? '▼ 이 판엔 별로' : '보통'}${f.why.length ? '  · ' + f.why.slice(0, 3).join('  · ') : ''}`, style(12, f.label === 'good' ? '#7CFC9A' : f.label === 'bad' ? '#ff8a80' : '#aabbcc', { wordWrap: { width: 520 } })));
     }
     const inDeck = deck.includes(u.id), full = deck.length >= sc.deckSize;
-    const tb = button(this, 1130, 604, 200, 40, isSoul ? '소울펫은 못 뺌' : inDeck ? '덱에서 빼기' : full ? '덱이 가득 참' : '덱에 넣기', () => {
+    const tb = button(this, 1130, 604, 200, 40, isSoul ? '👑 소울펫' : inDeck ? '➖ 빼기' : full ? '가득 참' : '➕ 넣기', () => {
       S.deck = inDeck ? deck.filter((x) => x !== u.id) : [...deck, u.id];
       this.save(); this.paint();
     }, { size: 15, fill: inDeck ? 0x4a2a2a : 0x2a4a6a });
     tb.setEnabled(open && !isSoul && (inDeck ? deck.length > 3 : !full));
     this.btns.push(tb);
-    if (this.stageId) this.btns.push(button(this, 1140, 676, 200, 44, '이 덱으로 출발', () => this.scene.start('Gauntlet', { stageId: this.stageId }), { size: 17, fill: 0x3a7bd5 }));
+    if (this.stageId) this.btns.push(button(this, 1140, 676, 200, 44, '▶ 출발', () => this.scene.start('Gauntlet', { stageId: this.stageId }), { size: 17, fill: 0x3a7bd5 }));
   }
 }

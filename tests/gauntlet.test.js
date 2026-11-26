@@ -139,3 +139,23 @@ test('하드: 보상 하나는 막힘, 노멀 생명은 2', () => {
   if (st.phase === 'regroup') { assert.ok(st.offer.dropped); assert.equal(takeReward(st, D, st.offer.dropped, st.offer.dropped === 'food' ? st.field[0].uid : st.offer.dropped === 'relic' ? st.offer.relic?.[0] : 0).ok, false); }
   assert.equal(createGauntlet(D, 'forest-1', 1, {}).maxLife, 2);
 });
+
+test('금화 부활·놓아주기, 앞줄은 브루저만, 진형 붕괴, 레벨로 출전 단계, 전설 카드', async () => {
+  const { reviveUnit, releaseUnit, reviveCost, baseStyle } = await import('../src/logic/gauntlet.js');
+  const st = createGauntlet(D, 'forest-1', 31, { levels: { dog: 6, rabbit: 3 }, legend: { kind: 'base', speciesId: 'tiger', traits: [], name: '산군' } });
+  const dog = st.field.find((u) => u.speciesId === 'dog'), rabbit = st.field.find((u) => u.speciesId === 'rabbit');
+  assert.equal(dog.stage, 'adult'); assert.equal(rabbit.stage, 'teen');
+  assert.ok(st.field.some((u) => u.legend && u.speciesId === 'tiger' && u.stage === 'adult'));
+  for (const u of st.field) if (u.seat < 3 && baseStyle(u) !== 'bruiser') assert.ok(!st.field.some((x) => baseStyle(x) === 'bruiser' && x.seat >= 3), '브루저가 뒷줄에 밀려 있지 않음');
+  fightOut(st);
+  const v = st.field[0]; v.resting = true; st.gold = 100;
+  const cost = reviveCost(st, D);
+  assert.ok(reviveUnit(st, D, v.uid).ok); assert.equal(st.gold, 100 - cost); assert.ok(reviveCost(st, D) > cost, '부활할수록 비쌈');
+  const n = st.field.length; assert.ok(releaseUnit(st, D, st.field[1].uid).ok); assert.equal(st.field.length, n - 1);
+  // 진형 붕괴
+  const st2 = createGauntlet(D, 'forest-1', 33, {});
+  for (let i = 0; i < 30; i++) tickGauntlet(st2, D, 0.1);
+  for (const u of st2.field) if (baseStyle(u) === 'bruiser') { u.hp = 0; u.down = true; }
+  st2.events.length = 0; tickGauntlet(st2, D, 0.1);
+  if (st2.phase === 'fight') assert.ok(st2.collapse.u);
+});

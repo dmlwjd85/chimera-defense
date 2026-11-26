@@ -17,10 +17,10 @@ export default class TitleScene extends Phaser.Scene {
     showDebug(this, null);
     this.add.text(640, 240, '지구의 심장을 지켜라 — 동화와 신화 속 짐승들의 대연합', style(22, '#e8d9b8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5);
     const go = () => this.scene.start(save.openingSeen ? 'StageSelect' : 'Opening', { next: 'StageSelect' });
-    button(this, 640, 350, 260, 64, '시작', go, { size: 26, fill: 0x3a7bd5 });
+    button(this, 640, 350, 260, 64, '▶ 시작', go, { size: 26, fill: 0x3a7bd5 });
     button(this, 900, 350, 150, 48, '📖 이야기', () => this.scene.start('Opening', { next: 'Title' }), { size: 16, tip: '오프닝 다시 보기' });
-    button(this, 640, 430, 260, 54, '도감', () => this.scene.start('Codex'), { size: 20 });
-    button(this, 640, 500, 260, 54, '해금', () => this.scene.start('Unlock'), { size: 20 });
+    button(this, 640, 430, 260, 54, '📚 도감', () => this.scene.start('Codex'), { size: 20 });
+    button(this, 640, 500, 260, 54, '✨ 강화', () => this.scene.start('Unlock'), { size: 20 });
     // 크롬에서 설치할 수 있을 때만 보이는 '앱으로 설치' 버튼
     const inst = button(this, 640, 570, 260, 48, '📲 앱으로 설치', async () => {
       const p = window.__installPrompt; if (!p) return;

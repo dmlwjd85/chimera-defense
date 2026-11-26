@@ -104,7 +104,8 @@ export default class DeckScene extends Phaser.Scene {
     add(this.add.text(496, 540, '덱 점검', style(14, '#ffe2b8')));
     cover.forEach(([name, ok], i) => add(this.add.text(566 + i * 112, 540, `${ok ? '✔' : '✘'} ${name}`, style(13, ok ? '#7CFC9A' : '#ff8a80'))));
     const rec = D.recipes.filter((r) => r.parts.every((p) => deck.includes(p)));
-    add(this.add.text(496, 566, `만들 수 있는 키메라: ${rec.length ? rec.map((r) => (S.codex.recipes.includes(r.id) ? r.name : '???')).join(', ') : '없음'}`, style(13, '#d7bde2')));
+    const story = rec.filter((r) => !r.auto), autoN = rec.length - story.length;
+    add(this.add.text(496, 566, `🧬 만들 수 있는 키메라: ${story.length ? story.map((r) => (S.codex.recipes.includes(r.id) ? r.name : '???')).join(', ') : '이야기 조합 없음'}${autoN ? `  + 같은 강 짝 ${autoN}쌍` : ''}`, style(13, '#d7bde2')));
     if (stage) {
       const c = cfg.climates[stage.climate];
       add(this.add.text(496, 590, `${stage.name} · ${c.icon} ${c.name} · ${stageProfile(stage, D).tags.join('  ')}`, style(13, '#cfe8ff')));

@@ -245,6 +245,7 @@ export function settleRun(save, state, data) {
   addUniq(save.codex.bonds, state.finds.bonds);
   addUniq(save.codex.enemies, [...(state.seenEnemies ?? [])]);
   addUniq((save.codex.spirits ??= []), state.finds.spirits ?? []);
+  addUniq((save.codex.flips ??= []), state.finds.flips ?? []);   // 각성·신화급으로 뒤집힌 약점(도감 특성 탭)
   const ach = [];
   const give = (id) => { if (!save.achievements.includes(id)) { save.achievements.push(id); ach.push(id); } };
   if (state.summonCount > 0) give('firstSummon');

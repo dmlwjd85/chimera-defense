@@ -15,7 +15,8 @@ test('every trait and flipped trait has a fairy-tale line', () => {
 test('every species skill, passive, recipe, bond and relic has a line', () => {
   for (const u of D.units) for (const k of ['base', 'adult', 'spirit']) assert.equal(T.skills[`${u.id}_${k}`]?.length, 2, `${u.id}_${k}`);
   for (const id of Object.keys(D.lore.passives)) assert.ok(T.passives[id], id);
-  for (const r of D.recipes) assert.ok(T.recipes[r.id], r.id);
+  for (const r of D.recipes.filter((x) => !x.auto)) assert.ok(T.recipes[r.id], r.id);
+  for (const r of D.recipes.filter((x) => x.auto)) assert.ok(r.codex && r.codex.length <= 48, r.id);
   for (const b of D.lore.bonds) assert.ok(T.bonds[b.id], b.id);
   for (const r of D.relicCfg.relics) assert.ok(T.relics[r.id], r.id);
 });

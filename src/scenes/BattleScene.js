@@ -1796,7 +1796,7 @@ export default class BattleScene extends Phaser.Scene {
         case 'bossSummon': { const ve = this.enemyViews.get(ev.eid); if (ve?.rig?.dot) ve.rig.inst.play('skill'); this.floatText(640, PATH_Y - 110, `${data.enemyById[this.state.enemies.find((x) => x.eid === ev.eid)?.id]?.name ?? '보스'}이(가) 졸개를 불렀다`, '#aab7b8'); if (ve) { this.fx.burst('puff', ve.lastX, ve.lastY, 10, 0x6c5a8a); this.fx.ring(ve.lastX, ve.lastY, 'purple', 1.5); } sfx('bossSummon'); break; }
         case 'merge': {
           const [mx, my] = unitPos(ev.uid);
-          if (ev.kind === 'weak') { this.toast('합성 실패… 적들이 멈춰서 구경함', '#cccccc'); this.fx.weak(mx, my); sfx('weak'); }
+          if (ev.kind === 'weak') { this.toast('🧬 돌연변이 슬라임 탄생… 적들이 멈춰서 구경함', '#c9f27a'); this.fx.weak(mx, my); sfx('weak'); }
           if (ev.kind === 'chimera') { this.cameras.main.flash(250, 180, 120, 255); sfx('chimera'); this.fx.chimera(mx, my); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '키메라'} 탄생!`, '#d7bde2', '키메라 합성 성공'); }
           // 진화 빛은 변신(startMorph)이 모았다가 터지는 순간(0.45초)에 맞춰 한 번에. 화면 전체 번쩍임은 색이 확 바뀌어 보여서 뺌(2026-11-26)
           if (ev.kind === 'evolve') { this.time.delayedCall(450, () => this.fx.evolve(mx, my, false)); sfx('evolve'); }

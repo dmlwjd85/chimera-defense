@@ -307,3 +307,25 @@ test('덱 대결: 코드 주고받기(틀린 글자 잡기), 해금한 동물만
   G.autoRun(st, dd.data);
   assert.equal(st.phase, 'ended'); assert.ok(st.wins === 2 || st.losses === 2);
 });
+
+test('각성하면 약점 하나가 뒤집히고 도감(flips)에 남음 · 정비 합성은 염색체 굴림', async () => {
+  const { flipOneWeak, mergeOddsG } = await import('../src/logic/gauntlet.js');
+  const { makeUnit } = await import('../src/logic/battle.js');
+  const s = createGauntlet(D, 'forest-1', 3, { prelude: true });
+  const u = s.field[0];
+  u.traits = [{ sp: 'bear', id: 'bear_w1', kind: 'weak', flipped: false, locked: false }];
+  const f = flipOneWeak(s, D, u);
+  assert.equal(f.from, D.traits.bear.weak[0].name);
+  assert.ok(u.traits[0].flipped && s.finds.flips.includes('bear_w1'));
+  assert.equal(flipOneWeak(s, D, u), null, '다 뒤집히면 더 없음');
+  const save = defaultSave(D);
+  settleRun(save, s, D);
+  assert.ok(save.codex.flips.includes('bear_w1'));
+  // 정비 칸에서 곰+호랑이: 46%, 실패하면 슬라임
+  const mk = (sp) => makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'adult', parts: null, traits: [] });
+  s.bench[0] = mk('tiger'); s.bench[1] = mk('bear');
+  assert.deepEqual(mergeOddsG(s, D, { where: 'bench', index: 0 }, { where: 'bench', index: 1 }), { kind: 'chimera', chance: 46, cross: false });
+  s.rng = () => 0.99;
+  const r = moveAnimal(s, D, { where: 'bench', index: 0 }, { where: 'bench', index: 1 });
+  assert.deepEqual([r.kind, s.bench[1].kind], ['weak', 'weak']);
+});

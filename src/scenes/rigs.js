@@ -80,6 +80,16 @@ const ART_SPIRITS = new Set([]); // 리코스 그림 한 장으로 움직일 신
 /** Rig instance + view for a unit, inside `parent` container; null when there is no rig (weak chimera). */
 export function unitRig(scene, unit, parent, scale = 0.17) {
   if (unit.kind === 'weak') return null;
+  // 자동 키메라(같은 강 짝, 전용 그림 전): 힘센 쪽 성체 도트에 다른 쪽 색을 입힘 — 이미지 작업창 주문서에 정식 그림 올림
+  if (unit.kind === 'chimera' && unit.stats?.look) {
+    const ld = dotDataFor(scene, unit.stats.look, 'adult');
+    if (ld) {
+      const inst = new DotInstance(ld, { stage: 'adult', scale: scale * 1.08 });
+      const view = new DotView(scene, inst, { parent, px: DOT_PX * ((scale * 1.08) / 0.22) });
+      view.tint = unit.stats.lookTint;
+      return { inst, view, dot: true };
+    }
+  }
   // 도트 그림이 있는 종은 도트로(전투 기본 배율 0.22일 때 도트 1칸 = 3px). 없는 종은 아래 기존 리그 그대로.
   const dot = dotDataFor(scene, unit.speciesId, unit.stage);
   if (dot) {

@@ -41,8 +41,8 @@ test('same-species factor', () => {
   assert.strictEqual(sameSpeciesFactor('fox', null, D), 1);
   const map3 = new Map([['fox', 3]]);
   assert.strictEqual(sameSpeciesFactor('fox', map3, D), Math.min(D.config.sameSpecies.max ?? Infinity, 1 + 3 * D.config.sameSpecies.perUnit));
-  const map2c = new Map([['crow', 2]]);
-  assert.strictEqual(sameSpeciesFactor('fox', map2c, D), Math.min(D.config.sameSpecies.max ?? Infinity, 1 + 2 * D.config.sameSpecies.partnerPerUnit));
+  const map2c = new Map([['bighorn', 2]]);
+  assert.strictEqual(sameSpeciesFactor('rabbit', map2c, D), Math.min(D.config.sameSpecies.max ?? Infinity, 1 + 2 * D.config.sameSpecies.partnerPerUnit));
   assert.ok(sameSpeciesFactor('fox', new Map([['fox', 20]]), D) <= (D.config.sameSpecies.max ?? Infinity), '쏠림 상한');
   assert.strictEqual(sameSpeciesFactor('bear', map3, D), 1);
   const planMap = new Map([['fox', 3]]);
@@ -51,11 +51,11 @@ test('same-species factor', () => {
 
 test('chances still sum to 1 and owned species rise', () => {
   const a = unitChances(ctx, 5, D);
-  const b = unitChances(ctx, 5, D, new Map([['fox', 2]]));
+  const b = unitChances(ctx, 5, D, new Map([['rabbit', 2]]));
   assert.ok(Math.abs(Object.values(a).reduce((s, v) => s + v, 0) - 1) < 1e-9, 'a does not sum to 1');
   assert.ok(Math.abs(Object.values(b).reduce((s, v) => s + v, 0) - 1) < 1e-9, 'b does not sum to 1');
-  assert.ok(b.fox > a.fox, `fox chance did not increase: ${a.fox} vs ${b.fox}`);
-  assert.ok(b.crow > a.crow, `crow chance did not increase: ${a.crow} vs ${b.crow}`);
+  assert.ok(b.rabbit > a.rabbit, `rabbit chance did not increase: ${a.rabbit} vs ${b.rabbit}`);
+  assert.ok(b.bighorn > a.bighorn, `bighorn (jackalope partner) chance did not increase: ${a.bighorn} vs ${b.bighorn}`);
   assert.ok(b.bear < a.bear, `bear chance should decrease: ${a.bear} vs ${b.bear}`);
 });
 

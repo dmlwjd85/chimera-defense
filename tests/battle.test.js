@@ -41,12 +41,19 @@ test('merges update bench and discoveries', () => {
   s.bench[0] = add(s, 'fox', 'young'); s.bench[1] = add(s, 'fox', 'young');
   const r = B.merge(s, D, { where: 'bench', index: 0 }, { where: 'bench', index: 1 });
   assert.deepEqual([r.kind, s.bench[1].stage, s.bench.filter(Boolean).length], ['evolve', 'teen', 1]);
-  s.bench[2] = add(s, 'fox', 'adult'); s.bench[3] = add(s, 'crow', 'adult');
+  s.rng = () => 0;   // 염색체 굴림 성공
+  s.bench[2] = add(s, 'rabbit', 'adult'); s.bench[3] = add(s, 'bighorn', 'adult');
   B.merge(s, D, { where: 'bench', index: 2 }, { where: 'bench', index: 3 });
-  assert.ok(s.known.recipes.has('cheese_thief'));
-  s.bench[2] = add(s, 'fox', 'adult'); s.bench[4] = add(s, 'bear', 'adult');
-  assert.equal(B.merge(s, D, { where: 'bench', index: 2 }, { where: 'bench', index: 4 }).kind, 'weak');
-  assert.ok(s.known.failed.has('bear+fox'));
+  assert.ok(s.known.recipes.has('jackalope'));
+  s.bench[2] = add(s, 'fox', 'adult'); s.bench[4] = add(s, 'crow', 'adult');
+  const cross = B.merge(s, D, { where: 'bench', index: 2 }, { where: 'bench', index: 4 });
+  assert.deepEqual([cross.kind, cross.geneFail], ['weak', false], '강이 다르면 굴림 없이 슬라임');
+  assert.ok(s.known.failed.has('crow+fox'));
+  s.rng = () => 0.99;   // 곰(74)+호랑이(38): 46% → 실패
+  s.bench[2] = add(s, 'bear', 'adult'); s.bench[5] = add(s, 'tiger', 'adult');
+  const flop = B.merge(s, D, { where: 'bench', index: 2 }, { where: 'bench', index: 5 });
+  assert.deepEqual([flop.kind, flop.geneFail, flop.chance], ['weak', true, 46]);
+  assert.ok(flop.unit.stats.name.endsWith('슬라임'));
 });
 
 test('empty field leaks wave 1, then lose at low life', () => {

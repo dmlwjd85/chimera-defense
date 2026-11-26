@@ -6,6 +6,7 @@ import { summonCost, waveReward, sellPrice, skipGold } from './economy.js';
 import { newRollCtx, rollSummon, advanceRollCtx, ownedSpecies } from './roulette.js';
 import { unitStats } from './stats.js';
 import { mergeKind, mergeUnits } from './merge.js';
+import { genesOf, geneChance } from './genes.js';
 import { buildWave, makeEnemy } from './waves.js';
 import { combatTick, onWaveStart, onWaveEnd } from './combat.js';
 import { eco, rollOffer, chooseRelic } from './relics.js';
@@ -268,9 +269,12 @@ export function merge(state, data, fromRef, toRef) {
   if (!from || !to) return fail('notFound');
   if (from === to) return fail('same');
   if (from.down || to.down) return fail('down');
-  const kind = mergeKind(from, to, data);
+  let kind = mergeKind(from, to, data);
   if (kind === 'swap') return swapUnits(state, fromRef, toRef, from, to, data.config);
-  const inst = mergeUnits(from, to, data, 0);
+  // 염색체 굴림: 같은 강이어도 염색체 수가 많이 다르면 실패 → 돌연변이 슬라임
+  let chance = null, geneFail = false;
+  if (kind === 'chimera' && genesOf(data)) { chance = geneChance(from.speciesId, to.speciesId, data); if (state.rng() * 100 >= chance) { kind = 'weak'; geneFail = true; } }
+  const inst = mergeUnits(from, to, data, 0, kind);
   if (kind === 'evolve') inst.traits = inheritEvolve(to.traits, from.traits);
   else if (kind === 'spirit') inst.traits = inheritSpirit(to.traits, from.traits);
   else if (kind === 'chimera') inst.traits = inheritChimera(to.traits, from.traits);
@@ -289,7 +293,10 @@ export function merge(state, data, fromRef, toRef) {
     state.known.recipes.add(unit.speciesId);
   }
   if (kind === 'spirit') { state.madeSpirit = true; (state.finds.spirits ??= []).push(unit.speciesId); }
+  // 뒤집힌 약점(신화급·역전 슬라임) → 도감 특성 탭에 '각성하면'으로 기록
+  for (const t of unit.traits ?? []) if (t.kind === 'weak' && t.flipped) (state.finds.flips ??= []).includes(t.id) || state.finds.flips.push(t.id);
   if (kind === 'weak') {
+    unit.geneFail = geneFail;
     if (!state.known.failed.has(pairKey(...unit.parts))) state.finds.flops.push(pairKey(...unit.parts));
     state.known.failed.add(pairKey(...unit.parts));
     if (onField) {
@@ -298,8 +305,8 @@ export function merge(state, data, fromRef, toRef) {
       }
     }
   }
-  state.events.push({ type: 'merge', kind, uid: unit.uid });
-  return { ok: true, kind, unit };
+  state.events.push({ type: 'merge', kind, uid: unit.uid, chance, geneFail });
+  return { ok: true, kind, unit, chance, geneFail };
 }
 
 /** Swap two units (bench or field) without merging. */

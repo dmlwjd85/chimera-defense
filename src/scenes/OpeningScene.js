@@ -7,24 +7,26 @@ import { Globe } from './globe.js';
 import { sfx, unlockAudio } from './sfx.js';
 import { FX } from './fx.js';
 
-/** 오프닝: 동화책을 넘기듯 일곱 장면. 아무 데나 누르면 다음, '건너뛰기'로 바로 시작. */
+/** 오프닝: 장면마다 그림 한 장(story.json의 bg) + 짧은 자막. 그림이 없으면 예전 코드 장면(scene_<키>)으로 그림.
+ *  아무 데나 누르면 다음, '건너뛰기'로 바로 시작. */
 export default class OpeningScene extends Phaser.Scene {
   constructor() { super('Opening'); }
 
   create(d) {
     this.next = d?.next ?? 'StageSelect';
+    // 같은 장면을 다시 열 때(📖 이야기 두 번째) 지난번 '끝남'·글자 찍기 상태가 남아 있으면 마지막 장에서 멈춤 → 처음 상태로
+    this.done = false; this.typing = null;
     this.D = buildData(this.registry.get('raw'));
     this.story = this.registry.get('raw').story;
     this.cameras.main.setBackgroundColor('#05080c');
     this.fx = new FX(this);
     this.layer = this.add.container(0, 0);
     this.rigs = [];
-    // storybook frame and caption band
-    const band = this.add.graphics().setDepth(50);
-    band.fillGradientStyle(0x000000, 0x000000, 0x000000, 0x000000, 0, 0, 0.85, 0.85).fillRect(0, 470, 1280, 250);
-    band.lineStyle(2, 0xd4b06a, 0.7).lineBetween(140, 560, 1140, 560);
-    this.caption = this.add.text(640, 625, '', style(24, '#fff4dc', { align: 'center', lineSpacing: 10, stroke: '#1a1006', strokeThickness: 4, wordWrap: { width: 1080 } })).setOrigin(0.5).setDepth(51);
-    this.pageNo = this.add.text(640, 548, '', style(13, '#d4b06a')).setOrigin(0.5).setDepth(51);
+    // 자막 띠: 화면 아래 26%(그림을 덜 가림). 장마다 cap: 'right'면 오른쪽 아래 절반에만
+    this.band = this.add.graphics().setDepth(50);
+    this.caption = this.add.text(640, 655, '', style(26, '#fff4dc', { align: 'center', lineSpacing: 10, stroke: '#1a1006', strokeThickness: 4, wordWrap: { width: 1080 } })).setOrigin(0.5).setDepth(51);
+    this.pageNo = this.add.text(640, 584, '', style(13, '#d4b06a')).setOrigin(0.5).setDepth(51);
+    this.captionAt('bottom');
     this.hint = this.add.text(1240, 700, '누르면 다음 ▶', style(13, '#cfd8dc')).setOrigin(1, 0.5).setDepth(51);
     this.tweens.add({ targets: this.hint, alpha: 0.35, duration: 700, yoyo: true, repeat: -1 });
     button(this, 1180, 36, 140, 40, '건너뛰기 ⏭', () => this.finish(), { size: 15, depth: 60 });
@@ -46,11 +48,43 @@ export default class OpeningScene extends Phaser.Scene {
     this.cameras.main.fadeOut(220, 0, 0, 0);
     this.cameras.main.once('camerafadeoutcomplete', () => {
       this.clear();
-      this[`scene_${pg.scene}`]?.();
+      this.captionAt(pg.cap === 'right' ? 'right' : 'bottom');
+      if (!this.art(pg)) this[`scene_${pg.scene}`]?.();
       this.cameras.main.fadeIn(320, 0, 0, 0);
       this.type(pg.text);
       sfx(pg.scene === 'crack' || pg.scene === 'king' ? 'bossSummon' : pg.scene === 'globe' ? 'reveal' : 'note');
     });
+  }
+
+  /** 자막 띠 자리: bottom = 아래 26% 전체, right = 오른쪽 아래 절반(왼쪽 아래 인물을 가리지 않게) */
+  captionAt(where) {
+    const right = where === 'right';
+    const x0 = right ? 640 : 0, cx = right ? 960 : 640, y0 = right ? 475 : 533, line = right ? 540 : 601;
+    this.band.clear();
+    this.band.fillGradientStyle(0x08040e, 0x08040e, 0x08040e, 0x08040e, 0, 0, 0.85, 0.85).fillRect(x0, y0, 1280 - x0, 720 - y0);
+    this.band.lineStyle(2, 0xd4b06a, 0.7).lineBetween(cx - (right ? 190 : 380), line, cx + (right ? 190 : 380), line);
+    this.pageNo.setPosition(cx, line - 14);
+    this.caption.setPosition(cx, right ? 620 : 655).setWordWrapWidth(right ? 600 : 1080);
+  }
+
+  /** 장면 그림 한 장을 꽉 차게 깔고 천천히 확대(켄 번스) + 장면별 가벼운 덧효과. 그림이 없으면 false → 예전 코드 장면 */
+  art(pg) {
+    if (!pg.bg || !this.textures.exists(pg.bg)) return false;
+    const im = this.add.image(640, 360, pg.bg).setDisplaySize(1280, 720);
+    this.layer.add(im);
+    this.tweens.add({ targets: im, scale: im.scale * 1.05, duration: 9000, ease: 'Sine.inOut' });
+    const fx = (k) => this.textures.exists(k);
+    const k = pg.scene;
+    if (k === 'core') { const beat = () => this.fx.ring(640, 300, 0xffd36b, 2, 900); beat(); this.extra.push(this.time.addEvent({ delay: 1100, loop: true, callback: beat })); }
+    if (k === 'crack') {
+      this.cameras.main.shake(500, 0.006);
+      if (fx('fx-spark')) this.extra.push(this.add.particles(0, 0, 'fx-spark', { x: { min: 520, max: 760 }, y: 520, speedY: { min: -160, max: -50 }, lifespan: 1600, frequency: 70, scale: { start: 0.5, end: 0 }, tint: 0xb388ff, blendMode: 'ADD' }).setDepth(5));
+    }
+    if (k === 'king' && fx('fx-snow')) this.extra.push(this.add.particles(0, 0, 'fx-snow', { x: { min: 0, max: 1280 }, y: -10, speedY: { min: 30, max: 70 }, speedX: { min: -20, max: 10 }, lifespan: 9000, frequency: 140, scale: { min: 0.2, max: 0.5 }, alpha: 0.6 }).setDepth(5));
+    if (k === 'globe') this.time.delayedCall(900, () => { if (this.done) return; this.fx.burst('star', 640, 230, 16, 0xfff6a0); this.fx.ring(640, 230, 0xfff1a8, 3, 600); });
+    if ((k === 'myth' || k === 'unite' || k === 'home') && fx('fx-spark')) this.extra.push(this.add.particles(0, 0, 'fx-spark', { x: { min: 0, max: 1280 }, y: 560, speedY: { min: -60, max: -20 }, speedX: { min: -8, max: 8 }, lifespan: 7000, frequency: k === 'home' ? 600 : 220, scale: { start: 0.35, end: 0 }, tint: 0xffc04d, alpha: { start: 0.8, end: 0 }, blendMode: 'ADD' }).setDepth(5));
+    if (k === 'call') { const flash = () => this.cameras.main.flash(160, 190, 150, 255); this.time.delayedCall(500, flash); this.extra.push(this.time.addEvent({ delay: 3200, loop: true, callback: flash })); }
+    return true;
   }
 
   type(text) {
@@ -149,6 +183,15 @@ export default class OpeningScene extends Phaser.Scene {
     this.globe.g.setDepth(3); this.globe.over.setDepth(4);
     this.tweens.add({ targets: this.globe, lon: this.globe.lon + 720, duration: 4200, ease: 'Cubic.inOut' });
     this.time.delayedCall(4200, () => { if (!this.globe) return; this.globe.highlight = 'eurasia'; this.fx.burst('star', 640, 260, 20, 0xfff6a0); this.fx.ring(640, 260, 0xfff1a8, 3, 600); });
+  }
+
+  /** 세 수호자(웅녀·산군·구미호)가 금빛 속에서 깨어남 — 그림이 없을 때만 쓰는 코드 장면 */
+  scene_myth() {
+    this.bg('bg-forest-3', 0x554466, 0.7);
+    const glow = this.add.circle(640, 300, 200, 0xffd84d, 0.18).setBlendMode('ADD'); this.layer.add(glow);
+    this.tweens.add({ targets: glow, scale: 1.2, duration: 1100, yoyo: true, repeat: -1 });
+    [['fox', 400, 420], ['tiger', 640, 400, { delay: 200 }], ['bear', 880, 420, { delay: 400, flip: true }]].forEach(([id, x, y, o]) => this.beast(id, x, y, 0.4, o));
+    this.time.delayedCall(900, () => this.fx.burst('rise', 640, 420, 24, 0xffd84d));
   }
 
   scene_unite() {

@@ -102,6 +102,6 @@ export default class DeckScene extends Phaser.Scene {
     }, { size: 15, fill: inDeck ? 0x4a2a2a : 0x2a4a6a });
     tb.setEnabled(open && !isSoul && (inDeck ? deck.length > 3 : !full));
     this.btns.push(tb);
-    if (this.stageId) this.btns.push(button(this, 1140, 676, 200, 44, '이 덱으로 출발', () => this.scene.start('Battle', { stageId: this.stageId }), { size: 17, fill: 0x3a7bd5 }));
+    if (this.stageId) this.btns.push(button(this, 1140, 676, 200, 44, '이 덱으로 출발', () => this.scene.start('Gauntlet', { stageId: this.stageId }), { size: 17, fill: 0x3a7bd5 }));
   }
 }

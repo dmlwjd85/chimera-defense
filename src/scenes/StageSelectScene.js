@@ -128,7 +128,7 @@ export default class StageSelectScene extends Phaser.Scene {
     const sp = (cfg.spells?.list ?? []).find((s) => s.stage === st.id);
     if (sp) add(this.add.text(mid, y + 106, rec?.cleared ? `🔮 배운 마법: ${sp.icon} ${sp.name}` : `🔮 깨면 배우는 마법: ${sp.icon} ${sp.name}`, style(13, '#d7bde2')));
     if (i > 0 && open) add(this.add.text(mid, y + 86, carry ? `데려갈 동물: ${carry.white ? '흰 ' : ''}${carry.stage === 'teen' ? '성장기' : '어린'} ${data.unitById[carry.speciesId].name}` : `데려갈 동물 없음 → 시작 골드 +${cfg.carry.fallbackGold}`, style(13, carry ? '#9cff6b' : '#aaaaaa')));
-    this.goBtn = button(this, 1130, y + 58, 190, 60, open ? '출발' : '잠김', () => this.scene.start('Battle', { stageId: st.id }), { size: open ? 24 : 16, fill: open ? 0x3a7bd5 : 0x333333 });
+    this.goBtn = button(this, 1130, y + 58, 190, 60, open ? '출발' : '잠김', () => this.scene.start('Gauntlet', { stageId: st.id }), { size: open ? 24 : 16, fill: open ? 0x3a7bd5 : 0x333333 });
     this.goBtn.setEnabled(open);
   }
 }

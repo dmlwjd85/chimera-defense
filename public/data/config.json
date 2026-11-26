@@ -1477,5 +1477,6 @@
     "spiritBonus": 50
    }
   }
- }
+ },
+  "gauntlet": {"note": "2026-11-26 연전: 지도 이동 없이 덱이 교전 8번을 연달아 치름(마지막 보스). 교전은 실시간 자동(행동 게이지), 동시 공격은 stagger초씩 엇갈림. 이기면 정비(체력 healPct% 회복, 보상 3개 중 1개, 자리 바꾸기·합성, 가장 많이 때린 동물 한 단계 성장). 노멀 생명 life, 하드 한 번 지면 끝(에센스 hardEssence배, 유물 조각 hardShards배). 적 숫자는 길 디펜스용이라 squash 제곱으로 눌러 씀. 봇(node tools/gauntlet-sim.mjs 16): 노멀 1·2·3·4·5·6 = 100·75·100·50·63·56%, 하드 1 = 63%", "encounters": 8, "squadMin": 3, "squadMax": 6, "bossSquad": 3, "timeLimit": 60, "healPct": 30, "restBackPct": 50, "lossRevive": 80, "life": 5, "stagger": 0.15, "enemyHp": 20, "enemyAtk": 1.5, "bossHp": 4, "bossAtk": 1, "bossBase": 6000, "growth": 0.15, "atkGrowth": 0.12, "squash": 0.55, "stageHpPow": 0.5, "stageAtkPow": 0.4, "summonCap": 2, "minionHp": 0.5, "summonerHp": 0.7, "healMult": 0.3, "bossTune": {"boss_bone": {"hp": 0.45, "atk": 0.55}}, "backMelee": 0.5, "frontRanged": 0.75, "taunt": 2, "manaRegen": 0.6, "mvpGrow": true, "hardEssence": 1.5, "hardShards": 2, "lowStars": 3}
 }

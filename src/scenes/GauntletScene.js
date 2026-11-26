@@ -9,7 +9,7 @@ import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, nextEn
 import { spellDef, spellCost } from '../logic/spells.js';
 import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, enemyFace } from './rigs.js';
 import { FX, ambient, weather } from './fx.js';
-import { sfx, unlockAudio, isMuted, setMuted, ENEMY_HIT_DB } from './sfx.js';
+import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
 import { button, style, unitToken, hex, COLORS, speciesImage } from './ui.js';
 import { dotOn, dotify } from './dotfx.js';
 import { stageProfile } from '../logic/matchup.js';
@@ -1089,7 +1089,7 @@ export default class GauntletScene extends Phaser.Scene {
       this.fx.hit(t.c.x, t.c.y - 10, ev.boss ? 'red' : 'white', ev.boss);
       t.kick = { t: 0, dur: 0.16, px: -14 };
       if (ev.boss) this.cameras.main.shake(120, 0.004);
-      sfx(ev.boss ? 'slam' : 'hit', ENEMY_HIT_DB);
+      sfx(ev.boss ? 'slam' : 'hit');
     };
     if (!ev.melee && t) { this.fx.line?.(v.c.x - 20, v.c.y - 30, t.c.x, t.c.y - 10, 0xc4a6ff, 4, 160); this.time.delayedCall(120, impact); }
     else this.time.delayedCall(ev.style === 'skirm' && !ev.clash ? 230 : 140, impact);

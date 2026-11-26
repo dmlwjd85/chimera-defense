@@ -16,5 +16,5 @@ def run(job):
     return f'{out}: ' + (r.stdout.strip().splitlines() or ['?'])[-1] + (' ERR ' + r.stderr[-200:] if r.returncode else '')
 js = [j for j in jobs(species) if (not only or j[2] in only) and (not stages_only or j[1] in stages_only)]
 print(len(js), 'jobs', flush=True)
-with ThreadPoolExecutor(4) as ex:
+with ThreadPoolExecutor(int(os.environ.get('PAR', '6'))) as ex:
     for line in ex.map(run, js): print(line, flush=True)

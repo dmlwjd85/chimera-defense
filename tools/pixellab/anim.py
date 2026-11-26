@@ -4,9 +4,15 @@ from PIL import Image
 API = 'https://api.pixellab.ai/v2'
 TOK = os.environ['PIXELLAB_API_TOKEN']   # 토큰은 환경변수에서만(파일·대화에 적지 않음)
 def req(method, path, body=None):
-    r = urllib.request.Request(API + path, method=method, data=json.dumps(body).encode() if body else None,
-                               headers={'Authorization': 'Bearer ' + TOK, 'Content-Type': 'application/json'})
-    with urllib.request.urlopen(r, timeout=120) as f: return json.loads(f.read())
+    import urllib.error, random
+    for k in range(12):   # 너무 많이 보내면 429 → 기다렸다 다시
+        r = urllib.request.Request(API + path, method=method, data=json.dumps(body).encode() if body else None,
+                                   headers={'Authorization': 'Bearer ' + TOK, 'Content-Type': 'application/json'})
+        try:
+            with urllib.request.urlopen(r, timeout=120) as f: return json.loads(f.read())
+        except urllib.error.HTTPError as e:
+            if e.code not in (429, 502, 503) or k == 11: raise
+            time.sleep(15 + 10 * k + random.random() * 10)
 ap = argparse.ArgumentParser()
 ap.add_argument('--src', required=True); ap.add_argument('--out', required=True); ap.add_argument('--action', required=True)
 ap.add_argument('--frames', type=int, default=8); ap.add_argument('--canvas', type=int, default=128)

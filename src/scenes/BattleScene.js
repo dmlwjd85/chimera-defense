@@ -1061,9 +1061,47 @@ export default class BattleScene extends Phaser.Scene {
     const v = { container: c, tok, rig, shadow, bar, barBg, downText, name, icon, foot, foot2, lastHp: unit.hp, wasDown: unit.down, key: `${unit.kind}:${unit.speciesId}:${unit.stage}` };
     if (rig && this.state.time > 0) {
       const born = this.pendingBirth?.get(unit.uid);
-      if (born) rig.inst.play(born);
+      // 도트 동물이 한 단계 올라가면: 앞 모습이 빛에 감싸였다가 그 빛 속에서 새 모습이 서서히 드러남(색이 확 바뀌지 않게)
+      if (born === 'evolve' && rig.dot) v.morph = this.startMorph(unit, sub, rig);
+      else if (born) rig.inst.play(born);
     }
     return v;
+  }
+
+  /** 진화 변신: 앞 단계 모습(유령)과 흰 빛 덮개를 겹쳐 둠. 모았다가(앞 모습이 하얗게) → 한 번에 터지고(새 모습 흰 실루엣) → 색이 서서히 드러남. */
+  startMorph(unit, sub, rig) {
+    const prev = { spirit: 'adult', adult: 'teen', teen: 'young' }[unit.stage];
+    const ghost = prev ? unitRig(this, { ...unit, stage: prev }, sub, 0.22) : null;
+    if (ghost && !ghost.dot) { ghost.view.destroy(); return null; }
+    rig.inst.play('idle', { loop: true });
+    const white = (src) => this.add.image(0, 0, src.texture.key, src.frame.name).setTintFill(0xffffff).setAlpha(0);
+    const m = { t: 0, ghost, gw: ghost ? white(ghost.view.sprite) : null, nw: white(rig.view.sprite) };
+    sub.add([m.gw, m.nw].filter(Boolean));
+    return m;
+  }
+
+  tickMorph(v) {
+    const m = v.morph, dt = (this.realDt || 0.016) * (this.paused ? 0 : 1), main = v.rig.view.sprite;
+    m.t += dt;
+    const copy = (dst, src) => dst.setFrame(src.frame.name).setOrigin(src.originX, src.originY).setScale(src.scaleX, src.scaleY).setFlipX(src.flipX).setPosition(src.x, src.y);
+    const G = 0.45, B = 0.6, E = 1.25;   // 모으기 끝, 터짐 끝, 색 다 돌아옴(초)
+    if (m.ghost) { m.ghost.inst.update(dt); m.ghost.view.sync(); copy(m.gw, m.ghost.view.sprite); }
+    copy(m.nw, main);
+    if (m.t < G) {          // 모으기: 앞 모습이 점점 하얘짐, 새 모습은 아직 안 보임
+      const k = m.t / G;
+      main.setAlpha(0); m.nw.setAlpha(0);
+      m.ghost?.view.sprite.setAlpha(1); m.gw?.setAlpha(k * k);
+    } else if (m.t < B) {   // 터짐: 흰 실루엣이 앞 모습 → 새 모습으로 바뀜
+      const k = (m.t - G) / (B - G);
+      m.ghost?.view.sprite.setAlpha(0); m.gw?.setAlpha(1 - k);
+      main.setAlpha(1); m.nw.setAlpha(1);
+      if (!m.popped) { m.popped = true; this.fx.ring?.(v.container.x, v.container.y + 20, 0xfff3b0, 1.1, 380); }
+    } else {                // 색이 서서히 드러남
+      const k = Math.min(1, (m.t - B) / (E - B));
+      main.setAlpha(1); m.nw.setAlpha(1 - k * (2 - k));
+      m.gw?.setAlpha(0);
+      if (k >= 1) { m.ghost?.view.destroy(); m.gw?.destroy(); m.nw.destroy(); v.morph = null; }
+    }
   }
 
   /** Drive a unit's rig from what happened this frame. */
@@ -1084,6 +1122,7 @@ export default class BattleScene extends Phaser.Scene {
     if (u.hp < v.lastHp - 0.5 && !u.down) { r.inst.hitFlash(0.1); if (!busy && !u.moving) r.inst.play('hit'); }
     v.lastHp = u.hp; v.wasDown = u.down;
     r.view.update(dt);
+    if (v.morph) this.tickMorph(v);
   }
 
   syncUnits() {
@@ -1125,6 +1164,7 @@ export default class BattleScene extends Phaser.Scene {
           let lx = 0;
           if (v.lungeT != null) { v.lungeT += this.realDt || 0.016; const k = v.lungeT / 0.3; lx = k < 0.35 ? -10 * (k / 0.35) * v.lungeDir : k < 1 ? (-10 + 40 * Math.sin(((k - 0.35) / 0.65) * Math.PI)) * v.lungeDir * (k < 0.55 ? 1 : 1) : 0; if (k >= 1) v.lungeT = null; }
           if (v.shakeT > 0) { v.shakeT -= this.realDt || 0.016; lx += Math.sin(this.time.now / 18) * 4 * Math.max(0, v.shakeT / 0.18); }
+          if (v.kbU) { lx += v.kbU; v.kbU *= Math.pow(0.002, this.realDt || 0.016); if (Math.abs(v.kbU) < 0.4) v.kbU = 0; }   // 적에게 맞아 밀림
           v.container.setPosition(v.curX + lx, v.curY);
         } else { v.curX = x; v.curY = y; v.walking = false; v.container.setPosition(x, y); if (this.pendingEnt?.has(u.uid) && !this.hidden.has(u.uid)) this.startEntrance(u.uid); if (v.ent) this.tickEntrance(u, v, x, y); }
       } else { v.curX = undefined; v.curY = undefined; }
@@ -1210,7 +1250,9 @@ export default class BattleScene extends Phaser.Scene {
     const bar = this.add.rectangle(0, 0, barW, 4, 0xff5252).setOrigin(0, 0.5).setDepth(71);
     const label = e.boss ? this.add.text(0, 0, def.name, style(13, '#ffcccc', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(71) : null;
     const shield = e.pattern?.type === 'shield' ? this.add.circle(0, 0, size, 0x9b59b6, 0.25).setStrokeStyle(3, 0xd2b4ff).setDepth(72).setVisible(false) : null;
-    return { body, rig, holder, bar, barW, size, px, label, shield, lastHp: e.hp };
+    // 발밑 그림자: 땅에 붙어 보이게(나는 적은 땅에 옅게)
+    const shadow = this.add.ellipse(0, 0, size * (e.boss ? 1.9 : 1.6), size * 0.42, 0x000000, e.flying ? 0.16 : 0.3).setDepth(36);
+    return { body, rig, holder, bar, barW, size, px, label, shield, shadow, lastHp: e.hp, maxHp: e.maxHp };
   }
 
   syncEnemies() {
@@ -1233,7 +1275,7 @@ export default class BattleScene extends Phaser.Scene {
       if (v.kb) { v.kb *= Math.pow(0.0005, this.realDt || 0.016); if (Math.abs(v.kb) < 0.3) v.kb = 0; }
       v.qx = (v.qx ?? 0) + ((blk ? ring[0] + ringRow * 30 : 0) - (v.qx ?? 0)) * Math.min(1, (this.realDt || 0.016) * 8);
       const xk = x + (v.kb ?? 0) + v.qx;
-      if (e.hp < v.lastHp - 0.4) { v.dmgAcc = (v.dmgAcc ?? 0) + (v.lastHp - e.hp); }
+      if (e.hp < v.lastHp - 0.4) { v.dmgAcc = (v.dmgAcc ?? 0) + (v.lastHp - e.hp); if (v.lastHp - e.hp >= e.maxHp * 0.35) v.bigAt = this.time.now; }
       if (v.dmgAcc && this.time.now - (v.dmgAt ?? 0) > 110) {
         const d = v.dmgAcc, heavy = d >= e.maxHp * 0.18;
         this.dmgNumber(xk, y - v.size / 2 - 26, d, heavy);
@@ -1253,6 +1295,8 @@ export default class BattleScene extends Phaser.Scene {
         v.rig.view.update(e.stunLeft > 0 || e.holdLeft > 0 ? 0 : this.frameDt);
         v.holder.setDepth(50 + y + 0.5);
       } else { v.body.setPosition(xk, y); if (e.hp < v.lastHp - 0.01) { v.body.setFillStyle?.(0xffffff); this.time.delayedCall(70, () => v.body.active && v.body.setFillStyle?.(hex(this.data2.enemyById[e.id].color))); } v.lastHp = e.hp; }
+      v.shadow?.setPosition(xk, (e.flying ? v.laneY : y) + (v.rig ? v.px * 0.42 - 2 : v.size / 2)).setAlpha((v.rig ? v.holder : v.body).alpha * (e.flying ? 0.16 : 0.3) / 0.3);
+      if (!e.flying && v.rig && v.rig.inst.motion === 'move' && this.time.now - (v.dustAt ?? 0) > 420 && Math.random() < 0.5) { v.dustAt = this.time.now; this.fx.burst('puff', xk + 8, (v.shadow?.y ?? y) - 2, 1, 0xcbb994); }
       v.bar.setPosition(x - v.barW / 2, y - v.size / 2 - (v.rig ? 22 : 7));
       v.bar.width = v.barW * Math.max(0, e.hp) / e.maxHp;
       v.label?.setPosition(x, y + v.size / 2 + 12);
@@ -1267,14 +1311,41 @@ export default class BattleScene extends Phaser.Scene {
       if (seen.has(eid)) continue;
       v.bar.destroy(); v.label?.destroy(); v.shield?.destroy();
       this.enemyViews.delete(eid);
-      if (v.rig) {
-        v.rig.inst.play('down');
-        const r = v.rig, h = v.holder, born = time();
-        const tick = () => { r.view.update(this.frameDt || 0.016); if (time() - born < 650) this.time.delayedCall(16, tick); else { r.view.destroy(); h.destroy(); } };
-        tick();
-      } else v.body.destroy();
+      if (v.rig) this.enemyDeath(v); else { v.body.destroy(); v.shadow?.destroy(); }
       (this.goneViews ??= new Map()).set(eid, v);
     }
+  }
+
+  /** 적 쓰러짐: 큰 한 방(최근 맞은 피해가 최대 체력의 35% 이상)이면 튕겨 날아가며 돌고, 아니면 털썩 쓰러져 깜빡이다 보라 넋이 빠져나감. */
+  enemyDeath(v) {
+    const r = v.rig, h = v.holder, sh = v.shadow, born = time();
+    // 마지막 한 방이 컸으면(쓰러지기 직전 체력이 최대의 30% 이상 남아 있었거나 방금 큰 피해) 튕겨 날아감
+    const big = this.time.now - (v.bigAt ?? -9999) < 260 || (v.lastHp ?? 0) >= (v.maxHp ?? 1e9) * 0.3;
+    const dir = v.kb ? Math.sign(v.kb) : 1;
+    if (big) {
+      r.inst.play('hit');
+      const x0 = h.x, y0 = h.y;
+      this.tweens.add({ targets: h, angle: dir * 540, duration: 560, ease: 'Cubic.out' });
+      const t = { k: 0 };
+      this.tweens.add({ targets: t, k: 1, duration: 560, ease: 'Linear', onUpdate: () => { h.setPosition(x0 + dir * 120 * t.k, y0 - Math.sin(t.k * Math.PI) * 70 + t.k * 10); h.setAlpha(1 - t.k * t.k); sh?.setAlpha(0.3 * (1 - t.k)); },
+        onComplete: () => { this.fx.burst('puff', h.x, h.y - 10, 6, 0xb39ddb); r.view.destroy(); h.destroy(); sh?.destroy(); } });
+      return;
+    }
+    r.inst.play('down');
+    const tick = () => {
+      const age = time() - born;
+      r.view.update(this.frameDt || 0.016);
+      if (age > 520) h.setAlpha(Math.floor(age / 70) % 2 ? 0.35 : 0.9);   // 깜빡깜빡
+      if (age < 860) this.time.delayedCall(16, tick);
+      else {
+        // 보라 넋 구슬이 위로 빠져나가며 사라짐
+        const orb = this.add.circle(h.x, h.y - 20, 6, 0xc39bd3, 0.9).setDepth(1590).setBlendMode('ADD');
+        this.tweens.add({ targets: orb, y: h.y - 90, alpha: 0, scale: 0.4, duration: 520, ease: 'Sine.out', onComplete: () => orb.destroy() });
+        this.fx.burst('puff', h.x, h.y - 6, 5, 0x9b7bb8);
+        r.view.destroy(); h.destroy(); sh?.destroy();
+      }
+    };
+    tick();
   }
 
   /** Terrain patches on the road: a soft coloured field with drifting bits of its element, fading as it runs out. */
@@ -1502,7 +1573,20 @@ export default class BattleScene extends Phaser.Scene {
     this.lastAttack ??= new Map();
     for (const ev of this.state.events) {
       switch (ev.type) {
-        case 'kill': { const v = this.goneViews?.get(ev.eid); if (v) { if (ev.gold) this.floatText(v.lastX, v.lastY - 10, `+${ev.gold}`, '#ffd84d'); this.fx.kill(v.lastX, v.lastY, ev.gold, ev.boss); } sfx(ev.boss ? 'bigKill' : 'kill'); if (ev.gold) sfx('coin'); if (ev.boss) { this.cameras.main.flash(300, 255, 255, 255); this.fx.banner(`${data.enemyById[ev.id].name} 처치!`, '#ffd84d'); } break; }
+        case 'enemyAttack': {
+          // 적이 내리치는 순간(공격 동작의 hit 0.2초)에 맞붙은 자리에서 먼지·충격, 맞은 동물은 뒤로 밀렸다 돌아옴
+          const e = this.state.enemies.find((x) => x.eid === ev.eid), ve = this.enemyViews.get(ev.eid);
+          const uv = e?.blockedBy != null ? this.unitViews.get(e.blockedBy) : null;
+          if (ve && uv) this.time.delayedCall(200 / (this.speed || 1), () => {
+            if (!uv.container.active) return;
+            const ux = uv.container.x, uy = uv.container.y, mx = (ux + (ve.lastX ?? ux)) / 2;
+            this.fx.burst('puff', mx, uy + 18, 2, 0xcbb994);
+            this.fx.hit(ux + 10, uy - 18, 'red', false);
+            uv.kbU = -10;
+          });
+          break;
+        }
+        case 'kill': { this.stopFor(ev.boss ? 0.12 : 0.03); const v = this.goneViews?.get(ev.eid); if (v) { if (ev.gold) this.floatText(v.lastX, v.lastY - 10, `+${ev.gold}`, '#ffd84d'); this.fx.kill(v.lastX, v.lastY, ev.gold, ev.boss); } sfx(ev.boss ? 'bigKill' : 'kill'); if (ev.gold) sfx('coin'); if (ev.boss) { this.cameras.main.flash(300, 255, 255, 255); this.fx.banner(`${data.enemyById[ev.id].name} 처치!`, '#ffd84d'); } break; }
         case 'leak': this.floatText(tileToX(0) + 30, PATH_Y - 40, `-${ev.leak}`, '#ff5252', 22); this.fx.leak(tileToX(0), PATH_Y); this.cameras.main.shake(100, 0.005); sfx('leak'); break;
         case 'ult': {
           // 필살기: 이름 컷인 + 잠깐 멈춤 + 표적 둘레 충격
@@ -1515,13 +1599,14 @@ export default class BattleScene extends Phaser.Scene {
         case 'attack': {
           this.lastAttack.set(ev.uid, time());
           this.combo();
-          if (ev.moveName && (ev.move === 'el' || Math.random() < 0.3)) { const vv = this.unitViews.get(ev.uid); const now = this.time.now; if (vv && now - (this.moveWordAt?.get(ev.uid) ?? -9999) > 2500) { (this.moveWordAt ??= new Map()).set(ev.uid, now); this.fx.shout(vv.container.x, vv.container.y - 96, ev.moveName, ev.move === 'el' ? 0x9be7ff : 0xffe066, { size: 15, hold: 520 }); } }
+          if (ev.moveName && (ev.move === 'el' || ev.aoe || Math.random() < 0.3)) { const vv = this.unitViews.get(ev.uid); const now = this.time.now; if (vv && now - (this.moveWordAt?.get(ev.uid) ?? -9999) > 2500) { (this.moveWordAt ??= new Map()).set(ev.uid, now); this.fx.shout(vv.container.x, vv.container.y - 96, ev.moveName, ev.move === 'el' ? 0x9be7ff : 0xffe066, { size: 15, hold: 520 }); } }
           { const uu = this.state.field.find((x) => x.uid === ev.uid), ve0 = this.enemyViews.get(ev.eid); const now = this.time.now; if (uu && ve0 && now - (this.hitWordAt?.get(ev.uid) ?? -9999) > 1600 && Math.random() < 0.45) { (this.hitWordAt ??= new Map()).set(ev.uid, now); this.time.delayedCall(uu.stats.range >= 3 ? 220 : 60, () => this.fx.sfxWord(ve0.lastX + Phaser.Math.Between(-12, 12), ve0.lastY - 44, soundOf(uu, 'hit'), '#fff2a8', ev.aoe ? 28 : 22)); } }
           const u = this.state.field.find((x) => x.uid === ev.uid);
           const ve = this.enemyViews.get(ev.eid) ?? this.goneViews?.get(ev.eid);
           if (!u || !ve) break;
           const [ux, uy] = unitPos(ev.uid);
-          const kind = STRIKE[u.speciesId] ?? (u.stats.range >= 3 ? 'shot' : 'swing');
+          // 독수리 급강하(종 특기, 광역)만 내리꽂기, 평소엔 깃털 한 개씩. 하늘에 뜬 단계만 내리꽂음(신화급은 땅에 서서 큰 깃털)
+          const kind = ev.move === 'a2' && ev.aoe && u.speciesId === 'eagle' && this.airborne(u) ? 'dive' : STRIKE[u.speciesId] ?? (u.stats.range >= 3 ? 'shot' : 'swing');
           if (kind === 'dive') {
             const v = this.unitViews.get(ev.uid);
             if (v) v.dive = { t: 0, tx: ve.lastX, ty: ve.lastY - 30 };
@@ -1532,12 +1617,15 @@ export default class BattleScene extends Phaser.Scene {
             // 동작 그림이 있으면 던지는 장(타격 순간)에 맞춰 날림
             const clip = this.unitViews.get(ev.uid)?.rig?.inst?.cur?.clip;
             const hitT = clip?.events?.find((e) => e[1] === 'hit')?.[0];
-            const fire = () => { const [x0, y0] = unitPos(ev.uid); this.fx.projectile(u.speciesId, x0, y0, ve.lastX, ve.lastY, ev.aoe); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); };
+            const fire = () => { const [x0, y0] = unitPos(ev.uid); this.fx.projectile(u.speciesId, x0, y0, ve.lastX, ve.lastY, ev.aoe, () => this.kick(ev.eids?.length ? ev.eids : [ev.eid], x0, ev.aoe ? 12 : 7)); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); };
             if (hitT > 0.02) this.time.delayedCall(Math.min(0.4, hitT) * 1000 / (this.speed || 1), fire); else fire();
           }
           else {
             const v = this.unitViews.get(ev.uid);
-            if (v) { v.lungeT = 0; v.lungeDir = Math.sign(ve.lastX - ux) || 1; }
+            // 동작 그림의 때리는 장(hit)에 맞춰 맞는 효과가 터지게(먼저 터지면 서로 안 부딪힌 것처럼 보임). 동작 그림이 없으면 코드 내딛기
+            const clipM = v?.rig?.inst?.cur?.clip, hitM = clipM?.events?.find((e) => e[1] === 'hit')?.[0];
+            if (v && !(hitM > 0.02)) { v.lungeT = 0; v.lungeDir = Math.sign(ve.lastX - ux) || 1; }
+            const strike = () => {
             const big = ev.aoe || u.stats.role === 'bruiser';
             const dir = Math.sign(ve.lastX - ux) || 1;
             if (kind === 'claw') this.fx.scratch(ve.lastX, ve.lastY - 4, 0xffffff, dir);
@@ -1549,9 +1637,11 @@ export default class BattleScene extends Phaser.Scene {
             this.fx.hit(ve.lastX, ve.lastY, ev.aoe ? 'gold' : 'white', ev.aoe);
             if (big) this.fx.impact(ve.lastX + 6, ve.lastY - 8, ev.aoe ? 0xffb35c : 0xffe066, ev.aoe ? 1.1 : 0.8);
             if (ev.aoe) { this.fx.groundAoe(ve.lastX, ve.lastY + 26, 75, 0xffd84d, { shake: false }); this.stopFor(0.045); }
-            this.kick(ev.eids?.length ? ev.eids : [ev.eid], ux, big ? 12 : 7);
+            this.kick(ev.eids?.length ? ev.eids : [ev.eid], ux, big ? 14 : 8);
             this.cameras.main.shake(70, big ? 0.0028 : 0.0014);
             sfx('slash'); sfx('hit');
+            };
+            if (hitM > 0.02) this.time.delayedCall(Math.min(0.35, hitM) * 1000 / (this.speed || 1), strike); else strike();
           }
           this.fx.onHitFlavor(u.stats.effects, ve.lastX, ve.lastY);
           break;
@@ -1639,8 +1729,9 @@ export default class BattleScene extends Phaser.Scene {
           const [mx, my] = unitPos(ev.uid);
           if (ev.kind === 'weak') { this.toast('합성 실패… 적들이 멈춰서 구경함', '#cccccc'); this.fx.weak(mx, my); sfx('weak'); }
           if (ev.kind === 'chimera') { this.cameras.main.flash(250, 180, 120, 255); sfx('chimera'); this.fx.chimera(mx, my); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '키메라'} 탄생!`, '#d7bde2', '키메라 합성 성공'); }
-          if (ev.kind === 'evolve') { this.fx.evolve(mx, my, false); sfx('evolve'); }
-          if (ev.kind === 'spirit') { this.spiritDrama(ev.uid); sfx('spirit'); this.fx.evolve(mx, my, true); this.cameras.main.flash(300, 255, 230, 140);  }
+          // 진화 빛은 변신(startMorph)이 모았다가 터지는 순간(0.45초)에 맞춰 한 번에. 화면 전체 번쩍임은 색이 확 바뀌어 보여서 뺌(2026-11-26)
+          if (ev.kind === 'evolve') { this.time.delayedCall(450, () => this.fx.evolve(mx, my, false)); sfx('evolve'); }
+          if (ev.kind === 'spirit') { this.spiritDrama(ev.uid); sfx('spirit'); this.time.delayedCall(450, () => this.fx.evolve(mx, my, true)); }
           if (this.tutorialStep === 2 && (ev.kind === 'evolve' || ev.kind === 'spirit')) this.tutorialStep = 3;
           if (this.tutorialStep === 3 && (ev.kind === 'chimera' || ev.kind === 'weak')) this.endTutorial();
           break;

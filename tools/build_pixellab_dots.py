@@ -5,6 +5,8 @@
 # 쓰는 법: python3 tools/build_pixellab_dots.py   (그림을 바꾼 뒤 다시 돌리고 node tools/pack-art.mjs)
 import json, os
 from PIL import Image
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from myth_recolor import recolor   # 신화급 털색 다듬기(tools/pixellab/myth_recolor.json)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SRC = os.path.join(ROOT, 'art-src', 'pixellab')
@@ -43,6 +45,7 @@ def claw(name):
 index = []
 for sp in SPECIES:
     ims = {st: crop(Image.open(os.path.join(SRC, f'{sp}_{st}.png')).convert('RGBA')) for st in ('baby', 'teen', 'adult', 'myth')}
+    ims['myth'] = recolor(ims['myth'], sp)
     names = {st: f'{sp}_{st}_idle_01' for st in ims}
     # 아기·성장기·성체
     W, H, foot, pal = sheet(sp, [(names[s], ims[s]) for s in ('baby', 'teen', 'adult')], os.path.join(PUB, 'assets', 'dot', f'{sp}.png'))

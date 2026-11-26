@@ -19,6 +19,8 @@ export function movesOf(u, cfg) {
 
 /** Role-shaped second basic attack. */
 export function a2Of(u, cfg) {
+  const sp = u.kind === 'base' ? M(cfg)?.a2BySpecies?.[u.speciesId] : null;   // 종 특기(독수리 급강하 등)
+  if (sp) return sp;
   const role = u.stats.range > 1 ? 'ranged' : u.stats.role;
   return M(cfg)?.a2ByRole?.[role] ?? M(cfg)?.a2ByRole?.dealer;
 }
@@ -45,7 +47,7 @@ export function pickMove(state, u, target, cfg) {
   for (const k of have) if (k !== 'ult') w[k] = m.weights[k] ?? 0;
   if (w.a2 != null) {
     const near = state.enemies.filter((e) => e !== target && e.hp > 0 && Math.abs(e.pos - target.pos) <= 1).length;
-    if (near + 1 >= r.a2.crowd) w.a2 *= r.a2.crowdMult;
+    if (near + 1 >= r.a2.crowd) w.a2 *= a2Of(u, cfg)?.crowdMult ?? r.a2.crowdMult;   // 종 특기(급강하)는 몰려 있을 때 훨씬 자주
     if (target.hp / target.maxHp < r.a2.lowHp) w.a2 *= r.a2.lowHpMult;
   }
   if (w.el != null) {

@@ -123,7 +123,7 @@ export class FX {
    * 도트 투사체(PixelLab 그림): 크게, 날아가는 방향으로 기울이고, 뒤에 옅은 잔상 + 아래에 그림자를 둬서 풀밭에서도 잘 보이게.
    * aim: 그림이 가리키는 방향(라디안)을 날아가는 방향에 맞춤, spin: 빙글빙글, wob: 살짝 흔들림.
    */
-  dotProjectile(species, x1, y1, x2, y2, aoe) {
+  dotProjectile(species, x1, y1, x2, y2, aoe, onHit = null) {
     const sc = this.scene, P = DOT_PROJ[species] ?? { mode: 'wob', scale: 1.5, hit: 'white' };
     const p = sc.add.image(x1 + 10, y1 - 34, 'fx-proj-' + species).setDepth(1596).setScale(P.scale);
     const sh = sc.add.ellipse(x1, y1 + 4, 22, 7, 0x000000, 0.28).setDepth(36);
@@ -143,6 +143,7 @@ export class FX {
       },
       onComplete: () => {
         p.destroy(); sh.destroy();
+        onHit?.();
         this.hit(x2, y2 - 10, P.hit, aoe);
         if (P.burst) this.burst(P.burst[0], x2, y2 - 10, 8, P.burst[1]);
         if (aoe) { this.ring(x2, y2, TINT[P.hit] ?? 0xffffff, 1.2); this.groundAoe(x2, y2 + 26, 70, TINT[P.hit] ?? 0xffffff); }
@@ -151,9 +152,9 @@ export class FX {
   }
 
   /** Arc a projectile from a ranged unit to its target, then pop. */
-  projectile(species, x1, y1, x2, y2, aoe) {
+  projectile(species, x1, y1, x2, y2, aoe, onHit = null) {
     if (!this.ok) return;
-    if (this.scene.textures.exists('fx-proj-' + species)) return this.dotProjectile(species, x1, y1, x2, y2, aoe);
+    if (this.scene.textures.exists('fx-proj-' + species)) return this.dotProjectile(species, x1, y1, x2, y2, aoe, onHit);
     const [tex, tint, sc] = PROJECTILE[species] ?? ['fx-orb', 0xffffff, 0.8];
     const p = this.scene.add.image(x1, y1 - 20, tex).setDepth(1595).setTint(tint).setScale(sc);
     if (tex === 'fx-orb' || tex === 'fx-bolt') p.setBlendMode('ADD');

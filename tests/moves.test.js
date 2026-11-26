@@ -51,3 +51,12 @@ test('an ultimate in battle hits around the target and resets the gauge', () => 
   assert.ok(e2.hp < e2.maxHp, 'splash hit the second enemy');
   assert.ok((u.ultGauge ?? 0) < 20);
 });
+
+test('eagle dive is the only species splash (a2BySpecies)', async () => {
+  const { a2Of } = await import('../src/logic/moves.js');
+  const D2 = (await import('./helpers.js')).loadData();
+  const mk = (sp, stage) => ({ kind: 'base', speciesId: sp, stage, stats: { range: 4, role: 'dealer' } });
+  assert.equal(a2Of(mk('eagle', 'adult'), D2.config).name, '급강하');
+  assert.ok(a2Of(mk('eagle', 'adult'), D2.config).aoe > 0);
+  assert.ok(!a2Of(mk('crow', 'adult'), D2.config).aoe, 'crow throws one feather at a time');
+});

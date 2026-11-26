@@ -472,10 +472,10 @@
   "role": "buffer",
   "hp": 130,
   "block": 2,
-  "damage": 14,
+  "damage": 19,
   "interval": 1.0,
   "range": 1,
-  "aoeRadius": 1.0,
+  "aoeRadius": 0,
   "respawn": 8,
   "stageNames": {
    "young": "어린 늑대",
@@ -541,10 +541,10 @@
   "role": "dealer",
   "hp": 120,
   "block": 1,
-  "damage": 40,
-  "interval": 2.0,
+  "damage": 48,
+  "interval": 1.6,
   "range": 4,
-  "aoeRadius": 1.5,
+  "aoeRadius": 0,
   "respawn": 10,
   "stageNames": {
    "young": "어린 독수리",
@@ -553,7 +553,7 @@
    "spirit": "아퀼라"
   },
   "nickname": "솜털 독수리, 그늘 독수리",
-  "baseSkillDesc": "급강하: 먼 적에게 광역 피해",
+  "baseSkillDesc": "깃털 날리기: 먼 적 하나에 큰 피해. 가끔 급강하로 주변 적까지(광역)",
   "baseSkill": [],
   "adultSkill": {
    "name": "사냥꾼",
@@ -568,11 +568,10 @@
   },
   "spiritSkill": {
    "name": "큰 날개",
-   "desc": "공격 범위가 반경 2.5로 늘어남",
+   "desc": "급강하 범위가 반경 2로 넓어짐",
    "effects": [
     {
-     "type": "aoeRadiusSet",
-     "radius": 2.5
+     "type": "text"
     }
    ]
   },

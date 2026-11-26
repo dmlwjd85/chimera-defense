@@ -18,7 +18,7 @@ test('2D 거리: 깊이 차이도 거리, 공중은 가로만', async () => {
 test('근접은 다른 깊이의 적을 못 때리고, 원거리는 때림', async () => {
   const bear = await mkUnit(D, 1, 'bear', 'adult', 3, { y: 0, slot: 3 });
   const fox = await mkUnit(D, 2, 'fox', 'adult', 3, { y: 0, slot: 3 });
-  const e = await mkEnemy(D, 'normal', 3.5, 1);
+  const e = await mkEnemy(D, 'normal', 3.25, 1);   // 사격 구역(앞줄 곰 3 + killZone) 안
   Object.assign(e, { y: 1, speed: 0 });
   const s = mkState(D, [bear, fox], [e]);
   s.phase = 'prep'; // 움직임 없이 판정만
@@ -58,4 +58,15 @@ test('웨이브 중 동물은 겹치지 않고, 딜러는 옆으로 비켜 파�
     assert.ok(g >= D.config.arena.spacing * 0.95, `${field[i].speciesId}-${field[j].speciesId} 간격 ${g.toFixed(2)}`);
   }
   assert.ok(Math.abs(field[1].targetY - 0.5) > 0.1, '호랑이는 깊이를 바꿔 옆으로 들어감');
+});
+
+test('사격 구역: 원거리는 땅의 적이 앞줄 근접 동물 가까이 와야 쏨(포탈 입구에서 녹지 않게)', async () => {
+  const bear = await mkUnit(D, 1, 'bear', 'adult', 3, { y: 0.5, slot: 3 });
+  const fox = await mkUnit(D, 2, 'fox', 'adult', 2.5, { y: 0.5, slot: 2.5 });
+  const e = await mkEnemy(D, 'normal', 5.4, 1);
+  Object.assign(e, { y: 0.5, speed: 0 });
+  const s = mkState(D, [bear, fox], [e]);
+  s.phase = 'prep';
+  run(s, 1.5);
+  assert.equal(e.hp, e.maxHp, '앞줄보다 멀리 있는 적은 아직 안 쏨');
 });

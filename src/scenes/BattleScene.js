@@ -1177,7 +1177,7 @@ export default class BattleScene extends Phaser.Scene {
         if (!best || both) best = { name: s.known.recipes.has(r.id) ? r.name : '?', both };
       }
       if (!best) { v.pairTag.setVisible(false); continue; }
-      v.pairTag.setText(best.both ? `✦ ${best.name} 합성 가능` : `✦ ${best.name} 짝꿍`).setColor(best.both ? '#ffe066' : '#e0b8ff').setVisible(!u.inGate);
+      v.pairTag.setText(best.both ? `✦ ${best.name} 합성!` : `✦ ${best.name} 짝꿍`).setColor(best.both ? '#ffe066' : '#e0b8ff').setVisible(!u.inGate).setScale(1.15 / (v.container.scaleX || 1)).setY(s.bench.includes(u) ? -62 : 54);
     }
     // 같은 종 성체 둘(신화급)도 제단이 빛남
     const adults = own.filter((u) => u.stage === 'adult');

@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { button, title, style, panel, unitToken } from './ui.js';
+import { button, title, style, panel, unitToken, speciesImage } from './ui.js';
+import { ULTS, tuneOf, gcfg } from '../logic/gauntlet.js';
 import { buildData, pairKey } from '../logic/data.js';
 import { levelInfo, favorState, buyFavor, writeSave } from '../logic/meta.js';
 
@@ -18,9 +19,32 @@ export default class CodexScene extends Phaser.Scene {
     title(this, 640, 45, '도감', 36);
     TABS.forEach(([id, label], i) => button(this, 640 - (TABS.length - 1) * 80 + i * 160, 100, 145, 40, label, () => this.scene.restart({ tab: id }), { fill: id === this.tab ? 0xb8742a : 0x2f4f6f }));
     panel(this, 40, 130, 1200, 520);
+    // 탭 내용은 한 판(page)에 모아 가림막을 씌우고 휠·끌기로 스크롤(인연·흑역사가 넘쳐서)
+    const before = new Set(this.children.list);
     this[this.tab]();
+    this.makeScroll(before);
     if (d?.open && this.data2.unitById[d.open]) this.showDetail(this.data2.unitById[d.open]);
     button(this, 120, 685, 160, 44, '← 타이틀', () => this.scene.start('Title'));
+  }
+
+  makeScroll(before) {
+    const fresh = this.children.list.filter((o) => !before.has(o) && (o.depth ?? 0) < 3000);
+    const page = this.add.container(0, 0);
+    let bottom = 0;
+    for (const o of fresh) { page.add(o); const b = o.getBounds?.(); if (b) bottom = Math.max(bottom, b.bottom); }
+    const top = 136, viewH = 506, maxScroll = Math.max(0, bottom - (top + viewH) + 20);
+    const shape = this.make.graphics({ add: false }); shape.fillStyle(0xffffff).fillRect(40, 132, 1200, 516);
+    page.setMask(shape.createGeometryMask());
+    if (!maxScroll) return;
+    let sy = 0;
+    const set = (v) => { sy = Math.max(-maxScroll, Math.min(0, v)); page.y = sy; bar.y = 140 + (-sy / maxScroll) * (viewH - 80); };
+    const bar = this.add.rectangle(1232, 140, 8, 80, 0xd4b06a, 0.8).setOrigin(0.5, 0);
+    this.add.text(1232, 652, '⇕', style(14, '#d4b06a')).setOrigin(0.5, 0);
+    this.input.on('wheel', (p, objs, dx, dy) => set(sy - dy * 0.6));
+    let drag = null;
+    this.input.on('pointerdown', (p) => { if (p.y > 130 && p.y < 650) drag = { y: p.y, s: sy, moved: false }; });
+    this.input.on('pointermove', (p) => { if (drag && p.isDown) { if (Math.abs(p.y - drag.y) > 6) drag.moved = true; set(drag.s + (p.y - drag.y)); } });
+    this.input.on('pointerup', () => { drag = null; });
   }
 
   cell(i, cols = 4, w = 290, h = 120) { return { x: 60 + (i % cols) * (w + 5), y: 145 + Math.floor(i / cols) * (h + 6), w, h }; }
@@ -108,6 +132,8 @@ export default class CodexScene extends Phaser.Scene {
       this.add.text(c.x + 96, c.y + 8, got ? `🌟 ${u.stageNames.spirit}` : '🌟 ???', style(19, got ? '#ffd84d' : '#7f8c99', { stroke: '#000', strokeThickness: 3 }));
       this.add.text(c.x + c.w - 10, c.y + 10, m ? `${m.flag} ${got ? m.land : '???'}` : '', style(12, '#cfd8dc')).setOrigin(1, 0);
       if (got) {
+        const z = this.add.zone(c.x + c.w / 2, c.y + c.h / 2, c.w, c.h).setInteractive({ useHandCursor: true }); z.on('pointerup', () => this.showMyth(u));
+        this.add.text(c.x + c.w - 8, c.y + c.h - 18, '그림으로 보기 ▸', style(11, '#ffd84d')).setOrigin(1, 0);
         this.add.text(c.x + 96, c.y + 36, `${m?.source ?? ''} · ✦ ${u.spiritSkill.name}`, style(12, '#e8c3ff'));
         this.add.text(c.x + 96, c.y + 56, T.skills?.[`${u.id}_spirit`]?.[1] ?? u.spiritSkill.desc, style(12, '#efe3c8', { wordWrap: { width: 275 } }));
         this.add.text(c.x + 96, c.y + 94, `"${u.spiritCodex}"`, style(11, '#aab4be', { wordWrap: { width: 275 } }));
@@ -117,6 +143,40 @@ export default class CodexScene extends Phaser.Scene {
       }
     });
     this.add.text(640, 632, `깨운 신화급 ${made.size} / ${D.units.length}`, style(15, '#ffd84d')).setOrigin(0.5);
+  }
+
+  /** 신화급 자세히(7살도 알게): 큰 그림 · 성체 둘 → 신화급 그림식 · 나라 · 짧은 옛이야기 · 필살기(무엇을 도와주나) · 좋은 점/약한 점 */
+  showMyth(u) {
+    this.detail?.forEach((o) => o.destroy());
+    const D = this.data2, T = D.tales ?? {}, objs = [];
+    const add = (o) => { o.setDepth?.(3002); objs.push(o); return o; };
+    objs.push(this.add.rectangle(640, 360, 1280, 720, 0x05080c, 0.8).setInteractive().setDepth(3000));
+    objs.push(panel(this, 110, 60, 1060, 600, { depth: 3001, alpha: 0.98 }));
+    const m = T.myth?.[u.id] ?? {};
+    // 왼쪽: 큰 신화급 그림 + 빛
+    const glow = add(this.add.circle(330, 300, 150, 0xffd84d, 0.18).setStrokeStyle(4, 0xffd84d, 0.8));
+    this.tweens.add({ targets: glow, scale: { from: 0.95, to: 1.05 }, yoyo: true, repeat: -1, duration: 900 });
+    const big = speciesImage(this, u.id, 'spirit', 330, 250, 240); if (big) add(big);
+    // 그림식: 성체 + 성체 → 신화급
+    const a1 = speciesImage(this, u.id, 'adult', 220, 500, 80), a2 = speciesImage(this, u.id, 'adult', 330, 500, 80), sp = speciesImage(this, u.id, 'spirit', 450, 500, 90);
+    [a1, a2, sp].forEach((o) => o && add(o));
+    add(this.add.text(275, 520, '+', style(34, '#ffffff')).setOrigin(0.5));
+    add(this.add.text(388, 520, '→', style(34, '#ffd84d')).setOrigin(0.5));
+    add(this.add.text(330, 600, `어른 ${u.name} 둘을 겹치면!`, style(16, '#ffe9a8')).setOrigin(0.5));
+    // 오른쪽: 이름·나라·이야기·필살기·장단점
+    add(this.add.text(560, 90, `🌟 ${u.stageNames.spirit}`, style(36, '#ffd84d', { stroke: '#2a1a08', strokeThickness: 6 })));
+    add(this.add.text(560, 144, `${m.flag ?? ''} ${m.land ?? ''}  ·  📜 ${m.source ?? ''}`, style(18, '#cfe8ff')));
+    add(this.add.text(560, 186, '📖 옛이야기', style(18, '#ffe6b0')));
+    add(this.add.text(560, 214, T.mythStory?.[u.id] ?? u.spiritCodex, style(17, '#f4f1e8', { wordWrap: { width: 560 }, lineSpacing: 6 })));
+    const ult = ULTS[u.id];
+    if (ult) { add(this.add.text(560, 360, '✨ 필살기', style(18, '#ffe6b0'))); add(this.add.text(560, 388, `${ult.name}`, style(22, '#ffd84d'))); add(this.add.text(560, 420, `👉 ${ult.desc}`, style(16, '#9cff6b', { wordWrap: { width: 560 } }))); }
+    const tn = tuneOf({ kind: 'base', speciesId: u.id }, gcfg(D));
+    if (tn) { add(this.add.text(560, 480, `👍 잘하는 것  ${tn.pro}`, style(16, '#7CFC9A', { wordWrap: { width: 560 } }))); add(this.add.text(560, 514, `👎 약한 것  ${tn.con}`, style(16, '#ffb27a', { wordWrap: { width: 560 } }))); }
+    const ROLE = { bruiser: '🛡 막는 친구', dealer: '⚔ 때리는 친구', technician: '🎯 재주꾼', buffer: '📣 응원하는 친구' };
+    add(this.add.text(560, 560, `${ROLE[u.role] ?? ''}  ·  ${D.config.elements.defs[u.element]?.icon ?? ''} ${D.config.elements.defs[u.element]?.name ?? ''}`, style(16, '#d4b06a')));
+    const close = () => { objs.forEach((o) => o.destroy()); cb.destroy(); this.detail = null; };
+    const cb = button(this, 1130, 90, 48, 48, '✕', close, { depth: 3003, size: 20 });
+    this.detail = [...objs, { destroy: () => cb.destroy() }];
   }
 
   chimeras() {

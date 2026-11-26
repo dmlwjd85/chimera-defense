@@ -155,9 +155,9 @@ test('하드: 보상 하나는 막힘, 노멀 생명은 2', () => {
 
 test('금화 부활·놓아주기, 앞줄은 브루저만, 진형 붕괴, 레벨로 출전 단계, 전설 카드', async () => {
   const { reviveUnit, releaseUnit, reviveCost, baseStyle } = await import('../src/logic/gauntlet.js');
-  const st = createGauntlet(D, 'forest-1', 31, { levels: { dog: 6, rabbit: 3 }, legend: { kind: 'base', speciesId: 'tiger', traits: [], name: '산군' } });
+  const st = createGauntlet(D, 'forest-1', 31, { levels: { dog: 9, rabbit: 4 }, legend: { kind: 'base', speciesId: 'tiger', traits: [], name: '산군' } });
   const dog = st.field.find((u) => u.speciesId === 'dog'), rabbit = st.field.find((u) => u.speciesId === 'rabbit');
-  assert.equal(dog.stage, 'adult'); assert.equal(rabbit.stage, 'teen');
+  assert.equal(dog.stage, 'teen', '레벨이 높아도 성장기까지만'); assert.equal(rabbit.stage, 'teen');
   assert.ok(st.field.some((u) => u.legend && u.speciesId === 'tiger' && u.stage === 'adult'));
   for (const u of st.field) if (baseStyle(u) === 'bruiser') assert.ok(u.seat < 3, '브루저는 1열');
   fightOut(st);
@@ -256,15 +256,35 @@ test('흐름: 응원 톡·승패 요인, 보상 하나 더(금화), 주머니·�
   if (st.offer.taken) { assert.ok(G.buyExtraReward(st, D).ok); assert.equal(st.offer.taken, null); assert.ok(st.gold < 50); }
   // 주머니·상점
   const save = defaultSave(D);
-  save.pouch = 100; save.deck = ['bear', 'tiger', 'eagle'];
+  save.pouch = 120; save.deck = ['bear', 'tiger', 'eagle'];
   const shop = M.shopOffers(save, D);
   assert.ok(shop.items.length >= 4);
   const fi = shop.items.findIndex((x) => x.kind === 'food');
   assert.ok(M.buyShop(save, D, fi).ok); assert.equal(save.prep.food, 1);
-  const bag = M.takeOutForRun(save);
-  assert.equal(save.pouch, 0); assert.equal(bag.pouch, 100 - shop.items[fi].price);
+  const bag = M.takeOutForRun(save, D);
+  assert.equal(bag.pouch, 40); assert.equal(save.pouch, 120 - shop.items[fi].price - 40);
   const run = createGauntlet(D, 'forest-1', 3, { pouch: bag.pouch, prep: { relics: ['war_horn'], food: 1, feathers: 1 } });
   assert.equal(run.gold, bag.pouch); assert.ok(run.relics.includes('war_horn')); assert.equal(run.feathers, 1);
   // 새 유물 10개
   for (const id of ['war_horn', 'thorn_mail', 'shadow_cloak', 'vanguard_flag', 'vamp_fang', 'gold_scale', 'phoenix_plume', 'iron_chain', 'thunder_drum', 'mana_spring']) assert.ok(D.relicById[id]?.gauntlet, id);
+});
+
+test('잡아채기(개구리 혀·좀비 손)·깊숙이 위험·덩굴 덫·흑역사 팔기', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  let snatch = 0, eSnatch = 0;
+  for (const st of ['stage-4', 'stage-5', 'stage-6']) for (let i = 1; i <= 3; i++) {
+    const s = autoRun(createGauntlet(D, st, i * 37, { pool: ['frog', 'monkey', 'tiger', 'wolf', 'eagle', 'bear'] }), D);
+    snatch += s.dstat?.snatch ?? 0; eSnatch += s.dstat?.eSnatch ?? 0;
+  }
+  assert.ok(snatch > 0, '우리 쪽이 낚아챔'); assert.ok(eSnatch > 0, '적이 우리 딜러를 낚아챔');
+  // 덩굴 덫
+  const s2 = createGauntlet(D, 'forest-3', 4, { spells: ['snare'] });
+  s2.mana = 100; s2.charging = false;
+  assert.ok(G.castG(s2, D, 'snare').ok); assert.ok(s2.snareT > s2.time);
+  // 흑역사 팔기
+  const s3 = createGauntlet(D, 'forest-1', 5, {});
+  fightOut(s3);
+  const w = s3.field[1]; w.kind = 'weak';
+  const g0 = s3.gold, r = G.releaseUnit(s3, D, w.uid);
+  assert.ok(r.ok); assert.equal(s3.gold - g0, D.config.gauntlet?.sellWeak ?? 25);
 });

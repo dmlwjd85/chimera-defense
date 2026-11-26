@@ -732,56 +732,7 @@
    "weak": []
   }
  },
- "roadmap": [
-  {
-   "n": 7,
-   "name": "불의 산 기슭",
-   "climate": "ash",
-   "zones": "화산·용암길·온천",
-   "boss": "용암 거북",
-   "theme": "불에 강한 마물. 물과 바람이 귀해지는 곳"
-  },
-  {
-   "n": 8,
-   "name": "안개 늪",
-   "climate": "fog",
-   "zones": "늪·갈대밭·썩은 숲",
-   "boss": "늪의 마녀",
-   "theme": "언데드가 본격적으로 일어나는 곳"
-  },
-  {
-   "n": 9,
-   "name": "달 없는 묘지",
-   "climate": "moonless",
-   "zones": "묘지·폐허·까마귀 언덕",
-   "boss": "목 없는 기사",
-   "theme": "되살아나는 적, 빛과 불이 열쇠"
-  },
-  {
-   "n": 10,
-   "name": "마계의 문턱",
-   "climate": "miasma",
-   "zones": "갈라진 땅·검은 숲·문",
-   "boss": "문지기 쌍둥이",
-   "theme": "마계 동물이 직접 넘어오는 곳"
-  },
-  {
-   "n": 11,
-   "name": "땅속 길",
-   "climate": "cave",
-   "zones": "동굴·수정굴·지하 호수",
-   "boss": "굴 파는 거대 두더지",
-   "theme": "하늘이 없는 싸움, 비행이 막히는 곳"
-  },
-  {
-   "n": 12,
-   "name": "지구의 심장",
-   "climate": "heart",
-   "zones": "맨틀 다리·심장의 방",
-   "boss": "굶주린 왕",
-   "theme": "마지막 싸움"
-  }
- ],
+ "roadmap": [],
  "spells": {
   "note": "플레이어 마법. 마력은 웨이브 동안만 참(기본 세 웨이브에 한 번쯤). 마법 갈래 특성으로 회복·효과·소모를 키움. 처음엔 별똥별 하나, 스테이지를 깰 때마다 하나씩 배움.",
   "max": 100,
@@ -876,7 +827,7 @@
     "tale": "모래시계를 눕히자 적들의 걸음이 꿈속처럼 느려졌지요.",
     "desc": "5초간 모든 적 이동 속도 -50%"
    },
-   {
+   {"id": "snare", "name": "덩굴 덫", "icon": "🪤", "kind": "defense", "cost": 30, "effect": "snare", "dur": 8, "stage": "forest-2", "tale": "뒷줄 앞에 덩굴 덫을 깔자 몰래 파고든 녀석이 발목을 잡혔지요.", "desc": "8초 동안 우리 뒷줄을 노리고 들어오는 적을 모두 낚아챔"}, {
     "id": "gust",
     "name": "되돌이 바람",
     "icon": "🌬",
@@ -1480,6 +1431,6 @@
  },
   "gauntlet": {
     "relicBan": ["earth_bless", "golden_acorn", "interest", "coupon", "feed_bag", "lucky_star", "twin_egg", "phoenix_down", "continent_oath", "harmony", "rampart", "herald"],
-    "adultMeals": 2, "tempo": 1.35,"note": "2026-11-26 연전: 지도 이동 없이 덱이 교전 8번을 연달아 치름(마지막 보스). 교전은 실시간 자동(행동 게이지), 동시 공격은 stagger초씩 엇갈림. 이기면 정비(체력 healPct% 회복, 보상 3개 중 1개, 자리 바꾸기·합성, 가장 많이 때린 동물 한 단계 성장). 노멀 생명 life, 하드 한 번 지면 끝(에센스 hardEssence배, 유물 조각 hardShards배). 적 숫자는 길 디펜스용이라 squash 제곱으로 눌러 씀. 2026-11-26 싸움 모양: 브루저는 적 근접과 힘겨루기(clash*), 근접 딜러·기술은 맞붙지 않은 적을 치고 빠지며 가끔 피함(dodge), 원거리·응원은 밀리는 힘겨루기를 거듦(assistPush·cheerPush·cheerHeal). 힘 = √(초당 피해×최대 체력), 기세(surge)가 0.5~1.3초마다 바뀌어 엎치락뒤치락, 아군이 이기는 힘겨루기 약 76%. 돌격(charge초 동안 가운데로 달려와 쾅), 남는 적 근접은 2대1로 끼어듦(gang*), 원거리·응원을 노리면 브루저가 막거나(guard*) 딜러가 떼어 냄(peel*). 봇(node tools/gauntlet-sim.mjs 16): 노멀 1~6 = 100·94·100·69·56·88%, 하드 1 = 56%", "encounters": 8, "squadMin": 3, "squadMax": 6, "bossSquad": 3, "timeLimit": 80, "healPct": 30, "restBackPct": 50, "lossRevive": 80, "life": 2, "stagger": 0.32, "enemyHp": 22, "enemyAtk": 1.7, "bossHp": 4, "bossAtk": 1, "bossBase": 6000, "growth": 0.15, "atkGrowth": 0.12, "squash": 0.55, "stageHpPow": 0.5, "stageAtkPow": 0.4, "summonCap": 2, "minionHp": 0.5, "summonerHp": 0.7, "healMult": 0.3, "bossTune": {"boss_bone": {"hp": 0.35, "atk": 0.45}}, "backMelee": 0.5, "frontRanged": 0.75, "taunt": 2, "manaRegen": 0.6, "mvpGrow": true, "hardEssence": 1.5, "hardShards": 2, "lowStars": 3, "clashRate": 0.62, "clashNoise": 1, "clashBonus": 1.5, "clashStun": 0.5, "clashEnemy": 1.35, "assistPush": 0.02, "cheerPush": 0.08, "cheerHeal": 3, "dodge": 0.25, "clashLean": 0.6, "clashBoss": 0.5, "charge": 1.1, "gangMax": 2, "gangPower": 0.5, "protectCd": 4, "guardChance": 0.4, "guardTaken": 0.6, "peelChance": 0.7, "peelDmg": 0.8, "peelStun": 0.6, "stageScale": {"forest-1": 0.8, "forest-2": 1.15, "forest-3": 1.35, "stage-4": 0.72, "stage-5": 0.95, "stage-6": 1.4}, "hardHeal": 25, "eliteChance": 0.25},
+    "adultMeals": 2, "tempo": 1.35,"note": "2026-11-26 연전: 지도 이동 없이 덱이 교전 8번을 연달아 치름(마지막 보스). 교전은 실시간 자동(행동 게이지), 동시 공격은 stagger초씩 엇갈림. 이기면 정비(체력 healPct% 회복, 보상 3개 중 1개, 자리 바꾸기·합성, 가장 많이 때린 동물 한 단계 성장). 노멀 생명 life, 하드 한 번 지면 끝(에센스 hardEssence배, 유물 조각 hardShards배). 적 숫자는 길 디펜스용이라 squash 제곱으로 눌러 씀. 2026-11-26 싸움 모양: 브루저는 적 근접과 힘겨루기(clash*), 근접 딜러·기술은 맞붙지 않은 적을 치고 빠지며 가끔 피함(dodge), 원거리·응원은 밀리는 힘겨루기를 거듦(assistPush·cheerPush·cheerHeal). 힘 = √(초당 피해×최대 체력), 기세(surge)가 0.5~1.3초마다 바뀌어 엎치락뒤치락, 아군이 이기는 힘겨루기 약 76%. 돌격(charge초 동안 가운데로 달려와 쾅), 남는 적 근접은 2대1로 끼어듦(gang*), 원거리·응원을 노리면 브루저가 막거나(guard*) 딜러가 떼어 냄(peel*). 봇(node tools/gauntlet-sim.mjs 16): 노멀 1~6 = 100·94·100·69·56·88%, 하드 1 = 56%", "encounters": 8, "squadMin": 3, "squadMax": 6, "bossSquad": 3, "timeLimit": 80, "healPct": 30, "restBackPct": 50, "lossRevive": 80, "life": 2, "stagger": 0.32, "enemyHp": 22, "enemyAtk": 1.7, "bossHp": 4, "bossAtk": 1, "bossBase": 6000, "growth": 0.15, "atkGrowth": 0.12, "squash": 0.55, "stageHpPow": 0.5, "stageAtkPow": 0.4, "summonCap": 2, "minionHp": 0.5, "summonerHp": 0.7, "healMult": 0.3, "bossTune": {"boss_bone": {"hp": 0.35, "atk": 0.45}}, "backMelee": 0.5, "frontRanged": 0.75, "taunt": 2, "manaRegen": 0.6, "mvpGrow": true, "hardEssence": 1.5, "hardShards": 2, "lowStars": 3, "clashRate": 0.62, "clashNoise": 1, "clashBonus": 1.5, "clashStun": 0.5, "clashEnemy": 1.35, "assistPush": 0.02, "cheerPush": 0.08, "cheerHeal": 3, "dodge": 0.25, "clashLean": 0.6, "clashBoss": 0.5, "charge": 1.1, "gangMax": 2, "gangPower": 0.5, "protectCd": 4, "guardChance": 0.4, "guardTaken": 0.6, "peelChance": 0.7, "peelDmg": 0.8, "peelStun": 0.6, "stageScale": {"forest-1": 0.7, "forest-2": 1.15, "forest-3": 1.35, "stage-4": 0.64, "stage-5": 0.95, "stage-6": 1.2, "stage-7": 0.8, "stage-8": 0.95, "stage-9": 0.85, "stage-10": 0.92, "stage-11": 0.3, "stage-12": 0.65}, "hardHeal": 25, "eliteChance": 0.25},
   "unlockGauge": {"note": "2026-11-26 해금 게이지: 스테이지를 깨면 점수만큼 차고, 다 차면 잠긴 동물 실루엣 2마리 중 1마리를 골라 해금. 필요 점수 = base + step × 해금한 수", "base": 150, "step": 50, "clear": 100, "star": 30, "flawless": 30, "matchup": 20, "matchupHits": 20, "perWin": 10, "hard": 2}
 }

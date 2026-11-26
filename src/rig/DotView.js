@@ -61,7 +61,7 @@ export class DotView {
     const { local } = this.dotScale();
     o.setScale(local).setFlipX(p.facing < 0).setAlpha(p.alpha);
     o.setPosition(p.dx * local * p.facing, p.dy * local);
-    if (p.silhouette) o.setTintFill(0x0b0e12); else if (p.white) o.setTintFill(0xffffff); else o.clearTint();
+    if (p.silhouette) o.setTintFill(0x0b0e12); else if (p.white) o.setTintFill(0xffffff); else if (this.tint) o.setTint(this.tint); else o.clearTint();   // tint: 적 등급 색
     if (!this.opts?.parent) this.container.setDepth(this.inst.y ?? 0);
   }
 

@@ -24,7 +24,9 @@ for (const id of stages) {
     const bl = args.find((a) => a.startsWith('--build='))?.slice(8).split(',');
     const builds = {};
     if (bl) for (const u of D.units) { const set = u.range > 1 || u.role === 'buffer' ? 'ranged' : 'melee'; const b = bl.find((x) => BUILD_SETS[set].includes(x)); if (b) builds[u.id] = b; }
-    const st = createGauntlet(D, id, i * 7919, { hard, spells, pool, builds });
+    const lvArg = +(args.find((a) => a.startsWith('--lv='))?.slice(5) ?? 0);
+    const levels = lvArg ? Object.fromEntries(D.units.map((u) => [u.id, lvArg])) : undefined;
+    const st = createGauntlet(D, id, i * 7919, { hard, spells, pool, builds, levels });
     const tac = args.find((a) => a.startsWith('--tac='))?.slice(6).split(',');
     if (tac) for (const u of [...st.field, ...st.bench]) { if (!u) continue; const o = TACTICS[styleOf(u)]; const pick = o && tac.find((t) => o.includes(t)); if (pick) u.tactic = pick; }
     const rw = args.find((a) => a.startsWith('--reward='))?.slice(9);

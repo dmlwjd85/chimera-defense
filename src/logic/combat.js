@@ -458,7 +458,8 @@ export function combatTick(state, data, dt) {
     if (a2) { mult = a2.mult ?? 1; reps = a2.hits ?? 1; }
     if (move === 'el') mult = MV.el?.mult ?? 1;
     if (move === 'ult') mult = MV.ult?.mult ?? 2.5;
-    const aoe = Math.max(effAoe(u), move === 'ult' ? MV.ult?.aoe ?? 1 : 0);
+    const a2Aoe = a2?.aoe ? (u.stage === 'spirit' && a2.aoeSpirit ? a2.aoeSpirit : a2.aoe) + (u.mods?.aoe ?? 0) : 0;   // 종 특기 광역(급강하)
+    const aoe = Math.max(effAoe(u), move === 'ult' ? MV.ult?.aoe ?? 1 : 0, a2Aoe);
     const hits = aoe > 0
       ? state.enemies.filter((e) => hittable(u, e) && gap(state, e, target) <= aoe)
       : [target];

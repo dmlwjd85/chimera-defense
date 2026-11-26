@@ -19,7 +19,8 @@ test('fox by stage', () => {
 
 test('bear hold count and modifiers', () => {
   assert.deepEqual(['young', 'teen', 'adult', 'spirit'].map((st) => eff(base('bear', st), 'hold').count), [3, 4, 5, 6]);
-  assert.equal(base('eagle', 'spirit').aoeRadius, 2.5);
+  // 스플래시는 특별한 기술에만(2026-11-26): 동물 기본 공격은 모두 한 마리, 독수리 광역은 급강하(기본2)에서만
+  for (const u of D.units) assert.equal(base(u.id, 'spirit').aoeRadius, 0, u.id);
   assert.equal(eff(base('bighorn', 'adult'), 'knockback').stun, 1);
 });
 

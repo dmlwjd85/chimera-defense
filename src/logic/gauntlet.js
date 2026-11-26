@@ -39,6 +39,9 @@ export function gcfg(data) {
     enemyRole: { normal: 'bruiser', tough: 'bruiser', zombie: 'bruiser', swarm: 'bruiser', skeleton: 'bruiser', miniboss: 'bruiser',
       fast: 'skirm', ghost: 'skirm', flying: 'ranged', bat: 'ranged', wisp: 'ranged', healer: 'support',
       boss_boar: 'bruiser', boss_shadow: 'bruiser', boss_bone: 'bruiser', boss_frost: 'bruiser', boss_bat: 'ranged', boss_lich: 'support' }, guardChance: 0.6, guardTaken: 0.6, peelChance: 0.7, peelDmg: 0.8, peelStun: 0.6, clashBonus: 1.5, clashStun: 1, clashEnemy: 1, assistPush: 0.05, cheerPush: 0.12, goldWin: 8, goldPerEnc: 2, goldLose: 5, reviveCost: 15, reviveUp: 0.5, releaseGold: 3, collapseTaken: 35, collapseStun: 0.8, growLv: { teen: 4, adult: 99 }, relicAll: 4, skirmBack: 0.4, supDmg: 30, supTaken: 20,
+    // 적 등급(색): 뒤 스테이지일수록 푸른·붉은·검은 적이 섞여 나옴(체력·공격 ↑) — 긴장감
+    ranks: [null, { prefix: '푸른', tint: 0x7fb8ff, hp: 1.25, atk: 1.15 }, { prefix: '붉은', tint: 0xff7a6a, hp: 1.55, atk: 1.3 }, { prefix: '검은', tint: 0x9a7cff, hp: 1.9, atk: 1.5 }],
+    rankChance: [[0, 0, 0], [0, 0, 0], [0.08, 0, 0], [0.15, 0.04, 0], [0.18, 0.07, 0], [0.22, 0.1, 0.02], [0.25, 0.12, 0.03], [0.26, 0.14, 0.05], [0.28, 0.16, 0.06], [0.3, 0.18, 0.08], [0.3, 0.2, 0.1], [0.3, 0.22, 0.12]],
     // 신화·키메라 필살기(2026-11-26): 피해만이 아니라 동물 특성에 맞게 판을 바꿈. 게이지 ×ultSlow, 교전마다 한 마리 ultMax번
     ultSlow: 2, ultMax: 1, ultDmg: 1.2,
     // growLv.adult 99: 레벨로는 성장기까지만 출전(성체로 시작하면 바로 신화급·키메라가 태어나서)
@@ -400,7 +403,13 @@ function addEnemy(state, data, id, wave) {
   e.attack = Math.max(1, Math.round(atk * Math.pow(state.stage.mult ?? 1, g.stageAtkPow) * (data.config.difficulty?.enemyAttack ?? 1) * upA));
   if (e.heal) e.heal = { ...e.heal, percent: e.heal.percent * g.healMult };
   e.interval = e.interval || g.zeroInterval;
-  Object.assign(e, { seat, gauge: state.rng() * 0.3, name: def.name, ranged, style, element: enemyElement(data, state.stage, id, state.rng()), shieldLeft: 0, patternT: def.pattern?.every ?? 0, healT: def.heal?.every ?? 0, burnDps: 0, burnLeft: 0, curseLeft: 0, pos: 0 });
+  Object.assign(e, { skin: def.skin, tint: def.tint, seat, gauge: state.rng() * 0.3, name: def.name, ranged, style, element: enemyElement(data, state.stage, id, state.rng()), shieldLeft: 0, patternT: def.pattern?.every ?? 0, healT: def.heal?.every ?? 0, burnDps: 0, burnLeft: 0, curseLeft: 0, pos: 0 });
+  // 등급(색): 스테이지 번호에 따라 푸른(1)·붉은(2)·검은(3)
+  if (!def.boss && !state.lesson) {
+    const si = Math.max(0, data.stages.findIndex((x) => x.id === state.stage.id)), ch = g.rankChance[Math.min(si, g.rankChance.length - 1)] ?? [0, 0, 0];
+    const r = state.rng(); const rank = r < ch[2] ? 3 : r < ch[2] + ch[1] ? 2 : r < ch[2] + ch[1] + ch[0] ? 1 : 0;
+    if (rank) { const R = g.ranks[rank]; e.rank = rank; e.name = `${R.prefix} ${e.name}`; e.hp = e.maxHp = Math.round(e.maxHp * R.hp); e.attack = Math.round(e.attack * R.atk); }
+  }
   // 하드: 정예(방패·분노·재생·가시) — 이름 옆에 표시
   if (state.hard && !def.boss && state.rng() < g.eliteChance * (state.tier ? 2 : 1)) {
     e.elite = ['shield', 'rage', 'regen', 'thorns'][Math.floor(state.rng() * 4)];

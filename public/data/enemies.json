@@ -1,7 +1,7 @@
 [
  {
   "id": "normal",
-  "name": "일반",
+  "name": "보라 꼬마 도깨비",
   "hp": 30,
   "attack": 5,
   "interval": 1.0,
@@ -17,12 +17,12 @@
   "holdFactor": 1,
   "slowFactor": 1,
   "color": "#c0392b",
-  "desc": "기준",
+  "desc": "몽둥이 하나 들고 마계에서 넘어온 졸개. 숫자로 밀어붙임.",
   "codex": "그냥 지나가는 중이었다고 함."
  },
  {
   "id": "fast",
-  "name": "빠른 적",
+  "name": "복면 여우 자객",
   "hp": 18,
   "attack": 3,
   "interval": 0.8,
@@ -38,12 +38,12 @@
   "holdFactor": 1,
   "slowFactor": 1,
   "color": "#e67e22",
-  "desc": "둔화가 없으면 막기 전에 빠져나감",
+  "desc": "몸이 날래 막기 전에 빠져나감. 뒷줄을 노림.",
   "codex": "늘 바쁨. 어디 가는지는 모름."
  },
  {
   "id": "tough",
-  "name": "튼튼한 적",
+  "name": "이끼 바위 골렘",
   "hp": 150,
   "attack": 14,
   "interval": 1.5,
@@ -59,12 +59,12 @@
   "holdFactor": 1,
   "slowFactor": 1,
   "color": "#7d3c98",
-  "desc": "막는 동물을 오래 두들김, 단일 피해 집중 필요",
+  "desc": "돌몸이라 오래 버팀. 한곳에 피해를 모아야 함.",
   "codex": "맷집이 자랑."
  },
  {
   "id": "swarm",
-  "name": "군집",
+  "name": "독무당벌레 떼",
   "hp": 10,
   "attack": 2,
   "interval": 1.0,
@@ -80,12 +80,12 @@
   "holdFactor": 1,
   "slowFactor": 1,
   "color": "#a93226",
-  "desc": "1기 자리에 6기씩 등장. 막기 수를 넘쳐 뒤로 새어 나감, 광역이 유리",
+  "desc": "한 자리에 여럿이 몰려옴. 광역 공격에 약함.",
   "codex": "혼자서는 아무것도 못 함. 그래서 혼자 안 다님."
  },
  {
   "id": "flying",
-  "name": "비행",
+  "name": "홀림 나비",
   "hp": 25,
   "attack": 0,
   "interval": 0.0,
@@ -101,12 +101,12 @@
   "holdFactor": 1,
   "slowFactor": 1,
   "color": "#5dade2",
-  "desc": "막기와 저지 무시, 공격하지 않음, 사거리 3 이상만 공격 가능",
+  "desc": "막기를 무시하고 날아다님. 멀리 닿는 동물만 침.",
   "codex": "길이 막혀도 상관없음."
  },
  {
   "id": "healer",
-  "name": "힐러",
+  "name": "약초 버섯 주술사",
   "hp": 40,
   "attack": 3,
   "interval": 1.5,
@@ -126,7 +126,7 @@
   "holdFactor": 1,
   "slowFactor": 1,
   "color": "#48c9b0",
-  "desc": "3초마다 반경 1.5 안의 적 체력 8% 회복",
+  "desc": "지팡이로 주변 마물을 고쳐 줌. 먼저 잡아야 함.",
   "codex": "남을 고쳐 줌. 자기는 못 고침."
  },
  {
@@ -182,7 +182,7 @@
  },
  {
   "id": "bat",
-  "name": "박쥐",
+  "name": "흡혈 박쥐",
   "hp": 80,
   "attack": 0,
   "interval": 0,
@@ -199,7 +199,7 @@
   "holdFactor": 1,
   "slowFactor": 1,
   "color": "#34495e",
-  "desc": "박쥐왕이 부르는 졸개",
+  "desc": "박쥐왕이 부르는 졸개. 날아다님.",
   "codex": "박쥐왕의 부하. 월급은 없음."
  },
  {
@@ -318,7 +318,7 @@
  },
  {
   "id": "zombie",
-  "name": "되살아난 멧돼지",
+  "name": "되살아난 썩은 멧돼지",
   "hp": 130,
   "attack": 14,
   "interval": 1.5,
@@ -334,7 +334,7 @@
   "holdFactor": 1,
   "slowFactor": 1,
   "color": "#6f8f5a",
-  "desc": "쓰러져도 한 번은 체력 40%로 다시 일어남. 불 동물에게 약함",
+  "desc": "쓰러져도 한 번은 다시 일어남. 불에 약함.",
   "codex": "한 번 진 걸 인정 안 함.",
   "kin": "undead",
   "revive": {
@@ -478,5 +478,11 @@
    "enemy": "ghost",
    "count": 3
   }
- }
+ },
+  {"id": "boss_lava", "name": "용암 바위 거인", "hp": 5200, "attack": 26, "interval": 1.5, "speed": 0.6, "gold": 5, "leak": 2, "flying": false, "spawnCount": 1, "blockSlots": 1, "heal": null, "boss": true, "scaleWithWave": true, "holdFactor": 1, "slowFactor": 1, "color": "#e8582a", "desc": "불의 산의 우두머리. 몸이 단단하고 맞붙은 동물을 오래 두들김. 물·바람에 약함", "codex": "화산이 식지 않는 건 이 거인이 자꾸 뒤척여서라고 함.", "skin": "tough", "tint": 16747098, "stageMultHp": true, "pattern": {"type": "charge", "belowHpPercent": 50, "every": 8, "duration": 3, "speed": 1.6}},
+  {"id": "boss_witch", "name": "안개 늪의 마녀", "hp": 13000, "attack": 55, "interval": 1.5, "speed": 0.5, "gold": 100, "leak": 10, "flying": false, "spawnCount": 1, "blockSlots": 2, "heal": {"every": 4, "radius": 2, "percent": 4}, "boss": true, "scaleWithWave": false, "holdFactor": 1, "slowFactor": 0.5, "color": "#4b2d6b", "desc": "8초마다 떠도는 넋을 부르고 주변을 치료함. 빛·번개에 약함", "codex": "늪 안개는 마녀가 끓이는 솥에서 피어오른다고 함.", "kin": "demon", "stageMultHp": false, "weak": ["light"], "pattern": {"type": "summon", "every": 8, "enemy": "ghost", "count": 3}, "skin": "boss_lich", "tint": 9429130},
+  {"id": "boss_knight", "name": "그믐의 해골 기사", "hp": 8500, "attack": 55, "interval": 1.5, "speed": 0.6, "gold": 100, "leak": 10, "flying": false, "spawnCount": 1, "blockSlots": 2, "heal": null, "boss": true, "scaleWithWave": false, "holdFactor": 1, "slowFactor": 0.5, "color": "#d8d2c0", "desc": "해골 병정을 일으킴. 원거리 피해를 덜 받음. 빛·불에 약함", "codex": "달이 없는 밤에만 갑옷을 입고 나온다고 함.", "kin": "undead", "stageMultHp": false, "resist": {"ranged": 0.6}, "weak": ["earth", "light"], "pattern": {"type": "summon", "every": 7, "enemy": "skeleton", "count": 3}, "skin": "boss_bone", "tint": 10128639},
+  {"id": "boss_gate", "name": "마계 문지기", "hp": 12000, "attack": 60, "interval": 1.5, "speed": 0.5, "gold": 100, "leak": 10, "flying": false, "spawnCount": 1, "blockSlots": 2, "heal": null, "boss": true, "scaleWithWave": false, "stageMultHp": false, "holdFactor": 1, "slowFactor": 0.5, "color": "#17202a", "desc": "보호막을 두르고 문을 지킴. 광역 공격으로 깨야 함", "pattern": {"type": "shield", "every": 10, "duration": 4, "breakHits": 5}, "codex": "마계 문 앞에서 천 년째 같은 자리에 서 있음.", "skin": "boss_shadow", "tint": 16738954},
+  {"id": "boss_mole", "name": "땅굴 대왕", "hp": 5600, "attack": 24, "interval": 1.5, "speed": 0.7, "gold": 40, "leak": 5, "flying": false, "spawnCount": 1, "blockSlots": 2, "heal": null, "boss": true, "scaleWithWave": false, "stageMultHp": true, "holdFactor": 1, "slowFactor": 0.5, "color": "#6e2c00", "desc": "땅속 길의 주인. 돌진으로 앞줄을 밀어붙임. 땅·물에 강함", "codex": "땅속 길은 전부 이 대왕이 코로 판 것이라고 함.", "skin": "miniboss", "tint": 13148272, "pattern": {"type": "charge", "belowHpPercent": 50, "every": 8, "duration": 3, "speed": 1.6}},
+  {"id": "overlord", "name": "굶주린 왕", "hp": 16800, "attack": 78, "interval": 1.5, "speed": 0.5, "gold": 100, "leak": 10, "flying": false, "spawnCount": 1, "blockSlots": 2, "heal": null, "boss": true, "scaleWithWave": false, "stageMultHp": false, "holdFactor": 1, "slowFactor": 0.5, "color": "#17202a", "desc": "지구의 심장을 노리는 마계의 왕. 보호막과 졸개 부르기를 함께 씀", "pattern": {"type": "summon", "every": 8, "duration": 4, "breakHits": 5, "enemy": "normal", "count": 3}, "codex": "땅속 깊이 갇혀 천 년을 굶었음. 그래서 이름이 굶주린 왕."}
 ]

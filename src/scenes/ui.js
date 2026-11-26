@@ -140,7 +140,8 @@ export function unitToken(scene, unit, data) {
     if (unit.stage === 'spirit') g.lineStyle(2, COLORS.gold, 0.6).strokeCircle(0, 0, stageR + 5);
     c.add(g);
   }
-  if (!key && !(unit.kind === 'weak' && c.list.length > 1)) {
+  // 그림(도트)이 있으면 글자를 얹지 않음 — 도감 그림 위 한글 글자 지우기
+  if (!key && !dset && !(unit.kind === 'weak' && c.list.length > 1)) {
     const letter = unit.kind === 'weak' ? '?' : unit.kind === 'chimera' ? data.recipeById[unit.speciesId].name[0] : data.unitById[id].name[0];
     c.add(scene.add.text(0, 0, letter, style(stageR, '#111111', { fontStyle: 'bold' })).setOrigin(0.5));
   }

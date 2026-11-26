@@ -112,24 +112,30 @@ export function stageEnemyIds(stage, data) {
   for (const w of stage?.waves ?? []) { for (const id of Object.keys(w.mix ?? {})) ids.add(id); for (const id of w.extra ?? []) ids.add(id); }
   if (stage?.boss) ids.add(stage.boss);
   for (const id of [...ids]) { const p = data?.enemyById?.[id]?.pattern; if (p?.enemy) ids.add(p.enemy); }
+  // 새 보스는 아직 전용 그림이 없어 기존 그림(skin)에 색만 입힘 → 그 그림 시트도 불러옴
+  for (const id of [...ids]) { const sk = data?.enemyById?.[id]?.skin; if (sk) ids.add(sk); }
   return [...ids].map((id) => 'en_' + id);
 }
 
 /** 원래 그림이 이미 왼쪽(또는 정면에서 왼쪽)을 보는 적 — 뒤집으면 오른쪽을 보게 되므로 뒤집지 않음(2026-11-26 전장 나란히 확인) */
 export const ENEMY_FACES_LEFT = new Set(['boss_frost', 'boss_bat', 'bat', 'wisp', 'skeleton', 'boss_lich', 'overlord', 'swarm']);
 /** 적이 동물 쪽(왼쪽)을 볼 때 setFacing 값 */
-export const enemyFace = (id, back = false) => (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1);
+export const enemyFace = (id0, back = false) => { const id = SKIN_OF[id0] ?? id0; return (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1); };
+const SKIN_OF = { boss_lava: 'tough', boss_witch: 'boss_lich', boss_knight: 'boss_bone', boss_gate: 'boss_shadow', boss_mole: 'miniboss' };
+export const enemyFaceOld = (id, back = false) => (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1);
 
 /** 적 도트(동작 시트가 불러와져 있을 때만). 오른쪽을 보는 그림 → 왼쪽(동물 쪽)을 보게 뒤집음. */
 function enemyDot(scene, enemy, parent, scale) {
   if (!dotArtOn()) return null;
-  const mv = scene.cache.json.get('dotM-en_' + enemy.id);
+  const mv = scene.cache.json.get('dotM-en_' + (enemy.skin ?? enemy.id));
   if (!mv || dotBad.has(mv.species + 'm') || !scene.textures.exists(mv.sheet)) return null;
   if (!mv._checked) { const errs = validateDot(mv); if (errs.length) { console.warn(`dotm ${mv.species}:`, errs); dotBad.add(mv.species + 'm'); return null; } mv._checked = true; }
   if (!ensureDotFrames(scene, mv)) return null;
   const inst = new DotInstance(mv, { stage: 'adult', scale, motion: 'move' });
-  inst.setFacing(enemyFace(enemy.id));
-  return { inst, view: new DotView(scene, inst, { parent, px: DOT_PX * (scale / 0.22) }), dot: true };
+  inst.setFacing(enemyFace(enemy.skin ?? enemy.id));
+  const view = new DotView(scene, inst, { parent, px: DOT_PX * (scale / 0.22) });
+  if (enemy.tint) view.tint = enemy.tint;
+  return { inst, view, dot: true };
 }
 
 /** One-image enemy animated with the sprite template. */

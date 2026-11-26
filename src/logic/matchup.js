@@ -8,7 +8,7 @@ const DEF = {
   enemyElem: { normal: 'fire', fast: 'wind', tough: 'earth', swarm: 'grass', flying: 'wind', healer: 'grass', miniboss: 'grass', bat: 'moon',
     skeleton: 'earth', ghost: 'moon', zombie: 'earth', wisp: 'fire', boss_boar: 'earth', boss_bat: 'moon', boss_shadow: 'moon', boss_bone: 'earth', boss_frost: 'water', boss_lich: 'moon' },
   // 스테이지 기운: 보스가 아닌 적의 절반이 이 속성으로 물듦(비 오는 습지 = 물, 얼어붙은 호수 = 물)
-  stageElem: { 'forest-2': 'water', 'forest-3': 'moon', 'stage-4': 'earth', 'stage-5': 'water', 'stage-6': 'thunder' },
+  stageElem: { 'forest-2': 'water', 'forest-3': 'moon', 'stage-4': 'earth', 'stage-5': 'water', 'stage-6': 'thunder', 'stage-7': 'fire', 'stage-8': 'water', 'stage-9': 'moon', 'stage-10': 'wind', 'stage-11': 'earth', 'stage-12': 'fire' },
   // 먹이사슬(실제 생태 기준). hunters: 이 동물이 사냥하는 적 / fears: 이 동물이 무서워하는 적
   hunters: {
     frog: ['swarm', 'flying'], crow: ['swarm', 'flying'], rooster: ['swarm'], monkey: ['swarm'], grasshopper: [],

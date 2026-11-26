@@ -282,15 +282,18 @@ export default class GauntletScene extends Phaser.Scene {
 
   // ---------- views ----------
   /** 크기 점검: 날개를 편 새(까마귀·독수리)는 그림 칸이 커서 실제보다 커 보임 → 단계 기준 키에 맞춰 줄임 */
-  /** 새는 그림 칸이 커서 실제로 커 보임: 같은 단계 땅 동물보다 작게(까마귀 ≈ 0.7배, 독수리 ≈ 0.9배) */
+  /** 크기 맞춤: 종마다 그림 칸의 실제 키가 달라 어떤 동물(까마귀·원숭이 등)은 너무 커 보임.
+   *  같은 단계 기준 키(아기 47 · 성장기 63 · 성체 78)에 맞추고, 새는 조금 더 작게. 신화급·키메라는 그대로 */
   sizeFix(u) {
-    const BIRD = { crow: { young: 34, teen: 44, adult: 56 }, eagle: { young: 42, teen: 54, adult: 68 } };
-    if (!BIRD[u.speciesId] || u.stage === 'spirit' || u.kind !== 'base') return 1;
+    if (u.stage === 'spirit' || u.kind !== 'base') return 1;
     const d = dotDataFor(this, u.speciesId, u.stage);   // 리그가 실제로 쓰는 시트와 같은 것
     const st = d?.stages?.[u.stage], set = st && d.sets[st.set];
-    if (!set) return 0.75;
+    if (!set) return 1;
     const h = d.foot + 1 - (set.top ?? 0);
-    return Math.max(0.45, Math.min(1, BIRD[u.speciesId][u.stage] / h));
+    // 실제 덩치 느낌(호랑이 1 기준, 작은 동물도 잘 보이게 너무 줄이지는 않음)
+    const bird = { crow: 0.72, eagle: 0.86, monkey: 0.8, rabbit: 0.78, rooster: 0.82, fox: 0.88, dog: 0.92, frog: 0.8, ant: 0.8, grasshopper: 0.78, bighorn: 0.96, bison: 1.05, bear: 1.03 }[u.speciesId] ?? 1;
+    const target = ({ young: 47, teen: 63, adult: 78 }[u.stage] ?? h) * bird;
+    return Math.max(0.45, Math.min(1.1, target / h));
   }
 
   makeUnitView(u) {
@@ -347,15 +350,20 @@ export default class GauntletScene extends Phaser.Scene {
     const shadow = this.add.ellipse(0, 34, size * 2, 16, 0x000000, e.flying ? 0.15 : 0.35);
     const ring = this.add.ellipse(0, 34, size * 2.4, 24).setStrokeStyle(3, 0xff6b5a, 0);
     const top = -(px * 0.7) - 6;
+    const rankRing = e.rank ? this.add.ellipse(0, 36, size * 2.2, 20).setStrokeStyle(3, gcfg(this.D).ranks[e.rank].tint, 0.9).setFillStyle(gcfg(this.D).ranks[e.rank].tint, 0.15) : null;
     const bw = e.boss ? 110 : 66;
     const barBg = this.add.rectangle(0, 48, bw, 8, 0x000000);
     const bar = this.add.rectangle(-bw / 2, 48, bw, 8, e.boss ? 0xff6b5a : 0x9b6cf0).setOrigin(0, 0.5);
     const gBg = this.add.rectangle(0, 55, 66, 4, 0x000000);
     const gBar = this.add.rectangle(-33, 55, 66, 4, 0xc4a6ff).setOrigin(0, 0.5);
     const ELITE = { shield: '🛡정예', rage: '😡정예', regen: '💚정예', thorns: '🌵정예' };
-    const name = this.add.text(0, 67, `${STYLE_ICON[e.style] ?? ''}${this.D.config.elements.defs[e.element]?.icon ?? ''} ${def.name}${e.elite ? ' ' + ELITE[e.elite] : ''}`, style(e.boss ? 15 : 12, e.boss ? '#ffcccc' : '#d8ccff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5);
+    // 등급 색: 몸 색·이름 색·발밑 고리
+    const R = e.rank ? gcfg(this.D).ranks[e.rank] : null;
+    if (R && rig?.view) rig.view.tint = R.tint;
+    const rankCol = R ? '#' + R.tint.toString(16).padStart(6, '0') : null;
+    const name = this.add.text(0, 67, `${STYLE_ICON[e.style] ?? ''}${this.D.config.elements.defs[e.element]?.icon ?? ''} ${e.name ?? def.name}${e.elite ? ' ' + ELITE[e.elite] : ''}`, style(e.boss ? 15 : 12, e.boss ? '#ffcccc' : rankCol ?? '#d8ccff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5);
     const tag = this.add.text(0, top, '', style(12, '#c4a6ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5, 1);
-    c.add([shadow, ring, holder, barBg, bar, gBg, gBar, name, tag]);
+    c.add([shadow, rankRing, ring, holder, barBg, bar, gBg, gBar, name, tag].filter(Boolean));
     holder.y = 34;
     rig?.inst.play('idle', { loop: true });
     const at = seatXY('e', e.seat);
@@ -480,7 +488,7 @@ export default class GauntletScene extends Phaser.Scene {
       if (fight && !u.down && scrum.u.has(u.uid)) home = scrum.u.get(u.uid);
       v.baseX = home.x; v.baseY = home.y;
       if (!v.dragging) {
-        const tx = home.x + v.ox, ty = home.y + v.oy;
+        const tx = Math.max(70, Math.min(1210, home.x + v.ox)), ty = Math.max(190, Math.min(570, home.y + v.oy));   // 화면 밖으로 안 나가게
         const f = v.lunge || v.kick || v.cu || v.dash ? 1 : Math.min(1, (this.realDt || 0.016) * (s.charging ? 4 : cl ? 10 : 4.5));
         const px = v.c.x;
         v.c.x += (tx - v.c.x) * f;
@@ -531,7 +539,7 @@ export default class GauntletScene extends Phaser.Scene {
       if (!v.dying && !this.tweens.isTweening(v.c)) {
         const f = v.lunge || v.kick || v.cu || v.dash ? 1 : Math.min(1, (this.realDt || 0.016) * (s.charging ? 4 : cl ? 10 : 4.5));
         const px = v.c.x;
-        v.c.x += (at.x + v.ox - v.c.x) * f;
+        v.c.x += (Math.max(70, Math.min(1210, at.x + v.ox)) - v.c.x) * f;
         v.c.y += (at.y + v.oy + (e.flying ? -40 + Math.sin(this.time.now / 300 + e.eid) * 5 : 0) - v.c.y) * (v.dash ? 1 : Math.min(1, (this.realDt || 0.016) * 8));
         v.walking = !(v.lunge || v.kick || v.cu) && Math.abs(v.c.x - px) > 0.9;
       }

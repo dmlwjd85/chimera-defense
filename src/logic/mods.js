@@ -207,6 +207,8 @@ export function computeMods(state, data) {
     }
     if (clim && u.stats.element) m.dmg += climSide(u.stats.element, clim, cfg.climateEffect?.dmg ?? 0, -(cfg.climateEffect?.dmg ?? 0), 0);
     if (state.patches?.length && cfg.patches) for (const [s, v] of Object.entries(patchAllyMods(state, u, cfg))) m[s] += v;
+    // 연전 빌드(고급): 동물마다 고른 성향의 덤/벌(u.extraMods)
+    if (u.extraMods) for (const [s, v] of Object.entries(u.extraMods)) m[s] = (m[s] ?? 0) + v;
     if (m.flags.perBruiserHp) m.hp += m.flags.perBruiserHp * state.field.filter((o) => (o.stats.role ?? '') === 'bruiser').length;
     // max hp follows hp%; keep the current fraction
     const newMax = Math.max(1, Math.round(u.stats.hp * (1 + m.hp / 100)));

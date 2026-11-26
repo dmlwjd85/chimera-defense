@@ -872,6 +872,12 @@
      }
     ]
    }
-  }
- ]
+  },
+    {"id": "dangun", "name": "쑥과 마늘", "kind": "bond", "pair": ["bear", "tiger"], "source": "한국 단군 신화", "tiles": 2, "desc": "곰 체력 +20%(끝까지 참음), 호랑이 공격 간격 -10%(참지 못해 뛰쳐나감)", "fx": {"bear": [{"hp": 20}], "tiger": [{"interval": -10}]}},
+    {"id": "cheese", "name": "치즈 한 조각", "kind": "bond", "pair": ["crow", "fox"], "source": "프랑스 라퐁텐 우화", "tiles": 2, "desc": "여우 피해 +15%, 까마귀 피해 -10%", "fx": {"fox": [{"dmg": 15}], "crow": [{"dmg": -10}]}},
+    {"id": "briar_patch", "name": "가시덤불만은 안 돼", "kind": "bond", "pair": ["rabbit", "fox"], "source": "아프리카계 미국 민담(브레어 래빗)", "tiles": 2, "desc": "토끼 회피 +20%, 여우 피해 -10%", "fx": {"rabbit": [{"dodge": 20}], "fox": [{"dmg": -10}]}},
+    {"id": "frog_ox", "name": "황소만큼 부풀기", "kind": "bond", "pair": ["frog", "bison"], "source": "그리스 이솝 우화", "tiles": 2, "desc": "개구리 체력 +25%, 공격 간격 +10%", "fx": {"frog": [{"hp": 25}, {"interval": 10}]}},
+    {"id": "zodiac_race", "name": "열두 띠 달리기", "kind": "bond", "pair": ["monkey", "rooster"], "source": "중국 십이지 이야기", "tiles": 2, "desc": "원숭이·수탉 공격 간격 -8%", "fx": {"monkey": [{"interval": -8}], "rooster": [{"interval": -8}]}},
+    {"id": "bremen", "name": "브레멘 음악대", "kind": "bond", "pair": ["dog", "bighorn"], "source": "독일 그림 형제 동화", "tiles": 2, "desc": "개·큰뿔양 체력 +10%, 피해 +10%", "fx": {"dog": [{"hp": 10}, {"dmg": 10}], "bighorn": [{"hp": 10}, {"dmg": 10}]}}
+  ]
 }

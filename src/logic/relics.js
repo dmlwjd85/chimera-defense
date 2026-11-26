@@ -29,12 +29,15 @@ export function whoMatches(who, u, state) {
 /** Roll an offer of N distinct relics the player does not own, weighted by rarity. */
 export function rollOffer(state, data) {
   const cfg = data.relicCfg;
-  const pool = cfg.relics.filter((r) => !(state.relics ?? []).includes(r.id));
+  // 연전(gauntlet) 전용 유물은 연전에서만, 연전에서 쓸모없는 유물(ban)은 연전에서 뺌
+  const ban = state.gauntletRelicBan;
+  const pool = cfg.relics.filter((r) => !(state.relics ?? []).includes(r.id) && (ban ? !ban.includes(r.id) : !r.gauntlet));
   const out = [];
   while (out.length < (cfg.choices ?? 3) && pool.length) {
-    const total = pool.reduce((s, r) => s + (cfg.weights?.[r.rarity] ?? 1), 0);
+    const wt = (r) => (cfg.weights?.[r.rarity] ?? 1) * (ban && r.gauntlet ? 3 : 1);
+    const total = pool.reduce((s, r) => s + wt(r), 0);
     let t = state.rng() * total;
-    const i = pool.findIndex((r) => (t -= cfg.weights?.[r.rarity] ?? 1) < 0);
+    const i = pool.findIndex((r) => (t -= wt(r)) < 0);
     out.push(pool.splice(i < 0 ? 0 : i, 1)[0].id);
   }
   return out;

@@ -324,6 +324,12 @@
      "taken": 30
     }
    ]
-  }
- ]
+  },
+    {"id": "back_ward", "icon": "🧿", "name": "후열 부적", "rarity": "common", "gauntlet": true, "desc": "원거리·응원 동물이 받는 피해 -35%, 피해 +15%", "fx": [{"who": {"role": "technician"}, "taken": -35, "dmg": 15}, {"who": {"role": "buffer"}, "taken": -35, "dmg": 15}]},
+    {"id": "pierce_fang", "icon": "🦷", "name": "돌파 송곳니", "rarity": "common", "gauntlet": true, "desc": "뚫었을 때 급소 피해 +60%, 딜러 피해 +15%", "eco": {"diveBonus": 60}, "fx": [{"who": {"role": "dealer"}, "dmg": 15}]},
+    {"id": "sentry_bell", "icon": "🔔", "name": "경보 종", "rarity": "common", "gauntlet": true, "desc": "요격 성공률 +30%, 딜러 체력 +15%", "eco": {"intercept": 30}, "fx": [{"who": {"role": "dealer"}, "hp": 15}]},
+    {"id": "war_drum", "icon": "🥁", "name": "전쟁 북", "rarity": "rare", "gauntlet": true, "desc": "힘싸움 미는 힘 +25%, 브루저 체력 +20%", "eco": {"clashPow": 25}, "fx": [{"who": {"role": "bruiser"}, "hp": 20}]},
+    {"id": "field_ration", "icon": "🍙", "name": "야전 주먹밥", "rarity": "common", "gauntlet": true, "desc": "교전 뒤 회복 +25%, 모든 동물 체력 +10%", "eco": {"healPlus": 25}, "fx": [{"hp": 10}]},
+    {"id": "growth_herb", "icon": "🌱", "name": "성장 약초", "rarity": "rare", "gauntlet": true, "desc": "교전을 이길 때마다 가장 어린 동물이 먹이 반 그릇", "eco": {"halfFeed": 1}}
+  ]
 }

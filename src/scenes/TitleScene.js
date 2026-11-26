@@ -10,7 +10,7 @@ export default class TitleScene extends Phaser.Scene {
   create() {
     const save = this.registry.get('save');
     this.cameras.main.setBackgroundColor('#141a21');
-    // 타이틀 배경: 심장의 성문(B3). 없으면 예전 배경 → 그것도 없으면 도형 배경
+    // 타이틀 배경: 심장의 성문(B4). 없으면 예전 배경 → 그것도 없으면 도형 배경
     const bgKey = ['bg-title-gate', 'bg-title'].find((k) => this.textures.exists(k));
     if (bgKey) this.add.image(640, 360, bgKey).setDisplaySize(1280, 720);
     else this.drawBackdrop();

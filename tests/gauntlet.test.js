@@ -268,3 +268,23 @@ test('흐름: 응원 톡·승패 요인, 보상 하나 더(금화), 주머니·�
   // 새 유물 10개
   for (const id of ['war_horn', 'thorn_mail', 'shadow_cloak', 'vanguard_flag', 'vamp_fang', 'gold_scale', 'phoenix_plume', 'iron_chain', 'thunder_drum', 'mana_spring']) assert.ok(D.relicById[id]?.gauntlet, id);
 });
+
+test('잡아채기(개구리 혀·좀비 손)·깊숙이 위험·덩굴 덫·흑역사 팔기', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  let snatch = 0, eSnatch = 0;
+  for (const st of ['stage-4', 'stage-5', 'stage-6']) for (let i = 1; i <= 3; i++) {
+    const s = autoRun(createGauntlet(D, st, i * 37, { pool: ['frog', 'monkey', 'tiger', 'wolf', 'eagle', 'bear'] }), D);
+    snatch += s.dstat?.snatch ?? 0; eSnatch += s.dstat?.eSnatch ?? 0;
+  }
+  assert.ok(snatch > 0, '우리 쪽이 낚아챔'); assert.ok(eSnatch > 0, '적이 우리 딜러를 낚아챔');
+  // 덩굴 덫
+  const s2 = createGauntlet(D, 'forest-3', 4, { spells: ['snare'] });
+  s2.mana = 100; s2.charging = false;
+  assert.ok(G.castG(s2, D, 'snare').ok); assert.ok(s2.snareT > s2.time);
+  // 흑역사 팔기
+  const s3 = createGauntlet(D, 'forest-1', 5, {});
+  fightOut(s3);
+  const w = s3.field[1]; w.kind = 'weak';
+  const g0 = s3.gold, r = G.releaseUnit(s3, D, w.uid);
+  assert.ok(r.ok); assert.equal(s3.gold - g0, D.config.gauntlet?.sellWeak ?? 25);
+});

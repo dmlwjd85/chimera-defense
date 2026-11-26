@@ -71,14 +71,14 @@ test('undead resist one attack style and fear an element; climate tilts elements
   assert.equal(D.stages.length + D.config.roadmap.length, 12);
 });
 
-test('spells: one to start, one more per cleared stage; mana gates the cast', async () => {
+test('spells: one to start, more per cleared stage; mana gates the cast', async () => {
   const { spellsUnlocked, castSpell, spellBlock } = await import('../src/logic/spells.js');
   const { step } = await import('../src/logic/battle.js');
   const save = defaultSave(), list = D.config.spells.list;
   assert.deepEqual(spellsUnlocked(save, D), ['meteor']);
   assert.deepEqual(new Set(list.map((s) => s.kind)), new Set(['attack', 'defense', 'support']));
   save.stages['forest-1'] = { cleared: true }; save.stages['forest-2'] = { cleared: true };
-  assert.deepEqual(spellsUnlocked(save, D), ['meteor', 'wall', 'drum']);
+  assert.deepEqual(spellsUnlocked(save, D), ['meteor', 'wall', 'drum', 'snare']);
   const s = createBattle(D, 'forest-1', 1, { spells: list.map((x) => x.id) });
   assert.equal(spellBlock(s, D, 'meteor'), 'noWave');
   s.phase = 'wave'; s.mana = 100;

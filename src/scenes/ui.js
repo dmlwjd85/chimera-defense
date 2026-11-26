@@ -120,8 +120,9 @@ export function unitToken(scene, unit, data) {
     if (unit.stage === 'spirit') c.add(scene.add.circle(0, 0, stageR * 1.35, COLORS.gold, 0.35).setStrokeStyle(3, COLORS.gold, 0.9));
     if (unit.white) c.add(scene.add.circle(0, 0, stageR * 1.3, 0xffffff, 0.35));
     c.add(scene.add.image(0, -stageR * 0.2, key).setDisplaySize(stageR * 2.9, stageR * 2.9));
-  } else if (unit.kind === 'weak' && unit.parts?.every((p) => scene.textures.exists('unit-' + p))) {
-    unit.parts.forEach((p, i) => c.add(scene.add.image((i ? 1 : -1) * stageR * 0.45, -stageR * 0.2, 'unit-' + p).setDisplaySize(stageR * 2, stageR * 2).setTint(0x8a8a8a).setAngle(i ? 12 : -12)));
+  } else if (unit.kind === 'weak' && unit.parts?.every((p) => dotDataFor(scene, p, 'adult') || scene.textures.exists('unit-' + p))) {
+    // 약체 키메라: 두 동물의 성체 도트를 회색으로 겹침(예전 한 장 그림 unit-<종>은 묶음에서 뺌)
+    unit.parts.forEach((p, i) => { const im = speciesImage(scene, p, 'adult', (i ? 1 : -1) * stageR * 0.45, -stageR * 1.1, stageR * 2); if (im) c.add(im.setTint(0x8a8a8a).setAngle(i ? 12 : -12)); });
     c.add(scene.add.text(0, -stageR * 0.3, '?', style(stageR, '#ffffff', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5));
   } else if (unit.kind === 'chimera') {
     const [a, b] = unit.parts.map((p) => hex(data.unitById[p].color));

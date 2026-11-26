@@ -90,11 +90,31 @@ def palette_of(paths):
     return sorted(cols)
 
 
-def hit_frame(ims):
-    """앞(오른쪽)으로 가장 멀리 뻗은 장 = 타격 순간(앞 75% 안에서)."""
-    n = max(1, int(len(ims) * 0.75))
-    rights = [(im.getbbox() or (0, 0, 0, 0))[2] for im in ims[:n]]
-    return max(range(n), key=lambda i: rights[i])
+def hit_frame(ims, ref=None):
+    """타격 순간 = 원화(ref)보다 앞(오른쪽)으로 가장 많이 뻗은 장. 몸 가운데가 앞으로 나간 만큼 + 앞 끝이 나간 만큼으로 잼.
+    첫 장·마지막 1/4은 제외(준비·되돌아오기). 앞으로 안 나가는 동작(울기·소리치기)은 원화와 가장 많이 달라진 장.
+    2026-11-26: 예전엔 '오른쪽 끝이 가장 먼 장'만 봐서 60개 중 21개가 첫 장(0)으로 잡혀 체력이 휘두르기 전에 깎였음"""
+    ref = ref or ims[0]
+    def stat(im):
+        px = im.load(); W, H = im.size; xs = []; 
+        for y in range(H):
+            for x in range(W):
+                if px[x, y][3]: xs.append(x)
+        bb = im.getbbox() or (0, 0, 0, 0)
+        return (sum(xs) / len(xs) if xs else 0), bb[2]
+    cx0, r0 = stat(ref)
+    lo, hi = 1, max(2, int(len(ims) * 0.75))
+    cand = list(range(lo, min(hi, len(ims))))
+    if not cand: return 0
+    scores = []
+    for i in cand:
+        cx, r = stat(ims[i]); scores.append((cx - cx0) + (r - r0) * 0.6)
+    best = max(range(len(cand)), key=lambda k: scores[k])
+    if scores[best] >= 1.5: return cand[best]
+    import numpy as np
+    a0 = np.asarray(ref.convert('RGBA'), dtype=int)
+    diffs = [np.abs(np.asarray(ims[i].convert('RGBA'), dtype=int) - a0).sum() for i in cand]
+    return cand[int(np.argmax(diffs))]
 
 
 def build(sp):

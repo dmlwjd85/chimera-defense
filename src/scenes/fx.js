@@ -171,6 +171,7 @@ export class FX {
       },
       onComplete: () => {
         p.destroy();
+        onHit?.();
         this.hit(x2, y2, tint, aoe);
         if (tex === 'fx-bubble') { this.burst('bubble', x2, y2, 8, 0x9fe4ff); this.ring(x2, y2, 0x9fe4ff, 0.7, 260); }
         if (species === 'fox') this.burst('rise', x2, y2, 8, 0x7fffd4);

@@ -1275,7 +1275,9 @@ export default class BattleScene extends Phaser.Scene {
       if (v.kb) { v.kb *= Math.pow(0.0005, this.realDt || 0.016); if (Math.abs(v.kb) < 0.3) v.kb = 0; }
       v.qx = (v.qx ?? 0) + ((blk ? ring[0] + ringRow * 30 : 0) - (v.qx ?? 0)) * Math.min(1, (this.realDt || 0.016) * 8);
       const xk = x + (v.kb ?? 0) + v.qx;
-      if (e.hp < v.lastHp - 0.4) { v.dmgAcc = (v.dmgAcc ?? 0) + (v.lastHp - e.hp); if (v.lastHp - e.hp >= e.maxHp * 0.35) v.bigAt = this.time.now; }
+      // 타격 맞춤: 때리는 그림·투사체가 닿기 전에는 체력이 깎인 걸 보여 주지 않음(v.impactAt까지 hp를 붙잡음)
+      const hp = this.time.now < (v.impactAt ?? 0) ? (v.shownHp ?? e.hp) : e.hp; v.shownHp = hp;
+      if (hp < v.lastHp - 0.4) { v.dmgAcc = (v.dmgAcc ?? 0) + (v.lastHp - hp); if (v.lastHp - hp >= e.maxHp * 0.35) v.bigAt = this.time.now; }
       if (v.dmgAcc && this.time.now - (v.dmgAt ?? 0) > 110) {
         const d = v.dmgAcc, heavy = d >= e.maxHp * 0.18;
         this.dmgNumber(xk, y - v.size / 2 - 26, d, heavy);
@@ -1289,16 +1291,16 @@ export default class BattleScene extends Phaser.Scene {
         const still = e.blockedBy !== null || e.holdLeft > 0 || e.stunLeft > 0;
         if (this.enemyHits?.has(e.eid)) r.play('attack');
         else if (!(m === 'attack' && !r.finished) && !(m === 'hit' && !r.finished)) { if (still && m !== 'idle') r.play('idle', { loop: true }); else if (!still && m !== 'move') r.play('move', { loop: true }); }
-        if (e.hp < v.lastHp - 0.01) { r.hitFlash(0.14); if (!(m === 'attack' && !r.finished)) r.play('hit'); }
-        v.lastHp = e.hp;
+        if (hp < v.lastHp - 0.01) { r.hitFlash(0.14); if (!(m === 'attack' && !r.finished)) r.play('hit'); }
+        v.lastHp = hp;
         r.setFacing(e.confuseLeft > 0 ? 1 : -1);
         v.rig.view.update(e.stunLeft > 0 || e.holdLeft > 0 ? 0 : this.frameDt);
         v.holder.setDepth(50 + y + 0.5);
-      } else { v.body.setPosition(xk, y); if (e.hp < v.lastHp - 0.01) { v.body.setFillStyle?.(0xffffff); this.time.delayedCall(70, () => v.body.active && v.body.setFillStyle?.(hex(this.data2.enemyById[e.id].color))); } v.lastHp = e.hp; }
+      } else { v.body.setPosition(xk, y); if (hp < v.lastHp - 0.01) { v.body.setFillStyle?.(0xffffff); this.time.delayedCall(70, () => v.body.active && v.body.setFillStyle?.(hex(this.data2.enemyById[e.id].color))); } v.lastHp = hp; }
       v.shadow?.setPosition(xk, (e.flying ? v.laneY : y) + (v.rig ? v.px * 0.42 - 2 : v.size / 2)).setAlpha((v.rig ? v.holder : v.body).alpha * (e.flying ? 0.16 : 0.3) / 0.3);
       if (!e.flying && v.rig && v.rig.inst.motion === 'move' && this.time.now - (v.dustAt ?? 0) > 420 && Math.random() < 0.5) { v.dustAt = this.time.now; this.fx.burst('puff', xk + 8, (v.shadow?.y ?? y) - 2, 1, 0xcbb994); }
       v.bar.setPosition(x - v.barW / 2, y - v.size / 2 - (v.rig ? 22 : 7));
-      v.bar.width = v.barW * Math.max(0, e.hp) / e.maxHp;
+      v.bar.width = v.barW * Math.max(0, hp) / e.maxHp;
       v.label?.setPosition(x, y + v.size / 2 + 12);
       v.shield?.setPosition(x, y).setVisible(e.shieldLeft > 0);
       const stroke = e.holdLeft > 0 || e.stunLeft > 0 ? 0xffffff : e.confuseLeft > 0 ? 0xc39bd3 : e.poisonLeft > 0 ? 0x58d68d : e.slowLeft > 0 ? 0x5dade2 : null;
@@ -1309,12 +1311,26 @@ export default class BattleScene extends Phaser.Scene {
     }
     for (const [eid, v] of this.enemyViews) {
       if (seen.has(eid)) continue;
+      if (this.time.now < (v.impactAt ?? 0)) continue;   // 마지막 한 방이 닿을 때까지 기다렸다 쓰러짐
       v.bar.destroy(); v.label?.destroy(); v.shield?.destroy();
       this.enemyViews.delete(eid);
       if (v.rig) this.enemyDeath(v); else { v.body.destroy(); v.shadow?.destroy(); }
       (this.goneViews ??= new Map()).set(eid, v);
+      if (v.pendingKill) { this.killFx(v.pendingKill, v); v.pendingKill = null; }
     }
   }
+
+  /** 처치 연출(금화·소리·멈칫·보스 배너). 마지막 한 방이 닿는 순간에 맞춰 부름. */
+  killFx(ev, v) {
+    this.stopFor(ev.boss ? 0.12 : 0.03);
+    if (v) { if (ev.gold) this.floatText(v.lastX, v.lastY - 10, `+${ev.gold}`, '#ffd84d'); this.fx.kill(v.lastX, v.lastY, ev.gold, ev.boss); }
+    sfx(ev.boss ? 'bigKill' : 'kill'); if (ev.gold) sfx('coin');
+    if (ev.boss) { this.cameras.main.flash(300, 255, 255, 255); this.fx.banner(`${this.data2.enemyById[ev.id].name} 처치!`, '#ffd84d'); }
+  }
+
+  /** 타격 맞춤: 이 적들의 체력 표시를 ms 동안 붙잡음(닿는 순간 release). */
+  holdHp(eids, ms) { const until = this.time.now + ms; for (const id of eids) { const v = this.enemyViews.get(id); if (v) v.impactAt = Math.max(v.impactAt ?? 0, until); } }
+  releaseHp(eids) { for (const id of eids) { const v = this.enemyViews.get(id); if (v) v.impactAt = 0; } }
 
   /** 적 쓰러짐: 큰 한 방(최근 맞은 피해가 최대 체력의 35% 이상)이면 튕겨 날아가며 돌고, 아니면 털썩 쓰러져 깜빡이다 보라 넋이 빠져나감. */
   enemyDeath(v) {
@@ -1558,6 +1574,7 @@ export default class BattleScene extends Phaser.Scene {
     this.pendingBirth ??= new Map();
     for (const ev of this.state.events) {
       const v = ev.uid != null ? this.unitViews.get(ev.uid) : null;
+      if (ev.type === 'attack') this.holdHp(ev.eids?.length ? ev.eids : [ev.eid], 1100 / (this.speed || 1));   // 닿으면 releaseHp, 안전하게 최대 1.1초
       if (ev.type === 'attack' && v?.rig) playAttack(v.rig.inst, ev.move);
       if (ev.type === 'ult' && v?.rig) { const a = v.rig.inst; a.play(a.dot?.sets?.[a.stageDef?.set]?.ult ? 'ult' : a.anims.skill ? 'skill' : 'attack'); }
       if (ev.type === 'skill' && v?.rig && ev.name) v.rig.inst.play('skill');
@@ -1586,7 +1603,7 @@ export default class BattleScene extends Phaser.Scene {
           });
           break;
         }
-        case 'kill': { this.stopFor(ev.boss ? 0.12 : 0.03); const v = this.goneViews?.get(ev.eid); if (v) { if (ev.gold) this.floatText(v.lastX, v.lastY - 10, `+${ev.gold}`, '#ffd84d'); this.fx.kill(v.lastX, v.lastY, ev.gold, ev.boss); } sfx(ev.boss ? 'bigKill' : 'kill'); if (ev.gold) sfx('coin'); if (ev.boss) { this.cameras.main.flash(300, 255, 255, 255); this.fx.banner(`${data.enemyById[ev.id].name} 처치!`, '#ffd84d'); } break; }
+        case 'kill': { const held = this.enemyViews.get(ev.eid); if (held) held.pendingKill = ev; else this.killFx(ev, this.goneViews?.get(ev.eid)); break; }
         case 'leak': this.floatText(tileToX(0) + 30, PATH_Y - 40, `-${ev.leak}`, '#ff5252', 22); this.fx.leak(tileToX(0), PATH_Y); this.cameras.main.shake(100, 0.005); sfx('leak'); break;
         case 'ult': {
           // 필살기: 이름 컷인 + 잠깐 멈춤 + 표적 둘레 충격
@@ -1610,14 +1627,14 @@ export default class BattleScene extends Phaser.Scene {
           if (kind === 'dive') {
             const v = this.unitViews.get(ev.uid);
             if (v) v.dive = { t: 0, tx: ve.lastX, ty: ve.lastY - 30 };
-            this.time.delayedCall(170, () => { this.fx.gust(ve.lastX, ve.lastY, 1, u.speciesId === 'phoenix' ? 0xffb35c : 0xe0f7ff); this.fx.hit(ve.lastX, ve.lastY, u.speciesId === 'phoenix' ? 'orange' : 'white', true); if (ev.aoe) this.fx.groundAoe(ve.lastX, ve.lastY + 26, 80, u.speciesId === 'thunderbird' ? 0xfff6a0 : u.speciesId === 'phoenix' ? 0xff8a3c : 0xcfefff, { shake: false }); if (u.speciesId === 'thunderbird') this.fx.bolt(ve.lastX, ve.lastY - 150, ve.lastX, ve.lastY); this.kick2(ev, ux); });
+            this.time.delayedCall(170, () => { this.releaseHp((ev.eids?.length ? ev.eids : [ev.eid])); this.fx.gust(ve.lastX, ve.lastY, 1, u.speciesId === 'phoenix' ? 0xffb35c : 0xe0f7ff); this.fx.hit(ve.lastX, ve.lastY, u.speciesId === 'phoenix' ? 'orange' : 'white', true); if (ev.aoe) this.fx.groundAoe(ve.lastX, ve.lastY + 26, 80, u.speciesId === 'thunderbird' ? 0xfff6a0 : u.speciesId === 'phoenix' ? 0xff8a3c : 0xcfefff, { shake: false }); if (u.speciesId === 'thunderbird') this.fx.bolt(ve.lastX, ve.lastY - 150, ve.lastX, ve.lastY); this.kick2(ev, ux); });
             sfx('slash');
-          } else if (kind === 'drop') { this.fx.drop(ve.lastX, ve.lastY, 'fx-stone', u.speciesId === 'cheese_thief' ? 0xffe9a8 : 0xffffff); this.time.delayedCall(200, () => this.kick2(ev, ux)); sfx('shoot'); }
+          } else if (kind === 'drop') { this.fx.drop(ve.lastX, ve.lastY, 'fx-stone', u.speciesId === 'cheese_thief' ? 0xffe9a8 : 0xffffff); this.time.delayedCall(200, () => { this.releaseHp((ev.eids?.length ? ev.eids : [ev.eid])); this.kick2(ev, ux); }); sfx('shoot'); }
           else if (u.stats.range >= 3) {
             // 동작 그림이 있으면 던지는 장(타격 순간)에 맞춰 날림
             const clip = this.unitViews.get(ev.uid)?.rig?.inst?.cur?.clip;
             const hitT = clip?.events?.find((e) => e[1] === 'hit')?.[0];
-            const fire = () => { const [x0, y0] = unitPos(ev.uid); this.fx.projectile(u.speciesId, x0, y0, ve.lastX, ve.lastY, ev.aoe, () => this.kick(ev.eids?.length ? ev.eids : [ev.eid], x0, ev.aoe ? 12 : 7)); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); };
+            const fire = () => { const [x0, y0] = unitPos(ev.uid); this.fx.projectile(u.speciesId, x0, y0, ve.lastX, ve.lastY, ev.aoe, () => { this.releaseHp((ev.eids?.length ? ev.eids : [ev.eid])); this.kick((ev.eids?.length ? ev.eids : [ev.eid]), x0, ev.aoe ? 12 : 7); }); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); };
             if (hitT > 0.02) this.time.delayedCall(Math.min(0.4, hitT) * 1000 / (this.speed || 1), fire); else fire();
           }
           else {
@@ -1626,6 +1643,7 @@ export default class BattleScene extends Phaser.Scene {
             const clipM = v?.rig?.inst?.cur?.clip, hitM = clipM?.events?.find((e) => e[1] === 'hit')?.[0];
             if (v && !(hitM > 0.02)) { v.lungeT = 0; v.lungeDir = Math.sign(ve.lastX - ux) || 1; }
             const strike = () => {
+            this.releaseHp((ev.eids?.length ? ev.eids : [ev.eid]));
             const big = ev.aoe || u.stats.role === 'bruiser';
             const dir = Math.sign(ve.lastX - ux) || 1;
             if (kind === 'claw') this.fx.scratch(ve.lastX, ve.lastY - 4, 0xffffff, dir);

@@ -444,7 +444,8 @@ export function combatTick(state, data, dt) {
 
   // 사격 구역 끝 = 가장 앞에 선 근접(땅) 동물 + killZone칸. 근접 동물이 없으면 제한 없음
   { const kz = cfg.formation?.killZone; const melee = kz != null ? state.field.filter((o) => !o.down && !o.inGate && !o.stats.flyer && o.stats.range <= 1) : [];
-    state.killLine = melee.length ? Math.max(...melee.map((o) => o.pos)) + kz : null; }
+    // 근접 동물이 없으면(원거리·하늘만) 전열 + killZoneAlone칸: 까마귀·독수리만 있어도 포탈 입구가 아니라 들판 가운데서 맞히게(2026-11-26)
+    state.killLine = kz == null ? null : melee.length ? Math.max(...melee.map((o) => o.pos)) + kz : (cfg.formation.front ?? 5.8) + (cfg.formation.killZoneAlone ?? 1.2); }
   // unit attacks
   for (const u of state.field) {
     if (!standing(u)) continue;
@@ -475,7 +476,7 @@ export function combatTick(state, data, dt) {
     if (a2?.stun && target.hp > 0) target.stunLeft = Math.max(target.stunLeft ?? 0, target.boss ? a2.stun / 3 : a2.stun);
     if (a2?.healAlly) { const mate = state.field.filter((o) => !o.down && !o.inGate && o !== u).sort((x, y) => x.hp / (x.maxHp ?? x.stats.hp) - y.hp / (y.maxHp ?? y.stats.hp))[0]; if (mate) mate.hp = Math.min(mate.maxHp ?? mate.stats.hp, mate.hp + (mate.maxHp ?? mate.stats.hp) * a2.healAlly / 100); }
     if (flags(u).splashChance && state.rng() < flags(u).splashChance / 100) {
-      const other = state.enemies.find((e) => e !== target && hittable(u, e) && Math.abs(e.pos - u.pos) <= effRange(u) + 1);
+      const other = state.enemies.find((e) => e !== target && hittable(u, e) && Math.abs(e.pos - u.pos) <= effRange(u) + 1 && (state.killLine == null || e.flying || e.pos <= state.killLine + 0.6));   // 사격 구역 밖(포탈 입구) 적은 안 맞음
       if (other) { damageEnemy(state, other, hitDamage(state, u, other), false, u.uid); state.events.push({ type: 'splash', uid: u.uid, eid: other.eid }); }
     }
     applyOnHit(state, u, hits, target, cfg);

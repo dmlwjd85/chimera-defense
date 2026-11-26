@@ -25,7 +25,7 @@ export default class UnlockScene extends Phaser.Scene {
       const y = 200 + i * 110;
       panel(this, 240, y - 40, 800, 90);
       this.add.text(270, y - 22, `${name}  (${lv}/${costs.length})`, style(22));
-      this.add.text(270, y + 10, `${eff} · 지금 +${lv * (key === 'bench' ? U.bench.step : U.startGold.step)}`, style(15, '#aabbcc'));
+      this.add.text(270, y + 10, `${eff} · 지금 +${lv * (key === 'bench' ? U.bench.step : U.startGold.step)}`, style(15, '#dcc6a2'));
       const done = lv >= costs.length;
       button(this, 920, y, 180, 50, done ? '최대' : `${costs[lv]} 에센스`, () => {
         const r = buyUnlock(save, D, key);
@@ -36,10 +36,10 @@ export default class UnlockScene extends Phaser.Scene {
     const y = 420;
     panel(this, 240, y - 40, 800, 90);
     this.add.text(270, y - 22, '레시피 힌트', style(22));
-    this.add.text(270, y + 10, '아직 못 찾은 레시피 하나의 재료 1종을 도감에 공개', style(15, '#aabbcc'));
+    this.add.text(270, y + 10, '못 찾은 레시피의 재료 1종 공개', style(15, '#dcc6a2'));
     button(this, 920, y, 180, 50, `${U.hint.cost} 에센스`, () => {
       const r = buyUnlock(save, D, 'hint');
-      if (r.ok) { writeSave(this.registry.get('storage'), save); const rc = D.recipeById[r.hint.recipe]; this.scene.restart({ msg: `힌트: ??? 의 재료에 ${D.unitById[r.hint.part].name}이(가) 들어간다 (출처: ${rc.source})` }); }
+      if (r.ok) { writeSave(this.registry.get('storage'), save); const rc = D.recipeById[r.hint.recipe]; this.scene.restart({ msg: `힌트: ??? = ${D.unitById[r.hint.part].name} + ? (${rc.source})` }); }
       else this.scene.restart({ msg: r.reason === 'essence' ? '에센스 부족' : '공개할 힌트 없음' });
     }).setEnabled(save.essence >= U.hint.cost);
     this.add.text(240, 500, '업적', style(20, '#ffe2b8'));

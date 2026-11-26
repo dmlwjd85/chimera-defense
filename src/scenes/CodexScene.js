@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { button, title, style, panel, unitToken } from './ui.js';
+import { button, title, style, panel, unitToken, dimmer, drawSlot } from './ui.js';
 import { buildData, pairKey } from '../logic/data.js';
 import { levelInfo, favorState, buyFavor, writeSave } from '../logic/meta.js';
 
@@ -35,10 +35,10 @@ export default class CodexScene extends Phaser.Scene {
       if (!seen) tok.list.forEach((o) => o.setTint?.(0x000000));
       this.add.text(c.x + 80, c.y + 8, seen ? `${u.name}  Lv.${lv.level}${S.favor?.[u.id] ? '  ' + '♥'.repeat(S.favor[u.id]) : ''}` : '???', style(17, lv.level >= 10 ? '#ffd84d' : '#ffffff'));
       if (seen) { const z = this.add.zone(c.x + c.w / 2, c.y + c.h / 2, c.w, c.h).setInteractive({ useHandCursor: true }); z.on('pointerdown', () => this.showDetail(u)); this.add.text(c.x + c.w - 8, c.y + c.h - 18, '자세히 ▸', style(11, '#d4b06a')).setOrigin(1, 0); }
-      this.add.text(c.x + 80, c.y + 32, `${CONT[u.continent]} · 영물 ${seen ? u.stageNames.spirit : '???'}`, style(12, '#aabbcc'));
+      this.add.text(c.x + 80, c.y + 32, `${CONT[u.continent]} · 영물 ${seen ? u.stageNames.spirit : '???'}`, style(12, '#dcc6a2'));
       if (seen) {
         this.add.text(c.x + 80, c.y + 52, `"${u.codex}"`, style(12, '#dddddd', { wordWrap: { width: 200 } }));
-        if (u.nickname && u.nickname !== '없음') this.add.text(c.x + 10, c.y + 100, `별명: ${u.nickname}`, style(11, '#8899aa'));
+        if (u.nickname && u.nickname !== '없음') this.add.text(c.x + 10, c.y + 100, `별명: ${u.nickname}`, style(11, '#b9a37f'));
       }
     });
   }
@@ -48,7 +48,7 @@ export default class CodexScene extends Phaser.Scene {
     this.detail?.forEach((o) => o.destroy());
     const D = this.data2, S = this.save, T = D.tales ?? {}, objs = [];
     const add = (o) => { objs.push(o.setDepth?.(3002) ?? o); return o; };
-    objs.push(this.add.rectangle(640, 360, 1280, 720, 0x05080c, 0.72).setInteractive().setDepth(3000));
+    objs.push(dimmer(this, 3000, 0.72));
     objs.push(panel(this, 190, 70, 900, 580, { depth: 3001, alpha: 0.98 }));
     const tok = unitToken(this, { kind: 'base', speciesId: u.id, stage: 'adult', stats: { color: u.color } }, D); tok.setPosition(270, 150).setScale(1.5); add(tok);
     const sp = unitToken(this, { kind: 'base', speciesId: u.id, stage: 'spirit', stats: { color: u.color } }, D); sp.setPosition(1000, 150).setScale(1.3); add(sp);
@@ -56,9 +56,9 @@ export default class CodexScene extends Phaser.Scene {
     if (!gotSp) sp.list.forEach((o) => o.setTint?.(0x000000));
     add(this.add.text(350, 100, u.name, style(30, '#ffe6b0', { stroke: '#2a1a08', strokeThickness: 5 })));
     add(this.add.text(350, 142, `${CONT[u.continent]} · ${{ bruiser: '브루저', dealer: '딜러', technician: '테크니션', buffer: '버퍼' }[u.role]} · ${D.config.elements.defs[u.element]?.icon ?? ''} ${D.config.elements.defs[u.element]?.name ?? ''} 속성`, style(14, '#d4b06a')));
-    add(this.add.text(350, 166, `"${u.codex}"`, style(13, '#cfd8dc', { wordWrap: { width: 520 } })));
+    add(this.add.text(350, 166, `"${u.codex}"`, style(13, '#efe0c4', { wordWrap: { width: 520 } })));
     add(this.add.text(1000, 210, gotSp ? `🌟 ${u.stageNames.spirit}` : '🌟 ???', style(15, '#ffd84d')).setOrigin(0.5));
-    add(this.add.text(1000, 232, T.myth?.[u.id] ? `${T.myth[u.id].flag} ${T.myth[u.id].source}` : '', style(12, '#cfd8dc')).setOrigin(0.5));
+    add(this.add.text(1000, 232, T.myth?.[u.id] ? `${T.myth[u.id].flag} ${T.myth[u.id].source}` : '', style(12, '#efe0c4')).setOrigin(0.5));
     let y = 228;
     const row = (icon, label, text, col = '#efe3c8') => { add(this.add.text(230, y, `${icon} ${label}`, style(14, '#9fd8ff'))); const o = add(this.add.text(340, y, text, style(14, col, { wordWrap: { width: 540 } }))); y += Math.max(24, o.height + 6); };
     row('🏡', '사는 곳', u.eco.home); row('🍽', '먹이', u.eco.diet); row('⚠', '천적', u.eco.foes); row('💡', '한마디', u.eco.fact);
@@ -79,7 +79,7 @@ export default class CodexScene extends Phaser.Scene {
     }
     const f = D.config.favor, st = favorState(S, D, u.id);
     const lv = st.level ?? 0;
-    add(this.add.text(230, 596, `💗 정 붙이기 ${'♥'.repeat(lv)}${'♡'.repeat(f.max - lv)}  — ${u.name} 소환 확률 무게 +${lv * f.perLevel}%`, style(14, '#ff9fbf')));
+    add(this.add.text(230, 596, `💗 정 붙이기 ${'♥'.repeat(lv)}${'♡'.repeat(f.max - lv)} · ${u.name} 소환 무게 +${lv * f.perLevel}%`, style(14, '#ff9fbf')));
     const close = () => { objs.forEach((o) => o.destroy()); fb.destroy(); cb.destroy(); this.detail = null; };
     const fb = button(this, 880, 606, 230, 40, st.reason === 'max' ? '가득 참' : `정 붙이기 · 에센스 ${st.cost ?? f.costs[lv]}`, () => {
       const r = buyFavor(S, D, u.id);
@@ -99,14 +99,13 @@ export default class CodexScene extends Phaser.Scene {
     D.units.forEach((u, i) => {
       const c = this.cell(i, 3, 385, 122), got = made.has(u.id), m = T.myth?.[u.id];
       const g = this.add.graphics();
-      g.fillStyle(got ? 0x3a2a10 : 0x10161e, got ? 0.55 : 0.6).fillRoundedRect(c.x, c.y, c.w, c.h, 12);
-      g.lineStyle(2, got ? 0xffd84d : 0x3b4b5e, got ? 0.9 : 0.6).strokeRoundedRect(c.x, c.y, c.w, c.h, 12);
+      drawSlot(g, c.x, c.y, c.w, c.h, { r: 12, fill: got ? 0x4a3418 : 0x1c130e, alpha: got ? 0.85 : 0.7, accent: got ? 0xffd84d : undefined });
       if (got) g.fillStyle(0xffd84d, 0.18).fillCircle(c.x + 48, c.y + 52, 40);
       const tok = unitToken(this, { kind: 'base', speciesId: u.id, stage: 'spirit', stats: { color: u.color } }, D);
       tok.setPosition(c.x + 48, c.y + 52);
       if (!got) tok.list.forEach((o) => o.setTint?.(0x000000));
       this.add.text(c.x + 96, c.y + 8, got ? `🌟 ${u.stageNames.spirit}` : '🌟 ???', style(19, got ? '#ffd84d' : '#7f8c99', { stroke: '#000', strokeThickness: 3 }));
-      this.add.text(c.x + c.w - 10, c.y + 10, m ? `${m.flag} ${got ? m.land : '???'}` : '', style(12, '#cfd8dc')).setOrigin(1, 0);
+      this.add.text(c.x + c.w - 10, c.y + 10, m ? `${m.flag} ${got ? m.land : '???'}` : '', style(12, '#efe0c4')).setOrigin(1, 0);
       if (got) {
         this.add.text(c.x + 96, c.y + 36, `${m?.source ?? ''} · ✦ ${u.spiritSkill.name}`, style(12, '#e8c3ff'));
         this.add.text(c.x + 96, c.y + 56, T.skills?.[`${u.id}_spirit`]?.[1] ?? u.spiritSkill.desc, style(12, '#efe3c8', { wordWrap: { width: 275 } }));
@@ -129,11 +128,11 @@ export default class CodexScene extends Phaser.Scene {
       if (!known) tok.list.forEach((o) => o.setTint?.(0x000000));
       const parts = r.parts.map((p) => (known || hint.includes(p) ? D.unitById[p].name : `?(${CONT[D.unitById[p].continent]})`)).join(' + ');
       this.add.text(c.x + 85, c.y + 8, known ? r.name : '???', style(18, known ? '#d7bde2' : '#888888'));
-      this.add.text(c.x + 85, c.y + 34, parts, style(13, '#aabbcc'));
+      this.add.text(c.x + 85, c.y + 34, parts, style(13, '#dcc6a2'));
       this.add.text(c.x + 85, c.y + 56, known ? r.desc : `출처: ${r.source}`, style(11, '#dddddd', { wordWrap: { width: 290 } }));
       if (known && r.codex) this.add.text(c.x + 85, c.y + 96, `"${r.codex}"`, style(11, '#c0c0c0', { wordWrap: { width: 290 } }));
     });
-    this.add.text(640, 632, `힌트 조각 ${S.hintShards}/${D.config.hintShardsPerReveal} — 흑역사를 만들 때마다 1개`, style(14, '#ffd84d')).setOrigin(0.5);
+    this.add.text(640, 632, `힌트 조각 ${S.hintShards}/${D.config.hintShardsPerReveal} · 흑역사마다 +1`, style(14, '#ffd84d')).setOrigin(0.5);
   }
 
   flops() {
@@ -155,7 +154,7 @@ export default class CodexScene extends Phaser.Scene {
       const c = this.cell(i, 3, 385, 62), seen = S.codex.bonds.includes(b.id);
       const names = b.pair.map((p) => D.unitById[p]?.name ?? p).join(' + ');
       this.add.text(c.x + 10, c.y + 4, `${b.kind === 'clash' ? '⚡' : '♥'} ${seen ? b.name : '???'}${seen && b.flip ? '  ✨' + b.flip.name : ''}`, style(15, b.kind === 'clash' ? '#f0883e' : '#ff8fb1'));
-      this.add.text(c.x + 10, c.y + 26, `${names} · ${b.sameTeam ? '함께 출전' : b.tiles + '타일 안'}`, style(12, '#aabbcc'));
+      this.add.text(c.x + 10, c.y + 26, `${names} · ${b.sameTeam ? '함께 출전' : b.tiles + '타일 안'}`, style(12, '#dcc6a2'));
       this.add.text(c.x + 10, c.y + 42, seen ? b.desc : `출처: ${b.source}`, style(11, '#dddddd'));
     });
   }
@@ -168,7 +167,7 @@ export default class CodexScene extends Phaser.Scene {
       else this.add.rectangle(c.x + 30, c.y + 40, e.boss ? 44 : 30, e.boss ? 44 : 30, Phaser.Display.Color.HexStringToColor(e.color).color).setAlpha(seen ? 1 : 0.15);
       this.add.text(c.x + 65, c.y + 8, seen ? e.name : '???', style(17));
       if (seen) {
-        this.add.text(c.x + 65, c.y + 32, e.desc, style(11, '#aabbcc', { wordWrap: { width: 215 } }));
+        this.add.text(c.x + 65, c.y + 32, e.desc, style(11, '#dcc6a2', { wordWrap: { width: 215 } }));
         this.add.text(c.x + 65, c.y + 66, `"${e.codex}"`, style(11, '#dddddd', { wordWrap: { width: 215 } }));
       }
     });

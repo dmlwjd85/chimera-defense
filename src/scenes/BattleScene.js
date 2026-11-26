@@ -17,7 +17,8 @@ import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
 import { soundOf, ELEM_SOUND } from './onomato.js';
 import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
-import { button, panel, style, unitToken, silhouette, hex, COLORS, chip, showTip, hideTip } from './ui.js';
+import { button, panel, style, unitToken, silhouette, hex, COLORS, chip, showTip, hideTip, dimmer, INK, INK_CSS, THEME } from './ui.js';
+import { drawPanel } from './theme.js';
 
 import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX, benchSlotPos, LANE_Y, LANE_SCALE, laneAt, DOCK_Y, SIDE_L, SIDE_R, SIDE_TOP } from './layout.js';
 import { drawSidebars, Roster, Altar } from './sidebars.js';
@@ -32,10 +33,10 @@ const RARITY_NAME = { common: '일반', rare: '희귀', epic: '영웅' };
 const SYN_TEXT = { eurasia: '유라시아 시너지: 공격 간격 -10%', america: '아메리카 시너지: 사거리 +1', africa: '아프리카 시너지: 피해 +15%' };
 const ROLE_NAME = { bruiser: '브루저', dealer: '딜러', technician: '테크니션', buffer: '버퍼', weak: '약체' };
 const TUTORIAL = [
-  '🌐 소환 — 버튼 또는 스페이스',
-  '⇢ 케이지 동물을 누르면 출전 — 자리는 알아서',
-  '⧉ 같은 동물·같은 단계 겹치기 = 진화',
-  '✦ 성체 다른 종 둘 = 키메라 (여우+까마귀?)',
+  '🌐 소환: 버튼 · 스페이스',
+  '⇢ 케이지 동물 누르기 = 출전 (자리 자동)',
+  '⧉ 같은 동물·단계 둘 = 진화',
+  '✦ 다른 종 성체 둘 = 키메라',
 ];
 const ZONE_TILES = 4;
 
@@ -81,7 +82,7 @@ export default class BattleScene extends Phaser.Scene {
     this.bondTexts = [];
     this.toastText = this.add.text(640, 120, '', style(20, '#ffd84d', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(2000).setVisible(false);
     this.tutorialStep = this.stageId === 'forest-1' && !this.save.tutorialDone ? 0 : -1;
-    this.tutorialText = this.add.text(560, 160, '', style(17, '#ffe6b0', { backgroundColor: '#101820ee', padding: { x: 14, y: 8 }, stroke: '#000', strokeThickness: 2 })).setOrigin(0.5).setDepth(1900);
+    this.tutorialText = this.add.text(560, 160, '', style(17, '#ffe6b0', { backgroundColor: '#4a3222ee', padding: { x: 14, y: 8 }, stroke: INK_CSS, strokeThickness: 3 })).setOrigin(0.5).setDepth(1900);
 
     const kb = this.input.keyboard;
     kb.on('keydown-SPACE', () => this.doSummon());
@@ -97,8 +98,8 @@ export default class BattleScene extends Phaser.Scene {
       playSangunUlt: (uid) => this.triggerSangunUlt(uid),
       get sangunUlt() { return this.scene.sangunUlt ? { index: this.scene.sangunUlt.frameIdx, elapsedMs: this.scene.sangunUlt.elapsedMs } : null; } };
     attachInput(this);
-    if (this.carried) this.time.delayedCall(400, () => { this.toast(`지난 스테이지에서 데려온 동물: ${this.carried.white ? '흰 ' : ''}${this.carried.stats.name}`, '#9cff6b'); this.fx.burst('rise', benchSlotX(0), BENCH_Y, 14, 0x9cff6b); });
-    else if (this.fallbackGold) this.time.delayedCall(400, () => this.toast(`데려온 동물이 없어 시작 골드 +${this.fallbackGold}`, '#ffd84d'));
+    if (this.carried) this.time.delayedCall(400, () => { this.toast(`데려온 동물: ${this.carried.white ? '흰 ' : ''}${this.carried.stats.name}`, '#9cff6b'); this.fx.burst('rise', benchSlotX(0), BENCH_Y, 14, 0x9cff6b); });
+    else if (this.fallbackGold) this.time.delayedCall(400, () => this.toast(`데려온 동물 없음 → 골드 +${this.fallbackGold}`, '#ffd84d'));
     this.input.on('pointerdown', unlockAudio);
     this.input.keyboard.on('keydown', unlockAudio);
     this.stanceFx = new Map();
@@ -214,7 +215,7 @@ export default class BattleScene extends Phaser.Scene {
     this.mvpObjs?.forEach((o) => o.destroy());
     const objs = this.mvpObjs = [], top = ev.top[0].dmg || 1, X = 500, Y = 86;
     const g = this.add.graphics().setDepth(2500); objs.push(g);
-    g.fillStyle(0x0d141d, 0.9).fillRoundedRect(X, Y, 280, 26 + ev.top.length * 22, 10).lineStyle(1.5, 0xd4b06a, 0.9).strokeRoundedRect(X, Y, 280, 26 + ev.top.length * 22, 10);
+    drawPanel(g, X, Y, 280, 26 + ev.top.length * 22, { alpha: 0.95, r: 10, plain: true });
     objs.push(this.add.text(X + 140, Y + 4, `🏆 웨이브 ${ev.wave} 주인공`, style(13, '#ffd84d')).setOrigin(0.5, 0).setDepth(2501));
     ev.top.forEach((m, i) => {
       const y = Y + 26 + i * 22;
@@ -245,7 +246,7 @@ export default class BattleScene extends Phaser.Scene {
       const ring = this.add.graphics().setDepth(2);
       const icon = this.add.text(x, y - 1, d.icon, style(16)).setOrigin(0.5).setDepth(3);
       const cost = this.add.text(x + 11, y + 12, `${spellCost(this.state, this.data2, d)}`, style(10, '#9fd8ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(3);
-      this.add.text(x - 15, y - 17, KEYS[i], style(9, '#8899aa')).setDepth(3);
+      this.add.text(x - 15, y - 17, KEYS[i], style(9, '#b9a37f')).setDepth(3);
       const z = this.add.zone(x, y, 30, 36).setInteractive({ useHandCursor: true }).setDepth(4);
       z.on('pointerover', () => showTip(this, `${d.icon} ${d.name} · ${KIND_NAME[d.kind]} · 마력 ${spellCost(this.state, this.data2, d)}\n“${d.tale}”\n· ${d.desc}`, x, y - 60));
       z.on('pointerout', () => hideTip(this));
@@ -268,7 +269,7 @@ export default class BattleScene extends Phaser.Scene {
       const ok = !spellBlock(s, this.data2, b.id), has = (s.mana ?? 0) >= b.need;
       b.ring.clear().fillStyle(0x0d141d, 0.95).fillCircle(b.x, b.y, R).lineStyle(3, b.col, ok ? 1 : 0.35).strokeCircle(b.x, b.y, R);
       if (!has) b.ring.fillStyle(0x4aa3ff, 0.25).slice(b.x, b.y, R, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, (s.mana ?? 0) / b.need), false).fillPath();
-      b.icon.setAlpha(ok ? 1 : 0.4); b.cost.setColor(has ? '#9fd8ff' : '#667788');
+      b.icon.setAlpha(ok ? 1 : 0.4); b.cost.setColor(has ? '#9fd8ff' : '#9c8668');
       if (ok && !b.ready) this.tweens.add({ targets: b.icon, scale: { from: 1.35, to: 1 }, duration: 260 });
       b.ready = ok;
     }
@@ -308,7 +309,7 @@ export default class BattleScene extends Phaser.Scene {
     if (!c) return;
     weather(this, c);
     const icons = (ids) => ids.map((e) => cfg.elements.defs[e]?.icon ?? '').join('');
-    const tip = `${c.name}\n“${c.tale}”${c.strong?.length ? `\n${icons(c.strong)} 속성 동물: 피해 +${cfg.climateEffect.dmg}%, 속성 공격 잦아짐` : ''}${c.weak?.length ? `\n${icons(c.weak)} 속성 동물: 피해 -${cfg.climateEffect.dmg}%, 속성 공격 뜸해짐` : ''}${c.enemy?.speed ? '\n적이 조금 빨라짐' : ''}${c.enemy?.flySpeed ? `\n나는 적 ${c.enemy.flySpeed < 1 ? '느려짐' : '빨라짐'}` : ''}`;
+    const tip = `${c.name}\n“${c.tale}”${c.strong?.length ? `\n${icons(c.strong)} 피해 +${cfg.climateEffect.dmg}% · 속성 공격 ↑` : ''}${c.weak?.length ? `\n${icons(c.weak)} 피해 -${cfg.climateEffect.dmg}% · 속성 공격 ↓` : ''}${c.enemy?.speed ? '\n적이 조금 빨라짐' : ''}${c.enemy?.flySpeed ? `\n나는 적 ${c.enemy.flySpeed < 1 ? '느려짐' : '빨라짐'}` : ''}`;
     chip(this, 1090, 100, `${c.icon} ${c.name}  ${c.strong?.length ? icons(c.strong) + '▲' : ''} ${c.weak?.length ? icons(c.weak) + '▼' : ''}`, tip, { stroke: 0x7fd1ff, size: 13, depth: 30 });
     if (!this.testSangunUlt) this.time.delayedCall(700, () => this.fx.banner(`${c.icon} ${c.name}`, '#cfe8ff', c.tale));
   }
@@ -342,19 +343,18 @@ export default class BattleScene extends Phaser.Scene {
 
   drawHud() {
     const hud = this.add.graphics().setDepth(0);
-    hud.fillGradientStyle(0x0b1016, 0x0b1016, 0x0b1016, 0x0b1016, 0.85, 0.85, 0, 0).fillRect(0, 0, 1280, 118);
-    hud.lineStyle(1, 0xd4b06a, 0.35).lineBetween(0, 1, 1280, 1);
+    hud.fillGradientStyle(0x1a100c, 0x1a100c, 0x1a100c, 0x1a100c, 0.8, 0.8, 0, 0).fillRect(0, 0, 1280, 118);
     panel(this, 12, 10, 118, 34, { r: 17, plain: true, alpha: 0.85, stroke: 0xff8a80 });
     panel(this, 138, 10, 150, 34, { r: 17, plain: true, alpha: 0.85 });
     this.lifeText = this.add.text(30, 27, '', style(19, '#ffb3b3', { stroke: '#000', strokeThickness: 3 })).setOrigin(0, 0.5).setDepth(2);
     this.goldText = this.add.text(154, 27, '', style(19, '#ffd84d', { stroke: '#000', strokeThickness: 3 })).setOrigin(0, 0.5).setDepth(2);
     this.waveText = this.add.text(560, 20, '', style(20, '#ffe6b0', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(2);
-    this.phaseText = this.add.text(560, 46, '', style(14, '#cfd8dc')).setOrigin(0.5).setDepth(2);
+    this.phaseText = this.add.text(560, 46, '', style(14, '#efe0c4')).setOrigin(0.5).setDepth(2);
     this.waveBar = this.add.graphics().setDepth(2);
-    this.nextText = this.add.text(18, 58, '', style(13, '#aabbcc')).setOrigin(0, 0.5);
+    this.nextText = this.add.text(18, 58, '', style(13, '#dcc6a2')).setOrigin(0, 0.5);
     this.nextText.setInteractive({ useHandCursor: true }).on('pointerover', () => this.nextFull && showTip(this, this.nextFull, 200, 70)).on('pointerout', () => hideTip(this));
     this.chipObjs = []; this.chipSig = '';
-    this.skipBtn = button(this, 790, 30, 120, 40, '▶ 바로 시작', () => this.doSkip(), { tip: '준비 시간을 건너뛰고 웨이브 시작' });
+    this.skipBtn = button(this, 790, 30, 120, 40, '▶ 바로 시작', () => this.doSkip(), { variant: 'green', tip: '준비 건너뛰고 바로 웨이브' });
     this.speedBtn = button(this, 912, 30, 92, 40, '', () => { this.speed = this.speed === 1 ? 2 : 1; }, { tip: '배속 (1 / 2 키)' });
     this.pauseBtn = button(this, 1012, 30, 92, 40, '', () => { this.paused = !this.paused; }, { tip: '일시정지 (P 키)' });
     button(this, 1098, 30, 80, 40, '⎋ 나가기', () => this.confirmLeave(), { fill: 0x4a1a1a, stroke: 0xc0392b, size: 14 });
@@ -403,10 +403,10 @@ export default class BattleScene extends Phaser.Scene {
     this.hideUnitCard();
     this.modalOpen = true;
     const objs = [];
-    const dim = this.add.rectangle(640, 360, 1280, 720, 0x05080c, 0.72).setInteractive().setDepth(4000);
+    const dim = dimmer(this, 4000, 0.72);
     objs.push(dim);
-    const t = this.add.text(640, 150, '💎 유물 선택', style(32, '#ffe6b0', { stroke: '#2a1a08', strokeThickness: 6 })).setOrigin(0.5).setDepth(4002);
-    const sub = this.add.text(640, 190, '하나를 골라 이번 판의 빌드를 바꿈', style(15, '#cfd8dc')).setOrigin(0.5).setDepth(4002);
+    const t = this.add.text(640, 150, '💎 유물 선택', style(32, THEME.goldCss, { stroke: INK_CSS, strokeThickness: 6, fontStyle: 'bold' })).setOrigin(0.5).setDepth(4002);
+    const sub = this.add.text(640, 190, '하나 고르기 · 이번 판 동안', style(15, '#efe0c4')).setOrigin(0.5).setDepth(4002);
     objs.push(t, sub);
     const W = 250, H = 300, gap = 30, x0 = 640 - (offer.length * W + (offer.length - 1) * gap) / 2;
     offer.forEach((id, i) => {
@@ -416,19 +416,19 @@ export default class BattleScene extends Phaser.Scene {
       const g = this.add.graphics().setDepth(4001);
       const draw = (hover) => {
         g.clear();
-        g.fillStyle(col, hover ? 0.35 : 0.18).fillRoundedRect(x - 6, y - 6, W + 12, H + 12, 20);
-        g.fillGradientStyle(0x1e2c3e, 0x1e2c3e, 0x0c121a, 0x0c121a, 1).fillRoundedRect(x, y, W, H, 16);
-        g.lineStyle(hover ? 3 : 2, col, 1).strokeRoundedRect(x, y, W, H, 16);
-        g.fillStyle(col, 0.25).fillCircle(x + W / 2, y + 78, 50);
-        g.lineStyle(2, col, 0.9).strokeCircle(x + W / 2, y + 78, 50);
+        if (hover) g.fillStyle(col, 0.45).fillRoundedRect(x - 7, y - 7, W + 14, H + 14, 18);
+        drawPanel(g, x, y - (hover ? 3 : 0), W, H, { r: 14, accent: col });
+        g.fillStyle(col, 0.3).fillCircle(x + W / 2, y + 78, 50);
+        g.lineStyle(3, INK, 1).strokeCircle(x + W / 2, y + 78, 50);
+        g.lineStyle(2, col, 1).strokeCircle(x + W / 2, y + 78, 46);
       };
       draw(false);
       const icon = this.add.text(x + W / 2, y + 78, r.icon, style(48)).setOrigin(0.5).setDepth(4002);
-      const nm = this.add.text(x + W / 2, y + 150, r.name, style(20, '#ffffff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(4002);
+      const nm = this.add.text(x + W / 2, y + 150, r.name, style(20, '#ffffff', { stroke: INK_CSS, strokeThickness: 4, fontStyle: 'bold' })).setOrigin(0.5).setDepth(4002);
       const rr = this.add.text(x + W / 2, y + 176, RARITY_NAME[r.rarity], style(13, '#' + col.toString(16).padStart(6, '0'))).setOrigin(0.5).setDepth(4002);
       const tl = this.data2.tales?.relics?.[r.id] ?? '';
       const ds = this.add.text(x + W / 2, y + 198, tl, style(14, '#efe3c8', { align: 'center', wordWrap: { width: W - 34 }, lineSpacing: 3 })).setOrigin(0.5, 0).setDepth(4002);
-      const mech = this.add.text(x + W / 2, y + H - 18, r.desc, style(12, '#9fb3c8', { align: 'center', wordWrap: { width: W - 30 } })).setOrigin(0.5, 1).setDepth(4002);
+      const mech = this.add.text(x + W / 2, y + H - 18, r.desc, style(13, '#ffe08a', { align: 'center', wordWrap: { width: W - 30 } })).setOrigin(0.5, 1).setDepth(4002);
       objs.push(mech);
       const z = this.add.zone(x + W / 2, y + H / 2, W, H).setInteractive({ useHandCursor: true }).setDepth(4003);
       z.on('pointerover', () => { draw(true); this.tweens.add({ targets: icon, scale: 1.15, duration: 120 }); });
@@ -453,20 +453,20 @@ export default class BattleScene extends Phaser.Scene {
     if (this.modalOpen) return;
     this.modalOpen = true;
     const objs = [];
-    objs.push(this.add.rectangle(640, 360, 1280, 720, 0x05080c, 0.7).setInteractive().setDepth(4000));
+    objs.push(dimmer(this, 4000, 0.7));
     objs.push(panel(this, 300, 110, 680, 500, { depth: 4001 }));
-    objs.push(this.add.text(640, 145, '도움말', style(26, '#ffe6b0', { stroke: '#2a1a08', strokeThickness: 5 })).setOrigin(0.5).setDepth(4002));
-    const sym = [['♥', '생명 — 적이 방어선을 넘으면 줄어듦'], ['●', '골드 — 소환·먹이에 사용'], ['⚔', '피해'], ['⏱', '공격 간격(초)'], ['◎', '사거리'], ['🛡', '막는 적 수'], ['♥ 칩', '인연 — 함께 있으면 강해짐'], ['⚡ 칩', '상극 — 함께 있으면 약해짐'], ['🌏', '대륙 시너지'], ['💎', '유물 — 3·6·9·12 웨이브 뒤 선택'], ['🔒', '특성 고정 — 합쳐도 유지'], ['📜', '설화 능력'], ['Zz', '쉬는 중 (이동 직후)']];
+    objs.push(this.add.text(640, 145, '도움말', style(26, THEME.goldCss, { stroke: INK_CSS, strokeThickness: 5, fontStyle: 'bold' })).setOrigin(0.5).setDepth(4002));
+    const sym = [['♥', '생명 · 적이 넘어오면 줄어듦'], ['●', '골드 · 소환·먹이'], ['⚔', '피해'], ['⏱', '공격 간격(초)'], ['◎', '사거리'], ['🛡', '막는 적 수'], ['♥ 칩', '인연 · 함께면 ▲'], ['⚡ 칩', '상극 · 함께면 ▼'], ['🌏', '대륙 시너지'], ['💎', '유물 · 3·6·9·12 웨이브 뒤'], ['🔒', '특성 고정 — 합쳐도 유지'], ['📜', '설화 능력'], ['Zz', '쉬는 중 (이동 직후)']];
     sym.forEach(([k, v], i) => {
       const x = 340 + (i % 2) * 320, y = 190 + Math.floor(i / 2) * 34;
-      objs.push(this.add.text(x, y, k, style(17, '#ffd84d')).setDepth(4002), this.add.text(x + 56, y + 2, v, style(14, '#dfe6ea')).setDepth(4002));
+      objs.push(this.add.text(x, y, k, style(17, '#ffd84d')).setDepth(4002), this.add.text(x + 56, y + 2, v, style(14, '#f3e6cc')).setDepth(4002));
     });
-    const more = ['소환: 지구본이 대륙 → 서식지 → 동물 순으로 돎. 대륙/서식지를 지정하면 비싸지만 원하는 쪽이 나옴.', '출전: 케이지 동물을 누르면 성문 안에서 대기. 자리는 타고난 역할대로 알아서 잡음.', '진화: 같은 동물·같은 단계 둘 → 다음 단계. 성체 다른 종 둘 → 키메라.', '전투: 웨이브가 시작되면 성문에서 맷집 좋은 동물부터 줄지어 달려나와 앞·옆·뒤로 퍼짐. 웨이브가 끝나면 성문 안으로.', '로그라이트: 유물과 데려가는 동료로 판마다 빌드가 달라짐.'];
+    const more = ['소환: 대륙 → 서식지 → 동물. 지정하면 비싸지만 원하는 쪽', '출전: 케이지 동물 누르기 → 성문 대기 · 자리는 역할대로 자동', '진화: 같은 동물·단계 둘 → 다음 단계 · 다른 종 성체 둘 → 키메라', '전투: 맷집 센 동물부터 출격해 앞·옆·뒤로 퍼짐 · 끝나면 성문 안으로', '로그라이트: 유물·데려가는 동료로 판마다 빌드가 바뀜'];
     let detail = null;
     const toggle = button(this, 640, 440, 180, 34, '자세히 ▾', () => {
       if (detail) { detail.forEach((o) => o.destroy()); detail = null; toggle.set('자세히 ▾'); return; }
       detail = []; let y = 470;
-      for (const m of more) { const o = this.add.text(330, y, '· ' + m, style(13, '#cfd8dc', { wordWrap: { width: 620 } })).setDepth(4002); detail.push(o); y += o.height + 4; }
+      for (const m of more) { const o = this.add.text(330, y, '· ' + m, style(13, '#efe0c4', { wordWrap: { width: 620 } })).setDepth(4002); detail.push(o); y += o.height + 4; }
       toggle.set('접기 ▴');
     }, { depth: 4003, size: 14 });
     const close = () => { objs.forEach((o) => o.destroy()); detail?.forEach((o) => o.destroy()); toggle.destroy(); cb.destroy(); this.modalOpen = false; };
@@ -481,15 +481,15 @@ export default class BattleScene extends Phaser.Scene {
     const cageMax = n + (this.data2.talents?.branches?.find((b) => b.id === 'cage')?.nodes ?? []).filter((c) => !(this.save.talents ?? []).includes(c.id)).length;
     const shown = Math.min(cageMax, n + 1);
     this.add.text(BENCH_X0 - SLOT / 2, DOCK_Y + 4, `🧺 케이지 ${n}칸`, style(11, '#e8d9b0')).setDepth(2);
-    this.benchSlots = this.state.bench.map((_, i) => { const p = benchSlotPos(i); return this.add.rectangle(p.x, p.y, SLOT - 4, SLOT + 2, 0x0b1016, 0.5).setStrokeStyle(1.5, 0xd4b06a, 0.6).setDepth(1); });
+    this.benchSlots = this.state.bench.map((_, i) => { const p = benchSlotPos(i); return this.add.rectangle(p.x, p.y, SLOT - 4, SLOT + 2, 0x2a1c14, 0.8).setStrokeStyle(2.5, INK, 1).setDepth(1); });
     for (let i = n; i < shown; i++) {
       const p = benchSlotPos(i);
-      const r = this.add.rectangle(p.x, p.y, SLOT - 4, SLOT + 2, 0x05080c, 0.55).setStrokeStyle(1.5, 0x3b4b5e, 0.8).setDepth(1).setInteractive();
+      const r = this.add.rectangle(p.x, p.y, SLOT - 4, SLOT + 2, 0x1c130e, 0.7).setStrokeStyle(2.5, INK, 0.8).setDepth(1).setInteractive();
       this.add.text(p.x, p.y, '🔒', style(18)).setOrigin(0.5).setAlpha(0.6).setDepth(2);
-      r.on('pointerover', () => showTip(this, '잠긴 케이지\n· 별자리 나무의 케이지 갈래에서 엶', p.x, p.y - 50)).on('pointerout', () => hideTip(this));
+      r.on('pointerover', () => showTip(this, '🔒 잠긴 칸 · 별자리 나무 「케이지」에서 열기', p.x, p.y - 50)).on('pointerout', () => hideTip(this));
     }
     const sx = benchSlotPos(shown - 1).x + SLOT / 2 + 34;
-    this.sellZone = this.add.rectangle(sx, BENCH_Y, 56, SLOT + 10, 0x3a1414, 0.85).setStrokeStyle(2, 0xc0392b, 0.9).setDepth(1);
+    this.sellZone = this.add.rectangle(sx, BENCH_Y, 56, SLOT + 10, 0x7a2a20, 0.9).setStrokeStyle(3, INK, 1).setDepth(1);
     this.add.text(sx, BENCH_Y, '🪙\n판매', style(12, '#ffcdd2', { align: 'center' })).setOrigin(0.5).setDepth(2);
     this.altar = new Altar(this);
     this.buildSpellBar();
@@ -514,7 +514,7 @@ export default class BattleScene extends Phaser.Scene {
     // 먹이는 준비 시간에만 씀: 조작판 바로 위 작은 줄, 전투가 시작되면 숨김
     const BY = DOCK_Y - 20;
     this.baitLabel = this.add.text(24, BY, '🍖 먹이 ⓘ', style(12, '#ffe2b8', { stroke: '#000', strokeThickness: 3 })).setOrigin(0, 0.5).setInteractive({ useHandCursor: true }).setDepth(8);
-    this.baitLabel.on('pointerover', () => showTip(this, '준비 시간에만 · 다음 3회 소환에서 그 역할이 나올 확률 2배', 200, BY - 6)).on('pointerout', () => hideTip(this));
+    this.baitLabel.on('pointerover', () => showTip(this, '준비 시간 전용 · 다음 소환 3번, 그 역할 확률 ×2', 200, BY - 6)).on('pointerout', () => hideTip(this));
     this.baitBtns = Object.entries(b.types).map(([id, t], i) =>
       button(this, 136 + i * 86, BY, 82, 28, `${t.name} ${b.cost}·${ROLE_NAME[t.role]}`, () => this.doBait(id), { size: 11, fill: 0x4a3b22 }));
     this.baitState = this.add.text(24, BY - 22, '', style(12, '#ffd84d', { stroke: '#000', strokeThickness: 3 })).setDepth(8);
@@ -528,13 +528,13 @@ export default class BattleScene extends Phaser.Scene {
     this.add.circle(...this.scopeAt, 32, 0x6b4a2e).setDepth(4);
     this.scope = this.add.circle(...this.scopeAt, 28, 0x0b0e12).setStrokeStyle(4, 0xd4b06a).setDepth(5);
     this.scopeLayer = this.add.container(0, 0).setDepth(6);
-    this.ribbon = this.add.text(1000, DOCK_Y - 30, '', style(18, '#ffffff', { stroke: '#000', strokeThickness: 4, backgroundColor: '#101820f0', padding: { x: 14, y: 5 }, fontStyle: 'bold' })).setOrigin(0.5).setDepth(20).setVisible(false);
+    this.ribbon = this.add.text(1000, DOCK_Y - 30, '', style(18, '#ffffff', { stroke: INK_CSS, strokeThickness: 4, backgroundColor: '#4a3222f0', padding: { x: 14, y: 5 }, fontStyle: 'bold' })).setOrigin(0.5).setDepth(20).setVisible(false);
     this.globeText = this.add.text(1000, DOCK_Y - 6, '지구본을 돌려 소환', style(12, '#ddeeff', { align: 'center', wordWrap: { width: 260 }, stroke: '#000', strokeThickness: 3 })).setOrigin(0.5, 1).setDepth(8);
     const zone = this.add.zone(990, 666, 170, 100).setInteractive().setDepth(7);
     zone.on('pointerdown', () => this.finishReveal());
     this.contBtn = button(this, 1136, 645, 130, 32, '', () => this.cycleDesignate('continent'), { size: 11, fill: 0x2b3f55 });
     this.habBtn = button(this, 1136, 687, 130, 32, '', () => this.cycleDesignate('habitat'), { size: 11, fill: 0x2b3f55 });
-    this.summonBtn = button(this, 1236, 666, 64, 88, '', () => this.doSummon(), { size: 14, fill: 0x1d4f8c, stroke: 0xf2cf7a });
+    this.summonBtn = button(this, 1236, 666, 64, 88, '', () => this.doSummon(), { size: 14, variant: 'gold' });
     this.refreshDesignate();
   }
 
@@ -680,7 +680,7 @@ export default class BattleScene extends Phaser.Scene {
 
   confirmLeave() {
     if (this.leaveArmed) { this.state.phase = 'ended'; this.state.result = 'lose'; this.leaveArmed = false; return; }
-    this.leaveArmed = true; this.toast('한 번 더 누르면 이 판을 포기하고 나가요', '#ff8a80');
+    this.leaveArmed = true; this.toast('한 번 더 누르면 포기하고 나가기', '#ff8a80');
     this.time.delayedCall(2500, () => { this.leaveArmed = false; });
   }
 
@@ -712,7 +712,7 @@ export default class BattleScene extends Phaser.Scene {
     if (ed) {
       const ch = u.kind === 'chimera' ? data.config.elements.chance.chimera : data.config.elements.chance[u.stage] ?? 0;
       const et = add(this.add.text(x + w - 34, y, ed.icon, style(13))).setOrigin(1, 0).setInteractive();
-      et.on('pointerover', () => showTip(this, `${ed.name} 속성\n${ELEM_TALE[u.stats.element]}\n· ${ch ? `공격의 ${ch}%가 ${ed.name} 속성으로 터짐` : '성장기부터 속성 공격이 나옴'}`, x + w - 40, y)).on('pointerout', () => hideTip(this));
+      et.on('pointerover', () => showTip(this, `${ed.name} 속성\n${ELEM_TALE[u.stats.element]}\n· ${ch ? `공격 ${ch}% → ${ed.name} 속성` : '성장기부터 속성 공격'}`, x + w - 40, y)).on('pointerout', () => hideTip(this));
     }
     y += 20;
     const stat = (ix, iy, ic, val, tip) => {
@@ -755,9 +755,9 @@ export default class BattleScene extends Phaser.Scene {
       const line = (t, col, size = 12) => { const o = add(this.add.text(x + 12, y, t, style(size, col, { wordWrap: { width: w - 24 } }))); y += o.height + 2; };
       const pair = (head, col, tale, mech) => { line(head, col, 12); if (tale) line(tale, '#efe3c8', 12); line('· ' + mech, '#8fa1b3', 11); y += 3; };
       u.traits.forEach((t) => { const v = traitView(t, data); pair(v.name, v.tone === 'str' ? '#7CFC9A' : v.tone === 'flip' ? '#7fd1ff' : '#ffb27a', v.tale, v.desc); });
-      for (const k of u.stats.skillTales ?? []) pair('✦ ' + k.name, '#cfd8dc', k.tale, k.desc);
+      for (const k of u.stats.skillTales ?? []) pair('✦ ' + k.name, '#efe0c4', k.tale, k.desc);
       if (pas) pair('📜 ' + pas.name, '#e8c3ff', data.tales?.passives?.[sp.id], pas.desc);
-      if (sp) line(`"${u.stage === 'spirit' ? sp.spiritCodex : sp.codex}"`, '#8899aa');
+      if (sp) line(`"${u.stage === 'spirit' ? sp.spiritCodex : sp.codex}"`, '#b9a37f');
     }
     const more = add(this.add.text(x + w / 2, y + 2, this.cardExpanded ? '접기 ▴' : '자세히 ▾', style(12, '#d4b06a'))).setOrigin(0.5, 0).setInteractive({ useHandCursor: true });
     more.on('pointerdown', (p, a, b, ev) => { ev?.stopPropagation?.(); this.cardExpanded = !this.cardExpanded; this.cardSig = ''; this.showUnitCard(uid); });
@@ -1774,7 +1774,7 @@ export default class BattleScene extends Phaser.Scene {
           sfx(boss ? 'boss' : 'wave');
           if (boss) { this.fx.banner(`보스 등장 · ${boss.name}`, '#ff6b6b', boss.desc); this.cameras.main.shake(400, 0.006); }
           else if (mini) this.fx.banner(`웨이브 ${ev.wave} · 덤불멧돼지`, '#ffb27a', '미니보스가 온다');
-          else if (w?.horde) { this.fx.banner(`🌊 웨이브 ${ev.wave} · 무쌍 타임!`, '#ff8a3c', '약한 놈들이 떼로 몰려옴 — 쓸어 담을 시간'); this.cameras.main.shake(300, 0.005); }
+          else if (w?.horde) { this.fx.banner(`🌊 웨이브 ${ev.wave} · 무쌍 타임!`, '#ff8a3c', '약한 적 떼 — 쓸어 담기!'); this.cameras.main.shake(300, 0.005); }
           else this.fx.banner(`웨이브 ${ev.wave}`, '#ffffff', Object.keys(w?.mix ?? {}).map((id) => data.enemyById[id].name).join(' · '));
         }
           if (this.tutorialStep === 3 && ev.wave >= 6) this.endTutorial(); break;

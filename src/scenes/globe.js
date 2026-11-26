@@ -20,7 +20,7 @@ export class Globe {
     const mg = scene.make.graphics({}, false); mg.fillStyle(0xffffff).fillCircle(x, y, R);
     this.g.setMask(mg.createGeometryMask());
     this.over = scene.add.graphics().setDepth(5);
-    this.label = scene.add.text(x, y + R - 14, '', { fontFamily: 'sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#ffffff', stroke: '#0b1a2b', strokeThickness: 4, backgroundColor: '#0b1a2bcc', padding: { x: 8, y: 3 } }).setOrigin(0.5).setDepth(8).setAlpha(0);
+    this.label = scene.add.text(x, y + R - 14, '', { fontFamily: 'sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#ffffff', stroke: '#291a1f', strokeThickness: 4, backgroundColor: '#4a3222dd', padding: { x: 8, y: 3 } }).setOrigin(0.5).setDepth(8).setAlpha(0);
     // stand
     const st = scene.add.graphics().setDepth(2);
     st.lineStyle(4, 0xd4b06a, 0.9); st.beginPath(); st.arc(x, y, R + 9, 0.35, Math.PI - 0.35); st.strokePath();

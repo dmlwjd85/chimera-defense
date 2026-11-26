@@ -4,6 +4,8 @@ import { buildData } from '../logic/data.js';
 import { rosterPool, favorState, buyFavor, writeSave } from '../logic/meta.js';
 import { deckOf, soulGaps, soulSig } from '../logic/soul.js';
 import { speciesFit, stageProfile } from '../logic/matchup.js';
+import { previewStats, BUILDS, BUILD_SETS } from '../logic/gauntlet.js';
+import { levelsOf } from '../logic/meta.js';
 
 const ROLE = { bruiser: '🛡 막기', dealer: '⚔ 딜러', technician: '🎯 기술', buffer: '🎺 응원' };
 
@@ -45,7 +47,12 @@ export default class DeckScene extends Phaser.Scene {
     add(this.add.text(180, 96, `${isSoul ? '👑 ' : ''}${open ? u.name : '???'}`, style(26, isSoul ? '#ffd84d' : '#ffffff')));
     add(this.add.text(180, 132, `${ROLE[u.role]}   ${E[u.element]?.icon ?? ''} ${E[u.element]?.name ?? ''}   사거리 ${u.range}`, style(14, '#cfe8ff')));
     add(this.add.text(180, 156, open ? u.baseSkillDesc : '🔒 해금 게이지가 차면 고를 수 있음', style(12, '#aabbcc', { wordWrap: { width: 265 } })));
-    let y = 222;
+    // 수치 한 줄(출전 단계 기준, 고급 모드면 고른 빌드 반영): ❤ 체력 ⚔ 공격 ⚡ 빠르기 🛡 막기 💨 피하기
+    { const lvl = levelsOf(S, D)[u.id] ?? 1, gl = cfg.gauntlet?.growLv ?? { teen: 3, adult: 6 };
+      const stg = lvl >= gl.adult ? 'adult' : lvl >= gl.teen ? 'teen' : 'young';
+      const b = S.advanced ? S.builds?.[u.id] ?? null : null, p = previewStats(D, u.id, stg, b);
+      add(this.add.text(50, 204, `❤${p.hp}  ⚔${p.atk}  ⚡${p.spd}/초${p.def ? `  🛡${p.def}%` : ''}${p.dodge ? `  💨${p.dodge}%` : ''}   Lv${lvl}`, style(15, '#ffffff', { stroke: '#000', strokeThickness: 3 }))); }
+    let y = 232;
     add(this.add.text(50, y, `🔥 소울 기술 · ${sig.name}`, style(18, '#ffb27a'))); y += 28;
     add(this.add.text(50, y, `· ${sig.desc}`, style(14, '#ffffff', { wordWrap: { width: 390 } }))); y += 40;
     add(this.add.text(50, y, `▶ ${sig.feel}`, style(14, '#9cff6b'))); y += 26;
@@ -85,6 +92,7 @@ export default class DeckScene extends Phaser.Scene {
       add(this.add.text(cx + 70, cy + 92, has ? `${soul ? '👑 ' : ''}${a.name}` : '🔒 해금 게이지', style(14, soul ? '#ffd84d' : has ? '#ffffff' : '#8899aa')).setOrigin(0.5));
       add(this.add.text(cx + 70, cy + 112, has ? `${ROLE[a.role].split(' ')[0]}${E[a.element]?.icon ?? ''} ${soulSig(D, id).name}` : '', style(11, '#aabbcc')).setOrigin(0.5));
       if (inDeck) add(this.add.text(cx + 8, cy + 6, '✔', style(14, '#7CFC9A')));
+      if (S.advanced && S.builds?.[id]) add(this.add.text(cx + 8, cy + 26, BUILDS[S.builds[id]].icon, style(14)));
       if (stage && has) { const f = speciesFit(id, stage, D); if (f.label !== 'mid') add(this.add.text(cx + 132, cy + 8, f.label === 'good' ? '▲좋음' : '▼별로', style(12, f.label === 'good' ? '#7CFC9A' : '#ff8a80', { stroke: '#000', strokeThickness: 3 })).setOrigin(1, 0)); }
       const z = add(this.add.zone(cx + 70, cy + 64, 140, 128).setInteractive({ useHandCursor: true }));
       z.on('pointerdown', () => { this.sel = id; this.paint(); });
@@ -109,6 +117,17 @@ export default class DeckScene extends Phaser.Scene {
     }, { size: 15, fill: inDeck ? 0x4a2a2a : 0x2a4a6a });
     tb.setEnabled(open && !isSoul && (inDeck ? deck.length > 3 : !full));
     this.btns.push(tb);
+    // 고급: 역할을 내 취향대로(추천 → 탱커·탱딜·회피탱·딜탱·딜러 / 원딜·저격·응원·전투응원)
+    this.btns.push(button(this, 1190, 40, 120, 36, S.advanced ? '⚙ 고급 켜짐' : '⚙ 고급', () => { S.advanced = !S.advanced; this.save(); this.paint(); }, { size: 14, fill: S.advanced ? 0x5a3a8a : 0x24303f, tip: '역할을 내 마음대로 바꾸기(고급자용)' }));
+    if (S.advanced && open) {
+      const set = u.range > 1 || u.role === 'buffer' ? 'ranged' : 'melee', cur = S.builds?.[u.id] ?? null, B = cur ? BUILDS[cur] : null;
+      this.btns.push(button(this, 990, 40, 250, 36, `🔧 ${B ? `${B.icon} ${B.name}` : '추천(기본)'}`, () => {
+        const list = [null, ...BUILD_SETS[set]], nx = list[(list.indexOf(cur) + 1) % list.length];
+        S.builds ??= {}; if (nx) S.builds[u.id] = nx; else delete S.builds[u.id];
+        this.save(); this.paint();
+      }, { size: 15, fill: 0x3a2a5a, stroke: 0xc4a6ff, tip: B ? B.tip : '이 동물에게 맞는 역할' }));
+      if (B) add(this.add.text(990, 64, B.tip, style(12, '#c4a6ff')).setOrigin(0.5, 0));
+    }
     if (this.stageId) this.btns.push(button(this, 1140, 676, 200, 44, '▶ 출발', () => this.scene.start('Gauntlet', { stageId: this.stageId }), { size: 17, fill: 0x3a7bd5 }));
   }
 }

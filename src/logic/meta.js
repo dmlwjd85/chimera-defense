@@ -91,6 +91,8 @@ export function battleOptions(save, data, stageId = null) {
     soul: save.soulPet && (rosterPool(save, data) ?? []).includes(save.soulPet) ? { id: save.soulPet, favor: save.favor?.[save.soulPet] ?? 0, path: save.soulPath?.[save.soulPet] ?? null } : null,
     spells: spellsUnlocked(save, data),
     legend: save.legend ?? null,
+    // 고급 모드일 때만 고른 빌드가 적용됨(기본은 추천)
+    builds: save.advanced ? { ...(save.builds ?? {}) } : {},
   };
 }
 
@@ -275,6 +277,18 @@ export function settleRun(save, state, data) {
     if (extra > 0) { save.essence += extra; essence += extra; lines.push(['하드 보너스', extra]); }
     shards = Math.round(shards * (ge.hardShards ?? 2));
     if (clear) rec.hard = true;
+    // 하드코어 ×2, 신계 ×2.5(에센스 덤), 신계는 이번 주 최고 기록(교전 수·시간)
+    if (state.tier) {
+      const k = state.tier === 'god' ? 1.5 : 1, more = Math.round(essence * k);
+      if (more > 0) { save.essence += more; essence += more; lines.push([state.tier === 'god' ? '신계 보너스' : '하드코어 보너스', more]); }
+      if (clear) rec[state.tier] = true;
+      if (state.tier === 'god') {
+        const wk = state.godWeek ?? 'w0', score = state.enc * 1000 + (clear ? 5000 : 0) - Math.round(state.time);
+        save.godBest ??= {};
+        const prev = save.godBest[wk]?.[state.stage.id];
+        if (!prev || score > prev.score) (save.godBest[wk] ??= {})[state.stage.id] = { score, enc: state.enc, clear, rule: state.godRule };
+      }
+    }
   }
   save.shards = (save.shards ?? 0) + shards;
   return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,

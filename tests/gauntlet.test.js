@@ -189,3 +189,40 @@ test('보상 밸런스: 성장기→어른은 먹이 두 그릇, 연전 유물�
   assert.equal(r1.meal, 1); assert.equal(r1.need, 2);
   for (let i = 0; i < 30; i++) { st.offer = rollRewards(st, D); for (const id of st.offer.relic ?? []) { const r = D.relicById[id]; assert.ok(!(D.config.gauntlet.relicBan ?? []).includes(id), id); assert.ok(r); } }
 });
+
+test('고급 빌드·수치·주인공·각성·톡 보호막·난이도 사다리', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  // 빌드: 호랑이를 회피탱으로 → 브루저 모양, 체력 줄고 피하기 35%
+  const st = G.createGauntlet(D, 'forest-3', 4, { pool: ['tiger', 'bear', 'eagle', 'rabbit'], builds: { tiger: 'dodgetank' } });
+  const tiger = st.field.find((u) => u.speciesId === 'tiger');
+  assert.equal(G.styleOf(tiger), 'bruiser');
+  assert.equal(G.statLine(tiger, D).dodge, 35);
+  const before = G.statLine(tiger, D).hp;
+  G.cycleBuild(st, D, tiger.uid);   // 회피탱 → 딜탱
+  assert.equal(tiger.build, 'dealtank'); assert.equal(G.styleOf(tiger), 'skirm');
+  assert.ok(G.statLine(tiger, D).hp > before);
+  // 주인공: 공격 +, 다른 동물 -
+  const bear = st.field.find((u) => u.speciesId === 'bear');
+  const a0 = G.statLine(bear, D).atk, o0 = G.statLine(tiger, D).atk;
+  G.setStar(st, D, bear.uid);
+  assert.ok(G.statLine(bear, D).atk > a0 && G.statLine(tiger, D).atk < o0);
+  // 각성: 동료 절반 이상 쓰러지고 체력 낮으면 한 번
+  for (const u of st.field.slice(1)) { u.down = true; u.hp = 0; }
+  st.field[0].hp = st.field[0].maxHp * 0.2;
+  st.charging = false;
+  G.tickGauntlet(st, D, 0.1);
+  assert.ok(st.field[0].awake || st.dstat?.awaken, '각성');
+  // 톡 보호막: 노려진 동물만
+  const s2 = G.createGauntlet(D, 'forest-3', 5, {});
+  assert.equal(G.tapShield(s2, s2.field[0].uid).ok, false);
+  const e = s2.enemies[0]; e.diveMark = { uid: s2.field[0].uid };
+  assert.equal(G.tapShield(s2, s2.field[0].uid).ok, true);
+  // 사다리: 하드코어는 짐작 없음, 신계는 이번 주 규칙
+  const hc = G.createGauntlet(D, 'forest-3', 6, { tier: 'hardcore' });
+  assert.ok(hc.hard); assert.equal(G.nextPreview(hc, D).hint, null);
+  const god = G.createGauntlet(D, 'forest-3', 6, { tier: 'god', godRule: 'giants' });
+  assert.ok(god.enemies.filter((x) => !x.boss).every((x) => x.style === 'bruiser'));
+  assert.ok(G.GOD_RULES[G.godRuleOf(Date.now())]);
+  // 이야기 궁합: 여러 문화의 민담·신화
+  for (const id of ['dangun', 'cheese', 'briar_patch', 'frog_ox', 'zodiac_race', 'bremen']) assert.ok(D.lore.bonds.find((b) => b.id === id), id);
+});

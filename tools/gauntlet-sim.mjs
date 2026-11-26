@@ -1,6 +1,6 @@
 // 연전 자동 플레이 봇: node tools/gauntlet-sim.mjs [runs=30] [--hard] [--stage=forest-1] [--detail]
 import { loadData } from './sim.mjs';
-import { createGauntlet, autoRun, botPick, TACTICS, styleOf } from '../src/logic/gauntlet.js';
+import { createGauntlet, autoRun, botPick, TACTICS, BUILD_SETS, styleOf } from '../src/logic/gauntlet.js';
 import { bestDeck } from '../src/logic/matchup.js';
 
 const args = process.argv.slice(2);
@@ -21,7 +21,10 @@ for (const id of stages) {
     const deckMode = args.find((a) => a.startsWith('--deck='))?.slice(7) ?? 'starter';
     const all = D.units.map((u) => u.id), stg = D.stageById[id];
     const pool = deckMode === 'best' ? bestDeck(stg, D, all) : deckMode === 'worst' ? bestDeck(stg, D, all, 6, true) : undefined;
-    const st = createGauntlet(D, id, i * 7919, { hard, spells, pool });
+    const bl = args.find((a) => a.startsWith('--build='))?.slice(8).split(',');
+    const builds = {};
+    if (bl) for (const u of D.units) { const set = u.range > 1 || u.role === 'buffer' ? 'ranged' : 'melee'; const b = bl.find((x) => BUILD_SETS[set].includes(x)); if (b) builds[u.id] = b; }
+    const st = createGauntlet(D, id, i * 7919, { hard, spells, pool, builds });
     const tac = args.find((a) => a.startsWith('--tac='))?.slice(6).split(',');
     if (tac) for (const u of [...st.field, ...st.bench]) { if (!u) continue; const o = TACTICS[styleOf(u)]; const pick = o && tac.find((t) => o.includes(t)); if (pick) u.tactic = pick; }
     const rw = args.find((a) => a.startsWith('--reward='))?.slice(9);

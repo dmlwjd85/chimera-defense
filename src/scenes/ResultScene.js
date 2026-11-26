@@ -20,7 +20,7 @@ export default class ResultScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#141a21');
     if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.35);
     title(this, 640, 70, r.clear ? '클리어!' : '패배', 56).setColor(r.clear ? '#7CFC9A' : '#ff6b6b');
-    this.add.text(640, 118, `${D.stageById[d.stageId]?.name ?? ''}${d.hard ? ' · 하드' : ''}`, style(16, '#cfd6e6')).setOrigin(0.5);
+    this.add.text(640, 118, `${D.stageById[d.stageId]?.name ?? ''}${d.tier === 'god' ? ' · ⚡ 신계' : d.tier === 'hardcore' ? ' · 하드코어' : d.hard ? ' · 하드' : ''}`, style(16, '#cfd6e6')).setOrigin(0.5);
 
     // 별
     if (r.clear) {
@@ -59,7 +59,7 @@ export default class ResultScene extends Phaser.Scene {
     }
 
     // 버튼 셋
-    const retry = () => this.scene.start(d.gauntlet ? 'Gauntlet' : 'Battle', { stageId: d.stageId, hard: d.gauntlet ? !!d.hard : undefined });
+    const retry = () => this.scene.start(d.gauntlet ? 'Gauntlet' : 'Battle', { stageId: d.stageId, hard: d.gauntlet ? !!d.hard : undefined, tier: d.tier ?? null });
     button(this, 440, 650, 200, 56, '▶ 지도', () => this.scene.start('StageSelect'), { size: 22, fill: 0x3a7bd5 });
     button(this, 660, 650, 200, 56, '↻ 다시', retry, { size: 22 });
     button(this, 880, 650, 200, 56, '📋 자세히', () => this.details(r), { size: 20 });

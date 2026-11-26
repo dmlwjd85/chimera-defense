@@ -1,0 +1,383 @@
+{
+ "note": "en_zombie 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_zombie",
+ "sheet": "dot-m-en_zombie",
+ "file": "assets/dotm/en_zombie.png",
+ "frameW": 103,
+ "frameH": 87,
+ "foot": 85,
+ "cols": 1,
+ "anchorX": 53,
+ "palette": [
+  "#06080e",
+  "#1a2f2f",
+  "#254234",
+  "#291a1f",
+  "#335e45",
+  "#3c353a",
+  "#3c6e4d",
+  "#42624d",
+  "#5f3b52",
+  "#71a160",
+  "#7d229b",
+  "#86d274",
+  "#8d5059",
+  "#9a807e",
+  "#ddcdb1",
+  "#e27bed"
+ ],
+ "rects": {
+  "en_zombie_adult_a1_00": [
+   196,
+   81,
+   95,
+   73,
+   -47,
+   -73
+  ],
+  "en_zombie_adult_a1_01": [
+   398,
+   0,
+   97,
+   77,
+   -49,
+   -78
+  ],
+  "en_zombie_adult_a1_02": [
+   496,
+   0,
+   99,
+   77,
+   -51,
+   -84
+  ],
+  "en_zombie_adult_a1_03": [
+   1869,
+   0,
+   97,
+   74,
+   -49,
+   -86
+  ],
+  "en_zombie_adult_a1_04": [
+   1181,
+   0,
+   98,
+   75,
+   -50,
+   -86
+  ],
+  "en_zombie_adult_a1_05": [
+   0,
+   0,
+   101,
+   80,
+   -53,
+   -84
+  ],
+  "en_zombie_adult_a1_06": [
+   102,
+   0,
+   99,
+   79,
+   -51,
+   -79
+  ],
+  "en_zombie_adult_a1_07": [
+   1280,
+   0,
+   97,
+   75,
+   -49,
+   -75
+  ],
+  "en_zombie_adult_down_00": [
+   596,
+   0,
+   96,
+   76,
+   -49,
+   -76
+  ],
+  "en_zombie_adult_down_01": [
+   1378,
+   0,
+   98,
+   75,
+   -50,
+   -75
+  ],
+  "en_zombie_adult_down_02": [
+   390,
+   81,
+   99,
+   61,
+   -49,
+   -61
+  ],
+  "en_zombie_adult_down_03": [
+   490,
+   81,
+   98,
+   58,
+   -49,
+   -58
+  ],
+  "en_zombie_adult_hit_00": [
+   292,
+   81,
+   97,
+   73,
+   -49,
+   -73
+  ],
+  "en_zombie_adult_hit_01": [
+   0,
+   81,
+   97,
+   74,
+   -49,
+   -74
+  ],
+  "en_zombie_adult_idle_00": [
+   1477,
+   0,
+   97,
+   75,
+   -49,
+   -75
+  ],
+  "en_zombie_adult_idle_01": [
+   98,
+   81,
+   97,
+   74,
+   -49,
+   -74
+  ],
+  "en_zombie_adult_idle_02": [
+   1575,
+   0,
+   97,
+   75,
+   -49,
+   -75
+  ],
+  "en_zombie_adult_idle_03": [
+   693,
+   0,
+   96,
+   76,
+   -48,
+   -76
+  ],
+  "en_zombie_adult_walk_00": [
+   790,
+   0,
+   97,
+   76,
+   -49,
+   -76
+  ],
+  "en_zombie_adult_walk_01": [
+   202,
+   0,
+   97,
+   78,
+   -49,
+   -78
+  ],
+  "en_zombie_adult_walk_02": [
+   300,
+   0,
+   97,
+   78,
+   -49,
+   -79
+  ],
+  "en_zombie_adult_walk_03": [
+   888,
+   0,
+   97,
+   76,
+   -49,
+   -78
+  ],
+  "en_zombie_adult_walk_04": [
+   1673,
+   0,
+   97,
+   75,
+   -49,
+   -78
+  ],
+  "en_zombie_adult_walk_05": [
+   986,
+   0,
+   97,
+   76,
+   -49,
+   -79
+  ],
+  "en_zombie_adult_walk_06": [
+   1771,
+   0,
+   97,
+   75,
+   -49,
+   -77
+  ],
+  "en_zombie_adult_walk_07": [
+   1084,
+   0,
+   96,
+   76,
+   -48,
+   -76
+  ]
+ },
+ "frames": [
+  "en_zombie_adult_a1_00",
+  "en_zombie_adult_a1_01",
+  "en_zombie_adult_a1_02",
+  "en_zombie_adult_a1_03",
+  "en_zombie_adult_a1_04",
+  "en_zombie_adult_a1_05",
+  "en_zombie_adult_a1_06",
+  "en_zombie_adult_a1_07",
+  "en_zombie_adult_down_00",
+  "en_zombie_adult_down_01",
+  "en_zombie_adult_down_02",
+  "en_zombie_adult_down_03",
+  "en_zombie_adult_hit_00",
+  "en_zombie_adult_hit_01",
+  "en_zombie_adult_idle_00",
+  "en_zombie_adult_idle_01",
+  "en_zombie_adult_idle_02",
+  "en_zombie_adult_idle_03",
+  "en_zombie_adult_walk_00",
+  "en_zombie_adult_walk_01",
+  "en_zombie_adult_walk_02",
+  "en_zombie_adult_walk_03",
+  "en_zombie_adult_walk_04",
+  "en_zombie_adult_walk_05",
+  "en_zombie_adult_walk_06",
+  "en_zombie_adult_walk_07"
+ ],
+ "standing": [
+  "en_zombie_adult_idle_00",
+  "en_zombie_adult_idle_01",
+  "en_zombie_adult_idle_02",
+  "en_zombie_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 10,
+   "attack": {
+    "frames": [
+     "en_zombie_adult_a1_00",
+     "en_zombie_adult_a1_01",
+     "en_zombie_adult_a1_02",
+     "en_zombie_adult_a1_03",
+     "en_zombie_adult_a1_04",
+     "en_zombie_adult_a1_05",
+     "en_zombie_adult_a1_06",
+     "en_zombie_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_zombie_adult_down_00",
+     "en_zombie_adult_down_01",
+     "en_zombie_adult_down_02",
+     "en_zombie_adult_down_03"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "en_zombie_adult_hit_00",
+     "en_zombie_adult_hit_01"
+    ],
+    "durs": [
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_zombie_adult_idle_00",
+     "en_zombie_adult_idle_01",
+     "en_zombie_adult_idle_02",
+     "en_zombie_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_zombie_adult_walk_00",
+     "en_zombie_adult_walk_01",
+     "en_zombie_adult_walk_02",
+     "en_zombie_adult_walk_03",
+     "en_zombie_adult_walk_04",
+     "en_zombie_adult_walk_05",
+     "en_zombie_adult_walk_06",
+     "en_zombie_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.62
+  }
+ }
+}

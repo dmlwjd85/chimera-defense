@@ -8,6 +8,8 @@ import json, os, sys, glob
 from PIL import Image
 import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from myth_recolor import recolor   # 신화급 털색 다듬기(tools/pixellab/myth_recolor.json)
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pixellab'))
+from enemy_motion_spec import E as ENEMY, DROP as ENEMY_DROP   # 적(en_<id>): 단계 하나(adult), 칸 크기는 적마다
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SRC = os.path.join(ROOT, 'art-src', 'pixellab')
@@ -43,12 +45,14 @@ def comps(im):
     return out
 
 
-def nearest(pal):
+def nearest(pal, far=None):
+    """가장 가까운 팔레트 색. far(가중 거리)를 주면 원화에 없는 먼 색(PixelLab이 덧그린 빛·연기·휘두름 자국)은 None → 지움."""
     cache = {}
     def f(c):
         if c not in cache:
             r, g, b = c
-            cache[c] = min(pal, key=lambda p: 2 * (p[0] - r) ** 2 + 4 * (p[1] - g) ** 2 + 3 * (p[2] - b) ** 2)
+            d, best = min(((2 * (p[0] - r) ** 2 + 4 * (p[1] - g) ** 2 + 3 * (p[2] - b) ** 2), p) for p in pal)
+            cache[c] = None if far is not None and d > far else best
         return cache[c]
     return f
 
@@ -58,7 +62,8 @@ def clean(im, pal_fn):
     for y in range(H):
         for x in range(W):
             r, g, b, a = px[x, y]
-            px[x, y] = (*pal_fn((r, g, b)), 255) if a >= 128 else (0, 0, 0, 0)
+            q = pal_fn((r, g, b)) if a >= 128 else None
+            px[x, y] = (*q, 255) if q else (0, 0, 0, 0)
     cs = comps(im)
     if cs:
         big = max(len(c) for c in cs)
@@ -119,16 +124,18 @@ def hit_frame(ims, ref=None):
 
 def build(sp):
     report = {'species': sp, 'motions': {}}
-    groups = {'main': ['baby', 'teen', 'adult'], 'spirit': ['myth']}
+    enemy = sp.startswith('en_')
+    groups = {'main': ['adult']} if enemy else {'main': ['baby', 'teen', 'adult'], 'spirit': ['myth']}
     for gname, stages in groups.items():
         pal = palette_of([os.path.join(SRC, f'{sp}_{st}.png') for st in stages])
         assert len(pal) <= 16, f'{sp} {gname} palette {len(pal)}'
-        pfn = nearest(pal)
+        # 적: PixelLab이 맞기·쓰러짐에 덧그리는 빛·연기·휘두름 자국이 잦아서, 원화 팔레트에서 먼 색은 지움(2026-11-26)
+        pfn = nearest(pal, far=9 * 40 ** 2 if enemy else None)
         frames = []          # (이름, 칸 그림(주문 칸 크기), 단계)
         sets = {}
         for st in stages:
             src = Image.open(os.path.join(SRC, f'{sp}_{st}.png'))
-            C = CANVAS[st]; ox = (C - src.width) // 2; oy = C - src.height - FOOT_PAD
+            C = ENEMY[sp[3:]][1] if enemy else CANVAS[st]; ox = (C - src.width) // 2; oy = C - src.height - FOOT_PAD
             foot_c, anchor_c = oy + src.height - 1, ox + src.width // 2
             ref_h = src.getbbox()[3] - src.getbbox()[1]
             # PixelLab이 발을 1~3줄 옮겨 그려서, 그 단계 대기 장들의 발 높이(가운데값)를 발밑선으로 삼음(뛰는 장은 그대로 뜸)
@@ -140,6 +147,8 @@ def build(sp):
                 m = d.rsplit('_', 1)[1]
                 if m not in CLIP: continue
                 fs = sorted(glob.glob(os.path.join(d, 'f[0-9]*.png')))[1:]   # f00 = 넣은 원화와 같은 장 → 뺌
+                if enemy:   # 덧그린 번쩍임이 있는 장 빼기(enemy_motion_spec.DROP)
+                    dr = set(ENEMY_DROP.get((sp[3:], m), [])); fs = [f for i, f in enumerate(fs) if i not in dr]
                 ims = [clean(Image.open(f), pfn) for f in fs]
                 if st == 'myth': ims = [recolor(im, sp) for im in ims]
                 if not ims: continue
@@ -170,7 +179,7 @@ def build(sp):
                 sset[name] = clip
                 report['motions'][f'{st}_{m}'] = {'n': len(ims), 'max|h%|': max(abs(r['h%']) for r in q), 'foot±': max(abs(r['foot']) for r in q)}
             # 나는 새(아기·성장기·성체)는 하늘에 떠 있는 동안 늘 날갯짓: 대기 = 날기 장을 조금 느리게
-            if sp in FLYERS and st != 'myth' and 'move' in sset:
+            if (sp in FLYERS and st != 'myth' or enemy and ENEMY[sp[3:]][2]) and 'move' in sset and 'idle' not in sset:
                 sset['idle'] = {**sset['move'], 'durs': [0.1] * len(sset['move']['frames']), 'loop': True}
             sets[st] = sset
         # 장마다 그림만 잘라(빈 곳 버림) 촘촘히 묶음: 폰 메모리. rects[이름] = [x, y, w, h, 왼쪽, 위] (왼쪽·위 = 기준점(가운데·발밑) 대비 칸 위치)
@@ -204,8 +213,10 @@ def build(sp):
             'frameW': W, 'frameH': H, 'foot': foot, 'cols': 1, 'anchorX': L, 'palette': used, 'rects': rects,
             'frames': [n for n, *_ in frames], 'standing': [n for n, *_ in frames if '_idle_' in n],
             'attacks': ['attack', 'attack2'],
+            **({'noAttack': True} if enemy and not ENEMY[sp[3:]][3] else {}),
             'sets': {st: sets[st] for st in stages},
-            'stages': {STAGE_OF[st]: {'set': st, 'scale': SCALE} for st in stages},
+            # 적: 졸병은 성체 동물과 키가 맞게 크게(0.62, 전장 크기 비교 2026-11-26), 보스는 원화가 이미 큼(0.55)
+            'stages': {STAGE_OF[st]: {'set': st, 'scale': (0.55 if ENEMY[sp[3:]][1] >= 176 else 0.62) if enemy else SCALE} for st in stages},
         }
         os.makedirs(os.path.join(PUB, 'data', 'dotm'), exist_ok=True)
         json.dump(d, open(os.path.join(PUB, 'data', 'dotm', f'{key}.dot.json'), 'w'), ensure_ascii=False, indent=1)
@@ -221,7 +232,7 @@ def write_index():
 
 
 if __name__ == '__main__':
-    sps = sys.argv[1].split(',') if len(sys.argv) > 1 else sorted({os.path.basename(d).split('_')[0] for d in glob.glob(os.path.join(SRC, 'anim', '*'))})
+    sps = sys.argv[1].split(',') if len(sys.argv) > 1 else sorted({(os.path.basename(d).split('_adult_')[0] if os.path.basename(d).startswith('en_') else os.path.basename(d).split('_')[0]) for d in glob.glob(os.path.join(SRC, 'anim', '*'))})
     for sp in sps:
         r = build(sp)
         print(sp, r['main'], r.get('spirit'))

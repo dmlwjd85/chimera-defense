@@ -1,0 +1,48 @@
+{
+ "species": "en_overlord",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 5.9,
+   "foot±": 1
+  },
+  "adult_down": {
+   "n": 5,
+   "max|h%|": 29.4,
+   "foot±": 7
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 36.1,
+   "foot±": 2
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 4.2,
+   "foot±": 1
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.7,
+   "foot±": 1
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 1.7,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   396
+  ],
+  "box": [
+   158,
+   169
+  ],
+  "frames": 37,
+  "colors": 16,
+  "px": 811008
+ }
+}

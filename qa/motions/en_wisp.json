@@ -1,0 +1,33 @@
+{
+ "species": "en_wisp",
+ "motions": {
+  "adult_down": {
+   "n": 2,
+   "max|h%|": 28.3,
+   "foot±": 19
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 13.3,
+   "foot±": 12
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 6.7,
+   "foot±": 5
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   64
+  ],
+  "box": [
+   54,
+   69
+  ],
+  "frames": 14,
+  "colors": 16,
+  "px": 131072
+ }
+}

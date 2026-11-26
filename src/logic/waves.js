@@ -80,7 +80,7 @@ export function makeEnemy(enemyId, wave, stage, data, eid, offset = 0) {
     attack: Math.round(def.attack * s * (cfg.tempo?.enemy ?? 1) * (cfg.difficulty?.enemyAttack ?? 1)),
     interval: def.interval * (cfg.tempo?.enemy ?? 1),
     speed: def.speed * ((def.flying ? clim?.flySpeed : clim?.speed) ?? 1),
-    gold: def.gold,
+    gold: Math.round(def.gold * (cfg.difficulty?.enemyGold ?? 1)),
     leak: def.leak,
     flying: !!def.flying,
     blockSlots: def.blockSlots ?? 1,

@@ -1,0 +1,405 @@
+{
+ "note": "en_ghost 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_ghost",
+ "sheet": "dot-m-en_ghost",
+ "file": "assets/dotm/en_ghost.png",
+ "frameW": 77,
+ "frameH": 86,
+ "foot": 81,
+ "cols": 1,
+ "anchorX": 37,
+ "palette": [
+  "#02050f",
+  "#141435",
+  "#1c3156",
+  "#291a1f",
+  "#32144f",
+  "#41527b",
+  "#4c80dd",
+  "#4d6c8f",
+  "#628fa5",
+  "#71a5bb",
+  "#7ec7d4",
+  "#873fbf",
+  "#99d5e0",
+  "#bbebf4",
+  "#be5bdd",
+  "#fafbfe"
+ ],
+ "rects": {
+  "en_ghost_adult_a1_00": [
+   634,
+   0,
+   62,
+   54,
+   -29,
+   -53
+  ],
+  "en_ghost_adult_a1_01": [
+   211,
+   0,
+   58,
+   64,
+   -27,
+   -65
+  ],
+  "en_ghost_adult_a1_02": [
+   158,
+   0,
+   52,
+   71,
+   -22,
+   -75
+  ],
+  "en_ghost_adult_a1_03": [
+   53,
+   0,
+   49,
+   73,
+   -19,
+   -81
+  ],
+  "en_ghost_adult_a1_04": [
+   103,
+   0,
+   54,
+   72,
+   -24,
+   -82
+  ],
+  "en_ghost_adult_a1_05": [
+   270,
+   0,
+   59,
+   62,
+   -28,
+   -71
+  ],
+  "en_ghost_adult_a1_06": [
+   392,
+   0,
+   63,
+   58,
+   -31,
+   -64
+  ],
+  "en_ghost_adult_a1_07": [
+   509,
+   0,
+   61,
+   55,
+   -28,
+   -57
+  ],
+  "en_ghost_adult_down_00": [
+   330,
+   0,
+   61,
+   62,
+   -29,
+   -63
+  ],
+  "en_ghost_adult_down_01": [
+   0,
+   0,
+   52,
+   79,
+   -22,
+   -77
+  ],
+  "en_ghost_adult_down_02": [
+   456,
+   0,
+   52,
+   56,
+   -20,
+   -55
+  ],
+  "en_ghost_adult_down_03": [
+   1350,
+   0,
+   63,
+   50,
+   -28,
+   -50
+  ],
+  "en_ghost_adult_down_04": [
+   1613,
+   0,
+   67,
+   36,
+   -29,
+   -33
+  ],
+  "en_ghost_adult_down_05": [
+   1681,
+   0,
+   77,
+   34,
+   -37,
+   -31
+  ],
+  "en_ghost_adult_hit_00": [
+   571,
+   0,
+   62,
+   55,
+   -30,
+   -56
+  ],
+  "en_ghost_adult_hit_01": [
+   697,
+   0,
+   63,
+   53,
+   -30,
+   -52
+  ],
+  "en_ghost_adult_idle_00": [
+   1087,
+   0,
+   65,
+   51,
+   -32,
+   -51
+  ],
+  "en_ghost_adult_idle_01": [
+   761,
+   0,
+   63,
+   52,
+   -30,
+   -53
+  ],
+  "en_ghost_adult_idle_02": [
+   1153,
+   0,
+   64,
+   51,
+   -31,
+   -51
+  ],
+  "en_ghost_adult_idle_03": [
+   1218,
+   0,
+   65,
+   51,
+   -32,
+   -49
+  ],
+  "en_ghost_adult_walk_00": [
+   825,
+   0,
+   65,
+   52,
+   -32,
+   -50
+  ],
+  "en_ghost_adult_walk_01": [
+   891,
+   0,
+   65,
+   52,
+   -32,
+   -52
+  ],
+  "en_ghost_adult_walk_02": [
+   957,
+   0,
+   64,
+   52,
+   -31,
+   -53
+  ],
+  "en_ghost_adult_walk_03": [
+   1022,
+   0,
+   64,
+   52,
+   -31,
+   -53
+  ],
+  "en_ghost_adult_walk_04": [
+   1414,
+   0,
+   65,
+   50,
+   -32,
+   -51
+  ],
+  "en_ghost_adult_walk_05": [
+   1480,
+   0,
+   65,
+   50,
+   -32,
+   -50
+  ],
+  "en_ghost_adult_walk_06": [
+   1546,
+   0,
+   66,
+   50,
+   -33,
+   -48
+  ],
+  "en_ghost_adult_walk_07": [
+   1284,
+   0,
+   65,
+   51,
+   -32,
+   -49
+  ]
+ },
+ "frames": [
+  "en_ghost_adult_a1_00",
+  "en_ghost_adult_a1_01",
+  "en_ghost_adult_a1_02",
+  "en_ghost_adult_a1_03",
+  "en_ghost_adult_a1_04",
+  "en_ghost_adult_a1_05",
+  "en_ghost_adult_a1_06",
+  "en_ghost_adult_a1_07",
+  "en_ghost_adult_down_00",
+  "en_ghost_adult_down_01",
+  "en_ghost_adult_down_02",
+  "en_ghost_adult_down_03",
+  "en_ghost_adult_down_04",
+  "en_ghost_adult_down_05",
+  "en_ghost_adult_hit_00",
+  "en_ghost_adult_hit_01",
+  "en_ghost_adult_idle_00",
+  "en_ghost_adult_idle_01",
+  "en_ghost_adult_idle_02",
+  "en_ghost_adult_idle_03",
+  "en_ghost_adult_walk_00",
+  "en_ghost_adult_walk_01",
+  "en_ghost_adult_walk_02",
+  "en_ghost_adult_walk_03",
+  "en_ghost_adult_walk_04",
+  "en_ghost_adult_walk_05",
+  "en_ghost_adult_walk_06",
+  "en_ghost_adult_walk_07"
+ ],
+ "standing": [
+  "en_ghost_adult_idle_00",
+  "en_ghost_adult_idle_01",
+  "en_ghost_adult_idle_02",
+  "en_ghost_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 29,
+   "attack": {
+    "frames": [
+     "en_ghost_adult_a1_00",
+     "en_ghost_adult_a1_01",
+     "en_ghost_adult_a1_02",
+     "en_ghost_adult_a1_03",
+     "en_ghost_adult_a1_04",
+     "en_ghost_adult_a1_05",
+     "en_ghost_adult_a1_06",
+     "en_ghost_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_ghost_adult_down_00",
+     "en_ghost_adult_down_01",
+     "en_ghost_adult_down_02",
+     "en_ghost_adult_down_03",
+     "en_ghost_adult_down_04",
+     "en_ghost_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "en_ghost_adult_hit_00",
+     "en_ghost_adult_hit_01"
+    ],
+    "durs": [
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_ghost_adult_idle_00",
+     "en_ghost_adult_idle_01",
+     "en_ghost_adult_idle_02",
+     "en_ghost_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_ghost_adult_walk_00",
+     "en_ghost_adult_walk_01",
+     "en_ghost_adult_walk_02",
+     "en_ghost_adult_walk_03",
+     "en_ghost_adult_walk_04",
+     "en_ghost_adult_walk_05",
+     "en_ghost_adult_walk_06",
+     "en_ghost_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.62
+  }
+ }
+}

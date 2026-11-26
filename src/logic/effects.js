@@ -24,7 +24,7 @@ export function tickEnemyTimers(state, dt) {
     if (p?.type === 'charge' && e.hp <= e.maxHp * p.belowHpPercent / 100) {
       e.chargeLeft = Math.max(0, e.chargeLeft - dt);
       e.chargeCd -= dt;
-      if (e.chargeCd <= 0) { e.chargeLeft = p.duration; e.chargeCd = p.every; }
+      if (e.chargeCd <= 0) { e.chargeLeft = p.duration; e.chargeCd = p.every; state.events?.push({ type: 'bossCharge', eid: e.eid }); }
     }
     if (p?.type === 'shield') {
       e.patternCd -= dt;

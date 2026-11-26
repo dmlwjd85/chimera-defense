@@ -1,0 +1,383 @@
+{
+ "note": "en_swarm 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_swarm",
+ "sheet": "dot-m-en_swarm",
+ "file": "assets/dotm/en_swarm.png",
+ "frameW": 52,
+ "frameH": 62,
+ "foot": 59,
+ "cols": 1,
+ "anchorX": 27,
+ "palette": [
+  "#19030b",
+  "#291a1f",
+  "#4d2337",
+  "#4e0f18",
+  "#5d3035",
+  "#733f43",
+  "#7a272e",
+  "#8a192c",
+  "#9e3cbd",
+  "#9f1e2b",
+  "#a15d4b",
+  "#b6232a",
+  "#c251dd",
+  "#d82f25",
+  "#f37f71",
+  "#fad8fc"
+ ],
+ "rects": {
+  "en_swarm_adult_a1_00": [
+   971,
+   0,
+   42,
+   35,
+   -20,
+   -35
+  ],
+  "en_swarm_adult_a1_01": [
+   836,
+   0,
+   42,
+   38,
+   -21,
+   -38
+  ],
+  "en_swarm_adult_a1_02": [
+   255,
+   0,
+   41,
+   43,
+   -22,
+   -48
+  ],
+  "en_swarm_adult_a1_03": [
+   129,
+   0,
+   43,
+   45,
+   -23,
+   -56
+  ],
+  "en_swarm_adult_a1_04": [
+   86,
+   0,
+   42,
+   48,
+   -23,
+   -60
+  ],
+  "en_swarm_adult_a1_05": [
+   0,
+   0,
+   42,
+   50,
+   -23,
+   -57
+  ],
+  "en_swarm_adult_a1_06": [
+   43,
+   0,
+   42,
+   49,
+   -22,
+   -50
+  ],
+  "en_swarm_adult_a1_07": [
+   173,
+   0,
+   41,
+   44,
+   -21,
+   -44
+  ],
+  "en_swarm_adult_down_00": [
+   627,
+   0,
+   42,
+   40,
+   -20,
+   -40
+  ],
+  "en_swarm_adult_down_01": [
+   709,
+   0,
+   40,
+   39,
+   -20,
+   -39
+  ],
+  "en_swarm_adult_down_02": [
+   922,
+   0,
+   48,
+   36,
+   -24,
+   -36
+  ],
+  "en_swarm_adult_down_03": [
+   1057,
+   0,
+   52,
+   27,
+   -27,
+   -26
+  ],
+  "en_swarm_adult_hit_00": [
+   1014,
+   0,
+   42,
+   35,
+   -21,
+   -35
+  ],
+  "en_swarm_adult_hit_01": [
+   879,
+   0,
+   42,
+   37,
+   -21,
+   -37
+  ],
+  "en_swarm_adult_idle_00": [
+   297,
+   0,
+   40,
+   43,
+   -21,
+   -43
+  ],
+  "en_swarm_adult_idle_01": [
+   215,
+   0,
+   39,
+   44,
+   -21,
+   -44
+  ],
+  "en_swarm_adult_idle_02": [
+   338,
+   0,
+   41,
+   42,
+   -21,
+   -42
+  ],
+  "en_swarm_adult_idle_03": [
+   750,
+   0,
+   42,
+   39,
+   -21,
+   -39
+  ],
+  "en_swarm_adult_walk_00": [
+   464,
+   0,
+   42,
+   41,
+   -21,
+   -41
+  ],
+  "en_swarm_adult_walk_01": [
+   507,
+   0,
+   41,
+   41,
+   -21,
+   -42
+  ],
+  "en_swarm_adult_walk_02": [
+   549,
+   0,
+   38,
+   41,
+   -21,
+   -42
+  ],
+  "en_swarm_adult_walk_03": [
+   670,
+   0,
+   38,
+   40,
+   -21,
+   -40
+  ],
+  "en_swarm_adult_walk_04": [
+   588,
+   0,
+   38,
+   41,
+   -21,
+   -41
+  ],
+  "en_swarm_adult_walk_05": [
+   380,
+   0,
+   40,
+   42,
+   -21,
+   -42
+  ],
+  "en_swarm_adult_walk_06": [
+   421,
+   0,
+   42,
+   42,
+   -21,
+   -42
+  ],
+  "en_swarm_adult_walk_07": [
+   793,
+   0,
+   42,
+   39,
+   -21,
+   -39
+  ]
+ },
+ "frames": [
+  "en_swarm_adult_a1_00",
+  "en_swarm_adult_a1_01",
+  "en_swarm_adult_a1_02",
+  "en_swarm_adult_a1_03",
+  "en_swarm_adult_a1_04",
+  "en_swarm_adult_a1_05",
+  "en_swarm_adult_a1_06",
+  "en_swarm_adult_a1_07",
+  "en_swarm_adult_down_00",
+  "en_swarm_adult_down_01",
+  "en_swarm_adult_down_02",
+  "en_swarm_adult_down_03",
+  "en_swarm_adult_hit_00",
+  "en_swarm_adult_hit_01",
+  "en_swarm_adult_idle_00",
+  "en_swarm_adult_idle_01",
+  "en_swarm_adult_idle_02",
+  "en_swarm_adult_idle_03",
+  "en_swarm_adult_walk_00",
+  "en_swarm_adult_walk_01",
+  "en_swarm_adult_walk_02",
+  "en_swarm_adult_walk_03",
+  "en_swarm_adult_walk_04",
+  "en_swarm_adult_walk_05",
+  "en_swarm_adult_walk_06",
+  "en_swarm_adult_walk_07"
+ ],
+ "standing": [
+  "en_swarm_adult_idle_00",
+  "en_swarm_adult_idle_01",
+  "en_swarm_adult_idle_02",
+  "en_swarm_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 16,
+   "attack": {
+    "frames": [
+     "en_swarm_adult_a1_00",
+     "en_swarm_adult_a1_01",
+     "en_swarm_adult_a1_02",
+     "en_swarm_adult_a1_03",
+     "en_swarm_adult_a1_04",
+     "en_swarm_adult_a1_05",
+     "en_swarm_adult_a1_06",
+     "en_swarm_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_swarm_adult_down_00",
+     "en_swarm_adult_down_01",
+     "en_swarm_adult_down_02",
+     "en_swarm_adult_down_03"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "en_swarm_adult_hit_00",
+     "en_swarm_adult_hit_01"
+    ],
+    "durs": [
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_swarm_adult_idle_00",
+     "en_swarm_adult_idle_01",
+     "en_swarm_adult_idle_02",
+     "en_swarm_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_swarm_adult_walk_00",
+     "en_swarm_adult_walk_01",
+     "en_swarm_adult_walk_02",
+     "en_swarm_adult_walk_03",
+     "en_swarm_adult_walk_04",
+     "en_swarm_adult_walk_05",
+     "en_swarm_adult_walk_06",
+     "en_swarm_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.62
+  }
+ }
+}

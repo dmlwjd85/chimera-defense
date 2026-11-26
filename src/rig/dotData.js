@@ -63,7 +63,8 @@ export function validateDot(d) {
     }
   }
   // 공격 그림은 한 세트 이상에 있어야 함(아기처럼 공격 장이 없는 세트는 재생기가 대기 장으로 내딛기 연출을 만듦)
-  if (d.sets && !Object.values(d.sets).some((set) => attacks.some((a) => set[a]))) errs.push(`no attack clip (${attacks.join('/')}) in any set`);
+  // 공격하지 않는 적(나방·박쥐·도깨비불·박쥐왕)은 noAttack: 그림에 공격 장이 없음
+  if (d.sets && !d.noAttack && !Object.values(d.sets).some((set) => attacks.some((a) => set[a]))) errs.push(`no attack clip (${attacks.join('/')}) in any set`);
   if (!d.stages || !Object.keys(d.stages).length) errs.push('stages missing');
   for (const [st, def] of Object.entries(d.stages || {})) {
     if (!['young', 'teen', 'adult', 'spirit'].includes(st)) errs.push(`unknown stage ${st}`);

@@ -1,0 +1,247 @@
+{
+ "note": "en_wisp 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_wisp",
+ "sheet": "dot-m-en_wisp",
+ "file": "assets/dotm/en_wisp.png",
+ "frameW": 54,
+ "frameH": 69,
+ "foot": 67,
+ "cols": 1,
+ "anchorX": 29,
+ "palette": [
+  "#121958",
+  "#150d38",
+  "#163d87",
+  "#1778d2",
+  "#1c6dc6",
+  "#1cb4ee",
+  "#1f59ae",
+  "#26aee0",
+  "#291a1f",
+  "#2b94d0",
+  "#43cef4",
+  "#5becfd",
+  "#6432a7",
+  "#71e5fa",
+  "#af89da",
+  "#fbfafe"
+ ],
+ "rects": {
+  "en_wisp_adult_down_00": [
+   606,
+   0,
+   48,
+   48,
+   -26,
+   -62
+  ],
+  "en_wisp_adult_down_01": [
+   655,
+   0,
+   48,
+   43,
+   -28,
+   -62
+  ],
+  "en_wisp_adult_hit_00": [
+   450,
+   0,
+   49,
+   57,
+   -27,
+   -64
+  ],
+  "en_wisp_adult_hit_01": [
+   552,
+   0,
+   53,
+   52,
+   -29,
+   -64
+  ],
+  "en_wisp_adult_hit_02": [
+   500,
+   0,
+   51,
+   56,
+   -28,
+   -67
+  ],
+  "en_wisp_adult_hit_03": [
+   404,
+   0,
+   45,
+   58,
+   -25,
+   -65
+  ],
+  "en_wisp_adult_walk_00": [
+   203,
+   0,
+   49,
+   60,
+   -26,
+   -61
+  ],
+  "en_wisp_adult_walk_01": [
+   253,
+   0,
+   48,
+   60,
+   -26,
+   -63
+  ],
+  "en_wisp_adult_walk_02": [
+   302,
+   0,
+   50,
+   60,
+   -27,
+   -65
+  ],
+  "en_wisp_adult_walk_03": [
+   50,
+   0,
+   52,
+   63,
+   -28,
+   -68
+  ],
+  "en_wisp_adult_walk_04": [
+   0,
+   0,
+   49,
+   64,
+   -27,
+   -68
+  ],
+  "en_wisp_adult_walk_05": [
+   103,
+   0,
+   49,
+   61,
+   -27,
+   -64
+  ],
+  "en_wisp_adult_walk_06": [
+   153,
+   0,
+   49,
+   61,
+   -25,
+   -62
+  ],
+  "en_wisp_adult_walk_07": [
+   353,
+   0,
+   50,
+   60,
+   -25,
+   -60
+  ]
+ },
+ "frames": [
+  "en_wisp_adult_down_00",
+  "en_wisp_adult_down_01",
+  "en_wisp_adult_hit_00",
+  "en_wisp_adult_hit_01",
+  "en_wisp_adult_hit_02",
+  "en_wisp_adult_hit_03",
+  "en_wisp_adult_walk_00",
+  "en_wisp_adult_walk_01",
+  "en_wisp_adult_walk_02",
+  "en_wisp_adult_walk_03",
+  "en_wisp_adult_walk_04",
+  "en_wisp_adult_walk_05",
+  "en_wisp_adult_walk_06",
+  "en_wisp_adult_walk_07"
+ ],
+ "standing": [],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "noAttack": true,
+ "sets": {
+  "adult": {
+   "top": 0,
+   "down": {
+    "frames": [
+     "en_wisp_adult_down_00",
+     "en_wisp_adult_down_01"
+    ],
+    "durs": [
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "en_wisp_adult_hit_00",
+     "en_wisp_adult_hit_01",
+     "en_wisp_adult_hit_02",
+     "en_wisp_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "move": {
+    "frames": [
+     "en_wisp_adult_walk_00",
+     "en_wisp_adult_walk_01",
+     "en_wisp_adult_walk_02",
+     "en_wisp_adult_walk_03",
+     "en_wisp_adult_walk_04",
+     "en_wisp_adult_walk_05",
+     "en_wisp_adult_walk_06",
+     "en_wisp_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "idle": {
+    "frames": [
+     "en_wisp_adult_walk_00",
+     "en_wisp_adult_walk_01",
+     "en_wisp_adult_walk_02",
+     "en_wisp_adult_walk_03",
+     "en_wisp_adult_walk_04",
+     "en_wisp_adult_walk_05",
+     "en_wisp_adult_walk_06",
+     "en_wisp_adult_walk_07"
+    ],
+    "durs": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.62
+  }
+ }
+}

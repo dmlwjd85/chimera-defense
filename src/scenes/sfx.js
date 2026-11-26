@@ -96,6 +96,7 @@ const SOUNDS = {
   dodge: () => noise(0.15, 0.2, 0, { type: 'bandpass', f: 600, q: 2 }, 3000),
   heal: () => tone('sine', N(84), N(88), 0.3, 0.06, 0, { vib: 6 }),
   bond: () => { tone('sine', N(81), N(81), 0.15, 0.12); tone('sine', N(85), N(85), 0.25, 0.12, 0.12); },
+  clang: () => { tone('square', 1760, 1500, 0.09, 0.07); tone('triangle', 2640, 2300, 0.22, 0.06, 0.01, { vib: 14, vibDepth: 30 }); noise(0.08, 0.2, 0, { type: 'highpass', f: 5000 }); },
   clash: () => { noise(0.12, 0.25, 0, { type: 'highpass', f: 4000 }); tone('square', 900, 300, 0.1, 0.08); },
   hundred: () => [60, 64, 67, 72, 76, 79, 84].forEach((n, i) => tone('triangle', N(n), N(n), 0.25, 0.1, i * 0.06)),
   clear: () => [[72, 0], [72, 0.15], [72, 0.3], [76, 0.45], [79, 0.7], [76, 0.9], [79, 1.05], [84, 1.25]].forEach(([n, t]) => { tone('square', N(n), N(n), 0.2, 0.07, t, { lp: 3000 }); tone('triangle', N(n - 12), N(n - 12), 0.22, 0.08, t); }),

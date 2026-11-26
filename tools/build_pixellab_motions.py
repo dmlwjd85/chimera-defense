@@ -160,9 +160,13 @@ def build(sp):
                     lo = min((im.getbbox()[3] - im.getbbox()[1]) for im in ims)
                     if lo > 0.8 * ref_h: clip['fx'] = {'sink': 3}
                 if m in ATTACKS:
-                    hf = hit_frame(ims); clip['hold'] = {'frame': hf, 'sec': 0.06}
-                    clip['events'] = [[round(dur * hf + 0.01, 3), 'cast' if m in ('el', 'ult') else 'hit']]
-                    if m in ('el', 'ult'): clip['events'].append([round(dur * hf + 0.02, 3), 'hit'])
+                    hf = hit_frame(ims)
+                    # 장 시간(2026-11-26 프레임 보강 B): 준비 장은 길게(움츠림), 때리는 장은 멈칫, 되돌아가는 장은 빠르게 → 같은 장 수로도 묵직하게
+                    durs = [round(dur * (0.9 if i < hf - 1 else 1.6 if i == hf - 1 else 1.0 if i == hf else 0.75), 3) for i in range(len(ims))]
+                    clip['durs'] = durs; clip['hold'] = {'frame': hf, 'sec': 0.09 if m != 'ult' else 0.14}
+                    t_hit = round(sum(durs[:hf]) + 0.01, 3)
+                    clip['events'] = [[t_hit, 'cast' if m in ('el', 'ult') else 'hit']]
+                    if m in ('el', 'ult'): clip['events'].append([round(t_hit + 0.01, 3), 'hit'])
                 sset[name] = clip
                 report['motions'][f'{st}_{m}'] = {'n': len(ims), 'max|h%|': max(abs(r['h%']) for r in q), 'foot±': max(abs(r['foot']) for r in q)}
             # 나는 새(아기·성장기·성체)는 하늘에 떠 있는 동안 늘 날갯짓: 대기 = 날기 장을 조금 느리게

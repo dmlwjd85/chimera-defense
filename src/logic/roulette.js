@@ -39,7 +39,8 @@ export function sameSpeciesFactor(id, owned, data) {
     if (!r.parts.includes(id)) continue;
     for (const p of r.parts) if (p !== id) partners += owned.get(p) ?? 0;
   }
-  return 1 + (rule.perUnit ?? 0) * (owned.get(id) ?? 0) + (rule.partnerPerUnit ?? 0) * partners;
+  const f = 1 + (rule.perUnit ?? 0) * (owned.get(id) ?? 0) + (rule.partnerPerUnit ?? 0) * partners;
+  return rule.max ? Math.min(rule.max, f) : f;   // 쏠림 상한(2026-11-26)
 }
 
 /** Per-unit summon chances (sum 1) after pity, first-summon and same-species rules. */
@@ -54,8 +55,11 @@ export function unitChances(ctx, wave, data, owned = null, opts = {}) {
   for (const u of units) perRarity[u.rarity] = (perRarity[u.rarity] ?? 0) + 1;
   let pool = units.filter((u) => table[u.rarity] > 0);
   if (ctx.sinceHero >= config.pityCount) pool = restrict(pool, (u) => u.rarity === 'hero');
-  if (ctx.summonIndex === 1 && !ctx.firstWasRanged) pool = restrict(pool, (u) => u.range >= config.flyingMinRange);
-  const raw = pool.map((u) => [u.id, (table[u.rarity] / perRarity[u.rarity]) * (sameSpeciesFactor(u.id, owned, data) + (opts.sameExtra ?? 0) * (owned?.get(u.id) ?? 0)) * (baitRole && u.role === baitRole ? config.bait.mult : 1) * (u.rarity === 'hero' ? opts.heroMult ?? 1 : 1) * (1 + (opts.favor?.[u.id] ?? 0) * (config.favor?.perLevel ?? 0) / 100)]);
+  // 두 번째 소환 원거리: 예전엔 원거리만 나오게 강제 → 원거리 종이 적은 덱에서 그 종으로 쏠림(2026-11-26 계산: 여우·까마귀 각 35%).
+  // config.rangedBoost가 있으면 강제 대신 원거리 무게만 그 배수로 올림
+  const boostRanged = ctx.summonIndex === 1 && !ctx.firstWasRanged && config.rangedBoost ? config.rangedBoost : 1;
+  if (ctx.summonIndex === 1 && !ctx.firstWasRanged && !config.rangedBoost) pool = restrict(pool, (u) => u.range >= config.flyingMinRange);
+  const raw = pool.map((u) => [u.id, (table[u.rarity] / perRarity[u.rarity]) * (sameSpeciesFactor(u.id, owned, data) + (opts.sameExtra ?? 0) * (owned?.get(u.id) ?? 0)) * (u.range >= config.flyingMinRange ? boostRanged : 1) * (baitRole && u.role === baitRole ? config.bait.mult : 1) * (u.rarity === 'hero' ? opts.heroMult ?? 1 : 1) * (1 + (opts.favor?.[u.id] ?? 0) * (config.favor?.perLevel ?? 0) / 100)]);
   const sum = raw.reduce((s, [, p]) => s + p, 0);
   return Object.fromEntries(raw.map(([id, p]) => [id, p / sum]));
 }

@@ -98,9 +98,8 @@
  "weakNamePrefix": "어설픈 ",
  "swarmSpacing": 0.15,
  "bossDelay": 1.0,
- "sameSpecies": {
-  "perUnit": 4,
-  "partnerPerUnit": 4,
+ "rangedBoost": 3,
+  "sameSpecies": { "perUnit": 1.5, "partnerPerUnit": 1, "max": 4, "note2": "2026-11-26 계산(14회×4000판, 덱 6종): +4·+4에선 여우·까마귀 각 35%, 한 종이 절반 넘는 판 56% → 선생님 결정 덜 쏠리게: +1.5·+1, 최대 4배, 두 번째 소환은 원거리 강제 대신 원거리 무게 3배(rangedBoost)",
   "note": "확정(2026-11-20, 선생님 결정 '같은 종이 나올 확률을 올려'): 가진 동물 1마리(어린 기준, 성장기 2·성체 4)마다 그 종과 키메라 짝 종의 소환 무게 +4 (기본 1)"
  },
  "damageBoost": {

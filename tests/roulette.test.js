@@ -18,9 +18,12 @@ test('chances sum to 1 and pity keeps only heroes', () => {
   for (const id of Object.keys(p)) assert.equal(D.unitById[id].rarity, 'hero');
 });
 
-test('second summon is ranged when the first was not', () => {
+test('second summon favours ranged when the first was not (weight boost, not forced)', () => {
   const p = unitChances({ summonIndex: 1, sinceHero: 1, firstWasRanged: false }, 1, D);
-  for (const id of Object.keys(p)) assert.ok(D.unitById[id].range >= D.config.flyingMinRange);
+  const q = unitChances({ summonIndex: 2, sinceHero: 2, firstWasRanged: false }, 1, D);
+  const ranged = (o) => Object.entries(o).filter(([id]) => D.unitById[id].range >= D.config.flyingMinRange).reduce((s, [, v]) => s + v, 0);
+  assert.ok(ranged(p) > ranged(q) * 1.5, 'ranged odds clearly up on the second summon');
+  assert.ok(Object.keys(p).some((id) => D.unitById[id].range < D.config.flyingMinRange), 'melee can still appear');
 });
 
 test('roll is deterministic and habitat odds sum to 1', () => {

@@ -1320,6 +1320,18 @@ export default class BattleScene extends Phaser.Scene {
     }
   }
 
+  /** 때리는 순간 잔상: 지금 그림을 하얗게 두 장 겹쳐 뒤쪽으로 흐리게 남김(휘두름이 빠르게 보임, 프레임 보강 B). */
+  smear(uid, dir) {
+    const v = this.unitViews.get(uid), sp = v?.rig?.view?.sprite;
+    if (!sp || !v.rig.dot) return;
+    const m = sp.getWorldTransformMatrix();
+    for (let k = 1; k <= 2; k++) {
+      const g = this.add.image(m.tx - dir * 7 * k, m.ty, sp.texture.key, sp.frame.name).setOrigin(sp.originX, sp.originY)
+        .setScale(Math.hypot(m.a, m.b), Math.hypot(m.c, m.d)).setFlipX(sp.flipX).setTintFill(0xffffff).setAlpha(0.35 / k).setDepth(v.container.depth - 0.1);
+      this.tweens.add({ targets: g, alpha: 0, x: g.x - dir * 6, duration: 140, onComplete: () => g.destroy() });
+    }
+  }
+
   /** 처치 연출(금화·소리·멈칫·보스 배너). 마지막 한 방이 닿는 순간에 맞춰 부름. */
   killFx(ev, v) {
     this.stopFor(ev.boss ? 0.12 : 0.03);
@@ -1643,6 +1655,7 @@ export default class BattleScene extends Phaser.Scene {
             const clipM = v?.rig?.inst?.cur?.clip, hitM = clipM?.events?.find((e) => e[1] === 'hit')?.[0];
             if (v && !(hitM > 0.02)) { v.lungeT = 0; v.lungeDir = Math.sign(ve.lastX - ux) || 1; }
             const strike = () => {
+            this.smear(ev.uid, Math.sign(ve.lastX - ux) || 1);
             this.releaseHp((ev.eids?.length ? ev.eids : [ev.eid]));
             const big = ev.aoe || u.stats.role === 'bruiser';
             const dir = Math.sign(ve.lastX - ux) || 1;

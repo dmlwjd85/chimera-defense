@@ -1,4 +1,4 @@
-// Stage 1 auto-play simulator: node tools/sim.mjs [runs=20] [startSeed=1] [--detail]
+// Stage 1 auto-play simulator: node tools/sim.mjs [runs=20] [startSeed=1] [--detail] [--starter] [--stage=2]
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { buildData } from '../src/logic/data.js';
@@ -181,7 +181,7 @@ export function main(argv) {
     console.log(`roll: ${r.trials} runs x ${r.count} summons -> avg chimera ${r.avgChimera.toFixed(2)}, avg spirit ${r.avgSpirit.toFixed(2)}, at least one chimera ${r.chimeraPct.toFixed(1)}%, at least one spirit ${r.spiritPct.toFixed(1)}%`);
     return [];
   }
-  const opts = { mergeWhenCrowded: !!flags.crowded, skip: !!flags.skip, stage: flags.stage ? 'forest-' + flags.stage : 'forest-1' };
+  const opts = { mergeWhenCrowded: !!flags.crowded, skip: !!flags.skip, stage: flags.stage ? 'forest-' + flags.stage : 'forest-1', pool: flags.starter ? data.config.roster.starter : null };   // --starter: 처음 덱 6종(실제 새 사용자)
   const rs = [];
   for (let s = start; s < start + runs; s++) {
     const r = runOne(data, s, opts);

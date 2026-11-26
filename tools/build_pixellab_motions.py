@@ -6,6 +6,8 @@
 # 쓰는 법: python3 tools/build_pixellab_motions.py [종,종...]   → 검수 표 qa/motions/<종>.json
 import json, os, sys, glob
 from PIL import Image
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from myth_recolor import recolor   # 신화급 털색 다듬기(tools/pixellab/myth_recolor.json)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SRC = os.path.join(ROOT, 'art-src', 'pixellab')
@@ -119,6 +121,7 @@ def build(sp):
                 if m not in CLIP: continue
                 fs = sorted(glob.glob(os.path.join(d, 'f[0-9]*.png')))[1:]   # f00 = 넣은 원화와 같은 장 → 뺌
                 ims = [clean(Image.open(f), pfn) for f in fs]
+                if st == 'myth': ims = [recolor(im, sp) for im in ims]
                 if not ims: continue
                 if m == 'down':   # 가장 낮게 누운 장까지만 쓰고 거기서 멈춤(다시 일어서는 장 버림)
                     hs = [(im.getbbox() or (0, 0, 0, 0))[3] - (im.getbbox() or (0, 0, 0, 0))[1] for im in ims]

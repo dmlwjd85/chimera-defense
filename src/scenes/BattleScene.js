@@ -1061,9 +1061,47 @@ export default class BattleScene extends Phaser.Scene {
     const v = { container: c, tok, rig, shadow, bar, barBg, downText, name, icon, foot, foot2, lastHp: unit.hp, wasDown: unit.down, key: `${unit.kind}:${unit.speciesId}:${unit.stage}` };
     if (rig && this.state.time > 0) {
       const born = this.pendingBirth?.get(unit.uid);
-      if (born) rig.inst.play(born);
+      // 도트 동물이 한 단계 올라가면: 앞 모습이 빛에 감싸였다가 그 빛 속에서 새 모습이 서서히 드러남(색이 확 바뀌지 않게)
+      if (born === 'evolve' && rig.dot) v.morph = this.startMorph(unit, sub, rig);
+      else if (born) rig.inst.play(born);
     }
     return v;
+  }
+
+  /** 진화 변신: 앞 단계 모습(유령)과 흰 빛 덮개를 겹쳐 둠. 모았다가(앞 모습이 하얗게) → 한 번에 터지고(새 모습 흰 실루엣) → 색이 서서히 드러남. */
+  startMorph(unit, sub, rig) {
+    const prev = { spirit: 'adult', adult: 'teen', teen: 'young' }[unit.stage];
+    const ghost = prev ? unitRig(this, { ...unit, stage: prev }, sub, 0.22) : null;
+    if (ghost && !ghost.dot) { ghost.view.destroy(); return null; }
+    rig.inst.play('idle', { loop: true });
+    const white = (src) => this.add.image(0, 0, src.texture.key, src.frame.name).setTintFill(0xffffff).setAlpha(0);
+    const m = { t: 0, ghost, gw: ghost ? white(ghost.view.sprite) : null, nw: white(rig.view.sprite) };
+    sub.add([m.gw, m.nw].filter(Boolean));
+    return m;
+  }
+
+  tickMorph(v) {
+    const m = v.morph, dt = (this.realDt || 0.016) * (this.paused ? 0 : 1), main = v.rig.view.sprite;
+    m.t += dt;
+    const copy = (dst, src) => dst.setFrame(src.frame.name).setOrigin(src.originX, src.originY).setScale(src.scaleX, src.scaleY).setFlipX(src.flipX).setPosition(src.x, src.y);
+    const G = 0.45, B = 0.6, E = 1.25;   // 모으기 끝, 터짐 끝, 색 다 돌아옴(초)
+    if (m.ghost) { m.ghost.inst.update(dt); m.ghost.view.sync(); copy(m.gw, m.ghost.view.sprite); }
+    copy(m.nw, main);
+    if (m.t < G) {          // 모으기: 앞 모습이 점점 하얘짐, 새 모습은 아직 안 보임
+      const k = m.t / G;
+      main.setAlpha(0); m.nw.setAlpha(0);
+      m.ghost?.view.sprite.setAlpha(1); m.gw?.setAlpha(k * k);
+    } else if (m.t < B) {   // 터짐: 흰 실루엣이 앞 모습 → 새 모습으로 바뀜
+      const k = (m.t - G) / (B - G);
+      m.ghost?.view.sprite.setAlpha(0); m.gw?.setAlpha(1 - k);
+      main.setAlpha(1); m.nw.setAlpha(1);
+      if (!m.popped) { m.popped = true; this.fx.ring?.(v.container.x, v.container.y + 20, 0xfff3b0, 1.1, 380); }
+    } else {                // 색이 서서히 드러남
+      const k = Math.min(1, (m.t - B) / (E - B));
+      main.setAlpha(1); m.nw.setAlpha(1 - k * (2 - k));
+      m.gw?.setAlpha(0);
+      if (k >= 1) { m.ghost?.view.destroy(); m.gw?.destroy(); m.nw.destroy(); v.morph = null; }
+    }
   }
 
   /** Drive a unit's rig from what happened this frame. */
@@ -1084,6 +1122,7 @@ export default class BattleScene extends Phaser.Scene {
     if (u.hp < v.lastHp - 0.5 && !u.down) { r.inst.hitFlash(0.1); if (!busy && !u.moving) r.inst.play('hit'); }
     v.lastHp = u.hp; v.wasDown = u.down;
     r.view.update(dt);
+    if (v.morph) this.tickMorph(v);
   }
 
   syncUnits() {
@@ -1639,8 +1678,9 @@ export default class BattleScene extends Phaser.Scene {
           const [mx, my] = unitPos(ev.uid);
           if (ev.kind === 'weak') { this.toast('합성 실패… 적들이 멈춰서 구경함', '#cccccc'); this.fx.weak(mx, my); sfx('weak'); }
           if (ev.kind === 'chimera') { this.cameras.main.flash(250, 180, 120, 255); sfx('chimera'); this.fx.chimera(mx, my); this.fx.banner(`${this.state.field.concat(this.state.bench).find((x) => x && x.uid === ev.uid)?.stats.name ?? '키메라'} 탄생!`, '#d7bde2', '키메라 합성 성공'); }
-          if (ev.kind === 'evolve') { this.fx.evolve(mx, my, false); sfx('evolve'); }
-          if (ev.kind === 'spirit') { this.spiritDrama(ev.uid); sfx('spirit'); this.fx.evolve(mx, my, true); this.cameras.main.flash(300, 255, 230, 140);  }
+          // 진화 빛은 변신(startMorph)이 모았다가 터지는 순간(0.45초)에 맞춰 한 번에. 화면 전체 번쩍임은 색이 확 바뀌어 보여서 뺌(2026-11-26)
+          if (ev.kind === 'evolve') { this.time.delayedCall(450, () => this.fx.evolve(mx, my, false)); sfx('evolve'); }
+          if (ev.kind === 'spirit') { this.spiritDrama(ev.uid); sfx('spirit'); this.time.delayedCall(450, () => this.fx.evolve(mx, my, true)); }
           if (this.tutorialStep === 2 && (ev.kind === 'evolve' || ev.kind === 'spirit')) this.tutorialStep = 3;
           if (this.tutorialStep === 3 && (ev.kind === 'chimera' || ev.kind === 'weak')) this.endTutorial();
           break;

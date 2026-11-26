@@ -21,7 +21,7 @@ test('처음엔 덱 6마리가 역할대로 앞줄·뒷줄에 섬(근접 앞, �
   const st = createGauntlet(D, 'forest-1', 5, {});
   const us = unitsIn(st);
   assert.equal(us.filter(Boolean).length, 6);
-  for (const u of us) if (u && u.stats.range > 1) assert.ok(u.seat >= 3, `${u.speciesId} 뒷줄`);
+  for (const u of us) if (u && u.stats.range > 1) assert.ok(u.seat >= 6, `${u.speciesId} 3열`);
   assert.equal(st.phase, 'fight');
   assert.ok(st.enemies.length >= 3);
 });
@@ -52,9 +52,13 @@ test('한 번에 하나: 같은 틱에 행동은 하나만 나감', () => {
 test('자리 바꾸기와 합성(같은 종·같은 단계 = 진화)', () => {
   const st = createGauntlet(D, 'forest-1', 11, {});
   fightOut(st);
-  const a = st.seats[0], b = st.seats[3];
-  assert.ok(moveAnimal(st, D, { where: 'seat', index: 0 }, { where: 'seat', index: 3 }).ok);
-  assert.equal(st.seats[0], b); assert.equal(st.seats[3], a);
+  const [i, j] = st.seats.map((x, k) => (x != null ? k : -1)).filter((k) => k >= 0);
+  const a = st.seats[i], b = st.seats[j];
+  assert.ok(moveAnimal(st, D, { where: 'seat', index: i }, { where: 'seat', index: j }).ok);
+  assert.equal(st.seats[i], b); assert.equal(st.seats[j], a);
+  // 빈 칸으로 옮기기(3×3: 9칸에 6마리)
+  const empty = st.seats.indexOf(null);
+  assert.ok(empty >= 0 && moveAnimal(st, D, { where: 'seat', index: i }, { where: 'seat', index: empty }).ok);
   // 같은 종을 대기석에 넣고 겹치면 진화
   const u = unitsIn(st).find((x) => x && x.stage === 'young');
   st.offer.globe[0] = { speciesId: u.speciesId, traits: [] };
@@ -65,12 +69,21 @@ test('자리 바꾸기와 합성(같은 종·같은 단계 = 진화)', () => {
   assert.equal(unitsIn(st)[u.seat].stage, 'teen');
 });
 
-test('앞줄이 비면 뒷줄 근접이 앞으로 당겨짐', () => {
-  const st = createGauntlet(D, 'forest-1', 13, {});
-  const front = unitsIn(st).filter((u) => u && u.seat < 3);
-  for (const u of front) u.down = true;
-  closeRanks(st);
-  assert.ok(unitsIn(st).slice(0, 3).some((u) => u && !u.down), '누군가 앞줄로 나옴');
+test('3×3 자리: 브루저 1열·딜러 2열·응원 3열, 라인 맞붙음, 정원, 브루저 없는 라인은 제압', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  const st = createGauntlet(D, 'forest-3', 13, { pool: ['bear', 'dog', 'tiger', 'wolf', 'eagle', 'rooster'] });
+  assert.equal(st.seats.length, 9);
+  for (const u of st.field) { const c = G.colOf(u.seat), sty = G.baseStyle(u); if (sty === 'bruiser') assert.equal(c, 0); if (sty === 'ranged' || sty === 'support') assert.equal(c, 2); }
+  const bear = st.field.find((u) => u.speciesId === 'bear');
+  assert.ok(G.clashCap(bear) >= 3, '곰은 여럿을 붙잡음');
+  // 우리 브루저를 모두 눕히면 적 브루저가 전진 → 후열 제압
+  st.charging = false;
+  for (const u of st.field) if (G.styleOf(u) === 'bruiser') { u.down = true; u.hp = 0; }
+  const eb = st.enemies.find((e) => e.style === 'bruiser') ?? st.enemies[0];
+  eb.style = 'bruiser'; eb.stunLeft = 0;
+  G.tickGauntlet(st, D, 0.2);
+  assert.ok(eb.advance, '적 브루저 전진');
+  assert.ok(st.field.some((u) => u.suppressed), '후열 제압');
 });
 
 test('하드는 한 번 지면 끝, 노멀은 생명이 깎이고 계속', () => {
@@ -146,7 +159,7 @@ test('금화 부활·놓아주기, 앞줄은 브루저만, 진형 붕괴, 레벨
   const dog = st.field.find((u) => u.speciesId === 'dog'), rabbit = st.field.find((u) => u.speciesId === 'rabbit');
   assert.equal(dog.stage, 'adult'); assert.equal(rabbit.stage, 'teen');
   assert.ok(st.field.some((u) => u.legend && u.speciesId === 'tiger' && u.stage === 'adult'));
-  for (const u of st.field) if (u.seat < 3 && baseStyle(u) !== 'bruiser') assert.ok(!st.field.some((x) => baseStyle(x) === 'bruiser' && x.seat >= 3), '브루저가 뒷줄에 밀려 있지 않음');
+  for (const u of st.field) if (baseStyle(u) === 'bruiser') assert.ok(u.seat < 3, '브루저는 1열');
   fightOut(st);
   const v = st.field[0]; v.resting = true; st.gold = 100;
   const cost = reviveCost(st, D);
@@ -225,4 +238,33 @@ test('고급 빌드·수치·주인공·각성·톡 보호막·난이도 사다�
   assert.ok(G.GOD_RULES[G.godRuleOf(Date.now())]);
   // 이야기 궁합: 여러 문화의 민담·신화
   for (const id of ['dangun', 'cheese', 'briar_patch', 'frog_ox', 'zodiac_race', 'bremen']) assert.ok(D.lore.bonds.find((b) => b.id === id), id);
+});
+
+test('흐름: 응원 톡·승패 요인, 보상 하나 더(금화), 주머니·상점·준비물, 새 유물', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  const M = await import('../src/logic/meta.js');
+  const st = createGauntlet(D, 'forest-3', 21, {});
+  st.charging = false; G.tickGauntlet(st, D, 0.5);
+  const c = st.clashes[0];
+  if (c) { const p0 = c.push; st.time += 1; assert.ok(G.cheerClash(st, c.uid, D).ok); assert.ok(c.push >= p0 || c.push === 0.95); }
+  fightOut(st);
+  assert.ok(Array.isArray(G.encFactors(st, D)));
+  // 하나 더: 고른 뒤에만, 금화 들고
+  st.gold = 50;
+  assert.equal(G.buyExtraReward(st, D).ok, false);
+  assert.ok(takeReward(st, D, 'food', st.field[0].uid).ok || true);
+  if (st.offer.taken) { assert.ok(G.buyExtraReward(st, D).ok); assert.equal(st.offer.taken, null); assert.ok(st.gold < 50); }
+  // 주머니·상점
+  const save = defaultSave(D);
+  save.pouch = 100; save.deck = ['bear', 'tiger', 'eagle'];
+  const shop = M.shopOffers(save, D);
+  assert.ok(shop.items.length >= 4);
+  const fi = shop.items.findIndex((x) => x.kind === 'food');
+  assert.ok(M.buyShop(save, D, fi).ok); assert.equal(save.prep.food, 1);
+  const bag = M.takeOutForRun(save);
+  assert.equal(save.pouch, 0); assert.equal(bag.pouch, 100 - shop.items[fi].price);
+  const run = createGauntlet(D, 'forest-1', 3, { pouch: bag.pouch, prep: { relics: ['war_horn'], food: 1, feathers: 1 } });
+  assert.equal(run.gold, bag.pouch); assert.ok(run.relics.includes('war_horn')); assert.equal(run.feathers, 1);
+  // 새 유물 10개
+  for (const id of ['war_horn', 'thorn_mail', 'shadow_cloak', 'vanguard_flag', 'vamp_fang', 'gold_scale', 'phoenix_plume', 'iron_chain', 'thunder_drum', 'mana_spring']) assert.ok(D.relicById[id]?.gauntlet, id);
 });

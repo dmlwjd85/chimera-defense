@@ -1,3 +1,4 @@
+import { autoTint } from './genes.js';
 const STATUS_FIELD = { slow: 'percent', aura: 'percent', haste: 'percent', poison: 'dps' };
 const MODIFIERS = new Set(['confuseTargets', 'aoeRadiusSet', 'knockbackStun', 'respawnHalf', 'hasteRadiusSet', 'text']);
 
@@ -78,15 +79,16 @@ function chimeraStats(inst, data) {
     damage: round1(r.damage * ((damageBoost(a, data.config) + damageBoost(b, data.config)) / 2) * m.damage * tempoD(data)),
     interval: round2(r.interval * tempoU(data)), range: r.range, aoeRadius: r.aoeRadius,
     block: r.block ?? Math.max(a.block, b.block), respawn: Math.max(a.respawn, b.respawn),
-    effects: scaleEffects(r.effects, m), skills: [r.desc], skillTales: [{ name: r.name, tale: data.tales?.recipes?.[r.id] ?? '', desc: r.desc }],
+    effects: scaleEffects(r.effects, m), skills: [r.desc], skillTales: [{ name: r.name, tale: data.tales?.recipes?.[r.id] ?? r.codex ?? '', desc: r.desc }],
     element: r.element ?? null, continents: uniq([a.continent, b.continent]), habitats: uniq([a.habitat, b.habitat]), color: r.color, image: r.image ?? null, role: r.role, flyer: !!r.flyer,
+    look: r.auto ? r.look : null, lookTint: r.auto ? autoTint(r, data) : null,
   };
 }
 
 function weakStats(inst, data) {
   const [a, b] = partsOf(inst, data);
   return {
-    name: (inst.reversal ? '역전의 ' : data.config.weakNamePrefix) + a.name + b.name,
+    name: data.config.slimeName ? (inst.reversal ? '역전의 ' : '') + data.config.slimeName.replace('{a}', a.name).replace('{b}', b.name) : (inst.reversal ? '역전의 ' : data.config.weakNamePrefix) + a.name + b.name,
     hp: Math.min(a.hp, b.hp), damage: round1(Math.min(a.damage * damageBoost(a, data.config), b.damage * damageBoost(b, data.config)) * tempoD(data)),
     interval: round2(Math.max(a.interval, b.interval) * tempoU(data)), range: Math.min(a.range, b.range), aoeRadius: 0,
     block: Math.min(a.block, b.block), respawn: Math.max(a.respawn, b.respawn),

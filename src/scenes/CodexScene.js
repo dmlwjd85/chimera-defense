@@ -3,8 +3,9 @@ import { button, title, style, panel, unitToken, speciesImage } from './ui.js';
 import { ULTS, tuneOf, gcfg } from '../logic/gauntlet.js';
 import { buildData, pairKey } from '../logic/data.js';
 import { levelInfo, favorState, buyFavor, writeSave } from '../logic/meta.js';
+import { classOf, chromoOf, className, geneChance } from '../logic/genes.js';
 
-const TABS = [['units', '동물'], ['spirits', '신화급'], ['chimeras', '키메라'], ['flops', '흑역사'], ['bonds', '인연'], ['enemies', '적']];
+const TABS = [['units', '동물'], ['traits', '강점·약점'], ['spirits', '신화급'], ['chimeras', '키메라'], ['flops', '슬라임'], ['bonds', '인연'], ['enemies', '적']];
 const CONT = { eurasia: '유라시아', america: '아메리카', africa: '아프리카' };
 
 export default class CodexScene extends Phaser.Scene {
@@ -17,7 +18,7 @@ export default class CodexScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#141a21');
     if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.45);
     title(this, 640, 45, '도감', 36);
-    TABS.forEach(([id, label], i) => button(this, 640 - (TABS.length - 1) * 80 + i * 160, 100, 145, 40, label, () => this.scene.restart({ tab: id }), { fill: id === this.tab ? 0xb8742a : 0x2f4f6f }));
+    TABS.forEach(([id, label], i) => button(this, 640 - (TABS.length - 1) * 75 + i * 150, 100, 140, 40, label, () => this.scene.restart({ tab: id }), { fill: id === this.tab ? 0xb8742a : 0x2f4f6f }));
     panel(this, 40, 130, 1200, 520);
     // 탭 내용은 한 판(page)에 모아 가림막을 씌우고 휠·끌기로 스크롤(인연·흑역사가 넘쳐서)
     const before = new Set(this.children.list);
@@ -181,32 +182,76 @@ export default class CodexScene extends Phaser.Scene {
 
   chimeras() {
     const D = this.data2, S = this.save;
-    D.recipes.forEach((r, i) => {
-      const c = this.cell(i, 3, 385, 120), known = S.codex.recipes.includes(r.id);
+    // 염색체 합성 안내 줄: 같은 강끼리만, 염색체 수가 비슷할수록 잘 붙음
+    const cls = [...new Set(D.units.map((u) => classOf(u.id, D)).filter(Boolean))];
+    this.add.text(60, 140, `🧬 같은 강끼리만 섞여요 · 염색체 수가 비슷할수록 성공!  ${cls.map((c) => { const [n, ic] = className(c, D); return `${ic}${n} ${D.units.filter((u) => classOf(u.id, D) === c).length}`; }).join('  ')}`, style(14, '#c9f27a'));
+    const list = [...D.recipes.filter((r) => !r.auto), ...D.recipes.filter((r) => r.auto), ...(D.oldRecipes ?? [])];
+    list.forEach((r, i) => {
+      const c = this.cell(i, 3, 385, 120), known = S.codex.recipes.includes(r.id), old = !!(D.oldRecipes ?? []).includes(r);
+      c.y += 26;
       const hint = S.hints[r.id] ?? [];
+      const g = this.add.graphics();
+      g.fillStyle(old ? 0x141414 : r.auto ? 0x161a2a : 0x22163a, 0.6).fillRoundedRect(c.x, c.y, c.w, c.h, 10);
       const tok = unitToken(this, { kind: 'chimera', speciesId: r.id, stage: 'adult', parts: r.parts, stats: {} }, D);
-      tok.setPosition(c.x + 40, c.y + 45).setAlpha(known ? 1 : 0.5);
+      tok.setPosition(c.x + 40, c.y + 50).setAlpha(known ? 1 : 0.5);
       if (!known) tok.list.forEach((o) => o.setTint?.(0x000000));
       const parts = r.parts.map((p) => (known || hint.includes(p) ? D.unitById[p].name : `?(${CONT[D.unitById[p].continent]})`)).join(' + ');
-      this.add.text(c.x + 85, c.y + 8, known ? r.name : '???', style(18, known ? '#d7bde2' : '#888888'));
+      const [cn, ci] = className(classOf(r.parts[0], D), D);
+      this.add.text(c.x + 85, c.y + 8, known ? r.name : '???', style(18, old ? '#777777' : known ? '#d7bde2' : '#888888'));
+      this.add.text(c.x + c.w - 8, c.y + 10, old ? '🚫 강이 달라요' : `${ci}${cn} · 🧬${geneChance(r.parts[0], r.parts[1], D)}%`, style(12, old ? '#ff8a80' : '#c9f27a')).setOrigin(1, 0);
       this.add.text(c.x + 85, c.y + 34, parts, style(13, '#aabbcc'));
-      this.add.text(c.x + 85, c.y + 56, known ? r.desc : `출처: ${r.source}`, style(11, '#dddddd', { wordWrap: { width: 290 } }));
-      if (known && r.codex) this.add.text(c.x + 85, c.y + 96, `"${r.codex}"`, style(11, '#c0c0c0', { wordWrap: { width: 290 } }));
+      this.add.text(c.x + 85, c.y + 56, old ? '옛 이야기 속 조합. 염색체가 안 맞아 이제는 슬라임이 돼요.' : known ? r.desc : `출처: ${r.source}`, style(11, '#dddddd', { wordWrap: { width: 290 } }));
+      if (known && r.codex) this.add.text(c.x + 85, c.y + 94, `"${r.codex}"`, style(11, '#c0c0c0', { wordWrap: { width: 290 } }));
     });
-    this.add.text(640, 632, `힌트 조각 ${S.hintShards}/${D.config.hintShardsPerReveal} — 흑역사를 만들 때마다 1개`, style(14, '#ffd84d')).setOrigin(0.5);
+    this.add.text(720, 684, `키메라 ${S.codex.recipes.filter((id) => D.recipes.some((r) => r.id === id)).length}/${D.recipes.length} · 힌트 조각 ${S.hintShards}/${D.config.hintShardsPerReveal} — 슬라임을 만들 때마다 1개`, style(14, '#ffd84d')).setOrigin(0.5).setDepth(3500);
+  }
+
+  /** 강점·약점: 종마다 타고나는 강점 3 · 약점 3. 약점이 각성(신화급·역전 각성)으로 뒤집히면 무엇이 되는지는 한 번 본 뒤에만 보임. */
+  traits() {
+    const D = this.data2, S = this.save, seenF = new Set(S.codex.flips ?? []);
+    let found = 0, total = 0;
+    D.units.forEach((u, i) => {
+      const c = this.cell(i, 2, 585, 196), seen = S.codex.units.includes(u.id), tr = D.traits[u.id];
+      const g = this.add.graphics();
+      g.fillStyle(0x10161e, 0.7).fillRoundedRect(c.x, c.y, c.w, c.h, 12).lineStyle(2, 0x3b4b5e, 0.8).strokeRoundedRect(c.x, c.y, c.w, c.h, 12);
+      const tok = unitToken(this, { kind: 'base', speciesId: u.id, stage: 'adult', stats: { color: u.color } }, D);
+      tok.setPosition(c.x + 44, c.y + 60).setAlpha(seen ? 1 : 0.4);
+      if (!seen) tok.list.forEach((o) => o.setTint?.(0x000000));
+      const [cn, ci] = className(classOf(u.id, D), D);
+      this.add.text(c.x + 10, c.y + 104, seen ? u.name : '???', style(16, '#ffe6b0')).setOrigin(0, 0);
+      this.add.text(c.x + 10, c.y + 128, `${ci}${cn}`, style(12, '#c9f27a'));
+      this.add.text(c.x + 10, c.y + 146, `🧬 염색체 ${chromoOf(u.id, D) ?? '?'}개`, style(12, '#9fd8ff'));
+      const tn = tuneOf({ kind: 'base', speciesId: u.id }, gcfg(D));
+      if (!tr) return;
+      let y = c.y + 8;
+      const line = (t, col, size = 12) => { const o = this.add.text(c.x + 100, y, t, style(size, col, { wordWrap: { width: 470 } })); y += o.height + 3; };
+      if (!seen) { line('아직 만난 적 없는 동물. 덱에 넣고 데려가 봐요.', '#7f8c99', 13); return; }
+      if (tn) line(`👍 ${tn.pro}   👎 ${tn.con}`, '#d4b06a');
+      for (const d of tr.str) line(`💪 ${d.name} — ${d.desc}`, '#7CFC9A');
+      for (const d of tr.weak) {
+        total += 1;
+        const got = seenF.has(d.id); if (got) found += 1;
+        line(`💧 ${d.name} — ${d.desc}`, '#ffb27a');
+        y -= 1; line(got ? `     ✨ 각성하면 → ${d.flip.name}: ${d.flip.desc}` : '     ✨ 각성하면 → ??? (각성하거나 신화급이 되면 알 수 있어요)', got ? '#ffd84d' : '#6f7f8f', 11);
+      }
+    });
+    this.add.text(720, 684, `✨ 찾은 약점 극복 ${found}/${total || D.units.length * 3} · 위기에 각성하거나 신화급으로 깨우면 약점이 강점으로 뒤집혀요`, style(14, '#ffd84d')).setOrigin(0.5).setDepth(3500);
   }
 
   flops() {
     const D = this.data2, S = this.save;
-    if (!S.codex.failedPairs.length) this.add.text(640, 380, '아직 실패한 합성 없음. 언젠가는 생김.', style(18, '#888888')).setOrigin(0.5);
+    if (!S.codex.failedPairs.length) this.add.text(640, 380, '아직 슬라임 없음. 강이 다르거나 염색체가 안 맞으면 생겨요.', style(18, '#888888')).setOrigin(0.5);
     S.codex.failedPairs.forEach((k, i) => {
       const [a, b] = k.split('+');
-      const c = this.cell(i, 4, 290, 80);
-      this.add.text(c.x + 10, c.y + 8, `어설픈 ${D.unitById[a]?.name ?? a}${D.unitById[b]?.name ?? b}`, style(17, '#bbbbbb'));
-      this.add.text(c.x + 10, c.y + 36, '단점만 모였다. 적들이 구경했다.', style(12, '#888888'));
+      const c = this.cell(i, 4, 290, 92);
+      const tok = unitToken(this, { kind: 'weak', speciesId: null, stage: 'adult', parts: [a, b], stats: {} }, D);
+      tok.setPosition(c.x + 34, c.y + 40);
+      this.add.text(c.x + 70, c.y + 8, D.config.slimeName ? D.config.slimeName.replace('{a}', D.unitById[a]?.name ?? a).replace('{b}', D.unitById[b]?.name ?? b) : `어설픈 ${D.unitById[a]?.name ?? a}${D.unitById[b]?.name ?? b}`, style(16, '#c9f27a'));
+      const ch = geneChance(a, b, D);
+      this.add.text(c.x + 70, c.y + 34, ch ? `🧬 같은 강, 성공 ${ch}%였는데…` : `🧬 ${className(classOf(a, D), D)[0]}+${className(classOf(b, D), D)[0]}: 안 섞임`, style(12, '#aab4be'));
+      this.add.text(c.x + 70, c.y + 54, '말랑말랑. 적들이 구경함.', style(11, '#888888'));
     });
-    const total = D.units.length * (D.units.length - 1) / 2 - D.recipes.filter((r) => r.parts.every((p) => D.unitById[p])).length;
-    this.add.text(640, 632, `흑역사 ${S.codex.failedPairs.length}/${total}`, style(14, '#aaaaaa')).setOrigin(0.5);
+    this.add.text(720, 684, `돌연변이 슬라임 ${S.codex.failedPairs.length}마리 발견`, style(14, '#c9f27a')).setOrigin(0.5).setDepth(3500);
   }
 
   bonds() {

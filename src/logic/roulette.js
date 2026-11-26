@@ -36,7 +36,7 @@ export function sameSpeciesFactor(id, owned, data) {
   if (!rule || !owned || owned.size === 0) return 1;
   let partners = 0;
   for (const r of data.recipes) {
-    if (!r.parts.includes(id)) continue;
+    if (r.auto || !r.parts.includes(id)) continue; // 자동 키메라(같은 강 아무 짝)는 짝 끌림 없음
     for (const p of r.parts) if (p !== id) partners += owned.get(p) ?? 0;
   }
   const f = 1 + (rule.perUnit ?? 0) * (owned.get(id) ?? 0) + (rule.partnerPerUnit ?? 0) * partners;

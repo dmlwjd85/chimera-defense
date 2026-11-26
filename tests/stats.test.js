@@ -29,7 +29,7 @@ test('chimera and weak chimera', () => {
   assert.deepEqual([c.hp, c.damage, c.range, c.block, eff(c, 'poison').dps], [158, 43.2, 4, 1, 10]);
   const w = unitStats({ uid: 3, kind: 'weak', speciesId: null, stage: 'adult', parts: ['fox', 'bear'] }, D);
   assert.deepEqual([w.damage, w.hp, w.interval, w.range, w.block, w.respawn, w.effects.length], [7, 55, 1.2, 1, 1, 8, 0]);
-  assert.ok(w.name.startsWith(D.config.weakNamePrefix));
+  assert.ok(w.name.endsWith('슬라임'), w.name);
 });
 
 test('does not mutate data and rejects unknown kinds', () => {

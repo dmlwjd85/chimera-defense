@@ -1,4 +1,5 @@
 import { pairKey } from './data.js';
+import { genesOf, geneChance, sameClass } from './genes.js';
 
 export const NEXT_STAGE = { young: 'teen', teen: 'adult', adult: 'spirit' };
 
@@ -13,12 +14,20 @@ export function mergeKind(dragged, target, data) {
     return dragged.stage === 'adult' ? 'spirit' : 'swap';
   }
   if (dragged.stage !== 'adult' || target.stage !== 'adult') return 'swap';
+  // 염색체 합성: 강이 다르면 무조건 슬라임. 같은 강이면 키메라 시도(성공은 mergeOdds 확률)
+  if (genesOf(data) && !sameClass(dragged.speciesId, target.speciesId, data)) return 'weak';
   return recipeFor(dragged, target, data) ? 'chimera' : 'weak';
 }
 
-/** New merged instance, or null when the drop is a swap. */
-export function mergeUnits(dragged, target, data, uid) {
-  switch (mergeKind(dragged, target, data)) {
+/** Chance (%) that a 'chimera' merge really succeeds; 100 for every other kind. */
+export function mergeOdds(dragged, target, data) {
+  const kind = mergeKind(dragged, target, data);
+  return { kind, chance: kind === 'chimera' ? geneChance(dragged.speciesId, target.speciesId, data) : kind === 'weak' ? 0 : 100, cross: kind === 'weak' && !!genesOf(data) && !sameClass(dragged.speciesId, target.speciesId, data) };
+}
+
+/** New merged instance, or null when the drop is a swap. `kind` forces the result (a failed gene roll → 'weak'). */
+export function mergeUnits(dragged, target, data, uid, kind = mergeKind(dragged, target, data)) {
+  switch (kind) {
     case 'evolve':
     case 'spirit':
       return { uid, kind: 'base', speciesId: target.speciesId, stage: NEXT_STAGE[target.stage], parts: null };
@@ -43,7 +52,8 @@ export function mergePreview(dragged, target, data, known) {
   }
   if (kind === 'chimera') {
     const r = recipeFor(dragged, target, data);
-    return known.recipes.has(r.id) ? view('merge.chimera', { name: r.name }) : view('merge.unknown');
+    const chance = geneChance(dragged.speciesId, target.speciesId, data);
+    return known.recipes.has(r.id) ? view('merge.chimera', { name: r.name, chance }) : view('merge.unknown', { chance });
   }
   if (kind === 'weak') return view(known.failed.has(pairKey(dragged.speciesId, target.speciesId)) ? 'merge.weakKnown' : 'merge.unknown');
   return view('merge.swap');

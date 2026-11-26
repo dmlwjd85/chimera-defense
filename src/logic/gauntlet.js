@@ -11,7 +11,7 @@ import { movesOf, a2Of, chargeUlt, ultName } from './moves.js';
 import { rollTraits, inheritEvolve } from './traits.js';
 import { eco, rollOffer, chooseRelic } from './relics.js';
 import { spellDef, spellCost } from './spells.js';
-import { mergeKind } from './merge.js';
+import { mergeKind, mergeOdds } from './merge.js';
 import { mcfg, elemMult, enemyElement, foodChain } from './matchup.js';
 
 // 3×3 자리: seat = 열×3 + 라인. 열 0 = 1열(브루저), 1 = 2열(딜러), 2 = 3열(응원·원거리). 라인 0 위 · 1 가운데 · 2 아래
@@ -539,7 +539,9 @@ function sub(state, data, d, g) {
         cand.awake = { dmg: 1 + (g.awakenBase + g.awakenWeak * weak) * (rule(state, 'heroes') ? 1.5 : 1) / 100, speed: 1 - g.awakenSpeed / 100 };
         cand.hp = Math.max(cand.hp, cand.maxHp * g.awakenHeal); cand.stunLeft = 0; cand.gauge = 1;
         for (const e of state.enemies) if (aliveE(e)) e.stunLeft = Math.max(e.stunLeft ?? 0, 0.8);
-        state.events.push({ type: 'awaken', uid: cand.uid, weak }); say(state, `${cand.stats.name} 각성!`);
+        // 약점 극복: 각성하면 약점 하나가 강점으로 뒤집힘(이번 판 내내). 처음 본 뒤집힘은 도감 특성 탭에 기록
+        const flip = flipOneWeak(state, data, cand);
+        state.events.push({ type: 'awaken', uid: cand.uid, weak, flip }); say(state, `${cand.stats.name} 각성!${flip ? ` 약점 극복: ${flip.from} → ${flip.to}` : ''}`);
         dstat(state, 'awaken');
       }
     }
@@ -1539,6 +1541,25 @@ export function mergeHint(state, data, from, to) {
   const a = at(from), b = at(to);
   if (!a || !b || a === b) return null;
   return mergeKind(a, b, data);
+}
+/** 각성 때 아직 안 뒤집힌 약점 하나를 뒤집음. { id, from, to } 또는 null */
+export function flipOneWeak(state, data, u) {
+  const i = (u.traits ?? []).findIndex((t) => t.kind === 'weak' && !t.flipped);
+  if (i < 0) return null;
+  const t = u.traits[i], d = data.traits?.[t.sp]?.weak?.find((x) => x.id === t.id);
+  if (!d?.flip) return null;
+  u.traits = u.traits.map((x, j) => (j === i ? { ...x, flipped: true } : x));
+  (state.finds.flips ??= []).includes(t.id) || state.finds.flips.push(t.id);
+  refreshMods(state, data);
+  return { id: t.id, from: d.name, to: d.flip.name, desc: d.flip.desc };
+}
+/** 끌기 미리보기용: { kind, chance(%), cross(강이 다름) } */
+export function mergeOddsG(state, data, from, to) {
+  const at = (r) => (r.where === 'seat' ? state.field.find((u) => u.uid === state.seats[r.index]) ?? null : state.bench[r.index] ?? null);
+  const a = at(from), b = at(to);
+  if (!a || !b || a === b) return null;
+  if (a.resting || b.resting) return { kind: 'swap', chance: 100 };
+  return mergeOdds(a, b, data);
 }
 
 /** 부활: 정비 때 금화를 내고 쉬는/쓰러진 동물을 바로 일으킴(체력 50%). 값은 부활할수록 오름. */

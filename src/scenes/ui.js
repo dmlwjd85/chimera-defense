@@ -2,6 +2,7 @@
 import Phaser from 'phaser';
 import { FONT } from '../text.js';
 import { dotDataFor } from './rigs.js';
+import { autoTint } from '../logic/genes.js';
 
 export const COLORS = { bg: 0x141a21, panel: 0x1f2a36, line: 0x3b4b5e, accent: 0xffb35c, good: 0x58d68d, bad: 0xf0883e, flip: 0x5dade2, gold: 0xffd84d };
 export const hex = (h) => Phaser.Display.Color.HexStringToColor(h ?? '#888888').color;
@@ -102,6 +103,8 @@ export function speciesImage(scene, id, stage, x, y, size) {
   return null;
 }
 
+const autoLook = (scene, unit, data) => { const r = data.recipeById?.[unit.speciesId]; return !!(r?.auto && (dotDataFor(scene, r.look, 'adult') || scene.textures.exists('unit-' + r.look))); };
+
 export function unitToken(scene, unit, data) {
   const c = scene.add.container(0, 0);
   const stageR = { young: 20, teen: 24, adult: 28, spirit: 30 }[unit.stage] ?? 26;
@@ -120,10 +123,20 @@ export function unitToken(scene, unit, data) {
     if (unit.stage === 'spirit') c.add(scene.add.circle(0, 0, stageR * 1.35, COLORS.gold, 0.35).setStrokeStyle(3, COLORS.gold, 0.9));
     if (unit.white) c.add(scene.add.circle(0, 0, stageR * 1.3, 0xffffff, 0.35));
     c.add(scene.add.image(0, -stageR * 0.2, key).setDisplaySize(stageR * 2.9, stageR * 2.9));
-  } else if (unit.kind === 'weak' && unit.parts?.every((p) => dotDataFor(scene, p, 'adult') || scene.textures.exists('unit-' + p))) {
-    // 약체 키메라: 두 동물의 성체 도트를 회색으로 겹침(예전 한 장 그림 unit-<종>은 묶음에서 뺌)
-    unit.parts.forEach((p, i) => { const im = speciesImage(scene, p, 'adult', (i ? 1 : -1) * stageR * 0.45, -stageR * 1.1, stageR * 2); if (im) c.add(im.setTint(0x8a8a8a).setAngle(i ? 12 : -12)); });
-    c.add(scene.add.text(0, -stageR * 0.3, '?', style(stageR, '#ffffff', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5));
+  } else if (unit.kind === 'weak' && unit.parts?.length === 2) {
+    // 염색체 돌연변이 슬라임(2026-11-27): 두 부모 색이 얼룩진 도트 젤리. 말랑말랑 흔들림
+    const img = slimeImage(scene, unit.parts.map((p) => data.unitById[p]?.color ?? '#888888'), stageR * 2.4);
+    img.setY(stageR * 0.9);
+    c.add(img);
+    scene.tweens?.add({ targets: img, scaleY: img.scaleY * 0.9, scaleX: img.scaleX * 1.06, duration: 520 + ((unit.uid ?? 0) % 5) * 40, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
+  } else if (unit.kind === 'chimera' && autoLook(scene, unit, data)) {
+    // 자동 키메라: 힘센 쪽 성체 도트(다른 쪽 색) + 작은 다른 쪽, 보라 테두리
+    const r = data.recipeById[unit.speciesId];
+    c.add(scene.add.circle(0, 0, stageR * 1.25, 0xb388ff, 0.22).setStrokeStyle(3, 0xb388ff, 0.9));
+    const im = speciesImage(scene, r.look, 'adult', 0, -stageR * 1.05, stageR * 2.3);
+    if (im) c.add(im.setTint(autoTint(r, data)));
+    const side = speciesImage(scene, r.tintOf, 'adult', stageR * 0.85, stageR * 0.15, stageR * 0.9);
+    if (side) c.add(side);
   } else if (unit.kind === 'chimera') {
     const [a, b] = unit.parts.map((p) => hex(data.unitById[p].color));
     const g = scene.add.graphics();
@@ -141,11 +154,67 @@ export function unitToken(scene, unit, data) {
     c.add(g);
   }
   // 그림(도트)이 있으면 글자를 얹지 않음 — 도감 그림 위 한글 글자 지우기
-  if (!key && !dset && !(unit.kind === 'weak' && c.list.length > 1)) {
+  if (!key && !dset && !(unit.kind === 'weak' && c.list.length > 0) && !(unit.kind === 'chimera' && autoLook(scene, unit, data))) {
     const letter = unit.kind === 'weak' ? '?' : unit.kind === 'chimera' ? data.recipeById[unit.speciesId].name[0] : data.unitById[id].name[0];
     c.add(scene.add.text(0, 0, letter, style(stageR, '#111111', { fontStyle: 'bold' })).setOrigin(0.5));
   }
   return c;
+}
+
+// 슬라임 도트(14×11): o 테두리 · b 몸 · l 밝은 몸 · w 반짝 · e 눈 · m 입 · A/B 부모 얼룩
+const SLIME = [
+  '.....oooo.....',
+  '...oollllo....',
+  '..olwwllbbo...',
+  '.olwwlbbAAbo..',
+  '.olllbbbAAbbo.',
+  'olbebbbbbebbbo',
+  'olbeebbbbeebbo',
+  'obBBbbmmbbbbbo',
+  'obBBbbbbbbAAbo',
+  '.obbbbbbbbbbo.',
+  '..oooooooooo..',
+];
+/** 슬라임 그림 한 장(부모 색 두 개). 같은 색 짝은 텍스처를 다시 씀. */
+export function slimeImage(scene, [ca, cb], size) {
+  const key = `slime-${ca}-${cb}`;
+  if (!scene.textures.exists(key)) {
+    const A = Phaser.Display.Color.HexStringToColor(ca), B = Phaser.Display.Color.HexStringToColor(cb);
+    const mixC = (k, light) => Phaser.Display.Color.GetColor(Math.min(255, ((A.red + B.red) / 2) * k + light), Math.min(255, ((A.green + B.green) / 2) * k + light), Math.min(255, ((A.blue + B.blue) / 2) * k + light));
+    const pal = { o: 0x1a1426, b: mixC(0.55, 70), l: mixC(0.55, 120), w: 0xffffff, e: 0x151018, m: 0x5a2030, A: A.color, B: B.color };
+    const P = 6, g = scene.make.graphics({ x: 0, y: 0 }, false);
+    SLIME.forEach((row, y) => [...row].forEach((ch, x) => { if (pal[ch] != null) g.fillStyle(pal[ch], 1).fillRect(x * P, y * P, P, P); }));
+    g.generateTexture(key, SLIME[0].length * P, SLIME.length * P);
+    g.destroy();
+  }
+  const img = scene.add.image(0, 0, key).setOrigin(0.5, 1);
+  img.setScale(size / (SLIME[0].length * 6));
+  return img;
+}
+
+// 정비 화면 보상 버튼용 도트 아이콘(전장 도트와 같은 톤: 진한 테두리 + 3단 명암). 16칸
+const PIX = {
+  meat: { pal: { o: 0x2a1810, r: 0xb4502e, R: 0xe8875a, h: 0xffc9a0, w: 0xf6efdc, g: 0xc9bfa6 }, rows: [
+    '................', '........oooo....', '.......orRRro...', '......orRhhRro..', '.....orRhRRRrro.', '.....orRRRRrrro.', '.....orrRRrrrro.', '......orrrrrro..',
+    '.....oworrrro...', '....owwgoooo....', '...owwgo........', '.oowwgo.........', 'owwwwgo.........', 'owwggo..........', '.oooo...........', '................'] },
+  gem: { pal: { o: 0x1c1430, W: 0xffffff, l: 0xe3d0ff, m: 0xb58cff, d: 0x7a4fd6, D: 0x4b2a8f, s: 0xfff6a0 }, rows: [
+    '..s.............', '.sss....oooooo..', '..s....oWllmmdo.', '......oWlllmmddo', '.....oooooooooooo'.slice(0, 16), '.....oWllllmmmdo', '......oWlllmmdo.', '.......oWlmmdo..',
+    '........oWmdo...', '.........oWo....', '..........o.....', '............s...', '...........sss..', '............s...', '................', '................'] },
+  coin: { pal: { o: 0x3a2a08, y: 0xf2c33a, Y: 0xffe58a, d: 0xb8860b, w: 0xffffff }, rows: [
+    '................', '.....oooooo.....', '...ooyyyyyyoo...', '..oyYYyyyyyydo..', '..oYwYyyyyyydo..', '.oyYYyyddyyyydo.', '.oyYyyd..dyyydo.', '.oyyyyd..dyyydo.',
+    '.oyyyyyddyyyydo.', '.oyyyyyyyyyyydo.', '..oyyyyyyyyydo..', '..odyyyyyyyddo..', '...oodddddddoo..', '.....oooooo.....', '................', '................'] },
+};
+/** 도트 아이콘 이미지(meat 고기 · gem 유물 · coin 금화). size = 한 변 px */
+export function pixIcon(scene, name, x, y, size) {
+  const def = PIX[name], key = 'pix-' + name;
+  if (!def) return null;
+  if (!scene.textures.exists(key)) {
+    const P = 4, g = scene.make.graphics({ x: 0, y: 0 }, false);
+    def.rows.forEach((row, yy) => [...row].forEach((ch, xx) => { const c = def.pal[ch]; if (c != null) g.fillStyle(c, 1).fillRect(xx * P, yy * P, P, P); }));
+    g.generateTexture(key, 16 * P, 16 * P);
+    g.destroy();
+  }
+  return scene.add.image(x, y, key).setDisplaySize(size, size);
 }
 
 /** Rough silhouette disc for the globe telescope reveal. */

@@ -12,21 +12,29 @@ export const HAB_SPOT = {
 const dim = (c, k) => { const r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255; return (Math.round(r * k) << 16) | (Math.round(g * k) << 8) | Math.round(b * k); };
 
 export class Globe {
-  constructor(scene, x, y, R, map) {
+  constructor(scene, x, y, R, map, opts = {}) {
     Object.assign(this, { scene, x, y, R, map, lon: 100, tilt: 18, highlight: null, pin: null, spinning: false, acc: 0, streak: 0 });
-    scene.add.circle(x, y, R + 9, 0x7fc8ff, 0.12).setDepth(2);
-    scene.add.circle(x, y, R + 4, 0x9fd8ff, 0.22).setDepth(2);
-    this.g = scene.add.graphics().setDepth(3);
+    // depth: 바닥 깊이(기본 2 — 예전 소환판). 정비 화면 보상 카드 위에 올릴 땐 2001처럼 크게
+    const d = opts.depth ?? 2, o = (x0) => { this.objs.push(x0); return x0; };
+    this.objs = [];
+    o(scene.add.circle(x, y, R + 9, 0x7fc8ff, 0.12).setDepth(d));
+    o(scene.add.circle(x, y, R + 4, 0x9fd8ff, 0.22).setDepth(d));
+    this.g = o(scene.add.graphics().setDepth(d + 1));
     const mg = scene.make.graphics({}, false); mg.fillStyle(0xffffff).fillCircle(x, y, R);
+    this.mask = mg;
     this.g.setMask(mg.createGeometryMask());
-    this.over = scene.add.graphics().setDepth(5);
-    this.label = scene.add.text(x, y + R - 14, '', { fontFamily: 'sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#ffffff', stroke: '#0b1a2b', strokeThickness: 4, backgroundColor: '#0b1a2bcc', padding: { x: 8, y: 3 } }).setOrigin(0.5).setDepth(8).setAlpha(0);
+    this.over = o(scene.add.graphics().setDepth(d + 3));
+    this.label = o(scene.add.text(x, y + R - 14, '', { fontFamily: 'sans-serif', fontSize: '16px', fontStyle: 'bold', color: '#ffffff', stroke: '#0b1a2b', strokeThickness: 4, backgroundColor: '#0b1a2bcc', padding: { x: 8, y: 3 } }).setOrigin(0.5).setDepth(d + 6).setAlpha(0));
     // stand
-    const st = scene.add.graphics().setDepth(2);
+    const st = o(scene.add.graphics().setDepth(d));
     st.lineStyle(4, 0xd4b06a, 0.9); st.beginPath(); st.arc(x, y, R + 9, 0.35, Math.PI - 0.35); st.strokePath();
     st.fillStyle(0xd4b06a, 0.95).fillRoundedRect(x - 22, y + R + 8, 44, 6, 3);
+    this.speedK = opts.speed ?? 1;
     this.draw();
   }
+
+  /** 지우기(정비 화면이 닫힐 때). */
+  destroy() { if (this.dead) return; this.dead = true; this.reset(); this.objs.forEach((x0) => x0.destroy()); this.mask?.destroy(); }
 
   /** Orthographic projection → [sx, sy, z]. */
   proj(lon, lat) {
@@ -98,7 +106,8 @@ export class Globe {
 
   /** Slow idle turn; repaint ~20 times a second. */
   update(dt) {
-    if (!this.spinning && !this.hold) this.lon = (this.lon + dt * 7) % 360;
+    if (this.dead) return;
+    if (!this.spinning && !this.hold) this.lon = (this.lon + dt * 7 * (this.speedK ?? 1)) % 360;
     this.acc += dt;
     if (this.spinning || this.highlight || this.acc > 0.05) { this.acc = 0; this.draw(); }
   }

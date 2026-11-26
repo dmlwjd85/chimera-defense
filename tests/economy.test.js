@@ -29,10 +29,14 @@ assert.ok(Array.isArray(gameData.units));
 assert.strictEqual(gameData.units.length, 15);
 assert.ok(Object.keys(gameData.unitById).length === 15);
 assert.ok(Array.isArray(gameData.recipes));
-assert.strictEqual(gameData.recipes.length, 7);
-assert.ok(Object.keys(gameData.recipeById).length === 7);
-assert.ok(Object.keys(gameData.recipeByPair).length > 0);
-assert.strictEqual(gameData.recipeByPair['crow+fox'].id, 'cheese_thief');
+// 염색체 합성: 같은 강 이야기 조합 5 + 자동 35, 강이 다른 옛 조합 2개(치즈 도둑·황소개구리)는 막힘
+assert.strictEqual(gameData.recipes.filter((r) => !r.auto).length, 5);
+assert.strictEqual(gameData.recipes.filter((r) => r.auto).length, 35);
+assert.strictEqual(gameData.oldRecipes.length, 2);
+assert.ok(Object.keys(gameData.recipeById).length === 42);
+assert.strictEqual(gameData.recipeByPair['crow+fox'], undefined);
+assert.strictEqual(gameData.recipeByPair['bighorn+rabbit'].id, 'jackalope');
+assert.strictEqual(gameData.recipeByPair['ant+grasshopper'].name, '개짱이');
 
 try {
   buildData({ config: null, units, recipes, enemies, stages });

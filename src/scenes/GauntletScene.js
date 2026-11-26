@@ -5,13 +5,14 @@
 import Phaser from 'phaser';
 import { buildData } from '../logic/data.js';
 import { battleOptions, settleRun, writeSave, carryCandidates, setCarry, takeOutForRun } from '../logic/meta.js';
-import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost, recommendReward, buyPotion, trainUnit, trainCost, tuneOf, laneOf } from '../logic/gauntlet.js';
+import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, mergeOddsG, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost, recommendReward, buyPotion, trainUnit, trainCost, tuneOf, laneOf } from '../logic/gauntlet.js';
 import { spellDef, spellCost } from '../logic/spells.js';
 import { duelData, myDuelDeck, DUEL } from '../logic/duel.js';
 import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, enemyFace } from './rigs.js';
 import { FX, ambient, weather } from './fx.js';
 import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
-import { button, style, unitToken, hex, COLORS, speciesImage } from './ui.js';
+import { button, style, unitToken, hex, COLORS, speciesImage, pixIcon } from './ui.js';
+import { Globe } from './globe.js';
 import { dotOn, dotify } from './dotfx.js';
 import { stageProfile } from '../logic/matchup.js';
 
@@ -22,7 +23,7 @@ const STANCE_NAME = { tank: '🛡 탱', deal: '⚔ 딜', support: '✚ 서폿' }
 const STANCE_COL = { tank: 0xffd84d, deal: 0xff6b5a, support: 0x7ddc6f };
 const STYLE_ICON = { bruiser: '🛡', skirm: '⚔', ranged: '🏹', support: '✚' };
 const ROLE = { bruiser: '🛡 막기', dealer: '⚔ 딜러', technician: '🎯 기술', buffer: '🎺 응원', weak: '약체' };
-const MERGE_NAME = { evolve: '진화', spirit: '신화급!', chimera: '키메라!', weak: '약체 키메라…', swap: '자리 바꾸기' };
+const MERGE_NAME = { evolve: '진화', spirit: '신화급!', chimera: '키메라!', weak: '🧬 슬라임…', swap: '자리 바꾸기' };
 // 자리: 0~2 앞줄, 3~5 뒷줄. 세 줄 깊이(위·가운데·아래)를 살짝 엇갈려 세움
 // 3×3 자리(seat = 열×3 + 라인): 1열 브루저 · 2열 딜러 · 3열 응원. 정비 때 칸, 교전 때는 라인별로 가운데에 모여 붙음
 const LANE_Y = [245, 370, 495], LANE_S = [0.94, 1, 1.06];
@@ -70,8 +71,9 @@ export default class GauntletScene extends Phaser.Scene {
     this.fx = new FX(this);
     this.drawStage();
     this.input.on('pointerdown', unlockAudio);
-    this.input.keyboard.on('keydown-ONE', () => { this.speed = 1; });
-    this.input.keyboard.on('keydown-TWO', () => { this.speed = 2; });
+    this.input.keyboard.on('keydown-ONE', () => { this.speed = 1; this.speedBtn?.set('×1'); });
+    this.input.keyboard.on('keydown-TWO', () => { this.speed = 2; this.speedBtn?.set('×2'); });
+    this.input.keyboard.on('keydown-THREE', () => { this.speed = 1.5; this.speedBtn?.set('×1.5'); });
     if (this.duelIn) this.beginDuel(); else if (d?.hard != null) this.begin(!!d.hard, d.tier ?? null); else this.chooseDifficulty();
   }
 
@@ -226,7 +228,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.bottom.fillStyle(0x0d1222, 0.9).fillRect(0, 604, 1280, 116);
     this.logText = this.add.text(24, 616, '', style(15, '#cfd6e6', { lineSpacing: 6 })).setDepth(1801);
     this.muteBtn = button(this, 770, 662, 52, 48, isMuted() ? '🔇' : '🔊', () => { setMuted(!isMuted()); unlockAudio(); this.muteBtn.set(isMuted() ? '🔇' : '🔊'); sfx('click'); }, { depth: 1802, size: 18, tip: '소리 켜기/끄기' });
-    this.speedBtn = button(this, 860, 662, 90, 48, '×1', () => { this.speed = this.speed === 1 ? 2 : 1; this.speedBtn.set('×' + this.speed); }, { depth: 1802, size: 18 });
+    this.speedBtn = button(this, 860, 662, 90, 48, '×1', () => { this.speed = this.speed === 1 ? 1.5 : this.speed === 1.5 ? 2 : 1; this.speedBtn.set('×' + this.speed); }, { depth: 1802, size: 18 });
     this.spellBtns = (s.spells ?? []).slice(-3).map((id, i) => {
       const def = spellDef(this.D, id);
       return { id, def, btn: button(this, 990 + i * 96, 662, 90, 52, `${def.icon}\n${def.name}`, () => this.doSpell(id), { depth: 1802, size: 13, fill: 0x1d4a6a, stroke: 0x8fd3ff, tip: def.desc }) };
@@ -472,14 +474,17 @@ export default class GauntletScene extends Phaser.Scene {
     if (!this.state) return;
     const real = Math.min(delta / 1000, 0.1);
     this.realDt = real;
+    this.rewardGlobe?.update(real);
     if (this.paused > 0) this.paused -= real;
     if (this.slow > 0) this.slow -= real;
     const k = this.slow > 0 ? 0.25 : 1;
-    const dt = this.state.phase === 'fight' && !(this.paused > 0) && !this.lessonHold && !this.leaving ? real * this.speed * k : 0;
+    // 기본 속도 늦춤(2026-11-27): 전투 시계 전체를 viewTempo배로(밸런스는 그대로, 한 수 한 수가 보이게). ×1.5 · ×2는 그 위에 곱함
+    const base = gcfg(this.D).viewTempo ?? 1;
+    const dt = this.state.phase === 'fight' && !(this.paused > 0) && !this.lessonHold && !this.leaving ? real * this.speed * base * k : 0;
     if (dt > 0) tickGauntlet(this.state, this.D, dt);
     if (this.tut && this.tut.step === 6 && this.spellBtns?.length && !spellBlockG(this.state, this.D, this.spellBtns[0].id)) this.tutAt('mana');
     this.drain();
-    this.sync(real * (this.slow > 0 ? 0.45 : 1) * (this.state.phase === 'fight' ? this.speed : 1));
+    this.sync(real * (this.slow > 0 ? 0.45 : 1) * (this.state.phase === 'fight' ? this.speed * Math.max(base, 0.8) : 1));
     this.drawClashes();
     this.drawFlow();
     if (dt > 0) this.silly(dt);
@@ -693,7 +698,8 @@ export default class GauntletScene extends Phaser.Scene {
       case 'awaken': {
         // 역전 각성: 약할수록 크게. 짧은 컷인 + 금빛 오라
         const a = this.uViews.get(ev.uid), u = s.field.find((x) => x.uid === ev.uid);
-        if (a && u) { this.fx.evolve(a.c.x, a.c.y, true); this.fx.shockwave(a.c.x, a.c.y, 0xffd84d, 3, 3); this.fx.cutIn(`${u.stats.name} 각성!`, 0xffd84d, ev.weak >= 0.75 ? '가장 작은 친구가 일어섰다' : '포기하지 않아!'); this.slow = 0.6; this.cameras.main.shake(300, 0.01); }
+        if (a && u) { this.fx.evolve(a.c.x, a.c.y, true); this.fx.shockwave(a.c.x, a.c.y, 0xffd84d, 3, 3); this.fx.cutIn(`${u.stats.name} 각성!`, 0xffd84d, ev.flip ? `약점 극복! ${ev.flip.from} → ✨${ev.flip.to}` : ev.weak >= 0.75 ? '가장 작은 친구가 일어섰다' : '포기하지 않아!'); this.slow = 0.6; this.cameras.main.shake(300, 0.01); }
+        if (ev.flip) this.ticker(`✨ 약점 극복 — ${ev.flip.from} → ${ev.flip.to}: ${ev.flip.desc} (도감에 기록)`, '#ffd84d');
         sfx('spirit'); break;
       }
       case 'focus': { const a = this.uViews.get(ev.uid); if (a) { this.say(a.c.x, a.c.y - 130, '🎯 집중 견제!', 0xff6b5a, { size: 18, force: true }); } this.hintOnce('focus', '💡 한 마리만 너무 세면 적이 그 친구를 노려요. 지켜 주세요!'); break; }
@@ -749,7 +755,7 @@ export default class GauntletScene extends Phaser.Scene {
         if (a && b) { this.fx.line(a.c.x - 10, a.c.y - 40, b.c.x, b.c.y - 40, 0xc4a6ff, 4, 260); this.fx.ring(b.c.x, b.c.y + 30, 0xc4a6ff, 0.8, 360); this.fx.heal(b.c.x, b.c.y); }
         break;
       }
-      case 'edodge': { const e = this.eViews.get(ev.eid); if (e) { e.kick = { t: 0, dur: 0.3, px: 46 }; this.floatAt(e.c.x, e.c.y - 96, '휙!', '#c4a6ff', 20); } sfx('dodge'); break; }
+      case 'edodge': { const e = this.eViews.get(ev.eid); if (e) { e.kick = { t: 0, dur: 0.3, px: 46 }; this.floatAt(e.c.x, e.c.y - 96, '💨 회피!', '#c4a6ff', 22); } sfx('dodge'); break; }
       case 'stance': {
         const a = this.uViews.get(ev.uid);
         if (a) { this.say(a.c.x, a.c.y - 120, `${STANCE_NAME[ev.stance]} 태세!`, STANCE_COL[ev.stance], { size: 17, hold: 520 }); this.fx.ring(a.c.x, a.c.y + 30, STANCE_COL[ev.stance], 1.1, 420); this.fx.pillar?.(a.c.x, a.c.y, STANCE_COL[ev.stance]); }
@@ -1052,7 +1058,10 @@ export default class GauntletScene extends Phaser.Scene {
     const big = ev.big;
     const color = ev.move === 'ult' ? 0xffd84d : ev.el ? (this.D.config.elements.defs[ev.el] ? 0x8fd3ff : 0xffe066) : 0xffe066;
     if (ev.move === 'ult' && targets.length && this.robotCut(u, ev, targets)) { /* 3단 컷이 대신함 */ } else if (ev.move === 'ult' && targets.length) this.closeUp([v], targets.slice(0, 3), ev.name ?? '기술', ev.move === 'ult' ? 0xffd84d : ev.move === 'skill' ? 0x9cff6b : 0x8fd3ff, ev.move === 'ult');
-    else if (ev.name && (big || Math.random() < 0.35)) this.say(v.c.x, v.c.y - 110, ev.name, 0xffffff, { size: 17, hold: 420 });
+    // 한 수 한 수가 보이게: 강타·기술·속성 공격은 늘 이름표(2026-11-27 느린 템포)
+    else if (ev.move === 'a2') this.say(v.c.x, v.c.y - 112, `💥 강타!${ev.name ? ' ' + ev.name : ''}`, 0xffb27a, { size: 18, hold: 520 });
+    else if (ev.move === 'skill' || ev.move === 'el') this.say(v.c.x, v.c.y - 112, `✨ ${ev.name ?? '기술'}`, 0x9fd8ff, { size: 18, hold: 560 });
+    else if (ev.name && big) this.say(v.c.x, v.c.y - 110, ev.name, 0xffffff, { size: 17, hold: 420 });
     // 싸움 모양마다 움직임이 다름
     //  치고 빠지기(근접 딜러·기술): 표적 바로 앞까지 달려가 치고 깡충 돌아옴
     //  힘겨루기(브루저): 맞댄 채로 짧게 들이받음 / 응원·원거리: 제자리에서 살짝
@@ -1108,7 +1117,7 @@ export default class GauntletScene extends Phaser.Scene {
     }
     const impact = () => {
       if (!t) return;
-      if (ev.dodged) { t.kick = { t: 0, dur: 0.3, px: -46 }; this.floatAt(t.c.x, t.c.y - 96, '휙!', '#9cff6b', 20); sfx('dodge'); return; }
+      if (ev.dodged) { t.kick = { t: 0, dur: 0.3, px: -46 }; this.floatAt(t.c.x, t.c.y - 96, '💨 회피!', '#9cff6b', 22); sfx('dodge'); return; }
       this.dmgNumber(t.c.x, t.c.y - 90, ev.dmg, ev.boss);
       this.fx.hit(t.c.x, t.c.y - 10, ev.boss ? 'red' : 'white', ev.boss);
       t.kick = { t: 0, dur: 0.16, px: -14 };
@@ -1246,6 +1255,8 @@ export default class GauntletScene extends Phaser.Scene {
     if (!o) return;
     if (o.taken) this.tutAt('reward');
     const y = 214, w = 180;
+    // 보상 카드 = 그림 버튼(2026-11-27): 🌐 돌아가는 지구본 · 🍖 도트 고기 · 💎 도트 보석. 글자는 옆에 짧게
+    this.rewardGlobe = null;
     const card = (i, title, desc, color, onClick, on = true) => { // eslint-disable-line
       const x = 684 + i * (w + 12);
       const b = add(this.add.graphics().setDepth(2001));
@@ -1253,20 +1264,44 @@ export default class GauntletScene extends Phaser.Scene {
       if (o.dropped === kind) { on = false; desc = '🔒 막힘'; }
       const taken = o.taken === kind;
       b.fillStyle(taken ? 0x3b2f12 : 0x182040, 1).fillRoundedRect(x, y, w, 118, 12).lineStyle(taken ? 3 : 2, taken ? 0xffd84d : color, on ? 1 : 0.3).strokeRoundedRect(x, y, w, 118, 12);
-      add(this.add.text(x + w / 2, y + 36, title, style(26, on ? '#ffffff' : '#777777')).setOrigin(0.5).setDepth(2002));
-      add(this.add.text(x + w / 2, y + 82, desc, style(14, on ? '#d8d2c2' : '#666666', { align: 'center' })).setOrigin(0.5).setDepth(2002));
+      b.fillStyle(color, on ? 0.16 : 0.05).fillCircle(x + 52, y + 56, 44);
+      let pic = null;
+      if (kind === 'globe') {
+        const G = new Globe(this, x + 52, y + 54, 34, this.registry.get('raw').globe, { depth: 2002, speed: on && !o.taken ? 5 : 0.6 });
+        add(G); this.rewardGlobe = G; pic = G;
+        if (!on) G.objs.forEach((q) => q.setAlpha?.(0.35));
+      } else {
+        pic = add(pixIcon(this, kind === 'food' ? 'meat' : 'gem', x + 52, y + 56, 76).setDepth(2002));
+        if (!on) pic.setAlpha(0.3).setTint(0x777777);
+        else if (!o.taken) this.tweens.add({ targets: pic, y: pic.y - 5, duration: 700 + i * 120, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
+      }
+      add(this.add.text(x + 102, y + 26, title, style(19, on ? '#ffffff' : '#777777', { stroke: '#000', strokeThickness: 3 })).setDepth(2002));
+      add(this.add.text(x + 102, y + 56, desc, style(13, on ? '#d8d2c2' : '#666666', { wordWrap: { width: 74 } })).setDepth(2002));
       const z = add(this.add.zone(x + w / 2, y + 59, w, 118).setInteractive({ useHandCursor: on && !o.taken }).setDepth(2003));
+      z.on('pointerover', () => { if (on && !o.taken && kind !== 'globe') pic.setScale(pic.scaleX * 1.1); });
+      z.on('pointerout', () => { if (kind !== 'globe' && pic.scene) pic.setDisplaySize(76, 76); });
       z.on('pointerdown', () => { if (on && !o.taken) onClick(); });
     };
     const rec = this.guideOn() ? recommendReward(s, D) : null;
     if (rec) { const i = ['globe', 'food', 'relic'].indexOf(rec.kind); const x = 684 + i * 192; add(this.add.text(x + 172, y + 6, '👍 추천', style(13, '#0d1222', { backgroundColor: '#9cff6b', padding: { x: 5, y: 2 } })).setOrigin(1, 0).setDepth(2004)); add(this.add.text(684, y + 124, `💡 ${rec.why}`, style(13, '#9cff6b')).setDepth(2002)); }
-    card(0, '🌐 동물', '새 동료 1마리', 0xf2b544, () => this.showGlobe(), s.bench.includes(null) || s.seats.includes(null));
-    card(1, '🍖 성장', '한 마리 한 단계 ↑', 0x7ddc6f, () => { this.pickFood = true; this.toast('먹일 동물을 누름', '#9cff6b'); });
-    card(2, '✨ 유물', o.relic ? '이번 판 내내 효과' : '없음', 0xc4a6ff, () => this.showRelics(), !!o.relic);
+    card(0, '동물', '새 친구 뽑기', 0xf2b544, () => this.spinGlobe(), s.bench.includes(null) || s.seats.includes(null));
+    card(1, '먹이', '한 마리 쑥쑥', 0x7ddc6f, () => { this.pickFood = true; this.toast('🍖 먹일 동물을 누름', '#9cff6b'); });
+    card(2, '유물', o.relic ? '판 내내 힘' : '없음', 0xc4a6ff, () => this.showRelics(), !!o.relic);
     this.sub?.forEach((x) => x.destroy()); this.sub = [];
   }
 
   subUi(o) { this.sub.push(o); this.ui.push(o); return o; }
+
+  /** 지구본 카드를 누르면: 빠르게 돌다가 첫 후보의 대륙에서 멈추고 → 고르기 카드 */
+  spinGlobe() {
+    const s = this.state, G = this.rewardGlobe, first = s.offer?.globe?.[0] && this.D.unitById[s.offer.globe[0].speciesId];
+    if (!G || !first || this.globeSpin) { this.showGlobe(); return; }
+    this.globeSpin = true; sfx('summon');
+    const CN = { eurasia: '유라시아', america: '아메리카', africa: '아프리카' };
+    G.spinTo(first.continent, null, 520, { cont: CN[first.continent] ?? '', hab: '' });
+    this.fx.ring?.(G.x, G.y, 0x9fd8ff, 1.2, 380);
+    this.time.delayedCall(600, () => { this.globeSpin = false; if (this.state?.phase === 'regroup') this.showGlobe(); });
+  }
 
   showGlobe() {
     const s = this.state, D = this.D;
@@ -1389,9 +1424,12 @@ export default class GauntletScene extends Phaser.Scene {
 
   showDropHint(v, x, y) {
     const to = this.slotAt(x, y), from = this.refOf(v.uid);
-    const k = to && from ? mergeHint(this.state, this.D, from, to) : null;
+    const o = to && from ? mergeOddsG(this.state, this.D, from, to) : null, k = o?.kind;
     this.hintT?.destroy();
-    if (k && k !== 'swap') this.hintT = this.add.text(x, y - 110, MERGE_NAME[k], style(18, k === 'weak' ? '#aaaaaa' : '#ffd84d', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(2600);
+    // 염색체 합성: 키메라는 성공 확률, 강이 다르면 '안 섞임'을 미리 보여 줌
+    const label = k === 'chimera' ? `🧬 키메라 도전! 성공 ${o.chance}%` : k === 'weak' ? (o.cross ? '🧬 강이 달라 안 섞여요 → 슬라임' : MERGE_NAME.weak) : MERGE_NAME[k];
+    const col = k === 'weak' ? '#aaaaaa' : k === 'chimera' ? (o.chance >= 70 ? '#9cff6b' : o.chance >= 45 ? '#ffd84d' : '#ff9f6b') : '#ffd84d';
+    if (k && k !== 'swap') this.hintT = this.add.text(x, y - 110, label, style(18, col, { stroke: '#000', strokeThickness: 4, align: 'center' })).setOrigin(0.5).setDepth(2600);
   }
 
   dropUnit(v) {
@@ -1405,7 +1443,11 @@ export default class GauntletScene extends Phaser.Scene {
     if (r.kind === 'evolve') { this.fx.evolve(at.x, at.y, false); sfx('evolve'); this.tutAt('evolve'); }
     else if (r.kind === 'spirit') { this.fx.evolve(at.x, at.y, true); this.birthCut(r.unit, 0xffd84d, '신화급이 깨어남'); sfx('spirit'); }
     else if (r.kind === 'chimera') { this.fx.chimera(at.x, at.y); this.birthCut(r.unit, 0xc77dff, '새 이야기가 태어남'); sfx('chimera'); }
-    else if (r.kind === 'weak') { this.fx.weak(at.x, at.y); this.toast(`${r.unit.stats.name}… 단점만 모였음`, '#aaaaaa'); sfx('weak'); }
+    else if (r.kind === 'weak') {
+      this.fx.weak(at.x, at.y); sfx('weak');
+      const [pa, pb] = (r.unit.parts ?? []).map((p) => this.D.unitById[p]?.name ?? p);
+      this.toast(r.geneFail ? `🧬 염색체가 안 맞음! (성공 ${r.chance}%) → ${r.unit.stats.name}` : `🧬 ${pa}와 ${pb}는 강이 달라요 → ${r.unit.stats.name}`, '#c9f27a');
+    }
   }
 
   // ---------- 끝 ----------

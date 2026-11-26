@@ -13,6 +13,3 @@ Thumbs.db
 public/assets/art-pack.json
 public/assets/art-pack-m.json
 
-# Sonniss 소리 파일은 공개 저장소에 올리지 않는다(라이선스). 안내 파일만 올림.
-public/assets/sfx/sonniss/*
-!public/assets/sfx/sonniss/README.md

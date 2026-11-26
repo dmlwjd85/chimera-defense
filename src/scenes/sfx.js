@@ -32,24 +32,23 @@ export function isMuted() { return muted; }
 export function setMuted(m) { muted = m; try { localStorage.setItem('chimera-mute', m ? '1' : '0'); } catch { /* ignore */ } }
 
 // ---- real sound files ----------------------------------------------------------------------------
-// sound name -> files in public/assets/sfx/ (several files = variants, played in turn). `dir` '' = CC0 (Kenney),
-// 'sonniss' = Sonniss GDC license files that are NOT stored in the public repository (see docs/에셋_출처.md).
-// Anything that fails to load simply keeps the synthesized sound below.
+// sound name -> files in public/assets/sfx/ (several files = variants, played in turn). All of them are Kenney CC0
+// (see docs/에셋_출처.md). Anything that fails to load simply keeps the synthesized sound below.
 export const SOUND_FILES = {
-  click: { files: ['click'], dir: 'sonniss' },
-  hit: { files: ['hit_light'], dir: 'sonniss' },
-  slam: { files: ['hit_heavy'], dir: 'sonniss' },
-  shoot: { files: ['shoot'], dir: 'sonniss' },
-  magic: { files: ['magic'], dir: 'sonniss' },
-  skill: { files: ['magic'], dir: 'sonniss' },       // sfx('skill') (skill effects) shares the magic sound
-  shield: { files: ['shield'], dir: '' },
-  heal: { files: ['heal'], dir: 'sonniss' },
-  kill: { files: ['kill'], dir: 'sonniss' },
-  coin: { files: ['coin'], dir: 'sonniss' },
-  evolve: { files: ['evolve'], dir: 'sonniss' },
-  clear: { files: ['win'], dir: '' },
-  lose: { files: ['lose'], dir: '' },
-  boss: { files: ['boss'], dir: 'sonniss' },
+  click: { files: ['click'] },
+  hit: { files: ['hit_light'] },
+  slam: { files: ['hit_heavy'] },
+  shoot: { files: ['shoot'] },
+  magic: { files: ['magic'] },
+  skill: { files: ['magic'] },       // sfx('skill') (skill effects) shares the magic sound
+  shield: { files: ['shield'] },
+  heal: { files: ['heal'] },
+  kill: { files: ['kill'] },
+  coin: { files: ['coin'] },
+  evolve: { files: ['evolve'] },
+  clear: { files: ['win'] },
+  lose: { files: ['lose'] },
+  boss: { files: ['boss'] },
 };
 const FILE_BASE = 'assets/sfx/';
 const buffers = {};        // 'dir/file' -> AudioBuffer (only when loaded and decoded)
@@ -70,7 +69,7 @@ async function loadFile(dir, file) {
   const key = `${dir}/${file}`;
   for (const ext of ['ogg', 'mp3']) {
     try {
-      const raw = await fetchBuf(`${FILE_BASE}${dir ? dir + '/' : ''}${file}.${ext}`);
+      const raw = await fetchBuf(`${FILE_BASE}${file}.${ext}`);
       buffers[key] = await new Promise((res, rej) => ctx.decodeAudioData(raw, res, rej));
       return;
     } catch { /* try the next format, then give up quietly (synth stays) */ }
@@ -80,7 +79,7 @@ function loadAll() {
   if (loadStarted || !ctx) return;
   loadStarted = true;
   const seen = new Set();
-  for (const d of Object.values(SOUND_FILES)) for (const f of d.files) { const k = `${d.dir}/${f}`; if (!seen.has(k)) { seen.add(k); loadFile(d.dir, f); } }
+  for (const d of Object.values(SOUND_FILES)) for (const f of d.files) { if (!seen.has(f)) { seen.add(f); loadFile('', f); } }
 }
 /** AudioBuffer to play for `name`, rotating through variants; null when no file is loaded (-> synth). */
 function pickBuffer(name) {
@@ -89,7 +88,7 @@ function pickBuffer(name) {
   const n = d.files.length;
   for (let k = 1; k <= n; k++) {
     const i = ((rotate[name] ?? -1) + k) % n;
-    const b = buffers[`${d.dir}/${d.files[i]}`];
+    const b = buffers[`/${d.files[i]}`];
     if (b) { rotate[name] = i; return { b, file: d.files[i] }; }
   }
   return null;

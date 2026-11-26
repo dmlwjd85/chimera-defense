@@ -13,10 +13,12 @@ test('sfx: 13 roles + skill are wired to files and every name has a synth fallba
   }
 });
 
-test('sfx: CC0 (Kenney) files are in the repository; Sonniss files are optional (not stored in the public repo)', () => {
+test('sfx: every role file is in the repository (Kenney CC0, ogg and mp3)', () => {
+  const seen = new Set();
   for (const d of Object.values(SOUND_FILES)) for (const f of d.files) {
-    const base = new URL(`../public/assets/sfx/${d.dir ? d.dir + '/' : ''}${f}`, import.meta.url);
-    if (d.dir === '') { assert.ok(existsSync(base.pathname + '.ogg') && existsSync(base.pathname + '.mp3'), `${f} (CC0) missing`); }
+    if (seen.has(f)) continue; seen.add(f);
+    const base = new URL(`../public/assets/sfx/${f}`, import.meta.url);
+    assert.ok(existsSync(base.pathname + '.ogg') && existsSync(base.pathname + '.mp3'), `${f} missing`);
   }
 });
 

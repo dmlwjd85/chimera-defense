@@ -1,12 +1,15 @@
-// Sound effects. 13 roles play real sound files (public/assets/sfx/); every other effect — and any role whose
-// file is missing or fails to load — is synthesized with WebAudio (each sound is a tiny recipe of oscillators and noise).
+// Sound effects. Six roles (click, coin, evolve, clear, lose, boss) play Kenney CC0 files in public/assets/sfx/.
+// Battle roles (hit, slam, shoot, kill, magic, skill, shield, heal) use the original WebAudio synth (same recipes as before PR #62).
+// Every other effect — and any file role that fails to load — is also synthesized.
 let ctx = null, master = null, bus = null, noiseBuf = null;
 const last = {};
 const recent = {};   // name -> start times of the last few plays (for the overlap limit)
 const OVERLAP_WINDOW = 0.3, OVERLAP_MAX = 3;   // the same sound: at most 3 starts within 0.3 s
 const PITCH_JITTER = 0.08;                     // playback speed varies by +-8 %
-export const ENEMY_HIT_DB = -4;                // enemy attacks are 4 dB quieter than ours
-const MIN_GAP = { hit: 0.045, slash: 0.05, shoot: 0.05, magic: 0.06, note: 0.12, coin: 0.05, kill: 0.04, dodge: 0.1, heal: 0.2, hold: 0.1 };
+export const ENEMY_HIT_DB = -4;                // kept for compatibility; not applied to rolled-back battle synths
+const MIN_GAP = { hit: 0.045, slash: 0.05, shoot: 0.05, magic: 0.06, skill: 0.06, note: 0.12, coin: 0.05, kill: 0.04, dodge: 0.1, heal: 0.2, hold: 0.1 };
+// Battle synths keep the old MIN_GAP only (no 0.3 s / 3-start cap — that cap would thin out rapid hits).
+const SYNTH_ONLY = new Set(['hit', 'slam', 'shoot', 'kill', 'magic', 'skill', 'shield', 'heal']);
 let muted = false;
 try { muted = localStorage.getItem('chimera-mute') === '1'; } catch { /* storage may be blocked */ }
 
@@ -36,14 +39,6 @@ export function setMuted(m) { muted = m; try { localStorage.setItem('chimera-mut
 // (see docs/에셋_출처.md). Anything that fails to load simply keeps the synthesized sound below.
 export const SOUND_FILES = {
   click: { files: ['click'] },
-  hit: { files: ['hit_light'] },
-  slam: { files: ['hit_heavy'] },
-  shoot: { files: ['shoot'] },
-  magic: { files: ['magic'] },
-  skill: { files: ['magic'] },       // sfx('skill') (skill effects) shares the magic sound
-  shield: { files: ['shield'] },
-  heal: { files: ['heal'] },
-  kill: { files: ['kill'] },
   coin: { files: ['coin'] },
   evolve: { files: ['evolve'] },
   clear: { files: ['win'] },
@@ -178,13 +173,13 @@ const SOUNDS = {
   hundred: () => [60, 64, 67, 72, 76, 79, 84].forEach((n, i) => tone('triangle', N(n), N(n), 0.25, 0.1, i * 0.06)),
   clear: () => [[72, 0], [72, 0.15], [72, 0.3], [76, 0.45], [79, 0.7], [76, 0.9], [79, 1.05], [84, 1.25]].forEach(([n, t]) => { tone('square', N(n), N(n), 0.2, 0.07, t, { lp: 3000 }); tone('triangle', N(n - 12), N(n - 12), 0.22, 0.08, t); }),
   lose: () => [[67, 0], [63, 0.3], [60, 0.6], [55, 0.9]].forEach(([n, t]) => tone('sawtooth', N(n), N(n), 0.35, 0.08, t, { lp: 1200 })),
-  skill: () => { tone('sine', 520, 1040, 0.22, 0.14, 0, { vib: 14, vibDepth: 30 }); tone('triangle', 1040, 1560, 0.16, 0.06, 0.05); },
+  skill: () => SOUNDS.magic(),   // 예전에 정의가 없었음. 예전 magic 합성음으로 연결
   bait: () => { tone('sine', 500, 700, 0.1, 0.12); tone('sine', 700, 1000, 0.1, 0.1, 0.08); },
 };
 
 /**
- * Play a named sound. Throttled per name, and the same sound starts at most 3 times within 0.3 s.
- * `db` = volume offset in decibels (enemy attacks pass ENEMY_HIT_DB). Real file when loaded, otherwise the synth recipe.
+ * Play a named sound. File roles: at most 3 starts within 0.3 s, optional `db` volume offset, pitch jitter in playBuffer.
+ * Battle synths (SYNTH_ONLY): old MIN_GAP only, no overlap cap, no pitch jitter, `db` ignored (exact old sound).
  */
 export function sfx(name, db = 0) {
   if (muted || !SOUNDS[name]) return;
@@ -193,12 +188,15 @@ export function sfx(name, db = 0) {
   loadAll();
   const now = c.currentTime;
   if (now - (last[name] ?? -9) < (MIN_GAP[name] ?? 0.03)) return;
-  const r = (recent[name] ??= []).filter((t) => now - t < OVERLAP_WINDOW);
-  recent[name] = r;
-  if (r.length >= OVERLAP_MAX) return;
-  last[name] = now; r.push(now);
+  if (!SYNTH_ONLY.has(name)) {
+    const r = (recent[name] ??= []).filter((t) => now - t < OVERLAP_WINDOW);
+    recent[name] = r;
+    if (r.length >= OVERLAP_MAX) return;
+    r.push(now);
+  }
+  last[name] = now;
   const dd = dbg(); if (dd) ((dd.__t ??= {})[name] ??= []).push(+now.toFixed(3));
-  const lvl = typeof db === 'number' && isFinite(db) ? db : 0;
+  const lvl = SYNTH_ONLY.has(name) ? 0 : (typeof db === 'number' && isFinite(db) ? db : 0);
   try {
     const p = pickBuffer(name);
     if (p) { playBuffer(p.b, lvl); if (dd) { (dd[name] ??= { file: 0, synth: 0, files: {} }).file++; dd[name].files[p.file] = (dd[name].files[p.file] ?? 0) + 1; } return; }

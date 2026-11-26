@@ -1,19 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
-import { SOUND_FILES, SOUND_NAMES, ENEMY_HIT_DB, sfx } from '../src/scenes/sfx.js';
+import { SOUND_FILES, SOUND_NAMES, sfx } from '../src/scenes/sfx.js';
 
-// The 13 roles that play real files (skill shares the magic file).
-const ROLES = ['click', 'hit', 'slam', 'shoot', 'magic', 'shield', 'heal', 'kill', 'coin', 'evolve', 'clear', 'lose', 'boss'];
+const FILE_ROLES = ['click', 'coin', 'evolve', 'clear', 'lose', 'boss'];
+const SYNTH_ROLES = ['hit', 'slam', 'shoot', 'kill', 'magic', 'skill', 'shield', 'heal'];
 
-test('sfx: 13 roles + skill are wired to files and every name has a synth fallback', () => {
-  for (const r of [...ROLES, 'skill']) {
+test('sfx: six file roles are wired and present (Kenney CC0, ogg and mp3)', () => {
+  for (const r of FILE_ROLES) {
     assert.ok(SOUND_FILES[r], `${r} has no file entry`);
     assert.ok(SOUND_NAMES.includes(r), `${r} has no synthesized fallback`);
   }
-});
-
-test('sfx: every role file is in the repository (Kenney CC0, ogg and mp3)', () => {
   const seen = new Set();
   for (const d of Object.values(SOUND_FILES)) for (const f of d.files) {
     if (seen.has(f)) continue; seen.add(f);
@@ -22,9 +19,19 @@ test('sfx: every role file is in the repository (Kenney CC0, ogg and mp3)', () =
   }
 });
 
-test('sfx: sfx() without a browser is silent and never throws; enemy hit is quieter', () => {
-  assert.doesNotThrow(() => { sfx('hit', ENEMY_HIT_DB); sfx('skill'); sfx('nope'); });
-  assert.equal(ENEMY_HIT_DB, -4);
+test('sfx: seven battle roles (and skill) are synth-only, with no leftover files', () => {
+  for (const r of SYNTH_ROLES) {
+    assert.ok(!SOUND_FILES[r], `${r} should not play a file`);
+    assert.ok(SOUND_NAMES.includes(r), `${r} has no synthesized sound`);
+  }
+  for (const f of ['hit_light', 'hit_heavy', 'shoot', 'kill', 'magic', 'shield', 'heal']) {
+    const base = new URL(`../public/assets/sfx/${f}`, import.meta.url);
+    assert.ok(!existsSync(base.pathname + '.ogg') && !existsSync(base.pathname + '.mp3'), `${f} should have been removed`);
+  }
+});
+
+test('sfx: sfx() without a browser is silent and never throws', () => {
+  assert.doesNotThrow(() => { sfx('hit'); sfx('skill'); sfx('nope'); });
 });
 
 test('sfx: no scene calls an undefined sound name', () => {

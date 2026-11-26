@@ -4,6 +4,10 @@ import { defaultSave, writeSave } from '../logic/meta.js';
 import { unlockAudio } from './sfx.js';
 import { showDebug } from './debug.js';
 
+// 제목 화면 메뉴만 쓰는 갈색(나무·가죽) 버튼 + 금빛 테두리. 다른 화면 공통 버튼은 그대로
+const WOOD = { fill: 0x7a5230, stroke: 0xd4b06a, color: '#fff3d6' };
+const START = { fill: 0x9a5a22, stroke: 0xffd36b, color: '#fff8e6' }; // 시작: 더 밝은 호박색·밝은 금테
+
 export default class TitleScene extends Phaser.Scene {
   constructor() { super('Title'); }
 
@@ -23,16 +27,16 @@ export default class TitleScene extends Phaser.Scene {
     showDebug(this, null);
     // 부제('지구의 심장을 지켜라…')는 선생님 결정(2026-11-26)으로 제목 화면에서 뺌
     const go = () => this.scene.start(save.openingSeen ? 'StageSelect' : 'Opening', { next: 'StageSelect' });
-    button(this, 740, 686, 165, 49, '시작', go, { size: 24, fill: 0x3a7bd5 });
-    button(this, 907, 686, 125, 40, '📖 이야기', () => this.scene.start('Opening', { next: 'Title' }), { size: 15, tip: '오프닝 다시 보기' });
-    button(this, 1042, 686, 125, 40, '도감', () => this.scene.start('Codex'), { size: 18 });
-    button(this, 1177, 686, 125, 40, '해금', () => this.scene.start('Unlock'), { size: 18 });
+    button(this, 740, 686, 165, 49, '시작', go, { size: 25, ...START });
+    button(this, 907, 686, 125, 40, '📖 이야기', () => this.scene.start('Opening', { next: 'Title' }), { size: 15, ...WOOD, tip: '오프닝 다시 보기' });
+    button(this, 1042, 686, 125, 40, '도감', () => this.scene.start('Codex'), { size: 18, ...WOOD });
+    button(this, 1177, 686, 125, 40, '해금', () => this.scene.start('Unlock'), { size: 18, ...WOOD });
     // 크롬에서 설치할 수 있을 때만 보이는 '앱으로 설치' 버튼
     const inst = button(this, 740, 631, 165, 36, '📲 앱으로 설치', async () => {
       const p = window.__installPrompt; if (!p) return;
       p.prompt(); const r = await p.userChoice.catch(() => null);
       if (r?.outcome === 'accepted') inst.setVisible(false);
-    }, { size: 15, fill: 0x2e5d3a, stroke: 0x9cff6b, tip: '바탕화면·홈 화면에 아이콘이 생기고 인터넷 없이도 실행됨' });
+    }, { size: 15, ...WOOD, tip: '바탕화면·홈 화면에 아이콘이 생기고 인터넷 없이도 실행됨' });
     const standalone = window.matchMedia?.('(display-mode: standalone)').matches || window.matchMedia?.('(display-mode: fullscreen)').matches;
     inst.setVisible(!!window.__installPrompt && !standalone);
     const onAble = () => inst.setVisible(!standalone);

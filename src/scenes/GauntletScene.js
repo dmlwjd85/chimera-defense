@@ -5,14 +5,17 @@
 import Phaser from 'phaser';
 import { buildData } from '../logic/data.js';
 import { battleOptions, settleRun, writeSave, carryCandidates, setCarry } from '../logic/meta.js';
-import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf } from '../logic/gauntlet.js';
+import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance } from '../logic/gauntlet.js';
 import { spellDef, spellCost } from '../logic/spells.js';
 import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds } from './rigs.js';
 import { FX, ambient, weather } from './fx.js';
 import { sfx, unlockAudio } from './sfx.js';
 import { button, style, unitToken, hex, COLORS, speciesImage } from './ui.js';
 import { dotOn, dotify } from './dotfx.js';
+import { stageProfile } from '../logic/matchup.js';
 
+const STANCE_NAME = { tank: '🛡 탱', deal: '⚔ 딜', support: '✚ 서폿' };
+const STANCE_COL = { tank: 0xffd84d, deal: 0xff6b5a, support: 0x7ddc6f };
 const STYLE_ICON = { bruiser: '🛡', skirm: '⚔', ranged: '🏹', support: '✚' };
 const ROLE = { bruiser: '🛡 막기', dealer: '⚔ 딜러', technician: '🎯 기술', buffer: '🎺 응원', weak: '약체' };
 const MERGE_NAME = { evolve: '진화', spirit: '신화급!', chimera: '키메라!', weak: '약체 키메라…', swap: '자리 바꾸기' };
@@ -111,9 +114,10 @@ export default class GauntletScene extends Phaser.Scene {
     box.fillStyle(0x000000, 0.7).fillRect(0, 0, 1280, 720);
     box.fillStyle(0x141a2e, 1).fillRoundedRect(330, 130, 620, 460, 18).lineStyle(2, 0xd4b06a, 0.9).strokeRoundedRect(330, 130, 620, 460, 18);
     const t1 = this.add.text(640, 175, this.stage.name, style(30, '#ffffff')).setOrigin(0.5).setDepth(3001);
-    const t2 = this.add.text(640, 212, `교전 ${this.D.stages.length ? g.encounters : 8}번 + 보스 · 난이도를 고름`, style(15, '#b9b4a6')).setOrigin(0.5).setDepth(3001);
-    const t3 = this.add.text(640, 330, `노멀 ♥ 생명 ${g.life}\n지면 성문이 맞아 생명 -1, 다음 교전으로. 생명 0이면 끝.`, style(15, '#d8f5d0', { align: 'center' })).setOrigin(0.5).setDepth(3001);
-    const t4 = this.add.text(640, 490, hardOpen ? `하드 · 한 번 지면 끝\n에센스 ×${g.hardEssence} · 유물 조각 ×${g.hardShards} · 깨면 👑` : '하드 · 노멀을 한 번 깨면 열림', style(15, hardOpen ? '#ffd0c8' : '#888888', { align: 'center' })).setOrigin(0.5).setDepth(3001);
+    const prof = stageProfile(this.stage, this.D);
+    const t2 = this.add.text(640, 212, `교전 ${g.encounters}번 + 보스 · ${prof.tags.join('  ')}`, style(14, '#b9b4a6')).setOrigin(0.5).setDepth(3001);
+    const t3 = this.add.text(640, 330, `노멀 ♥ 생명 ${g.life}\n지면 생명 -1, 다음 교전으로. 생명 0이면 끝.`, style(15, '#d8f5d0', { align: 'center' })).setOrigin(0.5).setDepth(3001);
+    const t4 = this.add.text(640, 496, hardOpen ? `하드 · 한 번 지면 끝 · 정예 적·보스 2단계 · 정비 회복 ${g.hardHeal}% · 보상 2개\n에센스 ×${g.hardEssence} · 유물 조각 ×${g.hardShards} · 해금 게이지 ×2 · 깨면 👑` : '하드 · 노멀을 한 번 깨면 열림', style(14, hardOpen ? '#ffd0c8' : '#888888', { align: 'center' })).setOrigin(0.5).setDepth(3001);
     const parts = [box, t1, t2, t3, t4];
     const close = () => { parts.forEach((p) => p.destroy()); bn.destroy(); bh.destroy(); bb.destroy(); };
     const bn = button(this, 640, 280, 260, 54, '노멀로 출발', () => { close(); this.begin(false); }, { depth: 3002, fill: 0x2e5a3a, stroke: 0x7ddc6f, size: 20 });
@@ -198,20 +202,27 @@ export default class GauntletScene extends Phaser.Scene {
     const top = rig?.dot ? Math.max(-150, Math.min(-60, 30 + Math.round(rig.view.topY()))) : -70;
     const shadow = this.add.ellipse(0, 34, 70, 16, 0x000000, 0.35);
     const ring = this.add.ellipse(0, 34, 86, 22).setStrokeStyle(3, COLORS.gold, 0).setFillStyle(0, 0);
+    const aura = canStance(u) ? this.add.ellipse(0, 34, 96, 26, 0xffffff, 0.0).setStrokeStyle(3, 0xffffff, 0) : null;
+    const pref = canStance(u) ? this.add.text(0, 82, '', style(11, '#ffd84d', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5) : null;
     const crown = u.soul ? this.add.text(0, top - 6, '👑', style(16)).setOrigin(0.5) : null;
     // 체력·행동 게이지는 발밑(다키스트 던전처럼): 위 줄 동물과 겹치지 않음
     const barBg = this.add.rectangle(0, 48, 66, 8, 0x000000).setOrigin(0.5);
     const bar = this.add.rectangle(-33, 48, 66, 8, 0x7ddc6f).setOrigin(0, 0.5);
     const gBg = this.add.rectangle(0, 55, 66, 4, 0x000000).setOrigin(0.5);
     const gBar = this.add.rectangle(-33, 55, 66, 4, 0x8fd3ff).setOrigin(0, 0.5);
-    const name = this.add.text(0, 67, `${STYLE_ICON[styleOf(u)] ?? ''} ${u.stats.name}`, style(12, '#ffffff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5);
+    const name = this.add.text(0, 67, `${STYLE_ICON[styleOf(u)] ?? ''}${this.D.config.elements.defs[u.stats.element]?.icon ?? ''} ${u.stats.name}`, style(12, '#ffffff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5);
     const tag = this.add.text(0, top - (crown ? 18 : 2), '', style(12, '#ffd84d', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5, 1);
-    c.add([shadow, ring, tok, barBg, bar, gBg, gBar, name, tag, crown].filter(Boolean));
+    c.add([shadow, aura, ring, tok, barBg, bar, gBg, gBar, name, tag, crown, pref].filter(Boolean));
     c.setSize(90, 110).setInteractive({ draggable: true, useHandCursor: true });
     c.on('drag', (p, x, y) => { if (this.state.phase !== 'regroup') return; c.x = x; c.y = y; c.setDepth(2500); v.dragging = true; this.showDropHint(v, x, y); });
     c.on('dragend', () => { if (!v.dragging) return; v.dragging = false; this.dropUnit(v); });
-    c.on('pointerup', () => { if (this.pickFood && !v.dragging) this.feed(u.uid); });
-    const v = { c, rig, tok, bar, gBar, name, tag, ring, top, key: `${u.uid}:${u.kind}:${u.speciesId}:${u.stage}`, ox: 0, oy: 0, z: 1, lastHp: u.hp, uid: u.uid, lunge: null, cu: null };
+    c.on('pointerup', (p) => {
+      if (v.dragging) return;
+      if (this.pickFood) { this.feed(u.uid); return; }
+      // 정비 때 신화급·키메라를 누르면 선호 태세가 바뀜(자동 → 탱 → 딜 → 서폿)
+      if (this.state?.phase === 'regroup' && canStance(u) && Math.hypot(p.upX - p.downX, p.upY - p.downY) < 8) { const r = cyclePrefStance(this.state, u.uid); if (r.ok) { sfx('click'); this.toast(`${u.stats.name} 선호 태세: ${STANCE_NAME[r.pref] ?? '자동'}`, '#ffd84d'); } }
+    });
+    const v = { c, rig, tok, bar, gBar, name, tag, ring, top, aura, pref, key: `${u.uid}:${u.kind}:${u.speciesId}:${u.stage}`, ox: 0, oy: 0, z: 1, lastHp: u.hp, uid: u.uid, lunge: null, cu: null };
     rig?.inst.play('idle', { loop: true });
     return v;
   }
@@ -234,7 +245,8 @@ export default class GauntletScene extends Phaser.Scene {
     const bar = this.add.rectangle(-bw / 2, 48, bw, 8, e.boss ? 0xff6b5a : 0x9b6cf0).setOrigin(0, 0.5);
     const gBg = this.add.rectangle(0, 55, 66, 4, 0x000000);
     const gBar = this.add.rectangle(-33, 55, 66, 4, 0xc4a6ff).setOrigin(0, 0.5);
-    const name = this.add.text(0, 67, `${STYLE_ICON[e.style] ?? ''} ${def.name}`, style(e.boss ? 15 : 12, e.boss ? '#ffcccc' : '#d8ccff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5);
+    const ELITE = { shield: '🛡정예', rage: '😡정예', regen: '💚정예', thorns: '🌵정예' };
+    const name = this.add.text(0, 67, `${STYLE_ICON[e.style] ?? ''}${this.D.config.elements.defs[e.element]?.icon ?? ''} ${def.name}${e.elite ? ' ' + ELITE[e.elite] : ''}`, style(e.boss ? 15 : 12, e.boss ? '#ffcccc' : '#d8ccff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5);
     const tag = this.add.text(0, top, '', style(12, '#c4a6ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5, 1);
     c.add([shadow, ring, holder, barBg, bar, gBg, gBar, name, tag]);
     holder.y = 34;
@@ -348,6 +360,13 @@ export default class GauntletScene extends Phaser.Scene {
       const melee = u.stats.range <= 1;
       v.tag.setText(u.resting ? '쉼' : u.down ? '' : s.phase === 'fight' && melee && u.seat >= 3 && u.stats.role === 'bruiser' ? '뒷줄 -50%' : s.phase === 'fight' && !melee && u.seat < 3 ? '앞줄 -25%' : (u.gauge ?? 0) > 0.85 && s.phase === 'fight' ? '곧 침' : '');
       v.c.setAlpha(u.down ? 0.35 : u.resting ? 0.5 : 1);
+      if (v.aura) {
+        const st = s.phase === 'fight' ? u.stance : null, col = STANCE_COL[st] ?? 0xffffff;
+        v.aura.setStrokeStyle(3, col, st ? 0.9 : 0).setFillStyle(col, st ? 0.18 + 0.08 * Math.sin(this.time.now / 160) : 0);
+        v.pref.setText(s.phase === 'regroup' ? `선호: ${STANCE_NAME[u.prefStance] ?? '자동'} (누르기)` : st ? STANCE_NAME[st] : '');
+        const want = `${STYLE_ICON[styleOf(u)] ?? ''}${this.D.config.elements.defs[u.stats.element]?.icon ?? ''} ${u.stats.name}`;
+        if (v.name.text !== want) v.name.setText(want);
+      }
       if (v.rig) {
         const r = v.rig.inst, m = r.motion;
         const busy = [...ATTACK_MOTIONS, 'skill', 'ult', 'hit'].includes(m) && !r.finished;
@@ -496,6 +515,14 @@ export default class GauntletScene extends Phaser.Scene {
         break;
       }
       case 'edodge': { const e = this.eViews.get(ev.eid); if (e) { e.kick = { t: 0, dur: 0.3, px: 46 }; this.floatAt(e.c.x, e.c.y - 96, '휙!', '#c4a6ff', 20); } sfx('dodge'); break; }
+      case 'stance': {
+        const a = this.uViews.get(ev.uid);
+        if (a) { this.fx.shout(a.c.x, a.c.y - 120, `${STANCE_NAME[ev.stance]} 태세!`, STANCE_COL[ev.stance], { size: 17, hold: 520 }); this.fx.ring(a.c.x, a.c.y + 30, STANCE_COL[ev.stance], 1.1, 420); this.fx.pillar?.(a.c.x, a.c.y, STANCE_COL[ev.stance]); }
+        sfx('stance'); break;
+      }
+      case 'fear': { const a = this.uViews.get(ev.uid); if (a) { this.floatAt(a.c.x, a.c.y - 100, '벌벌…', '#9fd3ff', 16); a.kick = { t: 0, dur: 0.3, px: -10 }; } break; }
+      case 'thorns': { const a = this.uViews.get(ev.uid); if (a) { this.floatAt(a.c.x, a.c.y - 100, '🌵 따끔!', '#9cff6b', 14); this.fx.hit(a.c.x, a.c.y - 10, 'green'); } break; }
+      case 'phase2': { const e = this.eViews.get(ev.eid); this.fx.banner(`${this.D.enemyById[s.enemies.find((x) => x.eid === ev.eid)?.id]?.name ?? '보스'} 2단계!`, '#ff6b5a', '더 세지고 기술이 잦아짐'); if (e) { this.fx.shockwave(e.c.x, e.c.y, 0xff6b5a, 3, 3); e.rig?.inst.hitFlash(0.4); } this.cameras.main.shake(400, 0.01); sfx('boss'); break; }
       case 'gang': { const e = this.eViews.get(ev.eid); if (e) this.fx.shout(e.c.x, e.c.y - 110, '같이 덤벼!', 0xc4a6ff, { size: 16, hold: 480 }); break; }
       case 'clashWin': {
         const e = this.eViews.get(ev.eid), a = this.uViews.get(ev.uid);
@@ -526,6 +553,17 @@ export default class GauntletScene extends Phaser.Scene {
   floatAt(x, y, msg, color = '#ffffff', size = 15) {
     const t = this.add.text(x, y, msg, style(size, color, { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(1700);
     this.tweens.add({ targets: t, y: y - 24, alpha: 0, delay: 500, duration: 400, onComplete: () => t.destroy() });
+  }
+
+  /** 상성 글자: 효과 굉장! / 별로… / 🍖 사냥! (한 자리에 겹치지 않게) */
+  effWord(x, y, eff) {
+    const now = this.time.now;
+    this.effAt ??= 0;
+    if (now - this.effAt < 220) return;
+    this.effAt = now;
+    const W = { strong: ['효과 굉장!', '#ffe066', 22], weak: ['별로…', '#9aa7b8', 15], prey: ['🍖 사냥!', '#ff9f6b', 19], fear: ['벌벌…', '#9fd3ff', 15] }[eff];
+    if (!W) return;
+    if (eff === 'strong' || eff === 'prey') this.fx.sfxWord(x, y, W[0], W[1], W[2]); else this.floatAt(x, y, W[0], W[1], W[2]);
   }
 
   dmgNumber(x, y, d, heavy) {
@@ -587,6 +625,7 @@ export default class GauntletScene extends Phaser.Scene {
         const heavy = big || h.dmg >= 0.18 * (s.enemies.find((e) => e.eid === h.eid)?.maxHp ?? 1e9);
         this.dmgNumber(t.c.x, t.c.y - 90, h.dmg, heavy);
         this.fx.hit(t.c.x, t.c.y - 10, heavy ? 'orange' : 'white', heavy);
+        if (h.eff && Math.random() < (h.eff === 'weak' ? 0.4 : 0.6)) this.effWord(t.c.x, t.c.y - 128, h.eff);
         if (ev.melee && !big) this.fx.slash(t.c.x - 10, t.c.y - 10, 0xffffff);
         t.ring.setStrokeStyle(3, 0xff6b5a, 1); this.tweens.add({ targets: t.ring, alpha: { from: 1, to: 0 }, duration: 380, onComplete: () => t.ring.setAlpha(1).setStrokeStyle(3, 0xff6b5a, 0) });
         t.kick = { t: 0, dur: 0.16, px: heavy ? 26 : 12 };
@@ -688,10 +727,12 @@ export default class GauntletScene extends Phaser.Scene {
     add(this.add.text(684, 184, o?.taken ? '보상 — 받음' : '보상 — 하나만 고름', style(18, '#ffffff')).setDepth(2001));
     if (!o) return;
     const y = 214, w = 180;
-    const card = (i, title, desc, color, onClick, on = true) => {
+    const card = (i, title, desc, color, onClick, on = true) => { // eslint-disable-line
       const x = 684 + i * (w + 12);
       const b = add(this.add.graphics().setDepth(2001));
-      const taken = o.taken === ['globe', 'food', 'relic'][i];
+      const kind = ['globe', 'food', 'relic'][i];
+      if (o.dropped === kind) { on = false; desc = '하드: 이번엔 막힘'; }
+      const taken = o.taken === kind;
       b.fillStyle(taken ? 0x3b2f12 : 0x182040, 1).fillRoundedRect(x, y, w, 118, 12).lineStyle(taken ? 3 : 2, taken ? 0xffd84d : color, on ? 1 : 0.3).strokeRoundedRect(x, y, w, 118, 12);
       add(this.add.text(x + 12, y + 10, title, style(17, on ? '#ffffff' : '#777777')).setDepth(2002));
       add(this.add.text(x + 12, y + 38, desc, style(12, on ? '#d8d2c2' : '#666666', { wordWrap: { width: w - 24 } })).setDepth(2002));

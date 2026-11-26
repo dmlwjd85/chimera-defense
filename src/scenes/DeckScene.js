@@ -3,6 +3,7 @@ import { speciesImage, button, title, style, panel } from './ui.js';
 import { buildData } from '../logic/data.js';
 import { rosterPool, favorState, buyFavor, writeSave } from '../logic/meta.js';
 import { deckOf, soulGaps, soulSig } from '../logic/soul.js';
+import { speciesFit, stageProfile } from '../logic/matchup.js';
 
 const ROLE = { bruiser: '🛡 막기', dealer: '⚔ 딜러', technician: '🎯 기술', buffer: '🎺 응원' };
 
@@ -43,7 +44,7 @@ export default class DeckScene extends Phaser.Scene {
     { const im0 = speciesImage(this, u.id, 'adult', 110, 150, 120); if (im0) { const im = add(im0); if (!open) im.setTint(0x000000).setAlpha(0.5); } }
     add(this.add.text(180, 96, `${isSoul ? '👑 ' : ''}${open ? u.name : '???'}`, style(26, isSoul ? '#ffd84d' : '#ffffff')));
     add(this.add.text(180, 132, `${ROLE[u.role]}   ${E[u.element]?.icon ?? ''} ${E[u.element]?.name ?? ''}   사거리 ${u.range}`, style(14, '#cfe8ff')));
-    add(this.add.text(180, 156, open ? u.baseSkillDesc : `⭐ ${cfg.roster.unlocks.find((x) => x.id === u.id)?.stars ?? 0}개에 합류`, style(12, '#aabbcc', { wordWrap: { width: 265 } })));
+    add(this.add.text(180, 156, open ? u.baseSkillDesc : '🔒 해금 게이지가 차면 고를 수 있음', style(12, '#aabbcc', { wordWrap: { width: 265 } })));
     let y = 222;
     add(this.add.text(50, y, `🔥 소울 기술 · ${sig.name}`, style(18, '#ffb27a'))); y += 28;
     add(this.add.text(50, y, `“${sig.tale}”`, style(12, '#9fb3c8', { fontStyle: 'italic', wordWrap: { width: 390 } }))); y += 38;
@@ -81,9 +82,10 @@ export default class DeckScene extends Phaser.Scene {
       g.fillStyle(inDeck ? 0x1d3346 : 0x141b24, 1).fillRoundedRect(cx, cy, 140, 128, 10);
       g.lineStyle(this.sel === id ? 4 : 2, soul ? 0xffd84d : this.sel === id ? 0xffffff : inDeck ? 0x7fd1ff : 0x3b4b5e, 1).strokeRoundedRect(cx, cy, 140, 128, 10);
       { const im0 = speciesImage(this, id, 'adult', cx + 70, cy + 46, 72); if (im0) { const im = add(im0); if (!has) im.setTint(0x000000).setAlpha(0.45); else if (!inDeck) im.setAlpha(0.55); } }
-      add(this.add.text(cx + 70, cy + 92, has ? `${soul ? '👑 ' : ''}${a.name}` : `⭐${cfg.roster.unlocks.find((x) => x.id === id)?.stars}`, style(14, soul ? '#ffd84d' : has ? '#ffffff' : '#8899aa')).setOrigin(0.5));
+      add(this.add.text(cx + 70, cy + 92, has ? `${soul ? '👑 ' : ''}${a.name}` : '🔒 해금 게이지', style(14, soul ? '#ffd84d' : has ? '#ffffff' : '#8899aa')).setOrigin(0.5));
       add(this.add.text(cx + 70, cy + 112, has ? `${ROLE[a.role].split(' ')[0]}${E[a.element]?.icon ?? ''} ${soulSig(D, id).name}` : '', style(11, '#aabbcc')).setOrigin(0.5));
       if (inDeck) add(this.add.text(cx + 8, cy + 6, '✔', style(14, '#7CFC9A')));
+      if (stage && has) { const f = speciesFit(id, stage, D); if (f.label !== 'mid') add(this.add.text(cx + 132, cy + 8, f.label === 'good' ? '▲좋음' : '▼별로', style(12, f.label === 'good' ? '#7CFC9A' : '#ff8a80', { stroke: '#000', strokeThickness: 3 })).setOrigin(1, 0)); }
       const z = add(this.add.zone(cx + 70, cy + 64, 140, 128).setInteractive({ useHandCursor: true }));
       z.on('pointerdown', () => { this.sel = id; this.paint(); });
     });
@@ -94,7 +96,12 @@ export default class DeckScene extends Phaser.Scene {
     cover.forEach(([name, ok], i) => add(this.add.text(566 + i * 112, 540, `${ok ? '✔' : '✘'} ${name}`, style(13, ok ? '#7CFC9A' : '#ff8a80'))));
     const rec = D.recipes.filter((r) => r.parts.every((p) => deck.includes(p)));
     add(this.add.text(496, 566, `만들 수 있는 키메라: ${rec.length ? rec.map((r) => (S.codex.recipes.includes(r.id) ? r.name : '???')).join(', ') : '없음'}`, style(13, '#d7bde2')));
-    if (stage) { const c = cfg.climates[stage.climate]; add(this.add.text(496, 590, `${stage.name} · ${c.icon} ${c.name}  ${(c.strong ?? []).map((e) => E[e]?.icon).join('')}▲ ${(c.weak ?? []).map((e) => E[e]?.icon).join('')}▼`, style(13, '#cfe8ff'))); }
+    if (stage) {
+      const c = cfg.climates[stage.climate];
+      add(this.add.text(496, 590, `${stage.name} · ${c.icon} ${c.name} · ${stageProfile(stage, D).tags.join('  ')}`, style(13, '#cfe8ff')));
+      const f = speciesFit(u.id, stage, D);
+      add(this.add.text(496, 612, `${u.name}: ${f.label === 'good' ? '▲ 이 판에 좋음' : f.label === 'bad' ? '▼ 이 판엔 별로' : '보통'}${f.why.length ? '  · ' + f.why.slice(0, 3).join('  · ') : ''}`, style(12, f.label === 'good' ? '#7CFC9A' : f.label === 'bad' ? '#ff8a80' : '#aabbcc', { wordWrap: { width: 520 } })));
+    }
     const inDeck = deck.includes(u.id), full = deck.length >= sc.deckSize;
     const tb = button(this, 1130, 604, 200, 40, isSoul ? '소울펫은 못 뺌' : inDeck ? '덱에서 빼기' : full ? '덱이 가득 참' : '덱에 넣기', () => {
       S.deck = inDeck ? deck.filter((x) => x !== u.id) : [...deck, u.id];

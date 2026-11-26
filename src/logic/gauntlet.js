@@ -12,6 +12,7 @@ import { rollTraits, inheritEvolve } from './traits.js';
 import { eco, rollOffer, chooseRelic } from './relics.js';
 import { spellDef, spellCost } from './spells.js';
 import { mergeKind } from './merge.js';
+import { mcfg, elemMult, enemyElement, foodChain } from './matchup.js';
 
 const FRONT = [0, 1, 2], BACK = [3, 4, 5];
 const isFront = (seat) => seat < 3;
@@ -29,7 +30,7 @@ export function gcfg(data) {
     // 적 역할(우리와 같은 문법): bruiser 힘겨루기 / skirm 뒷줄 노리고 치고 빠지기 / ranged 뒤에서 쏨 / support 자기 편 거들기
     enemyRole: { normal: 'bruiser', tough: 'bruiser', zombie: 'bruiser', swarm: 'bruiser', skeleton: 'bruiser', miniboss: 'bruiser',
       fast: 'skirm', ghost: 'skirm', flying: 'ranged', bat: 'ranged', wisp: 'ranged', healer: 'support',
-      boss_boar: 'bruiser', boss_shadow: 'bruiser', boss_bone: 'bruiser', boss_frost: 'bruiser', boss_bat: 'ranged', boss_lich: 'support' }, guardChance: 0.6, guardTaken: 0.6, peelChance: 0.7, peelDmg: 0.8, peelStun: 0.6, clashBonus: 1.5, clashStun: 1, clashEnemy: 1, assistPush: 0.05, cheerPush: 0.12, cheerHeal: 3, dodge: 0.25, ...(data.config.gauntlet ?? {}),
+      boss_boar: 'bruiser', boss_shadow: 'bruiser', boss_bone: 'bruiser', boss_frost: 'bruiser', boss_bat: 'ranged', boss_lich: 'support' }, guardChance: 0.6, guardTaken: 0.6, peelChance: 0.7, peelDmg: 0.8, peelStun: 0.6, clashBonus: 1.5, clashStun: 1, clashEnemy: 1, assistPush: 0.05, cheerPush: 0.12, hardHeal: 15, eliteChance: 0.35, eliteHp: 1.3, bossPhase2: true, stanceEvery: 2.5, stancePref: 0.45, stanceNative: 0.15, cheerHeal: 3, dodge: 0.25, ...(data.config.gauntlet ?? {}),
   };
 }
 
@@ -40,7 +41,12 @@ export const fighters = (state) => unitsIn(state).filter(aliveU);
 export const enemiesIn = (state) => state.eSeats.map((eid) => state.enemies.find((e) => e.eid === eid) ?? null);
 /** 싸움 모양: 브루저 = 힘겨루기, 근접 딜러·기술 = 치고 빠지기, 원거리·응원 = 뒤에서 거들기 */
 export const roleOfEnemy = (g, id, def) => g.enemyRole?.[id] ?? (def?.flying ? 'ranged' : def?.heal ? 'support' : 'bruiser');
-export const styleOf = (u) => (u.stats.range > 1 ? 'ranged' : u.stats.role === 'bruiser' ? 'bruiser' : u.stats.role === 'buffer' ? 'support' : u.stats.role === 'weak' ? 'support' : 'skirm');
+/** 원래 싸움 모양(태세 없이) */
+export const baseStyle = (u) => (u.stats.range > 1 ? 'ranged' : u.stats.role === 'bruiser' ? 'bruiser' : u.stats.role === 'buffer' ? 'support' : u.stats.role === 'weak' ? 'support' : 'skirm');
+/** 신화급·키메라는 태세(탱·딜·서폿)를 넘나듦 */
+export const canStance = (u) => !!u && (u.kind === 'chimera' || (u.kind === 'base' && u.stage === 'spirit'));
+export const nativeStance = (u) => ({ bruiser: 'tank', skirm: 'deal', ranged: 'deal', support: 'support' })[baseStyle(u)];
+export const styleOf = (u) => (u.stance === 'tank' ? 'bruiser' : u.stance === 'deal' ? (u.stats.range > 1 ? 'ranged' : 'skirm') : u.stance === 'support' ? 'support' : baseStyle(u));
 const findU = (state, uid) => state.field.find((u) => u.uid === uid);
 const findE = (state, eid) => state.enemies.find((e) => e.eid === eid);
 export const clashOfU = (state, uid) => (state.clashes ?? []).find((c) => c.uid === uid) ?? null;
@@ -151,7 +157,7 @@ export function startEncounter(state, data) {
   for (const id of spec.ids) addEnemy(state, data, id, spec.wave);
   // 쉬던 동물: 혼자 남지 않게, 싸울 동물이 둘보다 적으면 쉬던 동물도 나옴
   if (fighters(state).length < 2) for (const u of unitsIn(state)) if (u?.resting) { u.resting = false; u.hp = Math.max(u.hp, u.maxHp * 0.3); }
-  for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; }
+  for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; u.stance = canStance(u) ? u.prefStance ?? nativeStance(u) : null; u.stanceT = 0.3 + state.rng() * 0.6; }
   state.encTime = 0; state.actGap = 0; state.phase = 'fight'; state.allyBuffs = []; state.clashes = [];
   // 돌격: 처음 charge초 동안 양쪽이 가운데로 달려와 쾅 부딪힌 뒤 싸움이 시작됨
   state.charging = g.charge > 0;
@@ -175,13 +181,19 @@ function addEnemy(state, data, id, wave) {
   const sm = Math.pow(state.stage.mult ?? 1, g.stageHpPow) * (data.config.difficulty?.enemyHp ?? 1);
   const pack = def.spawnCount > 1 ? def.spawnCount * 0.8 : 1;
   const hp = def.boss ? 30 * Math.pow((def.miniboss || def.hp < 3000 ? def.hp : g.bossBase) / 30, g.squash) * g.bossHp * (def.pattern?.type === 'summon' ? g.summonerHp : 1) * (g.bossTune?.[id]?.hp ?? 1) : 30 * Math.pow((def.hp * pack) / 30, g.squash) * g.enemyHp;
-  e.hp = e.maxHp = Math.max(1, Math.round(hp * sm * up * (state.hard ? g.hardHp : 1)));
+  const tune = g.stageScale?.[state.stage.id] ?? 1;
+  e.hp = e.maxHp = Math.max(1, Math.round(hp * sm * up * tune * (state.hard ? g.hardHp : 1)));
   const atk0 = def.attack || g.zeroAttack;
   const atk = 5 * Math.pow((atk0 * (def.spawnCount > 1 ? def.spawnCount * 0.5 : 1)) / 5, g.squash) * (def.boss ? g.bossAtk * (g.bossTune?.[id]?.atk ?? 1) : g.enemyAtk);
   e.attack = Math.max(1, Math.round(atk * Math.pow(state.stage.mult ?? 1, g.stageAtkPow) * (data.config.difficulty?.enemyAttack ?? 1) * upA));
   if (e.heal) e.heal = { ...e.heal, percent: e.heal.percent * g.healMult };
   e.interval = e.interval || g.zeroInterval;
-  Object.assign(e, { seat, gauge: state.rng() * 0.3, name: def.name, ranged, style, shieldLeft: 0, patternT: def.pattern?.every ?? 0, healT: def.heal?.every ?? 0, burnDps: 0, burnLeft: 0, curseLeft: 0, pos: 0 });
+  Object.assign(e, { seat, gauge: state.rng() * 0.3, name: def.name, ranged, style, element: enemyElement(data, state.stage, id, state.rng()), shieldLeft: 0, patternT: def.pattern?.every ?? 0, healT: def.heal?.every ?? 0, burnDps: 0, burnLeft: 0, curseLeft: 0, pos: 0 });
+  // 하드: 정예(방패·분노·재생·가시) — 이름 옆에 표시
+  if (state.hard && !def.boss && state.rng() < g.eliteChance) {
+    e.elite = ['shield', 'rage', 'regen', 'thorns'][Math.floor(state.rng() * 4)];
+    e.hp = e.maxHp = Math.round(e.maxHp * g.eliteHp);
+  }
   state.eSeats[seat] = e.eid;
   state.enemies.push(e);
   state.seenEnemies.add(id);
@@ -251,6 +263,9 @@ function sub(state, data, d, g) {
     if (e.burnLeft > 0) { e.burnLeft -= d; hurtEnemy(state, data, e, e.burnDps * d, null, true); }
     if (e.slowLeft > 0) e.slowLeft -= d;
     if (e.curseLeft > 0) e.curseLeft -= d;
+    if (e.elite === 'regen') e.hp = Math.min(e.maxHp, e.hp + e.maxHp * 0.015 * d);
+    // 하드 보스 2단계: 체력 절반 아래에서 더 세지고 기술이 잦아짐
+    if (state.hard && g.bossPhase2 && e.boss && !e.phase2 && e.hp < e.maxHp / 2) { e.phase2 = true; e.attack = Math.round(e.attack * 1.4); if (e.pattern) e.pattern = { ...e.pattern, every: e.pattern.every * 0.6, count: (e.pattern.count ?? 1) + 1 }; state.events.push({ type: 'phase2', eid: e.eid }); say(state, `${e.name}: 2단계!`); }
     if (e.shieldLeft > 0) e.shieldLeft -= d;
     if (e.stunLeft > 0) { e.stunLeft -= d; continue; }
     e.gauge = Math.min(1, e.gauge + d / eInterval(e));
@@ -262,6 +277,7 @@ function sub(state, data, d, g) {
     u.gauge = Math.min(1, u.gauge + d / uInterval(state, u));
     timerSkills(state, data, u, d);
   }
+  updateStances(state, data, d, g);
   updateClashes(state, data, d, g);
   // 한 번에 하나: 게이지가 가득 찬 쪽 중 가장 오래 기다린 하나만, stagger 간격으로
   if (state.actGap <= 0) {
@@ -277,11 +293,46 @@ function sub(state, data, d, g) {
 }
 
 // ---------- 힘겨루기: 앞줄 브루저가 적 근접과 맞붙어 서로 밀고 당김 ----------
+/** 태세 고르기: 상황 점수 + 선호 태세(정비 때 찍음) + 원래 역할 */
+function updateStances(state, data, d, g) {
+  const us = fighters(state);
+  const es = state.enemies.filter(aliveE);
+  const avgHp = us.reduce((s, x) => s + x.hp / x.maxHp, 0) / Math.max(1, us.length);
+  const losing = (state.clashes ?? []).some((c) => c.push < -0.2);
+  const freeBrute = es.some((e) => e.style === 'bruiser' && !clashOfE(state, e.eid));
+  const raid = es.some((e) => e.style === 'skirm' && !clashOfE(state, e.eid));
+  const weakFoe = es.some((e) => e.hp / e.maxHp < 0.4) || es.some((e) => e.boss);
+  for (const u of us) {
+    if (!canStance(u)) continue;
+    u.stanceT -= d;
+    if (u.stanceT > 0) continue;
+    u.stanceT = g.stanceEvery;
+    const sc = { tank: losing || freeBrute || raid ? 1 : 0.2, deal: weakFoe ? 0.9 : 0.5, support: avgHp < 0.55 ? 1 : 0.2 };
+    if (u.prefStance) sc[u.prefStance] += g.stancePref;
+    sc[nativeStance(u)] += g.stanceNative;
+    const pick = Object.entries(sc).sort((a, b) => b[1] - a[1])[0][0];
+    if (pick !== u.stance) {
+      if (u.stance === 'tank') { const c = clashOfU(state, u.uid); if (c) { state.clashes = state.clashes.filter((x) => x !== c); state.events.push({ type: 'clashEnd', uid: c.uid, eid: c.eid }); } }
+      u.stance = pick;
+      state.events.push({ type: 'stance', uid: u.uid, stance: pick });
+    }
+  }
+}
+
+/** 정비 때 선호 태세 바꾸기: 자동 → 탱 → 딜 → 서폿 → 자동 */
+export function cyclePrefStance(state, uid) {
+  const u = [...state.field, ...state.bench].find((x) => x && x.uid === uid);
+  if (!canStance(u)) return fail('noStance');
+  const order = [null, 'tank', 'deal', 'support'];
+  u.prefStance = order[(order.indexOf(u.prefStance ?? null) + 1) % order.length];
+  return { ok: true, pref: u.prefStance };
+}
+
 /** 짝 짓기: 앞줄 브루저 ↔ 적 근접, 남는 적 근접은 2대1로 끼어듦 */
 function pairUp(state, g) {
   const freeE = () => state.enemies.filter((e) => aliveE(e) && e.style === 'bruiser' && !e.flying && !clashOfE(state, e.eid));
   for (const u of fighters(state)) {
-    if (styleOf(u) !== 'bruiser' || !isFront(u.seat) || clashOfU(state, u.uid)) continue;
+    if (styleOf(u) !== 'bruiser' || !(isFront(u.seat) || u.stance === 'tank') || clashOfU(state, u.uid)) continue;
     const free = freeE();
     if (!free.length) break;
     free.sort((a, b) => Math.abs((a.seat % 3) - (u.seat % 3)) - Math.abs((b.seat % 3) - (u.seat % 3)));
@@ -324,7 +375,7 @@ function updateClashes(state, data, d, g) {
     c.push += d * g.clashRate * (lean * g.clashLean + c.surge);
     if (c.push >= 1) {
       c.push = 0;
-      const a = hurtEnemy(state, data, e, effDamage(u) * g.clashBonus, u);
+      const a = hurtEnemy(state, data, e, effDamage(u) * g.clashBonus * matchK(state, data, u, e).mult, u);
       if (aliveE(e)) { e.stunLeft = Math.max(e.stunLeft ?? 0, e.boss ? g.clashStun * 0.4 : g.clashStun); e.gauge = 0; }
       state.events.push({ type: 'clashWin', uid: u.uid, eid: e.eid, dmg: Math.round(a) });
       say(state, `${u.stats.name} 힘겨루기 승! → ${e.name} ${Math.round(a)}`);
@@ -410,7 +461,7 @@ function pickMoveG(state, u, target, cfg) {
 /** Damage to an enemy (shield takes most of it). Returns damage dealt. */
 function hurtEnemy(state, data, e, amount, src, quiet = false) {
   if (!aliveE(e)) return 0;
-  let a = amount * (e.shieldLeft > 0 ? 0.3 : 1);
+  let a = amount * (e.shieldLeft > 0 ? 0.3 : 1) * (e.elite === 'shield' ? 0.65 : 1);
   a = Math.min(a, e.hp);
   e.hp -= a;
   if (src) {
@@ -428,12 +479,22 @@ function hurtEnemy(state, data, e, amount, src, quiet = false) {
 
 function hurtUnit(state, data, u, amount, src) {
   if (!aliveU(u)) return 0;
-  const taken = (u.mods?.taken ?? 0) + buffSum(state, 'taken');
+  const taken = (u.mods?.taken ?? 0) + buffSum(state, 'taken') + (u.stance === 'tank' ? (nativeStance(u) === 'tank' ? -35 : -25) : 0);
   const a = Math.max(1, amount * Math.max(0.2, 1 + taken / 100));
   u.hp -= a;
   chargeUlt(u, data.config, 'hurt', (a / u.maxHp) * 100);
   if (u.hp <= 0) { u.hp = 0; u.down = true; state.downs += 1; state.events.push({ type: 'down', uid: u.uid }); say(state, `${u.stats.name} 쓰러짐`); }
   return a;
+}
+
+/** 상성 배수: 속성(×1.5/×0.6) × 먹이사슬(×1.3/×0.8). tag는 화면 글자용. */
+function matchK(state, data, u, e) {
+  const m = mcfg(data);
+  const em = elemMult(u.stats.element, e.element, m);
+  const fc = foodChain(u, e.id, data);
+  const tag = em > 1 ? 'strong' : em < 1 ? 'weak' : fc.tag;
+  if (em > 1 || fc.tag === 'prey') state.matchHits = (state.matchHits ?? 0) + 1;
+  return { mult: em * fc.mult, tag };
 }
 
 function unitAct(state, data, u, g) {
@@ -446,6 +507,7 @@ function unitAct(state, data, u, g) {
   const st = styleOf(u);
   let mult = melee && st !== 'skirm' && !isFront(u.seat) ? g.backMelee : !melee && isFront(u.seat) ? g.frontRanged : 1;
   mult *= 1 + buffSum(state, 'dmg') / 100;
+  if (u.stance === 'deal') mult *= nativeStance(u) === 'deal' ? 1.35 : 1.25;
   if (t.curseLeft > 0) mult *= 1.2;
   const base = hitDamage(state, u, t) * mult;
   const hits = [];
@@ -495,7 +557,9 @@ function unitAct(state, data, u, g) {
     for (const h of hits) if (h[0] === t) h[1] = 0;
     state.events.push({ type: 'edodge', eid: t.eid, uid: u.uid });
   }
-  const dealt = hits.filter(([, a]) => a > 0).map(([e, a]) => ({ eid: e.eid, dmg: Math.round(hurtEnemy(state, data, e, a, u)) }));
+  const dealt = hits.filter(([, a]) => a > 0).map(([e, a]) => { const k = matchK(state, data, u, e); return { eid: e.eid, dmg: Math.round(hurtEnemy(state, data, e, a * k.mult, u)), eff: k.tag }; });
+  // 가시 정예: 근접으로 때리면 20%를 되돌려 받음
+  if (melee) for (const h of dealt) { const e = findE(state, h.eid); if (e?.elite === 'thorns' && h.dmg > 0) { hurtUnit(state, data, u, h.dmg * 0.2, e); state.events.push({ type: 'thorns', uid: u.uid, eid: e.eid }); } }
   // 거들기: 힘겨루기 중인 적을 다른 동물이 때리면 우리 브루저 쪽으로 기움
   if (st !== 'bruiser') for (const h of dealt) assist(state, 'e', h.eid, g.assistPush * (big ? 2 : 1));
   // 응원: 응원 동물은 칠 때마다 가장 밀리는 브루저를 북돋움(체력 조금 + 힘겨루기 쪽으로)
@@ -504,8 +568,9 @@ function unitAct(state, data, u, g) {
     const c = [...(state.clashes ?? [])].sort((a, b) => a.push - b.push)[0];
     const to = c ? findU(state, c.uid) : lowest(fighters(state));
     if (to && aliveU(to)) {
-      to.hp = Math.min(to.maxHp, to.hp + to.maxHp * g.cheerHeal / 100);
-      if (c) c.push = Math.min(0.95, c.push + g.cheerPush);
+      const sk = u.stance === 'support' ? (nativeStance(u) === 'support' ? 2.5 : 2) : 1;
+      to.hp = Math.min(to.maxHp, to.hp + to.maxHp * g.cheerHeal * sk / 100);
+      if (c) c.push = Math.min(0.95, c.push + g.cheerPush * sk);
       cheer = to.uid;
       state.events.push({ type: 'cheer', uid: u.uid, to: to.uid });
     }
@@ -521,6 +586,11 @@ function enemyAct(state, data, e, g) {
   if (!t) return;
   let dmg = e.attack;
   if (e.chargeLeft > 0) dmg *= 1.6;
+  if (e.elite === 'rage' && e.hp < e.maxHp / 2) dmg *= 1.6;
+  { const m = mcfg(data); dmg *= elemMult(e.element, t.stats.element, m, m.eStrong, m.eWeak); }
+  // 천적 앞에서는 벌벌: 더 아프게 맞음
+  const fearful = foodChain(t, e.id, data).tag === 'fear';
+  if (fearful) { dmg *= 1.2; if (state.rng() < 0.5) state.events.push({ type: 'fear', uid: t.uid, eid: e.eid }); }
   const clash = clashOfE(state, e.eid);
   // 요리조리: 치고 빠지는 동물은 맞붙지 않은 적의 공격을 가끔 피함
   if (!clash && styleOf(t) === 'skirm' && state.rng() < g.dodge) {
@@ -588,7 +658,7 @@ function bossTimers(state, data, e, d) {
   if (p.type === 'summon') {
     let n = 0;
     const minions = state.enemies.filter((x) => aliveE(x) && x.minion).length;
-    for (let i = 0; i < Math.min(p.count, g.summonCap - minions); i++) { const m = addEnemy(state, data, p.enemy, state.plan[state.enc].wave); if (m) { m.minion = true; m.hp = m.maxHp = Math.max(1, Math.round(m.maxHp * g.minionHp)); n++; } }
+    for (let i = 0; i < Math.min(p.count, g.summonCap + (e.phase2 ? 1 : 0) - minions); i++) { const m = addEnemy(state, data, p.enemy, state.plan[state.enc].wave); if (m) { m.minion = true; m.hp = m.maxHp = Math.max(1, Math.round(m.maxHp * g.minionHp)); n++; } }
     if (n) { state.events.push({ type: 'summon', eid: e.eid, n }); say(state, `${e.name}: 졸개를 부름`); }
   } else if (p.type === 'shield') {
     e.shieldLeft = p.duration; state.events.push({ type: 'shield', eid: e.eid }); say(state, `${e.name}: 보호막`);
@@ -660,7 +730,7 @@ function endEncounter(state, data, win) {
     if (u.down) {
       u.down = false;
       if (win) { u.resting = true; u.hp = 1; } else u.hp = u.maxHp * g.lossRevive / 100;
-    } else u.hp = win ? Math.min(u.maxHp, u.hp + u.maxHp * g.healPct / 100) : Math.max(u.hp, u.maxHp * g.lossRevive / 100);
+    } else u.hp = win ? Math.min(u.maxHp, u.hp + u.maxHp * (state.hard ? g.hardHeal : g.healPct) / 100) : Math.max(u.hp, u.maxHp * g.lossRevive / 100);
     u.gauge = 0; u.stunLeft = 0;
   }
   for (const u of state.bench) if (u) u.hp = u.maxHp;
@@ -703,12 +773,15 @@ export function rollRewards(state, data) {
     picks.push(left.splice(i, 1)[0][0]);
   }
   const relics = rollOffer(state, data);
-  return {
+  const o = {
     globe: picks.map((id) => ({ speciesId: id, traits: rollTraits(id, data, state.rng) })),
     food: true,
     relic: relics.length ? relics : null,
-    taken: null,
+    taken: null, dropped: null,
   };
+  // 하드: 보상 선택지 2개(하나는 막힘)
+  if (state.hard) { const ks = ['globe', 'food', 'relic'].filter((k) => o[k]); o.dropped = ks[Math.floor(state.rng() * ks.length)]; }
+  return o;
 }
 
 /** Take one reward. kind 'globe' (arg = candidate index), 'food' (arg = uid), 'relic' (arg = relic id). */
@@ -716,6 +789,7 @@ export function takeReward(state, data, kind, arg) {
   const o = state.offer;
   if (state.phase !== 'regroup' || !o) return fail('noOffer');
   if (o.taken) return fail('taken');
+  if (o.dropped === kind) return fail('dropped');
   if (kind === 'globe') {
     const c = o.globe?.[arg];
     if (!c) return fail('notFound');
@@ -907,15 +981,21 @@ function botPick(state, data) {
   const o = state.offer;
   const young = [...state.field].filter((u) => u.kind === 'base' && NEXT[u.stage]).sort((a, b) => (b.soul ? 1 : 0) - (a.soul ? 1 : 0));
   const r = state.rng();
-  if (r < 0.45 && young.length) return takeReward(state, data, 'food', young[0].uid);
-  if (r < 0.75 && o.relic) return takeReward(state, data, 'relic', o.relic[0]);
-  const got = takeReward(state, data, 'globe', 0);
-  if (got.ok) {
-    // 같은 종·단계가 있으면 합치기
-    const u = got.unit, bi = state.bench.indexOf(u);
-    if (bi >= 0) {
-      const mate = state.seats.findIndex((uid) => { const x = state.field.find((f) => f.uid === uid); return x && x.kind === 'base' && x.speciesId === u.speciesId && x.stage === u.stage; });
-      if (mate >= 0) moveAnimal(state, data, { where: 'bench', index: bi }, { where: 'seat', index: mate });
+  const order = r < 0.45 ? ['food', 'relic', 'globe'] : r < 0.75 ? ['relic', 'food', 'globe'] : ['globe', 'food', 'relic'];
+  for (const k of order) {
+    if (o.dropped === k) continue;
+    if (k === 'food' && young.length && takeReward(state, data, 'food', young[0].uid).ok) return;
+    if (k === 'relic' && o.relic && takeReward(state, data, 'relic', o.relic[0]).ok) return;
+    if (k === 'globe') {
+      const got = takeReward(state, data, 'globe', 0);
+      if (got.ok) {
+        const u = got.unit, bi = state.bench.indexOf(u);
+        if (bi >= 0) {
+          const mate = state.seats.findIndex((uid) => { const x = state.field.find((f) => f.uid === uid); return x && x.kind === 'base' && x.speciesId === u.speciesId && x.stage === u.stage; });
+          if (mate >= 0) moveAnimal(state, data, { where: 'bench', index: bi }, { where: 'seat', index: mate });
+        }
+        return;
+      }
     }
-  } else if (young.length) takeReward(state, data, 'food', young[0].uid);
+  }
 }

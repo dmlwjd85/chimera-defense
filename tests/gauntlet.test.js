@@ -105,3 +105,37 @@ test('봇이 1스테이지 노멀을 대체로 깸, 별·하드 보상 정산', 
   if (st.result === 'clear') assert.equal(save.stages['forest-1'].hard, true);
   assert.ok(fighters(st).length >= 0);
 });
+
+test('상성: 속성 순환·먹이사슬, 스테이지마다 좋은 동물이 다름', async () => {
+  const { elemMult, mcfg, foodChain, speciesFit } = await import('../src/logic/matchup.js');
+  const m = mcfg(D);
+  assert.equal(elemMult('water', 'fire', m), m.strong);
+  assert.equal(elemMult('fire', 'water', m), m.weak);
+  assert.equal(elemMult('light', 'moon', m), m.strong);
+  assert.equal(foodChain({ kind: 'base', speciesId: 'frog', stage: 'adult' }, 'swarm', D).tag, 'prey');
+  assert.equal(foodChain({ kind: 'base', speciesId: 'rabbit', stage: 'young' }, 'fast', D).tag, 'fear');
+  assert.equal(foodChain({ kind: 'base', speciesId: 'rabbit', stage: 'spirit' }, 'fast', D).tag, null, '신화급은 천적도 안 무서워함');
+  const good = (st) => D.units.map((u) => u.id).filter((id) => speciesFit(id, D.stageById[st], D).label === 'good');
+  assert.notDeepEqual(good('forest-2'), good('stage-4'));
+});
+
+test('신화급·키메라는 태세를 넘나들고, 정비 때 선호 태세를 찍음', async () => {
+  const { cyclePrefStance, canStance, styleOf } = await import('../src/logic/gauntlet.js');
+  const st = createGauntlet(D, 'forest-1', 21, {});
+  fightOut(st);
+  const u = st.field[0];
+  u.stage = 'spirit';
+  assert.ok(canStance(u));
+  assert.equal(cyclePrefStance(st, u.uid).pref, 'tank');
+  assert.equal(cyclePrefStance(st, u.uid).pref, 'deal');
+  nextEncounter(st, D);
+  assert.equal(u.stance, 'deal');
+  assert.ok(['skirm', 'ranged'].includes(styleOf(u)));
+});
+
+test('하드: 보상 하나는 막힘, 노멀 생명은 2', () => {
+  const st = createGauntlet(D, 'forest-1', 23, { hard: true });
+  fightOut(st);
+  if (st.phase === 'regroup') { assert.ok(st.offer.dropped); assert.equal(takeReward(st, D, st.offer.dropped, st.offer.dropped === 'food' ? st.field[0].uid : st.offer.dropped === 'relic' ? st.offer.relic?.[0] : 0).ok, false); }
+  assert.equal(createGauntlet(D, 'forest-1', 1, {}).maxLife, 2);
+});

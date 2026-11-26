@@ -108,15 +108,63 @@ export function starGoals(state, data) {
 }
 export const starsFor = (state, data) => { const g = starGoals(state, data); return g.clear ? 1 + (g.life ? 1 : 0) + (g.time ? 1 : 0) : 0; };
 
-/** Animals the roulette can bring: the six starters plus everyone the collected stars have called in. */
+/** 해금된 동물(2026-11-26 해금 게이지): 처음 6종 + 게이지로 고른 동물. 예전 저장(별 해금)은 그때 별로 열린 동물을 그대로 둠. */
+export function unlockedAnimals(save, data) {
+  const r = data.config.roster;
+  if (!r) return [];
+  if (!save.unlockedAnimals) { const stars = totalStars(save); save.unlockedAnimals = r.unlocks.filter((u) => stars >= u.stars).map((u) => u.id); }
+  return save.unlockedAnimals;
+}
+
+/** Animals the roulette can bring: the six starters plus everyone unlocked with the gauge. */
 export function rosterPool(save, data) {
   const r = data.config.roster;
   if (!r) return null;
-  const stars = totalStars(save);
-  return [...r.starter, ...r.unlocks.filter((u) => stars >= u.stars).map((u) => u.id)].filter((id) => data.unitById[id]);
+  const got = unlockedAnimals(save, data);
+  return [...r.starter, ...r.unlocks.map((u) => u.id).filter((id) => got.includes(id))].filter((id) => data.unitById[id]);
 }
-/** The next animal waiting on stars, or null when everyone has joined. */
-export const nextUnlock = (save, data) => (data.config.roster?.unlocks ?? []).find((u) => totalStars(save) < u.stars) ?? null;
+/** 아직 잠긴 동물(해금 순서대로). */
+export const lockedAnimals = (save, data) => (data.config.roster?.unlocks ?? []).map((u) => u.id).filter((id) => !unlockedAnimals(save, data).includes(id) && data.unitById[id]);
+/** The next animal waiting, or null when everyone has joined (첫 후보). */
+export const nextUnlock = (save, data) => { const id = lockedAnimals(save, data)[0]; return id ? { id } : null; };
+
+/** 해금 게이지: { pts, level, need, pending } — need = base + step × level */
+export function unlockGauge(save, data) {
+  const c = data.config.unlockGauge ?? { base: 150, step: 50 };
+  const g = (save.unlockGauge ??= { pts: 0, level: 0, pending: 0 });
+  return { ...g, need: c.base + c.step * g.level };
+}
+/** 다 찼을 때 고를 후보 2마리(잠긴 순서대로 앞의 둘). */
+export const unlockCandidates = (save, data) => lockedAnimals(save, data).slice(0, 2);
+/** 후보 중 하나를 골라 해금. 덱에 자리가 있으면 덱에도 넣음. */
+export function pickUnlock(save, data, id) {
+  const g = save.unlockGauge ??= { pts: 0, level: 0, pending: 0 };
+  if (!(g.pending > 0)) return { ok: false, reason: 'noPending' };
+  if (!unlockCandidates(save, data).includes(id)) return { ok: false, reason: 'notCandidate' };
+  unlockedAnimals(save, data).push(id);
+  g.pending -= 1;
+  return { ok: true, id };
+}
+/** 판 결과로 게이지 채우기. 클리어 100 + 별×30 + 무사고 30 + 상성 공격 많이 20, 하드 ×2, 지면 이긴 교전×10. */
+export function fillUnlockGauge(save, state, data, stars) {
+  const c = data.config.unlockGauge ?? { base: 150, step: 50, clear: 100, star: 30, flawless: 30, matchup: 20, matchupHits: 20, perWin: 10, hard: 2 };
+  const clear = state.result === 'clear';
+  const parts = [];
+  if (clear) {
+    parts.push(['클리어', c.clear], ['별 ' + stars + '개', stars * c.star]);
+    if ((state.downs ?? 1) === 0) parts.push(['쓰러진 아군 없음', c.flawless]);
+    if ((state.matchHits ?? 0) >= c.matchupHits) parts.push(['상성 공격 ' + state.matchHits + '번', c.matchup]);
+  } else parts.push(['이긴 교전 ' + (state.wins ?? 0) + '번', (state.wins ?? 0) * c.perWin]);
+  let gain = parts.reduce((n, [, v]) => n + v, 0);
+  if (state.hard) { parts.push(['하드 ×' + c.hard, gain * (c.hard - 1)]); gain *= c.hard; }
+  const g = (save.unlockGauge ??= { pts: 0, level: 0, pending: 0 });
+  const before = { pts: g.pts, need: c.base + c.step * g.level, level: g.level };
+  g.pts += gain;
+  let filled = 0;
+  while (lockedAnimals(save, data).length - g.pending > 0 && g.pts >= c.base + c.step * g.level) { g.pts -= c.base + c.step * g.level; g.level += 1; g.pending += 1; filled += 1; }
+  if (!lockedAnimals(save, data).length) g.pts = 0;
+  return { gain, parts, before, after: { pts: g.pts, need: c.base + c.step * g.level, level: g.level }, filled, pending: g.pending };
+}
 
 export const stageUnlocked = (save, data, stageId) => {
   const i = data.stages.findIndex((s) => s.id === stageId);
@@ -197,7 +245,8 @@ export function settleRun(save, state, data) {
   if (clear) rec.cleared = true;
   if (clear) { rec.stars = Math.max(starsOf(rec), stars); rec.bestTime = Math.min(rec.bestTime ?? Infinity, Math.round(state.time)); }
   const starsAfter = totalStars(save);
-  const joined = (cfg.roster?.unlocks ?? []).filter((u) => u.stars > starsBefore && u.stars <= starsAfter).map((u) => u.id);
+  const joined = [];   // 별 해금은 해금 게이지로 바뀜
+  const gauge = fillUnlockGauge(save, state, data, clear ? stars : 0);
   rec.bestWave = Math.max(rec.bestWave, clear ? state.stage.waves.length : state.wave);
   save.essence += essence;
   // hint shards turn into hints automatically
@@ -222,7 +271,7 @@ export function settleRun(save, state, data) {
   save.shards = (save.shards ?? 0) + shards;
   return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
     mvp: Object.values(state.dmgRun ?? {}).sort((a, b) => b.dmg - a.dmg).slice(0, 3).map((r) => ({ ...r, dmg: Math.round(r.dmg) })),
-    stars, goals, totalStars: starsAfter, joined, newSpells: spellsUnlocked(save, data).filter((id) => !spellsBefore.includes(id)), time: Math.round(state.time) };
+    stars, goals, totalStars: starsAfter, joined, gauge, newSpells: spellsUnlocked(save, data).filter((id) => !spellsBefore.includes(id)), time: Math.round(state.time) };
 }
 
 /** Reveal one material of an undiscovered recipe. Returns { recipe, part } or null. */

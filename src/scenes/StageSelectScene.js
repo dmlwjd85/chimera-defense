@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import { button, title, style, panel, showTip, hideTip , speciesImage } from './ui.js';
 import { buildData } from '../logic/data.js';
-import { stageUnlocked, starsOf, totalStars, nextUnlock } from '../logic/meta.js';
+import { stageUnlocked, starsOf, totalStars, nextUnlock, unlockedAnimals, unlockGauge } from '../logic/meta.js';
+import { drawGauge, showUnlockPicker } from './unlockFx.js';
 import { soulGaps, soulSig } from '../logic/soul.js';
 
 const ZONE_NAME = { village: '마을', field: '들판', forest: '숲', plains: '대평원', mountain: '산', wetland: '습지' };
@@ -31,18 +32,19 @@ export default class StageSelectScene extends Phaser.Scene {
     const nx = nextUnlock(save, data);
     const track = cfg.roster?.unlocks ?? [];
     track.forEach((u, i) => {
-      const x = 420 + i * 62, got = total >= u.stars, unit = data.unitById[u.id];
+      const x = 420 + i * 62, got = unlockedAnimals(save, data).includes(u.id), unit = data.unitById[u.id];
       const key = 'unit-' + u.id;
       this.add.circle(x, 40, 23, got ? 0x24384a : 0x161c24).setStrokeStyle(2, got ? 0xffd84d : nx?.id === u.id ? 0x9cff6b : 0x3b4b5e);
       const im0 = speciesImage(this, u.id, 'young', x, 40, 40); if (im0) { if (!got) im0.setTint(0x000000).setAlpha(0.55); }
       if (!im0) this.add.text(x, 40, got ? unit.name[0] : '?', style(18)).setOrigin(0.5);
-      this.add.text(x, 73, got ? '합류' : `⭐${u.stars}`, style(11, got ? '#58d68d' : nx?.id === u.id ? '#9cff6b' : '#8899aa')).setOrigin(0.5);
+      this.add.text(x, 73, got ? '합류' : '🔒', style(11, got ? '#58d68d' : nx?.id === u.id ? '#9cff6b' : '#8899aa')).setOrigin(0.5);
       const z = this.add.zone(x, 44, 56, 66).setInteractive();
-      z.on('pointerover', () => showTip(this, got ? `${unit.name} · 합류함` : `별 ${u.stars}개를 모으면 ${nx?.id === u.id ? unit.name : '새 친구'} 합류`, x, 14));
+      z.on('pointerover', () => showTip(this, got ? `${unit.name} · 합류함` : '해금 게이지가 차면 그림자 속 친구를 고를 수 있음', x, 14));
       z.on('pointerout', () => hideTip(this));
     });
-    this.add.text(420 + track.length * 62 - 10, 30, nx ? `다음 친구까지 ⭐${nx.stars - total}` : '모두 모임', style(14, '#9cff6b'));
-    this.add.text(420 + track.length * 62 - 10, 52, '★ 클리어  ★ 생명 ' + (cfg.stars?.life ?? 60) + '% 이상  ★ 제한 시간', style(11, '#aabbcc'));
+    // 해금 게이지(별 대신): 다 차면 새 친구 고르기
+    { const gx = 420 + track.length * 62 - 10; drawGauge(this, gx, 40, 1270 - gx - 10, data, save, null, 20);
+      if (unlockGauge(save, data).pending > 0) { const pb = button(this, gx + (1270 - gx - 10) / 2, 76, 200, 28, '🎁 새 친구 고르기', () => showUnlockPicker(this, data, save, this.registry.get('storage'), () => this.scene.restart()), { size: 13, fill: 0x2e5a3a, stroke: 0x9cff6b, depth: 30 }); this.tweens.add({ targets: pb.text, scale: { from: 1, to: 1.08 }, yoyo: true, repeat: -1, duration: 600 }); } }
 
     // 12 cards, 4 x 3
     const W = 294, H = 122, GX = 12, GY = 10, X0 = 640 - (4 * W + 3 * GX) / 2, Y0 = 92;

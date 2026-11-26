@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import { button, title, style, panel } from './ui.js';
 import { buildData } from '../logic/data.js';
-import { setCarry, writeSave } from '../logic/meta.js';
+import { setCarry, writeSave, unlockGauge } from '../logic/meta.js';
+import { drawGauge, showUnlockPicker } from './unlockFx.js';
 
 const ACH = { firstSummon: '첫 소환', firstSpirit: '첫 영물', firstChimera: '첫 키메라', allRecipes: '레시피 7개 모두 발견', flawlessBoss: '무결점 보스 처치' };
 
@@ -28,7 +29,7 @@ export default class ResultScene extends Phaser.Scene {
         const sp = D.config.spells.list.filter((x) => r.newSpells.includes(x.id));
         this.add.text(640, 172, `🔮 새 마법을 배웠어요: ${sp.map((x) => `${x.icon} ${x.name}`).join(', ')} — ${sp[0].desc}`, style(15, '#d7bde2', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
       }
-      if (r.joined?.length) {
+      if (false && r.joined?.length) {
         const t = this.add.text(640, 548, `🎉 새 친구 합류: ${r.joined.map((id) => D.unitById[id]?.name).join(', ')} — 이제 지구본에서 만남`, style(17, '#9cff6b', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
         this.tweens.add({ targets: t, scale: { from: 1, to: 1.06 }, yoyo: true, repeat: -1, duration: 700 });
       }
@@ -85,6 +86,16 @@ export default class ResultScene extends Phaser.Scene {
       const label = (c) => `${c.white ? '흰 ' : ''}${stageName[c.stage]} ${D.unitById[c.speciesId].name}`;
       picks.forEach((c, i) => btns.push(button(this, 640 - (picks.length - 1) * 75 + i * 150, 598, 140, 34, label(c), () => { setCarry(save, D, d.stageId, c); writeSave(this.registry.get('storage'), save); mark(i); }, { size: 13, fill: 0x2e5a3a })));
       mark(0);
+    }
+    // 해금 게이지: 이번 판 점수만큼 차오름, 다 차면 새 친구 고르기
+    if (r.gauge) {
+      const saveG = this.registry.get('save');
+      drawGauge(this, 340, 540, 600, D, saveG, r.gauge, 25);
+      this.add.text(340, 562, r.gauge.parts.map(([t, v]) => `${t} +${v}`).join('  ·  '), style(12, '#aabbcc')).setDepth(25);
+      if (unlockGauge(saveG, D).pending > 0) {
+        const pb = button(this, 1060, 548, 220, 44, '🎁 새 친구 고르기', () => showUnlockPicker(this, D, saveG, this.registry.get('storage'), () => { pb.destroy(); }), { size: 17, fill: 0x2e5a3a, stroke: 0x9cff6b, depth: 30 });
+        this.tweens.add({ targets: pb.text, scale: { from: 1, to: 1.08 }, yoyo: true, repeat: -1, duration: 600 });
+      }
     }
     button(this, 440, 650, 200, 56, '다시 하기 (R)', () => this.scene.start(d.gauntlet ? 'Gauntlet' : 'Battle', { stageId: d.stageId, hard: d.gauntlet ? !!d.hard : undefined }), { size: 20 });
     button(this, 660, 650, 200, 56, '스테이지 선택', () => this.scene.start('StageSelect'), { size: 20, fill: 0x3a7bd5 });

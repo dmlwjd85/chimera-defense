@@ -24,7 +24,12 @@ export function gcfg(data) {
     encounters: 8, squadMin: 3, squadMax: 6, timeLimit: 60, healPct: 30, restBackPct: 50, life: 5,
     stagger: 0.15, enemyHp: 20, enemyAtk: 1.5, bossHp: 4, bossAtk: 1, growth: 0.15, atkGrowth: 0.12, squash: 0.55, summonCap: 2, bossBase: 6000, bossTune: { boss_bone: { hp: 0.45, atk: 0.55 } }, minionHp: 0.5, summonerHp: 0.7, bossSquad: 3, healMult: 0.3, hardHp: 1, lossRevive: 80, mvpGrow: true, stageHpPow: 0.5, stageAtkPow: 0.4, zeroAttack: 4, zeroInterval: 1.3,
     backMelee: 0.5, frontRanged: 0.75, taunt: 2, startStage: 'young', manaRegen: 0.6,
-    hardEssence: 1.5, hardShards: 2, lowStars: 3, ...(data.config.gauntlet ?? {}),
+    hardEssence: 1.5, hardShards: 2, lowStars: 3,
+    clashRate: 0.5, clashNoise: 1, clashLean: 0.6, clashBoss: 0.6, gangMax: 2, gangPower: 0.5, charge: 1.1, protectCd: 3,
+    // 적 역할(우리와 같은 문법): bruiser 힘겨루기 / skirm 뒷줄 노리고 치고 빠지기 / ranged 뒤에서 쏨 / support 자기 편 거들기
+    enemyRole: { normal: 'bruiser', tough: 'bruiser', zombie: 'bruiser', swarm: 'bruiser', skeleton: 'bruiser', miniboss: 'bruiser',
+      fast: 'skirm', ghost: 'skirm', flying: 'ranged', bat: 'ranged', wisp: 'ranged', healer: 'support',
+      boss_boar: 'bruiser', boss_shadow: 'bruiser', boss_bone: 'bruiser', boss_frost: 'bruiser', boss_bat: 'ranged', boss_lich: 'support' }, guardChance: 0.6, guardTaken: 0.6, peelChance: 0.7, peelDmg: 0.8, peelStun: 0.6, clashBonus: 1.5, clashStun: 1, clashEnemy: 1, assistPush: 0.05, cheerPush: 0.12, cheerHeal: 3, dodge: 0.25, ...(data.config.gauntlet ?? {}),
   };
 }
 
@@ -33,6 +38,13 @@ const aliveE = (e) => e && e.hp > 0;
 export const unitsIn = (state) => state.seats.map((uid) => state.field.find((u) => u.uid === uid) ?? null);
 export const fighters = (state) => unitsIn(state).filter(aliveU);
 export const enemiesIn = (state) => state.eSeats.map((eid) => state.enemies.find((e) => e.eid === eid) ?? null);
+/** 싸움 모양: 브루저 = 힘겨루기, 근접 딜러·기술 = 치고 빠지기, 원거리·응원 = 뒤에서 거들기 */
+export const roleOfEnemy = (g, id, def) => g.enemyRole?.[id] ?? (def?.flying ? 'ranged' : def?.heal ? 'support' : 'bruiser');
+export const styleOf = (u) => (u.stats.range > 1 ? 'ranged' : u.stats.role === 'bruiser' ? 'bruiser' : u.stats.role === 'buffer' ? 'support' : u.stats.role === 'weak' ? 'support' : 'skirm');
+const findU = (state, uid) => state.field.find((u) => u.uid === uid);
+const findE = (state, eid) => state.enemies.find((e) => e.eid === eid);
+export const clashOfU = (state, uid) => (state.clashes ?? []).find((c) => c.uid === uid) ?? null;
+export const clashOfE = (state, eid) => (state.clashes ?? []).find((c) => c.eid === eid || (c.helpers ?? []).includes(eid)) ?? null;
 const isRangedEnemy = (e) => e.flying || !!e.heal || e.id === 'wisp' || e.id === 'boss_lich' || e.id === 'skeleton';
 
 /** Which stage waves become the encounters: spread evenly, the last one is the boss wave. */
@@ -56,9 +68,24 @@ export function planEncounters(stage, data, rng) {
       if (['tough', 'healer', 'zombie'].includes(pick) && ids.filter((x) => x === pick).length >= 2) pick = mix.find(([id]) => !['tough', 'healer', 'zombie'].includes(id))?.[0] ?? pick;
       ids.push(pick);
     }
+    // 역할 고르게: 무리에 브루저(힘겨루기)만 몰리지 않게 — 브루저는 절반까지, 넷 이상이면 돌격·궁수/지원을 하나씩
+    if (!boss) balanceRoles(ids, stage, data, rng, g);
     out.push({ wave: wi + 1, ids, boss: !!boss });
   }
   return out;
+}
+
+function balanceRoles(ids, stage, data, rng, g) {
+  const role = (id) => roleOfEnemy(g, id, data.enemyById[id]);
+  const pool = [...new Set(stage.waves.flatMap((w) => Object.keys(w.mix)))].filter((id) => data.enemyById[id] && !data.enemyById[id].boss);
+  const of = (r) => pool.filter((id) => role(id) === r);
+  const pick = (list) => list[Math.floor(rng() * list.length)];
+  const swapIn = (want) => { const cand = want.flatMap(of); if (!cand.length) return false; const i = ids.findIndex((id) => role(id) === 'bruiser' && !data.enemyById[id].boss && id !== 'miniboss'); if (i < 0) return false; ids[i] = pick(cand); return true; };
+  const count = (r) => ids.filter((id) => role(id) === r).length;
+  if (ids.length >= 3 && count('skirm') === 0) swapIn(['skirm']);
+  if (ids.length >= 4 && count('ranged') + count('support') === 0) swapIn(['ranged', 'support']);
+  let guard = 0;
+  while (count('bruiser') > Math.ceil(ids.length / 2) && guard++ < 6) if (!swapIn(['skirm', 'ranged', 'support'])) break;
 }
 
 /** Seat for a unit by its natural role: melee and bruisers in front, ranged and cheerers behind. */
@@ -71,7 +98,9 @@ export function prefersFront(u) {
 export function autoSeat(state, units) {
   const seats = Array(6).fill(null);
   const put = (u, order) => { const i = order.find((k) => seats[k] == null); if (i == null) return false; seats[i] = u.uid; u.seat = i; return true; };
-  const front = units.filter(prefersFront), back = units.filter((u) => !prefersFront(u));
+  // 앞줄은 브루저부터(힘겨루기), 치고 빠지는 딜러는 뒷줄이어도 손해 없음
+  const rank = (u) => (u.stats.role === 'bruiser' ? 0 : u.stats.role === 'buffer' ? 2 : 1);
+  const front = units.filter(prefersFront).sort((a, b) => rank(a) - rank(b)), back = units.filter((u) => !prefersFront(u));
   for (const u of front) if (!put(u, [1, 0, 2])) put(u, [4, 3, 5]);
   for (const u of back) if (!put(u, [4, 3, 5])) put(u, [1, 0, 2]);
   return seats;
@@ -123,7 +152,10 @@ export function startEncounter(state, data) {
   // 쉬던 동물: 혼자 남지 않게, 싸울 동물이 둘보다 적으면 쉬던 동물도 나옴
   if (fighters(state).length < 2) for (const u of unitsIn(state)) if (u?.resting) { u.resting = false; u.hp = Math.max(u.hp, u.maxHp * 0.3); }
   for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; }
-  state.encTime = 0; state.actGap = 0; state.phase = 'fight'; state.allyBuffs = [];
+  state.encTime = 0; state.actGap = 0; state.phase = 'fight'; state.allyBuffs = []; state.clashes = [];
+  // 돌격: 처음 charge초 동안 양쪽이 가운데로 달려와 쾅 부딪힌 뒤 싸움이 시작됨
+  state.charging = g.charge > 0;
+  pairUp(state, g);
   refreshMods(state, data);
   state.events.push({ type: 'encStart', enc: state.enc, boss: spec.boss });
   return g;
@@ -131,8 +163,9 @@ export function startEncounter(state, data) {
 
 function addEnemy(state, data, id, wave) {
   const g = gcfg(data), def = data.enemyById[id];
-  const ranged = def.flying || !!def.heal || id === 'wisp' || id === 'boss_lich' || id === 'skeleton';
-  const order = def.boss ? [1, 0, 2, 4, 3, 5] : ranged ? [4, 3, 5, 1, 0, 2] : [1, 0, 2, 4, 3, 5];
+  const style = roleOfEnemy(g, id, def);
+  const ranged = style === 'ranged' || style === 'support';
+  const order = def.boss || style === 'bruiser' ? [1, 0, 2, 4, 3, 5] : style === 'skirm' ? [2, 0, 1, 5, 3, 4] : [4, 3, 5, 1, 0, 2];
   const seat = order.find((k) => state.eSeats[k] == null);
   if (seat == null) return null;
   // 웨이브 성장 대신 교전 번호로 성장(1교전 1배 → 마지막 1+growth×(N-1)배).
@@ -148,7 +181,7 @@ function addEnemy(state, data, id, wave) {
   e.attack = Math.max(1, Math.round(atk * Math.pow(state.stage.mult ?? 1, g.stageAtkPow) * (data.config.difficulty?.enemyAttack ?? 1) * upA));
   if (e.heal) e.heal = { ...e.heal, percent: e.heal.percent * g.healMult };
   e.interval = e.interval || g.zeroInterval;
-  Object.assign(e, { seat, gauge: state.rng() * 0.3, name: def.name, ranged, shieldLeft: 0, patternT: def.pattern?.every ?? 0, healT: def.heal?.every ?? 0, burnDps: 0, burnLeft: 0, curseLeft: 0, pos: 0 });
+  Object.assign(e, { seat, gauge: state.rng() * 0.3, name: def.name, ranged, style, shieldLeft: 0, patternT: def.pattern?.every ?? 0, healT: def.heal?.every ?? 0, burnDps: 0, burnLeft: 0, curseLeft: 0, pos: 0 });
   state.eSeats[seat] = e.eid;
   state.enemies.push(e);
   state.seenEnemies.add(id);
@@ -200,6 +233,11 @@ export function tickGauntlet(state, data, dt) {
 
 function sub(state, data, d, g) {
   state.time += d; state.encTime += d; state.actGap -= d;
+  if (state.charging) {
+    if (state.encTime < g.charge) return;
+    state.charging = false;
+    state.events.push({ type: 'collide', pairs: state.clashes.map((c) => ({ uid: c.uid, eid: c.eid })) });
+  }
   if (state.spellCd > 0) state.spellCd -= d;
   const sp = data.config.spells;
   if (sp && state.spells.length) state.mana = Math.min(sp.max, state.mana + g.manaRegen * (1 + (eco(state, data, 'manaRegen') ?? 0) / 100) * d);
@@ -224,6 +262,7 @@ function sub(state, data, d, g) {
     u.gauge = Math.min(1, u.gauge + d / uInterval(state, u));
     timerSkills(state, data, u, d);
   }
+  updateClashes(state, data, d, g);
   // 한 번에 하나: 게이지가 가득 찬 쪽 중 가장 오래 기다린 하나만, stagger 간격으로
   if (state.actGap <= 0) {
     const ready = [...fighters(state).filter((u) => u.gauge >= 1 && !(u.stunLeft > 0)).map((u) => ({ u })), ...state.enemies.filter((e) => aliveE(e) && e.gauge >= 1 && !(e.stunLeft > 0)).map((e) => ({ e }))];
@@ -237,6 +276,75 @@ function sub(state, data, d, g) {
   checkEnd(state, data, g);
 }
 
+// ---------- 힘겨루기: 앞줄 브루저가 적 근접과 맞붙어 서로 밀고 당김 ----------
+/** 짝 짓기: 앞줄 브루저 ↔ 적 근접, 남는 적 근접은 2대1로 끼어듦 */
+function pairUp(state, g) {
+  const freeE = () => state.enemies.filter((e) => aliveE(e) && e.style === 'bruiser' && !e.flying && !clashOfE(state, e.eid));
+  for (const u of fighters(state)) {
+    if (styleOf(u) !== 'bruiser' || !isFront(u.seat) || clashOfU(state, u.uid)) continue;
+    const free = freeE();
+    if (!free.length) break;
+    free.sort((a, b) => Math.abs((a.seat % 3) - (u.seat % 3)) - Math.abs((b.seat % 3) - (u.seat % 3)));
+    const e = free[0];
+    state.clashes.push({ uid: u.uid, eid: e.eid, push: 0, helpers: [] });
+    state.events.push({ type: 'clashStart', uid: u.uid, eid: e.eid });
+  }
+  // 패싸움: 남는 적 근접은 가장 밀리는(우리가 이기고 있는) 힘겨루기에 끼어들어 2대1로 거듦
+  if (state.clashes.length) for (const e of freeE()) {
+    const c = [...state.clashes].sort((a, b) => (a.helpers.length - b.helpers.length) || (b.push - a.push))[0];
+    if (c.helpers.length >= g.gangMax) break;
+    c.helpers.push(e.eid);
+    state.events.push({ type: 'gang', uid: c.uid, eid: e.eid });
+  }
+}
+
+function updateClashes(state, data, d, g) {
+  // 정리: 우리 브루저가 쓰러지면 끝, 맞붙은 적이 쓰러지면 거들던 적이 대신 맞붙음
+  state.clashes = (state.clashes ?? []).filter((c) => {
+    const u = findU(state, c.uid);
+    c.helpers = (c.helpers ?? []).filter((id) => aliveE(findE(state, id)));
+    if (!aliveE(findE(state, c.eid)) && c.helpers.length) { c.eid = c.helpers.shift(); state.events.push({ type: 'clashSwap', uid: c.uid, eid: c.eid }); }
+    const ok = u && aliveU(u) && aliveE(findE(state, c.eid));
+    if (!ok) state.events.push({ type: 'clashEnd', uid: c.uid, eid: c.eid });
+    return ok;
+  });
+  pairUp(state, g);
+  for (const c of state.clashes) {
+    const u = findU(state, c.uid), e = findE(state, c.eid);
+    // 힘 = √(초당 피해 × 최대 체력) × 남은 체력 — 아군은 세게 치고 약하고 적은 질기고 약하게 쳐서, 둘을 섞어야 맞먹음
+    const su = (u.stunLeft > 0 ? 0.6 : 1) * Math.sqrt((effDamage(u) / uInterval(state, u)) * u.maxHp) * (0.4 + 0.6 * u.hp / u.maxHp);
+    const se = (e.stunLeft > 0 ? 0.6 : 1) * Math.sqrt((e.attack / eInterval(e)) * e.maxHp) * g.clashEnemy * (e.boss ? g.clashBoss : 1) * (0.4 + 0.6 * e.hp / e.maxHp);
+    let sh = 0;
+    for (const id of c.helpers) { const h = findE(state, id); if (h) sh += (h.stunLeft > 0 ? 0.6 : 1) * Math.sqrt((h.attack / eInterval(h)) * h.maxHp) * g.clashEnemy * g.gangPower * (0.4 + 0.6 * h.hp / h.maxHp); }
+    const lean = su + se + sh > 0 ? (su - se - sh) / (su + se + sh) : 0;
+    // 힘 차이는 절반만 반영하고 흔들림을 크게: 강한 쪽이 이기는 편이지만 엎치락뒤치락함
+    // 기세(surge): 0.5~1.3초마다 바뀌는 밀고 당김 — 순간순간 엎치락뒤치락
+    c.surgeT = (c.surgeT ?? 0) - d;
+    if (c.surgeT <= 0) { c.surge = (state.rng() * 2 - 1) * g.clashNoise; c.surgeT = 0.5 + state.rng() * 0.8; }
+    c.push += d * g.clashRate * (lean * g.clashLean + c.surge);
+    if (c.push >= 1) {
+      c.push = 0;
+      const a = hurtEnemy(state, data, e, effDamage(u) * g.clashBonus, u);
+      if (aliveE(e)) { e.stunLeft = Math.max(e.stunLeft ?? 0, e.boss ? g.clashStun * 0.4 : g.clashStun); e.gauge = 0; }
+      state.events.push({ type: 'clashWin', uid: u.uid, eid: e.eid, dmg: Math.round(a) });
+      say(state, `${u.stats.name} 힘겨루기 승! → ${e.name} ${Math.round(a)}`);
+    } else if (c.push <= -1) {
+      c.push = 0;
+      const a = hurtUnit(state, data, u, e.attack * g.clashBonus, e);
+      if (aliveU(u)) { u.stunLeft = Math.max(u.stunLeft ?? 0, g.clashStun * 0.8); u.gauge = 0; }
+      state.events.push({ type: 'clashLose', uid: u.uid, eid: e.eid, dmg: Math.round(a) });
+      say(state, `${e.name}에게 밀림 · ${u.stats.name} ${Math.round(a)}`);
+    }
+  }
+}
+
+/** 힘겨루기를 거드는 한 방: 같은 편이 밀리는 쪽을 받쳐 줌 */
+function assist(state, side, id, amount) {
+  const c = side === 'e' ? clashOfE(state, id) : clashOfU(state, id);
+  if (!c) return;
+  c.push = Math.max(-0.95, Math.min(0.95, c.push + (side === 'e' ? amount : -amount)));
+}
+
 function frontTargets(list) {
   const f = list.filter((x) => x && isFront(x.seat) && (x.hp > 0) && !x.down && !x.resting);
   return f.length ? f : list.filter((x) => x && x.hp > 0 && !x.down && !x.resting);
@@ -246,6 +354,21 @@ const lowest = (list) => list.reduce((a, b) => (b.hp / b.maxHp < a.hp / a.maxHp 
 function pickUnitTarget(state, u) {
   const es = state.enemies.filter(aliveE);
   if (!es.length) return null;
+  const st = styleOf(u);
+  if (st === 'bruiser') { const c = clashOfU(state, u.uid); const e = c && findE(state, c.eid); if (e && aliveE(e)) return e; }
+  // 거들기: 밀리는 힘겨루기가 있으면 원거리·응원은 그 적을 먼저
+  if (st === 'ranged' || st === 'support') {
+    const losing = (state.clashes ?? []).filter((c) => c.push < -0.25).map((c) => findE(state, c.eid)).filter(aliveE);
+    if (losing.length && state.rng() < 0.6 && (st === 'ranged' || isFront(u.seat))) return losing[0];
+  }
+  // 치고 빠지기: 힘겨루기에 묶이지 않은 적, 뒷줄·약한 적을 노림
+  if (st === 'skirm') {
+    const loose = es.filter((e) => !clashOfE(state, e.eid) && (!e.flying || u.stats.canHitFlying));
+    // 떼어 내기: 2대1로 끼어든 적을 먼저
+    const gang = es.filter((e) => (state.clashes ?? []).some((c) => c.helpers.includes(e.eid)));
+    const pool = loose.length ? loose : gang.length ? gang : es;
+    return state.rng() < 0.55 ? lowest(pool) : pool[Math.floor(state.rng() * pool.length)];
+  }
   if (u.stats.range > 1) {
     // 원거리: 나는 적·뒷줄을 먼저 노리고, 그중 체력 낮은 놈
     const fly = es.filter((e) => e.flying || !isFront(e.seat));
@@ -259,6 +382,9 @@ function pickUnitTarget(state, u) {
 function pickEnemyTarget(state, e, g) {
   const us = fighters(state);
   if (!us.length) return null;
+  { const c = clashOfE(state, e.eid); const u = c && findU(state, c.uid); if (u && aliveU(u)) return u; }
+  // 적 돌격대: 우리 뒷줄(원거리·응원)을 노림 → 우리 쪽 지켜 주기·떼어 내기가 나옴
+  if (e.style === 'skirm') { const back = us.filter((u) => ['ranged', 'support'].includes(styleOf(u))); if (back.length && state.rng() < 0.75) return lowest(back); }
   if (e.ranged) return state.rng() < 0.5 ? lowest(us) : us[Math.floor(state.rng() * us.length)];
   const f = frontTargets(us);
   const w = f.map((u) => (u.stats.role === 'bruiser' ? g.taunt : 1));
@@ -317,7 +443,8 @@ function unitAct(state, data, u, g) {
   if (!t) return;
   const move = pickMoveG(state, u, t, cfg);
   const melee = u.stats.range <= 1;
-  let mult = melee && !isFront(u.seat) ? g.backMelee : !melee && isFront(u.seat) ? g.frontRanged : 1;
+  const st = styleOf(u);
+  let mult = melee && st !== 'skirm' && !isFront(u.seat) ? g.backMelee : !melee && isFront(u.seat) ? g.frontRanged : 1;
   mult *= 1 + buffSum(state, 'dmg') / 100;
   if (t.curseLeft > 0) mult *= 1.2;
   const base = hitDamage(state, u, t) * mult;
@@ -363,8 +490,27 @@ function unitAct(state, data, u, g) {
       state.events.push({ type: 'skill', uid: u.uid, name: '막아서기' });
     }
   }
-  const dealt = hits.map(([e, a]) => ({ eid: e.eid, dmg: Math.round(hurtEnemy(state, data, e, a, u)) }));
-  state.events.push({ type: 'act', side: 'u', uid: u.uid, eid: t.eid, move, name, big, el, melee, hits: dealt });
+  // 적 돌격대도 요리조리: 맞붙지 않았으면 평타를 가끔 피함
+  if ((move === 'a1' || move === 'a2') && t.style === 'skirm' && !clashOfE(state, t.eid) && state.rng() < g.dodge) {
+    for (const h of hits) if (h[0] === t) h[1] = 0;
+    state.events.push({ type: 'edodge', eid: t.eid, uid: u.uid });
+  }
+  const dealt = hits.filter(([, a]) => a > 0).map(([e, a]) => ({ eid: e.eid, dmg: Math.round(hurtEnemy(state, data, e, a, u)) }));
+  // 거들기: 힘겨루기 중인 적을 다른 동물이 때리면 우리 브루저 쪽으로 기움
+  if (st !== 'bruiser') for (const h of dealt) assist(state, 'e', h.eid, g.assistPush * (big ? 2 : 1));
+  // 응원: 응원 동물은 칠 때마다 가장 밀리는 브루저를 북돋움(체력 조금 + 힘겨루기 쪽으로)
+  let cheer = null;
+  if (st === 'support') {
+    const c = [...(state.clashes ?? [])].sort((a, b) => a.push - b.push)[0];
+    const to = c ? findU(state, c.uid) : lowest(fighters(state));
+    if (to && aliveU(to)) {
+      to.hp = Math.min(to.maxHp, to.hp + to.maxHp * g.cheerHeal / 100);
+      if (c) c.push = Math.min(0.95, c.push + g.cheerPush);
+      cheer = to.uid;
+      state.events.push({ type: 'cheer', uid: u.uid, to: to.uid });
+    }
+  }
+  state.events.push({ type: 'act', side: 'u', uid: u.uid, eid: t.eid, move, name, big, el, melee, style: st, cheer, hits: dealt });
   const tot = dealt.reduce((s, h) => s + h.dmg, 0);
   if (name || big) say(state, `${u.stats.name} · ${name ?? '공격'} → ${t.name} ${tot}`);
 }
@@ -375,8 +521,51 @@ function enemyAct(state, data, e, g) {
   if (!t) return;
   let dmg = e.attack;
   if (e.chargeLeft > 0) dmg *= 1.6;
-  const a = hurtUnit(state, data, t, dmg, e);
-  state.events.push({ type: 'act', side: 'e', eid: e.eid, uid: t.uid, dmg: Math.round(a), melee: !e.ranged, boss: e.boss });
+  const clash = clashOfE(state, e.eid);
+  // 요리조리: 치고 빠지는 동물은 맞붙지 않은 적의 공격을 가끔 피함
+  if (!clash && styleOf(t) === 'skirm' && state.rng() < g.dodge) {
+    state.events.push({ type: 'act', side: 'e', eid: e.eid, uid: t.uid, dmg: 0, dodged: true, melee: !e.ranged, boss: e.boss });
+    return;
+  }
+  // 지켜 주기·떼어 내기: 원거리·응원 동물이 노려지면 동료가 끼어듦(한 동물당 protectCd초에 한 번)
+  const ts = styleOf(t);
+  if (ts === 'ranged' || ts === 'support') {
+    const ready = (x) => aliveU(x) && !(x.stunLeft > 0) && (x.protectAt ?? -99) + g.protectCd <= state.time && x !== t;
+    const guard = fighters(state).filter((x) => styleOf(x) === 'bruiser' && ready(x) && !clashOfU(state, x.uid))[0]
+      ?? fighters(state).filter((x) => styleOf(x) === 'bruiser' && ready(x))[0];
+    if (guard && state.rng() < g.guardChance) {
+      guard.protectAt = state.time;
+      const a = hurtUnit(state, data, guard, dmg * g.guardTaken, e);
+      state.events.push({ type: 'guard', uid: guard.uid, for: t.uid, eid: e.eid, dmg: Math.round(a) });
+      say(state, `${guard.stats.name}: ${t.stats.name}를 지켜 줌!`);
+      return;
+    }
+    const peel = fighters(state).filter((x) => styleOf(x) === 'skirm' && ready(x))[0];
+    if (peel && state.rng() < g.peelChance) {
+      peel.protectAt = state.time;
+      const hit = hurtEnemy(state, data, e, effDamage(peel) * g.peelDmg, peel);
+      if (aliveE(e)) { e.stunLeft = Math.max(e.stunLeft ?? 0, e.boss ? 0.3 : g.peelStun); e.gauge = 0; }
+      const a = hurtUnit(state, data, t, dmg * 0.5, e);   // 반쯤 맞고 떼어 냄
+      state.events.push({ type: 'peel', uid: peel.uid, for: t.uid, eid: e.eid, dmg: Math.round(hit), hurt: Math.round(a) });
+      say(state, `${peel.stats.name}: ${e.name}을 떼어 냄!`);
+      return;
+    }
+  }
+  const a = hurtUnit(state, data, t, dmg * (e.style === 'support' ? 0.6 : 1), e);
+  if (!clash) assist(state, 'u', t.uid, g.assistPush * 1.5);
+  // 적 지원: 칠 때마다 자기 편 중 가장 밀리는 브루저를 북돋움(체력 조금 + 힘겨루기 쪽으로)
+  let cheer = null;
+  if (e.style === 'support') {
+    const c = [...(state.clashes ?? [])].sort((x, y) => y.push - x.push)[0];
+    const to = c ? findE(state, c.eid) : lowest(state.enemies.filter(aliveE));
+    if (to && aliveE(to)) {
+      to.hp = Math.min(to.maxHp, to.hp + to.maxHp * g.cheerHeal / 100);
+      if (c) c.push = Math.max(-0.95, c.push - g.cheerPush);
+      cheer = to.eid;
+      state.events.push({ type: 'echeer', eid: e.eid, to: to.eid });
+    }
+  }
+  state.events.push({ type: 'act', side: 'e', eid: e.eid, uid: t.uid, dmg: Math.round(a), melee: !e.ranged, boss: e.boss, clash: !!clash, style: e.style, cheer });
   if (e.boss) say(state, `${e.name} → ${t.stats.name} ${Math.round(a)}`);
 }
 

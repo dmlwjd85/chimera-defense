@@ -1,0 +1,33 @@
+{
+ "species": "en_bat",
+ "motions": {
+  "adult_down": {
+   "n": 5,
+   "max|h%|": 34.1,
+   "foot±": 4
+  },
+  "adult_hit": {
+   "n": 3,
+   "max|h%|": 2.4,
+   "foot±": 8
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 48.8,
+   "foot±": 24
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   61
+  ],
+  "box": [
+   77,
+   83
+  ],
+  "frames": 16,
+  "colors": 16,
+  "px": 124928
+ }
+}

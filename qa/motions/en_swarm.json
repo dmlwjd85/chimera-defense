@@ -1,0 +1,43 @@
+{
+ "species": "en_swarm",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 28.2,
+   "foot±": 12
+  },
+  "adult_down": {
+   "n": 4,
+   "max|h%|": 30.8,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 2,
+   "max|h%|": 10.3,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 12.8,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 7.7,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   50
+  ],
+  "box": [
+   52,
+   62
+  ],
+  "frames": 26,
+  "colors": 16,
+  "px": 102400
+ }
+}

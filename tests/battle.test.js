@@ -53,7 +53,7 @@ test('empty field leaks wave 1, then lose at low life', () => {
   const s = B.createBattle(D, STAGE, 5);
   for (let i = 0; i < 2000 && s.wave === 1; i++) B.step(s, D, 0.1);
   assert.deepEqual([s.wave, s.phase], [2, 'prep']);
-  assert.equal(s.life, D.config.life - 10);
+  assert.equal(s.life, D.config.life - (D.config.waveCount.base + D.config.waveCount.perWave));   // 1웨이브 일반 적 수만큼 샘
   const t = B.createBattle(D, STAGE, 6);
   t.life = 1;
   for (let i = 0; i < 2000 && t.phase !== 'ended'; i++) B.step(t, D, 0.1);

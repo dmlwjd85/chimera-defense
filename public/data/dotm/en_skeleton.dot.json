@@ -1,0 +1,394 @@
+{
+ "note": "en_skeleton 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_skeleton",
+ "sheet": "dot-m-en_skeleton",
+ "file": "assets/dotm/en_skeleton.png",
+ "frameW": 79,
+ "frameH": 80,
+ "foot": 78,
+ "cols": 1,
+ "anchorX": 40,
+ "palette": [
+  "#0b0202",
+  "#291a1f",
+  "#3b4649",
+  "#522e1f",
+  "#617678",
+  "#734422",
+  "#7920a8",
+  "#905c21",
+  "#9bb5b3",
+  "#ac7e3b",
+  "#b77a22",
+  "#d45fea",
+  "#dea337",
+  "#f6cc49",
+  "#f7f7da",
+  "#fdec8c"
+ ],
+ "rects": {
+  "en_skeleton_adult_a1_00": [
+   951,
+   0,
+   57,
+   69,
+   -28,
+   -69
+  ],
+  "en_skeleton_adult_a1_01": [
+   472,
+   0,
+   54,
+   72,
+   -26,
+   -72
+  ],
+  "en_skeleton_adult_a1_02": [
+   1184,
+   0,
+   60,
+   68,
+   -26,
+   -68
+  ],
+  "en_skeleton_adult_a1_03": [
+   1299,
+   0,
+   59,
+   67,
+   -26,
+   -67
+  ],
+  "en_skeleton_adult_a1_04": [
+   1359,
+   0,
+   59,
+   67,
+   -26,
+   -67
+  ],
+  "en_skeleton_adult_a1_05": [
+   1245,
+   0,
+   53,
+   68,
+   -26,
+   -68
+  ],
+  "en_skeleton_adult_a1_06": [
+   1009,
+   0,
+   56,
+   69,
+   -26,
+   -69
+  ],
+  "en_skeleton_adult_a1_07": [
+   1066,
+   0,
+   56,
+   69,
+   -26,
+   -69
+  ],
+  "en_skeleton_adult_down_00": [
+   1123,
+   0,
+   60,
+   69,
+   -30,
+   -69
+  ],
+  "en_skeleton_adult_down_01": [
+   527,
+   0,
+   58,
+   72,
+   -27,
+   -73
+  ],
+  "en_skeleton_adult_down_02": [
+   1419,
+   0,
+   62,
+   64,
+   -31,
+   -65
+  ],
+  "en_skeleton_adult_down_03": [
+   1482,
+   0,
+   72,
+   49,
+   -36,
+   -49
+  ],
+  "en_skeleton_adult_down_04": [
+   1555,
+   0,
+   79,
+   35,
+   -40,
+   -35
+  ],
+  "en_skeleton_adult_hit_00": [
+   293,
+   0,
+   56,
+   73,
+   -26,
+   -73
+  ],
+  "en_skeleton_adult_hit_01": [
+   586,
+   0,
+   60,
+   72,
+   -30,
+   -72
+  ],
+  "en_skeleton_adult_idle_00": [
+   115,
+   0,
+   57,
+   75,
+   -28,
+   -75
+  ],
+  "en_skeleton_adult_idle_01": [
+   0,
+   0,
+   56,
+   79,
+   -27,
+   -79
+  ],
+  "en_skeleton_adult_idle_02": [
+   57,
+   0,
+   57,
+   78,
+   -27,
+   -78
+  ],
+  "en_skeleton_adult_idle_03": [
+   647,
+   0,
+   59,
+   72,
+   -29,
+   -72
+  ],
+  "en_skeleton_adult_walk_00": [
+   707,
+   0,
+   60,
+   72,
+   -29,
+   -74
+  ],
+  "en_skeleton_adult_walk_01": [
+   350,
+   0,
+   61,
+   73,
+   -29,
+   -75
+  ],
+  "en_skeleton_adult_walk_02": [
+   768,
+   0,
+   61,
+   72,
+   -29,
+   -74
+  ],
+  "en_skeleton_adult_walk_03": [
+   830,
+   0,
+   60,
+   72,
+   -29,
+   -72
+  ],
+  "en_skeleton_adult_walk_04": [
+   412,
+   0,
+   59,
+   73,
+   -29,
+   -73
+  ],
+  "en_skeleton_adult_walk_05": [
+   173,
+   0,
+   59,
+   75,
+   -29,
+   -75
+  ],
+  "en_skeleton_adult_walk_06": [
+   233,
+   0,
+   59,
+   75,
+   -29,
+   -75
+  ],
+  "en_skeleton_adult_walk_07": [
+   891,
+   0,
+   59,
+   72,
+   -29,
+   -72
+  ]
+ },
+ "frames": [
+  "en_skeleton_adult_a1_00",
+  "en_skeleton_adult_a1_01",
+  "en_skeleton_adult_a1_02",
+  "en_skeleton_adult_a1_03",
+  "en_skeleton_adult_a1_04",
+  "en_skeleton_adult_a1_05",
+  "en_skeleton_adult_a1_06",
+  "en_skeleton_adult_a1_07",
+  "en_skeleton_adult_down_00",
+  "en_skeleton_adult_down_01",
+  "en_skeleton_adult_down_02",
+  "en_skeleton_adult_down_03",
+  "en_skeleton_adult_down_04",
+  "en_skeleton_adult_hit_00",
+  "en_skeleton_adult_hit_01",
+  "en_skeleton_adult_idle_00",
+  "en_skeleton_adult_idle_01",
+  "en_skeleton_adult_idle_02",
+  "en_skeleton_adult_idle_03",
+  "en_skeleton_adult_walk_00",
+  "en_skeleton_adult_walk_01",
+  "en_skeleton_adult_walk_02",
+  "en_skeleton_adult_walk_03",
+  "en_skeleton_adult_walk_04",
+  "en_skeleton_adult_walk_05",
+  "en_skeleton_adult_walk_06",
+  "en_skeleton_adult_walk_07"
+ ],
+ "standing": [
+  "en_skeleton_adult_idle_00",
+  "en_skeleton_adult_idle_01",
+  "en_skeleton_adult_idle_02",
+  "en_skeleton_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 0,
+   "attack": {
+    "frames": [
+     "en_skeleton_adult_a1_00",
+     "en_skeleton_adult_a1_01",
+     "en_skeleton_adult_a1_02",
+     "en_skeleton_adult_a1_03",
+     "en_skeleton_adult_a1_04",
+     "en_skeleton_adult_a1_05",
+     "en_skeleton_adult_a1_06",
+     "en_skeleton_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_skeleton_adult_down_00",
+     "en_skeleton_adult_down_01",
+     "en_skeleton_adult_down_02",
+     "en_skeleton_adult_down_03",
+     "en_skeleton_adult_down_04"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "en_skeleton_adult_hit_00",
+     "en_skeleton_adult_hit_01"
+    ],
+    "durs": [
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_skeleton_adult_idle_00",
+     "en_skeleton_adult_idle_01",
+     "en_skeleton_adult_idle_02",
+     "en_skeleton_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_skeleton_adult_walk_00",
+     "en_skeleton_adult_walk_01",
+     "en_skeleton_adult_walk_02",
+     "en_skeleton_adult_walk_03",
+     "en_skeleton_adult_walk_04",
+     "en_skeleton_adult_walk_05",
+     "en_skeleton_adult_walk_06",
+     "en_skeleton_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.62
+  }
+ }
+}

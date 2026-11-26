@@ -1,0 +1,48 @@
+{
+ "species": "en_boss_lich",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 7.2,
+   "foot±": 1
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 56.7,
+   "foot±": 4
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 70.1,
+   "foot±": 0
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 1.0,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 3.1,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 17.5,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   263
+  ],
+  "box": [
+   129,
+   170
+  ],
+  "frames": 38,
+  "colors": 16,
+  "px": 538624
+ }
+}

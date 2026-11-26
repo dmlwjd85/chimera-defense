@@ -1,0 +1,524 @@
+{
+ "note": "en_overlord 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_overlord",
+ "sheet": "dot-m-en_overlord",
+ "file": "assets/dotm/en_overlord.png",
+ "frameW": 158,
+ "frameH": 169,
+ "foot": 160,
+ "cols": 1,
+ "anchorX": 73,
+ "palette": [
+  "#1c0410",
+  "#291a1f",
+  "#3f2e3e",
+  "#490c43",
+  "#5e4145",
+  "#5e4771",
+  "#700f3f",
+  "#7c758f",
+  "#7e5e50",
+  "#a5a5ad",
+  "#a98b6f",
+  "#ac194a",
+  "#c345e3",
+  "#c5c6d2",
+  "#e8deb3",
+  "#f3edf2"
+ ],
+ "rects": {
+  "en_overlord_adult_a1_00": [
+   504,
+   163,
+   122,
+   118,
+   -66,
+   -118
+  ],
+  "en_overlord_adult_a1_01": [
+   1010,
+   163,
+   114,
+   117,
+   -58,
+   -117
+  ],
+  "en_overlord_adult_a1_02": [
+   0,
+   283,
+   145,
+   113,
+   -60,
+   -113
+  ],
+  "en_overlord_adult_a1_03": [
+   449,
+   283,
+   148,
+   112,
+   -63,
+   -113
+  ],
+  "en_overlord_adult_a1_04": [
+   146,
+   283,
+   150,
+   113,
+   -65,
+   -113
+  ],
+  "en_overlord_adult_a1_05": [
+   297,
+   283,
+   151,
+   113,
+   -66,
+   -113
+  ],
+  "en_overlord_adult_a1_06": [
+   1629,
+   163,
+   145,
+   114,
+   -65,
+   -114
+  ],
+  "en_overlord_adult_a1_07": [
+   627,
+   163,
+   121,
+   118,
+   -62,
+   -118
+  ],
+  "en_overlord_adult_down_00": [
+   1125,
+   163,
+   127,
+   116,
+   -66,
+   -116
+  ],
+  "en_overlord_adult_down_01": [
+   891,
+   0,
+   117,
+   121,
+   -65,
+   -117
+  ],
+  "en_overlord_adult_down_02": [
+   1253,
+   163,
+   119,
+   115,
+   -60,
+   -112
+  ],
+  "en_overlord_adult_down_03": [
+   598,
+   283,
+   117,
+   93,
+   -43,
+   -94
+  ],
+  "en_overlord_adult_down_04": [
+   716,
+   283,
+   128,
+   84,
+   -51,
+   -77
+  ],
+  "en_overlord_adult_el_00": [
+   633,
+   0,
+   131,
+   123,
+   -67,
+   -121
+  ],
+  "en_overlord_adult_el_01": [
+   133,
+   0,
+   130,
+   142,
+   -71,
+   -141
+  ],
+  "en_overlord_adult_el_02": [
+   0,
+   0,
+   132,
+   162,
+   -73,
+   -161
+  ],
+  "en_overlord_adult_el_03": [
+   264,
+   0,
+   122,
+   126,
+   -73,
+   -125
+  ],
+  "en_overlord_adult_el_04": [
+   387,
+   0,
+   122,
+   126,
+   -73,
+   -125
+  ],
+  "en_overlord_adult_el_05": [
+   510,
+   0,
+   122,
+   125,
+   -71,
+   -124
+  ],
+  "en_overlord_adult_el_06": [
+   765,
+   0,
+   125,
+   122,
+   -66,
+   -120
+  ],
+  "en_overlord_adult_el_07": [
+   1643,
+   0,
+   122,
+   120,
+   -63,
+   -118
+  ],
+  "en_overlord_adult_hit_00": [
+   1373,
+   163,
+   127,
+   115,
+   -73,
+   -115
+  ],
+  "en_overlord_adult_hit_01": [
+   1501,
+   163,
+   127,
+   115,
+   -73,
+   -115
+  ],
+  "en_overlord_adult_hit_02": [
+   1775,
+   163,
+   127,
+   114,
+   -70,
+   -115
+  ],
+  "en_overlord_adult_hit_03": [
+   0,
+   163,
+   125,
+   119,
+   -62,
+   -119
+  ],
+  "en_overlord_adult_idle_00": [
+   1009,
+   0,
+   125,
+   121,
+   -62,
+   -121
+  ],
+  "en_overlord_adult_idle_01": [
+   1135,
+   0,
+   125,
+   121,
+   -62,
+   -121
+  ],
+  "en_overlord_adult_idle_02": [
+   1261,
+   0,
+   125,
+   121,
+   -62,
+   -121
+  ],
+  "en_overlord_adult_idle_03": [
+   126,
+   163,
+   125,
+   119,
+   -62,
+   -118
+  ],
+  "en_overlord_adult_walk_00": [
+   252,
+   163,
+   125,
+   119,
+   -62,
+   -118
+  ],
+  "en_overlord_adult_walk_01": [
+   1766,
+   0,
+   125,
+   120,
+   -62,
+   -121
+  ],
+  "en_overlord_adult_walk_02": [
+   1892,
+   0,
+   128,
+   120,
+   -65,
+   -121
+  ],
+  "en_overlord_adult_walk_03": [
+   749,
+   163,
+   130,
+   118,
+   -67,
+   -118
+  ],
+  "en_overlord_adult_walk_04": [
+   880,
+   163,
+   129,
+   118,
+   -66,
+   -118
+  ],
+  "en_overlord_adult_walk_05": [
+   1387,
+   0,
+   128,
+   121,
+   -65,
+   -121
+  ],
+  "en_overlord_adult_walk_06": [
+   1516,
+   0,
+   126,
+   121,
+   -63,
+   -121
+  ],
+  "en_overlord_adult_walk_07": [
+   378,
+   163,
+   125,
+   119,
+   -62,
+   -118
+  ]
+ },
+ "frames": [
+  "en_overlord_adult_a1_00",
+  "en_overlord_adult_a1_01",
+  "en_overlord_adult_a1_02",
+  "en_overlord_adult_a1_03",
+  "en_overlord_adult_a1_04",
+  "en_overlord_adult_a1_05",
+  "en_overlord_adult_a1_06",
+  "en_overlord_adult_a1_07",
+  "en_overlord_adult_down_00",
+  "en_overlord_adult_down_01",
+  "en_overlord_adult_down_02",
+  "en_overlord_adult_down_03",
+  "en_overlord_adult_down_04",
+  "en_overlord_adult_el_00",
+  "en_overlord_adult_el_01",
+  "en_overlord_adult_el_02",
+  "en_overlord_adult_el_03",
+  "en_overlord_adult_el_04",
+  "en_overlord_adult_el_05",
+  "en_overlord_adult_el_06",
+  "en_overlord_adult_el_07",
+  "en_overlord_adult_hit_00",
+  "en_overlord_adult_hit_01",
+  "en_overlord_adult_hit_02",
+  "en_overlord_adult_hit_03",
+  "en_overlord_adult_idle_00",
+  "en_overlord_adult_idle_01",
+  "en_overlord_adult_idle_02",
+  "en_overlord_adult_idle_03",
+  "en_overlord_adult_walk_00",
+  "en_overlord_adult_walk_01",
+  "en_overlord_adult_walk_02",
+  "en_overlord_adult_walk_03",
+  "en_overlord_adult_walk_04",
+  "en_overlord_adult_walk_05",
+  "en_overlord_adult_walk_06",
+  "en_overlord_adult_walk_07"
+ ],
+ "standing": [
+  "en_overlord_adult_idle_00",
+  "en_overlord_adult_idle_01",
+  "en_overlord_adult_idle_02",
+  "en_overlord_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 40,
+   "attack": {
+    "frames": [
+     "en_overlord_adult_a1_00",
+     "en_overlord_adult_a1_01",
+     "en_overlord_adult_a1_02",
+     "en_overlord_adult_a1_03",
+     "en_overlord_adult_a1_04",
+     "en_overlord_adult_a1_05",
+     "en_overlord_adult_a1_06",
+     "en_overlord_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.35,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_overlord_adult_down_00",
+     "en_overlord_adult_down_01",
+     "en_overlord_adult_down_02",
+     "en_overlord_adult_down_03",
+     "en_overlord_adult_down_04"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_overlord_adult_el_00",
+     "en_overlord_adult_el_01",
+     "en_overlord_adult_el_02",
+     "en_overlord_adult_el_03",
+     "en_overlord_adult_el_04",
+     "en_overlord_adult_el_05",
+     "en_overlord_adult_el_06",
+     "en_overlord_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.185,
+      "cast"
+     ],
+     [
+      0.195,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "en_overlord_adult_hit_00",
+     "en_overlord_adult_hit_01",
+     "en_overlord_adult_hit_02",
+     "en_overlord_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_overlord_adult_idle_00",
+     "en_overlord_adult_idle_01",
+     "en_overlord_adult_idle_02",
+     "en_overlord_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_overlord_adult_walk_00",
+     "en_overlord_adult_walk_01",
+     "en_overlord_adult_walk_02",
+     "en_overlord_adult_walk_03",
+     "en_overlord_adult_walk_04",
+     "en_overlord_adult_walk_05",
+     "en_overlord_adult_walk_06",
+     "en_overlord_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

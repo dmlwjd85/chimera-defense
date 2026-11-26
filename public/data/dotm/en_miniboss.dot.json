@@ -1,0 +1,364 @@
+{
+ "note": "en_miniboss 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_miniboss",
+ "sheet": "dot-m-en_miniboss",
+ "file": "assets/dotm/en_miniboss.png",
+ "frameW": 95,
+ "frameH": 83,
+ "foot": 80,
+ "cols": 1,
+ "anchorX": 48,
+ "palette": [
+  "#0a0203",
+  "#291a1f",
+  "#305c37",
+  "#492b2c",
+  "#5b3936",
+  "#5e8647",
+  "#7c4733",
+  "#813695",
+  "#9a918e",
+  "#9c4c38",
+  "#a739d4",
+  "#b15b53",
+  "#b86d38",
+  "#cfb297",
+  "#d68470",
+  "#f4e3da"
+ ],
+ "rects": {
+  "en_miniboss_adult_a1_00": [
+   434,
+   0,
+   81,
+   69,
+   -41,
+   -69
+  ],
+  "en_miniboss_adult_a1_01": [
+   516,
+   0,
+   82,
+   69,
+   -42,
+   -71
+  ],
+  "en_miniboss_adult_a1_02": [
+   0,
+   0,
+   84,
+   78,
+   -44,
+   -81
+  ],
+  "en_miniboss_adult_a1_03": [
+   85,
+   0,
+   84,
+   78,
+   -44,
+   -81
+  ],
+  "en_miniboss_adult_a1_04": [
+   170,
+   0,
+   88,
+   74,
+   -47,
+   -77
+  ],
+  "en_miniboss_adult_a1_05": [
+   599,
+   0,
+   89,
+   69,
+   -48,
+   -72
+  ],
+  "en_miniboss_adult_a1_06": [
+   1115,
+   0,
+   86,
+   68,
+   -45,
+   -68
+  ],
+  "en_miniboss_adult_down_00": [
+   1454,
+   0,
+   87,
+   67,
+   -44,
+   -67
+  ],
+  "en_miniboss_adult_down_01": [
+   1885,
+   0,
+   91,
+   62,
+   -45,
+   -63
+  ],
+  "en_miniboss_adult_down_02": [
+   0,
+   79,
+   93,
+   58,
+   -46,
+   -57
+  ],
+  "en_miniboss_adult_hit_00": [
+   259,
+   0,
+   87,
+   71,
+   -47,
+   -71
+  ],
+  "en_miniboss_adult_hit_01": [
+   1202,
+   0,
+   85,
+   68,
+   -44,
+   -68
+  ],
+  "en_miniboss_adult_idle_00": [
+   689,
+   0,
+   83,
+   69,
+   -42,
+   -69
+  ],
+  "en_miniboss_adult_idle_01": [
+   773,
+   0,
+   83,
+   69,
+   -42,
+   -71
+  ],
+  "en_miniboss_adult_idle_02": [
+   1801,
+   0,
+   83,
+   65,
+   -42,
+   -70
+  ],
+  "en_miniboss_adult_idle_03": [
+   1288,
+   0,
+   82,
+   68,
+   -41,
+   -68
+  ],
+  "en_miniboss_adult_walk_00": [
+   857,
+   0,
+   82,
+   69,
+   -41,
+   -69
+  ],
+  "en_miniboss_adult_walk_01": [
+   347,
+   0,
+   86,
+   70,
+   -44,
+   -70
+  ],
+  "en_miniboss_adult_walk_02": [
+   940,
+   0,
+   86,
+   69,
+   -44,
+   -70
+  ],
+  "en_miniboss_adult_walk_03": [
+   1542,
+   0,
+   81,
+   67,
+   -39,
+   -69
+  ],
+  "en_miniboss_adult_walk_04": [
+   1714,
+   0,
+   86,
+   66,
+   -43,
+   -69
+  ],
+  "en_miniboss_adult_walk_05": [
+   1624,
+   0,
+   89,
+   67,
+   -47,
+   -70
+  ],
+  "en_miniboss_adult_walk_06": [
+   1027,
+   0,
+   87,
+   69,
+   -46,
+   -69
+  ],
+  "en_miniboss_adult_walk_07": [
+   1371,
+   0,
+   82,
+   68,
+   -41,
+   -68
+  ]
+ },
+ "frames": [
+  "en_miniboss_adult_a1_00",
+  "en_miniboss_adult_a1_01",
+  "en_miniboss_adult_a1_02",
+  "en_miniboss_adult_a1_03",
+  "en_miniboss_adult_a1_04",
+  "en_miniboss_adult_a1_05",
+  "en_miniboss_adult_a1_06",
+  "en_miniboss_adult_down_00",
+  "en_miniboss_adult_down_01",
+  "en_miniboss_adult_down_02",
+  "en_miniboss_adult_hit_00",
+  "en_miniboss_adult_hit_01",
+  "en_miniboss_adult_idle_00",
+  "en_miniboss_adult_idle_01",
+  "en_miniboss_adult_idle_02",
+  "en_miniboss_adult_idle_03",
+  "en_miniboss_adult_walk_00",
+  "en_miniboss_adult_walk_01",
+  "en_miniboss_adult_walk_02",
+  "en_miniboss_adult_walk_03",
+  "en_miniboss_adult_walk_04",
+  "en_miniboss_adult_walk_05",
+  "en_miniboss_adult_walk_06",
+  "en_miniboss_adult_walk_07"
+ ],
+ "standing": [
+  "en_miniboss_adult_idle_00",
+  "en_miniboss_adult_idle_01",
+  "en_miniboss_adult_idle_02",
+  "en_miniboss_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 10,
+   "attack": {
+    "frames": [
+     "en_miniboss_adult_a1_00",
+     "en_miniboss_adult_a1_01",
+     "en_miniboss_adult_a1_02",
+     "en_miniboss_adult_a1_03",
+     "en_miniboss_adult_a1_04",
+     "en_miniboss_adult_a1_05",
+     "en_miniboss_adult_a1_06"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_miniboss_adult_down_00",
+     "en_miniboss_adult_down_01",
+     "en_miniboss_adult_down_02"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true,
+    "fx": {
+     "sink": 3
+    }
+   },
+   "hit": {
+    "frames": [
+     "en_miniboss_adult_hit_00",
+     "en_miniboss_adult_hit_01"
+    ],
+    "durs": [
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_miniboss_adult_idle_00",
+     "en_miniboss_adult_idle_01",
+     "en_miniboss_adult_idle_02",
+     "en_miniboss_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_miniboss_adult_walk_00",
+     "en_miniboss_adult_walk_01",
+     "en_miniboss_adult_walk_02",
+     "en_miniboss_adult_walk_03",
+     "en_miniboss_adult_walk_04",
+     "en_miniboss_adult_walk_05",
+     "en_miniboss_adult_walk_06",
+     "en_miniboss_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.62
+  }
+ }
+}

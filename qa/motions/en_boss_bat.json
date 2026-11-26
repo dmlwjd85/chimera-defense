@@ -1,0 +1,38 @@
+{
+ "species": "en_boss_bat",
+ "motions": {
+  "adult_down": {
+   "n": 3,
+   "max|h%|": 30.5,
+   "foot±": 6
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 62.1,
+   "foot±": 14
+  },
+  "adult_hit": {
+   "n": 3,
+   "max|h%|": 12.6,
+   "foot±": 4
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 34.7,
+   "foot±": 31
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   246
+  ],
+  "box": [
+   151,
+   166
+  ],
+  "frames": 22,
+  "colors": 16,
+  "px": 503808
+ }
+}

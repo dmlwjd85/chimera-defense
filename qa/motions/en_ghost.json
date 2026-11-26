@@ -1,0 +1,43 @@
+{
+ "species": "en_ghost",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 43.1,
+   "foot±": 10
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 54.9,
+   "foot±": 3
+  },
+  "adult_hit": {
+   "n": 2,
+   "max|h%|": 7.8,
+   "foot±": 1
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.0,
+   "foot±": 2
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.0,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   79
+  ],
+  "box": [
+   77,
+   86
+  ],
+  "frames": 28,
+  "colors": 16,
+  "px": 161792
+ }
+}

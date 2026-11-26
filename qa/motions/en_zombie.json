@@ -1,0 +1,43 @@
+{
+ "species": "en_zombie",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 5.3,
+   "foot±": 12
+  },
+  "adult_down": {
+   "n": 4,
+   "max|h%|": 23.7,
+   "foot±": 0
+  },
+  "adult_hit": {
+   "n": 2,
+   "max|h%|": 3.9,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.6,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.6,
+   "foot±": 3
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   155
+  ],
+  "box": [
+   103,
+   87
+  ],
+  "frames": 26,
+  "colors": 16,
+  "px": 317440
+ }
+}

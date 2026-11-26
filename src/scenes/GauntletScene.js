@@ -7,7 +7,7 @@ import { buildData } from '../logic/data.js';
 import { battleOptions, settleRun, writeSave, carryCandidates, setCarry } from '../logic/meta.js';
 import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg } from '../logic/gauntlet.js';
 import { spellDef, spellCost } from '../logic/spells.js';
-import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets } from './rigs.js';
+import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds } from './rigs.js';
 import { FX, ambient, weather } from './fx.js';
 import { sfx, unlockAudio } from './sfx.js';
 import { button, style, unitToken, hex, COLORS, speciesImage } from './ui.js';
@@ -36,6 +36,7 @@ export default class GauntletScene extends Phaser.Scene {
       const data = buildData(this.registry.get('raw'));
       const pool = battleOptions(this.registry.get('save'), data, d?.stageId ?? 'forest-1').pool ?? [];
       queueMotionSheets(this, pool);
+      queueMotionSheets(this, stageEnemyIds(data.stageById[d?.stageId ?? 'forest-1'], data));   // 그 판 적의 PixelLab 동작
     } catch (e) { console.warn('motion sheets', e); }
     this.load.on('loaderror', (f) => console.warn('motion sheet missing', f.key));
   }
@@ -201,8 +202,8 @@ export default class GauntletScene extends Phaser.Scene {
     const size = e.boss ? 60 : e.id === 'swarm' ? 30 : 34;
     const holder = this.add.container(0, 0);
     const px = size * 2.2 * (e.boss ? 1.25 : 1.3);
-    const rig = enemyRig(this, e, holder, px);
-    if (rig && dotOn()) dotify(this, holder);
+    const rig = enemyRig(this, e, holder, px, UNIT_SCALE);
+    if (rig && !rig.dot && dotOn()) dotify(this, holder);
     const body = rig ? null : this.add.rectangle(0, -size / 2, size, size, hex(def.color));
     if (body) holder.add(body);
     const c = this.add.container(0, 0);

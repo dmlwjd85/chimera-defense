@@ -106,8 +106,31 @@ export function unitRig(scene, unit, parent, scale = 0.17) {
   return { inst, view: new RigView(scene, inst, { parent }) };
 }
 
+/** 적 동작 시트(PixelLab, en_<id>): 그 판에 나올 적만. 보스가 불러내는 졸병도 같이. */
+export function stageEnemyIds(stage, data) {
+  const ids = new Set();
+  for (const w of stage?.waves ?? []) { for (const id of Object.keys(w.mix ?? {})) ids.add(id); for (const id of w.extra ?? []) ids.add(id); }
+  if (stage?.boss) ids.add(stage.boss);
+  for (const id of [...ids]) { const p = data?.enemyById?.[id]?.pattern; if (p?.enemy) ids.add(p.enemy); }
+  return [...ids].map((id) => 'en_' + id);
+}
+
+/** 적 도트(동작 시트가 불러와져 있을 때만). 오른쪽을 보는 그림 → 왼쪽(동물 쪽)을 보게 뒤집음. */
+function enemyDot(scene, enemy, parent, scale) {
+  if (!dotArtOn()) return null;
+  const mv = scene.cache.json.get('dotM-en_' + enemy.id);
+  if (!mv || dotBad.has(mv.species + 'm') || !scene.textures.exists(mv.sheet)) return null;
+  if (!mv._checked) { const errs = validateDot(mv); if (errs.length) { console.warn(`dotm ${mv.species}:`, errs); dotBad.add(mv.species + 'm'); return null; } mv._checked = true; }
+  if (!ensureDotFrames(scene, mv)) return null;
+  const inst = new DotInstance(mv, { stage: 'adult', scale, motion: 'move' });
+  inst.setFacing(-1);
+  return { inst, view: new DotView(scene, inst, { parent, px: DOT_PX * (scale / 0.22) }), dot: true };
+}
+
 /** One-image enemy animated with the sprite template. */
-export function enemyRig(scene, enemy, parent, px) {
+export function enemyRig(scene, enemy, parent, px, dotScale = 0.22) {
+  const dot = enemyDot(scene, enemy, parent, dotScale);   // dotScale = 그 화면의 동물 배율(전투 0.22, 연전 0.34)과 같게
+  if (dot) return dot;
   const key = 'enemy-' + enemy.id;
   if (!scene.textures.exists(key)) return null;
   const template = json(scene, 'rigT-sprite'), anims = json(scene, 'rigA-sprite');

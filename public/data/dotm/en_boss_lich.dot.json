@@ -1,0 +1,535 @@
+{
+ "note": "en_boss_lich 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_lich",
+ "sheet": "dot-m-en_boss_lich",
+ "file": "assets/dotm/en_boss_lich.png",
+ "frameW": 129,
+ "frameH": 170,
+ "foot": 164,
+ "cols": 1,
+ "anchorX": 61,
+ "palette": [
+  "#16060d",
+  "#291a1f",
+  "#324643",
+  "#40284c",
+  "#4c6a57",
+  "#52322e",
+  "#69457a",
+  "#7b6d59",
+  "#7d503f",
+  "#8627c8",
+  "#8a4b9a",
+  "#959788",
+  "#b464ba",
+  "#b650ea",
+  "#d187f0",
+  "#dcd6b9"
+ ],
+ "rects": {
+  "en_boss_lich_adult_a1_00": [
+   1849,
+   0,
+   89,
+   97,
+   -44,
+   -97
+  ],
+  "en_boss_lich_adult_a1_01": [
+   1041,
+   0,
+   86,
+   102,
+   -51,
+   -102
+  ],
+  "en_boss_lich_adult_a1_02": [
+   1173,
+   166,
+   127,
+   90,
+   -61,
+   -90
+  ],
+  "en_boss_lich_adult_a1_03": [
+   715,
+   166,
+   114,
+   93,
+   -47,
+   -93
+  ],
+  "en_boss_lich_adult_a1_04": [
+   830,
+   166,
+   114,
+   93,
+   -47,
+   -93
+  ],
+  "en_boss_lich_adult_a1_05": [
+   1058,
+   166,
+   114,
+   92,
+   -47,
+   -92
+  ],
+  "en_boss_lich_adult_a1_06": [
+   945,
+   166,
+   112,
+   93,
+   -44,
+   -93
+  ],
+  "en_boss_lich_adult_a1_07": [
+   270,
+   166,
+   89,
+   96,
+   -43,
+   -97
+  ],
+  "en_boss_lich_adult_down_00": [
+   1128,
+   0,
+   89,
+   102,
+   -44,
+   -102
+  ],
+  "en_boss_lich_adult_down_01": [
+   360,
+   166,
+   87,
+   96,
+   -42,
+   -96
+  ],
+  "en_boss_lich_adult_down_02": [
+   1307,
+   0,
+   87,
+   100,
+   -39,
+   -100
+  ],
+  "en_boss_lich_adult_down_03": [
+   1486,
+   0,
+   86,
+   99,
+   -37,
+   -99
+  ],
+  "en_boss_lich_adult_down_04": [
+   1301,
+   166,
+   111,
+   57,
+   -46,
+   -58
+  ],
+  "en_boss_lich_adult_down_05": [
+   1413,
+   166,
+   119,
+   42,
+   -52,
+   -38
+  ],
+  "en_boss_lich_adult_el_00": [
+   674,
+   0,
+   92,
+   110,
+   -46,
+   -110
+  ],
+  "en_boss_lich_adult_el_01": [
+   158,
+   0,
+   85,
+   162,
+   -53,
+   -162
+  ],
+  "en_boss_lich_adult_el_02": [
+   0,
+   0,
+   78,
+   165,
+   -50,
+   -165
+  ],
+  "en_boss_lich_adult_el_03": [
+   79,
+   0,
+   78,
+   164,
+   -49,
+   -164
+  ],
+  "en_boss_lich_adult_el_04": [
+   244,
+   0,
+   79,
+   162,
+   -49,
+   -162
+  ],
+  "en_boss_lich_adult_el_05": [
+   324,
+   0,
+   81,
+   160,
+   -49,
+   -160
+  ],
+  "en_boss_lich_adult_el_06": [
+   406,
+   0,
+   84,
+   122,
+   -42,
+   -122
+  ],
+  "en_boss_lich_adult_el_07": [
+   1573,
+   0,
+   88,
+   98,
+   -42,
+   -98
+  ],
+  "en_boss_lich_adult_hit_00": [
+   1939,
+   0,
+   89,
+   97,
+   -48,
+   -97
+  ],
+  "en_boss_lich_adult_hit_01": [
+   1662,
+   0,
+   96,
+   98,
+   -49,
+   -98
+  ],
+  "en_boss_lich_adult_hit_02": [
+   448,
+   166,
+   90,
+   96,
+   -47,
+   -96
+  ],
+  "en_boss_lich_adult_hit_03": [
+   539,
+   166,
+   84,
+   96,
+   -44,
+   -96
+  ],
+  "en_boss_lich_adult_idle_00": [
+   1759,
+   0,
+   89,
+   98,
+   -44,
+   -98
+  ],
+  "en_boss_lich_adult_idle_01": [
+   1395,
+   0,
+   90,
+   100,
+   -44,
+   -100
+  ],
+  "en_boss_lich_adult_idle_02": [
+   624,
+   166,
+   90,
+   96,
+   -44,
+   -96
+  ],
+  "en_boss_lich_adult_idle_03": [
+   0,
+   166,
+   89,
+   97,
+   -44,
+   -97
+  ],
+  "en_boss_lich_adult_walk_00": [
+   90,
+   166,
+   89,
+   97,
+   -44,
+   -97
+  ],
+  "en_boss_lich_adult_walk_01": [
+   949,
+   0,
+   91,
+   103,
+   -47,
+   -104
+  ],
+  "en_boss_lich_adult_walk_02": [
+   491,
+   0,
+   91,
+   114,
+   -49,
+   -115
+  ],
+  "en_boss_lich_adult_walk_03": [
+   857,
+   0,
+   91,
+   106,
+   -48,
+   -107
+  ],
+  "en_boss_lich_adult_walk_04": [
+   583,
+   0,
+   90,
+   113,
+   -47,
+   -114
+  ],
+  "en_boss_lich_adult_walk_05": [
+   767,
+   0,
+   89,
+   109,
+   -45,
+   -110
+  ],
+  "en_boss_lich_adult_walk_06": [
+   1218,
+   0,
+   88,
+   101,
+   -44,
+   -101
+  ],
+  "en_boss_lich_adult_walk_07": [
+   180,
+   166,
+   89,
+   97,
+   -44,
+   -97
+  ]
+ },
+ "frames": [
+  "en_boss_lich_adult_a1_00",
+  "en_boss_lich_adult_a1_01",
+  "en_boss_lich_adult_a1_02",
+  "en_boss_lich_adult_a1_03",
+  "en_boss_lich_adult_a1_04",
+  "en_boss_lich_adult_a1_05",
+  "en_boss_lich_adult_a1_06",
+  "en_boss_lich_adult_a1_07",
+  "en_boss_lich_adult_down_00",
+  "en_boss_lich_adult_down_01",
+  "en_boss_lich_adult_down_02",
+  "en_boss_lich_adult_down_03",
+  "en_boss_lich_adult_down_04",
+  "en_boss_lich_adult_down_05",
+  "en_boss_lich_adult_el_00",
+  "en_boss_lich_adult_el_01",
+  "en_boss_lich_adult_el_02",
+  "en_boss_lich_adult_el_03",
+  "en_boss_lich_adult_el_04",
+  "en_boss_lich_adult_el_05",
+  "en_boss_lich_adult_el_06",
+  "en_boss_lich_adult_el_07",
+  "en_boss_lich_adult_hit_00",
+  "en_boss_lich_adult_hit_01",
+  "en_boss_lich_adult_hit_02",
+  "en_boss_lich_adult_hit_03",
+  "en_boss_lich_adult_idle_00",
+  "en_boss_lich_adult_idle_01",
+  "en_boss_lich_adult_idle_02",
+  "en_boss_lich_adult_idle_03",
+  "en_boss_lich_adult_walk_00",
+  "en_boss_lich_adult_walk_01",
+  "en_boss_lich_adult_walk_02",
+  "en_boss_lich_adult_walk_03",
+  "en_boss_lich_adult_walk_04",
+  "en_boss_lich_adult_walk_05",
+  "en_boss_lich_adult_walk_06",
+  "en_boss_lich_adult_walk_07"
+ ],
+ "standing": [
+  "en_boss_lich_adult_idle_00",
+  "en_boss_lich_adult_idle_01",
+  "en_boss_lich_adult_idle_02",
+  "en_boss_lich_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 65,
+   "attack": {
+    "frames": [
+     "en_boss_lich_adult_a1_00",
+     "en_boss_lich_adult_a1_01",
+     "en_boss_lich_adult_a1_02",
+     "en_boss_lich_adult_a1_03",
+     "en_boss_lich_adult_a1_04",
+     "en_boss_lich_adult_a1_05",
+     "en_boss_lich_adult_a1_06",
+     "en_boss_lich_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_lich_adult_down_00",
+     "en_boss_lich_adult_down_01",
+     "en_boss_lich_adult_down_02",
+     "en_boss_lich_adult_down_03",
+     "en_boss_lich_adult_down_04",
+     "en_boss_lich_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_lich_adult_el_00",
+     "en_boss_lich_adult_el_01",
+     "en_boss_lich_adult_el_02",
+     "en_boss_lich_adult_el_03",
+     "en_boss_lich_adult_el_04",
+     "en_boss_lich_adult_el_05",
+     "en_boss_lich_adult_el_06",
+     "en_boss_lich_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.185,
+      "cast"
+     ],
+     [
+      0.195,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "en_boss_lich_adult_hit_00",
+     "en_boss_lich_adult_hit_01",
+     "en_boss_lich_adult_hit_02",
+     "en_boss_lich_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_lich_adult_idle_00",
+     "en_boss_lich_adult_idle_01",
+     "en_boss_lich_adult_idle_02",
+     "en_boss_lich_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_boss_lich_adult_walk_00",
+     "en_boss_lich_adult_walk_01",
+     "en_boss_lich_adult_walk_02",
+     "en_boss_lich_adult_walk_03",
+     "en_boss_lich_adult_walk_04",
+     "en_boss_lich_adult_walk_05",
+     "en_boss_lich_adult_walk_06",
+     "en_boss_lich_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

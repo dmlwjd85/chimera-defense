@@ -172,6 +172,13 @@ test('motion dot sheets (dotm) pass the rules', () => {
     // 기술 묶음 동작이 단계마다 있는지: 아기 기본1, 성장기 +기본2, 성체 +속성, 신화급 +필살기
     const own = readJson('data/config.json').moves?.ultOwn ?? [];   // 전용 필살기 연출이 있는 종(산군)은 공용 필살기 동작 없음
     const need = { baby: ['idle', 'move', 'attack', 'hit', 'down'], teen: ['attack2'], adult: ['attack2', 'skill'], myth: ['attack2', 'skill', ...(own.includes(d.species.replace('_spirit', '')) ? [] : ['ult'])] };
+    // 적(en_*): 걷기·맞기·쓰러짐 + 공격하는 적은 공격(막아선 동물과 치고받음), 보스는 기술(패턴 신호)
+    if (key.startsWith('en_')) {
+      const st = d.sets.adult;
+      for (const m of ['idle', 'move', 'hit', 'down', ...(d.noAttack ? [] : ['attack'])]) assert.ok(st?.[m], `${key} ${m}`);
+      assert.ok(st.hit.frames.length >= 1 && st.move.frames.length >= 4, `${key} frames`);
+      continue;
+    }
     for (const [set, ms] of Object.entries(need)) if (d.sets[set]) for (const m of ms) assert.ok(d.sets[set][m], `${key} ${set} ${m}`);
   }
 });

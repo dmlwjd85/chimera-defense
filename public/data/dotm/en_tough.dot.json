@@ -1,0 +1,449 @@
+{
+ "note": "en_tough 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_tough",
+ "sheet": "dot-m-en_tough",
+ "file": "assets/dotm/en_tough.png",
+ "frameW": 96,
+ "frameH": 102,
+ "foot": 99,
+ "cols": 1,
+ "anchorX": 46,
+ "palette": [
+  "#13060e",
+  "#183a24",
+  "#291a1f",
+  "#303243",
+  "#3f4851",
+  "#4a913b",
+  "#4d565f",
+  "#616970",
+  "#703697",
+  "#798185",
+  "#79c24a",
+  "#858d91",
+  "#999fa5",
+  "#a3b2b8",
+  "#c45fe1",
+  "#f7b2fb"
+ ],
+ "rects": {
+  "en_tough_adult_a1_00": [
+   826,
+   0,
+   83,
+   84,
+   -42,
+   -84
+  ],
+  "en_tough_adult_a1_01": [
+   1072,
+   0,
+   84,
+   83,
+   -43,
+   -83
+  ],
+  "en_tough_adult_a1_02": [
+   1305,
+   0,
+   86,
+   81,
+   -45,
+   -81
+  ],
+  "en_tough_adult_a1_03": [
+   1829,
+   0,
+   87,
+   79,
+   -46,
+   -79
+  ],
+  "en_tough_adult_a1_04": [
+   1917,
+   0,
+   81,
+   78,
+   -41,
+   -78
+  ],
+  "en_tough_adult_a1_05": [
+   1459,
+   0,
+   69,
+   80,
+   -19,
+   -80
+  ],
+  "en_tough_adult_a1_06": [
+   1392,
+   0,
+   66,
+   81,
+   -20,
+   -81
+  ],
+  "en_tough_adult_a1_07": [
+   1157,
+   0,
+   69,
+   82,
+   -29,
+   -82
+  ],
+  "en_tough_adult_down_00": [
+   1529,
+   0,
+   71,
+   80,
+   -33,
+   -80
+  ],
+  "en_tough_adult_down_01": [
+   0,
+   100,
+   66,
+   78,
+   -31,
+   -78
+  ],
+  "en_tough_adult_down_02": [
+   1601,
+   0,
+   67,
+   80,
+   -32,
+   -80
+  ],
+  "en_tough_adult_down_03": [
+   1669,
+   0,
+   74,
+   80,
+   -36,
+   -80
+  ],
+  "en_tough_adult_down_04": [
+   67,
+   100,
+   70,
+   67,
+   -31,
+   -68
+  ],
+  "en_tough_adult_down_05": [
+   138,
+   100,
+   87,
+   50,
+   -40,
+   -50
+  ],
+  "en_tough_adult_down_06": [
+   226,
+   100,
+   91,
+   47,
+   -44,
+   -47
+  ],
+  "en_tough_adult_down_07": [
+   318,
+   100,
+   91,
+   46,
+   -44,
+   -46
+  ],
+  "en_tough_adult_hit_00": [
+   1744,
+   0,
+   84,
+   80,
+   -43,
+   -80
+  ],
+  "en_tough_adult_hit_01": [
+   1227,
+   0,
+   77,
+   82,
+   -39,
+   -82
+  ],
+  "en_tough_adult_hit_02": [
+   210,
+   0,
+   69,
+   90,
+   -35,
+   -90
+  ],
+  "en_tough_adult_hit_03": [
+   70,
+   0,
+   62,
+   94,
+   -32,
+   -94
+  ],
+  "en_tough_adult_idle_00": [
+   133,
+   0,
+   76,
+   93,
+   -36,
+   -95
+  ],
+  "en_tough_adult_idle_01": [
+   0,
+   0,
+   69,
+   99,
+   -32,
+   -100
+  ],
+  "en_tough_adult_idle_02": [
+   280,
+   0,
+   77,
+   90,
+   -37,
+   -90
+  ],
+  "en_tough_adult_idle_03": [
+   910,
+   0,
+   80,
+   84,
+   -40,
+   -84
+  ],
+  "en_tough_adult_walk_00": [
+   749,
+   0,
+   76,
+   85,
+   -37,
+   -86
+  ],
+  "en_tough_adult_walk_01": [
+   603,
+   0,
+   69,
+   87,
+   -33,
+   -88
+  ],
+  "en_tough_adult_walk_02": [
+   419,
+   0,
+   58,
+   88,
+   -28,
+   -89
+  ],
+  "en_tough_adult_walk_03": [
+   478,
+   0,
+   55,
+   88,
+   -28,
+   -87
+  ],
+  "en_tough_adult_walk_04": [
+   358,
+   0,
+   60,
+   89,
+   -29,
+   -88
+  ],
+  "en_tough_adult_walk_05": [
+   534,
+   0,
+   68,
+   88,
+   -33,
+   -88
+  ],
+  "en_tough_adult_walk_06": [
+   673,
+   0,
+   75,
+   86,
+   -37,
+   -86
+  ],
+  "en_tough_adult_walk_07": [
+   991,
+   0,
+   80,
+   84,
+   -40,
+   -84
+  ]
+ },
+ "frames": [
+  "en_tough_adult_a1_00",
+  "en_tough_adult_a1_01",
+  "en_tough_adult_a1_02",
+  "en_tough_adult_a1_03",
+  "en_tough_adult_a1_04",
+  "en_tough_adult_a1_05",
+  "en_tough_adult_a1_06",
+  "en_tough_adult_a1_07",
+  "en_tough_adult_down_00",
+  "en_tough_adult_down_01",
+  "en_tough_adult_down_02",
+  "en_tough_adult_down_03",
+  "en_tough_adult_down_04",
+  "en_tough_adult_down_05",
+  "en_tough_adult_down_06",
+  "en_tough_adult_down_07",
+  "en_tough_adult_hit_00",
+  "en_tough_adult_hit_01",
+  "en_tough_adult_hit_02",
+  "en_tough_adult_hit_03",
+  "en_tough_adult_idle_00",
+  "en_tough_adult_idle_01",
+  "en_tough_adult_idle_02",
+  "en_tough_adult_idle_03",
+  "en_tough_adult_walk_00",
+  "en_tough_adult_walk_01",
+  "en_tough_adult_walk_02",
+  "en_tough_adult_walk_03",
+  "en_tough_adult_walk_04",
+  "en_tough_adult_walk_05",
+  "en_tough_adult_walk_06",
+  "en_tough_adult_walk_07"
+ ],
+ "standing": [
+  "en_tough_adult_idle_00",
+  "en_tough_adult_idle_01",
+  "en_tough_adult_idle_02",
+  "en_tough_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 0,
+   "attack": {
+    "frames": [
+     "en_tough_adult_a1_00",
+     "en_tough_adult_a1_01",
+     "en_tough_adult_a1_02",
+     "en_tough_adult_a1_03",
+     "en_tough_adult_a1_04",
+     "en_tough_adult_a1_05",
+     "en_tough_adult_a1_06",
+     "en_tough_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.35,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_tough_adult_down_00",
+     "en_tough_adult_down_01",
+     "en_tough_adult_down_02",
+     "en_tough_adult_down_03",
+     "en_tough_adult_down_04",
+     "en_tough_adult_down_05",
+     "en_tough_adult_down_06",
+     "en_tough_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "en_tough_adult_hit_00",
+     "en_tough_adult_hit_01",
+     "en_tough_adult_hit_02",
+     "en_tough_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_tough_adult_idle_00",
+     "en_tough_adult_idle_01",
+     "en_tough_adult_idle_02",
+     "en_tough_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_tough_adult_walk_00",
+     "en_tough_adult_walk_01",
+     "en_tough_adult_walk_02",
+     "en_tough_adult_walk_03",
+     "en_tough_adult_walk_04",
+     "en_tough_adult_walk_05",
+     "en_tough_adult_walk_06",
+     "en_tough_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.62
+  }
+ }
+}

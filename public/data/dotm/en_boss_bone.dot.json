@@ -1,0 +1,535 @@
+{
+ "note": "en_boss_bone 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_bone",
+ "sheet": "dot-m-en_boss_bone",
+ "file": "assets/dotm/en_boss_bone.png",
+ "frameW": 139,
+ "frameH": 166,
+ "foot": 161,
+ "cols": 1,
+ "anchorX": 62,
+ "palette": [
+  "#140a10",
+  "#291a1f",
+  "#383a47",
+  "#425268",
+  "#46162c",
+  "#516d80",
+  "#661a2d",
+  "#668697",
+  "#75604b",
+  "#90a3af",
+  "#95856c",
+  "#9a2d31",
+  "#9bbbc8",
+  "#cebe93",
+  "#d2dee6",
+  "#e7dcb5"
+ ],
+ "rects": {
+  "en_boss_bone_adult_a1_00": [
+   204,
+   155,
+   95,
+   92,
+   -50,
+   -93
+  ],
+  "en_boss_bone_adult_a1_01": [
+   685,
+   155,
+   99,
+   90,
+   -57,
+   -91
+  ],
+  "en_boss_bone_adult_a1_02": [
+   300,
+   155,
+   86,
+   92,
+   -53,
+   -93
+  ],
+  "en_boss_bone_adult_a1_03": [
+   678,
+   0,
+   86,
+   95,
+   -56,
+   -96
+  ],
+  "en_boss_bone_adult_a1_04": [
+   387,
+   0,
+   94,
+   99,
+   -62,
+   -100
+  ],
+  "en_boss_bone_adult_a1_05": [
+   297,
+   0,
+   89,
+   108,
+   -56,
+   -109
+  ],
+  "en_boss_bone_adult_a1_06": [
+   785,
+   155,
+   90,
+   90,
+   -54,
+   -91
+  ],
+  "en_boss_bone_adult_a1_07": [
+   387,
+   155,
+   97,
+   92,
+   -53,
+   -93
+  ],
+  "en_boss_bone_adult_down_00": [
+   1058,
+   0,
+   93,
+   94,
+   -49,
+   -94
+  ],
+  "en_boss_bone_adult_down_01": [
+   1152,
+   0,
+   95,
+   94,
+   -50,
+   -94
+  ],
+  "en_boss_bone_adult_down_02": [
+   485,
+   155,
+   103,
+   92,
+   -51,
+   -92
+  ],
+  "en_boss_bone_adult_down_03": [
+   1008,
+   155,
+   106,
+   89,
+   -50,
+   -89
+  ],
+  "en_boss_bone_adult_down_04": [
+   1408,
+   155,
+   93,
+   70,
+   -53,
+   -70
+  ],
+  "en_boss_bone_adult_down_05": [
+   1502,
+   155,
+   93,
+   67,
+   -45,
+   -64
+  ],
+  "en_boss_bone_adult_down_06": [
+   1596,
+   155,
+   97,
+   54,
+   -41,
+   -52
+  ],
+  "en_boss_bone_adult_el_00": [
+   589,
+   155,
+   95,
+   92,
+   -50,
+   -92
+  ],
+  "en_boss_bone_adult_el_01": [
+   482,
+   0,
+   97,
+   98,
+   -56,
+   -98
+  ],
+  "en_boss_bone_adult_el_02": [
+   0,
+   0,
+   93,
+   154,
+   -50,
+   -162
+  ],
+  "en_boss_bone_adult_el_03": [
+   94,
+   0,
+   99,
+   150,
+   -57,
+   -159
+  ],
+  "en_boss_bone_adult_el_04": [
+   194,
+   0,
+   102,
+   150,
+   -59,
+   -154
+  ],
+  "en_boss_bone_adult_el_05": [
+   876,
+   155,
+   131,
+   90,
+   -54,
+   -89
+  ],
+  "en_boss_bone_adult_el_06": [
+   93,
+   155,
+   110,
+   93,
+   -59,
+   -92
+  ],
+  "en_boss_bone_adult_el_07": [
+   765,
+   0,
+   96,
+   95,
+   -54,
+   -94
+  ],
+  "en_boss_bone_adult_hit_00": [
+   1115,
+   155,
+   101,
+   89,
+   -58,
+   -89
+  ],
+  "en_boss_bone_adult_hit_01": [
+   1217,
+   155,
+   95,
+   84,
+   -51,
+   -84
+  ],
+  "en_boss_bone_adult_hit_02": [
+   1313,
+   155,
+   94,
+   84,
+   -49,
+   -84
+  ],
+  "en_boss_bone_adult_idle_00": [
+   1248,
+   0,
+   92,
+   94,
+   -47,
+   -94
+  ],
+  "en_boss_bone_adult_idle_01": [
+   1341,
+   0,
+   92,
+   94,
+   -47,
+   -94
+  ],
+  "en_boss_bone_adult_idle_02": [
+   1434,
+   0,
+   92,
+   94,
+   -47,
+   -94
+  ],
+  "en_boss_bone_adult_idle_03": [
+   1527,
+   0,
+   92,
+   94,
+   -46,
+   -94
+  ],
+  "en_boss_bone_adult_walk_00": [
+   1620,
+   0,
+   95,
+   94,
+   -48,
+   -95
+  ],
+  "en_boss_bone_adult_walk_01": [
+   862,
+   0,
+   97,
+   95,
+   -50,
+   -96
+  ],
+  "en_boss_bone_adult_walk_02": [
+   1716,
+   0,
+   97,
+   94,
+   -50,
+   -95
+  ],
+  "en_boss_bone_adult_walk_03": [
+   1814,
+   0,
+   93,
+   94,
+   -46,
+   -94
+  ],
+  "en_boss_bone_adult_walk_04": [
+   1908,
+   0,
+   94,
+   94,
+   -47,
+   -94
+  ],
+  "en_boss_bone_adult_walk_05": [
+   580,
+   0,
+   97,
+   96,
+   -50,
+   -96
+  ],
+  "en_boss_bone_adult_walk_06": [
+   960,
+   0,
+   97,
+   95,
+   -50,
+   -95
+  ],
+  "en_boss_bone_adult_walk_07": [
+   0,
+   155,
+   92,
+   94,
+   -46,
+   -94
+  ]
+ },
+ "frames": [
+  "en_boss_bone_adult_a1_00",
+  "en_boss_bone_adult_a1_01",
+  "en_boss_bone_adult_a1_02",
+  "en_boss_bone_adult_a1_03",
+  "en_boss_bone_adult_a1_04",
+  "en_boss_bone_adult_a1_05",
+  "en_boss_bone_adult_a1_06",
+  "en_boss_bone_adult_a1_07",
+  "en_boss_bone_adult_down_00",
+  "en_boss_bone_adult_down_01",
+  "en_boss_bone_adult_down_02",
+  "en_boss_bone_adult_down_03",
+  "en_boss_bone_adult_down_04",
+  "en_boss_bone_adult_down_05",
+  "en_boss_bone_adult_down_06",
+  "en_boss_bone_adult_el_00",
+  "en_boss_bone_adult_el_01",
+  "en_boss_bone_adult_el_02",
+  "en_boss_bone_adult_el_03",
+  "en_boss_bone_adult_el_04",
+  "en_boss_bone_adult_el_05",
+  "en_boss_bone_adult_el_06",
+  "en_boss_bone_adult_el_07",
+  "en_boss_bone_adult_hit_00",
+  "en_boss_bone_adult_hit_01",
+  "en_boss_bone_adult_hit_02",
+  "en_boss_bone_adult_idle_00",
+  "en_boss_bone_adult_idle_01",
+  "en_boss_bone_adult_idle_02",
+  "en_boss_bone_adult_idle_03",
+  "en_boss_bone_adult_walk_00",
+  "en_boss_bone_adult_walk_01",
+  "en_boss_bone_adult_walk_02",
+  "en_boss_bone_adult_walk_03",
+  "en_boss_bone_adult_walk_04",
+  "en_boss_bone_adult_walk_05",
+  "en_boss_bone_adult_walk_06",
+  "en_boss_bone_adult_walk_07"
+ ],
+ "standing": [
+  "en_boss_bone_adult_idle_00",
+  "en_boss_bone_adult_idle_01",
+  "en_boss_bone_adult_idle_02",
+  "en_boss_bone_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 68,
+   "attack": {
+    "frames": [
+     "en_boss_bone_adult_a1_00",
+     "en_boss_bone_adult_a1_01",
+     "en_boss_bone_adult_a1_02",
+     "en_boss_bone_adult_a1_03",
+     "en_boss_bone_adult_a1_04",
+     "en_boss_bone_adult_a1_05",
+     "en_boss_bone_adult_a1_06",
+     "en_boss_bone_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_bone_adult_down_00",
+     "en_boss_bone_adult_down_01",
+     "en_boss_bone_adult_down_02",
+     "en_boss_bone_adult_down_03",
+     "en_boss_bone_adult_down_04",
+     "en_boss_bone_adult_down_05",
+     "en_boss_bone_adult_down_06"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_bone_adult_el_00",
+     "en_boss_bone_adult_el_01",
+     "en_boss_bone_adult_el_02",
+     "en_boss_bone_adult_el_03",
+     "en_boss_bone_adult_el_04",
+     "en_boss_bone_adult_el_05",
+     "en_boss_bone_adult_el_06",
+     "en_boss_bone_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.374,
+      "cast"
+     ],
+     [
+      0.384,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "en_boss_bone_adult_hit_00",
+     "en_boss_bone_adult_hit_01",
+     "en_boss_bone_adult_hit_02"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_bone_adult_idle_00",
+     "en_boss_bone_adult_idle_01",
+     "en_boss_bone_adult_idle_02",
+     "en_boss_bone_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_boss_bone_adult_walk_00",
+     "en_boss_bone_adult_walk_01",
+     "en_boss_bone_adult_walk_02",
+     "en_boss_bone_adult_walk_03",
+     "en_boss_bone_adult_walk_04",
+     "en_boss_bone_adult_walk_05",
+     "en_boss_bone_adult_walk_06",
+     "en_boss_bone_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

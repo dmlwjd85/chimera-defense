@@ -1,0 +1,394 @@
+{
+ "note": "en_fast 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_fast",
+ "sheet": "dot-m-en_fast",
+ "file": "assets/dotm/en_fast.png",
+ "frameW": 77,
+ "frameH": 73,
+ "foot": 71,
+ "cols": 1,
+ "anchorX": 38,
+ "palette": [
+  "#120304",
+  "#291a1f",
+  "#3b4055",
+  "#4a160e",
+  "#6c7788",
+  "#833529",
+  "#a14e62",
+  "#a640a5",
+  "#a93c24",
+  "#ccb5d6",
+  "#d66e30",
+  "#d6a27e",
+  "#f0f7fa",
+  "#f57010",
+  "#f8dbb5",
+  "#fac997"
+ ],
+ "rects": {
+  "en_fast_adult_a1_00": [
+   1288,
+   0,
+   65,
+   58,
+   -33,
+   -58
+  ],
+  "en_fast_adult_a1_01": [
+   770,
+   0,
+   64,
+   60,
+   -29,
+   -60
+  ],
+  "en_fast_adult_a1_02": [
+   124,
+   0,
+   64,
+   63,
+   -37,
+   -72
+  ],
+  "en_fast_adult_a1_03": [
+   0,
+   0,
+   67,
+   65,
+   -38,
+   -65
+  ],
+  "en_fast_adult_a1_04": [
+   835,
+   0,
+   62,
+   60,
+   -34,
+   -60
+  ],
+  "en_fast_adult_down_00": [
+   898,
+   0,
+   65,
+   60,
+   -35,
+   -60
+  ],
+  "en_fast_adult_down_01": [
+   1221,
+   0,
+   66,
+   59,
+   -37,
+   -59
+  ],
+  "en_fast_adult_down_02": [
+   1496,
+   0,
+   67,
+   46,
+   -34,
+   -48
+  ],
+  "en_fast_adult_down_03": [
+   1564,
+   0,
+   68,
+   38,
+   -31,
+   -38
+  ],
+  "en_fast_adult_down_04": [
+   1633,
+   0,
+   70,
+   34,
+   -31,
+   -34
+  ],
+  "en_fast_adult_down_05": [
+   1704,
+   0,
+   77,
+   33,
+   -38,
+   -33
+  ],
+  "en_fast_adult_hit_00": [
+   1426,
+   0,
+   69,
+   56,
+   -37,
+   -56
+  ],
+  "en_fast_adult_hit_01": [
+   1354,
+   0,
+   71,
+   58,
+   -36,
+   -58
+  ],
+  "en_fast_adult_hit_02": [
+   189,
+   0,
+   55,
+   63,
+   -30,
+   -63
+  ],
+  "en_fast_adult_hit_03": [
+   68,
+   0,
+   55,
+   65,
+   -29,
+   -65
+  ],
+  "en_fast_adult_idle_00": [
+   245,
+   0,
+   65,
+   62,
+   -33,
+   -63
+  ],
+  "en_fast_adult_idle_01": [
+   508,
+   0,
+   65,
+   61,
+   -35,
+   -64
+  ],
+  "en_fast_adult_idle_02": [
+   311,
+   0,
+   64,
+   62,
+   -34,
+   -62
+  ],
+  "en_fast_adult_idle_03": [
+   964,
+   0,
+   63,
+   60,
+   -31,
+   -60
+  ],
+  "en_fast_adult_walk_00": [
+   1028,
+   0,
+   64,
+   60,
+   -33,
+   -61
+  ],
+  "en_fast_adult_walk_01": [
+   574,
+   0,
+   64,
+   61,
+   -33,
+   -62
+  ],
+  "en_fast_adult_walk_02": [
+   639,
+   0,
+   65,
+   61,
+   -32,
+   -62
+  ],
+  "en_fast_adult_walk_03": [
+   1093,
+   0,
+   63,
+   60,
+   -31,
+   -60
+  ],
+  "en_fast_adult_walk_04": [
+   705,
+   0,
+   64,
+   61,
+   -33,
+   -61
+  ],
+  "en_fast_adult_walk_05": [
+   376,
+   0,
+   64,
+   62,
+   -33,
+   -62
+  ],
+  "en_fast_adult_walk_06": [
+   441,
+   0,
+   66,
+   62,
+   -33,
+   -62
+  ],
+  "en_fast_adult_walk_07": [
+   1157,
+   0,
+   63,
+   60,
+   -31,
+   -60
+  ]
+ },
+ "frames": [
+  "en_fast_adult_a1_00",
+  "en_fast_adult_a1_01",
+  "en_fast_adult_a1_02",
+  "en_fast_adult_a1_03",
+  "en_fast_adult_a1_04",
+  "en_fast_adult_down_00",
+  "en_fast_adult_down_01",
+  "en_fast_adult_down_02",
+  "en_fast_adult_down_03",
+  "en_fast_adult_down_04",
+  "en_fast_adult_down_05",
+  "en_fast_adult_hit_00",
+  "en_fast_adult_hit_01",
+  "en_fast_adult_hit_02",
+  "en_fast_adult_hit_03",
+  "en_fast_adult_idle_00",
+  "en_fast_adult_idle_01",
+  "en_fast_adult_idle_02",
+  "en_fast_adult_idle_03",
+  "en_fast_adult_walk_00",
+  "en_fast_adult_walk_01",
+  "en_fast_adult_walk_02",
+  "en_fast_adult_walk_03",
+  "en_fast_adult_walk_04",
+  "en_fast_adult_walk_05",
+  "en_fast_adult_walk_06",
+  "en_fast_adult_walk_07"
+ ],
+ "standing": [
+  "en_fast_adult_idle_00",
+  "en_fast_adult_idle_01",
+  "en_fast_adult_idle_02",
+  "en_fast_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 8,
+   "attack": {
+    "frames": [
+     "en_fast_adult_a1_00",
+     "en_fast_adult_a1_01",
+     "en_fast_adult_a1_02",
+     "en_fast_adult_a1_03",
+     "en_fast_adult_a1_04"
+    ],
+    "durs": [
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.114,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_fast_adult_down_00",
+     "en_fast_adult_down_01",
+     "en_fast_adult_down_02",
+     "en_fast_adult_down_03",
+     "en_fast_adult_down_04",
+     "en_fast_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "en_fast_adult_hit_00",
+     "en_fast_adult_hit_01",
+     "en_fast_adult_hit_02",
+     "en_fast_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_fast_adult_idle_00",
+     "en_fast_adult_idle_01",
+     "en_fast_adult_idle_02",
+     "en_fast_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_fast_adult_walk_00",
+     "en_fast_adult_walk_01",
+     "en_fast_adult_walk_02",
+     "en_fast_adult_walk_03",
+     "en_fast_adult_walk_04",
+     "en_fast_adult_walk_05",
+     "en_fast_adult_walk_06",
+     "en_fast_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.62
+  }
+ }
+}

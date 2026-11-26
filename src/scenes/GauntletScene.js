@@ -9,7 +9,7 @@ import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, nextEn
 import { spellDef, spellCost } from '../logic/spells.js';
 import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, enemyFace } from './rigs.js';
 import { FX, ambient, weather } from './fx.js';
-import { sfx, unlockAudio } from './sfx.js';
+import { sfx, unlockAudio, isMuted, setMuted, ENEMY_HIT_DB } from './sfx.js';
 import { button, style, unitToken, hex, COLORS, speciesImage } from './ui.js';
 import { dotOn, dotify } from './dotfx.js';
 import { stageProfile } from '../logic/matchup.js';
@@ -203,6 +203,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.bottom = this.add.graphics().setDepth(1800);
     this.bottom.fillStyle(0x0d1222, 0.9).fillRect(0, 604, 1280, 116);
     this.logText = this.add.text(24, 616, '', style(15, '#cfd6e6', { lineSpacing: 6 })).setDepth(1801);
+    this.muteBtn = button(this, 770, 662, 52, 48, isMuted() ? '🔇' : '🔊', () => { setMuted(!isMuted()); unlockAudio(); this.muteBtn.set(isMuted() ? '🔇' : '🔊'); sfx('click'); }, { depth: 1802, size: 18, tip: '소리 켜기/끄기' });
     this.speedBtn = button(this, 860, 662, 90, 48, '×1', () => { this.speed = this.speed === 1 ? 2 : 1; this.speedBtn.set('×' + this.speed); }, { depth: 1802, size: 18 });
     this.spellBtns = (s.spells ?? []).slice(-3).map((id, i) => {
       const def = spellDef(this.D, id);
@@ -1045,6 +1046,7 @@ export default class GauntletScene extends Phaser.Scene {
       v.lunge = { t: 0, dur: ev.melee ? 0.34 : 0.22, reach: ev.melee ? Math.max(30, (tx - v.c.x) - 110) : ev.style === 'support' ? 14 : 26 };
     }
     if (v.ring) { v.ring.setStrokeStyle(3, COLORS.gold, 1); this.tweens.add({ targets: v.ring, alpha: { from: 1, to: 0 }, duration: 500, onComplete: () => v.ring.setAlpha(1).setStrokeStyle(3, COLORS.gold, 0) }); }
+    const launched = !ev.melee && !!tv && ev.move !== 'skill';   // 투사체를 쏘는 공격인가
     const impact = () => {
       for (const h of ev.hits ?? []) {
         const t = this.eViews.get(h.eid);
@@ -1060,9 +1062,9 @@ export default class GauntletScene extends Phaser.Scene {
       }
       if (ev.el) try { this.fx.element(ev.el, [v.c.x, v.c.y], targets.map((t) => [t.c.x, t.c.y])); } catch { /* */ }
       if (ev.move === 'skill' && ev.action) try { this.fx.skillFx(ev.action, [v.c.x, v.c.y], targets.map((t) => [t.c.x, t.c.y]), { allies: [...this.uViews.values()].map((a) => [a.c.x, a.c.y]) }); } catch { /* */ }
-      sfx(big ? 'slam' : ev.melee ? 'hit' : 'shoot');
+      if (big) sfx('slam'); else if (ev.melee) sfx('hit'); else if (!launched) sfx('shoot');   // 날아가는 공격은 쏠 때 한 번만(맞을 때 또 울리지 않음)
     };
-    if (!ev.melee && tv && ev.move !== 'skill') {
+    if (launched) {
       sfx('shoot');
       this.fx.projectile(u.speciesId, v.c.x + 20, v.c.y - 20, tv.c.x, tv.c.y - 10, ev.move === 'ult', impact);
     } else this.time.delayedCall(hitDelay, impact);
@@ -1087,7 +1089,7 @@ export default class GauntletScene extends Phaser.Scene {
       this.fx.hit(t.c.x, t.c.y - 10, ev.boss ? 'red' : 'white', ev.boss);
       t.kick = { t: 0, dur: 0.16, px: -14 };
       if (ev.boss) this.cameras.main.shake(120, 0.004);
-      sfx(ev.boss ? 'slam' : 'hit');
+      sfx(ev.boss ? 'slam' : 'hit', ENEMY_HIT_DB);
     };
     if (!ev.melee && t) { this.fx.line?.(v.c.x - 20, v.c.y - 30, t.c.x, t.c.y - 10, 0xc4a6ff, 4, 160); this.time.delayedCall(120, impact); }
     else this.time.delayedCall(ev.style === 'skirm' && !ev.clash ? 230 : 140, impact);

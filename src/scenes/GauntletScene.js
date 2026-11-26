@@ -469,7 +469,7 @@ export default class GauntletScene extends Phaser.Scene {
       case 'heal': { const p = this.posOf('u', ev.uid); if (p) this.fx.heal(p[0], p[1]); break; }
       case 'eheal': { for (const v of this.eViews.values()) this.fx.heal(v.c.x, v.c.y); break; }
       case 'summon': { const p = this.posOf('e', ev.eid); if (p) this.fx.shout(p[0], p[1] - 110, '나와라!', 0xc4a6ff); sfx('bossSummon'); break; }
-      case 'shield': { const p = this.posOf('e', ev.eid); if (p) { this.fx.bubbleShield(p[0], p[1], 0xd2b4ff); this.fx.shout(p[0], p[1] - 110, '보호막', 0xd2b4ff); } sfx('shield'); break; }
+      case 'shield': { const p = this.posOf('e', ev.eid); if (p) { this.flashShield(p[0], p[1], 0xd2b4ff, 900); this.fx.shout(p[0], p[1] - 110, '보호막', 0xd2b4ff); } sfx('shield'); break; }
       case 'charge': { const p = this.posOf('e', ev.eid); if (p) { this.closeUp([this.eViews.get(ev.eid)], [...this.uViews.values()].filter((v) => { const u = s.field.find((x) => x.uid === v.uid); return u && u.seat < 3; }), '돌진!', 0xff6b5a); this.fx.groundAoe(ALLY_X.front, 440, 160, 0xff6b5a); } sfx('stampede'); break; }
       case 'spell': return this.spellFx(ev);
       case 'clashStart': { const a = this.uViews.get(ev.uid); if (a && !s.charging) this.fx.shout(a.c.x + 40, a.c.y - 120, '힘겨루기!', 0xffd84d, { size: 18, hold: 520 }); sfx('clash'); break; }
@@ -478,7 +478,7 @@ export default class GauntletScene extends Phaser.Scene {
         if (g && f) {
           // 지킴이가 노려진 동료 앞(적 쪽)으로 뛰어들어 막음
           g.dash = { t: 0, dur: 0.7, dx: f.c.x + 46 - (g.baseX ?? g.c.x), dy: f.c.y - (g.baseY ?? g.c.y) };
-          this.time.delayedCall(200, () => { this.fx.bubbleShield(f.c.x + 40, f.c.y - 20, 0xffd84d); this.fx.ring(f.c.x + 40, f.c.y + 20, 0xffd84d, 1, 360); this.dmgNumber(g.c.x, g.c.y - 96, ev.dmg, false); sfx('shield'); });
+          this.time.delayedCall(200, () => { this.flashShield(f.c.x + 40, f.c.y - 20, 0xffd84d, 550); this.fx.ring(f.c.x + 40, f.c.y + 20, 0xffd84d, 1, 360); this.dmgNumber(g.c.x, g.c.y - 96, ev.dmg, false); sfx('shield'); });
           this.fx.shout(f.c.x + 40, f.c.y - 120, '지켜!', 0xffd84d, { size: 19 });
         }
         if (e) { e.rig?.inst.play('attack'); e.lunge = { t: 0, dur: 0.3, reach: -30 }; }
@@ -548,6 +548,13 @@ export default class GauntletScene extends Phaser.Scene {
       case 'encStart': break;
       default: break;
     }
+  }
+
+  /** 잠깐만 떴다 사라지는 방패 거품(fx.bubbleShield는 계속 남는 거품이라 연전에서는 쓰지 않음) */
+  flashShield(x, y, color, ms = 550) {
+    const b = this.add.circle(x, y, 42, color, 0.18).setStrokeStyle(3, color, 0.9).setDepth(1500).setScale(0.7);
+    this.tweens.add({ targets: b, scale: 1.08, duration: 140, ease: 'Back.out' });
+    this.tweens.add({ targets: b, alpha: 0, scale: 1.2, delay: ms - 200, duration: 200, onComplete: () => b.destroy() });
   }
 
   floatAt(x, y, msg, color = '#ffffff', size = 15) {

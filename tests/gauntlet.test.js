@@ -155,9 +155,9 @@ test('하드: 보상 하나는 막힘, 노멀 생명은 2', () => {
 
 test('금화 부활·놓아주기, 앞줄은 브루저만, 진형 붕괴, 레벨로 출전 단계, 전설 카드', async () => {
   const { reviveUnit, releaseUnit, reviveCost, baseStyle } = await import('../src/logic/gauntlet.js');
-  const st = createGauntlet(D, 'forest-1', 31, { levels: { dog: 6, rabbit: 3 }, legend: { kind: 'base', speciesId: 'tiger', traits: [], name: '산군' } });
+  const st = createGauntlet(D, 'forest-1', 31, { levels: { dog: 9, rabbit: 4 }, legend: { kind: 'base', speciesId: 'tiger', traits: [], name: '산군' } });
   const dog = st.field.find((u) => u.speciesId === 'dog'), rabbit = st.field.find((u) => u.speciesId === 'rabbit');
-  assert.equal(dog.stage, 'adult'); assert.equal(rabbit.stage, 'teen');
+  assert.equal(dog.stage, 'teen', '레벨이 높아도 성장기까지만'); assert.equal(rabbit.stage, 'teen');
   assert.ok(st.field.some((u) => u.legend && u.speciesId === 'tiger' && u.stage === 'adult'));
   for (const u of st.field) if (baseStyle(u) === 'bruiser') assert.ok(u.seat < 3, '브루저는 1열');
   fightOut(st);
@@ -256,13 +256,13 @@ test('흐름: 응원 톡·승패 요인, 보상 하나 더(금화), 주머니·�
   if (st.offer.taken) { assert.ok(G.buyExtraReward(st, D).ok); assert.equal(st.offer.taken, null); assert.ok(st.gold < 50); }
   // 주머니·상점
   const save = defaultSave(D);
-  save.pouch = 100; save.deck = ['bear', 'tiger', 'eagle'];
+  save.pouch = 120; save.deck = ['bear', 'tiger', 'eagle'];
   const shop = M.shopOffers(save, D);
   assert.ok(shop.items.length >= 4);
   const fi = shop.items.findIndex((x) => x.kind === 'food');
   assert.ok(M.buyShop(save, D, fi).ok); assert.equal(save.prep.food, 1);
-  const bag = M.takeOutForRun(save);
-  assert.equal(save.pouch, 0); assert.equal(bag.pouch, 100 - shop.items[fi].price);
+  const bag = M.takeOutForRun(save, D);
+  assert.equal(bag.pouch, 40); assert.equal(save.pouch, 120 - shop.items[fi].price - 40);
   const run = createGauntlet(D, 'forest-1', 3, { pouch: bag.pouch, prep: { relics: ['war_horn'], food: 1, feathers: 1 } });
   assert.equal(run.gold, bag.pouch); assert.ok(run.relics.includes('war_horn')); assert.equal(run.feathers, 1);
   // 새 유물 10개

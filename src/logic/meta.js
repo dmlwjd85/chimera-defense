@@ -209,7 +209,7 @@ export function settleRun(save, state, data) {
   const lines = [];
   // 남은 금화는 주머니로(다음 스테이지에 들고 가거나 상점에서 씀). 연전만
   let pouchIn = 0;
-  if (state.mode === 'gauntlet') { const cap = data.config.gauntlet?.pouchMax ?? 200; pouchIn = Math.max(0, Math.min(state.gold ?? 0, cap - (save.pouch ?? 0))); save.pouch = (save.pouch ?? 0) + pouchIn; if (clear) save.shop = null; }
+  if (state.mode === 'gauntlet') { const cap = data.config.gauntlet?.pouchMax ?? 150; pouchIn = Math.max(0, Math.min(state.gold ?? 0, cap - (save.pouch ?? 0))); save.pouch = (save.pouch ?? 0) + pouchIn; if (clear) save.shop = null; }
   let essence = waves * ec.perWave;
   lines.push(['웨이브 ' + waves + '개', waves * ec.perWave]);
   if (clear) {
@@ -377,7 +377,7 @@ export function buyFavor(save, data, id) {
 }
 
 // ---------- 스테이지 사이 상점(주머니 금화) ----------
-const SHOP_PRICE = { common: 25, rare: 40, epic: 60 };
+const SHOP_PRICE = { common: 35, rare: 55, epic: 80 };
 /** 상점 진열: 연전 유물 2 · 먹이 꾸러미 · 불사조 깃털(공짜 부활) · 훈련(덱 동물 레벨 +1). 같은 진열은 새로 고칠 때까지 유지 */
 export function shopOffers(save, data, rng = Math.random) {
   if (save.shop?.items?.length) return save.shop;
@@ -388,15 +388,15 @@ export function shopOffers(save, data, rng = Math.random) {
   const trainee = deck.length ? deck[Math.floor(rng() * deck.length)] : data.units[0].id;
   const items = [
     ...relics.map((r) => ({ kind: 'relic', id: r.id, icon: r.icon, name: r.name, desc: r.desc, price: SHOP_PRICE[r.rarity] ?? 30 })),
-    { kind: 'food', icon: '🍖', name: '먹이 꾸러미', desc: '다음 스테이지 시작 때 가장 어린 동물이 한 단계 자람', price: 20 },
-    { kind: 'feather', icon: '🪶', name: '부활 깃털', desc: '다음 스테이지에서 부활 한 번 공짜', price: 18 },
-    { kind: 'train', id: trainee, icon: '🏋', name: `${data.unitById[trainee]?.name ?? ''} 훈련`, desc: '이 동물 레벨 +1(출전 단계가 빨리 자람)', price: 30 },
+    { kind: 'food', icon: '🍖', name: '먹이 꾸러미', desc: '다음 스테이지 시작 때 가장 어린 동물이 한 단계 자람', price: 30 },
+    { kind: 'feather', icon: '🪶', name: '부활 깃털', desc: '다음 스테이지에서 부활 한 번 공짜', price: 25 },
+    { kind: 'train', id: trainee, icon: '🏋', name: `${data.unitById[trainee]?.name ?? ''} 훈련`, desc: '이 동물 레벨 +1(출전 단계가 빨리 자람)', price: 40 },
   ];
   save.shop = { items: items.map((x) => ({ ...x, sold: false })) };
   return save.shop;
 }
 export function rerollShop(save, data, rng = Math.random) {
-  const cost = 5;
+  const cost = 8;
   if ((save.pouch ?? 0) < cost) return { ok: false, reason: 'gold' };
   save.pouch -= cost; save.shop = null; shopOffers(save, data, rng);
   return { ok: true, cost };
@@ -415,8 +415,10 @@ export function buyShop(save, data, index) {
   return { ok: true, item: it };
 }
 /** 연전을 시작하면 주머니 금화와 산 물건을 들고 감 */
-export function takeOutForRun(save) {
-  const out = { pouch: save.pouch ?? 0, prep: save.prep ?? null };
-  save.pouch = 0; save.prep = null; save.shop = null;
+export function takeOutForRun(save, data = null) {
+  // 연전에는 주머니에서 pouchTake(40)까지만 들고 감(남은 건 주머니에 — 상점에서 씀). 금화가 쌓여 난이도가 무너지지 않게
+  const take = Math.min(save.pouch ?? 0, data?.config?.gauntlet?.pouchTake ?? 40);
+  const out = { pouch: take, prep: save.prep ?? null };
+  save.pouch = (save.pouch ?? 0) - take; save.prep = null; save.shop = null;
   return out;
 }

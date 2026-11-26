@@ -40,11 +40,11 @@ export default class ResultScene extends Phaser.Scene {
     let y = 318;
     if (r.legends?.length) {
       const cur = save.legend;
-      this.add.text(640, y, `⭐ 전설로 새기기${cur ? `  (지금: ${cur.name})` : ''}`, style(17, '#ffd84d')).setOrigin(0.5);
+      this.add.text(640, y, `⭐ 이 친구를 다음 스테이지에도 데려갈까요? (한 마리만, 어른으로 출전)${cur ? `  · 지금: ${cur.name}` : ''}`, style(16, '#ffd84d')).setOrigin(0.5);
       const list = r.legends.slice(0, 3);
-      const btns = list.map((c, i) => button(this, 640 - (list.length - 1) * 110 + i * 220, y + 40, 200, 40, c.name, () => {
+      const btns = list.map((c, i) => button(this, 640 - (list.length - 1) * 110 + i * 220, y + 40, 200, 40, `데려가기: ${c.name}`, () => {
         setLegend(save, c); writeSave(storage, save);
-        btns.forEach((b, k) => b.set((k === i ? '✔ ' : '') + list[k].name));
+        btns.forEach((b, k) => b.set(k === i ? `✔ ${list[k].name} 함께 감` : `데려가기: ${list[k].name}`));
         this.cameras.main.flash(200, 255, 230, 150);
       }, { size: 15, fill: 0x4a3d14, stroke: 0xffd84d }));
       y += 96;

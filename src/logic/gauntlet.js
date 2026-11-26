@@ -38,17 +38,38 @@ export function gcfg(data) {
     // 적 역할(우리와 같은 문법): bruiser 힘겨루기 / skirm 뒷줄 노리고 치고 빠지기 / ranged 뒤에서 쏨 / support 자기 편 거들기
     enemyRole: { normal: 'bruiser', tough: 'bruiser', zombie: 'bruiser', swarm: 'bruiser', skeleton: 'bruiser', miniboss: 'bruiser',
       fast: 'skirm', ghost: 'skirm', flying: 'ranged', bat: 'ranged', wisp: 'ranged', healer: 'support',
-      boss_boar: 'bruiser', boss_shadow: 'bruiser', boss_bone: 'bruiser', boss_frost: 'bruiser', boss_bat: 'ranged', boss_lich: 'support' }, guardChance: 0.6, guardTaken: 0.6, peelChance: 0.7, peelDmg: 0.8, peelStun: 0.6, clashBonus: 1.5, clashStun: 1, clashEnemy: 1, assistPush: 0.05, cheerPush: 0.12, goldWin: 10, goldPerEnc: 3, goldLose: 5, reviveCost: 15, reviveUp: 0.5, releaseGold: 3, collapseTaken: 35, collapseStun: 0.8, growLv: { teen: 3, adult: 6 }, relicAll: 4, skirmBack: 0.4, supDmg: 30, supTaken: 20,
+      boss_boar: 'bruiser', boss_shadow: 'bruiser', boss_bone: 'bruiser', boss_frost: 'bruiser', boss_bat: 'ranged', boss_lich: 'support' }, guardChance: 0.6, guardTaken: 0.6, peelChance: 0.7, peelDmg: 0.8, peelStun: 0.6, clashBonus: 1.5, clashStun: 1, clashEnemy: 1, assistPush: 0.05, cheerPush: 0.12, goldWin: 8, goldPerEnc: 2, goldLose: 5, reviveCost: 15, reviveUp: 0.5, releaseGold: 3, collapseTaken: 35, collapseStun: 0.8, growLv: { teen: 4, adult: 99 }, relicAll: 4, skirmBack: 0.4, supDmg: 30, supTaken: 20,
+    // 신화·키메라 필살기(2026-11-26): 피해만이 아니라 동물 특성에 맞게 판을 바꿈. 게이지 ×ultSlow, 교전마다 한 마리 ultMax번
+    ultSlow: 2, ultMax: 1, ultDmg: 1.2,
+    // growLv.adult 99: 레벨로는 성장기까지만 출전(성체로 시작하면 바로 신화급·키메라가 태어나서)
+    // 종마다 장점·단점(연전): hp·dmg·interval·taken %, dodge(피하기 더함), heal(응원 회복 배수), push(힘싸움 미는 힘 배수)
+    speciesTune: {
+      bear: { hp: 20, interval: 25, pro: '아주 튼튼, 셋까지 붙잡음', con: '느림' },
+      bison: { push: 1.15, taken: 15, pro: '힘싸움 미는 힘 +20%', con: '받는 피해 +10%' },
+      dog: { interval: -15, hp: -10, pro: '빠르게 물고 늘어짐', con: '체력 조금 낮음' },
+      ant: { dmg: 20, taken: 10, pro: '여럿이 막고 낚아챔, 피해 +20%', con: '체력이 낮고 잘 다침' },
+      frog: { interval: 5, hp: 25, dmg: 15, pro: '혀로 낚아채는 원거리 탱커', con: '조금 느림' },
+      tiger: { dmg: 20, hp: -5, pro: '한 방이 셈', con: '체력 낮고 탱커에게 잘 붙잡힘' },
+      fox: { dmg: 40, hp: 10, pro: '빠져나가며 세게 침', con: '아주 약한 몸' },
+      rabbit: { dodge: 0.2, dmg: 10, hp: 20, pro: '엄청 빠르고 잘 피함', con: '한 방이 약함' },
+      rooster: { heal: 1.4, hp: 10, pro: '응원 회복 +30%', con: '몸이 약함' },
+      crow: { dmg: -10, pro: '날아서 붙잡히지 않음, 멀리서 침', con: '피해 -10%' },
+      wolf: { dmg: 10, heal: 0.8, pro: '응원하며 함께 싸움', con: '회복이 적음' },
+      eagle: { dmg: 15, interval: 10, pro: '가장 센 한 방, 날아서 빠져나감', con: '아주 느림' },
+      bighorn: { taken: -15, dmg: 0, pro: '받는 피해 -10%, 둘까지 붙잡음', con: '피해가 약함' },
+      grasshopper: { push: 1.6, hp: 20, heal: 1.2, pro: '응원이 힘싸움을 크게 밀어 줌', con: '몸이 아주 약함' },
+      monkey: { dmg: 25, hp: 15, interval: 10, pro: '꼬리로 낚아채고 잘 빠져나감', con: '조금 느림' },
+    },
     // 잡아채기: 후열을 노리고 들어오는 딜러를 낚아채는 동물(우리: 개구리 혀·원숭이 꼬리·개미 떼 / 적: 좀비 손·해골 손·뼈 보스)
     catchers: { frog: 'tongue', monkey: 'tail', ant: 'swarm' }, eCatchers: { zombie: 'hand', skeleton: 'bone', boss_bone: 'bone', boss_lich: 'shadow' },
-    snatchCd: 7, snatchChance: 0.75, eSnatchChance: 0.5, snatchStun: 1.2, snatchPin: 2.5, deepT: 3, deepTaken: 20, deepFocus: 0.45, sellWeak: 25, extraCost: 12, extraUp: 0.6, pouchMax: 200,
+    snatchCd: 7, snatchChance: 0.75, eSnatchChance: 0.5, snatchStun: 1.2, snatchPin: 2.5, deepT: 3, deepTaken: 20, deepFocus: 0.45, sellWeak: 25, extraCost: 15, extraUp: 1, extraMax: 2, pouchMax: 150, pouchTake: 40, potionCost: 10, potionHeal: 35, trainCost: 20, trainDmg: 10, trainMax: 3,
     // 붙잡기: 남는 정원이 있는 탱커는 같은 라인 딜러에게 붙어 후열 노리기를 막음. 고급 딜러(나는 동물·신화·키메라·날쌘 종 성장기 이상)는 빠져나감
     slippery: ['fox', 'monkey', 'rabbit'], eSlippery: ['ghost', 'bat', 'boss_bat'], enemyCap: { bruiser: 2, boss: 3 },
     // 역전 각성(약할수록 큼), 주인공(선택과 집중), 무쌍 견제(한 마리가 피해를 독식하면 적이 집중)
     awakenHp: 0.35, awakenAllies: 0.5, awakenBase: 30, awakenWeak: 70, awakenSpeed: 25, awakenHeal: 0.5,
     starDmg: 30, starHp: 20, starOthers: -10, focusShare: 0.55, focusAfter: 8, focusTaken: 15, focusChance: 0.5,
     // 수싸움 배우기: 스테이지별 단계 0 = 앞라인 힘싸움만(돌파 없음), 1 = 수업(교전 번호별 'wall' 앞이 안 뚫림 → 후열 노리기 / 'dive' 우리가 당함 → 지키기), 2 = 자유
-    tacticLevel: { 'forest-1': 0, 'forest-2': 1 }, lessons: { 'forest-2': { 2: 'wall', 4: 'dive' } }, lessonWallHp: 1.5, globeTeenAt: 3, adultMeals: 2, diveMarkAt: 0.55, diveGap: 5, interceptChance: 0.6, diveBonus: 1.6, diveStun: 0.8, holdGuardPush: 0.3, holdGuardChance: 0.5, interceptStun: 0.7, guardFreePush: 0.5, isolateTaken: 20, isolatePush: 0.7,
+    tacticLevel: { 'forest-1': 0, 'forest-2': 1 }, lessons: { 'forest-2': { 2: 'wall', 4: 'dive' } }, lessonWallHp: 1.5, globeTeenAt: 5, adultMeals: 2, diveMarkAt: 0.55, diveGap: 5, interceptChance: 0.6, diveBonus: 1.6, diveStun: 0.8, holdGuardPush: 0.3, holdGuardChance: 0.5, interceptStun: 0.7, guardFreePush: 0.5, isolateTaken: 20, isolatePush: 0.7,
     // 수싸움: 우리 쪽 돌파꾼(사냥)·요격꾼 기본값, 적 돌파꾼, 도발(지키면서 힘싸움을 안 놓침), 벽 통과(지키기 무시)
     hunters: ['tiger', 'wolf', 'monkey', 'eagle', 'fox'], interceptors: ['rabbit', 'bighorn', 'ant'], taunters: ['bear', 'bison'],
     enemyDivers: ['fast', 'ghost', 'bat', 'boss_bat'], phasers: ['ghost'], enemyGuards: ['skeleton', 'tough'],
@@ -89,7 +110,9 @@ export function statLine(u, data) {
 export function previewStats(data, speciesId, stage = 'young', build = null) {
   const u = makeUnit({ nextUid: 1, talents: [], favor: {}, levels: {}, relics: [] }, data, { kind: 'base', speciesId, stage, parts: null, traits: [] });
   u.build = build; applyBuild(u);
-  const m = u.extraMods ?? {};
+  const m = { ...(u.extraMods ?? {}) };
+  const tn = tuneOf(u, gcfg(data));
+  if (tn) for (const k of ['hp', 'dmg', 'interval', 'taken']) if (tn[k]) m[k] = (m[k] ?? 0) + tn[k];
   u.maxHp = Math.round(u.stats.hp * (1 + (m.hp ?? 0) / 100));
   u.mods = { ...emptyMods(), dmg: m.dmg ?? 0, taken: m.taken ?? 0, interval: m.interval ?? 0 };
   return statLine(u, data);
@@ -103,6 +126,8 @@ export function applyBuild(u) {
   u.extraMods = u.buildMods;
   return u;
 }
+/** 종 장단점(키메라는 첫 부위 종을 따름) */
+export const tuneOf = (u, g) => g.speciesTune?.[u.kind === 'chimera' ? u.parts?.[0] : u.speciesId] ?? null;
 /** 주인공(선택과 집중): 정비 때 한 마리를 고르면 그 동물만 세지고 나머지는 조금 약해짐. 같은 동물을 다시 누르면 해제 */
 export function setStar(state, data, uid) {
   const u = [...state.field, ...state.bench].find((x) => x && x.uid === uid);
@@ -274,7 +299,7 @@ export function createGauntlet(data, stageId, seed = 1, opts = {}) {
     favor: { ...(opts.favor ?? {}) }, pool: opts.pool ? [...opts.pool] : data.config.roster?.starter ?? data.units.map((u) => u.id),
     spells: [...(opts.spells ?? [])], soul: opts.soul && data.unitById[opts.soul.id] ? { ...opts.soul } : null,
     dmgWave: {}, dmgRun: {}, mana: cfg.spells?.start ?? 0, spellCd: 0, weakBonus: cfg.weakBonus ?? 30, downs: 0, wins: 0, losses: 0,
-    summonCount: 0, offer: null, seenEnemies: new Set(), gold: Math.min(opts.pouch ?? 0, g.pouchMax ?? 200), extraBuys: 0, revives: 0, collapse: { u: false, e: false },
+    summonCount: 0, offer: null, seenEnemies: new Set(), gold: opts.pouch ?? 0, extraBuys: 0, revives: 0, collapse: { u: false, e: false },
   };
   state.life += eco(state, data, 'life') ?? 0;
   state.maxLife = state.life;
@@ -301,6 +326,8 @@ export function createGauntlet(data, stageId, seed = 1, opts = {}) {
   for (let i = 0; i < (opts.prep?.food ?? 0); i++) { const kid = state.field.filter((u) => u.kind === 'base' && NEXT[u.stage]).sort((a, b) => (a.stage === 'young' ? 0 : 1) - (b.stage === 'young' ? 0 : 1))[0]; if (kid) grow(state, data, kid); }
   state.feathers = opts.prep?.feathers ?? 0;
   if (state.relics.length) refreshMods(state, data);
+  // 첫 교전도 정비 화면부터(자리·작전을 먼저 보고 출발): prelude
+  if (opts.prelude) { state.phase = 'regroup'; state.prelude = true; state.offer = null; refreshMods(state, data); state.events.push({ type: 'regroup', prelude: true }); return state; }
   startEncounter(state, data);
   return state;
 }
@@ -323,8 +350,8 @@ export function startEncounter(state, data) {
   if (fighters(state).length < 2) for (const u of unitsIn(state)) if (u?.resting) { u.resting = false; u.hp = Math.max(u.hp, u.maxHp * 0.3); }
   for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; u.stance = canStance(u) ? u.prefStance ?? nativeStance(u) : null; u.stanceT = 0.3 + state.rng() * 0.6; }
   state.encTime = 0; state.actGap = 0; state.phase = 'fight'; state.allyBuffs = []; state.clashes = [];
-  state.collapse = { u: false, e: false }; state.isolated = { u: false, e: false }; state.diveAt = { u: -99, e: -99 }; state.taps = 0; state.awoke = false; state.awoke2 = false; state.focus = null; state.tempo = g.tempo ?? 1; state.snareT = 0; state.cheers = 0; state.phoenixUsed = false; state.dataRef = data; state.cheerAt = -9; state.encStat = { ...(state.dstat ?? {}) };
-  for (const u of state.field) { u.awake = null; u.advance = false; u.suppressed = false; u.pinnedBy = null; u.slipNote = false; }
+  state.collapse = { u: false, e: false }; state.isolated = { u: false, e: false }; state.diveAt = { u: -99, e: -99 }; state.taps = 0; state.awoke = false; state.awoke2 = false; state.focus = null; state.tempo = g.tempo ?? 1; state.ultSlow = g.ultSlow ?? 1; state.ultMax = g.ultMax ?? 99; state.snareT = 0; state.cheers = 0; state.phoenixUsed = false; state.dataRef = data; state.cheerAt = -9; state.encStat = { ...(state.dstat ?? {}) };
+  for (const u of state.field) { u.ultUsed = 0; u.awake = null; u.advance = false; u.suppressed = false; u.pinnedBy = null; u.slipNote = false; }
   // 적 무리 성향(숨김): 돌파형·철벽형·섞임
   // 무리 성향은 숨기지만 적 구성을 보면 짐작 가능: 돌파꾼(⚔)이 많으면 돌파형, 브루저(🛡)가 많으면 철벽형(20%는 엉뚱하게)
   state.tLevel = state.hard ? 2 : (g.tacticLevel?.[state.stage.id] ?? 2);
@@ -391,6 +418,9 @@ function refreshMods(state, data) {
   { const g = gcfg(data), on = state.star != null && state.field.some((x) => x.uid === state.star);
     for (const u of state.field) {
       const m = { ...(u.buildMods ?? {}) };
+      const tn = tuneOf(u, g);
+      if (tn) for (const k of ['hp', 'dmg', 'interval', 'taken']) if (tn[k]) m[k] = (m[k] ?? 0) + tn[k];
+      if (u.trained) m.dmg = (m.dmg ?? 0) + u.trained * g.trainDmg;
       if (on) { if (u.uid === state.star) { m.dmg = (m.dmg ?? 0) + g.starDmg; m.hp = (m.hp ?? 0) + g.starHp; } else m.dmg = (m.dmg ?? 0) + g.starOthers; }
       u.extraMods = Object.keys(m).length ? m : null;
     } }
@@ -667,6 +697,72 @@ function snatchE(state, data, c, u, kind) {
   dstat(state, 'eSnatch'); state.events.push({ type: 'snatch', side: 'e', eid: c.eid, uid: u.uid, kind, dmg: Math.round(a) });
   say(state, `${c.name}이(가) ${u.stats.name}을(를) 낚아챔!`);
 }
+/** 신화·키메라 필살기: 종(키메라는 첫 부위)마다 팀을 돕는 기술. 반환 { kind, name, desc } */
+export const ULTS = {
+  bear: { name: '대지의 포효', desc: '5초 동안 우리 모두 받는 피해 -30%, 적이 곰만 노림' },
+  bison: { name: '대돌진', desc: '모든 힘싸움이 우리 쪽으로 크게 기움, 적 앞줄 기절' },
+  dog: { name: '충견의 외침', desc: '가장 약한 동료 체력 40% 회복 + 보호막' },
+  ant: { name: '개미 군단', desc: '적 모두 4초 느려지고 날쌘 적이 붙잡힘' },
+  frog: { name: '단비', desc: '모두 체력 20% 회복, 제압·기절이 풀림' },
+  tiger: { name: '산군의 포효', desc: '적 행동 게이지가 0, 5초 동안 우리 피해 +20%' },
+  fox: { name: '여우불 홀림', desc: '적 셋이 2초 동안 홀려 멈춤' },
+  rabbit: { name: '달토끼 방아', desc: '우리 모두 행동 게이지 +50%, 4초 동안 잘 피함' },
+  rooster: { name: '새벽 울음', desc: '쓰러진 동료 하나가 일어나고 모두 체력 15% 회복' },
+  crow: { name: '까마귀 떼', desc: '적 후열이 6초 동안 받는 피해 +30%' },
+  wolf: { name: '늑대 무리 사냥', desc: '우리 딜러 모두 적 후열을 노림(막기 무시)' },
+  eagle: { name: '하늘의 눈', desc: '적 응원·원거리 3초 기절, 보호막 깨짐' },
+  bighorn: { name: '뿔 방벽', desc: '우리 후열 4초 받는 피해 -50%, 들어온 적 브루저를 밀어냄' },
+  grasshopper: { name: '축제의 노래', desc: '마력 +30, 응원 톡 +3번' },
+  monkey: { name: '분신술', desc: '6초 동안 뒤를 노리는 적을 모두 낚아챔, 금화 +8' },
+};
+function teamUlt(state, data, u, t, g) {
+  const id = u.kind === 'chimera' ? (u.parts ?? [])[0] : u.speciesId;
+  const U = ULTS[id] ?? { name: '필살 일격', desc: '큰 피해' };
+  const es = state.enemies.filter(aliveE), us = fighters(state);
+  const buff = (stat, percent, left) => state.allyBuffs.push({ stat, percent, left });
+  switch (id) {
+    case 'bear': buff('taken', -30, 5); state.focus = u.uid; state.focusUntil = state.time + 3; break;
+    case 'bison': for (const c of state.clashes ?? []) c.push = Math.min(0.95, c.push + 0.6); for (const e of es.filter((x) => isFront(x.seat) && !x.boss)) e.stunLeft = Math.max(e.stunLeft ?? 0, 1); break;
+    case 'dog': { const w = lowest(us); if (w) { w.hp = Math.min(w.maxHp, w.hp + w.maxHp * 0.4); w.shieldT = state.time + 3; } break; }
+    case 'ant': for (const e of es) { e.slowPct = 40; e.slowLeft = 4; if (e.style === 'skirm' && !e.boss) { e.pinnedBy = u.uid; e.pinUntil = state.time + 4; e.diveMark = null; } } break;
+    case 'frog': for (const x of us) { x.hp = Math.min(x.maxHp, x.hp + x.maxHp * 0.2); x.stunLeft = 0; x.suppressed = false; } break;
+    case 'tiger': for (const e of es) e.gauge = 0; buff('dmg', 20, 5); break;
+    case 'fox': for (const e of [...es].sort(() => state.rng() - 0.5).slice(0, 3)) if (!e.boss) e.stunLeft = Math.max(e.stunLeft ?? 0, 2); break;
+    case 'rabbit': for (const x of us) x.gauge = Math.min(1, (x.gauge ?? 0) + 0.5); buff('taken', -15, 4); break;
+    case 'rooster': { const d = state.field.find((x) => x.down && !x.resting); if (d) { d.down = false; d.hp = d.maxHp * 0.4; state.events.push({ type: 'revive', uid: d.uid }); } for (const x of us) x.hp = Math.min(x.maxHp, x.hp + x.maxHp * 0.15); break; }
+    case 'crow': for (const e of es.filter((x) => x.style === 'ranged' || x.style === 'support')) e.curseLeft = 6; break;
+    case 'wolf': { const back = es.filter((x) => x.style === 'ranged' || x.style === 'support'); for (const x of us.filter((y) => styleOf(y) === 'skirm')) { const v = lowest(back.length ? back : es); if (v) { x.pinnedBy = null; x.deepT = state.time + 2; x.deepEid = v.eid; x.gauge = 1; } } break; }
+    case 'eagle': for (const e of es.filter((x) => x.style === 'ranged' || x.style === 'support')) { if (!e.boss) e.stunLeft = Math.max(e.stunLeft ?? 0, 3); e.shieldLeft = 0; } break;
+    case 'bighorn': for (const x of us.filter(isBack)) x.shieldT = state.time + 4; for (const e of es.filter((x) => x.advance)) { e.advance = false; e.stunLeft = Math.max(e.stunLeft ?? 0, 1.5); } break;
+    case 'grasshopper': state.mana = Math.min(data.config.spells?.max ?? 100, (state.mana ?? 0) + 30); state.cheers = Math.max(-3, (state.cheers ?? 0) - 3); break;
+    case 'monkey': state.snareT = Math.max(state.snareT ?? 0, state.time + 6); state.gold += 8; break;
+    default: break;
+  }
+  say(state, `${u.stats.name} · ${U.name}!`);
+  void t; void g;
+  return { kind: id, name: U.name, desc: U.desc };
+}
+
+/** 추천 보상(안내용): { kind, why } */
+export function recommendReward(state, data) {
+  const o = state.offer;
+  if (!o || o.taken) return null;
+  const ok = (k) => o[k] && o.dropped !== k;
+  const g = gcfg(data);
+  const half = state.field.find((u) => u.kind === 'base' && u.stage === 'teen' && (u.meals ?? 0) >= 1);
+  if (half && ok('food')) return { kind: 'food', uid: half.uid, why: `${half.stats.name}이(가) 한 그릇만 더 먹으면 어른이 돼요` };
+  const lanes = new Set(fighters(state).filter((u) => styleOf(u) === 'bruiser').map((u) => laneOf(u.seat)));
+  if (lanes.size < 2 && ok('globe') && (state.bench.includes(null) || state.seats.includes(null))) {
+    const idx = (o.globe ?? []).findIndex((c) => baseStyle({ kind: 'base', speciesId: c.speciesId, stats: data.unitById[c.speciesId] }) === 'bruiser');
+    if (idx >= 0) return { kind: 'globe', index: idx, why: '브루저가 모자라요 — 막는 동물을 데려와요' };
+  }
+  const top = Object.entries(state.dmgLast ?? {}).sort((a, b) => b[1].dmg - a[1].dmg).map(([uid]) => state.field.find((u) => u.uid === +uid)).find((u) => u && u.kind === 'base' && NEXT[u.stage]);
+  if (top && ok('food')) return { kind: 'food', uid: top.uid, why: `가장 잘 싸운 ${top.stats.name}을(를) 키워요` };
+  if (ok('relic') && (state.relics ?? []).length < Math.ceil((state.enc + 1) / 3)) return { kind: 'relic', why: '유물은 이번 판 내내 효과가 있어요' };
+  if (ok('globe') && (state.bench.includes(null) || state.seats.includes(null))) return { kind: 'globe', index: 0, why: '같은 동물을 모아 겹치면 진화해요' };
+  return ok('relic') ? { kind: 'relic', why: '유물로 팀 전체를 강하게' } : ok('food') ? { kind: 'food', why: '한 마리를 키워요' } : null;
+  void g;
+}
 /** 고급 딜러: 탱커가 붙어도 빠져나감 */
 export function canSlip(u, g, state = null, data = null) { if (state && data && styleOf(u) === 'skirm' && eco(state, data, 'slipAll')) return true; return !!u.stats.flyer || u.stage === 'spirit' || u.kind === 'chimera' || (g.slippery.includes(u.speciesId) && u.stage !== 'young'); }
 const eCap = (e, g) => (e.boss ? g.enemyCap.boss : g.enemyCap.bruiser);
@@ -736,7 +832,7 @@ function updateClashes(state, data, d, g) {
   for (const c of state.clashes) {
     const u = findU(state, c.uid), e = findE(state, c.eid);
     // 힘 = √(초당 피해 × 최대 체력) × 남은 체력 — 아군은 세게 치고 약하고 적은 질기고 약하게 쳐서, 둘을 섞어야 맞먹음
-    const su = (u.stunLeft > 0 ? 0.6 : 1) * (1 + (eco(state, data, 'clashPow') ?? 0) / 100) * (state.isolated?.u ? g.isolatePush : 1) * Math.sqrt((effDamage(u) / uInterval(state, u)) * u.maxHp) * (0.4 + 0.6 * u.hp / u.maxHp);
+    const su = (u.stunLeft > 0 ? 0.6 : 1) * (tuneOf(u, g)?.push ?? 1) * (1 + (eco(state, data, 'clashPow') ?? 0) / 100) * (state.isolated?.u ? g.isolatePush : 1) * Math.sqrt((effDamage(u) / uInterval(state, u)) * u.maxHp) * (0.4 + 0.6 * u.hp / u.maxHp);
     const se = (e.stunLeft > 0 ? 0.6 : 1) * (state.isolated?.e ? g.isolatePush : 1) * Math.sqrt((e.attack / eInterval(e)) * e.maxHp) * g.clashEnemy * (e.boss ? g.clashBoss : 1) * (0.4 + 0.6 * e.hp / e.maxHp);
     let sh = 0;
     for (const id of c.helpers) { const h = findE(state, id); if (h) sh += (h.stunLeft > 0 ? 0.6 : 1) * Math.sqrt((h.attack / eInterval(h)) * h.maxHp) * g.clashEnemy * g.gangPower * (0.4 + 0.6 * h.hp / h.maxHp); }
@@ -823,6 +919,7 @@ function pickEnemyTarget(state, e, g) {
   { const c = clashOfE(state, e.eid); const u = c && findU(state, c.uid); if (u && aliveU(u)) return u; }
   if (e.diveMark?.uid != null) { const u = findU(state, e.diveMark.uid); if (aliveU(u)) return u; }
   if (e.pinnedBy != null) { const u = findU(state, e.pinnedBy); if (aliveU(u)) return u; }
+  if (state.focusUntil && state.time > state.focusUntil) { state.focus = null; state.focusUntil = 0; }
   if (state.focus != null && state.rng() < g.focusChance) { const u = findU(state, state.focus); if (aliveU(u)) return u; }
   { const deep = us.filter((u) => (u.deepT ?? 0) > state.time); if (deep.length && state.rng() < g.deepFocus) return deep[0]; }
   // 적 돌격대: 우리 뒷줄(원거리·응원)을 노림 → 우리 쪽 지켜 주기·떼어 내기가 나옴
@@ -847,7 +944,7 @@ function pickEnemyTarget(state, e, g) {
 function pickMoveG(state, u, target, cfg) {
   const m = cfg.moves, have = movesOf(u, cfg);
   if (!m || have.length === 1) return 'a1';
-  if (have.includes('ult') && (u.ultGauge ?? 0) >= m.ult.gauge) return 'ult';
+  if (have.includes('ult') && (u.ultGauge ?? 0) >= m.ult.gauge * (state.ultSlow ?? 1) && (u.ultUsed ?? 0) < (state.ultMax ?? 99)) return 'ult';
   const w = {};
   for (const k of have) if (k !== 'ult') w[k] = m.weights[k] ?? 0;
   if (w.a2 != null && target.hp / target.maxHp < m.rules.a2.lowHp) w.a2 *= m.rules.a2.lowHpMult;
@@ -939,9 +1036,11 @@ function unitAct(state, data, u, g) {
     if (el === 'grass') t.stunLeft = Math.max(t.stunLeft ?? 0, def.root ?? 0.8);
     if (el === 'light') hits[0][1] *= 1.3;
   } else if (move === 'ult') {
-    const m = cfg.moves.ult; name = ultName(u, cfg); big = true; u.ultGauge = 0;
-    hits.push([t, base * m.mult]);
-    for (const o of state.enemies.filter((x) => aliveE(x) && x !== t)) hits.push([o, base * m.splash]);
+    big = true; u.ultGauge = 0; u.ultUsed = (u.ultUsed ?? 0) + 1;
+    const sk = teamUlt(state, data, u, t, g);
+    name = sk.name;
+    hits.push([t, base * g.ultDmg]);
+    state.events.push({ type: 'ultFx', uid: u.uid, kind: sk.kind, name: sk.name, desc: sk.desc });
   }
   // 기본기 상태 효과(독·둔화·밀치기·묶기)
   for (const fx of u.stats.effects) {
@@ -1001,9 +1100,9 @@ function unitAct(state, data, u, g) {
       const sk = u.stance === 'support' ? (nativeStance(u) === 'support' ? 2.5 : 2) : 1;
       // 응원은 여럿이 겹치면 덜 듦(1/√응원 수): 응원만 잔뜩은 약함
       const nSup = fighters(state).filter((x) => styleOf(x) === 'support').length;
-      const hb = (u.kind === 'base' && u.build ? BUILDS[u.build]?.heal ?? 1 : 1) / Math.sqrt(Math.max(1, nSup));
+      const hb = (u.kind === 'base' && u.build ? BUILDS[u.build]?.heal ?? 1 : 1) * (tuneOf(u, g)?.heal ?? 1) / Math.sqrt(Math.max(1, nSup));
       to.hp = Math.min(to.maxHp, to.hp + to.maxHp * g.cheerHeal * sk * hb / 100);
-      if (c) c.push = Math.min(0.95, c.push + g.cheerPush * sk / Math.sqrt(Math.max(1, nSup)));
+      if (c) c.push = Math.min(0.95, c.push + g.cheerPush * sk * (tuneOf(u, g)?.push ?? 1) / Math.sqrt(Math.max(1, nSup)));
       cheer = to.uid;
       state.events.push({ type: 'cheer', uid: u.uid, to: to.uid });
     }
@@ -1028,7 +1127,8 @@ function enemyAct(state, data, e, g) {
   const clash = clashOfE(state, e.eid);
   // 요리조리: 치고 빠지는 동물은 맞붙지 않은 적의 공격을 가끔 피함
   const bd = t.kind === 'base' && t.build ? BUILDS[t.build]?.dodge : undefined;
-  if (bd != null ? state.rng() < bd : !clash && styleOf(t) === 'skirm' && state.rng() < g.dodge) {
+  const td = tuneOf(t, g)?.dodge ?? 0;
+  if (bd != null ? state.rng() < bd + td : !clash && styleOf(t) === 'skirm' && state.rng() < g.dodge + td) {
     state.events.push({ type: 'act', side: 'e', eid: e.eid, uid: t.uid, dmg: 0, dodged: true, melee: !e.ranged, boss: e.boss });
     return;
   }
@@ -1194,7 +1294,13 @@ function endEncounter(state, data, win) {
       const u = state.field.find((x) => x.uid === t.uid);
       if (!u) continue;
       const before = u.stats.name;
-      if (u.kind === 'base' && NEXT[u.stage]) { const n = grow(state, data, u); state.mvp = { uid: n.uid, from: before, to: n.stats.name, dmg: Math.round(t.dmg), grew: true }; }
+      // 활약상: 어린 동물은 한 단계, 성장기는 먹이 한 그릇(어른이 되려면 두 그릇) — 깨기 시작하면 진화가 너무 쉬워서
+      if (u.kind === 'base' && u.stage === 'young') { const n = grow(state, data, u); state.mvp = { uid: n.uid, from: before, to: n.stats.name, dmg: Math.round(t.dmg), grew: true }; }
+      else if (u.kind === 'base' && u.stage === 'teen') {
+        u.meals = (u.meals ?? 0) + 1;
+        if (u.meals >= (g.adultMeals ?? 1)) { const n = grow(state, data, u); state.mvp = { uid: n.uid, from: before, to: n.stats.name, dmg: Math.round(t.dmg), grew: true }; }
+        else state.mvp = { uid: u.uid, from: before, to: before, dmg: Math.round(t.dmg), grew: false, meal: true };
+      }
       else state.mvp = { uid: u.uid, from: before, to: before, dmg: Math.round(t.dmg), grew: false };
       break;
     }
@@ -1249,12 +1355,39 @@ export function rollRewards(state, data) {
   return o;
 }
 
+/** 금화 쓰기 ①: 회복 물약 — 출전 동물 모두 체력 +potionHeal%(정비마다 한 번) */
+export function buyPotion(state, data) {
+  const g = gcfg(data);
+  if (state.phase !== 'regroup' || state.prelude) return fail('notRegroup');
+  if (state.potionAt === state.enc) return fail('used');
+  if (state.gold < g.potionCost) return fail('gold');
+  state.gold -= g.potionCost; state.potionAt = state.enc;
+  for (const u of state.field) if (!u.resting) u.hp = Math.min(u.maxHp, u.hp + u.maxHp * g.potionHeal / 100);
+  state.events.push({ type: 'potion' });
+  return { ok: true };
+}
+/** 금화 쓰기 ②: 단련 — 한 마리 피해 +trainDmg%(판 내내, 한 마리에 trainMax번까지, 값은 단련할수록 오름) */
+export const trainCost = (state, data, u) => Math.round(gcfg(data).trainCost * (1 + 0.5 * (u?.trained ?? 0)));
+export function trainUnit(state, data, uid) {
+  const g = gcfg(data);
+  const u = state.field.find((x) => x.uid === uid);
+  if (state.phase !== 'regroup' || !u) return fail('notFound');
+  if ((u.trained ?? 0) >= g.trainMax) return fail('max');
+  const cost = trainCost(state, data, u);
+  if (state.gold < cost) return fail('gold');
+  state.gold -= cost; u.trained = (u.trained ?? 0) + 1;
+  refreshMods(state, data);
+  state.events.push({ type: 'trained', uid, n: u.trained });
+  return { ok: true, n: u.trained };
+}
+
 /** 보상 하나 더(금화): 기본은 하나, 금화로 더 고를 수 있음(값은 살 때마다 오름) */
 export const extraCost = (state, data) => { const g = gcfg(data); return Math.round(g.extraCost * (1 + g.extraUp * (state.offer?.bought ?? 0))); };
 export function buyExtraReward(state, data) {
   const o = state.offer;
   if (state.phase !== 'regroup' || !o) return fail('noOffer');
   if (!o.taken) return fail('notTaken');
+  if ((o.bought ?? 0) >= gcfg(data).extraMax) return fail('max');
   const cost = extraCost(state, data);
   if (state.gold < cost) return fail('gold');
   state.gold -= cost; o.bought = (o.bought ?? 0) + 1; (o.takenKinds ??= []).push(o.taken); o.taken = null;
@@ -1320,6 +1453,7 @@ function grow(state, data, u) {
 
 function replace(state, old, n) {
   if (n.tactic == null && old.tactic != null) n.tactic = old.tactic;
+  if (old.trained) n.trained = old.trained;
   if (n.kind === 'base' && n.speciesId === old.speciesId && old.build) { n.build = old.build; applyBuild(n); }
   const fi = state.field.indexOf(old);
   if (fi >= 0) { state.field[fi] = n; const s = state.seats.indexOf(old.uid); if (s >= 0) { state.seats[s] = n.uid; n.seat = s; } }
@@ -1418,7 +1552,7 @@ export function nextEncounter(state, data) {
   if (state.phase !== 'regroup') return fail('notRegroup');
   if (!fighters(state).length && !unitsIn(state).some(Boolean)) return fail('empty');
   if (!unitsIn(state).some(Boolean)) return fail('empty');
-  state.offer = null; state.relicOffer = null;
+  state.offer = null; state.relicOffer = null; state.prelude = false;
   startEncounter(state, data);
   return { ok: true };
 }

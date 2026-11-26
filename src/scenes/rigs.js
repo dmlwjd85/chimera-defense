@@ -116,7 +116,7 @@ export function stageEnemyIds(stage, data) {
 }
 
 /** 원래 그림이 이미 왼쪽(또는 정면에서 왼쪽)을 보는 적 — 뒤집으면 오른쪽을 보게 되므로 뒤집지 않음(2026-11-26 전장 나란히 확인) */
-export const ENEMY_FACES_LEFT = new Set(['boss_frost', 'boss_bat', 'bat', 'wisp']);
+export const ENEMY_FACES_LEFT = new Set(['boss_frost', 'boss_bat', 'bat', 'wisp', 'skeleton', 'boss_lich', 'overlord', 'swarm']);
 /** 적이 동물 쪽(왼쪽)을 볼 때 setFacing 값 */
 export const enemyFace = (id, back = false) => (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1);
 

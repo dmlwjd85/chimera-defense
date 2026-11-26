@@ -4,7 +4,7 @@ import { buildData } from '../logic/data.js';
 import { rosterPool, favorState, buyFavor, writeSave } from '../logic/meta.js';
 import { deckOf, soulGaps, soulSig } from '../logic/soul.js';
 import { speciesFit, stageProfile } from '../logic/matchup.js';
-import { previewStats, BUILDS, BUILD_SETS } from '../logic/gauntlet.js';
+import { previewStats, BUILDS, BUILD_SETS, tuneOf, gcfg } from '../logic/gauntlet.js';
 import { levelsOf } from '../logic/meta.js';
 
 const ROLE = { bruiser: '🛡 막기', dealer: '⚔ 딜러', technician: '🎯 기술', buffer: '🎺 응원' };
@@ -49,8 +49,9 @@ export default class DeckScene extends Phaser.Scene {
     add(this.add.text(180, 156, open ? u.baseSkillDesc : '🔒 해금 게이지가 차면 고를 수 있음', style(12, '#aabbcc', { wordWrap: { width: 265 } })));
     // 수치 한 줄(출전 단계 기준, 고급 모드면 고른 빌드 반영): ❤ 체력 ⚔ 공격 ⚡ 빠르기 🛡 막기 💨 피하기
     { const lvl = levelsOf(S, D)[u.id] ?? 1, gl = cfg.gauntlet?.growLv ?? { teen: 3, adult: 6 };
-      const stg = lvl >= gl.adult ? 'adult' : lvl >= gl.teen ? 'teen' : 'young';
+      const stg = lvl >= (gl.adult ?? 99) ? 'adult' : lvl >= (gl.teen ?? 4) ? 'teen' : 'young';
       const b = S.advanced ? S.builds?.[u.id] ?? null : null, p = previewStats(D, u.id, stg, b);
+      { const tn = tuneOf({ kind: 'base', speciesId: u.id }, gcfg(D)); if (tn && open) add(this.add.text(180, 178, `👍 ${tn.pro}   👎 ${tn.con}`, style(12, '#ffe9a8', { wordWrap: { width: 270 } }))); }
       add(this.add.text(50, 204, `❤${p.hp}  ⚔${p.atk}  ⚡${p.spd}/초${p.def ? `  🛡${p.def}%` : ''}${p.dodge ? `  💨${p.dodge}%` : ''}   Lv${lvl}`, style(15, '#ffffff', { stroke: '#000', strokeThickness: 3 }))); }
     let y = 232;
     add(this.add.text(50, y, `🔥 소울 기술 · ${sig.name}`, style(18, '#ffb27a'))); y += 28;
@@ -81,8 +82,8 @@ export default class DeckScene extends Phaser.Scene {
 
     // ---- right: roster grid ----
     g.fillStyle(0x0d141d, 0.92).fillRoundedRect(476, 76, 774, 572, 16).lineStyle(2, 0xd4b06a, 0.8).strokeRoundedRect(476, 76, 774, 572, 16);
-    add(this.add.text(496, 88, `덱 ${deck.length}/${sc.deckSize}${S.legend ? `   ⭐ 전설 ${S.legend.name} (한 칸 차지, 성체로 출전)` : ''}`, style(14, '#ffe2b8')));
-    if (S.legend) this.btns.push(button(this, 1180, 96, 110, 26, '⭐ 내리기', () => { S.legend = null; this.save(); this.paint(); }, { size: 12, fill: 0x4a3d14 }));
+    add(this.add.text(496, 88, `덱 ${deck.length}/${sc.deckSize}${S.legend ? `   ⭐ 데려가는 친구: ${S.legend.name} (한 칸, 어른으로 출전)` : ''}`, style(14, '#ffe2b8')));
+    if (S.legend) this.btns.push(button(this, 1180, 96, 110, 26, '⭐ 두고 가기', () => { S.legend = null; this.save(); this.paint(); }, { size: 12, fill: 0x4a3d14 }));
     order.forEach((id, i) => {
       const a = D.unitById[id]; if (!a) return;
       const cx = 496 + (i % 5) * 150, cy = 116 + Math.floor(i / 5) * 138, has = unlocked.includes(id), inDeck = deck.includes(id), soul = S.soulPet === id;

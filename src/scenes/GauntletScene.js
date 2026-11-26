@@ -5,7 +5,7 @@
 import Phaser from 'phaser';
 import { buildData } from '../logic/data.js';
 import { battleOptions, settleRun, writeSave, carryCandidates, setCarry, takeOutForRun } from '../logic/meta.js';
-import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost } from '../logic/gauntlet.js';
+import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost, recommendReward, buyPotion, trainUnit, trainCost, tuneOf, laneOf } from '../logic/gauntlet.js';
 import { spellDef, spellCost } from '../logic/spells.js';
 import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, enemyFace } from './rigs.js';
 import { FX, ambient, weather } from './fx.js';
@@ -136,17 +136,18 @@ export default class GauntletScene extends Phaser.Scene {
   begin(hard, tier = null) {
     this.bindCheer();
     const seed = Number(new URLSearchParams(window.location.search).get('seed')) || Date.now() % 100000;
-    const bag = takeOutForRun(this.save);
+    const bag = takeOutForRun(this.save, this.D);
     writeSave(this.registry.get('storage'), this.save);
-    this.state = createGauntlet(this.D, this.stageId, seed, { ...battleOptions(this.save, this.D, this.stageId), hard, tier, pouch: bag.pouch, prep: bag.prep });
+    this.state = createGauntlet(this.D, this.stageId, seed, { ...battleOptions(this.save, this.D, this.stageId), hard, tier, pouch: bag.pouch, prep: bag.prep, prelude: true });
     if (bag.pouch || bag.prep) this.time.delayedCall(900, () => this.toast(`🎒 들고 옴: 💰${this.state.gold}${bag.prep?.relics?.length ? ` · 유물 ${bag.prep.relics.length}` : ''}${bag.prep?.food ? ` · 🍖${bag.prep.food}` : ''}${bag.prep?.feathers ? ` · 🪶${bag.prep.feathers}` : ''}`, '#ffd84d'));
     window.__gauntlet = { scene: this, get state() { return this.scene.state; }, data: this.D,
-      jump: (n) => { const st = this.state; st.enc = n; this.eViews.forEach((v) => v.c.destroy()); this.eViews.clear(); startEncounter(st, this.D); this.startFightView(); } };   // 시험용: n번째 교전으로
+      jump: (n) => { const st = this.state; st.enc = n; st.prelude = false; this.clearUi?.(); this.tutShow?.(''); this.eViews.forEach((v) => v.c.destroy()); this.eViews.clear(); startEncounter(st, this.D); this.startFightView(); } };   // 시험용: n번째 교전으로
     this.drawHud();
     // 스테이지 1 튜토리얼: 처음 한 번, 하나씩 따라 하며 진행
     this.tut = this.stageId === 'forest-1' && !this.save.tutorialDone && !hard ? { step: 0 } : null;
-    this.startFightView();
-    this.tutAt('fightStart');
+    // 첫 교전도 정비 화면부터: 자리·작전·다음 적을 보고 ▶ 출발
+    this.state.events.length = 0;
+    this.time.delayedCall(80, () => { this.showRegroup(); if (this.tut) this.tutShow('🐾 동물 자리를 보고 ▶ 출발!', 1170, 690); });
   }
 
   // ---------- 튜토리얼(스테이지 1) ----------
@@ -308,7 +309,8 @@ export default class GauntletScene extends Phaser.Scene {
     const tac = this.add.text(-44, 40, '', style(16)).setOrigin(0.5);
     // 정비 때 이름 아래 수치(❤ 체력 · ⚔ 공격)
     // 정비 때 머리 위에 수치(❤ 체력 · ⚔ 공격) — 아래는 이름·작전 칸에 가려서 위로
-    const stat = this.add.text(0, top - 4, '', style(12, '#ffe9a8', { stroke: '#000', strokeThickness: 3, backgroundColor: '#0d1222aa', padding: { x: 4, y: 1 } })).setOrigin(0.5, 1);
+    // 정비 때 수치: 몸 앞쪽(오른쪽)에 아래로 한 줄씩(체력바·이름과 안 겹치게)
+    const stat = this.add.text(40, -36, '', style(11, '#ffe9a8', { stroke: '#000', strokeThickness: 3, lineSpacing: 0 })).setOrigin(0, 0);
     // 체력·행동 게이지는 발밑(다키스트 던전처럼): 위 줄 동물과 겹치지 않음
     const barBg = this.add.rectangle(0, 48, 66, 8, 0x000000).setOrigin(0.5);
     const bar = this.add.rectangle(-33, 48, 66, 8, 0x7ddc6f).setOrigin(0, 0.5);
@@ -387,19 +389,24 @@ export default class GauntletScene extends Phaser.Scene {
       out.e.set(c.eid, { x: x + CLASH_GAP + jig(c.eid), y, s: scaleAtY(y) });
       (c.helpers ?? []).forEach((id, h) => { const hy = y + (h % 2 ? 36 : -36); out.e.set(id, { x: x + CLASH_GAP + 34 + h * 16 + jig(id), y: hy, s: scaleAtY(hy) }); });
     });
-    // 전진(상대 후열로 밀고 들어감)·붙잡힘(탱커 곁)
+    // 전진(상대 후열로 밀고 들어감)·붙잡힘(탱커 곁)·깊숙이: 기준점은 힘싸움 자리나 원래 칸(서로의 움직이는 위치를 따라가면 끝없이 밀려남)
+    const baseU = new Map(out.u), baseE = new Map(out.e);
+    const anchorU = (u) => baseU.get(u.uid) ?? fightXY2('u', u.seat ?? 1);
+    const anchorE = (e) => baseE.get(e.eid) ?? fightXY2('e', e.seat ?? 1);
+    const at = (a, dx, dy) => { const y = Math.max(300, Math.min(540, a.y + dy)); return { x: a.x + dx, y, s: scaleAtY(y) }; };
     const nearOf = (list, seat) => [...list].sort((a, b) => Math.abs((a.seat % 3) - (seat % 3)) - Math.abs((b.seat % 3) - (seat % 3)))[0];
+    const stack = new Map(); const spread = (key, p) => { const n = stack.get(key) ?? 0; stack.set(key, n + 1); return n ? { ...p, y: Math.max(300, Math.min(540, p.y + (n % 2 ? 40 : -40) * Math.ceil(n / 2))), x: p.x - 18 * n } : p; };
     for (const u of s.field) {
-      if (u.down || out.u.has(u.uid)) continue;
-      if ((u.deepT ?? 0) > s.time && u.deepEid != null) { const v = this.eViews.get(u.deepEid); if (v) { out.u.set(u.uid, { x: (v.baseX ?? v.c.x) - 56, y: (v.baseY ?? v.c.y) - 10, s: scaleAtY(v.c.y) }); continue; } }
-      if (u.advance && styleOf(u) === 'bruiser') { const t0 = nearOf(s.enemies.filter((e) => e.hp > 0 && e.style !== 'bruiser'), u.seat ?? 1); const v = t0 && this.eViews.get(t0.eid); if (v) out.u.set(u.uid, { x: (v.baseX ?? v.c.x) - 64, y: (v.baseY ?? v.c.y) + 8, s: scaleAtY(v.c.y) }); }
-      else if (u.pinnedBy != null) { const v = this.eViews.get(u.pinnedBy); if (v) out.u.set(u.uid, { x: (v.baseX ?? v.c.x) - 58, y: (v.baseY ?? v.c.y) + 34, s: scaleAtY(v.c.y + 34) }); }
+      if (u.down || baseU.has(u.uid)) continue;
+      if ((u.deepT ?? 0) > s.time && u.deepEid != null) { const e = s.enemies.find((x) => x.eid === u.deepEid && x.hp > 0); if (e) { out.u.set(u.uid, at(anchorE(e), -56, -10)); continue; } }
+      if (u.advance && styleOf(u) === 'bruiser') { const t0 = nearOf(s.enemies.filter((e) => e.hp > 0 && e.style !== 'bruiser'), u.seat ?? 1); if (t0) out.u.set(u.uid, spread('e' + t0.eid, at(anchorE(t0), -64, 8))); }
+      else if (u.pinnedBy != null) { const e = s.enemies.find((x) => x.eid === u.pinnedBy && x.hp > 0); if (e) out.u.set(u.uid, at(anchorE(e), -58, 34)); }
     }
     for (const e of s.enemies) {
-      if (e.hp <= 0 || out.e.has(e.eid)) continue;
-      if ((e.deepT ?? 0) > s.time && e.deepUid != null) { const v = this.uViews.get(e.deepUid); if (v) { out.e.set(e.eid, { x: (v.baseX ?? v.c.x) + 56, y: (v.baseY ?? v.c.y) - 10, s: scaleAtY(v.c.y) }); continue; } }
-      if (e.advance && e.style === 'bruiser') { const t0 = nearOf(s.field.filter((u) => !u.down && (u.suppressed || styleOf(u) !== 'bruiser')), e.seat ?? 1); const v = t0 && this.uViews.get(t0.uid); if (v) out.e.set(e.eid, { x: (v.baseX ?? v.c.x) + 64, y: (v.baseY ?? v.c.y) + 8, s: scaleAtY(v.c.y) }); }
-      else if (e.pinnedBy != null) { const v = this.uViews.get(e.pinnedBy); if (v) out.e.set(e.eid, { x: (v.baseX ?? v.c.x) + 58, y: (v.baseY ?? v.c.y) + 34, s: scaleAtY(v.c.y + 34) }); }
+      if (e.hp <= 0 || baseE.has(e.eid)) continue;
+      if ((e.deepT ?? 0) > s.time && e.deepUid != null) { const u = s.field.find((x) => x.uid === e.deepUid && !x.down); if (u) { out.e.set(e.eid, at(anchorU(u), 56, -10)); continue; } }
+      if (e.advance && e.style === 'bruiser') { const t0 = nearOf(s.field.filter((u) => !u.down && (u.suppressed || styleOf(u) !== 'bruiser')), e.seat ?? 1); if (t0) out.e.set(e.eid, spread('u' + t0.uid, at(anchorU(t0), 64, 8))); }
+      else if (e.pinnedBy != null) { const u = s.field.find((x) => x.uid === e.pinnedBy && !x.down); if (u) out.e.set(e.eid, at(anchorU(u), 58, 34)); }
     }
     return out;
   }
@@ -443,6 +450,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.drawClashes();
     this.drawFlow();
     if (dt > 0) this.silly(dt);
+    if (dt > 0) { this.guideT = (this.guideT ?? 0) - dt; if (this.guideT <= 0) { this.guideT = 0.6; this.guideFight(); } }
     this.updateHud();
     if (this.state.phase === 'ended' && !this.leaving) this.finish();
   }
@@ -484,7 +492,7 @@ export default class GauntletScene extends Phaser.Scene {
       v.gBar.setScale(Math.min(1, u.gauge ?? 0), 1).setVisible(s.phase === 'fight');
       const melee = u.stats.range <= 1;
       v.tag.setText(u.resting ? '쉼' : (u.deepT ?? 0) > s.time && s.phase === 'fight' ? '⚠깊숙이' : u.suppressed && s.phase === 'fight' ? '⛓제압' : u.pinnedBy != null && s.phase === 'fight' ? '✋붙잡힘' : u.awake && s.phase === 'fight' ? '🔥각성' : s.star === u.uid ? '⭐주인공' : s.focus === u.uid && s.phase === 'fight' ? '🎯' : '');
-      { const want = s.phase === 'regroup' ? (() => { const p = statLine(u, this.D); return `❤${Math.round(u.hp)}/${p.hp} ⚔${p.atk}`; })() : ''; if (v.stat.text !== want) v.stat.setText(want); }
+      { const want = s.phase === 'regroup' ? (() => { const p = statLine(u, this.D); return `❤${Math.round(u.hp)}\n⚔${p.atk}${u.trained ? `\n🔨${u.trained}` : ''}`; })() : ''; if (v.stat.text !== want) v.stat.setText(want); }
       { const tc = (s.tLevel ?? 2) > 0 ? tacticOf(u, gcfg(this.D)) : null; const ic = tc && !['hold', 'help', 'front'].includes(tc) ? TACTIC_LABEL[tc].split(' ')[0] : ''; if (v.tac.text !== ic) v.tac.setText(ic); }
       v.c.setAlpha(u.down ? 0.35 : u.resting ? 0.5 : 1);
       if (v.aura) {
@@ -659,6 +667,9 @@ export default class GauntletScene extends Phaser.Scene {
       case 'snatch': return this.snatchFx(ev);
       case 'sold': { const p = this.posOf('u', ev.uid) ?? [320, 400]; this.floatAt(p[0], p[1] - 80, `💰+${ev.price} 팔림! 흑역사 안녕~`, '#ffd84d', 18); this.fx.burst?.('spark', p[0], p[1] - 20, 14, 0xffd84d); sfx('coin'); this.goldText?.setText(`💰 ${s.gold}`); break; }
       case 'phoenix': { const v = this.uViews.get(ev.uid); if (v) { this.fx.respawn(v.c.x, v.c.y); this.say(v.c.x, v.c.y - 120, '🔥 불사조!', 0xffb27a, { size: 20, force: true }); } this.ticker('🔥 불사조 깃털로 다시 일어남!', '#ffb27a'); break; }
+      case 'ultFx': { this.lastUlt = ev; this.ticker(`✨ ${ev.name} — ${ev.desc}`, '#ffd84d'); break; }
+      case 'potion': { for (const v of this.uViews.values()) this.fx.heal(v.c.x, v.c.y); break; }
+      case 'trained': { const v = this.uViews.get(ev.uid); if (v) { this.fx.ring(v.c.x, v.c.y + 20, 0xffd84d, 1, 320); this.floatAt(v.c.x, v.c.y - 120, `🔨 단련 ${ev.n}`, '#ffd84d', 18); } sfx('evolve'); break; }
       case 'tapCheer': { const v = this.uViews.get(ev.uid); if (v) { this.floatAt(v.c.x + 40, v.c.y - 150, ['영차!', '힘내!', '밀어!'][ev.left % 3], '#ffd84d', 20); this.fx.ring(v.c.x + 40, v.c.y - 20, 0xffd84d, 1, 280); } sfx('click'); try { navigator.vibrate?.(12); } catch { /* 없음 */ } break; }
       case 'tapShield': { const a = this.uViews.get(ev.uid); if (a) { this.flashShield(a.c.x, a.c.y - 20, 0x8fd3ff, 1200); this.floatAt(a.c.x, a.c.y - 110, '🧿 막아!', '#8fd3ff', 18); } sfx('shield'); try { navigator.vibrate?.(15); } catch { /* 없음 */ } break; }
       case 'herb': { const a = this.uViews.get(ev.uid); if (a) this.floatAt(a.c.x, a.c.y - 100, '🌱 쑥쑥', '#9cff6b', 16); break; }
@@ -785,6 +796,51 @@ export default class GauntletScene extends Phaser.Scene {
     if (v) this.say(v.c.x, v.c.y - 120, L[Math.floor(Math.random() * L.length)], 0xffffff, { size: 15, hold: 1200 });
   }
 
+  /** 추천 행동 안내(튜토리얼을 끄기 전까지): 전투 중·정비·보상 */
+  guideOn() { return !this.save?.guideOff; }
+  guideSay(key, text) {
+    if (!this.guideOn()) return;
+    this.guideAt ??= {};
+    const now = this.time.now;
+    if ((this.guideAt[key] ?? -1e9) > now - 9000 || (this.guideAny ?? -1e9) > now - 3500) return;
+    this.guideAt[key] = now; this.guideAny = now;
+    this.guideObj?.destroy();
+    const t = this.add.text(640, 574, `💡 ${text}`, style(17, '#0d1222', { backgroundColor: '#ffe27add', padding: { x: 14, y: 6 } })).setOrigin(0.5).setDepth(1860).setAlpha(0);
+    this.guideObj = t;
+    this.tweens.add({ targets: t, alpha: 1, duration: 180 });
+    this.time.delayedCall(3200, () => { if (t.active) this.tweens.add({ targets: t, alpha: 0, duration: 250, onComplete: () => t.destroy() }); });
+  }
+  guideFight() {
+    const s = this.state;
+    if (!this.guideOn() || s.phase !== 'fight' || s.charging) return;
+    const marked = s.enemies.some((e) => e.hp > 0 && e.diveMark?.uid);
+    if (marked && (s.taps ?? 0) < 3) return this.guideSay('tap', '빨간 화살표로 노려진 친구를 톡! → 보호막');
+    const losing = (s.clashes ?? []).find((c) => c.push < -0.3);
+    if (losing && (s.cheers ?? 0) < 8) return this.guideSay('cheer', '밀리는 힘싸움 막대를 톡톡! 응원해요');
+    const ready = (this.spellBtns ?? []).find((b) => !spellBlockG(s, this.D, b.id));
+    if (ready) {
+      const divers = s.enemies.some((e) => e.hp > 0 && (e.style === 'skirm' || e.diveMark));
+      const low = s.field.filter((u) => !u.down && u.hp < u.maxHp * 0.4).length >= 2;
+      const pick = (this.spellBtns.find((b) => b.def.effect === 'guard' && low && !spellBlockG(s, this.D, b.id)) ?? this.spellBtns.find((b) => b.def.effect === 'snare' && divers && !spellBlockG(s, this.D, b.id)) ?? ready);
+      return this.guideSay('spell', `마력이 찼어요 → ${pick.def.icon} ${pick.def.name} 눌러 보세요`);
+    }
+    if (s.field.some((u) => u.suppressed)) return this.guideSay('sup', '⛓ 제압당했어요 — 다음 정비 때 그 라인에 🛡 브루저를 세워요');
+  }
+  guideRegroup() {
+    const s = this.state, D = this.D;
+    if (!this.guideOn()) return;
+    const lanes = [0, 1, 2].filter((l) => s.field.some((u) => !u.down && laneOf(u.seat) === l && styleOf(u) !== 'bruiser') && !s.field.some((u) => laneOf(u.seat) === l && styleOf(u) === 'bruiser'));
+    const p = nextPreview(s, D);
+    let msg = null;
+    if (lanes.length && (p?.roles?.bruiser ?? 1) > 0) msg = `${['위', '가운데', '아래'][lanes[0]]} 라인에 🛡 브루저가 없어요 — 제압당할 수 있어요`;
+    else if (p?.hint === 'dive') msg = '날쌘 적이 많아요 → 🛡 지키기 작전을 눌러 봐요';
+    else if (p?.hint === 'wall') msg = '단단한 벽이에요 → 🎯 노리기 작전을 눌러 봐요';
+    else if (s.gold >= 30) msg = `금화가 ${s.gold} — 🔨 단련이나 💰 하나 더에 써 봐요`;
+    if (msg) this.addUi(this.add.text(330, 116, `💡 ${msg}`, style(14, '#0d1222', { backgroundColor: '#ffe27add', padding: { x: 10, y: 4 }, wordWrap: { width: 560 } })).setOrigin(0.5, 0).setDepth(2001));
+    // 안내 끄기
+    this.addUi(button(this, 1170, 610, 140, 30, '💡 안내 끄기', () => { this.save.guideOff = true; writeSave(this.registry.get('storage'), this.save); this.toast('안내를 껐어요 (지도 화면에서 다시 켤 수 있어요)'); this.showRegroup(); }, { depth: 2002, size: 13, fill: 0x24303f }));
+  }
+
   /** 처음 한 번만 뜨는 짧은 안내(세이브에 기억) */
   hintOnce(key, text) {
     const save = this.save ?? {}; save.hints ??= {};
@@ -865,21 +921,23 @@ export default class GauntletScene extends Phaser.Scene {
     const lines = this.add.graphics();
     root.add([bg, lines]);
     const stageC = this.add.container(640, 360); root.add(stageC);
-    const atkC = this.add.container(-700, 70); stageC.add(atkC);
-    const ar = unitRig(this, u, atkC, 0.95);
+    // 몸은 발 기준으로 그려지므로 발을 화면 아래쪽(y≈600)에 둠 — 위로 잘리지 않게
+    const atkC = this.add.container(-700, 240); stageC.add(atkC);
+    const ar = unitRig(this, u, atkC, 0.8);
     if (ar) { ar.view.update(0); ar.inst.setFacing?.(1); }
     else atkC.add(this.add.text(0, 0, STYLE_ICON[styleOf(u)] ?? '⭐', style(160)).setOrigin(0.5));
-    const tgtC = this.add.container(420, 70).setAlpha(0); stageC.add(tgtC);
-    const tr = e ? enemyRig(this, e, tgtC, 260, 0.8) : null;
+    const tgtC = this.add.container(420, 240).setAlpha(0); stageC.add(tgtC);
+    const tr = e ? enemyRig(this, e, tgtC, 220, 0.7) : null;
     if (tr) { tr.inst.setFacing?.(enemyFace(e.id)); tr.view.update(0); }
-    const nameT = this.add.text(640, 120, ev.name ?? '필살기', style(64, '#ffffff', { stroke: '#b8860b', strokeThickness: 12 })).setOrigin(0.5).setAngle(-6).setScale(2.4).setAlpha(0);
-    const who = this.add.text(640, 186, u.stats.name, style(22, '#ffe9a8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setAlpha(0);
+    const nameT = this.add.text(640, 110, ev.name ?? '필살기', style(64, '#ffffff', { stroke: '#b8860b', strokeThickness: 12 })).setOrigin(0.5).setAngle(-6).setScale(2.4).setAlpha(0);
+    const udesc = ev.desc ?? (this.lastUlt?.uid === u.uid ? this.lastUlt.desc : null);
+    const who = this.add.text(640, 176, udesc ? `${u.stats.name} · ${udesc}` : u.stats.name, style(22, '#ffe9a8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setAlpha(0);
     root.add([nameT, who]);
     let t = 0, phase = 0;
     const speed = (dir, a) => { lines.clear(); for (let i = 0; i < 26; i++) { const y = (i * 53 + t * 900 * (i % 3 + 1)) % 720; const x = (i * 197 + t * 2400 * dir) % 1600 - 160; lines.fillStyle(i % 4 ? 0xffffff : col, a).fillRect(dir > 0 ? x : 1280 - x, y, 140 + (i % 5) * 40, 2 + (i % 3)); } };
     const radial = (a) => { lines.clear(); lines.fillStyle(0xffffff, a); for (let i = 0; i < 36; i++) { const ang = (i / 36) * Math.PI * 2 + t; const r1 = 260 + (i % 3) * 30; lines.fillTriangle(640 + Math.cos(ang) * r1, 360 + Math.sin(ang) * r1, 640 + Math.cos(ang + 0.03) * 900, 360 + Math.sin(ang + 0.03) * 900, 640 + Math.cos(ang - 0.03) * 900, 360 + Math.sin(ang - 0.03) * 900); } };
     // ① 회전하며 날아 들어와 확대
-    this.tweens.add({ targets: atkC, x: -260, angle: { from: -40, to: 0 }, scale: { from: 0.6, to: 1.25 }, duration: 380, ease: 'Back.out' });
+    this.tweens.add({ targets: atkC, x: -260, angle: { from: -40, to: 0 }, scale: { from: 0.6, to: 1.1 }, duration: 380, ease: 'Back.out' });
     this.tweens.add({ targets: nameT, alpha: 1, scale: 1, duration: 220, delay: 120, ease: 'Back.out', onComplete: () => { this.cameras.main.shake(140, 0.006); sfx('clash'); } });
     this.tweens.add({ targets: who, alpha: 1, duration: 200, delay: 260 });
     const upd = this.time.addEvent({ delay: 16, loop: true, callback: () => {
@@ -908,7 +966,7 @@ export default class GauntletScene extends Phaser.Scene {
       const big = this.add.text(940, 220, `${dmg}`, style(78, '#ffd84d', { stroke: '#7a1a00', strokeThickness: 12 })).setOrigin(0.5).setScale(0.3); root.add(big);
       this.tweens.add({ targets: big, scale: 1.1, duration: 200, ease: 'Back.out' });
       this.cameras.main.shake(260, 0.014); sfx('slam');
-      this.tweens.add({ targets: stageC, scale: 0.8, delay: 260, duration: 380, ease: 'Cubic.in' });
+      this.tweens.add({ targets: stageC, scale: 0.85, y: 380, delay: 260, duration: 380, ease: 'Cubic.in' });
     });
     this.time.delayedCall(D * 1000, () => { this.tweens.add({ targets: root, alpha: 0, duration: 160, onComplete: () => { upd.remove(); ar?.view.destroy?.(); tr?.view.destroy?.(); root.destroy(true); } }); });
     return true;
@@ -919,15 +977,15 @@ export default class GauntletScene extends Phaser.Scene {
     const root = this.add.container(0, 0).setDepth(3000);
     const bg = this.add.graphics(); bg.fillStyle(0x05070d, 0.9).fillRect(0, 0, 1280, 720); root.add(bg);
     const rays = this.add.graphics(); root.add(rays);
-    const body = this.add.container(640, 430).setScale(0.1).setAngle(-360); root.add(body);
-    const rg = unitRig(this, u, body, 0.9);
+    const body = this.add.container(640, 600).setScale(0.1).setAngle(-360); root.add(body);   // 발 기준(y 600) — 위로 잘리지 않게
+    const rg = unitRig(this, u, body, 0.75);
     if (rg) rg.view.update(0); else body.add(this.add.text(0, -60, '✨', style(160)).setOrigin(0.5));
     const name = this.add.text(640, 150, u.stats.name, style(70, '#ffffff', { stroke: '#' + color.toString(16).padStart(6, '0'), strokeThickness: 12 })).setOrigin(0.5).setScale(3).setAlpha(0).setAngle(-4);
     const s2 = this.add.text(640, 226, sub, style(22, '#efe3c8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setAlpha(0);
     root.add([name, s2]);
     let t = 0;
-    const ev = this.time.addEvent({ delay: 16, loop: true, callback: () => { t += 0.016; rg?.view.update(0.016); rays.clear().fillStyle(color, 0.16); for (let i = 0; i < 24; i++) { const a = (i / 24) * Math.PI * 2 + t * 0.8; rays.fillTriangle(640, 380, 640 + Math.cos(a - 0.06) * 900, 380 + Math.sin(a - 0.06) * 900, 640 + Math.cos(a + 0.06) * 900, 380 + Math.sin(a + 0.06) * 900); } } });
-    this.tweens.add({ targets: body, scale: 1.2, angle: 0, duration: 700, ease: 'Back.out' });
+    const ev = this.time.addEvent({ delay: 16, loop: true, callback: () => { t += 0.016; rg?.view.update(0.016); rays.clear().fillStyle(color, 0.16); for (let i = 0; i < 24; i++) { const a = (i / 24) * Math.PI * 2 + t * 0.8; rays.fillTriangle(640, 460, 640 + Math.cos(a - 0.06) * 900, 460 + Math.sin(a - 0.06) * 900, 640 + Math.cos(a + 0.06) * 900, 460 + Math.sin(a + 0.06) * 900); } } });
+    this.tweens.add({ targets: body, scale: 1, angle: 0, duration: 700, ease: 'Back.out' });
     this.tweens.add({ targets: name, alpha: 1, scale: 1, delay: 500, duration: 260, ease: 'Back.out', onComplete: () => this.cameras.main.shake(200, 0.01) });
     this.tweens.add({ targets: s2, alpha: 1, delay: 760, duration: 200 });
     this.time.delayedCall(2100, () => this.tweens.add({ targets: root, alpha: 0, duration: 260, onComplete: () => { ev.remove(); root.destroy(true); } }));
@@ -1115,15 +1173,24 @@ export default class GauntletScene extends Phaser.Scene {
     const g = this.addUi(this.add.graphics().setDepth(2000));
     g.fillStyle(0x0d1222, 0.95).fillRoundedRect(660, 80, 600, 620, 16).lineStyle(2, 0xd4b06a, 0.7).strokeRoundedRect(660, 80, 600, 620, 16);
     const win = s.lastWin;
-    this.addUi(this.add.text(684, 96, win ? '승리!' : '후퇴…', style(30, win ? '#ffd84d' : '#ff8a7a')).setDepth(2001));
+    this.addUi(this.add.text(684, 96, s.prelude ? '출전 준비' : win ? '승리!' : '후퇴…', style(30, s.prelude ? '#9cff6b' : win ? '#ffd84d' : '#ff8a7a')).setDepth(2001));
+    if (s.prelude) this.addUi(this.add.text(684, 142, '자리와 작전을 보고, 다음 적을 확인한 뒤 ▶ 출발', style(15, '#d8d2c2')).setDepth(2001));
     this.goldText = this.addUi(this.add.text(1236, 104, `💰 ${s.gold}`, style(24, '#ffd84d')).setOrigin(1, 0).setDepth(2001));
     if (s.mvp) this.addUi(this.add.text(684, 140, s.mvp.grew ? `⭐ ${s.mvp.from} → ${s.mvp.to}` : `⭐ ${s.mvp.from}`, style(16, '#9cff6b')).setDepth(2001));
     if (s.mvp?.grew) { const p = this.posOf('u', s.mvp.uid); if (p) { this.fx.evolve(p[0], p[1], false); sfx('evolve'); } }
     // 왜 이겼나 / 왜 졌나: 가장 큰 요인 넷
-    { const f = encFactors(s, D);
+    if (!s.prelude) { const f = encFactors(s, D);
       if (f.length) { this.addUi(this.add.text(684, 352, win ? '이긴 까닭' : '진 까닭', style(16, win ? '#ffd84d' : '#ff8a7a')).setDepth(2001));
         f.forEach((x, i) => this.addUi(this.add.text(684 + (i % 2) * 280, 380 + Math.floor(i / 2) * 26, `${x.good ? '✔' : '✘'} ${x.text}`, style(14, x.good ? '#9cff6b' : '#ff9f9f', { wordWrap: { width: 270 } })).setDepth(2001))); } }
-    this.tutAt('regroup');
+    // 금화 쓰기: 회복 물약 · 단련(동물을 눌러서)
+    if (!s.prelude) {
+      const pc = gcfg(D).potionCost, used = s.potionAt === s.enc;
+      const pb = this.addUi(button(this, 770, 452, 170, 34, used ? '🧪 물약 ✔' : `🧪 물약 💰${pc}`, () => { const r = buyPotion(s, D); if (!r.ok) { this.toast(r.reason === 'gold' ? '금화가 모자람' : '이번 정비엔 이미 씀'); return; } sfx('heal'); this.goldText?.setText(`💰 ${s.gold}`); this.toast(`🧪 모두 체력 +${gcfg(D).potionHeal}%`, '#9cff6b'); this.showRegroup(); }, { depth: 2002, size: 14, fill: 0x1d4a3a, stroke: 0x9cff6b, tip: '출전 동물 모두 체력 회복(정비마다 한 번)' }));
+      pb.setEnabled(!used && s.gold >= pc);
+      this.addUi(this.add.text(870, 444, '🔨 단련: 동물을 눌러 피해 +10%', style(13, '#d8d2c2')).setDepth(2001));
+    }
+    this.guideRegroup();
+    if (!s.prelude) this.tutAt('regroup');
     this.drawRewards();
     this.drawPreview();
     // 작전 한 번에: 💪 앞싸움 · 🎯 노리기 · 🛡 지키기 (+ ? 설명). 2스테이지 수업 뒤부터 보임
@@ -1131,13 +1198,14 @@ export default class GauntletScene extends Phaser.Scene {
       PLAN_BTNS.forEach(([k, label], i) => this.addUi(button(this, 730 + i * 118, 660, 112, 50, label, () => { setPlan(s, this.D, k); sfx('click'); this.toast(`작전: ${label}`, '#9cff6b'); }, { depth: 2002, size: 16, fill: 0x1f2a4a })));
       this.addUi(button(this, 1056, 660, 44, 50, '?', () => this.planHelp(), { depth: 2002, size: 20, fill: 0x2a3a6a }));
     }
-    this.addUi(button(this, 1170, 660, 140, 56, '다음 ▶', () => this.goNext(), { depth: 2002, fill: 0x8a6a1a, stroke: 0xffd84d, size: 22 }));
+    this.addUi(button(this, 1170, 660, 140, 56, s.prelude ? '▶ 출발' : '다음 ▶', () => this.goNext(), { depth: 2002, fill: 0x8a6a1a, stroke: 0xffd84d, size: 22 }));
   }
 
   drawRewards() {
     const s = this.state, D = this.D, o = s.offer;
     this.rewardObjs?.forEach((x) => x.destroy()); this.rewardObjs = [];
     const add = (x) => { this.rewardObjs.push(x); this.ui.push(x); return x; };
+    if (s.prelude) return;
     add(this.add.text(684, 184, o?.taken ? `보상 ✔${o.bought ? ` (+${o.bought})` : ''}` : o?.bought ? '하나 더 고르기' : '보상 1개', style(18, '#ffffff')).setDepth(2001));
     // 금화로 하나 더
     if (o?.taken) { const c = extraCost(s, D); const bb = add(button(this, 1150, 192, 170, 34, `💰${c} 하나 더`, () => { const r = buyExtraReward(s, D); if (!r.ok) { this.toast('금화가 모자람'); return; } sfx('coin'); this.goldText?.setText(`💰 ${s.gold}`); this.drawRewards(); }, { depth: 2003, size: 14, fill: s.gold >= c ? 0x5a4a14 : 0x333333, stroke: 0xffd84d })); bb.setEnabled(s.gold >= c); }
@@ -1156,6 +1224,8 @@ export default class GauntletScene extends Phaser.Scene {
       const z = add(this.add.zone(x + w / 2, y + 59, w, 118).setInteractive({ useHandCursor: on && !o.taken }).setDepth(2003));
       z.on('pointerdown', () => { if (on && !o.taken) onClick(); });
     };
+    const rec = this.guideOn() ? recommendReward(s, D) : null;
+    if (rec) { const i = ['globe', 'food', 'relic'].indexOf(rec.kind); const x = 684 + i * 192; add(this.add.text(x + 172, y + 6, '👍 추천', style(13, '#0d1222', { backgroundColor: '#9cff6b', padding: { x: 5, y: 2 } })).setOrigin(1, 0).setDepth(2004)); add(this.add.text(684, y + 124, `💡 ${rec.why}`, style(13, '#9cff6b')).setDepth(2002)); }
     card(0, '🌐 동물', '새 동료 1마리', 0xf2b544, () => this.showGlobe(), s.bench.includes(null) || s.seats.includes(null));
     card(1, '🍖 성장', '한 마리 한 단계 ↑', 0x7ddc6f, () => { this.pickFood = true; this.toast('먹일 동물을 누름', '#9cff6b'); });
     card(2, '✨ 유물', o.relic ? '이번 판 내내 효과' : '없음', 0xc4a6ff, () => this.showRelics(), !!o.relic);
@@ -1230,6 +1300,7 @@ export default class GauntletScene extends Phaser.Scene {
     if (u.resting || u.down) items.push([`💰${reviveCost(s, this.D)} 부활`, () => { const r = reviveUnit(s, this.D, u.uid); if (!r.ok) this.toast(r.reason === 'gold' ? '금화 부족' : '못 함'); }]);
     if (canStance(u)) items.push([`${STANCE_NAME[u.prefStance] ?? '자동'} 태세`, () => cyclePrefStance(s, u.uid)]);
     if (this.save?.advanced && buildSet(u)) { const B = u.build ? BUILDS[u.build] : null; items.push([`🔧 ${B ? `${B.icon} ${B.name}` : '추천'}`, () => { const r = cycleBuild(s, this.D, u.uid); if (r.ok) { const nb = r.build ? BUILDS[r.build] : null; this.toast(nb ? `${u.stats.name} ${nb.icon} ${nb.name} — ${nb.tip}` : `${u.stats.name} 추천 역할`, '#c4a6ff'); if (this.save) { this.save.builds ??= {}; if (r.build) this.save.builds[u.speciesId] = r.build; else delete this.save.builds[u.speciesId]; } } }]); }
+    if (s.field.includes(u)) items.push([`🔨 단련 💰${trainCost(s, this.D, u)}`, () => { const r = trainUnit(s, this.D, u.uid); this.toast(r.ok ? `🔨 ${u.stats.name} 피해 +${gcfg(this.D).trainDmg}% (${r.n}번째)` : r.reason === 'gold' ? '금화가 모자람' : '더는 단련 못 함(3번까지)', r.ok ? '#ffd84d' : '#ffffff'); }]);
     items.push([s.star === u.uid ? '⭐ 주인공 해제' : '⭐ 주인공', () => { setStar(s, this.D, u.uid); this.toast(s.star === u.uid ? `⭐ ${u.stats.name} 주인공! 혼자 세지고 동료는 조금 약해짐` : '주인공 해제', '#ffd84d'); }]);
     const tc = (s.tLevel ?? 2) > 0 && tacticOf(u, gcfg(this.D));
     if (tc) items.push([`작전 ${TACTIC_LABEL[tc]}`, () => { const r = cycleTactic(s, this.D, u.uid); if (r.ok) { this.toast(`${u.stats.name} ${TACTIC_LABEL[r.tactic]} — ${TACTIC_TIP[r.tactic]}`, '#9cff6b'); this.tutAt('tactic'); } }]);
@@ -1237,7 +1308,8 @@ export default class GauntletScene extends Phaser.Scene {
     // 수치 카드: ❤ 체력 ⚔ 공격 ⚡ 빠르기 🛡 막기 💨 피하기 + 역할·작전
     y = Math.max(y, 150 + items.length * 42);   // 위로 잘리지 않게
     const p = statLine(u, this.D), top = y - (items.length - 1) * 42 - 26;
-    const card = this.add.text(x, top, `${u.stats.name}\n❤ ${Math.round(u.hp)}/${p.hp}   ⚔ ${p.atk}\n⚡ ${p.spd}/초${p.def ? `   🛡 ${p.def}%` : ''}${p.dodge ? `   💨 ${p.dodge}%` : ''}`, style(15, '#ffffff', { backgroundColor: '#0d1222ee', padding: { x: 12, y: 8 }, align: 'center', lineSpacing: 4 })).setOrigin(0.5, 1).setDepth(2700);
+    const tn = tuneOf(u, gcfg(this.D));
+    const card = this.add.text(x, top, `${u.stats.name}\n❤ ${Math.round(u.hp)}/${p.hp}   ⚔ ${p.atk}\n⚡ ${p.spd}/초${p.def ? `   🛡 ${p.def}%` : ''}${p.dodge ? `   💨 ${p.dodge}%` : ''}${tn ? `\n👍 ${tn.pro}\n👎 ${tn.con}` : ''}`, style(15, '#ffffff', { backgroundColor: '#0d1222ee', padding: { x: 12, y: 8 }, align: 'center', lineSpacing: 4 })).setOrigin(0.5, 1).setDepth(2700);
     this.menuObjs = items.map(([label, fn], i) => button(this, x, y - i * 42, 150, 36, label, () => { fn(); sfx('click'); this.menuObjs?.forEach((o) => o.destroy()); this.menuObjs = null; this.goldText?.setText(`💰 ${s.gold}`); }, { depth: 2700, size: 15, fill: 0x1f2a4a }));
     this.menuObjs.push(card);
     this.time.delayedCall(4500, () => { this.menuObjs?.forEach((o) => o.destroy()); this.menuObjs = null; });
@@ -1257,10 +1329,11 @@ export default class GauntletScene extends Phaser.Scene {
   goNext() {
     const s = this.state;
     if (s.offer && !s.offer.taken) { this.toast('보상을 먼저 하나 고름'); return; }
+    const first = s.prelude;
     const r = nextEncounter(s, this.D);
     if (!r.ok) { this.toast('출전할 동물이 없음'); return; }
     this.startFightView();
-    this.tutAt('next');
+    if (first) { this.tutShow?.(''); this.tutAt('fightStart'); } else this.tutAt('next');
   }
 
   // ---------- 끌어 놓기 ----------

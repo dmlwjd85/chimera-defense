@@ -5,7 +5,7 @@
 import { makeRng } from './rng.js';
 import { makeUnit, merge as mergeAny } from './battle.js';
 import { makeEnemy } from './waves.js';
-import { computeMods, effDamage, effInterval, emptyMods } from './mods.js';
+import { computeMods, effDamage, effInterval, effBlock, emptyMods } from './mods.js';
 import { hitDamage } from './combat.js';
 import { movesOf, a2Of, chargeUlt, ultName } from './moves.js';
 import { rollTraits, inheritEvolve } from './traits.js';
@@ -14,8 +14,16 @@ import { spellDef, spellCost } from './spells.js';
 import { mergeKind } from './merge.js';
 import { mcfg, elemMult, enemyElement, foodChain } from './matchup.js';
 
-const FRONT = [0, 1, 2], BACK = [3, 4, 5];
-const isFront = (seat) => seat < 3;
+// 3×3 자리: seat = 열×3 + 라인. 열 0 = 1열(브루저), 1 = 2열(딜러), 2 = 3열(응원·원거리). 라인 0 위 · 1 가운데 · 2 아래
+export const SEATS = 9;
+const FRONT = [0, 1, 2], MID = [3, 4, 5], BACK = [6, 7, 8];
+export const colOf = (seat) => Math.floor((seat ?? 1) / 3);
+export const laneOf = (seat) => (seat ?? 1) % 3;
+const COL_ORDER = { bruiser: [0, 1, 2], skirm: [1, 0, 2], ranged: [2, 1, 0], support: [2, 1, 0] };
+const LANE_ORDER = [1, 0, 2];
+/** 역할에 맞는 추천 자리 순서(열 우선, 라인은 가운데 → 위 → 아래) */
+export const seatOrder = (style) => (COL_ORDER[style] ?? COL_ORDER.skirm).flatMap((c) => LANE_ORDER.map((l) => c * 3 + l));
+const isFront = (seat) => colOf(seat) === 0;
 const NEXT = { young: 'teen', teen: 'adult' };
 const fail = (reason) => ({ ok: false, reason });
 
@@ -30,7 +38,9 @@ export function gcfg(data) {
     // 적 역할(우리와 같은 문법): bruiser 힘겨루기 / skirm 뒷줄 노리고 치고 빠지기 / ranged 뒤에서 쏨 / support 자기 편 거들기
     enemyRole: { normal: 'bruiser', tough: 'bruiser', zombie: 'bruiser', swarm: 'bruiser', skeleton: 'bruiser', miniboss: 'bruiser',
       fast: 'skirm', ghost: 'skirm', flying: 'ranged', bat: 'ranged', wisp: 'ranged', healer: 'support',
-      boss_boar: 'bruiser', boss_shadow: 'bruiser', boss_bone: 'bruiser', boss_frost: 'bruiser', boss_bat: 'ranged', boss_lich: 'support' }, guardChance: 0.6, guardTaken: 0.6, peelChance: 0.7, peelDmg: 0.8, peelStun: 0.6, clashBonus: 1.5, clashStun: 1, clashEnemy: 1, assistPush: 0.05, cheerPush: 0.12, goldWin: 10, goldPerEnc: 3, goldLose: 5, reviveCost: 15, reviveUp: 0.5, releaseGold: 3, collapseTaken: 35, collapseStun: 0.8, growLv: { teen: 3, adult: 6 }, relicAll: 4, skirmBack: 0.4,
+      boss_boar: 'bruiser', boss_shadow: 'bruiser', boss_bone: 'bruiser', boss_frost: 'bruiser', boss_bat: 'ranged', boss_lich: 'support' }, guardChance: 0.6, guardTaken: 0.6, peelChance: 0.7, peelDmg: 0.8, peelStun: 0.6, clashBonus: 1.5, clashStun: 1, clashEnemy: 1, assistPush: 0.05, cheerPush: 0.12, goldWin: 10, goldPerEnc: 3, goldLose: 5, reviveCost: 15, reviveUp: 0.5, releaseGold: 3, collapseTaken: 35, collapseStun: 0.8, growLv: { teen: 3, adult: 6 }, relicAll: 4, skirmBack: 0.4, supDmg: 30, supTaken: 20,
+    // 붙잡기: 남는 정원이 있는 탱커는 같은 라인 딜러에게 붙어 후열 노리기를 막음. 고급 딜러(나는 동물·신화·키메라·날쌘 종 성장기 이상)는 빠져나감
+    slippery: ['fox', 'monkey', 'rabbit'], eSlippery: ['ghost', 'bat', 'boss_bat'], enemyCap: { bruiser: 2, boss: 3 },
     // 역전 각성(약할수록 큼), 주인공(선택과 집중), 무쌍 견제(한 마리가 피해를 독식하면 적이 집중)
     awakenHp: 0.35, awakenAllies: 0.5, awakenBase: 30, awakenWeak: 70, awakenSpeed: 25, awakenHeal: 0.5,
     starDmg: 30, starHp: 20, starOthers: -10, focusShare: 0.55, focusAfter: 8, focusTaken: 15, focusChance: 0.5,
@@ -237,16 +247,12 @@ export function prefersFront(u) {
   return u.stats.role !== 'buffer' || u.stats.range <= 1;
 }
 
-/** Fill the six seats from a list of units (front first for melee). */
+/** 추천 배치: 브루저 1열, 딜러 2열, 응원·원거리 3열(넘치면 옆 열). 9칸에 6마리 */
 export function autoSeat(state, units) {
-  const seats = Array(6).fill(null);
+  const seats = Array(SEATS).fill(null);
   const put = (u, order) => { const i = order.find((k) => seats[k] == null); if (i == null) return false; seats[i] = u.uid; u.seat = i; return true; };
-  // 앞줄 = 브루저, 뒷줄 = 원거리·응원, 딜러·기술은 남는 자리(어디서든 옆구리로 들락날락 — 앞줄이어도 탱이 아님)
-  const tanks = units.filter((u) => baseStyle(u) === 'bruiser'), backs = units.filter((u) => ['ranged', 'support'].includes(baseStyle(u)));
-  const rest = units.filter((u) => !tanks.includes(u) && !backs.includes(u));
-  for (const u of tanks) if (!put(u, [1, 0, 2])) put(u, [4, 3, 5]);
-  for (const u of backs) if (!put(u, [4, 3, 5])) put(u, [1, 0, 2]);
-  for (const u of rest) put(u, [0, 2, 1, 3, 5, 4]);
+  for (const st of ['bruiser', 'support', 'ranged', 'skirm']) for (const u of units.filter((x) => baseStyle(x) === st)) put(u, seatOrder(st));
+  for (const u of units) if (!seats.includes(u.uid)) put(u, seatOrder('skirm'));
   return seats;
 }
 
@@ -258,7 +264,7 @@ export function createGauntlet(data, stageId, seed = 1, opts = {}) {
   const state = {
     mode: 'gauntlet', stage, rng: makeRng(seed), hard: !!opts.hard || !!opts.tier, tier: opts.tier ?? null, godWeek: opts.tier === 'god' ? weekKey(Date.now()) : null, godRule: opts.tier === 'god' ? opts.godRule ?? godRuleOf(Date.now()) : null, phase: 'fight', result: null,
     enc: 0, encTime: 0, time: 0, actGap: 0, life: opts.hard ? 1 : g.life, field: [], bench: Array(cfg.benchSize + (opts.benchBonus ?? 0)).fill(null),
-    seats: Array(6).fill(null), enemies: [], eSeats: Array(6).fill(null), nextUid: 1, nextEid: 1, events: [], log: [],
+    seats: Array(SEATS).fill(null), enemies: [], eSeats: Array(SEATS).fill(null), nextUid: 1, nextEid: 1, events: [], log: [],
     known: { recipes: new Set(opts.known?.recipes ?? []), failed: new Set(opts.known?.failed ?? []) },
     levels: { ...(opts.levels ?? {}) }, builds: { ...(opts.builds ?? {}) }, allyBuffs: [], kills: 0, relics: [], relicOffer: null, talents: [...(opts.talents ?? [])],
     finds: { recipes: [], flops: [], species: [], bonds: [] }, seenSpecies: new Set(opts.seenSpecies ?? []), seenBonds: new Set(opts.seenBonds ?? []),
@@ -303,14 +309,14 @@ const prep = (u) => Object.assign(u, { tactic: u.tactic ?? null, gauge: u.gauge 
 /** Put the encounter's enemies on their seats. */
 export function startEncounter(state, data) {
   const g = gcfg(data), spec = state.plan[state.enc];
-  state.enemies = []; state.eSeats = Array(6).fill(null);
+  state.enemies = []; state.eSeats = Array(SEATS).fill(null);
   for (const id of spec.ids) addEnemy(state, data, id, spec.wave);
   // 쉬던 동물: 혼자 남지 않게, 싸울 동물이 둘보다 적으면 쉬던 동물도 나옴
   if (fighters(state).length < 2) for (const u of unitsIn(state)) if (u?.resting) { u.resting = false; u.hp = Math.max(u.hp, u.maxHp * 0.3); }
   for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; u.stance = canStance(u) ? u.prefStance ?? nativeStance(u) : null; u.stanceT = 0.3 + state.rng() * 0.6; }
   state.encTime = 0; state.actGap = 0; state.phase = 'fight'; state.allyBuffs = []; state.clashes = [];
   state.collapse = { u: false, e: false }; state.isolated = { u: false, e: false }; state.diveAt = { u: -99, e: -99 }; state.taps = 0; state.awoke = false; state.awoke2 = false; state.focus = null;
-  for (const u of state.field) u.awake = null;
+  for (const u of state.field) { u.awake = null; u.advance = false; u.suppressed = false; u.pinnedBy = null; u.slipNote = false; }
   // 적 무리 성향(숨김): 돌파형·철벽형·섞임
   // 무리 성향은 숨기지만 적 구성을 보면 짐작 가능: 돌파꾼(⚔)이 많으면 돌파형, 브루저(🛡)가 많으면 철벽형(20%는 엉뚱하게)
   state.tLevel = state.hard ? 2 : (g.tacticLevel?.[state.stage.id] ?? 2);
@@ -342,7 +348,7 @@ function addEnemy(state, data, id, wave) {
   const g = gcfg(data), def = data.enemyById[id];
   const style = rule(state, 'giants') && !def.boss ? 'bruiser' : roleOfEnemy(g, id, def);
   const ranged = style === 'ranged' || style === 'support';
-  const order = def.boss || style === 'bruiser' ? [1, 0, 2, 4, 3, 5] : style === 'skirm' ? [2, 0, 1, 5, 3, 4] : [4, 3, 5, 1, 0, 2];
+  const order = seatOrder(def.boss ? 'bruiser' : style);
   const seat = order.find((k) => state.eSeats[k] == null);
   if (seat == null) return null;
   // 웨이브 성장 대신 교전 번호로 성장(1교전 1배 → 마지막 1+growth×(N-1)배).
@@ -412,8 +418,8 @@ export function closeRanks(state) {
 }
 
 const buffSum = (state, stat) => state.allyBuffs.reduce((s, b) => s + (b.stat === stat ? b.percent : 0), 0);
-const uInterval = (state, u) => effInterval(u) * Math.max(0.3, 1 + buffSum(state, 'interval') / 100) * (u.awake?.speed ?? 1);
-const eInterval = (e) => e.interval * (e.slowLeft > 0 ? 1 / Math.max(0.2, 1 - e.slowPct / 100) : 1);
+const uInterval = (state, u) => effInterval(u) * Math.max(0.3, 1 + buffSum(state, 'interval') / 100) * (u.awake?.speed ?? 1) * (u.suppressed ? 1.3 : 1);
+const eInterval = (e) => e.interval * (e.slowLeft > 0 ? 1 / Math.max(0.2, 1 - e.slowPct / 100) : 1) * (e.suppressed ? 1.3 : 1);
 
 /** Advance the current encounter by dt seconds. */
 export function tickGauntlet(state, data, dt) {
@@ -435,7 +441,8 @@ function sub(state, data, d, g) {
   if (sp && state.spells.length) state.mana = Math.min(sp.max, state.mana + g.manaRegen * (1 + (eco(state, data, 'manaRegen') ?? 0) / 100) * d);
   for (const b of state.allyBuffs) b.left -= d;
   state.allyBuffs = state.allyBuffs.filter((b) => b.left > 0);
-  closeRanks(state);
+  updateSuppress(state, g);
+  if (!state.charging) updatePins(state, g);
   // 상태: 독·불·둔화·기절·저주
   for (const e of state.enemies) {
     if (!aliveE(e)) continue;
@@ -499,7 +506,7 @@ function sub(state, data, d, g) {
   if (state.lesson === 'wall' && !state.lessonShown && state.encTime > 5) { state.lessonShown = true; state.events.push({ type: 'lesson', kind: 'wall' }); }
   if (state.tLevel > 0) for (const u of fighters(state)) {
     if (state.time - state.diveAt.u < g.diveGap) break;
-    if (u.diveMark || (u.gauge ?? 0) < g.diveMarkAt || !divesU(u, g)) continue;
+    if (u.diveMark || u.pinnedBy != null || (u.gauge ?? 0) < g.diveMarkAt || !divesU(u, g)) continue;
     const back = state.enemies.filter((e) => aliveE(e) && (e.style === 'ranged' || e.style === 'support') && (!e.flying || u.stats.canHitFlying || u.stats.flyer));
     if (!back.length) continue;
     const t = lowest(back); u.diveMark = { eid: t.eid }; state.diveAt.u = state.time;
@@ -507,7 +514,7 @@ function sub(state, data, d, g) {
   }
   if (state.tLevel > 0) for (const e of state.enemies) {
     if (state.time - state.diveAt.e < (state.lesson === 'dive' || rule(state, 'swarm') ? 2.5 : g.diveGap)) break;
-    if (!aliveE(e) || e.diveMark || (e.gauge ?? 0) < g.diveMarkAt || !divesE(state, e, g) || clashOfE(state, e.eid)) continue;
+    if (!aliveE(e) || e.diveMark || e.pinnedBy != null || (e.gauge ?? 0) < g.diveMarkAt || !divesE(state, e, g) || clashOfE(state, e.eid)) continue;
     if (state.rng() > (state.temper?.diveChance ?? 0.65)) { e.diveMark = { skip: true }; state.diveAt.e = state.time - g.diveGap / 2; continue; }
     const back = fighters(state).filter(isBack);
     if (!back.length) continue;
@@ -563,24 +570,95 @@ export function cyclePrefStance(state, uid) {
   return { ok: true, pref: u.prefStance };
 }
 
-/** 짝 짓기: 앞줄 브루저 ↔ 적 근접, 남는 적 근접은 2대1로 끼어듦 */
+/** 힘싸움 정원: 탱커 능력치(막기)·특성·기술에 따라 동시에 붙잡는 적 수(1~4). 탱 태세·탱커 빌드 +1 */
+export function clashCap(u) {
+  const b = effBlock(u) || 1;
+  return Math.max(1, Math.min(4, b + (u.stance === 'tank' ? 1 : 0) + (u.kind === 'base' && u.build === 'tank' ? 1 : 0)));
+}
+const laneDist = (a, b) => Math.abs(laneOf(a) - laneOf(b));
+/** 짝 짓기(라인): 적 브루저는 같은 라인 우리 브루저와 맞붙고, 없으면 가까운 라인 브루저에 합류(정원까지).
+ *  정원이 차거나 막을 브루저가 없으면 적 브루저는 우리 후열로 밀고 들어옴(advance → 제압).
+ *  맞붙을 적 브루저가 없는 우리 브루저는 적 후열로 전진. */
 function pairUp(state, g) {
   const freeE = () => state.enemies.filter((e) => aliveE(e) && e.style === 'bruiser' && !e.flying && !clashOfE(state, e.eid));
-  for (const u of fighters(state)) {
-    if (styleOf(u) !== 'bruiser' || !(isFront(u.seat) || u.stance === 'tank') || clashOfU(state, u.uid)) continue;
-    const free = freeE();
-    if (!free.length) break;
-    free.sort((a, b) => Math.abs((a.seat % 3) - (u.seat % 3)) - Math.abs((b.seat % 3) - (u.seat % 3)));
-    const e = free[0];
-    state.clashes.push({ uid: u.uid, eid: e.eid, push: 0, helpers: [] });
-    state.events.push({ type: 'clashStart', uid: u.uid, eid: e.eid });
+  const walls = fighters(state).filter((u) => styleOf(u) === 'bruiser');
+  const room = (u) => { const c = clashOfU(state, u.uid); return clashCap(u) - (c ? 1 + c.helpers.length : 0); };
+  for (const e of freeE().sort((a, b) => laneOf(a.seat) - laneOf(b.seat))) {
+    const cand = walls.filter((u) => room(u) > 0).sort((a, b) => laneDist(a.seat, e.seat) - laneDist(b.seat, e.seat) || colOf(a.seat) - colOf(b.seat))[0];
+    if (!cand) { e.advance = true; continue; }
+    e.advance = false;
+    const c = clashOfU(state, cand.uid);
+    if (c) { c.helpers.push(e.eid); state.events.push({ type: 'gang', uid: c.uid, eid: e.eid }); }
+    else { state.clashes.push({ uid: cand.uid, eid: e.eid, push: 0, helpers: [], lane: laneOf(cand.seat) }); state.events.push({ type: 'clashStart', uid: cand.uid, eid: e.eid }); }
+    cand.advance = false;
   }
-  // 패싸움: 남는 적 근접은 가장 밀리는(우리가 이기고 있는) 힘겨루기에 끼어들어 2대1로 거듦
-  if (state.clashes.length) for (const e of freeE()) {
-    const c = [...state.clashes].sort((a, b) => (a.helpers.length - b.helpers.length) || (b.push - a.push))[0];
-    if (c.helpers.length >= g.gangMax) break;
-    c.helpers.push(e.eid);
-    state.events.push({ type: 'gang', uid: c.uid, eid: e.eid });
+  // 힘싸움이 끝났거나 상대가 없는 우리 브루저: 적 후열로 전진
+  for (const u of walls) if (!clashOfU(state, u.uid)) {
+    const any = state.enemies.some((e) => aliveE(e) && e.style === 'bruiser' && !e.flying && e.advance === false && clashOfE(state, e.eid));
+    if (!u.advance) { u.advance = true; if (!state.charging) state.events.push({ type: 'advance', side: 'u', uid: u.uid, any }); }
+  }
+  for (const e of state.enemies) if (aliveE(e) && e.style === 'bruiser' && e.advance && !e.advNote) { e.advNote = true; if (!state.charging) state.events.push({ type: 'advance', side: 'e', eid: e.eid }); }
+}
+
+/** 추천 배치로 되돌리기(정비): 출전 중인 동물을 역할대로 다시 앉힘 */
+export function recommendSeats(state, data) {
+  if (state.phase !== 'regroup') return fail('notRegroup');
+  state.seats = autoSeat(state, state.field);
+  refreshMods(state, data);
+  state.events.push({ type: 'moved' });
+  return { ok: true };
+}
+/** 고급 딜러: 탱커가 붙어도 빠져나감 */
+export function canSlip(u, g) { return !!u.stats.flyer || u.stage === 'spirit' || u.kind === 'chimera' || (g.slippery.includes(u.speciesId) && u.stage !== 'young'); }
+const eCap = (e, g) => (e.boss ? g.enemyCap.boss : g.enemyCap.bruiser);
+/** 붙잡기: 남는 정원이 있는 탱커가 같은 라인(없으면 가까운 라인)의 날쌘 딜러에게 붙음 → 그 딜러는 후열을 못 노리고 탱커와 싸움 */
+function updatePins(state, g) {
+  // 우리 탱커 → 적 딜러
+  const uWalls = fighters(state).filter((u) => styleOf(u) === 'bruiser');
+  const uLoad = new Map(uWalls.map((u) => { const c = clashOfU(state, u.uid); return [u.uid, c ? 1 + c.helpers.length : 0]; }));
+  // 이미 붙어 있으면 그대로(탱커가 쓰러지거나 기절할 때까지)
+  for (const e of state.enemies) if (aliveE(e) && e.pinnedBy != null) { if (uLoad.has(e.pinnedBy) && !clashOfE(state, e.eid)) uLoad.set(e.pinnedBy, uLoad.get(e.pinnedBy) + 1); else e.pinnedBy = null; }
+  for (const e of state.enemies) {
+    if (e.pinnedBy != null) continue;
+    if (!aliveE(e) || !(e.style === 'skirm' || g.enemyDivers.includes(e.id)) || clashOfE(state, e.eid)) { e.pinnedBy = null; continue; }
+    const slip = g.eSlippery.includes(e.id) || e.boss;
+    const t = slip ? null : uWalls.filter((u) => uLoad.get(u.uid) < clashCap(u)).sort((a, b) => laneDist(a.seat, e.seat) - laneDist(b.seat, e.seat))[0];
+    if (t && laneDist(t.seat, e.seat) <= 1) { if (state.time - (e.pinAt ?? -99) > 3) { state.events.push({ type: 'pin', side: 'e', by: t.uid, eid: e.eid }); dstat(state, 'ePin'); } e.pinAt = state.time; e.pinnedBy = t.uid; uLoad.set(t.uid, uLoad.get(t.uid) + 1); e.diveMark = null; }
+    else { if (slip && !e.slipNote && uWalls.some((u) => laneDist(u.seat, e.seat) === 0)) { e.slipNote = true; state.events.push({ type: 'slip', side: 'e', eid: e.eid }); } e.pinnedBy = null; }
+  }
+  // 적 탱커 → 우리 딜러
+  const eWalls = state.enemies.filter((e) => aliveE(e) && e.style === 'bruiser' && !e.advance);
+  const eLoad = new Map(eWalls.map((e) => [e.eid, clashOfE(state, e.eid) ? 1 : 0]));
+  for (const u of fighters(state)) if (u.pinnedBy != null) { if (eLoad.has(u.pinnedBy)) eLoad.set(u.pinnedBy, eLoad.get(u.pinnedBy) + 1); else u.pinnedBy = null; }
+  for (const u of fighters(state)) {
+    if (u.pinnedBy != null) continue;
+    const st = styleOf(u);
+    if (!(st === 'skirm' || (st === 'ranged' && tacticOf(u, g) === 'hunt'))) { u.pinnedBy = null; continue; }
+    const slip = canSlip(u, g);
+    const t = slip ? null : eWalls.filter((e) => eLoad.get(e.eid) < eCap(e, g)).sort((a, b) => laneDist(a.seat, u.seat) - laneDist(b.seat, u.seat))[0];
+    if (t && laneDist(t.seat, u.seat) <= 1) { if (state.time - (u.pinAt ?? -99) > 3) { state.events.push({ type: 'pin', side: 'u', by: t.eid, uid: u.uid }); dstat(state, 'uPin'); } u.pinAt = state.time; u.pinnedBy = t.eid; eLoad.set(t.eid, eLoad.get(t.eid) + 1); u.diveMark = null; }
+    else { if (slip && divesU(u, g) && !u.slipNote && eWalls.some((e) => laneDist(e.seat, u.seat) === 0)) { u.slipNote = true; state.events.push({ type: 'slip', side: 'u', uid: u.uid }); dstat(state, 'uSlip'); } u.pinnedBy = null; }
+  }
+}
+
+/** 제압: 전진한 브루저가 들어온 라인에 그 편 브루저가 없으면, 그 라인의 후열(브루저가 아닌 동물)이 제압됨(능력치 ↓) */
+function updateSuppress(state, g) {
+  const wallLanes = (list, styleFn) => new Set(list.filter((x) => styleFn(x) === 'bruiser').map((x) => laneOf(x.seat)));
+  const uw = wallLanes(fighters(state), styleOf), ew = wallLanes(state.enemies.filter(aliveE), (e) => e.style);
+  const eAdv = state.enemies.filter((e) => aliveE(e) && e.style === 'bruiser' && e.advance && !(e.stunLeft > 0));
+  const uAdv = fighters(state).filter((u) => styleOf(u) === 'bruiser' && u.advance && !(u.stunLeft > 0));
+  // 전진한 브루저가 노리는 라인 = 가까운 라인 중 막는 브루저가 없는 곳
+  const lanesHit = (adv, walls) => new Set(adv.map((a) => [0, 1, 2].filter((l) => !walls.has(l)).sort((x, y) => Math.abs(x - laneOf(a.seat)) - Math.abs(y - laneOf(a.seat)))[0]).filter((l) => l != null));
+  const uHit = lanesHit(eAdv, uw), eHit = lanesHit(uAdv, ew);
+  for (const u of fighters(state)) {
+    const on = styleOf(u) !== 'bruiser' && uHit.has(laneOf(u.seat));
+    if (on && !u.suppressed) { state.events.push({ type: 'suppress', side: 'u', uid: u.uid }); dstat(state, 'uSup'); }
+    u.suppressed = on;
+  }
+  for (const e of state.enemies.filter(aliveE)) {
+    const on = e.style !== 'bruiser' && eHit.has(laneOf(e.seat));
+    if (on && !e.suppressed) { state.events.push({ type: 'suppress', side: 'e', eid: e.eid }); dstat(state, 'eSup'); }
+    e.suppressed = on;
   }
 }
 
@@ -642,7 +720,12 @@ function pickUnitTarget(state, u) {
   if (!es.length) return null;
   const st = styleOf(u);
   if (u.diveMark?.eid != null) { const e = findE(state, u.diveMark.eid); if (aliveE(e)) return e; }
-  if (st === 'bruiser') { const c = clashOfU(state, u.uid); const e = c && findE(state, c.eid); if (e && aliveE(e)) return e; }
+  if (u.pinnedBy != null) { const e = findE(state, u.pinnedBy); if (aliveE(e)) return e; }
+  if (st === 'bruiser') {
+    const c = clashOfU(state, u.uid); const e = c && findE(state, c.eid); if (e && aliveE(e)) return e;
+    // 전진: 적 후열(브루저가 아닌 적) 중 가까운 라인 → 없으면 남은 적
+    if (u.advance) { const back = es.filter((x) => x.style !== 'bruiser' && (!x.flying || u.stats.canHitFlying)); const pool = back.length ? back : es; return [...pool].sort((a, b) => laneDist(a.seat, u.seat) - laneDist(b.seat, u.seat) || a.hp - b.hp)[0]; }
+  }
   // 거들기: 밀리는 힘겨루기가 있으면 원거리·응원은 그 적을 먼저
   if (st === 'ranged' || st === 'support') {
     const losing = (state.clashes ?? []).filter((c) => c.push < -0.25).map((c) => findE(state, c.eid)).filter(aliveE);
@@ -650,6 +733,11 @@ function pickUnitTarget(state, u) {
   }
   // 치고 빠지기: 힘겨루기에 묶이지 않은 적, 뒷줄·약한 적을 노림
   if (st === 'skirm') {
+    // 같은 라인과 맞붙음: 같은 라인 적 먼저(없으면 가까운 라인)
+    const reach = es.filter((e) => !e.flying || u.stats.canHitFlying);
+    const near = Math.min(...reach.map((e) => laneDist(e.seat, u.seat)));
+    const lane = reach.filter((e) => laneDist(e.seat, u.seat) === near);
+    if (lane.length && state.rng() < 0.75) { const loose0 = lane.filter((e) => !clashOfE(state, e.eid)); const p0 = loose0.length ? loose0 : lane; return state.rng() < 0.55 ? lowest(p0) : p0[Math.floor(state.rng() * p0.length)]; }
     const loose = es.filter((e) => !clashOfE(state, e.eid) && (!e.flying || u.stats.canHitFlying));
     // 떼어 내기: 2대1로 끼어든 적을 먼저
     const gang = es.filter((e) => (state.clashes ?? []).some((c) => c.helpers.includes(e.eid)));
@@ -659,7 +747,9 @@ function pickUnitTarget(state, u) {
   if (u.stats.range > 1) {
     // 원거리: 나는 적·뒷줄을 먼저 노리고, 그중 체력 낮은 놈
     const fly = es.filter((e) => e.flying || !isFront(e.seat));
-    return lowest(fly.length && state.rng() < 0.6 ? fly : es);
+    if (fly.length && state.rng() < 0.4) return lowest(fly);
+    const near = Math.min(...es.map((e) => laneDist(e.seat, u.seat)));
+    return lowest(es.filter((e) => laneDist(e.seat, u.seat) === near));
   }
   const f = frontTargets(es).filter((e) => !e.flying || u.stats.canHitFlying);
   const pool = f.length ? f : es;
@@ -671,6 +761,7 @@ function pickEnemyTarget(state, e, g) {
   if (!us.length) return null;
   { const c = clashOfE(state, e.eid); const u = c && findU(state, c.uid); if (u && aliveU(u)) return u; }
   if (e.diveMark?.uid != null) { const u = findU(state, e.diveMark.uid); if (aliveU(u)) return u; }
+  if (e.pinnedBy != null) { const u = findU(state, e.pinnedBy); if (aliveU(u)) return u; }
   if (state.focus != null && state.rng() < g.focusChance) { const u = findU(state, state.focus); if (aliveU(u)) return u; }
   // 적 돌격대: 우리 뒷줄(원거리·응원)을 노림 → 우리 쪽 지켜 주기·떼어 내기가 나옴
   // 배우는 단계 0(1스테이지)은 앞라인 싸움만: 적 돌격대도 앞줄·딜러를 침. 그 뒤로는 예고 없는 후열 공격이 가끔(0.4) — 큰 돌파는 예고(빨간 화살표)로
@@ -679,10 +770,13 @@ function pickEnemyTarget(state, e, g) {
     if (back.length && state.tLevel !== 0 && state.rng() < g.skirmBack) return lowest(back);
     if (state.tLevel === 0) { const fr = us.filter((u) => !['ranged', 'support'].includes(styleOf(u))); if (fr.length) return fr[Math.floor(state.rng() * fr.length)]; }
   }
-  if (e.ranged) return state.rng() < 0.5 ? lowest(us) : us[Math.floor(state.rng() * us.length)];
-  // 근접 적: 우리 브루저가 벽. 브루저가 다 쓰러지면(진형 붕괴) 뒷줄로 밀고 들어옴
+  // 전진한 적 브루저: 막는 브루저가 없는 라인의 후열을 침(제압)
+  if (e.style === 'bruiser' && e.advance) { const sup = us.filter((u) => u.suppressed); const back = sup.length ? sup : us.filter((u) => styleOf(u) !== 'bruiser'); const pool = back.length ? back : us; return [...pool].sort((a, b) => laneDist(a.seat, e.seat) - laneDist(b.seat, e.seat) || a.hp - b.hp)[0]; }
+  const nearLane = (list) => { const m = Math.min(...list.map((u) => laneDist(u.seat, e.seat))); return list.filter((u) => laneDist(u.seat, e.seat) === m); };
+  if (e.ranged) return state.rng() < 0.5 ? lowest(nearLane(us)) : us[Math.floor(state.rng() * us.length)];
+  // 근접 적: 같은(가까운) 라인 우리 브루저가 벽. 브루저가 다 쓰러지면(진형 붕괴) 뒷줄로 밀고 들어옴
   const wall = us.filter((u) => styleOf(u) === 'bruiser');
-  if (wall.length) return wall[Math.floor(state.rng() * wall.length)];
+  if (wall.length) return lowest(nearLane(wall));
   const back = us.filter((u) => ['ranged', 'support'].includes(styleOf(u)));
   const pool = back.length && state.tLevel !== 0 && state.rng() < 0.7 ? back : us;
   return pool[Math.floor(state.rng() * pool.length)];
@@ -705,7 +799,7 @@ function pickMoveG(state, u, target, cfg) {
 /** Damage to an enemy (shield takes most of it). Returns damage dealt. */
 function hurtEnemy(state, data, e, amount, src, quiet = false) {
   if (!aliveE(e)) return 0;
-  let a = amount * (e.shieldLeft > 0 ? 0.3 : 1) * (e.elite === 'shield' ? 0.65 : 1) * (state.collapse?.e ? 1 + gcfg(data).collapseTaken / 100 : 1);
+  let a = amount * (e.shieldLeft > 0 ? 0.3 : 1) * (e.elite === 'shield' ? 0.65 : 1) * (state.collapse?.e ? 1 + gcfg(data).collapseTaken / 100 : 1) * (e.suppressed ? 1 + gcfg(data).supTaken / 100 : 1);
   a = Math.min(a, e.hp);
   e.hp -= a;
   if (src) {
@@ -723,7 +817,7 @@ function hurtEnemy(state, data, e, amount, src, quiet = false) {
 
 function hurtUnit(state, data, u, amount, src) {
   if (!aliveU(u)) return 0;
-  const taken = (u.mods?.taken ?? 0) + buffSum(state, 'taken') + (state.collapse?.u ? gcfg(data).collapseTaken : 0) + (state.isolated?.u && styleOf(u) === 'bruiser' ? gcfg(data).isolateTaken : 0) + (state.focus === u.uid ? gcfg(data).focusTaken : 0) + (u.stance === 'tank' ? (nativeStance(u) === 'tank' ? -35 : -25) : 0);
+  const taken = (u.mods?.taken ?? 0) + buffSum(state, 'taken') + (state.collapse?.u ? gcfg(data).collapseTaken : 0) + (state.isolated?.u && styleOf(u) === 'bruiser' ? gcfg(data).isolateTaken : 0) + (state.focus === u.uid ? gcfg(data).focusTaken : 0) + (u.suppressed ? gcfg(data).supTaken : 0) + (u.stance === 'tank' ? (nativeStance(u) === 'tank' ? -35 : -25) : 0);
   const a = Math.max(1, amount * Math.max(0.2, 1 + taken / 100) * ((u.shieldT ?? 0) > state.time ? 0.6 : 1));
   u.hp -= a;
   chargeUlt(u, data.config, 'hurt', (a / u.maxHp) * 100);
@@ -749,14 +843,15 @@ function unitAct(state, data, u, g) {
   const move = pickMoveG(state, u, t, cfg);
   const melee = u.stats.range <= 1;
   const st = styleOf(u);
-  let mult = melee && st !== 'skirm' && !isFront(u.seat) ? g.backMelee : !melee && isFront(u.seat) ? g.frontRanged : 1;
+  let mult = melee && st !== 'skirm' && colOf(u.seat) === 2 ? g.backMelee : !melee && isFront(u.seat) ? g.frontRanged : 1;
+  if (u.suppressed) mult *= 1 - g.supDmg / 100;
   mult *= 1 + buffSum(state, 'dmg') / 100;
   if (u.stance === 'deal') mult *= nativeStance(u) === 'deal' ? 1.35 : 1.25;
   if (t.curseLeft > 0) mult *= 1.2;
   const base = hitDamage(state, u, t) * mult;
   const hits = [];
   let name = null, big = false, el = null;
-  const row = (e) => state.enemies.filter((x) => aliveE(x) && isFront(x.seat) === isFront(e.seat));
+  const row = (e) => state.enemies.filter((x) => aliveE(x) && colOf(x.seat) === colOf(e.seat));
   if (move === 'a1') {
     hits.push([t, base]);
     const ms = u.stats.effects.find((x) => x.type === 'multiShot');
@@ -854,7 +949,7 @@ function enemyAct(state, data, e, g) {
   const t = pickEnemyTarget(state, e, g);
   e.gauge = 0;
   if (!t) return;
-  let dmg = e.attack * (rule(state, 'glass') ? 1.5 : 1);
+  let dmg = e.attack * (rule(state, 'glass') ? 1.5 : 1) * (e.suppressed ? 1 - g.supDmg / 100 : 1);
   if (e.chargeLeft > 0) dmg *= 1.6;
   if (e.elite === 'rage' && e.hp < e.maxHp / 2) dmg *= 1.6;
   { const m = mcfg(data); dmg *= elemMult(e.element, t.stats.element, m, m.eStrong, m.eWeak); }
@@ -1016,7 +1111,7 @@ function endEncounter(state, data, win) {
     u.gauge = 0; u.stunLeft = 0;
   }
   for (const u of state.bench) if (u) u.hp = u.maxHp;
-  state.enemies = []; state.eSeats = Array(6).fill(null);
+  state.enemies = []; state.eSeats = Array(SEATS).fill(null);
   // 활약상: 이긴 교전에서 가장 많이 때린 동물이 한 단계 자람(어린 → 성장기 → 성체)
   state.mvp = null;
   if (win && g.mvpGrow) {
@@ -1317,7 +1412,7 @@ const RANK = { young: 0, teen: 1, adult: 2, spirit: 3 };
 /** 봇: 대기석 동물을 합성(진화·영물·키메라) → 대기석끼리 진화 → 더 큰 동물이면 가장 어린 출전 동물과 바꿈 */
 function botPlace(state, data, bi) {
   const good = ['evolve', 'spirit', 'chimera'];
-  for (let i = 0; i < 6; i++) if (state.seats[i] != null && good.includes(mergeHint(state, data, { where: 'bench', index: bi }, { where: 'seat', index: i }))) return moveAnimal(state, data, { where: 'bench', index: bi }, { where: 'seat', index: i });
+  for (let i = 0; i < SEATS; i++) if (state.seats[i] != null && good.includes(mergeHint(state, data, { where: 'bench', index: bi }, { where: 'seat', index: i }))) return moveAnimal(state, data, { where: 'bench', index: bi }, { where: 'seat', index: i });
   for (let j = 0; j < state.bench.length; j++) if (j !== bi && state.bench[j] && mergeHint(state, data, { where: 'bench', index: bi }, { where: 'bench', index: j }) === 'evolve') return moveAnimal(state, data, { where: 'bench', index: bi }, { where: 'bench', index: j });
   const u = state.bench[bi];
   const weak = state.field.filter((f) => f.kind === 'base' && !f.soul).sort((a, b) => RANK[a.stage] - RANK[b.stage])[0];

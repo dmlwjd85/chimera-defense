@@ -21,7 +21,7 @@ test('처음엔 덱 6마리가 역할대로 앞줄·뒷줄에 섬(근접 앞, �
   const st = createGauntlet(D, 'forest-1', 5, {});
   const us = unitsIn(st);
   assert.equal(us.filter(Boolean).length, 6);
-  for (const u of us) if (u && u.stats.range > 1) assert.ok(u.seat >= 3, `${u.speciesId} 뒷줄`);
+  for (const u of us) if (u && u.stats.range > 1) assert.ok(u.seat >= 6, `${u.speciesId} 3열`);
   assert.equal(st.phase, 'fight');
   assert.ok(st.enemies.length >= 3);
 });
@@ -52,9 +52,13 @@ test('한 번에 하나: 같은 틱에 행동은 하나만 나감', () => {
 test('자리 바꾸기와 합성(같은 종·같은 단계 = 진화)', () => {
   const st = createGauntlet(D, 'forest-1', 11, {});
   fightOut(st);
-  const a = st.seats[0], b = st.seats[3];
-  assert.ok(moveAnimal(st, D, { where: 'seat', index: 0 }, { where: 'seat', index: 3 }).ok);
-  assert.equal(st.seats[0], b); assert.equal(st.seats[3], a);
+  const [i, j] = st.seats.map((x, k) => (x != null ? k : -1)).filter((k) => k >= 0);
+  const a = st.seats[i], b = st.seats[j];
+  assert.ok(moveAnimal(st, D, { where: 'seat', index: i }, { where: 'seat', index: j }).ok);
+  assert.equal(st.seats[i], b); assert.equal(st.seats[j], a);
+  // 빈 칸으로 옮기기(3×3: 9칸에 6마리)
+  const empty = st.seats.indexOf(null);
+  assert.ok(empty >= 0 && moveAnimal(st, D, { where: 'seat', index: i }, { where: 'seat', index: empty }).ok);
   // 같은 종을 대기석에 넣고 겹치면 진화
   const u = unitsIn(st).find((x) => x && x.stage === 'young');
   st.offer.globe[0] = { speciesId: u.speciesId, traits: [] };
@@ -65,12 +69,21 @@ test('자리 바꾸기와 합성(같은 종·같은 단계 = 진화)', () => {
   assert.equal(unitsIn(st)[u.seat].stage, 'teen');
 });
 
-test('앞줄이 비면 뒷줄 근접이 앞으로 당겨짐', () => {
-  const st = createGauntlet(D, 'forest-1', 13, {});
-  const front = unitsIn(st).filter((u) => u && u.seat < 3);
-  for (const u of front) u.down = true;
-  closeRanks(st);
-  assert.ok(unitsIn(st).slice(0, 3).some((u) => u && !u.down), '누군가 앞줄로 나옴');
+test('3×3 자리: 브루저 1열·딜러 2열·응원 3열, 라인 맞붙음, 정원, 브루저 없는 라인은 제압', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  const st = createGauntlet(D, 'forest-3', 13, { pool: ['bear', 'dog', 'tiger', 'wolf', 'eagle', 'rooster'] });
+  assert.equal(st.seats.length, 9);
+  for (const u of st.field) { const c = G.colOf(u.seat), sty = G.baseStyle(u); if (sty === 'bruiser') assert.equal(c, 0); if (sty === 'ranged' || sty === 'support') assert.equal(c, 2); }
+  const bear = st.field.find((u) => u.speciesId === 'bear');
+  assert.ok(G.clashCap(bear) >= 3, '곰은 여럿을 붙잡음');
+  // 우리 브루저를 모두 눕히면 적 브루저가 전진 → 후열 제압
+  st.charging = false;
+  for (const u of st.field) if (G.styleOf(u) === 'bruiser') { u.down = true; u.hp = 0; }
+  const eb = st.enemies.find((e) => e.style === 'bruiser') ?? st.enemies[0];
+  eb.style = 'bruiser'; eb.stunLeft = 0;
+  G.tickGauntlet(st, D, 0.2);
+  assert.ok(eb.advance, '적 브루저 전진');
+  assert.ok(st.field.some((u) => u.suppressed), '후열 제압');
 });
 
 test('하드는 한 번 지면 끝, 노멀은 생명이 깎이고 계속', () => {
@@ -146,7 +159,7 @@ test('금화 부활·놓아주기, 앞줄은 브루저만, 진형 붕괴, 레벨
   const dog = st.field.find((u) => u.speciesId === 'dog'), rabbit = st.field.find((u) => u.speciesId === 'rabbit');
   assert.equal(dog.stage, 'adult'); assert.equal(rabbit.stage, 'teen');
   assert.ok(st.field.some((u) => u.legend && u.speciesId === 'tiger' && u.stage === 'adult'));
-  for (const u of st.field) if (u.seat < 3 && baseStyle(u) !== 'bruiser') assert.ok(!st.field.some((x) => baseStyle(x) === 'bruiser' && x.seat >= 3), '브루저가 뒷줄에 밀려 있지 않음');
+  for (const u of st.field) if (baseStyle(u) === 'bruiser') assert.ok(u.seat < 3, '브루저는 1열');
   fightOut(st);
   const v = st.field[0]; v.resting = true; st.gold = 100;
   const cost = reviveCost(st, D);

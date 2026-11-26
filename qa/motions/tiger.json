@@ -1,0 +1,156 @@
+{
+ "species": "tiger",
+ "motions": {
+  "baby_a1": {
+   "n": 8,
+   "max|h%|": 12.8,
+   "foot±": 0
+  },
+  "baby_down": {
+   "n": 5,
+   "max|h%|": 34.0,
+   "foot±": 1
+  },
+  "baby_hit": {
+   "n": 4,
+   "max|h%|": 8.5,
+   "foot±": 1
+  },
+  "baby_idle": {
+   "n": 4,
+   "max|h%|": 2.1,
+   "foot±": 0
+  },
+  "baby_walk": {
+   "n": 8,
+   "max|h%|": 4.3,
+   "foot±": 1
+  },
+  "teen_a1": {
+   "n": 8,
+   "max|h%|": 3.2,
+   "foot±": 0
+  },
+  "teen_a2": {
+   "n": 8,
+   "max|h%|": 49.2,
+   "foot±": 0
+  },
+  "teen_down": {
+   "n": 6,
+   "max|h%|": 46.0,
+   "foot±": 0
+  },
+  "teen_hit": {
+   "n": 4,
+   "max|h%|": 12.7,
+   "foot±": 2
+  },
+  "teen_idle": {
+   "n": 4,
+   "max|h%|": 6.3,
+   "foot±": 0
+  },
+  "teen_walk": {
+   "n": 8,
+   "max|h%|": 1.6,
+   "foot±": 0
+  },
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 5.1,
+   "foot±": 1
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 12.8,
+   "foot±": 22
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 48.7,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 46.2,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 15.4,
+   "foot±": 10
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.6,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 1.3,
+   "foot±": 3
+  },
+  "myth_a1": {
+   "n": 8,
+   "max|h%|": 31.4,
+   "foot±": 12
+  },
+  "myth_a2": {
+   "n": 8,
+   "max|h%|": 31.4,
+   "foot±": 15
+  },
+  "myth_down": {
+   "n": 8,
+   "max|h%|": 58.1,
+   "foot±": 0
+  },
+  "myth_el": {
+   "n": 8,
+   "max|h%|": 40.0,
+   "foot±": 0
+  },
+  "myth_hit": {
+   "n": 4,
+   "max|h%|": 41.9,
+   "foot±": 0
+  },
+  "myth_idle": {
+   "n": 4,
+   "max|h%|": 1.9,
+   "foot±": 0
+  },
+  "myth_walk": {
+   "n": 8,
+   "max|h%|": 2.9,
+   "foot±": 0
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   428
+  ],
+  "box": [
+   115,
+   116
+  ],
+  "frames": 115,
+  "colors": 16,
+  "px": 876544
+ },
+ "spirit": {
+  "sheet": [
+   2048,
+   359
+  ],
+  "box": [
+   136,
+   151
+  ],
+  "frames": 48,
+  "colors": 16,
+  "px": 735232
+ }
+}

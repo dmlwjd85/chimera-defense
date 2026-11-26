@@ -9,7 +9,7 @@ def run(job):
     sp, st, m = job
     out = f'anim/{sp}_{st}_{m}'
     if os.path.exists(f'{out}/meta.json') and json.load(open(f'{out}/meta.json'))['n'] > 0: return f'skip {out}'
-    seed = 700 + sum(map(ord, sp + st + m)) % 300
+    seed = 700 + sum(map(ord, sp + st + m + os.environ.get('SALT', ''))) % 300   # 다시 뽑을 때 SALT로 시드만 바꿈
     cmd = ['python3', 'anim.py', '--src', base(sp, st), '--out', out, '--action', action(sp, st, m),
            '--frames', str(FRAMES[m]), '--canvas', str(CANVAS[st]), '--seed', str(seed)] + (['--last'] if use_last(sp, st, m) else [])
     r = subprocess.run(cmd, capture_output=True, text=True)

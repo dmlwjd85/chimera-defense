@@ -1,0 +1,1544 @@
+{
+ "note": "wolf 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "wolf",
+ "sheet": "dot-m-wolf",
+ "file": "assets/dotm/wolf.png",
+ "frameW": 120,
+ "frameH": 116,
+ "foot": 113,
+ "cols": 1,
+ "anchorX": 59,
+ "palette": [
+  "#0c0405",
+  "#291a1f",
+  "#423535",
+  "#4f4343",
+  "#5b4c46",
+  "#615450",
+  "#685c59",
+  "#7e6f69",
+  "#8d7c74",
+  "#93837d",
+  "#a19387",
+  "#ae9e91",
+  "#b8a99a",
+  "#d0bdb5",
+  "#e5d8c3",
+  "#f0e3d2"
+ ],
+ "rects": {
+  "wolf_baby_a1_00": [
+   1234,
+   341,
+   54,
+   47,
+   -25,
+   -47
+  ],
+  "wolf_baby_a1_01": [
+   547,
+   341,
+   56,
+   51,
+   -27,
+   -51
+  ],
+  "wolf_baby_a1_02": [
+   394,
+   341,
+   58,
+   53,
+   -29,
+   -55
+  ],
+  "wolf_baby_a1_03": [
+   87,
+   341,
+   59,
+   56,
+   -31,
+   -58
+  ],
+  "wolf_baby_a1_04": [
+   147,
+   341,
+   59,
+   56,
+   -30,
+   -56
+  ],
+  "wolf_baby_a1_05": [
+   604,
+   341,
+   59,
+   51,
+   -30,
+   -51
+  ],
+  "wolf_baby_a1_06": [
+   781,
+   341,
+   55,
+   48,
+   -26,
+   -48
+  ],
+  "wolf_baby_a1_07": [
+   1289,
+   341,
+   55,
+   47,
+   -27,
+   -47
+  ],
+  "wolf_baby_down_00": [
+   1689,
+   341,
+   59,
+   46,
+   -28,
+   -46
+  ],
+  "wolf_baby_down_01": [
+   1749,
+   341,
+   60,
+   46,
+   -28,
+   -45
+  ],
+  "wolf_baby_down_02": [
+   111,
+   399,
+   59,
+   43,
+   -26,
+   -43
+  ],
+  "wolf_baby_down_03": [
+   377,
+   399,
+   60,
+   37,
+   -27,
+   -36
+  ],
+  "wolf_baby_down_04": [
+   536,
+   399,
+   61,
+   34,
+   -28,
+   -33
+  ],
+  "wolf_baby_hit_00": [
+   1345,
+   341,
+   58,
+   47,
+   -29,
+   -47
+  ],
+  "wolf_baby_hit_01": [
+   1810,
+   341,
+   59,
+   46,
+   -29,
+   -46
+  ],
+  "wolf_baby_hit_02": [
+   1404,
+   341,
+   56,
+   47,
+   -27,
+   -47
+  ],
+  "wolf_baby_hit_03": [
+   837,
+   341,
+   54,
+   48,
+   -26,
+   -48
+  ],
+  "wolf_baby_idle_00": [
+   892,
+   341,
+   56,
+   48,
+   -28,
+   -48
+  ],
+  "wolf_baby_idle_01": [
+   664,
+   341,
+   57,
+   50,
+   -30,
+   -50
+  ],
+  "wolf_baby_idle_02": [
+   722,
+   341,
+   58,
+   49,
+   -30,
+   -49
+  ],
+  "wolf_baby_idle_03": [
+   949,
+   341,
+   56,
+   48,
+   -28,
+   -48
+  ],
+  "wolf_baby_walk_00": [
+   1461,
+   341,
+   56,
+   47,
+   -28,
+   -47
+  ],
+  "wolf_baby_walk_01": [
+   1518,
+   341,
+   56,
+   47,
+   -28,
+   -47
+  ],
+  "wolf_baby_walk_02": [
+   1575,
+   341,
+   56,
+   47,
+   -28,
+   -48
+  ],
+  "wolf_baby_walk_03": [
+   1006,
+   341,
+   56,
+   48,
+   -28,
+   -48
+  ],
+  "wolf_baby_walk_04": [
+   1063,
+   341,
+   56,
+   48,
+   -28,
+   -48
+  ],
+  "wolf_baby_walk_05": [
+   1632,
+   341,
+   56,
+   47,
+   -28,
+   -47
+  ],
+  "wolf_baby_walk_06": [
+   1120,
+   341,
+   56,
+   48,
+   -28,
+   -48
+  ],
+  "wolf_baby_walk_07": [
+   1177,
+   341,
+   56,
+   48,
+   -28,
+   -48
+  ],
+  "wolf_teen_a1_00": [
+   922,
+   277,
+   90,
+   62,
+   -46,
+   -62
+  ],
+  "wolf_teen_a1_01": [
+   1254,
+   197,
+   96,
+   64,
+   -52,
+   -64
+  ],
+  "wolf_teen_a1_02": [
+   0,
+   277,
+   93,
+   63,
+   -51,
+   -73
+  ],
+  "wolf_teen_a1_03": [
+   94,
+   277,
+   85,
+   63,
+   -44,
+   -74
+  ],
+  "wolf_teen_a1_04": [
+   180,
+   277,
+   97,
+   63,
+   -54,
+   -69
+  ],
+  "wolf_teen_a1_05": [
+   1351,
+   197,
+   92,
+   64,
+   -48,
+   -64
+  ],
+  "wolf_teen_a1_06": [
+   278,
+   277,
+   90,
+   63,
+   -46,
+   -63
+  ],
+  "wolf_teen_a1_07": [
+   369,
+   277,
+   88,
+   63,
+   -44,
+   -63
+  ],
+  "wolf_teen_a2_00": [
+   1667,
+   277,
+   88,
+   59,
+   -43,
+   -59
+  ],
+  "wolf_teen_a2_01": [
+   1073,
+   197,
+   91,
+   65,
+   -46,
+   -65
+  ],
+  "wolf_teen_a2_02": [
+   767,
+   115,
+   90,
+   80,
+   -51,
+   -80
+  ],
+  "wolf_teen_a2_03": [
+   1042,
+   0,
+   86,
+   89,
+   -54,
+   -89
+  ],
+  "wolf_teen_a2_04": [
+   776,
+   197,
+   96,
+   71,
+   -56,
+   -71
+  ],
+  "wolf_teen_a2_05": [
+   1850,
+   277,
+   90,
+   58,
+   -46,
+   -58
+  ],
+  "wolf_teen_a2_06": [
+   458,
+   277,
+   90,
+   63,
+   -46,
+   -63
+  ],
+  "wolf_teen_a2_07": [
+   1444,
+   197,
+   87,
+   64,
+   -43,
+   -64
+  ],
+  "wolf_teen_down_00": [
+   1013,
+   277,
+   90,
+   62,
+   -45,
+   -62
+  ],
+  "wolf_teen_down_01": [
+   1756,
+   277,
+   93,
+   59,
+   -47,
+   -59
+  ],
+  "wolf_teen_down_02": [
+   453,
+   341,
+   93,
+   52,
+   -46,
+   -52
+  ],
+  "wolf_teen_down_03": [
+   303,
+   341,
+   90,
+   54,
+   -44,
+   -54
+  ],
+  "wolf_teen_down_04": [
+   0,
+   341,
+   86,
+   57,
+   -39,
+   -57
+  ],
+  "wolf_teen_down_05": [
+   1870,
+   341,
+   91,
+   45,
+   -43,
+   -45
+  ],
+  "wolf_teen_down_06": [
+   285,
+   399,
+   91,
+   41,
+   -43,
+   -41
+  ],
+  "wolf_teen_down_07": [
+   438,
+   399,
+   97,
+   35,
+   -49,
+   -35
+  ],
+  "wolf_teen_hit_00": [
+   1465,
+   277,
+   90,
+   60,
+   -45,
+   -60
+  ],
+  "wolf_teen_hit_01": [
+   207,
+   341,
+   95,
+   55,
+   -48,
+   -57
+  ],
+  "wolf_teen_hit_02": [
+   1941,
+   277,
+   95,
+   58,
+   -49,
+   -60
+  ],
+  "wolf_teen_hit_03": [
+   1104,
+   277,
+   93,
+   62,
+   -48,
+   -62
+  ],
+  "wolf_teen_idle_00": [
+   1198,
+   277,
+   87,
+   62,
+   -44,
+   -62
+  ],
+  "wolf_teen_idle_01": [
+   1376,
+   277,
+   88,
+   61,
+   -45,
+   -61
+  ],
+  "wolf_teen_idle_02": [
+   549,
+   277,
+   87,
+   63,
+   -44,
+   -63
+  ],
+  "wolf_teen_idle_03": [
+   637,
+   277,
+   86,
+   63,
+   -43,
+   -63
+  ],
+  "wolf_teen_walk_00": [
+   1532,
+   197,
+   88,
+   64,
+   -45,
+   -64
+  ],
+  "wolf_teen_walk_01": [
+   873,
+   197,
+   88,
+   66,
+   -45,
+   -66
+  ],
+  "wolf_teen_walk_02": [
+   1621,
+   197,
+   88,
+   64,
+   -45,
+   -64
+  ],
+  "wolf_teen_walk_03": [
+   1286,
+   277,
+   89,
+   62,
+   -46,
+   -63
+  ],
+  "wolf_teen_walk_04": [
+   1710,
+   197,
+   89,
+   64,
+   -46,
+   -64
+  ],
+  "wolf_teen_walk_05": [
+   1165,
+   197,
+   88,
+   65,
+   -45,
+   -65
+  ],
+  "wolf_teen_walk_06": [
+   1800,
+   197,
+   87,
+   64,
+   -44,
+   -64
+  ],
+  "wolf_teen_walk_07": [
+   724,
+   277,
+   86,
+   63,
+   -43,
+   -63
+  ],
+  "wolf_adult_a1_00": [
+   1847,
+   115,
+   107,
+   79,
+   -53,
+   -79
+  ],
+  "wolf_adult_a1_01": [
+   1458,
+   0,
+   103,
+   85,
+   -49,
+   -85
+  ],
+  "wolf_adult_a1_02": [
+   831,
+   0,
+   100,
+   90,
+   -48,
+   -90
+  ],
+  "wolf_adult_a1_03": [
+   630,
+   0,
+   100,
+   94,
+   -51,
+   -94
+  ],
+  "wolf_adult_a1_04": [
+   932,
+   0,
+   109,
+   90,
+   -57,
+   -90
+  ],
+  "wolf_adult_a1_05": [
+   1562,
+   0,
+   113,
+   84,
+   -59,
+   -84
+  ],
+  "wolf_adult_a1_06": [
+   0,
+   197,
+   111,
+   79,
+   -56,
+   -79
+  ],
+  "wolf_adult_a1_07": [
+   858,
+   115,
+   108,
+   80,
+   -54,
+   -80
+  ],
+  "wolf_adult_a2_00": [
+   112,
+   197,
+   110,
+   78,
+   -56,
+   -78
+  ],
+  "wolf_adult_a2_01": [
+   967,
+   115,
+   110,
+   80,
+   -56,
+   -80
+  ],
+  "wolf_adult_a2_02": [
+   731,
+   0,
+   99,
+   93,
+   -50,
+   -93
+  ],
+  "wolf_adult_a2_03": [
+   0,
+   0,
+   96,
+   114,
+   -49,
+   -114
+  ],
+  "wolf_adult_a2_04": [
+   420,
+   0,
+   101,
+   96,
+   -52,
+   -96
+  ],
+  "wolf_adult_a2_05": [
+   1238,
+   0,
+   109,
+   88,
+   -57,
+   -88
+  ],
+  "wolf_adult_a2_06": [
+   1676,
+   0,
+   111,
+   82,
+   -57,
+   -82
+  ],
+  "wolf_adult_a2_07": [
+   1078,
+   115,
+   107,
+   80,
+   -53,
+   -80
+  ],
+  "wolf_adult_down_00": [
+   223,
+   197,
+   107,
+   78,
+   -52,
+   -78
+  ],
+  "wolf_adult_down_01": [
+   667,
+   197,
+   108,
+   74,
+   -51,
+   -74
+  ],
+  "wolf_adult_down_02": [
+   962,
+   197,
+   110,
+   66,
+   -51,
+   -66
+  ],
+  "wolf_adult_down_03": [
+   1556,
+   277,
+   110,
+   60,
+   -51,
+   -60
+  ],
+  "wolf_adult_down_04": [
+   1888,
+   197,
+   104,
+   64,
+   -47,
+   -64
+  ],
+  "wolf_adult_down_05": [
+   811,
+   277,
+   110,
+   63,
+   -50,
+   -63
+  ],
+  "wolf_adult_down_06": [
+   0,
+   399,
+   110,
+   45,
+   -49,
+   -45
+  ],
+  "wolf_adult_down_07": [
+   171,
+   399,
+   113,
+   42,
+   -52,
+   -42
+  ],
+  "wolf_adult_el_00": [
+   0,
+   115,
+   105,
+   81,
+   -51,
+   -81
+  ],
+  "wolf_adult_el_01": [
+   1129,
+   0,
+   108,
+   89,
+   -53,
+   -89
+  ],
+  "wolf_adult_el_02": [
+   206,
+   0,
+   104,
+   106,
+   -55,
+   -106
+  ],
+  "wolf_adult_el_03": [
+   97,
+   0,
+   108,
+   108,
+   -57,
+   -108
+  ],
+  "wolf_adult_el_04": [
+   311,
+   0,
+   108,
+   106,
+   -57,
+   -106
+  ],
+  "wolf_adult_el_05": [
+   522,
+   0,
+   107,
+   95,
+   -56,
+   -95
+  ],
+  "wolf_adult_el_06": [
+   1348,
+   0,
+   109,
+   86,
+   -55,
+   -86
+  ],
+  "wolf_adult_el_07": [
+   1186,
+   115,
+   109,
+   80,
+   -55,
+   -80
+  ],
+  "wolf_adult_hit_00": [
+   331,
+   197,
+   109,
+   78,
+   -54,
+   -77
+  ],
+  "wolf_adult_hit_01": [
+   554,
+   197,
+   112,
+   75,
+   -57,
+   -75
+  ],
+  "wolf_adult_hit_02": [
+   441,
+   197,
+   112,
+   77,
+   -58,
+   -78
+  ],
+  "wolf_adult_hit_03": [
+   1296,
+   115,
+   109,
+   80,
+   -56,
+   -80
+  ],
+  "wolf_adult_idle_00": [
+   106,
+   115,
+   108,
+   81,
+   -54,
+   -81
+  ],
+  "wolf_adult_idle_01": [
+   1788,
+   0,
+   109,
+   82,
+   -55,
+   -82
+  ],
+  "wolf_adult_idle_02": [
+   215,
+   115,
+   108,
+   81,
+   -54,
+   -81
+  ],
+  "wolf_adult_idle_03": [
+   1406,
+   115,
+   108,
+   80,
+   -54,
+   -80
+  ],
+  "wolf_adult_walk_00": [
+   324,
+   115,
+   108,
+   81,
+   -54,
+   -81
+  ],
+  "wolf_adult_walk_01": [
+   433,
+   115,
+   110,
+   81,
+   -55,
+   -81
+  ],
+  "wolf_adult_walk_02": [
+   544,
+   115,
+   111,
+   81,
+   -57,
+   -81
+  ],
+  "wolf_adult_walk_03": [
+   1515,
+   115,
+   111,
+   80,
+   -57,
+   -80
+  ],
+  "wolf_adult_walk_04": [
+   656,
+   115,
+   110,
+   81,
+   -56,
+   -81
+  ],
+  "wolf_adult_walk_05": [
+   1898,
+   0,
+   109,
+   82,
+   -55,
+   -82
+  ],
+  "wolf_adult_walk_06": [
+   1627,
+   115,
+   110,
+   80,
+   -55,
+   -80
+  ],
+  "wolf_adult_walk_07": [
+   1738,
+   115,
+   108,
+   80,
+   -54,
+   -80
+  ]
+ },
+ "frames": [
+  "wolf_baby_a1_00",
+  "wolf_baby_a1_01",
+  "wolf_baby_a1_02",
+  "wolf_baby_a1_03",
+  "wolf_baby_a1_04",
+  "wolf_baby_a1_05",
+  "wolf_baby_a1_06",
+  "wolf_baby_a1_07",
+  "wolf_baby_down_00",
+  "wolf_baby_down_01",
+  "wolf_baby_down_02",
+  "wolf_baby_down_03",
+  "wolf_baby_down_04",
+  "wolf_baby_hit_00",
+  "wolf_baby_hit_01",
+  "wolf_baby_hit_02",
+  "wolf_baby_hit_03",
+  "wolf_baby_idle_00",
+  "wolf_baby_idle_01",
+  "wolf_baby_idle_02",
+  "wolf_baby_idle_03",
+  "wolf_baby_walk_00",
+  "wolf_baby_walk_01",
+  "wolf_baby_walk_02",
+  "wolf_baby_walk_03",
+  "wolf_baby_walk_04",
+  "wolf_baby_walk_05",
+  "wolf_baby_walk_06",
+  "wolf_baby_walk_07",
+  "wolf_teen_a1_00",
+  "wolf_teen_a1_01",
+  "wolf_teen_a1_02",
+  "wolf_teen_a1_03",
+  "wolf_teen_a1_04",
+  "wolf_teen_a1_05",
+  "wolf_teen_a1_06",
+  "wolf_teen_a1_07",
+  "wolf_teen_a2_00",
+  "wolf_teen_a2_01",
+  "wolf_teen_a2_02",
+  "wolf_teen_a2_03",
+  "wolf_teen_a2_04",
+  "wolf_teen_a2_05",
+  "wolf_teen_a2_06",
+  "wolf_teen_a2_07",
+  "wolf_teen_down_00",
+  "wolf_teen_down_01",
+  "wolf_teen_down_02",
+  "wolf_teen_down_03",
+  "wolf_teen_down_04",
+  "wolf_teen_down_05",
+  "wolf_teen_down_06",
+  "wolf_teen_down_07",
+  "wolf_teen_hit_00",
+  "wolf_teen_hit_01",
+  "wolf_teen_hit_02",
+  "wolf_teen_hit_03",
+  "wolf_teen_idle_00",
+  "wolf_teen_idle_01",
+  "wolf_teen_idle_02",
+  "wolf_teen_idle_03",
+  "wolf_teen_walk_00",
+  "wolf_teen_walk_01",
+  "wolf_teen_walk_02",
+  "wolf_teen_walk_03",
+  "wolf_teen_walk_04",
+  "wolf_teen_walk_05",
+  "wolf_teen_walk_06",
+  "wolf_teen_walk_07",
+  "wolf_adult_a1_00",
+  "wolf_adult_a1_01",
+  "wolf_adult_a1_02",
+  "wolf_adult_a1_03",
+  "wolf_adult_a1_04",
+  "wolf_adult_a1_05",
+  "wolf_adult_a1_06",
+  "wolf_adult_a1_07",
+  "wolf_adult_a2_00",
+  "wolf_adult_a2_01",
+  "wolf_adult_a2_02",
+  "wolf_adult_a2_03",
+  "wolf_adult_a2_04",
+  "wolf_adult_a2_05",
+  "wolf_adult_a2_06",
+  "wolf_adult_a2_07",
+  "wolf_adult_down_00",
+  "wolf_adult_down_01",
+  "wolf_adult_down_02",
+  "wolf_adult_down_03",
+  "wolf_adult_down_04",
+  "wolf_adult_down_05",
+  "wolf_adult_down_06",
+  "wolf_adult_down_07",
+  "wolf_adult_el_00",
+  "wolf_adult_el_01",
+  "wolf_adult_el_02",
+  "wolf_adult_el_03",
+  "wolf_adult_el_04",
+  "wolf_adult_el_05",
+  "wolf_adult_el_06",
+  "wolf_adult_el_07",
+  "wolf_adult_hit_00",
+  "wolf_adult_hit_01",
+  "wolf_adult_hit_02",
+  "wolf_adult_hit_03",
+  "wolf_adult_idle_00",
+  "wolf_adult_idle_01",
+  "wolf_adult_idle_02",
+  "wolf_adult_idle_03",
+  "wolf_adult_walk_00",
+  "wolf_adult_walk_01",
+  "wolf_adult_walk_02",
+  "wolf_adult_walk_03",
+  "wolf_adult_walk_04",
+  "wolf_adult_walk_05",
+  "wolf_adult_walk_06",
+  "wolf_adult_walk_07"
+ ],
+ "standing": [
+  "wolf_baby_idle_00",
+  "wolf_baby_idle_01",
+  "wolf_baby_idle_02",
+  "wolf_baby_idle_03",
+  "wolf_teen_idle_00",
+  "wolf_teen_idle_01",
+  "wolf_teen_idle_02",
+  "wolf_teen_idle_03",
+  "wolf_adult_idle_00",
+  "wolf_adult_idle_01",
+  "wolf_adult_idle_02",
+  "wolf_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "baby": {
+   "top": 64,
+   "attack": {
+    "frames": [
+     "wolf_baby_a1_00",
+     "wolf_baby_a1_01",
+     "wolf_baby_a1_02",
+     "wolf_baby_a1_03",
+     "wolf_baby_a1_04",
+     "wolf_baby_a1_05",
+     "wolf_baby_a1_06",
+     "wolf_baby_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "wolf_baby_down_00",
+     "wolf_baby_down_01",
+     "wolf_baby_down_02",
+     "wolf_baby_down_03",
+     "wolf_baby_down_04"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "wolf_baby_hit_00",
+     "wolf_baby_hit_01",
+     "wolf_baby_hit_02",
+     "wolf_baby_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "wolf_baby_idle_00",
+     "wolf_baby_idle_01",
+     "wolf_baby_idle_02",
+     "wolf_baby_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "wolf_baby_walk_00",
+     "wolf_baby_walk_01",
+     "wolf_baby_walk_02",
+     "wolf_baby_walk_03",
+     "wolf_baby_walk_04",
+     "wolf_baby_walk_05",
+     "wolf_baby_walk_06",
+     "wolf_baby_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "teen": {
+   "top": 51,
+   "attack": {
+    "frames": [
+     "wolf_teen_a1_00",
+     "wolf_teen_a1_01",
+     "wolf_teen_a1_02",
+     "wolf_teen_a1_03",
+     "wolf_teen_a1_04",
+     "wolf_teen_a1_05",
+     "wolf_teen_a1_06",
+     "wolf_teen_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "wolf_teen_a2_00",
+     "wolf_teen_a2_01",
+     "wolf_teen_a2_02",
+     "wolf_teen_a2_03",
+     "wolf_teen_a2_04",
+     "wolf_teen_a2_05",
+     "wolf_teen_a2_06",
+     "wolf_teen_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "wolf_teen_down_00",
+     "wolf_teen_down_01",
+     "wolf_teen_down_02",
+     "wolf_teen_down_03",
+     "wolf_teen_down_04",
+     "wolf_teen_down_05",
+     "wolf_teen_down_06",
+     "wolf_teen_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "wolf_teen_hit_00",
+     "wolf_teen_hit_01",
+     "wolf_teen_hit_02",
+     "wolf_teen_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "wolf_teen_idle_00",
+     "wolf_teen_idle_01",
+     "wolf_teen_idle_02",
+     "wolf_teen_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "wolf_teen_walk_00",
+     "wolf_teen_walk_01",
+     "wolf_teen_walk_02",
+     "wolf_teen_walk_03",
+     "wolf_teen_walk_04",
+     "wolf_teen_walk_05",
+     "wolf_teen_walk_06",
+     "wolf_teen_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "adult": {
+   "top": 32,
+   "attack": {
+    "frames": [
+     "wolf_adult_a1_00",
+     "wolf_adult_a1_01",
+     "wolf_adult_a1_02",
+     "wolf_adult_a1_03",
+     "wolf_adult_a1_04",
+     "wolf_adult_a1_05",
+     "wolf_adult_a1_06",
+     "wolf_adult_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "wolf_adult_a2_00",
+     "wolf_adult_a2_01",
+     "wolf_adult_a2_02",
+     "wolf_adult_a2_03",
+     "wolf_adult_a2_04",
+     "wolf_adult_a2_05",
+     "wolf_adult_a2_06",
+     "wolf_adult_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "wolf_adult_down_00",
+     "wolf_adult_down_01",
+     "wolf_adult_down_02",
+     "wolf_adult_down_03",
+     "wolf_adult_down_04",
+     "wolf_adult_down_05",
+     "wolf_adult_down_06",
+     "wolf_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "wolf_adult_el_00",
+     "wolf_adult_el_01",
+     "wolf_adult_el_02",
+     "wolf_adult_el_03",
+     "wolf_adult_el_04",
+     "wolf_adult_el_05",
+     "wolf_adult_el_06",
+     "wolf_adult_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.08,
+      "cast"
+     ],
+     [
+      0.09,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "wolf_adult_hit_00",
+     "wolf_adult_hit_01",
+     "wolf_adult_hit_02",
+     "wolf_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "wolf_adult_idle_00",
+     "wolf_adult_idle_01",
+     "wolf_adult_idle_02",
+     "wolf_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "wolf_adult_walk_00",
+     "wolf_adult_walk_01",
+     "wolf_adult_walk_02",
+     "wolf_adult_walk_03",
+     "wolf_adult_walk_04",
+     "wolf_adult_walk_05",
+     "wolf_adult_walk_06",
+     "wolf_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
+}

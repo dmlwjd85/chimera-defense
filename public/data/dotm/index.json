@@ -1,9 +1,35 @@
 {
  "note": "동작 시트가 있는 종(전투에 들어갈 때 덱에 든 종만 불러옴)",
  "species": [
+  "ant",
+  "ant_spirit",
   "bear",
   "bear_spirit",
+  "bighorn",
+  "bighorn_spirit",
+  "bison",
+  "bison_spirit",
+  "crow",
+  "crow_spirit",
+  "dog",
+  "dog_spirit",
   "eagle",
-  "eagle_spirit"
+  "eagle_spirit",
+  "fox",
+  "fox_spirit",
+  "frog",
+  "frog_spirit",
+  "grasshopper",
+  "grasshopper_spirit",
+  "monkey",
+  "monkey_spirit",
+  "rabbit",
+  "rabbit_spirit",
+  "rooster",
+  "rooster_spirit",
+  "tiger",
+  "tiger_spirit",
+  "wolf",
+  "wolf_spirit"
  ]
 }

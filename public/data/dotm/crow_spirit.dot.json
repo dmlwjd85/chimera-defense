@@ -1,0 +1,857 @@
+{
+ "note": "crow 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "crow_spirit",
+ "sheet": "dot-m-crow_spirit",
+ "file": "assets/dotm/crow_spirit.png",
+ "frameW": 149,
+ "frameH": 154,
+ "foot": 151,
+ "cols": 1,
+ "anchorX": 68,
+ "palette": [
+  "#050211",
+  "#291a1f",
+  "#343645",
+  "#474a56",
+  "#5b5e69",
+  "#5c343b",
+  "#753019",
+  "#7f848b",
+  "#995b25",
+  "#a8acb7",
+  "#ca8835",
+  "#d41510",
+  "#e3e6ed",
+  "#f0b544",
+  "#f75038",
+  "#fad166"
+ ],
+ "rects": {
+  "crow_myth_a1_00": [
+   396,
+   254,
+   95,
+   103,
+   -49,
+   -103
+  ],
+  "crow_myth_a1_01": [
+   1854,
+   144,
+   94,
+   104,
+   -53,
+   -104
+  ],
+  "crow_myth_a1_02": [
+   109,
+   144,
+   112,
+   108,
+   -57,
+   -108
+  ],
+  "crow_myth_a1_03": [
+   1797,
+   0,
+   124,
+   109,
+   -58,
+   -109
+  ],
+  "crow_myth_a1_04": [
+   1922,
+   0,
+   109,
+   109,
+   -56,
+   -109
+  ],
+  "crow_myth_a1_05": [
+   222,
+   144,
+   99,
+   106,
+   -55,
+   -106
+  ],
+  "crow_myth_a1_06": [
+   880,
+   144,
+   92,
+   105,
+   -51,
+   -105
+  ],
+  "crow_myth_a1_07": [
+   973,
+   144,
+   94,
+   105,
+   -49,
+   -105
+  ],
+  "crow_myth_a2_00": [
+   1949,
+   144,
+   96,
+   104,
+   -52,
+   -104
+  ],
+  "crow_myth_a2_01": [
+   322,
+   144,
+   144,
+   106,
+   -63,
+   -106
+  ],
+  "crow_myth_a2_02": [
+   0,
+   144,
+   108,
+   109,
+   -56,
+   -112
+  ],
+  "crow_myth_a2_03": [
+   0,
+   0,
+   110,
+   143,
+   -58,
+   -147
+  ],
+  "crow_myth_a2_04": [
+   111,
+   0,
+   101,
+   143,
+   -56,
+   -144
+  ],
+  "crow_myth_a2_05": [
+   514,
+   0,
+   98,
+   130,
+   -52,
+   -130
+  ],
+  "crow_myth_a2_06": [
+   1575,
+   0,
+   100,
+   112,
+   -50,
+   -112
+  ],
+  "crow_myth_a2_07": [
+   0,
+   254,
+   93,
+   104,
+   -45,
+   -104
+  ],
+  "crow_myth_down_00": [
+   492,
+   254,
+   97,
+   103,
+   -46,
+   -105
+  ],
+  "crow_myth_down_01": [
+   94,
+   254,
+   98,
+   104,
+   -46,
+   -106
+  ],
+  "crow_myth_down_02": [
+   814,
+   254,
+   98,
+   102,
+   -48,
+   -104
+  ],
+  "crow_myth_down_03": [
+   1223,
+   254,
+   97,
+   101,
+   -50,
+   -101
+  ],
+  "crow_myth_down_04": [
+   1321,
+   254,
+   103,
+   100,
+   -59,
+   -100
+  ],
+  "crow_myth_down_05": [
+   0,
+   359,
+   112,
+   95,
+   -66,
+   -95
+  ],
+  "crow_myth_down_06": [
+   456,
+   359,
+   113,
+   73,
+   -56,
+   -74
+  ],
+  "crow_myth_down_07": [
+   570,
+   359,
+   126,
+   54,
+   -61,
+   -55
+  ],
+  "crow_myth_el_00": [
+   913,
+   254,
+   101,
+   102,
+   -51,
+   -102
+  ],
+  "crow_myth_el_01": [
+   1068,
+   144,
+   110,
+   105,
+   -57,
+   -105
+  ],
+  "crow_myth_el_02": [
+   1676,
+   0,
+   120,
+   111,
+   -68,
+   -118
+  ],
+  "crow_myth_el_03": [
+   313,
+   0,
+   98,
+   135,
+   -56,
+   -146
+  ],
+  "crow_myth_el_04": [
+   213,
+   0,
+   99,
+   140,
+   -57,
+   -152
+  ],
+  "crow_myth_el_05": [
+   412,
+   0,
+   101,
+   132,
+   -56,
+   -141
+  ],
+  "crow_myth_el_06": [
+   590,
+   254,
+   122,
+   103,
+   -67,
+   -106
+  ],
+  "crow_myth_el_07": [
+   1179,
+   144,
+   95,
+   105,
+   -47,
+   -105
+  ],
+  "crow_myth_hit_00": [
+   1275,
+   144,
+   96,
+   105,
+   -49,
+   -105
+  ],
+  "crow_myth_hit_01": [
+   1425,
+   254,
+   102,
+   100,
+   -54,
+   -100
+  ],
+  "crow_myth_hit_02": [
+   226,
+   359,
+   110,
+   94,
+   -58,
+   -95
+  ],
+  "crow_myth_hit_03": [
+   1528,
+   254,
+   97,
+   100,
+   -47,
+   -99
+  ],
+  "crow_myth_idle_00": [
+   1372,
+   144,
+   95,
+   105,
+   -47,
+   -105
+  ],
+  "crow_myth_idle_01": [
+   467,
+   144,
+   95,
+   106,
+   -47,
+   -106
+  ],
+  "crow_myth_idle_02": [
+   563,
+   144,
+   95,
+   106,
+   -47,
+   -106
+  ],
+  "crow_myth_idle_03": [
+   1468,
+   144,
+   95,
+   105,
+   -47,
+   -105
+  ],
+  "crow_myth_ult_00": [
+   1015,
+   254,
+   103,
+   102,
+   -50,
+   -102
+  ],
+  "crow_myth_ult_01": [
+   1626,
+   254,
+   108,
+   100,
+   -52,
+   -100
+  ],
+  "crow_myth_ult_02": [
+   1735,
+   254,
+   114,
+   97,
+   -56,
+   -97
+  ],
+  "crow_myth_ult_03": [
+   337,
+   359,
+   118,
+   94,
+   -59,
+   -94
+  ],
+  "crow_myth_ult_04": [
+   659,
+   144,
+   120,
+   106,
+   -59,
+   -107
+  ],
+  "crow_myth_ult_05": [
+   1255,
+   0,
+   114,
+   122,
+   -65,
+   -138
+  ],
+  "crow_myth_ult_06": [
+   613,
+   0,
+   107,
+   127,
+   -62,
+   -146
+  ],
+  "crow_myth_ult_07": [
+   1045,
+   0,
+   102,
+   125,
+   -59,
+   -140
+  ],
+  "crow_myth_ult_08": [
+   1370,
+   0,
+   98,
+   121,
+   -57,
+   -132
+  ],
+  "crow_myth_ult_09": [
+   1148,
+   0,
+   106,
+   125,
+   -61,
+   -141
+  ],
+  "crow_myth_ult_10": [
+   721,
+   0,
+   111,
+   127,
+   -64,
+   -148
+  ],
+  "crow_myth_ult_11": [
+   833,
+   0,
+   107,
+   127,
+   -62,
+   -149
+  ],
+  "crow_myth_ult_12": [
+   941,
+   0,
+   103,
+   126,
+   -59,
+   -147
+  ],
+  "crow_myth_ult_13": [
+   1469,
+   0,
+   105,
+   120,
+   -54,
+   -127
+  ],
+  "crow_myth_ult_14": [
+   1850,
+   254,
+   125,
+   97,
+   -55,
+   -97
+  ],
+  "crow_myth_ult_15": [
+   113,
+   359,
+   112,
+   95,
+   -49,
+   -95
+  ],
+  "crow_myth_walk_00": [
+   1564,
+   144,
+   95,
+   105,
+   -47,
+   -105
+  ],
+  "crow_myth_walk_01": [
+   193,
+   254,
+   97,
+   104,
+   -49,
+   -106
+  ],
+  "crow_myth_walk_02": [
+   780,
+   144,
+   99,
+   106,
+   -51,
+   -108
+  ],
+  "crow_myth_walk_03": [
+   291,
+   254,
+   104,
+   104,
+   -54,
+   -106
+  ],
+  "crow_myth_walk_04": [
+   1119,
+   254,
+   103,
+   102,
+   -53,
+   -103
+  ],
+  "crow_myth_walk_05": [
+   713,
+   254,
+   100,
+   103,
+   -51,
+   -104
+  ],
+  "crow_myth_walk_06": [
+   1660,
+   144,
+   97,
+   105,
+   -49,
+   -105
+  ],
+  "crow_myth_walk_07": [
+   1758,
+   144,
+   95,
+   105,
+   -47,
+   -105
+  ]
+ },
+ "frames": [
+  "crow_myth_a1_00",
+  "crow_myth_a1_01",
+  "crow_myth_a1_02",
+  "crow_myth_a1_03",
+  "crow_myth_a1_04",
+  "crow_myth_a1_05",
+  "crow_myth_a1_06",
+  "crow_myth_a1_07",
+  "crow_myth_a2_00",
+  "crow_myth_a2_01",
+  "crow_myth_a2_02",
+  "crow_myth_a2_03",
+  "crow_myth_a2_04",
+  "crow_myth_a2_05",
+  "crow_myth_a2_06",
+  "crow_myth_a2_07",
+  "crow_myth_down_00",
+  "crow_myth_down_01",
+  "crow_myth_down_02",
+  "crow_myth_down_03",
+  "crow_myth_down_04",
+  "crow_myth_down_05",
+  "crow_myth_down_06",
+  "crow_myth_down_07",
+  "crow_myth_el_00",
+  "crow_myth_el_01",
+  "crow_myth_el_02",
+  "crow_myth_el_03",
+  "crow_myth_el_04",
+  "crow_myth_el_05",
+  "crow_myth_el_06",
+  "crow_myth_el_07",
+  "crow_myth_hit_00",
+  "crow_myth_hit_01",
+  "crow_myth_hit_02",
+  "crow_myth_hit_03",
+  "crow_myth_idle_00",
+  "crow_myth_idle_01",
+  "crow_myth_idle_02",
+  "crow_myth_idle_03",
+  "crow_myth_ult_00",
+  "crow_myth_ult_01",
+  "crow_myth_ult_02",
+  "crow_myth_ult_03",
+  "crow_myth_ult_04",
+  "crow_myth_ult_05",
+  "crow_myth_ult_06",
+  "crow_myth_ult_07",
+  "crow_myth_ult_08",
+  "crow_myth_ult_09",
+  "crow_myth_ult_10",
+  "crow_myth_ult_11",
+  "crow_myth_ult_12",
+  "crow_myth_ult_13",
+  "crow_myth_ult_14",
+  "crow_myth_ult_15",
+  "crow_myth_walk_00",
+  "crow_myth_walk_01",
+  "crow_myth_walk_02",
+  "crow_myth_walk_03",
+  "crow_myth_walk_04",
+  "crow_myth_walk_05",
+  "crow_myth_walk_06",
+  "crow_myth_walk_07"
+ ],
+ "standing": [
+  "crow_myth_idle_00",
+  "crow_myth_idle_01",
+  "crow_myth_idle_02",
+  "crow_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 46,
+   "attack": {
+    "frames": [
+     "crow_myth_a1_00",
+     "crow_myth_a1_01",
+     "crow_myth_a1_02",
+     "crow_myth_a1_03",
+     "crow_myth_a1_04",
+     "crow_myth_a1_05",
+     "crow_myth_a1_06",
+     "crow_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "crow_myth_a2_00",
+     "crow_myth_a2_01",
+     "crow_myth_a2_02",
+     "crow_myth_a2_03",
+     "crow_myth_a2_04",
+     "crow_myth_a2_05",
+     "crow_myth_a2_06",
+     "crow_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "crow_myth_down_00",
+     "crow_myth_down_01",
+     "crow_myth_down_02",
+     "crow_myth_down_03",
+     "crow_myth_down_04",
+     "crow_myth_down_05",
+     "crow_myth_down_06",
+     "crow_myth_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "crow_myth_el_00",
+     "crow_myth_el_01",
+     "crow_myth_el_02",
+     "crow_myth_el_03",
+     "crow_myth_el_04",
+     "crow_myth_el_05",
+     "crow_myth_el_06",
+     "crow_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.08,
+      "cast"
+     ],
+     [
+      0.09,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "crow_myth_hit_00",
+     "crow_myth_hit_01",
+     "crow_myth_hit_02",
+     "crow_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "crow_myth_idle_00",
+     "crow_myth_idle_01",
+     "crow_myth_idle_02",
+     "crow_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "crow_myth_ult_00",
+     "crow_myth_ult_01",
+     "crow_myth_ult_02",
+     "crow_myth_ult_03",
+     "crow_myth_ult_04",
+     "crow_myth_ult_05",
+     "crow_myth_ult_06",
+     "crow_myth_ult_07",
+     "crow_myth_ult_08",
+     "crow_myth_ult_09",
+     "crow_myth_ult_10",
+     "crow_myth_ult_11",
+     "crow_myth_ult_12",
+     "crow_myth_ult_13",
+     "crow_myth_ult_14",
+     "crow_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.29,
+      "cast"
+     ],
+     [
+      0.3,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "crow_myth_walk_00",
+     "crow_myth_walk_01",
+     "crow_myth_walk_02",
+     "crow_myth_walk_03",
+     "crow_myth_walk_04",
+     "crow_myth_walk_05",
+     "crow_myth_walk_06",
+     "crow_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

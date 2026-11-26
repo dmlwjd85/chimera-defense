@@ -80,8 +80,8 @@ SPECIES = {
         'down_fly': '{who} gets knocked out: tumbles out of the air, falls onto the ground and lies still on its side with dizzy closed eyes',    },
 }
 HIT = '{who} flinches backward from a hit, eyes squeezed shut, then recovers to the start pose'
-DOWN = '{who} gets knocked out: staggers, falls over onto its side and lies still with dizzy closed eyes'
-DOWN_MYTH = '{who} gets knocked out: staggers and sits down heavily, then slumps over with dizzy closed eyes'
+DOWN = '{who} gets knocked out: its legs give way and it collapses, ending lying flat on its side on the ground, completely still, with dizzy closed eyes'   # 2026-11-26: 예전 문장은 선 채로 끝나는 일이 많았음. 대기에 'breathing'을 쓰면 머리 위에 김이 생겨서 뺌
+DOWN_MYTH = '{who} gets knocked out: staggers, falls down and ends lying flat on the ground, completely still, with dizzy closed eyes'
 
 
 def action(sp, stage, motion):
@@ -103,7 +103,7 @@ def jobs(species):
 def _who(baby, teen, adult, myth):
     return {'baby': baby, 'teen': teen, 'adult': adult, 'myth': myth}
 
-def _quad(name, myth, a1, a2, el, m_a1, m_a2, m_el, ult, walk='walking forward on four legs with a bouncy gait', idle='breathing calmly, ears and tail move a little'):
+def _quad(name, myth, a1, a2, el, m_a1, m_a2, m_el, ult, walk='walking forward on four legs with a bouncy gait', idle='standing still, chest rises and falls slightly, eyes blink once, ears and tail move a little, no steam, no breath clouds'):
     return {
         'who': _who(f'a chibi baby {name} on four legs', f'a chibi young {name} on four legs', f'a chibi {name} on four legs', myth),
         'idle': '{who} ' + idle, 'idle_myth': '{who} standing and breathing calmly, small idle sway',
@@ -149,7 +149,7 @@ SPECIES.update({
   'ant': _quad('red ant', 'Myrmidon, an upright chibi red ant warrior in a bronze crested helmet holding a round bronze shield and a long spear',
       'lunges forward and snaps its mandibles', 'charges forward and bumps with its head', 'rears up on its back legs and stomps the front legs down',
       'thrusts the spear forward', 'bashes forward with the round shield then thrusts the spear', 'raises the spear high and stamps one foot',
-      'leaps up and drives the spear down hard into the ground', walk='walking forward on six legs, antennae bobbing', idle='breathing, antennae twitch'),
+      'leaps up and drives the spear down hard into the ground', walk='walking forward on six legs, antennae bobbing', idle='standing still, antennae twitch, eyes blink once, no steam'),
 })
 SPECIES['ant']['who'] = _who('a chibi baby red ant on six legs', 'a chibi young red ant on six legs', 'a chibi red ant on six legs', SPECIES['ant']['who']['myth'])
 SPECIES['tiger']['who'] = _who('a chibi tiger cub on four legs', 'a chibi young tiger on four legs', 'a chibi tiger on four legs', SPECIES['tiger']['who']['myth'])
@@ -157,7 +157,7 @@ SPECIES['tiger']['who'] = _who('a chibi tiger cub on four legs', 'a chibi young 
 # 다리 모양이 다른 종(서서 앉는 개구리, 메뚜기, 두 발 닭·병아리)
 SPECIES['frog'] = {
     'who': _who('a chibi baby frog sitting', 'a chibi young frog sitting', 'a chibi big green frog sitting', 'Geumwa the frog king, an upright chibi golden-green frog with a small gold crown and a purple cape'),
-    'idle': '{who} breathing, throat puffs in and out, eyes blink', 'idle_myth': '{who} standing and breathing, cape sways a little',
+    'idle': '{who} sitting still, throat swells slightly, eyes blink once, no steam, no breath clouds', 'idle_myth': '{who} standing and breathing, cape sways a little',
     'walk': '{who} hopping forward in small frog hops', 'walk_myth': '{who} walking forward on two legs, cape sways',
     'a1': '{who} puffs its cheeks and spits forward (spitting a water bubble), then returns to the start pose',
     'a2': '{who} spits forward twice quickly, then returns to the start pose',
@@ -169,7 +169,7 @@ SPECIES['frog'] = {
 }
 SPECIES['grasshopper'] = {
     'who': _who('a chibi baby green grasshopper', 'a chibi young green grasshopper', 'a chibi green grasshopper', 'Tithonus, an upright chibi golden grasshopper with clear golden wings holding a small glowing golden orb'),
-    'idle': '{who} breathing, antennae twitch', 'idle_myth': '{who} standing and breathing, wings flutter slightly',
+    'idle': '{who} standing still, antennae twitch, eyes blink once, no steam', 'idle_myth': '{who} standing still, wings flutter slightly',
     'walk': '{who} walking forward on its legs with small hops', 'walk_myth': '{who} walking forward on two legs, wings flutter',
     'a1': '{who} kicks forward with a long hind leg (flinging a leaf), then returns to the start pose',
     'a2': '{who} kicks forward twice quickly with its hind legs, then returns to the start pose',
@@ -182,7 +182,7 @@ SPECIES['grasshopper'] = {
 SPECIES['rooster'] = {
     'who': _who('a round fluffy yellow chick', 'a chibi young chicken with a small red comb', 'a chibi rooster with a red comb and tall tail feathers',
                 'the Golden Rooster, an upright chibi golden rooster warrior in gold armor with feathered hands and a big flame-like golden tail'),
-    'idle': '{who} breathing, head bobs a little', 'idle_myth': '{who} standing proudly and breathing, tail sways',
+    'idle': '{who} standing still, head bobs a little, eyes blink once, no steam', 'idle_myth': '{who} standing proudly, tail sways',
     'walk': '{who} walking forward on two legs, head bobbing', 'walk_myth': '{who} walking forward on two legs, tail sways',
     'a1': '{who} raises its head and crows loudly with beak open, then returns to the start pose',
     'a2': '{who} crows twice quickly with beak open, wings flapping, then returns to the start pose',

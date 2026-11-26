@@ -1,0 +1,857 @@
+{
+ "note": "monkey 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "monkey_spirit",
+ "sheet": "dot-m-monkey_spirit",
+ "file": "assets/dotm/monkey_spirit.png",
+ "frameW": 113,
+ "frameH": 147,
+ "foot": 144,
+ "cols": 1,
+ "anchorX": 53,
+ "palette": [
+  "#1a0211",
+  "#291a1f",
+  "#475062",
+  "#5c2c21",
+  "#738d99",
+  "#7c4831",
+  "#8a1529",
+  "#a56439",
+  "#b7675b",
+  "#bc1523",
+  "#c38747",
+  "#e1a54c",
+  "#f39b7e",
+  "#f4c669",
+  "#f7efef",
+  "#fee67e"
+ ],
+ "rects": {
+  "monkey_myth_a1_00": [
+   456,
+   140,
+   89,
+   107,
+   -45,
+   -107
+  ],
+  "monkey_myth_a1_01": [
+   546,
+   140,
+   94,
+   107,
+   -48,
+   -107
+  ],
+  "monkey_myth_a1_02": [
+   0,
+   140,
+   95,
+   111,
+   -50,
+   -111
+  ],
+  "monkey_myth_a1_03": [
+   1813,
+   0,
+   95,
+   112,
+   -51,
+   -112
+  ],
+  "monkey_myth_a1_04": [
+   1360,
+   0,
+   95,
+   114,
+   -51,
+   -114
+  ],
+  "monkey_myth_a1_05": [
+   177,
+   140,
+   93,
+   110,
+   -49,
+   -110
+  ],
+  "monkey_myth_a1_06": [
+   1709,
+   140,
+   90,
+   105,
+   -45,
+   -105
+  ],
+  "monkey_myth_a1_07": [
+   1800,
+   140,
+   87,
+   105,
+   -43,
+   -105
+  ],
+  "monkey_myth_a2_00": [
+   907,
+   140,
+   92,
+   106,
+   -45,
+   -106
+  ],
+  "monkey_myth_a2_01": [
+   368,
+   140,
+   87,
+   108,
+   -46,
+   -108
+  ],
+  "monkey_myth_a2_02": [
+   641,
+   140,
+   87,
+   107,
+   -46,
+   -107
+  ],
+  "monkey_myth_a2_03": [
+   1184,
+   0,
+   92,
+   120,
+   -50,
+   -120
+  ],
+  "monkey_myth_a2_04": [
+   1277,
+   0,
+   82,
+   118,
+   -49,
+   -118
+  ],
+  "monkey_myth_a2_05": [
+   1643,
+   0,
+   79,
+   113,
+   -44,
+   -113
+  ],
+  "monkey_myth_a2_06": [
+   1456,
+   0,
+   96,
+   114,
+   -42,
+   -114
+  ],
+  "monkey_myth_a2_07": [
+   271,
+   140,
+   96,
+   110,
+   -44,
+   -110
+  ],
+  "monkey_myth_down_00": [
+   1000,
+   140,
+   92,
+   106,
+   -44,
+   -106
+  ],
+  "monkey_myth_down_01": [
+   1888,
+   140,
+   95,
+   105,
+   -44,
+   -105
+  ],
+  "monkey_myth_down_02": [
+   905,
+   252,
+   96,
+   103,
+   -42,
+   -104
+  ],
+  "monkey_myth_down_03": [
+   1002,
+   252,
+   100,
+   103,
+   -42,
+   -104
+  ],
+  "monkey_myth_down_04": [
+   1473,
+   252,
+   99,
+   98,
+   -39,
+   -98
+  ],
+  "monkey_myth_down_05": [
+   1573,
+   252,
+   99,
+   93,
+   -39,
+   -92
+  ],
+  "monkey_myth_down_06": [
+   1673,
+   252,
+   96,
+   77,
+   -39,
+   -77
+  ],
+  "monkey_myth_down_07": [
+   1770,
+   252,
+   106,
+   60,
+   -53,
+   -59
+  ],
+  "monkey_myth_el_00": [
+   0,
+   252,
+   87,
+   105,
+   -45,
+   -105
+  ],
+  "monkey_myth_el_01": [
+   88,
+   252,
+   99,
+   105,
+   -45,
+   -105
+  ],
+  "monkey_myth_el_02": [
+   1723,
+   0,
+   89,
+   113,
+   -45,
+   -113
+  ],
+  "monkey_myth_el_03": [
+   0,
+   0,
+   74,
+   139,
+   -44,
+   -139
+  ],
+  "monkey_myth_el_04": [
+   75,
+   0,
+   73,
+   138,
+   -43,
+   -138
+  ],
+  "monkey_myth_el_05": [
+   1909,
+   0,
+   85,
+   112,
+   -44,
+   -112
+  ],
+  "monkey_myth_el_06": [
+   729,
+   140,
+   92,
+   107,
+   -45,
+   -107
+  ],
+  "monkey_myth_el_07": [
+   188,
+   252,
+   89,
+   105,
+   -44,
+   -105
+  ],
+  "monkey_myth_hit_00": [
+   725,
+   252,
+   93,
+   104,
+   -45,
+   -104
+  ],
+  "monkey_myth_hit_01": [
+   1377,
+   252,
+   95,
+   100,
+   -44,
+   -100
+  ],
+  "monkey_myth_hit_02": [
+   1284,
+   252,
+   92,
+   101,
+   -43,
+   -101
+  ],
+  "monkey_myth_hit_03": [
+   1103,
+   252,
+   93,
+   103,
+   -46,
+   -103
+  ],
+  "monkey_myth_idle_00": [
+   278,
+   252,
+   89,
+   105,
+   -44,
+   -105
+  ],
+  "monkey_myth_idle_01": [
+   819,
+   252,
+   85,
+   104,
+   -43,
+   -104
+  ],
+  "monkey_myth_idle_02": [
+   368,
+   252,
+   86,
+   105,
+   -43,
+   -105
+  ],
+  "monkey_myth_idle_03": [
+   455,
+   252,
+   89,
+   105,
+   -44,
+   -105
+  ],
+  "monkey_myth_ult_00": [
+   1197,
+   252,
+   86,
+   102,
+   -40,
+   -102
+  ],
+  "monkey_myth_ult_01": [
+   1093,
+   140,
+   89,
+   106,
+   -43,
+   -107
+  ],
+  "monkey_myth_ult_02": [
+   822,
+   140,
+   84,
+   107,
+   -47,
+   -117
+  ],
+  "monkey_myth_ult_03": [
+   96,
+   140,
+   80,
+   111,
+   -47,
+   -125
+  ],
+  "monkey_myth_ult_04": [
+   1553,
+   0,
+   89,
+   114,
+   -49,
+   -131
+  ],
+  "monkey_myth_ult_05": [
+   432,
+   0,
+   103,
+   128,
+   -51,
+   -144
+  ],
+  "monkey_myth_ult_06": [
+   149,
+   0,
+   102,
+   132,
+   -50,
+   -144
+  ],
+  "monkey_myth_ult_07": [
+   618,
+   0,
+   89,
+   126,
+   -49,
+   -138
+  ],
+  "monkey_myth_ult_08": [
+   536,
+   0,
+   81,
+   128,
+   -48,
+   -141
+  ],
+  "monkey_myth_ult_09": [
+   252,
+   0,
+   84,
+   129,
+   -47,
+   -144
+  ],
+  "monkey_myth_ult_10": [
+   793,
+   0,
+   83,
+   125,
+   -46,
+   -143
+  ],
+  "monkey_myth_ult_11": [
+   337,
+   0,
+   94,
+   129,
+   -49,
+   -145
+  ],
+  "monkey_myth_ult_12": [
+   877,
+   0,
+   104,
+   125,
+   -52,
+   -144
+  ],
+  "monkey_myth_ult_13": [
+   708,
+   0,
+   84,
+   126,
+   -51,
+   -140
+  ],
+  "monkey_myth_ult_14": [
+   982,
+   0,
+   99,
+   125,
+   -48,
+   -126
+  ],
+  "monkey_myth_ult_15": [
+   1082,
+   0,
+   101,
+   123,
+   -50,
+   -123
+  ],
+  "monkey_myth_walk_00": [
+   1183,
+   140,
+   89,
+   106,
+   -44,
+   -106
+  ],
+  "monkey_myth_walk_01": [
+   1273,
+   140,
+   86,
+   106,
+   -43,
+   -106
+  ],
+  "monkey_myth_walk_02": [
+   1360,
+   140,
+   85,
+   106,
+   -43,
+   -106
+  ],
+  "monkey_myth_walk_03": [
+   1446,
+   140,
+   85,
+   106,
+   -43,
+   -106
+  ],
+  "monkey_myth_walk_04": [
+   1532,
+   140,
+   87,
+   106,
+   -44,
+   -106
+  ],
+  "monkey_myth_walk_05": [
+   1620,
+   140,
+   88,
+   106,
+   -44,
+   -106
+  ],
+  "monkey_myth_walk_06": [
+   545,
+   252,
+   89,
+   105,
+   -44,
+   -105
+  ],
+  "monkey_myth_walk_07": [
+   635,
+   252,
+   89,
+   105,
+   -44,
+   -105
+  ]
+ },
+ "frames": [
+  "monkey_myth_a1_00",
+  "monkey_myth_a1_01",
+  "monkey_myth_a1_02",
+  "monkey_myth_a1_03",
+  "monkey_myth_a1_04",
+  "monkey_myth_a1_05",
+  "monkey_myth_a1_06",
+  "monkey_myth_a1_07",
+  "monkey_myth_a2_00",
+  "monkey_myth_a2_01",
+  "monkey_myth_a2_02",
+  "monkey_myth_a2_03",
+  "monkey_myth_a2_04",
+  "monkey_myth_a2_05",
+  "monkey_myth_a2_06",
+  "monkey_myth_a2_07",
+  "monkey_myth_down_00",
+  "monkey_myth_down_01",
+  "monkey_myth_down_02",
+  "monkey_myth_down_03",
+  "monkey_myth_down_04",
+  "monkey_myth_down_05",
+  "monkey_myth_down_06",
+  "monkey_myth_down_07",
+  "monkey_myth_el_00",
+  "monkey_myth_el_01",
+  "monkey_myth_el_02",
+  "monkey_myth_el_03",
+  "monkey_myth_el_04",
+  "monkey_myth_el_05",
+  "monkey_myth_el_06",
+  "monkey_myth_el_07",
+  "monkey_myth_hit_00",
+  "monkey_myth_hit_01",
+  "monkey_myth_hit_02",
+  "monkey_myth_hit_03",
+  "monkey_myth_idle_00",
+  "monkey_myth_idle_01",
+  "monkey_myth_idle_02",
+  "monkey_myth_idle_03",
+  "monkey_myth_ult_00",
+  "monkey_myth_ult_01",
+  "monkey_myth_ult_02",
+  "monkey_myth_ult_03",
+  "monkey_myth_ult_04",
+  "monkey_myth_ult_05",
+  "monkey_myth_ult_06",
+  "monkey_myth_ult_07",
+  "monkey_myth_ult_08",
+  "monkey_myth_ult_09",
+  "monkey_myth_ult_10",
+  "monkey_myth_ult_11",
+  "monkey_myth_ult_12",
+  "monkey_myth_ult_13",
+  "monkey_myth_ult_14",
+  "monkey_myth_ult_15",
+  "monkey_myth_walk_00",
+  "monkey_myth_walk_01",
+  "monkey_myth_walk_02",
+  "monkey_myth_walk_03",
+  "monkey_myth_walk_04",
+  "monkey_myth_walk_05",
+  "monkey_myth_walk_06",
+  "monkey_myth_walk_07"
+ ],
+ "standing": [
+  "monkey_myth_idle_00",
+  "monkey_myth_idle_01",
+  "monkey_myth_idle_02",
+  "monkey_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 40,
+   "attack": {
+    "frames": [
+     "monkey_myth_a1_00",
+     "monkey_myth_a1_01",
+     "monkey_myth_a1_02",
+     "monkey_myth_a1_03",
+     "monkey_myth_a1_04",
+     "monkey_myth_a1_05",
+     "monkey_myth_a1_06",
+     "monkey_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "monkey_myth_a2_00",
+     "monkey_myth_a2_01",
+     "monkey_myth_a2_02",
+     "monkey_myth_a2_03",
+     "monkey_myth_a2_04",
+     "monkey_myth_a2_05",
+     "monkey_myth_a2_06",
+     "monkey_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "monkey_myth_down_00",
+     "monkey_myth_down_01",
+     "monkey_myth_down_02",
+     "monkey_myth_down_03",
+     "monkey_myth_down_04",
+     "monkey_myth_down_05",
+     "monkey_myth_down_06",
+     "monkey_myth_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "monkey_myth_el_00",
+     "monkey_myth_el_01",
+     "monkey_myth_el_02",
+     "monkey_myth_el_03",
+     "monkey_myth_el_04",
+     "monkey_myth_el_05",
+     "monkey_myth_el_06",
+     "monkey_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.08,
+      "cast"
+     ],
+     [
+      0.09,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "monkey_myth_hit_00",
+     "monkey_myth_hit_01",
+     "monkey_myth_hit_02",
+     "monkey_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "monkey_myth_idle_00",
+     "monkey_myth_idle_01",
+     "monkey_myth_idle_02",
+     "monkey_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "monkey_myth_ult_00",
+     "monkey_myth_ult_01",
+     "monkey_myth_ult_02",
+     "monkey_myth_ult_03",
+     "monkey_myth_ult_04",
+     "monkey_myth_ult_05",
+     "monkey_myth_ult_06",
+     "monkey_myth_ult_07",
+     "monkey_myth_ult_08",
+     "monkey_myth_ult_09",
+     "monkey_myth_ult_10",
+     "monkey_myth_ult_11",
+     "monkey_myth_ult_12",
+     "monkey_myth_ult_13",
+     "monkey_myth_ult_14",
+     "monkey_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.36,
+      "cast"
+     ],
+     [
+      0.37,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "monkey_myth_walk_00",
+     "monkey_myth_walk_01",
+     "monkey_myth_walk_02",
+     "monkey_myth_walk_03",
+     "monkey_myth_walk_04",
+     "monkey_myth_walk_05",
+     "monkey_myth_walk_06",
+     "monkey_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

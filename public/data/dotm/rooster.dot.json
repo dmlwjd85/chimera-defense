@@ -1,0 +1,1544 @@
+{
+ "note": "rooster 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "rooster",
+ "sheet": "dot-m-rooster",
+ "file": "assets/dotm/rooster.png",
+ "frameW": 112,
+ "frameH": 122,
+ "foot": 118,
+ "cols": 1,
+ "anchorX": 53,
+ "palette": [
+  "#080307",
+  "#17422d",
+  "#291a1f",
+  "#48874f",
+  "#662813",
+  "#862724",
+  "#a85a26",
+  "#c4352c",
+  "#c56218",
+  "#cf6b3c",
+  "#e88d3c",
+  "#e98728",
+  "#f6b152",
+  "#f9b73e",
+  "#fbce9c",
+  "#fdf2e7"
+ ],
+ "rects": {
+  "rooster_baby_a1_00": [
+   1791,
+   281,
+   46,
+   47,
+   -24,
+   -47
+  ],
+  "rooster_baby_a1_01": [
+   976,
+   281,
+   44,
+   53,
+   -25,
+   -53
+  ],
+  "rooster_baby_a1_02": [
+   885,
+   200,
+   42,
+   67,
+   -24,
+   -73
+  ],
+  "rooster_baby_a1_03": [
+   625,
+   200,
+   42,
+   71,
+   -24,
+   -85
+  ],
+  "rooster_baby_a1_04": [
+   512,
+   200,
+   43,
+   72,
+   -24,
+   -83
+  ],
+  "rooster_baby_a1_05": [
+   928,
+   200,
+   44,
+   67,
+   -24,
+   -67
+  ],
+  "rooster_baby_a1_06": [
+   1095,
+   281,
+   44,
+   51,
+   -22,
+   -51
+  ],
+  "rooster_baby_a1_07": [
+   1469,
+   281,
+   45,
+   48,
+   -22,
+   -48
+  ],
+  "rooster_baby_down_00": [
+   1234,
+   281,
+   46,
+   49,
+   -24,
+   -49
+  ],
+  "rooster_baby_down_01": [
+   1281,
+   281,
+   46,
+   49,
+   -24,
+   -49
+  ],
+  "rooster_baby_down_02": [
+   1929,
+   281,
+   46,
+   46,
+   -20,
+   -46
+  ],
+  "rooster_baby_down_03": [
+   262,
+   346,
+   55,
+   36,
+   -25,
+   -36
+  ],
+  "rooster_baby_down_04": [
+   318,
+   346,
+   59,
+   34,
+   -28,
+   -34
+  ],
+  "rooster_baby_down_05": [
+   378,
+   346,
+   59,
+   32,
+   -28,
+   -32
+  ],
+  "rooster_baby_down_06": [
+   438,
+   346,
+   59,
+   32,
+   -28,
+   -32
+  ],
+  "rooster_baby_down_07": [
+   498,
+   346,
+   59,
+   31,
+   -28,
+   -31
+  ],
+  "rooster_baby_hit_00": [
+   45,
+   346,
+   46,
+   43,
+   -19,
+   -43
+  ],
+  "rooster_baby_hit_01": [
+   0,
+   346,
+   44,
+   45,
+   -20,
+   -45
+  ],
+  "rooster_baby_hit_02": [
+   1838,
+   281,
+   44,
+   47,
+   -23,
+   -50
+  ],
+  "rooster_baby_hit_03": [
+   1976,
+   281,
+   44,
+   46,
+   -23,
+   -46
+  ],
+  "rooster_baby_idle_00": [
+   1515,
+   281,
+   45,
+   48,
+   -22,
+   -48
+  ],
+  "rooster_baby_idle_01": [
+   1561,
+   281,
+   45,
+   48,
+   -22,
+   -48
+  ],
+  "rooster_baby_idle_02": [
+   1607,
+   281,
+   45,
+   48,
+   -22,
+   -48
+  ],
+  "rooster_baby_idle_03": [
+   1653,
+   281,
+   45,
+   48,
+   -22,
+   -48
+  ],
+  "rooster_baby_walk_00": [
+   1328,
+   281,
+   46,
+   49,
+   -23,
+   -49
+  ],
+  "rooster_baby_walk_01": [
+   1140,
+   281,
+   46,
+   50,
+   -23,
+   -50
+  ],
+  "rooster_baby_walk_02": [
+   1375,
+   281,
+   46,
+   49,
+   -23,
+   -49
+  ],
+  "rooster_baby_walk_03": [
+   1883,
+   281,
+   45,
+   47,
+   -22,
+   -47
+  ],
+  "rooster_baby_walk_04": [
+   1699,
+   281,
+   45,
+   48,
+   -22,
+   -48
+  ],
+  "rooster_baby_walk_05": [
+   1422,
+   281,
+   46,
+   49,
+   -23,
+   -49
+  ],
+  "rooster_baby_walk_06": [
+   1187,
+   281,
+   46,
+   50,
+   -23,
+   -50
+  ],
+  "rooster_baby_walk_07": [
+   1745,
+   281,
+   45,
+   48,
+   -22,
+   -48
+  ],
+  "rooster_teen_a1_00": [
+   522,
+   281,
+   68,
+   63,
+   -34,
+   -63
+  ],
+  "rooster_teen_a1_01": [
+   735,
+   200,
+   65,
+   70,
+   -35,
+   -72
+  ],
+  "rooster_teen_a1_02": [
+   956,
+   114,
+   65,
+   81,
+   -38,
+   -91
+  ],
+  "rooster_teen_a1_03": [
+   266,
+   114,
+   57,
+   83,
+   -31,
+   -98
+  ],
+  "rooster_teen_a1_04": [
+   176,
+   200,
+   66,
+   79,
+   -39,
+   -88
+  ],
+  "rooster_teen_a1_05": [
+   1348,
+   200,
+   65,
+   65,
+   -36,
+   -65
+  ],
+  "rooster_teen_a1_06": [
+   973,
+   200,
+   67,
+   67,
+   -37,
+   -67
+  ],
+  "rooster_teen_a1_07": [
+   1414,
+   200,
+   67,
+   65,
+   -35,
+   -65
+  ],
+  "rooster_teen_a2_00": [
+   1832,
+   200,
+   73,
+   64,
+   -36,
+   -64
+  ],
+  "rooster_teen_a2_01": [
+   556,
+   200,
+   68,
+   72,
+   -38,
+   -72
+  ],
+  "rooster_teen_a2_02": [
+   1022,
+   114,
+   82,
+   81,
+   -41,
+   -90
+  ],
+  "rooster_teen_a2_03": [
+   1105,
+   114,
+   83,
+   81,
+   -43,
+   -98
+  ],
+  "rooster_teen_a2_04": [
+   1189,
+   114,
+   74,
+   81,
+   -41,
+   -85
+  ],
+  "rooster_teen_a2_05": [
+   668,
+   200,
+   66,
+   71,
+   -37,
+   -71
+  ],
+  "rooster_teen_a2_06": [
+   1906,
+   200,
+   70,
+   64,
+   -38,
+   -64
+  ],
+  "rooster_teen_a2_07": [
+   1482,
+   200,
+   68,
+   65,
+   -35,
+   -65
+  ],
+  "rooster_teen_down_00": [
+   591,
+   281,
+   68,
+   63,
+   -33,
+   -63
+  ],
+  "rooster_teen_down_01": [
+   726,
+   281,
+   69,
+   62,
+   -33,
+   -62
+  ],
+  "rooster_teen_down_02": [
+   1021,
+   281,
+   73,
+   53,
+   -34,
+   -55
+  ],
+  "rooster_teen_down_03": [
+   92,
+   346,
+   83,
+   43,
+   -41,
+   -43
+  ],
+  "rooster_teen_down_04": [
+   176,
+   346,
+   85,
+   40,
+   -43,
+   -40
+  ],
+  "rooster_teen_hit_00": [
+   796,
+   281,
+   73,
+   62,
+   -36,
+   -62
+  ],
+  "rooster_teen_hit_01": [
+   1551,
+   200,
+   70,
+   65,
+   -41,
+   -66
+  ],
+  "rooster_teen_hit_02": [
+   660,
+   281,
+   65,
+   63,
+   -37,
+   -66
+  ],
+  "rooster_teen_hit_03": [
+   1977,
+   200,
+   66,
+   64,
+   -34,
+   -64
+  ],
+  "rooster_teen_idle_00": [
+   1622,
+   200,
+   68,
+   65,
+   -33,
+   -65
+  ],
+  "rooster_teen_idle_01": [
+   1143,
+   200,
+   66,
+   66,
+   -33,
+   -66
+  ],
+  "rooster_teen_idle_02": [
+   1210,
+   200,
+   67,
+   66,
+   -34,
+   -66
+  ],
+  "rooster_teen_idle_03": [
+   0,
+   281,
+   68,
+   64,
+   -34,
+   -64
+  ],
+  "rooster_teen_walk_00": [
+   69,
+   281,
+   69,
+   64,
+   -34,
+   -65
+  ],
+  "rooster_teen_walk_01": [
+   1691,
+   200,
+   70,
+   65,
+   -35,
+   -66
+  ],
+  "rooster_teen_walk_02": [
+   139,
+   281,
+   69,
+   64,
+   -35,
+   -65
+  ],
+  "rooster_teen_walk_03": [
+   209,
+   281,
+   68,
+   64,
+   -34,
+   -64
+  ],
+  "rooster_teen_walk_04": [
+   278,
+   281,
+   69,
+   64,
+   -34,
+   -64
+  ],
+  "rooster_teen_walk_05": [
+   1762,
+   200,
+   69,
+   65,
+   -35,
+   -65
+  ],
+  "rooster_teen_walk_06": [
+   1278,
+   200,
+   69,
+   66,
+   -35,
+   -66
+  ],
+  "rooster_teen_walk_07": [
+   348,
+   281,
+   68,
+   64,
+   -34,
+   -64
+  ],
+  "rooster_adult_a1_00": [
+   1617,
+   114,
+   90,
+   80,
+   -43,
+   -80
+  ],
+  "rooster_adult_a1_01": [
+   380,
+   0,
+   91,
+   99,
+   -48,
+   -99
+  ],
+  "rooster_adult_a1_02": [
+   0,
+   0,
+   92,
+   113,
+   -51,
+   -113
+  ],
+  "rooster_adult_a1_03": [
+   93,
+   0,
+   92,
+   106,
+   -52,
+   -106
+  ],
+  "rooster_adult_a1_04": [
+   287,
+   0,
+   92,
+   102,
+   -51,
+   -102
+  ],
+  "rooster_adult_a1_05": [
+   472,
+   0,
+   92,
+   98,
+   -48,
+   -98
+  ],
+  "rooster_adult_a1_06": [
+   88,
+   114,
+   89,
+   84,
+   -45,
+   -84
+  ],
+  "rooster_adult_a1_07": [
+   1708,
+   114,
+   88,
+   80,
+   -44,
+   -80
+  ],
+  "rooster_adult_a2_00": [
+   243,
+   200,
+   90,
+   79,
+   -43,
+   -79
+  ],
+  "rooster_adult_a2_01": [
+   1478,
+   0,
+   94,
+   85,
+   -48,
+   -87
+  ],
+  "rooster_adult_a2_02": [
+   1082,
+   0,
+   97,
+   88,
+   -47,
+   -100
+  ],
+  "rooster_adult_a2_03": [
+   666,
+   0,
+   110,
+   93,
+   -51,
+   -110
+  ],
+  "rooster_adult_a2_04": [
+   186,
+   0,
+   100,
+   104,
+   -48,
+   -112
+  ],
+  "rooster_adult_a2_05": [
+   777,
+   0,
+   102,
+   89,
+   -47,
+   -89
+  ],
+  "rooster_adult_a2_06": [
+   178,
+   114,
+   87,
+   84,
+   -44,
+   -84
+  ],
+  "rooster_adult_a2_07": [
+   498,
+   114,
+   91,
+   82,
+   -47,
+   -82
+  ],
+  "rooster_adult_down_00": [
+   1573,
+   0,
+   83,
+   85,
+   -45,
+   -85
+  ],
+  "rooster_adult_down_01": [
+   1657,
+   0,
+   82,
+   85,
+   -47,
+   -85
+  ],
+  "rooster_adult_down_02": [
+   324,
+   114,
+   85,
+   83,
+   -47,
+   -83
+  ],
+  "rooster_adult_down_03": [
+   1797,
+   114,
+   86,
+   80,
+   -47,
+   -80
+  ],
+  "rooster_adult_down_04": [
+   801,
+   200,
+   83,
+   68,
+   -38,
+   -71
+  ],
+  "rooster_adult_down_05": [
+   1041,
+   200,
+   101,
+   67,
+   -51,
+   -67
+  ],
+  "rooster_adult_down_06": [
+   417,
+   281,
+   104,
+   64,
+   -51,
+   -63
+  ],
+  "rooster_adult_down_07": [
+   870,
+   281,
+   105,
+   62,
+   -51,
+   -61
+  ],
+  "rooster_adult_el_00": [
+   334,
+   200,
+   87,
+   76,
+   -41,
+   -76
+  ],
+  "rooster_adult_el_01": [
+   1740,
+   0,
+   87,
+   85,
+   -43,
+   -83
+  ],
+  "rooster_adult_el_02": [
+   880,
+   0,
+   99,
+   89,
+   -48,
+   -94
+  ],
+  "rooster_adult_el_03": [
+   1281,
+   0,
+   108,
+   87,
+   -53,
+   -104
+  ],
+  "rooster_adult_el_04": [
+   565,
+   0,
+   100,
+   95,
+   -53,
+   -119
+  ],
+  "rooster_adult_el_05": [
+   1180,
+   0,
+   100,
+   88,
+   -52,
+   -110
+  ],
+  "rooster_adult_el_06": [
+   980,
+   0,
+   101,
+   89,
+   -50,
+   -94
+  ],
+  "rooster_adult_el_07": [
+   590,
+   114,
+   100,
+   82,
+   -47,
+   -82
+  ],
+  "rooster_adult_hit_00": [
+   422,
+   200,
+   89,
+   76,
+   -43,
+   -76
+  ],
+  "rooster_adult_hit_01": [
+   1264,
+   114,
+   88,
+   81,
+   -47,
+   -81
+  ],
+  "rooster_adult_hit_02": [
+   1884,
+   114,
+   86,
+   80,
+   -50,
+   -90
+  ],
+  "rooster_adult_hit_03": [
+   1390,
+   0,
+   87,
+   86,
+   -50,
+   -87
+  ],
+  "rooster_adult_idle_00": [
+   1353,
+   114,
+   87,
+   81,
+   -43,
+   -81
+  ],
+  "rooster_adult_idle_01": [
+   691,
+   114,
+   88,
+   82,
+   -45,
+   -82
+  ],
+  "rooster_adult_idle_02": [
+   780,
+   114,
+   87,
+   82,
+   -44,
+   -82
+  ],
+  "rooster_adult_idle_03": [
+   1441,
+   114,
+   87,
+   81,
+   -43,
+   -81
+  ],
+  "rooster_adult_walk_00": [
+   0,
+   200,
+   87,
+   80,
+   -42,
+   -80
+  ],
+  "rooster_adult_walk_01": [
+   88,
+   200,
+   87,
+   80,
+   -42,
+   -80
+  ],
+  "rooster_adult_walk_02": [
+   868,
+   114,
+   87,
+   82,
+   -44,
+   -82
+  ],
+  "rooster_adult_walk_03": [
+   1828,
+   0,
+   88,
+   85,
+   -47,
+   -85
+  ],
+  "rooster_adult_walk_04": [
+   1917,
+   0,
+   88,
+   85,
+   -47,
+   -85
+  ],
+  "rooster_adult_walk_05": [
+   0,
+   114,
+   87,
+   85,
+   -46,
+   -85
+  ],
+  "rooster_adult_walk_06": [
+   410,
+   114,
+   87,
+   83,
+   -44,
+   -83
+  ],
+  "rooster_adult_walk_07": [
+   1529,
+   114,
+   87,
+   81,
+   -43,
+   -81
+  ]
+ },
+ "frames": [
+  "rooster_baby_a1_00",
+  "rooster_baby_a1_01",
+  "rooster_baby_a1_02",
+  "rooster_baby_a1_03",
+  "rooster_baby_a1_04",
+  "rooster_baby_a1_05",
+  "rooster_baby_a1_06",
+  "rooster_baby_a1_07",
+  "rooster_baby_down_00",
+  "rooster_baby_down_01",
+  "rooster_baby_down_02",
+  "rooster_baby_down_03",
+  "rooster_baby_down_04",
+  "rooster_baby_down_05",
+  "rooster_baby_down_06",
+  "rooster_baby_down_07",
+  "rooster_baby_hit_00",
+  "rooster_baby_hit_01",
+  "rooster_baby_hit_02",
+  "rooster_baby_hit_03",
+  "rooster_baby_idle_00",
+  "rooster_baby_idle_01",
+  "rooster_baby_idle_02",
+  "rooster_baby_idle_03",
+  "rooster_baby_walk_00",
+  "rooster_baby_walk_01",
+  "rooster_baby_walk_02",
+  "rooster_baby_walk_03",
+  "rooster_baby_walk_04",
+  "rooster_baby_walk_05",
+  "rooster_baby_walk_06",
+  "rooster_baby_walk_07",
+  "rooster_teen_a1_00",
+  "rooster_teen_a1_01",
+  "rooster_teen_a1_02",
+  "rooster_teen_a1_03",
+  "rooster_teen_a1_04",
+  "rooster_teen_a1_05",
+  "rooster_teen_a1_06",
+  "rooster_teen_a1_07",
+  "rooster_teen_a2_00",
+  "rooster_teen_a2_01",
+  "rooster_teen_a2_02",
+  "rooster_teen_a2_03",
+  "rooster_teen_a2_04",
+  "rooster_teen_a2_05",
+  "rooster_teen_a2_06",
+  "rooster_teen_a2_07",
+  "rooster_teen_down_00",
+  "rooster_teen_down_01",
+  "rooster_teen_down_02",
+  "rooster_teen_down_03",
+  "rooster_teen_down_04",
+  "rooster_teen_hit_00",
+  "rooster_teen_hit_01",
+  "rooster_teen_hit_02",
+  "rooster_teen_hit_03",
+  "rooster_teen_idle_00",
+  "rooster_teen_idle_01",
+  "rooster_teen_idle_02",
+  "rooster_teen_idle_03",
+  "rooster_teen_walk_00",
+  "rooster_teen_walk_01",
+  "rooster_teen_walk_02",
+  "rooster_teen_walk_03",
+  "rooster_teen_walk_04",
+  "rooster_teen_walk_05",
+  "rooster_teen_walk_06",
+  "rooster_teen_walk_07",
+  "rooster_adult_a1_00",
+  "rooster_adult_a1_01",
+  "rooster_adult_a1_02",
+  "rooster_adult_a1_03",
+  "rooster_adult_a1_04",
+  "rooster_adult_a1_05",
+  "rooster_adult_a1_06",
+  "rooster_adult_a1_07",
+  "rooster_adult_a2_00",
+  "rooster_adult_a2_01",
+  "rooster_adult_a2_02",
+  "rooster_adult_a2_03",
+  "rooster_adult_a2_04",
+  "rooster_adult_a2_05",
+  "rooster_adult_a2_06",
+  "rooster_adult_a2_07",
+  "rooster_adult_down_00",
+  "rooster_adult_down_01",
+  "rooster_adult_down_02",
+  "rooster_adult_down_03",
+  "rooster_adult_down_04",
+  "rooster_adult_down_05",
+  "rooster_adult_down_06",
+  "rooster_adult_down_07",
+  "rooster_adult_el_00",
+  "rooster_adult_el_01",
+  "rooster_adult_el_02",
+  "rooster_adult_el_03",
+  "rooster_adult_el_04",
+  "rooster_adult_el_05",
+  "rooster_adult_el_06",
+  "rooster_adult_el_07",
+  "rooster_adult_hit_00",
+  "rooster_adult_hit_01",
+  "rooster_adult_hit_02",
+  "rooster_adult_hit_03",
+  "rooster_adult_idle_00",
+  "rooster_adult_idle_01",
+  "rooster_adult_idle_02",
+  "rooster_adult_idle_03",
+  "rooster_adult_walk_00",
+  "rooster_adult_walk_01",
+  "rooster_adult_walk_02",
+  "rooster_adult_walk_03",
+  "rooster_adult_walk_04",
+  "rooster_adult_walk_05",
+  "rooster_adult_walk_06",
+  "rooster_adult_walk_07"
+ ],
+ "standing": [
+  "rooster_baby_idle_00",
+  "rooster_baby_idle_01",
+  "rooster_baby_idle_02",
+  "rooster_baby_idle_03",
+  "rooster_teen_idle_00",
+  "rooster_teen_idle_01",
+  "rooster_teen_idle_02",
+  "rooster_teen_idle_03",
+  "rooster_adult_idle_00",
+  "rooster_adult_idle_01",
+  "rooster_adult_idle_02",
+  "rooster_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "baby": {
+   "top": 71,
+   "attack": {
+    "frames": [
+     "rooster_baby_a1_00",
+     "rooster_baby_a1_01",
+     "rooster_baby_a1_02",
+     "rooster_baby_a1_03",
+     "rooster_baby_a1_04",
+     "rooster_baby_a1_05",
+     "rooster_baby_a1_06",
+     "rooster_baby_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "rooster_baby_down_00",
+     "rooster_baby_down_01",
+     "rooster_baby_down_02",
+     "rooster_baby_down_03",
+     "rooster_baby_down_04",
+     "rooster_baby_down_05",
+     "rooster_baby_down_06",
+     "rooster_baby_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "rooster_baby_hit_00",
+     "rooster_baby_hit_01",
+     "rooster_baby_hit_02",
+     "rooster_baby_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "rooster_baby_idle_00",
+     "rooster_baby_idle_01",
+     "rooster_baby_idle_02",
+     "rooster_baby_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "rooster_baby_walk_00",
+     "rooster_baby_walk_01",
+     "rooster_baby_walk_02",
+     "rooster_baby_walk_03",
+     "rooster_baby_walk_04",
+     "rooster_baby_walk_05",
+     "rooster_baby_walk_06",
+     "rooster_baby_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "teen": {
+   "top": 53,
+   "attack": {
+    "frames": [
+     "rooster_teen_a1_00",
+     "rooster_teen_a1_01",
+     "rooster_teen_a1_02",
+     "rooster_teen_a1_03",
+     "rooster_teen_a1_04",
+     "rooster_teen_a1_05",
+     "rooster_teen_a1_06",
+     "rooster_teen_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "rooster_teen_a2_00",
+     "rooster_teen_a2_01",
+     "rooster_teen_a2_02",
+     "rooster_teen_a2_03",
+     "rooster_teen_a2_04",
+     "rooster_teen_a2_05",
+     "rooster_teen_a2_06",
+     "rooster_teen_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "rooster_teen_down_00",
+     "rooster_teen_down_01",
+     "rooster_teen_down_02",
+     "rooster_teen_down_03",
+     "rooster_teen_down_04"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "rooster_teen_hit_00",
+     "rooster_teen_hit_01",
+     "rooster_teen_hit_02",
+     "rooster_teen_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "rooster_teen_idle_00",
+     "rooster_teen_idle_01",
+     "rooster_teen_idle_02",
+     "rooster_teen_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "rooster_teen_walk_00",
+     "rooster_teen_walk_01",
+     "rooster_teen_walk_02",
+     "rooster_teen_walk_03",
+     "rooster_teen_walk_04",
+     "rooster_teen_walk_05",
+     "rooster_teen_walk_06",
+     "rooster_teen_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "adult": {
+   "top": 37,
+   "attack": {
+    "frames": [
+     "rooster_adult_a1_00",
+     "rooster_adult_a1_01",
+     "rooster_adult_a1_02",
+     "rooster_adult_a1_03",
+     "rooster_adult_a1_04",
+     "rooster_adult_a1_05",
+     "rooster_adult_a1_06",
+     "rooster_adult_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "rooster_adult_a2_00",
+     "rooster_adult_a2_01",
+     "rooster_adult_a2_02",
+     "rooster_adult_a2_03",
+     "rooster_adult_a2_04",
+     "rooster_adult_a2_05",
+     "rooster_adult_a2_06",
+     "rooster_adult_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "rooster_adult_down_00",
+     "rooster_adult_down_01",
+     "rooster_adult_down_02",
+     "rooster_adult_down_03",
+     "rooster_adult_down_04",
+     "rooster_adult_down_05",
+     "rooster_adult_down_06",
+     "rooster_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "rooster_adult_el_00",
+     "rooster_adult_el_01",
+     "rooster_adult_el_02",
+     "rooster_adult_el_03",
+     "rooster_adult_el_04",
+     "rooster_adult_el_05",
+     "rooster_adult_el_06",
+     "rooster_adult_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.22,
+      "cast"
+     ],
+     [
+      0.23,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "rooster_adult_hit_00",
+     "rooster_adult_hit_01",
+     "rooster_adult_hit_02",
+     "rooster_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "rooster_adult_idle_00",
+     "rooster_adult_idle_01",
+     "rooster_adult_idle_02",
+     "rooster_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "rooster_adult_walk_00",
+     "rooster_adult_walk_01",
+     "rooster_adult_walk_02",
+     "rooster_adult_walk_03",
+     "rooster_adult_walk_04",
+     "rooster_adult_walk_05",
+     "rooster_adult_walk_06",
+     "rooster_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
+}

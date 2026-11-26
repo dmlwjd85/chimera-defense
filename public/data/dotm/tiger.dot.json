@@ -1,0 +1,1522 @@
+{
+ "note": "tiger 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "tiger",
+ "sheet": "dot-m-tiger",
+ "file": "assets/dotm/tiger.png",
+ "frameW": 115,
+ "frameH": 116,
+ "foot": 114,
+ "cols": 1,
+ "anchorX": 57,
+ "palette": [
+  "#291a1f",
+  "#4a2329",
+  "#4b180c",
+  "#682c1e",
+  "#754944",
+  "#a04c27",
+  "#a37d78",
+  "#b36245",
+  "#cb6537",
+  "#d9b3a7",
+  "#e6814f",
+  "#fc9047",
+  "#fda050",
+  "#fe7f3a",
+  "#fee7da",
+  "#fef1ea"
+ ],
+ "rects": {
+  "tiger_baby_a1_00": [
+   1061,
+   333,
+   58,
+   46,
+   -30,
+   -46
+  ],
+  "tiger_baby_a1_01": [
+   437,
+   333,
+   61,
+   49,
+   -32,
+   -49
+  ],
+  "tiger_baby_a1_02": [
+   92,
+   333,
+   65,
+   53,
+   -32,
+   -53
+  ],
+  "tiger_baby_a1_03": [
+   158,
+   333,
+   59,
+   53,
+   -28,
+   -53
+  ],
+  "tiger_baby_a1_04": [
+   218,
+   333,
+   62,
+   53,
+   -30,
+   -53
+  ],
+  "tiger_baby_a1_05": [
+   281,
+   333,
+   60,
+   51,
+   -32,
+   -51
+  ],
+  "tiger_baby_a1_06": [
+   499,
+   333,
+   60,
+   48,
+   -32,
+   -48
+  ],
+  "tiger_baby_a1_07": [
+   1120,
+   333,
+   60,
+   46,
+   -32,
+   -46
+  ],
+  "tiger_baby_down_00": [
+   1181,
+   333,
+   61,
+   46,
+   -31,
+   -46
+  ],
+  "tiger_baby_down_01": [
+   1602,
+   333,
+   62,
+   44,
+   -31,
+   -44
+  ],
+  "tiger_baby_down_02": [
+   111,
+   388,
+   63,
+   37,
+   -29,
+   -38
+  ],
+  "tiger_baby_down_03": [
+   272,
+   388,
+   63,
+   32,
+   -28,
+   -32
+  ],
+  "tiger_baby_down_04": [
+   336,
+   388,
+   67,
+   31,
+   -31,
+   -31
+  ],
+  "tiger_baby_hit_00": [
+   1665,
+   333,
+   65,
+   44,
+   -34,
+   -44
+  ],
+  "tiger_baby_hit_01": [
+   1796,
+   333,
+   62,
+   43,
+   -31,
+   -43
+  ],
+  "tiger_baby_hit_02": [
+   1731,
+   333,
+   64,
+   44,
+   -34,
+   -45
+  ],
+  "tiger_baby_hit_03": [
+   1243,
+   333,
+   63,
+   46,
+   -34,
+   -46
+  ],
+  "tiger_baby_idle_00": [
+   1307,
+   333,
+   57,
+   46,
+   -29,
+   -46
+  ],
+  "tiger_baby_idle_01": [
+   1365,
+   333,
+   59,
+   46,
+   -31,
+   -46
+  ],
+  "tiger_baby_idle_02": [
+   1425,
+   333,
+   58,
+   46,
+   -30,
+   -46
+  ],
+  "tiger_baby_idle_03": [
+   560,
+   333,
+   56,
+   47,
+   -28,
+   -47
+  ],
+  "tiger_baby_walk_00": [
+   617,
+   333,
+   56,
+   47,
+   -28,
+   -47
+  ],
+  "tiger_baby_walk_01": [
+   1484,
+   333,
+   57,
+   46,
+   -29,
+   -46
+  ],
+  "tiger_baby_walk_02": [
+   674,
+   333,
+   59,
+   47,
+   -31,
+   -47
+  ],
+  "tiger_baby_walk_03": [
+   734,
+   333,
+   59,
+   47,
+   -31,
+   -47
+  ],
+  "tiger_baby_walk_04": [
+   794,
+   333,
+   58,
+   47,
+   -30,
+   -47
+  ],
+  "tiger_baby_walk_05": [
+   1542,
+   333,
+   59,
+   45,
+   -31,
+   -46
+  ],
+  "tiger_baby_walk_06": [
+   853,
+   333,
+   59,
+   47,
+   -31,
+   -47
+  ],
+  "tiger_baby_walk_07": [
+   913,
+   333,
+   56,
+   47,
+   -28,
+   -47
+  ],
+  "tiger_teen_a1_00": [
+   744,
+   269,
+   90,
+   61,
+   -45,
+   -61
+  ],
+  "tiger_teen_a1_01": [
+   279,
+   269,
+   95,
+   62,
+   -48,
+   -62
+  ],
+  "tiger_teen_a1_02": [
+   1364,
+   194,
+   94,
+   64,
+   -48,
+   -64
+  ],
+  "tiger_teen_a1_03": [
+   1174,
+   194,
+   96,
+   65,
+   -47,
+   -65
+  ],
+  "tiger_teen_a1_04": [
+   1271,
+   194,
+   92,
+   65,
+   -46,
+   -65
+  ],
+  "tiger_teen_a1_05": [
+   1555,
+   194,
+   92,
+   63,
+   -46,
+   -63
+  ],
+  "tiger_teen_a1_06": [
+   835,
+   269,
+   91,
+   61,
+   -46,
+   -61
+  ],
+  "tiger_teen_a1_07": [
+   1648,
+   194,
+   89,
+   63,
+   -44,
+   -63
+  ],
+  "tiger_teen_a2_00": [
+   1465,
+   269,
+   82,
+   59,
+   -36,
+   -59
+  ],
+  "tiger_teen_a2_01": [
+   752,
+   194,
+   88,
+   69,
+   -44,
+   -69
+  ],
+  "tiger_teen_a2_02": [
+   583,
+   0,
+   91,
+   88,
+   -46,
+   -88
+  ],
+  "tiger_teen_a2_03": [
+   382,
+   0,
+   93,
+   94,
+   -45,
+   -94
+  ],
+  "tiger_teen_a2_04": [
+   108,
+   115,
+   91,
+   77,
+   -47,
+   -77
+  ],
+  "tiger_teen_a2_05": [
+   375,
+   269,
+   90,
+   62,
+   -45,
+   -62
+  ],
+  "tiger_teen_a2_06": [
+   927,
+   269,
+   92,
+   61,
+   -47,
+   -61
+  ],
+  "tiger_teen_a2_07": [
+   1738,
+   194,
+   92,
+   63,
+   -47,
+   -63
+  ],
+  "tiger_teen_down_00": [
+   1020,
+   269,
+   85,
+   61,
+   -38,
+   -61
+  ],
+  "tiger_teen_down_01": [
+   1750,
+   269,
+   85,
+   58,
+   -37,
+   -58
+  ],
+  "tiger_teen_down_02": [
+   0,
+   333,
+   91,
+   54,
+   -41,
+   -54
+  ],
+  "tiger_teen_down_03": [
+   342,
+   333,
+   94,
+   50,
+   -45,
+   -50
+  ],
+  "tiger_teen_down_04": [
+   970,
+   333,
+   90,
+   47,
+   -40,
+   -47
+  ],
+  "tiger_teen_down_05": [
+   175,
+   388,
+   96,
+   34,
+   -46,
+   -34
+  ],
+  "tiger_teen_hit_00": [
+   1381,
+   269,
+   83,
+   60,
+   -37,
+   -60
+  ],
+  "tiger_teen_hit_01": [
+   1924,
+   269,
+   84,
+   55,
+   -38,
+   -57
+  ],
+  "tiger_teen_hit_02": [
+   1836,
+   269,
+   87,
+   56,
+   -41,
+   -58
+  ],
+  "tiger_teen_hit_03": [
+   1106,
+   269,
+   93,
+   61,
+   -48,
+   -61
+  ],
+  "tiger_teen_idle_00": [
+   1200,
+   269,
+   89,
+   61,
+   -44,
+   -61
+  ],
+  "tiger_teen_idle_01": [
+   1548,
+   269,
+   91,
+   59,
+   -46,
+   -59
+  ],
+  "tiger_teen_idle_02": [
+   1290,
+   269,
+   90,
+   61,
+   -45,
+   -61
+  ],
+  "tiger_teen_idle_03": [
+   1831,
+   194,
+   89,
+   63,
+   -44,
+   -63
+  ],
+  "tiger_teen_walk_00": [
+   1921,
+   194,
+   90,
+   63,
+   -45,
+   -63
+  ],
+  "tiger_teen_walk_01": [
+   466,
+   269,
+   91,
+   62,
+   -46,
+   -62
+  ],
+  "tiger_teen_walk_02": [
+   558,
+   269,
+   93,
+   62,
+   -47,
+   -62
+  ],
+  "tiger_teen_walk_03": [
+   0,
+   269,
+   94,
+   63,
+   -48,
+   -63
+  ],
+  "tiger_teen_walk_04": [
+   1459,
+   194,
+   95,
+   64,
+   -49,
+   -64
+  ],
+  "tiger_teen_walk_05": [
+   95,
+   269,
+   93,
+   63,
+   -48,
+   -63
+  ],
+  "tiger_teen_walk_06": [
+   652,
+   269,
+   91,
+   62,
+   -46,
+   -62
+  ],
+  "tiger_teen_walk_07": [
+   189,
+   269,
+   89,
+   63,
+   -44,
+   -63
+  ],
+  "tiger_adult_a1_00": [
+   1396,
+   115,
+   109,
+   76,
+   -54,
+   -76
+  ],
+  "tiger_adult_a1_01": [
+   0,
+   194,
+   106,
+   74,
+   -50,
+   -75
+  ],
+  "tiger_adult_a1_02": [
+   107,
+   194,
+   107,
+   74,
+   -51,
+   -75
+  ],
+  "tiger_adult_a1_03": [
+   215,
+   194,
+   109,
+   74,
+   -52,
+   -75
+  ],
+  "tiger_adult_a1_04": [
+   325,
+   194,
+   110,
+   74,
+   -54,
+   -75
+  ],
+  "tiger_adult_a1_05": [
+   1723,
+   115,
+   112,
+   75,
+   -57,
+   -75
+  ],
+  "tiger_adult_a1_06": [
+   200,
+   115,
+   111,
+   77,
+   -56,
+   -77
+  ],
+  "tiger_adult_a1_07": [
+   1410,
+   0,
+   107,
+   78,
+   -53,
+   -78
+  ],
+  "tiger_adult_a2_00": [
+   1506,
+   115,
+   106,
+   76,
+   -52,
+   -76
+  ],
+  "tiger_adult_a2_01": [
+   1518,
+   0,
+   100,
+   78,
+   -46,
+   -79
+  ],
+  "tiger_adult_a2_02": [
+   675,
+   0,
+   101,
+   88,
+   -48,
+   -98
+  ],
+  "tiger_adult_a2_03": [
+   777,
+   0,
+   102,
+   82,
+   -50,
+   -104
+  ],
+  "tiger_adult_a2_04": [
+   985,
+   0,
+   105,
+   81,
+   -51,
+   -90
+  ],
+  "tiger_adult_a2_05": [
+   1836,
+   115,
+   108,
+   75,
+   -54,
+   -75
+  ],
+  "tiger_adult_a2_06": [
+   312,
+   115,
+   109,
+   77,
+   -55,
+   -77
+  ],
+  "tiger_adult_a2_07": [
+   1194,
+   0,
+   106,
+   79,
+   -52,
+   -79
+  ],
+  "tiger_adult_down_00": [
+   422,
+   115,
+   104,
+   77,
+   -49,
+   -77
+  ],
+  "tiger_adult_down_01": [
+   436,
+   194,
+   104,
+   73,
+   -48,
+   -73
+  ],
+  "tiger_adult_down_02": [
+   841,
+   194,
+   109,
+   68,
+   -53,
+   -68
+  ],
+  "tiger_adult_down_03": [
+   951,
+   194,
+   112,
+   66,
+   -54,
+   -66
+  ],
+  "tiger_adult_down_04": [
+   541,
+   194,
+   107,
+   73,
+   -49,
+   -73
+  ],
+  "tiger_adult_down_05": [
+   1640,
+   269,
+   109,
+   59,
+   -53,
+   -59
+  ],
+  "tiger_adult_down_06": [
+   1859,
+   333,
+   110,
+   42,
+   -53,
+   -42
+  ],
+  "tiger_adult_down_07": [
+   0,
+   388,
+   110,
+   40,
+   -53,
+   -40
+  ],
+  "tiger_adult_el_00": [
+   1091,
+   0,
+   102,
+   80,
+   -48,
+   -80
+  ],
+  "tiger_adult_el_01": [
+   476,
+   0,
+   106,
+   94,
+   -56,
+   -95
+  ],
+  "tiger_adult_el_02": [
+   89,
+   0,
+   96,
+   106,
+   -51,
+   -107
+  ],
+  "tiger_adult_el_03": [
+   0,
+   0,
+   88,
+   114,
+   -43,
+   -115
+  ],
+  "tiger_adult_el_04": [
+   186,
+   0,
+   95,
+   106,
+   -49,
+   -107
+  ],
+  "tiger_adult_el_05": [
+   282,
+   0,
+   99,
+   95,
+   -51,
+   -96
+  ],
+  "tiger_adult_el_06": [
+   880,
+   0,
+   104,
+   82,
+   -52,
+   -82
+  ],
+  "tiger_adult_el_07": [
+   527,
+   115,
+   106,
+   77,
+   -52,
+   -77
+  ],
+  "tiger_adult_hit_00": [
+   1945,
+   115,
+   101,
+   75,
+   -47,
+   -76
+  ],
+  "tiger_adult_hit_01": [
+   649,
+   194,
+   102,
+   71,
+   -49,
+   -74
+  ],
+  "tiger_adult_hit_02": [
+   1064,
+   194,
+   109,
+   66,
+   -54,
+   -76
+  ],
+  "tiger_adult_hit_03": [
+   634,
+   115,
+   109,
+   77,
+   -53,
+   -77
+  ],
+  "tiger_adult_idle_00": [
+   744,
+   115,
+   108,
+   77,
+   -54,
+   -77
+  ],
+  "tiger_adult_idle_01": [
+   1613,
+   115,
+   109,
+   76,
+   -54,
+   -76
+  ],
+  "tiger_adult_idle_02": [
+   853,
+   115,
+   108,
+   77,
+   -54,
+   -77
+  ],
+  "tiger_adult_idle_03": [
+   1619,
+   0,
+   107,
+   78,
+   -53,
+   -78
+  ],
+  "tiger_adult_walk_00": [
+   1727,
+   0,
+   107,
+   78,
+   -53,
+   -78
+  ],
+  "tiger_adult_walk_01": [
+   962,
+   115,
+   108,
+   77,
+   -54,
+   -77
+  ],
+  "tiger_adult_walk_02": [
+   1071,
+   115,
+   108,
+   77,
+   -54,
+   -77
+  ],
+  "tiger_adult_walk_03": [
+   1180,
+   115,
+   107,
+   77,
+   -53,
+   -77
+  ],
+  "tiger_adult_walk_04": [
+   1301,
+   0,
+   108,
+   79,
+   -54,
+   -79
+  ],
+  "tiger_adult_walk_05": [
+   1835,
+   0,
+   108,
+   78,
+   -54,
+   -80
+  ],
+  "tiger_adult_walk_06": [
+   1288,
+   115,
+   107,
+   77,
+   -53,
+   -80
+  ],
+  "tiger_adult_walk_07": [
+   0,
+   115,
+   107,
+   78,
+   -53,
+   -78
+  ]
+ },
+ "frames": [
+  "tiger_baby_a1_00",
+  "tiger_baby_a1_01",
+  "tiger_baby_a1_02",
+  "tiger_baby_a1_03",
+  "tiger_baby_a1_04",
+  "tiger_baby_a1_05",
+  "tiger_baby_a1_06",
+  "tiger_baby_a1_07",
+  "tiger_baby_down_00",
+  "tiger_baby_down_01",
+  "tiger_baby_down_02",
+  "tiger_baby_down_03",
+  "tiger_baby_down_04",
+  "tiger_baby_hit_00",
+  "tiger_baby_hit_01",
+  "tiger_baby_hit_02",
+  "tiger_baby_hit_03",
+  "tiger_baby_idle_00",
+  "tiger_baby_idle_01",
+  "tiger_baby_idle_02",
+  "tiger_baby_idle_03",
+  "tiger_baby_walk_00",
+  "tiger_baby_walk_01",
+  "tiger_baby_walk_02",
+  "tiger_baby_walk_03",
+  "tiger_baby_walk_04",
+  "tiger_baby_walk_05",
+  "tiger_baby_walk_06",
+  "tiger_baby_walk_07",
+  "tiger_teen_a1_00",
+  "tiger_teen_a1_01",
+  "tiger_teen_a1_02",
+  "tiger_teen_a1_03",
+  "tiger_teen_a1_04",
+  "tiger_teen_a1_05",
+  "tiger_teen_a1_06",
+  "tiger_teen_a1_07",
+  "tiger_teen_a2_00",
+  "tiger_teen_a2_01",
+  "tiger_teen_a2_02",
+  "tiger_teen_a2_03",
+  "tiger_teen_a2_04",
+  "tiger_teen_a2_05",
+  "tiger_teen_a2_06",
+  "tiger_teen_a2_07",
+  "tiger_teen_down_00",
+  "tiger_teen_down_01",
+  "tiger_teen_down_02",
+  "tiger_teen_down_03",
+  "tiger_teen_down_04",
+  "tiger_teen_down_05",
+  "tiger_teen_hit_00",
+  "tiger_teen_hit_01",
+  "tiger_teen_hit_02",
+  "tiger_teen_hit_03",
+  "tiger_teen_idle_00",
+  "tiger_teen_idle_01",
+  "tiger_teen_idle_02",
+  "tiger_teen_idle_03",
+  "tiger_teen_walk_00",
+  "tiger_teen_walk_01",
+  "tiger_teen_walk_02",
+  "tiger_teen_walk_03",
+  "tiger_teen_walk_04",
+  "tiger_teen_walk_05",
+  "tiger_teen_walk_06",
+  "tiger_teen_walk_07",
+  "tiger_adult_a1_00",
+  "tiger_adult_a1_01",
+  "tiger_adult_a1_02",
+  "tiger_adult_a1_03",
+  "tiger_adult_a1_04",
+  "tiger_adult_a1_05",
+  "tiger_adult_a1_06",
+  "tiger_adult_a1_07",
+  "tiger_adult_a2_00",
+  "tiger_adult_a2_01",
+  "tiger_adult_a2_02",
+  "tiger_adult_a2_03",
+  "tiger_adult_a2_04",
+  "tiger_adult_a2_05",
+  "tiger_adult_a2_06",
+  "tiger_adult_a2_07",
+  "tiger_adult_down_00",
+  "tiger_adult_down_01",
+  "tiger_adult_down_02",
+  "tiger_adult_down_03",
+  "tiger_adult_down_04",
+  "tiger_adult_down_05",
+  "tiger_adult_down_06",
+  "tiger_adult_down_07",
+  "tiger_adult_el_00",
+  "tiger_adult_el_01",
+  "tiger_adult_el_02",
+  "tiger_adult_el_03",
+  "tiger_adult_el_04",
+  "tiger_adult_el_05",
+  "tiger_adult_el_06",
+  "tiger_adult_el_07",
+  "tiger_adult_hit_00",
+  "tiger_adult_hit_01",
+  "tiger_adult_hit_02",
+  "tiger_adult_hit_03",
+  "tiger_adult_idle_00",
+  "tiger_adult_idle_01",
+  "tiger_adult_idle_02",
+  "tiger_adult_idle_03",
+  "tiger_adult_walk_00",
+  "tiger_adult_walk_01",
+  "tiger_adult_walk_02",
+  "tiger_adult_walk_03",
+  "tiger_adult_walk_04",
+  "tiger_adult_walk_05",
+  "tiger_adult_walk_06",
+  "tiger_adult_walk_07"
+ ],
+ "standing": [
+  "tiger_baby_idle_00",
+  "tiger_baby_idle_01",
+  "tiger_baby_idle_02",
+  "tiger_baby_idle_03",
+  "tiger_teen_idle_00",
+  "tiger_teen_idle_01",
+  "tiger_teen_idle_02",
+  "tiger_teen_idle_03",
+  "tiger_adult_idle_00",
+  "tiger_adult_idle_01",
+  "tiger_adult_idle_02",
+  "tiger_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "baby": {
+   "top": 68,
+   "attack": {
+    "frames": [
+     "tiger_baby_a1_00",
+     "tiger_baby_a1_01",
+     "tiger_baby_a1_02",
+     "tiger_baby_a1_03",
+     "tiger_baby_a1_04",
+     "tiger_baby_a1_05",
+     "tiger_baby_a1_06",
+     "tiger_baby_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "tiger_baby_down_00",
+     "tiger_baby_down_01",
+     "tiger_baby_down_02",
+     "tiger_baby_down_03",
+     "tiger_baby_down_04"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "tiger_baby_hit_00",
+     "tiger_baby_hit_01",
+     "tiger_baby_hit_02",
+     "tiger_baby_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "tiger_baby_idle_00",
+     "tiger_baby_idle_01",
+     "tiger_baby_idle_02",
+     "tiger_baby_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "tiger_baby_walk_00",
+     "tiger_baby_walk_01",
+     "tiger_baby_walk_02",
+     "tiger_baby_walk_03",
+     "tiger_baby_walk_04",
+     "tiger_baby_walk_05",
+     "tiger_baby_walk_06",
+     "tiger_baby_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "teen": {
+   "top": 52,
+   "attack": {
+    "frames": [
+     "tiger_teen_a1_00",
+     "tiger_teen_a1_01",
+     "tiger_teen_a1_02",
+     "tiger_teen_a1_03",
+     "tiger_teen_a1_04",
+     "tiger_teen_a1_05",
+     "tiger_teen_a1_06",
+     "tiger_teen_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "tiger_teen_a2_00",
+     "tiger_teen_a2_01",
+     "tiger_teen_a2_02",
+     "tiger_teen_a2_03",
+     "tiger_teen_a2_04",
+     "tiger_teen_a2_05",
+     "tiger_teen_a2_06",
+     "tiger_teen_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "tiger_teen_down_00",
+     "tiger_teen_down_01",
+     "tiger_teen_down_02",
+     "tiger_teen_down_03",
+     "tiger_teen_down_04",
+     "tiger_teen_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "tiger_teen_hit_00",
+     "tiger_teen_hit_01",
+     "tiger_teen_hit_02",
+     "tiger_teen_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "tiger_teen_idle_00",
+     "tiger_teen_idle_01",
+     "tiger_teen_idle_02",
+     "tiger_teen_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "tiger_teen_walk_00",
+     "tiger_teen_walk_01",
+     "tiger_teen_walk_02",
+     "tiger_teen_walk_03",
+     "tiger_teen_walk_04",
+     "tiger_teen_walk_05",
+     "tiger_teen_walk_06",
+     "tiger_teen_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "adult": {
+   "top": 37,
+   "attack": {
+    "frames": [
+     "tiger_adult_a1_00",
+     "tiger_adult_a1_01",
+     "tiger_adult_a1_02",
+     "tiger_adult_a1_03",
+     "tiger_adult_a1_04",
+     "tiger_adult_a1_05",
+     "tiger_adult_a1_06",
+     "tiger_adult_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "tiger_adult_a2_00",
+     "tiger_adult_a2_01",
+     "tiger_adult_a2_02",
+     "tiger_adult_a2_03",
+     "tiger_adult_a2_04",
+     "tiger_adult_a2_05",
+     "tiger_adult_a2_06",
+     "tiger_adult_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "tiger_adult_down_00",
+     "tiger_adult_down_01",
+     "tiger_adult_down_02",
+     "tiger_adult_down_03",
+     "tiger_adult_down_04",
+     "tiger_adult_down_05",
+     "tiger_adult_down_06",
+     "tiger_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "tiger_adult_el_00",
+     "tiger_adult_el_01",
+     "tiger_adult_el_02",
+     "tiger_adult_el_03",
+     "tiger_adult_el_04",
+     "tiger_adult_el_05",
+     "tiger_adult_el_06",
+     "tiger_adult_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "tiger_adult_hit_00",
+     "tiger_adult_hit_01",
+     "tiger_adult_hit_02",
+     "tiger_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "tiger_adult_idle_00",
+     "tiger_adult_idle_01",
+     "tiger_adult_idle_02",
+     "tiger_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "tiger_adult_walk_00",
+     "tiger_adult_walk_01",
+     "tiger_adult_walk_02",
+     "tiger_adult_walk_03",
+     "tiger_adult_walk_04",
+     "tiger_adult_walk_05",
+     "tiger_adult_walk_06",
+     "tiger_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
+}

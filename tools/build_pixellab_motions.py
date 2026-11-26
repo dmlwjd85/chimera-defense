@@ -61,7 +61,7 @@ def clean(im, pal_fn):
     if cs:
         big = max(len(c) for c in cs)
         for c in cs:
-            if len(c) < max(MIN_BLOB, big * 0.08):   # 몸에서 떨어진 연기·빛 조각(효과는 코드가 그림)
+            if len(c) < max(MIN_BLOB, big * 0.25):   # 몸에서 떨어진 연기·김·물음표 조각(효과는 코드가 그림, 2026-11-26 0.08→0.25)
                 for p in c: px[p] = (0, 0, 0, 0)
     # 상하좌우로 이웃이 하나도 없는 점(대각선으로만 붙은 점)도 외딴 점 → 지움
     for _ in range(2):
@@ -131,7 +131,11 @@ def build(sp):
                     frames.append((f'{sp}_{st}_{m}_{i:02d}', im, st, anchor_c, foot_c))
                 clip = {'frames': [f'{sp}_{st}_{m}_{i:02d}' for i in range(len(ims))], 'durs': [dur] * len(ims)}
                 if m in ('idle', 'walk'): clip['loop'] = True
-                if m == 'down': clip['stay'] = True
+                if m == 'down':
+                    clip['stay'] = True
+                    # 다시 뽑아도 눕지 않고 주저앉는 데서 끝난 것(대기 키의 80%보다 높음)은 코드로 살짝 가라앉혀 쓰러진 느낌을 보탬
+                    lo = min((im.getbbox()[3] - im.getbbox()[1]) for im in ims)
+                    if lo > 0.8 * ref_h: clip['fx'] = {'sink': 3}
                 if m in ATTACKS:
                     hf = hit_frame(ims); clip['hold'] = {'frame': hf, 'sec': 0.06}
                     clip['events'] = [[round(dur * hf + 0.01, 3), 'cast' if m in ('el', 'ult') else 'hit']]

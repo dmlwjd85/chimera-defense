@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { showShop } from './shopUi.js';
 import { button, title, style, panel } from './ui.js';
 import { buildData } from '../logic/data.js';
 import { writeSave, unlockGauge, setLegend } from '../logic/meta.js';
@@ -60,9 +61,11 @@ export default class ResultScene extends Phaser.Scene {
 
     // 버튼 셋
     const retry = () => this.scene.start(d.gauntlet ? 'Gauntlet' : 'Battle', { stageId: d.stageId, hard: d.gauntlet ? !!d.hard : undefined, tier: d.tier ?? null });
-    button(this, 440, 650, 200, 56, '▶ 지도', () => this.scene.start('StageSelect'), { size: 22, fill: 0x3a7bd5 });
-    button(this, 660, 650, 200, 56, '↻ 다시', retry, { size: 22 });
-    button(this, 880, 650, 200, 56, '📋 자세히', () => this.details(r), { size: 20 });
+    button(this, 330, 650, 200, 56, '▶ 지도', () => this.scene.start('StageSelect'), { size: 22, fill: 0x3a7bd5 });
+    button(this, 550, 650, 200, 56, '↻ 다시', retry, { size: 22 });
+    button(this, 770, 650, 200, 56, `🛒 상점 💰${save.pouch ?? 0}`, () => showShop(this, D, save, this.registry.get('storage'), () => this.scene.restart(d)), { size: 18, fill: 0x5a4a14, stroke: 0xffd84d });
+    button(this, 990, 650, 200, 56, '📋 자세히', () => this.details(r), { size: 20 });
+    if (r.pouchIn) this.add.text(640, 600, `💰 남은 금화 ${r.pouchIn} → 주머니(${r.pouch}) · 다음 스테이지에 들고 가거나 상점에서 써요`, style(15, '#ffd84d')).setOrigin(0.5);
     this.input.keyboard.on('keydown-R', retry);
     this.input.keyboard.on('keydown-ESC', () => this.scene.start('Title'));
   }

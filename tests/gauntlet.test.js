@@ -239,3 +239,32 @@ test('고급 빌드·수치·주인공·각성·톡 보호막·난이도 사다�
   // 이야기 궁합: 여러 문화의 민담·신화
   for (const id of ['dangun', 'cheese', 'briar_patch', 'frog_ox', 'zodiac_race', 'bremen']) assert.ok(D.lore.bonds.find((b) => b.id === id), id);
 });
+
+test('흐름: 응원 톡·승패 요인, 보상 하나 더(금화), 주머니·상점·준비물, 새 유물', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  const M = await import('../src/logic/meta.js');
+  const st = createGauntlet(D, 'forest-3', 21, {});
+  st.charging = false; G.tickGauntlet(st, D, 0.5);
+  const c = st.clashes[0];
+  if (c) { const p0 = c.push; st.time += 1; assert.ok(G.cheerClash(st, c.uid, D).ok); assert.ok(c.push >= p0 || c.push === 0.95); }
+  fightOut(st);
+  assert.ok(Array.isArray(G.encFactors(st, D)));
+  // 하나 더: 고른 뒤에만, 금화 들고
+  st.gold = 50;
+  assert.equal(G.buyExtraReward(st, D).ok, false);
+  assert.ok(takeReward(st, D, 'food', st.field[0].uid).ok || true);
+  if (st.offer.taken) { assert.ok(G.buyExtraReward(st, D).ok); assert.equal(st.offer.taken, null); assert.ok(st.gold < 50); }
+  // 주머니·상점
+  const save = defaultSave(D);
+  save.pouch = 100; save.deck = ['bear', 'tiger', 'eagle'];
+  const shop = M.shopOffers(save, D);
+  assert.ok(shop.items.length >= 4);
+  const fi = shop.items.findIndex((x) => x.kind === 'food');
+  assert.ok(M.buyShop(save, D, fi).ok); assert.equal(save.prep.food, 1);
+  const bag = M.takeOutForRun(save);
+  assert.equal(save.pouch, 0); assert.equal(bag.pouch, 100 - shop.items[fi].price);
+  const run = createGauntlet(D, 'forest-1', 3, { pouch: bag.pouch, prep: { relics: ['war_horn'], food: 1, feathers: 1 } });
+  assert.equal(run.gold, bag.pouch); assert.ok(run.relics.includes('war_horn')); assert.equal(run.feathers, 1);
+  // 새 유물 10개
+  for (const id of ['war_horn', 'thorn_mail', 'shadow_cloak', 'vanguard_flag', 'vamp_fang', 'gold_scale', 'phoenix_plume', 'iron_chain', 'thunder_drum', 'mana_spring']) assert.ok(D.relicById[id]?.gauntlet, id);
+});

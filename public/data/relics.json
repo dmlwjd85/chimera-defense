@@ -330,6 +330,16 @@
     {"id": "sentry_bell", "icon": "🔔", "name": "경보 종", "rarity": "common", "gauntlet": true, "desc": "요격 성공률 +30%, 딜러 체력 +15%", "eco": {"intercept": 30}, "fx": [{"who": {"role": "dealer"}, "hp": 15}]},
     {"id": "war_drum", "icon": "🥁", "name": "전쟁 북", "rarity": "rare", "gauntlet": true, "desc": "힘싸움 미는 힘 +25%, 브루저 체력 +20%", "eco": {"clashPow": 25}, "fx": [{"who": {"role": "bruiser"}, "hp": 20}]},
     {"id": "field_ration", "icon": "🍙", "name": "야전 주먹밥", "rarity": "common", "gauntlet": true, "desc": "교전 뒤 회복 +25%, 모든 동물 체력 +10%", "eco": {"healPlus": 25}, "fx": [{"hp": 10}]},
-    {"id": "growth_herb", "icon": "🌱", "name": "성장 약초", "rarity": "rare", "gauntlet": true, "desc": "교전을 이길 때마다 가장 어린 동물이 먹이 반 그릇", "eco": {"halfFeed": 1}}
+    {"id": "growth_herb", "icon": "🌱", "name": "성장 약초", "rarity": "rare", "gauntlet": true, "desc": "교전을 이길 때마다 가장 어린 동물이 먹이 반 그릇", "eco": {"halfFeed": 1}},
+    {"id": "war_horn", "icon": "📯", "name": "응원 나팔", "rarity": "common", "gauntlet": true, "desc": "힘싸움 응원 톡 +4번, 한 번에 더 세게", "eco": {"cheerTaps": 4}},
+    {"id": "thorn_mail", "icon": "🌵", "name": "가시 갑옷", "rarity": "common", "gauntlet": true, "desc": "브루저가 근접으로 맞으면 받은 피해의 25%를 되돌림", "eco": {"thornsU": 25}},
+    {"id": "shadow_cloak", "icon": "🦇", "name": "그림자 망토", "rarity": "rare", "gauntlet": true, "desc": "딜러가 탱커에게 붙잡혀도 빠져나감", "eco": {"slipAll": 1}},
+    {"id": "vanguard_flag", "icon": "🚩", "name": "선봉 깃발", "rarity": "common", "gauntlet": true, "desc": "쾅! 부딪히는 순간 힘싸움이 우리 쪽으로 기울어 시작", "eco": {"openPush": 40}},
+    {"id": "vamp_fang", "icon": "🩸", "name": "흡혈 송곳니", "rarity": "rare", "gauntlet": true, "desc": "딜러가 넣은 피해의 12%만큼 회복", "eco": {"lifesteal": 12}},
+    {"id": "gold_scale", "icon": "⚖️", "name": "황금 저울", "rarity": "common", "gauntlet": true, "desc": "교전을 이길 때마다 금화 +6", "eco": {"goldWin": 6}},
+    {"id": "phoenix_plume", "icon": "🔥", "name": "불사조 깃털", "rarity": "epic", "gauntlet": true, "desc": "교전마다 처음 쓰러지는 동물이 체력 30%로 일어남", "eco": {"phoenix": 1}},
+    {"id": "iron_chain", "icon": "⛓️", "name": "쇠사슬", "rarity": "rare", "gauntlet": true, "desc": "제압된 적이 받는 피해 +20%", "eco": {"supPlus": 20}},
+    {"id": "thunder_drum", "icon": "🪘", "name": "천둥 북", "rarity": "common", "gauntlet": true, "desc": "힘싸움에서 이기면 적이 0.4초 더 기절", "eco": {"clashStun": 0.4}},
+    {"id": "mana_spring", "icon": "💧", "name": "마력 샘", "rarity": "common", "gauntlet": true, "desc": "마력이 30% 빨리 참", "eco": {"manaRegen": 30}}
   ]
 }

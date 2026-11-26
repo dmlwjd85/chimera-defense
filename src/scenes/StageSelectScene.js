@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { showShop } from './shopUi.js';
 import { button, title, style, panel, showTip, hideTip , speciesImage } from './ui.js';
 import { buildData } from '../logic/data.js';
 import { stageUnlocked, starsOf, totalStars, nextUnlock, unlockedAnimals, unlockGauge } from '../logic/meta.js';
@@ -93,7 +94,8 @@ export default class StageSelectScene extends Phaser.Scene {
 
     button(this, 120, 672, 160, 46, '← 처음', () => this.scene.start('Title'));
     const sp = data.unitById[save.soulPet];
-    button(this, 640, 672, 420, 46, sp ? `🐾 덱 · 👑${sp.name}` : '🐾 덱', () => this.scene.start('Deck', { stageId: this.picked ?? null }), { fill: sp ? 0x4a3d14 : 0x2e5a3a, stroke: 0xffd84d, size: 16, tip: '주인공 한 마리와 약점을 메울 동료 고르기' });
+    button(this, 340, 672, 210, 46, `🛒 상점 💰${save.pouch ?? 0}`, () => showShop(this, data, save, this.registry.get('storage'), () => this.scene.restart()), { fill: 0x5a4a14, stroke: 0xffd84d, size: 16, tip: '남은 금화로 다음 스테이지 준비물 사기' });
+    button(this, 700, 672, 380, 46, sp ? `🐾 덱 · 👑${sp.name}` : '🐾 덱', () => this.scene.start('Deck', { stageId: this.picked ?? null }), { fill: sp ? 0x4a3d14 : 0x2e5a3a, stroke: 0xffd84d, size: 16, tip: '주인공 한 마리와 약점을 메울 동료 고르기' });
     button(this, 1120, 672, 250, 46, `✨ 강화 💎${save.shards ?? 0}`, () => this.scene.start('Talent', { back: 'StageSelect' }), { fill: 0x3a2466, stroke: 0xc77dff, size: 17, tip: '유물 조각으로 특성 찍기' });
   }
 

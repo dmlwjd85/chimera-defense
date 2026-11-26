@@ -161,12 +161,15 @@ export function settleRun(save, state, data) {
 
   // xp
   const xp = [];
-  if (clear) {
+  // 진 판도 깬 웨이브만큼 조금(개선제안 4: '아깝다! 한 판만 더'): stageXp × 깬 비율 × loseXpPct%
+  const loseK = clear ? 1 : (cfg.speciesLevel.loseXpPct ?? 0) / 100 * Math.max(0, (state.wavesCleared ?? 0)) / state.stage.waves.length;
+  if (clear || loseK > 0) {
     const idx = data.stages.findIndex((s) => s.id === stageId);
-    const base = cfg.speciesLevel.stageXp[Math.max(0, idx)] ?? cfg.speciesLevel.stageXp.at(-1);
+    const base = (cfg.speciesLevel.stageXp[Math.max(0, idx)] ?? cfg.speciesLevel.stageXp.at(-1)) * loseK;
     for (const [id, spirit] of xpSpecies(state)) {
       const before = levelInfo(save.speciesXp[id] ?? 0, cfg).level;
       const gain = Math.round(base * (spirit ? 1 + cfg.speciesLevel.spiritBonus / 100 : 1));
+      if (gain <= 0) continue;
       save.speciesXp[id] = (save.speciesXp[id] ?? 0) + gain;
       const after = levelInfo(save.speciesXp[id], cfg).level;
       xp.push({ id, gain, before, after });

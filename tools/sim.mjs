@@ -1,4 +1,4 @@
-// Stage 1 auto-play simulator: node tools/sim.mjs [runs=20] [startSeed=1] [--detail] [--starter] [--stage=2]
+// Stage 1 auto-play simulator: node tools/sim.mjs [runs=20] [startSeed=1] [--detail] [--starter] [--stage=2] [--species]
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { buildData } from '../src/logic/data.js';
@@ -190,6 +190,15 @@ export function main(argv) {
     if (flags.detail) for (const w of r.waves) console.log(`  w${w.wave} leak=${w.leak} gold=${w.gold} summons=${w.summons} field=[${w.field.join(', ')}]`);
   }
   const clear = rs.filter((r) => r.result === 'clear').length;
+  if (flags.species) {
+    // 종별 지표(개선제안 11): 마지막 전장에 있던 판 수(픽률)·그 판의 클리어율, 진 판의 탈락 웨이브
+    const per = {};
+    for (const r of rs) for (const sp of new Set(r.field.map((f) => f.split(':').slice(0, 2).join(':')))) { const p = (per[sp] ??= { n: 0, clear: 0 }); p.n++; if (r.result === 'clear') p.clear++; }
+    console.log('종(마지막 전장) | 픽률 | 그 판 클리어율');
+    for (const [sp, p] of Object.entries(per).sort((a, b) => b[1].n - a[1].n)) console.log(`  ${sp.padEnd(22)} ${String(Math.round(100 * p.n / rs.length)).padStart(3)}% | ${Math.round(100 * p.clear / p.n)}%`);
+    const lw = {}; for (const r of rs) if (r.result !== 'clear') lw[r.wave] = (lw[r.wave] ?? 0) + 1;
+    console.log('진 판 탈락 웨이브:', Object.entries(lw).sort((a, b) => a[0] - b[0]).map(([w, n]) => `w${w}×${n}`).join(' '));
+  }
   const avg = (f) => (rs.reduce((a, r) => a + f(r), 0) / rs.length).toFixed(1);
   console.log(`clear ${clear}/${rs.length} (${Math.round((clear / rs.length) * 100)}%), avg summons ${avg((r) => r.summons)}, avg life ${avg((r) => r.life)}, avg wave ${avg((r) => r.wave)}, avg chimeras ${avg((r) => r.chimeras)}, avg spirits ${avg((r) => r.spirits)}`);
   return rs;

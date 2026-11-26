@@ -46,7 +46,7 @@ const DOT_PROJ = {
 /** How each kind of animal lands its blows. */
 export const STRIKE = {
   ant: 'bite', dog: 'bite', bear: 'paw', bear_tiger: 'paw', bison: 'horn', bighorn: 'horn', tiger: 'claw', rabbit: 'kick', jackalope: 'kick', wolf: 'bite', wolf_in_sheep: 'bite',
-  cheese_thief: 'drop', thunderbird: 'dive', phoenix: 'dive', fox: 'foxfire', frog: 'bubble', bullfrog: 'bubble', rooster: 'song', grasshopper: 'song',
+  crow: 'drop', cheese_thief: 'drop', thunderbird: 'dive', phoenix: 'dive', fox: 'foxfire', frog: 'bubble', bullfrog: 'bubble', rooster: 'song', grasshopper: 'song',
 };
 
 export class FX {
@@ -362,12 +362,14 @@ export class FX {
   }
 
   /** A stone or loot dropped straight from the sky onto the target. */
-  drop(x, y, tex = 'fx-stone', tint = 0xffffff) {
+  drop(x, y, tex = 'fx-stone', tint = 0xffffff, from = null, onHit = null) {
     const sc = this.scene;
-    const p = sc.add.image(x + Phaser.Math.Between(-10, 10), y - 220, tex).setDepth(1595).setTint(tint).setScale(1.1);
+    // from = [x, y]: 새가 실제로 그 자리 위에서 떨어뜨림(까마귀). 없으면 하늘 위에서
+    const p = sc.add.image(from ? from[0] : x + Phaser.Math.Between(-10, 10), from ? from[1] : y - 220, tex).setDepth(1595).setTint(tint).setScale(1.1);
+    const dur = from ? Math.max(160, Math.min(320, (y - from[1]) * 1.4)) : 200;
     const sh = sc.add.ellipse(x, y + 28, 10, 4, 0x000000, 0.35).setDepth(35);
-    sc.tweens.add({ targets: sh, scaleX: 3, scaleY: 3, duration: 200 });
-    sc.tweens.add({ targets: p, x, y, angle: 360, duration: 200, ease: 'Quad.in', onComplete: () => { p.destroy(); sh.destroy(); this.impact(x, y, 0xffe066, 0.9); this.burst('shard', x, y + 8, 6, 0x9e9e9e); this.burst('puff', x, y + 22, 3, 0xd9c49a); } });
+    sc.tweens.add({ targets: sh, scaleX: 3, scaleY: 3, duration: dur });
+    sc.tweens.add({ targets: p, x, y, angle: 360, duration: dur, ease: 'Quad.in', onComplete: () => { p.destroy(); sh.destroy(); onHit?.(); this.impact(x, y, 0xffe066, 0.9); this.burst('shard', x, y + 8, 6, 0x9e9e9e); this.burst('puff', x, y + 22, 3, 0xd9c49a); } });
   }
 
   /** Wing gust: curling wind arcs that blow across a spot. */

@@ -5,7 +5,7 @@ import { sellPrice } from '../logic/economy.js';
 // Pure drop rules for the battle screen (no Phaser): what a drag-and-drop or tap should do.
 export const DRAG_MIN = 8;
 export const DROP_RADIUS = 40;
-export const RING = { evolve: 0x2ecc71, spirit: 0x2ecc71, known: 0x9b59b6, unknown: 0xaaaaaa };
+export const RING = { evolve: 0x2ecc71, spirit: 0x2ecc71, known: 0xb06bff, unknown: 0xffd84d };   // 진화 초록 ⬆, 아는 키메라 보라 ✦, 모험 노랑 ?(개선제안 5)
 
 /** Where a unit lives: { where: 'field', uid } or { where: 'bench', index }, or null. */
 export function refOf(state, uid) {
@@ -79,12 +79,12 @@ export function planDrop(state, data, uid, x, y, ctx) {
 /** Ring colour for a drag hint, and whether to draw '?'. */
 export function ringFor(dragged, other, data, known) {
   const kind = mergeKind(dragged, other, data);
-  if (kind === 'evolve' || kind === 'spirit') return { color: RING[kind], question: false };
+  if (kind === 'evolve' || kind === 'spirit') return { color: RING[kind], question: false, icon: '⬆', width: 5 };
   if (kind === 'chimera') {
     const p = mergePreview(dragged, other, data, known);
-    return p.textKey === 'merge.chimera' ? { color: RING.known, question: false } : { color: RING.unknown, question: true };
+    return p.textKey === 'merge.chimera' ? { color: RING.known, question: false, icon: '✦', width: 6 } : { color: RING.unknown, question: true, icon: '?', width: 3 };
   }
-  if (kind === 'weak') return { color: RING.unknown, question: true };
+  if (kind === 'weak') return { color: RING.unknown, question: true, icon: '?', width: 3 };
   return null;
 }
 

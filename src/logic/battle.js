@@ -69,6 +69,7 @@ export function makeUnit(state, data, inst) {
 
 /** Total gold for one summon with optional continent / habitat designation. */
 export function summonPrice(state, data, opts = {}) {
+  if ((state.freeSummons ?? 0) > 0) return 0;   // 보물 상자 무료 소환
   const d = data.config.designate ?? { continent: 0, habitat: 0 };
   const base = Math.max(10, summonCost(state.summonCount, data.config) - (eco(state, data, 'summonDiscount') ?? 0));
   return base + (opts.habitat ? d.habitat : opts.continent ? d.continent : 0);
@@ -135,7 +136,7 @@ export function summon(state, data, opts = {}) {
   if (soulFirst) { unit.soul = true; unit.soulKills = 0; state.soulOut = true; }
   state.bench[slot] = unit;
   state.gold -= cost;
-  state.summonCount += 1;
+  if (cost === 0 && state.freeSummons > 0) state.freeSummons -= 1; else state.summonCount += 1;   // 무료 소환은 값도 안 오름
   state.rollCtx = advanceRollCtx(state.rollCtx, data.unitById[roll.unitId], data.config);
   state.events.push({ type: 'summon', uid: unit.uid, roll });
   return { ok: true, unit, roll, cost };
@@ -376,6 +377,9 @@ function endWave(state, data) {
   state.wavesCleared = state.wave;
   { const top = Object.entries(state.dmgWave ?? {}).map(([uid, d]) => ({ uid: +uid, ...d })).sort((a, b) => b.dmg - a.dmg).slice(0, 3); if (top.length) state.events.push({ type: 'mvp', wave: state.wave, top }); state.dmgWave = {}; }
   for (const u of state.field) Object.assign(u, { down: false, hp: u.maxHp ?? u.stats.hp, respawnLeft: 0 });
+  // 무쌍 웨이브 보물 상자(개선제안 4): 버텨 내면 골드 + 무료 소환
+  { const ch = data.config.horde?.chest; const spec = state.stage.waves[state.wave - 1];
+    if (ch && spec?.horde) { state.gold += ch.gold ?? 0; state.freeSummons = (state.freeSummons ?? 0) + (ch.freeSummons ?? 0); state.events.push({ type: 'hordeChest', gold: ch.gold ?? 0, free: ch.freeSummons ?? 0 }); } }
   state.events.push({ type: 'waveEnd', wave: state.wave });
   if (state.wave >= state.stage.waves.length) {
     state.phase = 'ended';

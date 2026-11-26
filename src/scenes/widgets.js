@@ -172,15 +172,16 @@ export function hideRange(scene) {
  * @param {boolean} question - Whether to display a '?' mark at center.
  * @returns {Array<Phaser.DisplayObject>} Array containing [circle, questionMark].
  */
-export function highlightRing(scene, x, y, color, question) {
-  const circle = scene.add.circle(x, y, 34).setStrokeStyle(4, color);
+export function highlightRing(scene, x, y, color, question, opts = {}) {
+  const circle = scene.add.circle(x, y, 34).setStrokeStyle(opts.width ?? 4, color);
+  scene.tweens?.add({ targets: circle, scale: { from: 1.12, to: 0.96 }, duration: 520, yoyo: true, repeat: -1, ease: 'Sine.inOut' });   // 숨 쉬듯 커졌다 작아짐
 
   let questionMark = null;
-  if (question) {
-    questionMark = scene.add.text(x, y, '?', {
+  if (question || opts.icon) {
+    questionMark = scene.add.text(x, y - 40, opts.icon ?? '?', {
       fontFamily: FONT,
-      fontSize: '28px',
-      color: '#ffffff'
+      fontSize: '24px',
+      color: '#' + color.toString(16).padStart(6, '0'), stroke: '#000000', strokeThickness: 4
     }).setOrigin(0.5).setDepth(901);
   }
 

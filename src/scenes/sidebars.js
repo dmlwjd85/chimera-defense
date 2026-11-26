@@ -96,7 +96,12 @@ export class Altar {
     scene.add.text(X + 52, y0 + 58, '+', style(14, '#b388ff')).setOrigin(0.5).setDepth(2);
     this.preview = scene.add.text(x, y0 + 40, '', style(10, '#e8dcff', { align: 'center', wordWrap: { width: 86 } })).setOrigin(0.5).setDepth(2);
     this.btn = button(scene, x, y0 + 80, 84, 26, '합성', () => this.go(), { size: 12, fill: 0x4a2a6a, stroke: 0xb388ff });
+    // 합칠 수 있는 성체 둘이 있으면 제단 테두리가 은은하게 빛남(개선제안 5)
+    this.glowRect = scene.add.rectangle(X + ALTAR.w / 2, y0 + 50, ALTAR.w + 6, 106).setStrokeStyle(3, 0xffe066, 1).setDepth(3).setVisible(false);
+    scene.tweens.add({ targets: this.glowRect, alpha: { from: 1, to: 0.25 }, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.inOut' });
   }
+
+  glow(on) { this.glowRect.setVisible(!!on); }
 
   /** Slot index under a point, or -1. */
   slotAt(px, py) { return this.slots.findIndex((sl) => Math.abs(px - sl.x) <= 24 && Math.abs(py - sl.y) <= 24); }

@@ -30,8 +30,8 @@
    },
    {
     "mix": {
-     "normal": 60,
-     "swarm": 40
+     "normal": 75,
+     "swarm": 25
     },
     "extra": []
    },

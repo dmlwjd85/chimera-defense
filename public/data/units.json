@@ -348,7 +348,7 @@
   "block": 1,
   "damage": 26,
   "interval": 1.2,
-  "range": 4,
+  "range": 3,
   "aoeRadius": 0,
   "respawn": 8,
   "stageNames": {
@@ -358,7 +358,7 @@
    "spirit": "삼족오"
   },
   "nickname": "깍깍이, 반짝이 수집가 까마귀",
-  "baseSkillDesc": "돌 떨어뜨리기: 먼 적에게 높은 단일 피해",
+  "baseSkillDesc": "돌 떨어뜨리기: 적 위로 날아가 돌을 떨어뜨림(한 마리)",
   "baseSkill": [],
   "adultSkill": {
    "name": "반짝이 줍기",

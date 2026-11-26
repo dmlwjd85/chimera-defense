@@ -3,6 +3,7 @@ let ctx = null, master = null, noiseBuf = null;
 const last = {};
 const MIN_GAP = { hit: 0.045, slash: 0.05, shoot: 0.05, magic: 0.06, note: 0.12, coin: 0.05, kill: 0.04, dodge: 0.1, heal: 0.2, hold: 0.1 };
 let muted = false;
+let pitch = 1;   // sfx(name, semi)로 잠깐 음높이를 올림(연속 처치·합성 음계)
 try { muted = localStorage.getItem('chimera-mute') === '1'; } catch { /* storage may be blocked */ }
 
 function ensure() {
@@ -33,6 +34,7 @@ function env(g, t, a, peak, dur) {
 function tone(type, f0, f1, dur, vol = 0.3, delay = 0, opts = {}) {
   const t = ctx.currentTime + delay;
   const o = ctx.createOscillator(), g = ctx.createGain();
+  f0 *= pitch; if (f1) f1 *= pitch;
   o.type = type; o.frequency.setValueAtTime(f0, t);
   if (f1 && f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + dur * (opts.glide ?? 1));
   if (opts.vib) { const l = ctx.createOscillator(), lg = ctx.createGain(); l.frequency.value = opts.vib; lg.gain.value = opts.vibDepth ?? 12; l.connect(lg); lg.connect(o.frequency); l.start(t); l.stop(t + dur); }
@@ -102,14 +104,17 @@ const SOUNDS = {
 };
 
 /** Play a named sound (throttled per name). */
-export function sfx(name) {
+/** sfx(이름, 반음) — 반음만큼 높여 냄(연속 처치·연속 합성 때 한 음씩 올라가게). */
+export function sfx(name, semi = 0) {
   if (muted || !SOUNDS[name]) return;
   const c = ensure();
   if (!c || c.state !== 'running') return;
   const now = c.currentTime;
   if (now - (last[name] ?? -9) < (MIN_GAP[name] ?? 0.03)) return;
   last[name] = now;
+  pitch = Math.pow(2, semi / 12);
   try { SOUNDS[name](); } catch { /* ignore audio errors */ }
+  pitch = 1;
 }
 
 export const SOUND_NAMES = Object.keys(SOUNDS);

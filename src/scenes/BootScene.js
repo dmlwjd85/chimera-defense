@@ -24,7 +24,8 @@ export default class BootScene extends Phaser.Scene {
     this.load.json('artpack', half ? 'assets/art-pack-m.json' : 'assets/art-pack.json');
     const useArt = (pack) => {
       this.load.json('manifest', 'assets/manifest.json');
-      this.load.once('filecomplete-json-manifest', (k, t, m) => { for (const [key, path] of Object.entries(m?.images ?? {})) this.load.image(key, pack?.[key] ?? path); });
+      // 묶음에서 뺀 예전 리그·한 장 그림(도트로 바뀐 종)은 따로 받지도 않음(로딩 속도)
+      this.load.once('filecomplete-json-manifest', (k, t, m) => { for (const [key, path] of Object.entries(m?.images ?? {})) { if (pack && !pack[key] && /^(rig|unit)-/.test(key)) continue; this.load.image(key, pack?.[key] ?? path); } });
     };
     this.load.once('filecomplete-json-artpack', (k, t, pack) => useArt(pack));
     this.load.once('loaderror', (f) => { if (f.key === 'artpack') useArt(null); });

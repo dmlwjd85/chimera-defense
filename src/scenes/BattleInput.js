@@ -19,7 +19,7 @@ export function attachInput(scene) {
   scene.input.dragDistanceThreshold = DRAG_MIN;
   scene.selectedUid = null;
 
-  const clearRings = () => { rings.forEach((o) => o.destroy()); rings = []; };
+  const clearRings = () => { rings.forEach((o) => { scene.tweens.killTweensOf(o); o.destroy(); }); rings = []; };
 
   const deselect = () => { scene.selectedUid = null; scene.hideUnitCard(); hideRange(scene); };
 
@@ -80,7 +80,7 @@ export function attachInput(scene) {
       if (uid === obj.unitUid) continue;
       const other = unitOf(st(), refOf(st(), uid));
       const ring = other && ringFor(me, other, data, st().known);
-      if (ring) rings.push(...highlightRing(scene, v.container.x, v.container.y, ring.color, ring.question));
+      if (ring) rings.push(...highlightRing(scene, v.container.x, v.container.y, ring.color, ring.question, { icon: ring.icon, width: ring.width }));
     }
   });
 

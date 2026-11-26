@@ -59,7 +59,9 @@ export function unitChances(ctx, wave, data, owned = null, opts = {}) {
   // config.rangedBoost가 있으면 강제 대신 원거리 무게만 그 배수로 올림
   const boostRanged = ctx.summonIndex === 1 && !ctx.firstWasRanged && config.rangedBoost ? config.rangedBoost : 1;
   if (ctx.summonIndex === 1 && !ctx.firstWasRanged && !config.rangedBoost) pool = restrict(pool, (u) => u.range >= config.flyingMinRange);
-  const raw = pool.map((u) => [u.id, (table[u.rarity] / perRarity[u.rarity]) * (sameSpeciesFactor(u.id, owned, data) + (opts.sameExtra ?? 0) * (owned?.get(u.id) ?? 0)) * (u.range >= config.flyingMinRange ? boostRanged : 1) * (baitRole && u.role === baitRole ? config.bait.mult : 1) * (u.rarity === 'hero' ? opts.heroMult ?? 1 : 1) * (1 + (opts.favor?.[u.id] ?? 0) * (config.favor?.perLevel ?? 0) / 100)]);
+  // 초반 역할 보정(개선제안 8): 1~3웨이브에 막는 동물(저지 2 이상)이 하나도 없으면 그 무게 earlyBlockBoost배
+  const needBlock = config.earlyBlockBoost && wave <= 3 && ctx.summonIndex >= 1 && owned && ![...owned.keys()].some((id) => (data.unitById[id]?.block ?? 0) >= 2);
+  const raw = pool.map((u) => [u.id, (needBlock && u.block >= 2 ? config.earlyBlockBoost : 1) * (table[u.rarity] / perRarity[u.rarity]) * (sameSpeciesFactor(u.id, owned, data) + (opts.sameExtra ?? 0) * (owned?.get(u.id) ?? 0)) * (u.range >= config.flyingMinRange ? boostRanged : 1) * (baitRole && u.role === baitRole ? config.bait.mult : 1) * (u.rarity === 'hero' ? opts.heroMult ?? 1 : 1) * (1 + (opts.favor?.[u.id] ?? 0) * (config.favor?.perLevel ?? 0) / 100)]);
   const sum = raw.reduce((s, [, p]) => s + p, 0);
   return Object.fromEntries(raw.map(([id, p]) => [id, p / sum]));
 }

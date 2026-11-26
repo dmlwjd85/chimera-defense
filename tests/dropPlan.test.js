@@ -69,14 +69,15 @@ test('sell asks only for chimera and spirit', () => {
   assert.deepEqual([b.action, b.price, b.confirm], ['sell', D.config.sell.spirit, true]);
 });
 
-test('drag rings: green for evolve/spirit, purple for known recipe, grey ? otherwise', () => {
+test('drag rings: green ⬆ for evolve/spirit, purple ✦ for known recipe, yellow ? otherwise', () => {
   const s = createBattle(D, 'forest-1', 1);
   const fox = base(s, 'fox', 'adult'), crow = base(s, 'crow', 'adult'), bear = base(s, 'bear', 'adult');
-  assert.deepEqual(ringFor(fox, base(s, 'fox', 'adult'), D, s.known), { color: 0x2ecc71, question: false });
-  assert.deepEqual(ringFor(fox, crow, D, s.known), { color: 0xaaaaaa, question: true });
+  const pick = (r) => r && { color: r.color, question: r.question, icon: r.icon };
+  assert.deepEqual(pick(ringFor(fox, base(s, 'fox', 'adult'), D, s.known)), { color: 0x2ecc71, question: false, icon: '⬆' });
+  assert.deepEqual(pick(ringFor(fox, crow, D, s.known)), { color: 0xffd84d, question: true, icon: '?' });
   s.known.recipes.add('cheese_thief');
-  assert.deepEqual(ringFor(fox, crow, D, s.known), { color: 0x9b59b6, question: false });
-  assert.deepEqual(ringFor(fox, bear, D, s.known), { color: 0xaaaaaa, question: true });
+  assert.deepEqual(pick(ringFor(fox, crow, D, s.known)), { color: 0xb06bff, question: false, icon: '✦' });
+  assert.deepEqual(pick(ringFor(fox, bear, D, s.known)), { color: 0xffd84d, question: true, icon: '?' });
   assert.equal(ringFor(fox, base(s, 'fox', 'young'), D, s.known), null);
 });
 

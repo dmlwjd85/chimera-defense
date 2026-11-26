@@ -53,7 +53,13 @@ export default class ResultScene extends Phaser.Scene {
     }
 
     panel(this, 660, 165, 560, 375);
-    this.add.text(685, 180, r.clear ? '종 경험치' : '패배한 판은 경험치 없음', style(22, '#ffe2b8'));
+    this.add.text(685, 180, r.clear ? '종 경험치' : r.xp.length ? '종 경험치 (진 판은 조금)' : '패배한 판은 경험치 없음', style(22, '#ffe2b8'));
+    if (!r.clear) {
+      // 아깝다!(개선제안 4): 얼마나 가까웠는지 한 줄
+      const left = d.total - d.wave;
+      const t = this.add.text(640, 108, left <= 3 ? `😣 아깝다! ${left === 0 ? '마지막 웨이브' : `${left}웨이브만 더`} 버텼으면 클리어!` : `웨이브 ${d.wave}까지 버팀 — 다음엔 더 멀리!`, style(20, '#ffb27a', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5);
+      this.tweens.add({ targets: t, scale: { from: 1, to: 1.06 }, yoyo: true, repeat: -1, duration: 650 });
+    }
     r.xp.slice(0, r.mvp?.length ? 6 : 10).forEach((x, i) => {
       const up = x.after > x.before;
       this.add.text(700, 222 + i * 28, `${D.unitById[x.id].name}  +${x.gain}`, style(16));
@@ -89,5 +95,7 @@ export default class ResultScene extends Phaser.Scene {
     button(this, 1050, 650, 200, 56, '✨ 별자리 나무', () => this.scene.start('Talent', { back: 'StageSelect' }), { size: 18, fill: 0x3a2466, stroke: 0xc77dff });
     this.input.keyboard.on('keydown-R', () => this.scene.start('Battle', { stageId: d.stageId }));
     this.input.keyboard.on('keydown-ESC', () => this.scene.start('Title'));
+    // 명장면 그림은 이 화면에서만 씀 → 나갈 때 지움(메모리, 개선제안 13)
+    this.events.once('shutdown', () => { if (this.textures.exists('highlight')) this.textures.remove('highlight'); this.registry.set('highlight', null); });
   }
 }

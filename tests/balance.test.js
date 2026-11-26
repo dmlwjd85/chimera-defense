@@ -40,9 +40,10 @@ test('same-species factor', () => {
   assert.strictEqual(sameSpeciesFactor('fox', new Map(), D), 1);
   assert.strictEqual(sameSpeciesFactor('fox', null, D), 1);
   const map3 = new Map([['fox', 3]]);
-  assert.strictEqual(sameSpeciesFactor('fox', map3, D), 1 + 3 * D.config.sameSpecies.perUnit);
+  assert.strictEqual(sameSpeciesFactor('fox', map3, D), Math.min(D.config.sameSpecies.max ?? Infinity, 1 + 3 * D.config.sameSpecies.perUnit));
   const map2c = new Map([['crow', 2]]);
-  assert.strictEqual(sameSpeciesFactor('fox', map2c, D), 1 + 2 * D.config.sameSpecies.partnerPerUnit);
+  assert.strictEqual(sameSpeciesFactor('fox', map2c, D), Math.min(D.config.sameSpecies.max ?? Infinity, 1 + 2 * D.config.sameSpecies.partnerPerUnit));
+  assert.ok(sameSpeciesFactor('fox', new Map([['fox', 20]]), D) <= (D.config.sameSpecies.max ?? Infinity), '쏠림 상한');
   assert.strictEqual(sameSpeciesFactor('bear', map3, D), 1);
   const planMap = new Map([['fox', 3]]);
   assert.strictEqual(sameSpeciesFactor('fox', planMap, P), 1);

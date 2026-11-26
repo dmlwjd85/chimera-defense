@@ -25,7 +25,7 @@ export class Roster {
     const max = scene.data2.config.maxDeployed ?? 6;
     this.cells = [...Array(max)].map((_, i) => {
       const p = rosterPos(i);
-      const bg = scene.add.rectangle(p.x, p.y, CELL_W, CELL_H, 0x0b1016, 0.6).setStrokeStyle(1.5, 0x3b4b5e, 0.9).setDepth(1);
+      const bg = scene.add.rectangle(p.x, p.y, CELL_W, CELL_H, 0x2a1c14, 0.8).setStrokeStyle(1.5, 0x7a5a3e, 0.9).setDepth(1);
       const c = scene.add.container(p.x, p.y).setDepth(3).setSize(CELL_W, CELL_H);
       c.baseDepth = 3;
       c.setInteractive({ draggable: true, useHandCursor: true });
@@ -55,7 +55,7 @@ export class Roster {
       k.c.setVisible(!!u);
       if (u) k.c.setInteractive(); else k.c.disableInteractive();
       const selected = u && this.scene.selectedUid === u.uid;
-      k.bg.setStrokeStyle(selected ? 2.5 : 1.5, selected ? 0xffd84d : u?.down ? 0x6b2a2a : 0x3b4b5e, 1);
+      k.bg.setStrokeStyle(selected ? 2.5 : 1.5, selected ? 0xffd84d : u?.down ? 0x6b2a2a : 0x7a5a3e, 1);
       k.hp.clear();
       if (u) {
         const f = Math.max(0, u.hp) / (u.maxHp ?? u.stats.hp);
@@ -87,7 +87,7 @@ export class Altar {
     scene.add.text(X + 8, y0 + 4, '🧪 합성 제단', style(11, '#e8c3ff')).setDepth(2);
     this.slots = [X + 28, X + 76].map((sx, i) => {
       const y = y0 + 58;
-      const bg = scene.add.rectangle(sx, y, 42, 42, 0x150b22, 0.85).setStrokeStyle(1.5, 0xb388ff, 0.8).setDepth(1).setInteractive({ useHandCursor: true });
+      const bg = scene.add.rectangle(sx, y, 42, 42, 0x2a1838, 0.9).setStrokeStyle(2.5, 0x291a1f, 1).setDepth(1).setInteractive({ useHandCursor: true });
       bg.on('pointerdown', () => { this.uids[i] = null; });
       const c = scene.add.container(sx, y).setDepth(3);
       const hint = scene.add.text(sx, y, '+', style(18, '#8a6fb0')).setOrigin(0.5).setDepth(2);

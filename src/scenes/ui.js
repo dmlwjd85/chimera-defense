@@ -1,86 +1,110 @@
-// Shared drawing helpers for all scenes (placeholder art: shapes and text, swappable for images later).
+// Shared UI parts for all scenes. Look and colors live in theme.js (rules: docs/UI_규칙.md).
+// Scenes draw buttons, boxes, tooltips and chips only through these helpers.
 import Phaser from 'phaser';
 import { FONT } from '../text.js';
 import { dotDataFor } from './rigs.js';
+import { INK, INK_CSS, THEME, VARIANTS, variantOf, drawButton, drawPanel, drawParchment, drawChip, textStyle } from './theme.js';
 
-export const COLORS = { bg: 0x141a21, panel: 0x1f2a36, line: 0x3b4b5e, accent: 0xffb35c, good: 0x58d68d, bad: 0xf0883e, flip: 0x5dade2, gold: 0xffd84d };
+export { INK, INK_CSS, THEME, VARIANTS };
+export const COLORS = { bg: 0x141a21, panel: THEME.wood.bot, line: THEME.wood.hi, accent: 0xffb35c, good: 0x58d68d, bad: 0xf0883e, flip: 0x5dade2, gold: 0xffd84d };
 export const hex = (h) => Phaser.Display.Color.HexStringToColor(h ?? '#888888').color;
-export const style = (size, color = '#ffffff', extra = {}) => ({ fontSize: `${size}px`, color, fontFamily: FONT, ...extra });
+// 예전 검정 계열 글자 테두리는 모두 먹선 색으로 통일
+const OLD_STROKES = new Set(['#000', '#000000', '#0b0f14', '#2a1a08', '#111', '#0b1a2b']);
+export const style = (size, color = '#ffffff', extra = {}) => {
+  const s = { fontSize: `${size}px`, color, fontFamily: FONT, ...extra };
+  if (s.stroke && OLD_STROKES.has(String(s.stroke).toLowerCase())) s.stroke = INK_CSS;
+  return s;
+};
 
-/** Premium button: dark glass, gold trim, soft top highlight. Returns { set, setEnabled, setVisible, destroy }. */
+/**
+ * Button: warm colored body, thick ink outline, a dark lip underneath (pressed = body sinks).
+ * opts: { variant: 'wood'|'green'|'blue'|'purple'|'red'|'gold'|'locked', fill (old color, mapped to a variant), size, color, depth, tip }
+ * Returns { bg, text, zone, set, setEnabled, setVisible, destroy }.
+ */
 export function button(scene, x, y, w, h, label, onClick, opts = {}) {
   const depth = opts.depth ?? 10;
   const g = scene.add.graphics().setDepth(depth);
-  const base = opts.fill ?? 0x1c2a3a;
-  const trim = opts.stroke ?? 0xd4b06a;
-  const r = Math.min(12, h / 2);
-  const draw = (hover = false, on = true) => {
-    const top = Phaser.Display.Color.ValueToColor(base).brighten(hover ? 28 : 16).color;
-    const bot = Phaser.Display.Color.ValueToColor(base).darken(18).color;
-    g.clear();
-    g.fillStyle(0x000000, 0.35).fillRoundedRect(x - w / 2 + 2, y - h / 2 + 4, w, h, r);
-    g.fillGradientStyle(top, top, bot, bot, on ? 1 : 0.5).fillRoundedRect(x - w / 2, y - h / 2, w, h, r);
-    g.fillStyle(0xffffff, hover ? 0.14 : 0.08).fillRoundedRect(x - w / 2 + 3, y - h / 2 + 3, w - 6, h * 0.42, { tl: r - 2, tr: r - 2, bl: 2, br: 2 });
-    g.lineStyle(2, trim, on ? (hover ? 1 : 0.85) : 0.35).strokeRoundedRect(x - w / 2, y - h / 2, w, h, r);
-    g.lineStyle(1, 0xffffff, 0.08).strokeRoundedRect(x - w / 2 + 3, y - h / 2 + 3, w - 6, h - 6, Math.max(2, r - 3));
-  };
-  draw();
-  const zone = scene.add.zone(x, y, w, h).setInteractive({ useHandCursor: true }).setDepth(depth + 1);
-  const text = scene.add.text(x, y, label, style(opts.size ?? 16, opts.color ?? '#f6ead2', { align: 'center', stroke: '#0b0f14', strokeThickness: 3 })).setOrigin(0.5).setDepth(depth + 1);
-  let enabled = true;
-  zone.on('pointerover', () => { if (enabled) draw(true); if (opts.tip) showTip(scene, opts.tip, x, y - h / 2 - 8); });
-  zone.on('pointerout', () => { draw(false, enabled); hideTip(scene); });
-  zone.on('pointerdown', (p, lx, ly, ev) => { ev?.stopPropagation?.(); if (enabled) { scene.tweens.add({ targets: text, scale: { from: 0.92, to: 1 }, duration: 120 }); onClick(); } });
+  const variant = opts.variant ?? variantOf(opts.fill);
+  const size = opts.size ?? 16;
+  const text = scene.add.text(x, y, label, textStyle(FONT, size, opts.color ?? THEME.cream, { bold: true, extra: { align: 'center' } })).setOrigin(0.5).setDepth(depth + 1);
+  let enabled = true, over = false;
+  const draw = (s) => { if (!g.active) return; const dy = drawButton(g, x, y, w, h, variant, enabled ? s : 'off'); text.setY(y + (Number(dy) || 0)); };
+  draw('idle');
+  const zone = scene.add.zone(x, y, w, h + 4).setInteractive({ useHandCursor: true }).setDepth(depth + 1);
+  zone.on('pointerover', () => { over = true; if (enabled) draw('hover'); if (opts.tip) showTip(scene, opts.tip, x, y - h / 2 - 8); });
+  zone.on('pointerout', () => { over = false; draw('idle'); hideTip(scene); });
+  zone.on('pointerdown', (p, lx, ly, ev) => {
+    ev?.stopPropagation?.();
+    if (!enabled) return;
+    draw('down');
+    scene.time?.delayedCall(110, () => draw(over ? 'hover' : 'idle'));
+    onClick();
+  });
   const api = {
     bg: g, text, zone,
     set(label2) { text.setText(label2); return api; },
-    setEnabled(b) { if (b === enabled) return api; enabled = b; draw(false, b); text.setAlpha(b ? 1 : 0.55); return api; },
+    setEnabled(b) { if (b === enabled) return api; enabled = b; draw('idle'); text.setAlpha(b ? 1 : 0.6); return api; },
     setVisible(b) { g.setVisible(b); zone.setVisible(b); text.setVisible(b); if (b) zone.setInteractive(); else zone.disableInteractive(); return api; },
     destroy() { g.destroy(); zone.destroy(); text.destroy(); },
   };
   return api;
 }
 
-/** Small hover tooltip (one at a time). */
+/** Small hover tooltip on parchment (one at a time). */
 export function showTip(scene, msg, x, y) {
   hideTip(scene);
-  const t = scene.add.text(0, 0, msg, style(13, '#f6ead2', { wordWrap: { width: 260 }, align: 'left' })).setDepth(5001);
-  const w = t.width + 18, h = t.height + 12;
+  const t = scene.add.text(0, 0, msg, style(13, THEME.parch.text, { wordWrap: { width: 260 }, align: 'left', lineSpacing: 2 })).setDepth(5001);
+  const w = t.width + 20, h = t.height + 14;
   const px = Math.max(8, Math.min(1272 - w, x - w / 2)), py = Math.max(8, y - h);
-  const g = scene.add.graphics().setDepth(5000);
-  g.fillStyle(0x0d141d, 0.95).fillRoundedRect(px, py, w, h, 8).lineStyle(1.5, 0xd4b06a, 0.9).strokeRoundedRect(px, py, w, h, 8);
-  t.setPosition(px + 9, py + 6);
+  const g = drawParchment(scene.add.graphics().setDepth(5000), px, py, w, h, 8);
+  t.setPosition(px + 10, py + 7);
   scene.tipObjs = [g, t];
 }
 export function hideTip(scene) { scene.tipObjs?.forEach((o) => o.destroy()); scene.tipObjs = null; }
 
-/** Icon chip with a tooltip (for synergies, bonds, relics, traits). */
+/** Icon chip with a tooltip (for synergies, bonds, relics, traits). opts.stroke = accent color. */
 export function chip(scene, x, y, label, tip, opts = {}) {
-  const t = scene.add.text(0, 0, label, style(opts.size ?? 13, opts.color ?? '#f6ead2')).setDepth(opts.depth ?? 20);
-  const w = t.width + 14, h = t.height + 6;
-  const g = scene.add.graphics().setDepth((opts.depth ?? 20) - 1);
-  g.fillStyle(opts.fill ?? 0x142131, 0.9).fillRoundedRect(x, y, w, h, h / 2).lineStyle(1.5, opts.stroke ?? 0xd4b06a, 0.8).strokeRoundedRect(x, y, w, h, h / 2);
-  t.setPosition(x + 7, y + 3);
+  const t = scene.add.text(0, 0, label, style(opts.size ?? 13, opts.color ?? THEME.cream, { stroke: INK_CSS, strokeThickness: 2 })).setDepth(opts.depth ?? 20);
+  const w = t.width + 16, h = t.height + 8;
+  const g = drawChip(scene.add.graphics().setDepth((opts.depth ?? 20) - 1), x, y, w, h, opts.stroke);
+  t.setPosition(x + 8, y + 4);
   const z = scene.add.zone(x + w / 2, y + h / 2, w, h).setInteractive({ useHandCursor: !!opts.onClick }).setDepth((opts.depth ?? 20) + 1);
   if (tip) { z.on('pointerover', () => showTip(scene, tip, x + w / 2, y - 4)); z.on('pointerout', () => hideTip(scene)); }
   if (opts.onClick) z.on('pointerdown', (p, a, b, ev) => { ev?.stopPropagation?.(); opts.onClick(); });
   return { w, h, destroy() { g.destroy(); t.destroy(); z.destroy(); }, objs: [g, t, z] };
 }
 
+/** Wood box (글 상자). opts: { depth, alpha, r, stroke (inner accent color), plain (no corner studs) }. Returns the Graphics. */
 export function panel(scene, x, y, w, h, opts = {}) {
   const g = scene.add.graphics().setDepth(opts.depth ?? 0);
-  const a = opts.alpha ?? 0.9;
-  g.fillStyle(0x000000, 0.3 * a).fillRoundedRect(x + 3, y + 5, w, h, opts.r ?? 14);
-  g.fillGradientStyle(0x1a2636, 0x1a2636, 0x0d141d, 0x0d141d, a).fillRoundedRect(x, y, w, h, opts.r ?? 14);
-  g.lineStyle(2, opts.stroke ?? 0xd4b06a, 0.75 * Math.min(1, a + 0.1)).strokeRoundedRect(x, y, w, h, opts.r ?? 14);
-  g.lineStyle(1, 0xffffff, 0.06).strokeRoundedRect(x + 4, y + 4, w - 8, h - 8, Math.max(4, (opts.r ?? 14) - 4));
-  if (!opts.plain) for (const [cx, cy] of [[x + 14, y], [x + w - 14, y], [x + 14, y + h], [x + w - 14, y + h]]) g.fillStyle(0xd4b06a, 0.9).fillPoints([{ x: cx, y: cy - 4 }, { x: cx + 4, y: cy }, { x: cx, y: cy + 4 }, { x: cx - 4, y: cy }], true);
+  drawPanel(g, x, y, w, h, { alpha: opts.alpha ?? 0.95, r: opts.r, accent: opts.stroke, plain: opts.plain });
   return g;
 }
 
+/** Inset slot (cage cell, card cell). Drawn into an existing Graphics `g`; (x, y) = top-left. */
+export function drawSlot(g, x, y, w, h, opts = {}) {
+  const r = opts.r ?? 8, a = opts.alpha ?? 0.9;
+  g.fillStyle(opts.fill ?? 0x2a1c14, a).fillRoundedRect(x, y, w, h, r);
+  g.fillStyle(0x000000, 0.25 * a).fillRoundedRect(x + 2, y + 2, w - 4, Math.min(8, h / 4), { tl: r - 2, tr: r - 2, bl: 0, br: 0 });
+  if (opts.accent != null) g.lineStyle(opts.accentW ?? 2, opts.accent, opts.accentA ?? 1).strokeRoundedRect(x + 3, y + 3, w - 6, h - 6, Math.max(2, r - 3));
+  g.lineStyle(opts.line ?? 2.5, INK, 1).strokeRoundedRect(x, y, w, h, r);
+  return g;
+}
+
+/** Parchment box for modals and notes. Returns the Graphics. */
+export function parchment(scene, x, y, w, h, opts = {}) {
+  return drawParchment(scene.add.graphics().setDepth(opts.depth ?? 0), x, y, w, h, opts.r ?? 12);
+}
+
+/** Full-screen dimmer that also swallows clicks under a modal. */
+export function dimmer(scene, depth = 3000, alpha = 0.6) {
+  return scene.add.rectangle(640, 360, 1280, 720, 0x140c0a, alpha).setInteractive().setDepth(depth);
+}
+
+/** Heading text: gold fill, thick ink outline, hard drop shadow (no blur). */
 export function title(scene, x, y, text, size = 40) {
-  const t = scene.add.text(x, y, text, style(size, '#ffe6b0', { stroke: '#2a1a08', strokeThickness: Math.max(4, size / 7), fontStyle: 'bold' })).setOrigin(0.5);
-  t.setShadow(0, 4, '#000000', 8, true, true);
+  const t = scene.add.text(x, y, text, style(size, THEME.goldCss, { stroke: INK_CSS, strokeThickness: Math.max(4, Math.round(size / 6)), fontStyle: 'bold' })).setOrigin(0.5);
+  t.setShadow(0, Math.max(3, Math.round(size / 12)), INK_CSS, 0, true, true);
   return t;
 }
 
@@ -159,11 +183,11 @@ export function silhouette(scene, x, y, r) {
 export function modal(scene, titleText, lines, onClose) {
   scene.modalOpen = true;
   const objs = [];
-  const bg = scene.add.rectangle(640, 360, 1280, 720, 0x000000, 0.6).setInteractive().setDepth(4000);
+  const bg = dimmer(scene, 4000, 0.6);
   objs.push(bg, panel(scene, 290, 120, 700, 480, { depth: 4001 }));
-  objs.push(scene.add.text(640, 150, titleText, style(24, '#ffe2b8')).setOrigin(0.5).setDepth(4002));
+  objs.push(scene.add.text(640, 150, titleText, style(24, THEME.goldCss, { stroke: INK_CSS, strokeThickness: 5, fontStyle: 'bold' })).setOrigin(0.5).setDepth(4002));
   let y = 190;
-  for (const [t, col] of lines) { const o = scene.add.text(320, y, t, style(16, col ?? '#dddddd', { wordWrap: { width: 640 } })).setDepth(4002); objs.push(o); y += o.height + 6; }
+  for (const [t, col] of lines) { const o = scene.add.text(320, y, t, style(16, col ?? THEME.cream, { wordWrap: { width: 640 } })).setDepth(4002); objs.push(o); y += o.height + 6; }
   const close = () => { objs.forEach((o) => o.destroy()); b.destroy(); scene.modalOpen = false; onClose?.(); };
   const b = button(scene, 640, 560, 160, 48, '닫기', close, { depth: 4003 });
   return close;

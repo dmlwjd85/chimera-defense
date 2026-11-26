@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { speciesImage, button, title, style, panel } from './ui.js';
+import { speciesImage, button, title, style, panel, drawSlot } from './ui.js';
+import { drawPanel } from './theme.js';
 import { buildData } from '../logic/data.js';
 import { rosterPool, favorState, buyFavor, writeSave } from '../logic/meta.js';
 import { deckOf, soulGaps, soulSig } from '../logic/soul.js';
@@ -37,34 +38,34 @@ export default class DeckScene extends Phaser.Scene {
 
     // ---- left: the selected animal ----
     const g = add(this.add.graphics());
-    g.fillStyle(0x0d141d, 0.92).fillRoundedRect(30, 76, 430, 572, 16).lineStyle(2, 0xd4b06a, 0.8).strokeRoundedRect(30, 76, 430, 572, 16);
+    drawPanel(g, 30, 76, 430, 572, { alpha: 0.95 });
     const u = D.unitById[this.sel], sig = soulSig(D, u.id), isSoul = S.soulPet === u.id, open = unlocked.includes(u.id);
     const lv = S.favor?.[u.id] ?? 0;
     { const im0 = speciesImage(this, u.id, 'adult', 110, 150, 120); if (im0) { const im = add(im0); if (!open) im.setTint(0x000000).setAlpha(0.5); } }
     add(this.add.text(180, 96, `${isSoul ? '👑 ' : ''}${open ? u.name : '???'}`, style(26, isSoul ? '#ffd84d' : '#ffffff')));
     add(this.add.text(180, 132, `${ROLE[u.role]}   ${E[u.element]?.icon ?? ''} ${E[u.element]?.name ?? ''}   사거리 ${u.range}`, style(14, '#cfe8ff')));
-    add(this.add.text(180, 156, open ? u.baseSkillDesc : `⭐ ${cfg.roster.unlocks.find((x) => x.id === u.id)?.stars ?? 0}개에 합류`, style(12, '#aabbcc', { wordWrap: { width: 265 } })));
+    add(this.add.text(180, 156, open ? u.baseSkillDesc : `⭐ ${cfg.roster.unlocks.find((x) => x.id === u.id)?.stars ?? 0}개에 합류`, style(12, '#dcc6a2', { wordWrap: { width: 265 } })));
     let y = 222;
     add(this.add.text(50, y, `🔥 소울 기술 · ${sig.name}`, style(18, '#ffb27a'))); y += 28;
-    add(this.add.text(50, y, `“${sig.tale}”`, style(12, '#9fb3c8', { fontStyle: 'italic', wordWrap: { width: 390 } }))); y += 38;
+    add(this.add.text(50, y, `“${sig.tale}”`, style(12, '#dcc6a2', { fontStyle: 'italic', wordWrap: { width: 390 } }))); y += 38;
     add(this.add.text(50, y, `· ${sig.desc}`, style(14, '#ffffff', { wordWrap: { width: 390 } }))); y += 40;
     add(this.add.text(50, y, `▶ ${sig.feel}`, style(14, '#9cff6b'))); y += 26;
     const aw = sc.awaken.defs[u.element];
     add(this.add.text(50, y, `✨ 각성기 · ${aw.name} ${E[u.element]?.icon ?? ''}`, style(16, lv >= sc.awakenAt ? '#ffd84d' : '#8a8f96'))); y += 24;
-    add(this.add.text(50, y, `영물이 되면 ${sc.awaken.every}초마다 화면의 적 전부를 휩쓺 (정 ${sc.awakenAt}단계부터)`, style(12, '#aabbcc', { wordWrap: { width: 390 } }))); y += 22;
+    add(this.add.text(50, y, `영물: ${sc.awaken.every}초마다 화면 전체 공격 · 정 ${sc.awakenAt}단계~`, style(12, '#dcc6a2', { wordWrap: { width: 390 } }))); y += 22;
     add(this.add.text(50, y, '⚠ 혼자서는 힘든 것', style(14, '#ff9f9f'))); y += 21;
     for (const gp of soulGaps(D, u.id, stage).slice(0, 3)) { add(this.add.text(58, y, `· ${gp.text}  →  ${gp.need}`, style(12, '#ffd0c0', { wordWrap: { width: 385 } }))); y += 19; }
     // 갈림길: 정 2단계부터 둘 중 하나
     const forkOpen = lv >= sc.pathAt && open, cur = S.soulPath?.[u.id] ?? null;
-    add(this.add.text(50, 486, `🔀 갈림길${forkOpen ? '' : `  (정 ${sc.pathAt}단계에 열림)`}`, style(14, forkOpen ? '#7fd1ff' : '#667788')));
+    add(this.add.text(50, 486, `🔀 갈림길${forkOpen ? '' : `  (정 ${sc.pathAt}단계에 열림)`}`, style(14, forkOpen ? '#7fd1ff' : '#9c8668')));
     ['a', 'b'].forEach((k, i) => {
       const p = sig.paths[k], on = cur === k;
       const pb = button(this, 145 + i * 200, 524, 192, 36, `${on ? '✔ ' : ''}${p.name}`, () => { (S.soulPath ??= {})[u.id] = k; this.save(); this.paint(); }, { size: 14, fill: on ? 0x1f4d6b : 0x1a2636, stroke: on ? 0x7fd1ff : 0x55657a, tip: p.desc });
       pb.setEnabled(forkOpen);
       this.btns.push(pb);
-      add(this.add.text(145 + i * 200, 552, p.desc, style(10, on ? '#cfe8ff' : '#8899aa', { wordWrap: { width: 190 }, align: 'center' })).setOrigin(0.5, 0));
+      add(this.add.text(145 + i * 200, 552, p.desc, style(10, on ? '#cfe8ff' : '#b9a37f', { wordWrap: { width: 190 }, align: 'center' })).setOrigin(0.5, 0));
     });
-    add(this.add.text(50, 584, `💗 정 ${'♥'.repeat(lv)}${'♡'.repeat(cfg.favor.max - lv)}   소울펫일 때 단계마다 피해·체력 +${sc.favorDmg}%, 소울 기술 +${sc.favorSig}%`, style(11, '#ff9fbf', { wordWrap: { width: 395 } })));
+    add(this.add.text(50, 584, `💗 정 ${'♥'.repeat(lv)}${'♡'.repeat(cfg.favor.max - lv)} · 소울펫: 단계당 피해·체력 +${sc.favorDmg}%, 기술 +${sc.favorSig}%`, style(11, '#ff9fbf', { wordWrap: { width: 395 } })));
     const st = favorState(S, D, u.id);
     const fb = button(this, 135, 624, 180, 34, st.reason === 'max' ? '정 가득 참' : `정 붙이기 · 💠${st.cost ?? cfg.favor.costs[lv] ?? '-'}`, () => { if (buyFavor(S, D, u.id).ok) { this.save(); this.paint(); } }, { size: 14, fill: 0x5a2a4a, stroke: 0xff9fbf, tip: `가진 에센스 ${S.essence}` });
     fb.setEnabled(st.ok && open);
@@ -73,16 +74,15 @@ export default class DeckScene extends Phaser.Scene {
     this.btns.push(fb, sb);
 
     // ---- right: roster grid ----
-    g.fillStyle(0x0d141d, 0.92).fillRoundedRect(476, 76, 774, 572, 16).lineStyle(2, 0xd4b06a, 0.8).strokeRoundedRect(476, 76, 774, 572, 16);
-    add(this.add.text(496, 88, `덱 ${deck.length}/${sc.deckSize}  — 눌러서 살펴보고, 아래 버튼으로 넣고 빼기`, style(14, '#ffe2b8')));
+    drawPanel(g, 476, 76, 774, 572, { alpha: 0.95 });
+    add(this.add.text(496, 88, `덱 ${deck.length}/${sc.deckSize}`, style(14, '#ffe2b8')));
     order.forEach((id, i) => {
       const a = D.unitById[id]; if (!a) return;
       const cx = 496 + (i % 5) * 150, cy = 116 + Math.floor(i / 5) * 138, has = unlocked.includes(id), inDeck = deck.includes(id), soul = S.soulPet === id;
-      g.fillStyle(inDeck ? 0x1d3346 : 0x141b24, 1).fillRoundedRect(cx, cy, 140, 128, 10);
-      g.lineStyle(this.sel === id ? 4 : 2, soul ? 0xffd84d : this.sel === id ? 0xffffff : inDeck ? 0x7fd1ff : 0x3b4b5e, 1).strokeRoundedRect(cx, cy, 140, 128, 10);
+      drawSlot(g, cx, cy, 140, 128, { r: 10, fill: inDeck ? 0x3d2a1c : 0x1c130e, alpha: 1, accent: soul ? 0xffd84d : this.sel === id ? 0xffffff : inDeck ? 0x7fd1ff : undefined, accentW: this.sel === id ? 3 : 2, line: this.sel === id ? 3.5 : 2.5 });
       { const im0 = speciesImage(this, id, 'adult', cx + 70, cy + 46, 72); if (im0) { const im = add(im0); if (!has) im.setTint(0x000000).setAlpha(0.45); else if (!inDeck) im.setAlpha(0.55); } }
-      add(this.add.text(cx + 70, cy + 92, has ? `${soul ? '👑 ' : ''}${a.name}` : `⭐${cfg.roster.unlocks.find((x) => x.id === id)?.stars}`, style(14, soul ? '#ffd84d' : has ? '#ffffff' : '#8899aa')).setOrigin(0.5));
-      add(this.add.text(cx + 70, cy + 112, has ? `${ROLE[a.role].split(' ')[0]}${E[a.element]?.icon ?? ''} ${soulSig(D, id).name}` : '', style(11, '#aabbcc')).setOrigin(0.5));
+      add(this.add.text(cx + 70, cy + 92, has ? `${soul ? '👑 ' : ''}${a.name}` : `⭐${cfg.roster.unlocks.find((x) => x.id === id)?.stars}`, style(14, soul ? '#ffd84d' : has ? '#ffffff' : '#b9a37f')).setOrigin(0.5));
+      add(this.add.text(cx + 70, cy + 112, has ? `${ROLE[a.role].split(' ')[0]}${E[a.element]?.icon ?? ''} ${soulSig(D, id).name}` : '', style(11, '#dcc6a2')).setOrigin(0.5));
       if (inDeck) add(this.add.text(cx + 8, cy + 6, '✔', style(14, '#7CFC9A')));
       const z = add(this.add.zone(cx + 70, cy + 64, 140, 128).setInteractive({ useHandCursor: true }));
       z.on('pointerdown', () => { this.sel = id; this.paint(); });
@@ -102,6 +102,6 @@ export default class DeckScene extends Phaser.Scene {
     }, { size: 15, fill: inDeck ? 0x4a2a2a : 0x2a4a6a });
     tb.setEnabled(open && !isSoul && (inDeck ? deck.length > 3 : !full));
     this.btns.push(tb);
-    if (this.stageId) this.btns.push(button(this, 1140, 676, 200, 44, '이 덱으로 출발', () => this.scene.start('Battle', { stageId: this.stageId }), { size: 17, fill: 0x3a7bd5 }));
+    if (this.stageId) this.btns.push(button(this, 1140, 676, 200, 44, '이 덱으로 출발', () => this.scene.start('Battle', { stageId: this.stageId }), { size: 17, variant: 'green' }));
   }
 }

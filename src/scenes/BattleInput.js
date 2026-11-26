@@ -126,12 +126,12 @@ export function attachInput(scene) {
         if (kind === 'evolve') opts.unshift({ icon: '⬆', label: '진화', sub: `${T(p.textKey, p.vars)}\n특성: ${names(inheritEvolve(to.traits, from.traits))}`, color: 0x2ecc71, onPick: doMerge });
         if (kind === 'spirit') opts.unshift({ icon: '🌟', label: '영물로 진화', sub: `${T('merge.spirit', p.vars)}\n특성: ${names(inheritSpirit(to.traits, from.traits))} (약점이 모두 뒤집혀요)`, color: 0xffd84d, onPick: doMerge });
         if (kind === 'chimera' || kind === 'weak') {
-          let line = '레시피가 있으면 키메라, 없으면 약체 키메라가 태어나요.';
+          let line = '레시피 있으면 키메라 · 없으면 약체';
           if (p.kind === 'chimera' && p.textKey === 'merge.chimera') line = `${T(p.textKey, p.vars)}\n특성: ${names(inheritChimera(to.traits, from.traits))}`;
           else if (p.kind === 'weak' && p.textKey === 'merge.weakKnown') line = `${T(p.textKey, p.vars)}\n약점만 남아요: ${names(inheritWeak(to.traits, from.traits, data, makeRng(1)).traits)}`;
           opts.unshift({ icon: '🧪', label: p.textKey === 'merge.chimera' ? '합성' : '합성 (모험)', sub: line, color: p.textKey === 'merge.chimera' ? 0xb388ff : 0xaaaaaa, onPick: doMerge });
         }
-        choiceBox(scene, `${from.stats.name} → ${to.stats.name}`, [[kind === 'swap' ? '두 동물의 자리를 바꿈.' : '합치면 되돌릴 수 없음. 무엇을 할지 선택.', kind === 'swap' ? '#cfd8dc' : '#ffcf8a']], opts);
+        choiceBox(scene, `${from.stats.name} → ${to.stats.name}`, [[kind === 'swap' ? '두 동물 자리 바꾸기' : '합치면 되돌릴 수 없어요', kind === 'swap' ? '#efe0c4' : '#ffcf8a']], opts);
         break;
       }
       case 'sell': {

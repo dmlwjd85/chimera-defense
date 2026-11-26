@@ -126,10 +126,10 @@ export default class StageSelectScene extends Phaser.Scene {
     const mid = 760;
     add(this.add.text(mid, y + 4, `${stars(starsOf(rec))}`, style(26, '#ffd84d', { stroke: '#000', strokeThickness: 4 })));
     add(this.add.text(mid, y + 42, rec?.cleared ? `클리어 ✔${rec.bestTime ? `  최고 ${mmss(rec.bestTime)}` : ''}` : rec ? `최고 웨이브 ${rec.bestWave}` : '처음', style(14, rec?.cleared ? '#58d68d' : '#cccccc')));
-    add(this.add.text(mid, y + 64, `★ 제한 시간 ${mmss(st.par ?? cfg.stars.par)}`, style(13, '#aabbcc')));
+    add(this.add.text(mid, y + 64, `★ 클리어  ★ 생명 ${cfg.stars?.life ?? 60}% 이상  ★ 쓰러진 아군 ${cfg.gauntlet?.lowStars ?? 3} 이하${rec?.hard ? '  👑 하드' : ''}`, style(13, '#aabbcc')));
     const sp = (cfg.spells?.list ?? []).find((s) => s.stage === st.id);
     if (sp) add(this.add.text(mid, y + 106, rec?.cleared ? `🔮 배운 마법: ${sp.icon} ${sp.name}` : `🔮 깨면 배우는 마법: ${sp.icon} ${sp.name}`, style(13, '#d7bde2')));
-    if (i > 0 && open) add(this.add.text(mid, y + 86, carry ? `데려갈 동물: ${carry.white ? '흰 ' : ''}${carry.stage === 'teen' ? '성장기' : '어린'} ${data.unitById[carry.speciesId].name}` : `데려갈 동물 없음 → 시작 골드 +${cfg.carry.fallbackGold}`, style(13, carry ? '#9cff6b' : '#aaaaaa')));
+    if (false && i > 0 && open) add(this.add.text(mid, y + 86, carry ? `데려갈 동물: ${carry.white ? '흰 ' : ''}${carry.stage === 'teen' ? '성장기' : '어린'} ${data.unitById[carry.speciesId].name}` : `데려갈 동물 없음 → 시작 골드 +${cfg.carry.fallbackGold}`, style(13, carry ? '#9cff6b' : '#aaaaaa')));
     this.goBtn = button(this, 1130, y + 58, 190, 60, open ? '출발' : '잠김', () => this.scene.start('Gauntlet', { stageId: st.id }), { size: open ? 24 : 16, fill: open ? 0x3a7bd5 : 0x333333 });
     this.goBtn.setEnabled(open);
   }

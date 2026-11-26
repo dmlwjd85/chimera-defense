@@ -288,3 +288,22 @@ test('잡아채기(개구리 혀·좀비 손)·깊숙이 위험·덩굴 덫·흑
   const g0 = s3.gold, r = G.releaseUnit(s3, D, w.uid);
   assert.ok(r.ok); assert.equal(s3.gold - g0, D.config.gauntlet?.sellWeak ?? 25);
 });
+
+test('덱 대결: 코드 주고받기(틀린 글자 잡기), 해금한 동물만, 3판 2선승', async () => {
+  const Du = await import('../src/logic/duel.js');
+  const G = await import('../src/logic/gauntlet.js');
+  const save = defaultSave(D);
+  const mine = Du.myDuelDeck(save, D);
+  const open = new Set((await import('../src/logic/meta.js')).rosterPool(save, D) ?? D.units.map((u) => u.id));
+  assert.ok(mine.length >= 3 && mine.every((u) => open.has(u.id) && u.stage !== 'adult'), '해금한 동물, 성장기까지');
+  const code = Du.encodeDeck(mine, 'hunt', D);
+  const back = Du.decodeDeck(code, D);
+  assert.deepEqual(back.deck.map((u) => u.id), mine.map((u) => u.id)); assert.equal(back.plan, 'hunt');
+  const bad = code.slice(0, 5) + (code[5] === 'A' ? 'B' : 'A') + code.slice(6);
+  assert.ok(Du.decodeDeck(bad, D).error, '틀린 글자');
+  const dd = Du.duelData(D, back);
+  const st = G.createGauntlet(dd.data, 'arena', 7, { pool: mine.map((u) => u.id), plan: dd.plan, duel: { hpMul: Du.DUEL.hpMul, need: 2, foePlan: dd.foePlan } });
+  assert.ok(st.enemies.every((e) => e.animal), '상대는 동물');
+  G.autoRun(st, dd.data);
+  assert.equal(st.phase, 'ended'); assert.ok(st.wins === 2 || st.losses === 2);
+});

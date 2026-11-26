@@ -307,7 +307,8 @@ export function createGauntlet(data, stageId, seed = 1, opts = {}) {
   state.life += eco(state, data, 'life') ?? 0;
   state.maxLife = state.life;
   state.mana = Math.min(cfg.spells?.max ?? 0, state.mana + (eco(state, data, 'manaStart') ?? 0));
-  state.plan = planEncounters(stage, data, state.rng);
+  state.plan = opts.plan ?? planEncounters(stage, data, state.rng);
+  if (opts.duel) { state.duel = { ...opts.duel }; state.life = state.maxLife = 99; }
   // 처음 출전: 덱 전부(어린 단계). 소울펫이 있으면 왕관.
   // 출전 단계: 종 레벨이 오르면 성장기(Lv3)·성체(Lv6)로 시작. 신화급은 혼자 못 됨(합성만)
   const lvStage = (id) => { const lv = state.levels[id] ?? 1; return lv >= g.growLv.adult ? 'adult' : lv >= g.growLv.teen ? 'teen' : g.startStage; };
@@ -348,7 +349,7 @@ const prep = (u) => Object.assign(u, { tactic: u.tactic ?? null, gauge: u.gauge 
 export function startEncounter(state, data) {
   const g = gcfg(data), spec = state.plan[state.enc];
   state.enemies = []; state.eSeats = Array(SEATS).fill(null);
-  for (const id of spec.ids) addEnemy(state, data, id, spec.wave);
+  for (const id of spec.ids) addEnemy(state, data, id, spec.wave, spec.seats?.[id] ?? null);
   // 쉬던 동물: 혼자 남지 않게, 싸울 동물이 둘보다 적으면 쉬던 동물도 나옴
   if (fighters(state).length < 2) for (const u of unitsIn(state)) if (u?.resting) { u.resting = false; u.hp = Math.max(u.hp, u.maxHp * 0.3); }
   for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; u.stance = canStance(u) ? u.prefStance ?? nativeStance(u) : null; u.stanceT = 0.3 + state.rng() * 0.6; }
@@ -368,6 +369,7 @@ export function startEncounter(state, data) {
     if (state.rng() < 0.2) k = ['dive', 'wall', 'mixed'][Math.floor(state.rng() * 3)];
     if (state.lesson === 'wall') { k = 'lessonWall'; for (const e of es) if (e.style === 'bruiser') { e.maxHp = Math.round(e.maxHp * g.lessonWallHp); e.hp = e.maxHp; } }
     if (state.lesson === 'dive') k = 'lessonDive';
+    if (state.duel) k = { hunt: 'dive', guard: 'wall', front: 'mixed' }[state.duel.foePlan] ?? 'mixed';
     state.temperName = k; state.temper = g.temper[k];
   }
   for (const u of state.field) u.diveMark = null;
@@ -382,12 +384,12 @@ export function startEncounter(state, data) {
   return g;
 }
 
-function addEnemy(state, data, id, wave) {
+function addEnemy(state, data, id, wave, seatWant = null) {
   const g = gcfg(data), def = data.enemyById[id];
   const style = rule(state, 'giants') && !def.boss ? 'bruiser' : roleOfEnemy(g, id, def);
   const ranged = style === 'ranged' || style === 'support';
   const order = seatOrder(def.boss ? 'bruiser' : style);
-  const seat = order.find((k) => state.eSeats[k] == null);
+  const seat = seatWant != null && state.eSeats[seatWant] == null ? seatWant : order.find((k) => state.eSeats[k] == null);
   if (seat == null) return null;
   // 웨이브 성장 대신 교전 번호로 성장(1교전 1배 → 마지막 1+growth×(N-1)배).
   // 길 디펜스용 숫자(튼튼한 적 5배, 보스 200배)는 차이가 너무 커서 0.6제곱으로 눌러 씀.
@@ -401,11 +403,13 @@ function addEnemy(state, data, id, wave) {
   const atk0 = def.attack || g.zeroAttack;
   const atk = 5 * Math.pow((atk0 * (def.spawnCount > 1 ? def.spawnCount * 0.5 : 1)) / 5, g.squash) * (def.boss ? g.bossAtk * (g.bossTune?.[id]?.atk ?? 1) : g.enemyAtk);
   e.attack = Math.max(1, Math.round(atk * Math.pow(state.stage.mult ?? 1, g.stageAtkPow) * (data.config.difficulty?.enemyAttack ?? 1) * upA));
+  // 대결: 친구 동물은 계산한 수치 그대로(스테이지 배율·성장 없음)
+  if (def.raw) { e.hp = e.maxHp = def.hp; e.attack = def.attack; e.interval = def.interval; e.animal = def.animal; e.animalStage = def.stage; }
   if (e.heal) e.heal = { ...e.heal, percent: e.heal.percent * g.healMult };
   e.interval = e.interval || g.zeroInterval;
   Object.assign(e, { skin: def.skin, tint: def.tint, seat, gauge: state.rng() * 0.3, name: def.name, ranged, style, element: enemyElement(data, state.stage, id, state.rng()), shieldLeft: 0, patternT: def.pattern?.every ?? 0, healT: def.heal?.every ?? 0, burnDps: 0, burnLeft: 0, curseLeft: 0, pos: 0 });
   // 등급(색): 스테이지 번호에 따라 푸른(1)·붉은(2)·검은(3)
-  if (!def.boss && !state.lesson) {
+  if (!def.boss && !state.lesson && !def.raw) {
     const si = Math.max(0, data.stages.findIndex((x) => x.id === state.stage.id)), ch = g.rankChance[Math.min(si, g.rankChance.length - 1)] ?? [0, 0, 0];
     const r = state.rng(); const rank = r < ch[2] ? 3 : r < ch[2] + ch[1] ? 2 : r < ch[2] + ch[1] + ch[0] ? 1 : 0;
     if (rank) { const R = g.ranks[rank]; e.rank = rank; e.name = `${R.prefix} ${e.name}`; e.hp = e.maxHp = Math.round(e.maxHp * R.hp); e.attack = Math.round(e.attack * R.atk); }
@@ -430,6 +434,7 @@ function refreshMods(state, data) {
       const tn = tuneOf(u, g);
       if (tn) for (const k of ['hp', 'dmg', 'interval', 'taken']) if (tn[k]) m[k] = (m[k] ?? 0) + tn[k];
       if (u.trained) m.dmg = (m.dmg ?? 0) + u.trained * g.trainDmg;
+      if (state.duel) m.hp = (m.hp ?? 0) + (state.duel.hpMul - 1) * 100;
       if (on) { if (u.uid === state.star) { m.dmg = (m.dmg ?? 0) + g.starDmg; m.hp = (m.hp ?? 0) + g.starHp; } else m.dmg = (m.dmg ?? 0) + g.starOthers; }
       u.extraMods = Object.keys(m).length ? m : null;
     } }
@@ -1273,6 +1278,18 @@ function checkEnd(state, data, g) {
 function endEncounter(state, data, win) {
   const g = gcfg(data), spec = state.plan[state.enc];
   state.lastWin = win;
+  // 대결: 3판 2선승. 판 사이엔 보상 없이 자리·작전만 고치고, 체력은 모두 가득
+  if (state.duel) {
+    if (win) state.wins += 1; else state.losses += 1;
+    state.events.push({ type: win ? 'encWin' : 'encLose', enc: state.enc, life: state.life, duel: true });
+    state.enc += 1;
+    if (state.wins >= state.duel.need || state.losses >= state.duel.need || state.enc >= state.plan.length) { state.phase = 'ended'; state.result = state.wins > state.losses ? 'clear' : 'lose'; return; }
+    for (const u of state.field) { u.down = false; u.resting = false; u.hp = u.maxHp; u.gauge = 0; u.stunLeft = 0; }
+    state.enemies = []; state.eSeats = Array(SEATS).fill(null);
+    state.phase = 'regroup'; state.prelude = true; state.offer = null;
+    state.events.push({ type: 'regroup', prelude: true });
+    return;
+  }
   if (win) {
     state.wins += 1;
     state.gold += g.goldWin + g.goldPerEnc * state.enc + (eco(state, data, 'goldWin') ?? 0);

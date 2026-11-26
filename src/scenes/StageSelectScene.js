@@ -93,10 +93,11 @@ export default class StageSelectScene extends Phaser.Scene {
     this.pick(lastOpen, cards[lastOpen]);
 
     button(this, 120, 672, 160, 46, '← 처음', () => this.scene.start('Title'));
-    button(this, 120, 620, 160, 34, save.guideOff ? '💡 안내 꺼짐' : '💡 안내 켜짐', () => { save.guideOff = !save.guideOff; writeSave(this.registry.get('storage'), save); this.scene.restart(); }, { size: 13, fill: save.guideOff ? 0x333333 : 0x3a5a2a, tip: '전투·보상 때 추천 행동 안내' });
+    button(this, 880, 672, 170, 46, '⚔ 덱 대결', () => this.scene.start('Duel'), { size: 16, fill: 0x5a1e1e, stroke: 0xff8a7a, tip: '친구 덱 코드로 대결' });
+    button(this, 1185, 84, 140, 28, save.guideOff ? '💡 안내 꺼짐' : '💡 안내 켜짐', () => { save.guideOff = !save.guideOff; writeSave(this.registry.get('storage'), save); this.scene.restart(); }, { size: 12, fill: save.guideOff ? 0x333333 : 0x3a5a2a, tip: '전투·보상 때 추천 행동 안내' });
     const sp = data.unitById[save.soulPet];
     button(this, 340, 672, 210, 46, `🛒 상점 💰${save.pouch ?? 0}`, () => showShop(this, data, save, this.registry.get('storage'), () => this.scene.restart()), { fill: 0x5a4a14, stroke: 0xffd84d, size: 16, tip: '남은 금화로 다음 스테이지 준비물 사기' });
-    button(this, 700, 672, 380, 46, sp ? `🐾 덱 · 👑${sp.name}` : '🐾 덱', () => this.scene.start('Deck', { stageId: this.picked ?? null }), { fill: sp ? 0x4a3d14 : 0x2e5a3a, stroke: 0xffd84d, size: 16, tip: '주인공 한 마리와 약점을 메울 동료 고르기' });
+    button(this, 600, 672, 300, 46, sp ? `🐾 덱 · 👑${sp.name}` : '🐾 덱', () => this.scene.start('Deck', { stageId: this.picked ?? null }), { fill: sp ? 0x4a3d14 : 0x2e5a3a, stroke: 0xffd84d, size: 16, tip: '주인공 한 마리와 약점을 메울 동료 고르기' });
     button(this, 1120, 672, 250, 46, `✨ 강화 💎${save.shards ?? 0}`, () => this.scene.start('Talent', { back: 'StageSelect' }), { fill: 0x3a2466, stroke: 0xc77dff, size: 17, tip: '유물 조각으로 특성 찍기' });
   }
 

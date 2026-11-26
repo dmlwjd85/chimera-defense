@@ -10,19 +10,22 @@ export default class TitleScene extends Phaser.Scene {
   create() {
     const save = this.registry.get('save');
     this.cameras.main.setBackgroundColor('#141a21');
-    if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720);
+    // 타이틀 배경: 심장의 성문(B3). 없으면 예전 배경 → 그것도 없으면 도형 배경
+    const bgKey = ['bg-title-gate', 'bg-title'].find((k) => this.textures.exists(k));
+    if (bgKey) this.add.image(640, 360, bgKey).setDisplaySize(1280, 720);
     else this.drawBackdrop();
     if (this.textures.exists('fx-leaf')) this.add.particles(0, 0, 'fx-leaf', { x: { min: 0, max: 1280 }, y: -10, speedY: { min: 30, max: 70 }, speedX: { min: -20, max: 20 }, lifespan: 12000, frequency: 350, scale: { min: 0.3, max: 0.6 }, rotate: { start: 0, end: 360 }, tint: [0xffb3c6, 0x9ccc65, 0xffd36b], alpha: 0.8 });
     title(this, 640, 170, '키메라 디펜스', 68);
     showDebug(this, null);
-    this.add.text(640, 240, '지구의 심장을 지켜라 — 동화와 신화 속 짐승들의 대연합', style(22, '#e8d9b8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5);
+    // 부제는 두 줄로(성탑·유령을 가리지 않게)
+    this.add.text(640, 250, '지구의 심장을 지켜라\n동화와 신화 속 짐승들의 대연합', style(21, '#fff1d0', { stroke: '#2a1a08', strokeThickness: 5, align: 'center', lineSpacing: 2 })).setOrigin(0.5);
     const go = () => this.scene.start(save.openingSeen ? 'StageSelect' : 'Opening', { next: 'StageSelect' });
     button(this, 640, 350, 260, 64, '시작', go, { size: 26, fill: 0x3a7bd5 });
-    button(this, 900, 350, 150, 48, '📖 이야기', () => this.scene.start('Opening', { next: 'Title' }), { size: 16, tip: '오프닝 다시 보기' });
-    button(this, 640, 430, 260, 54, '도감', () => this.scene.start('Codex'), { size: 20 });
-    button(this, 640, 500, 260, 54, '해금', () => this.scene.start('Unlock'), { size: 20 });
+    button(this, 640, 545, 260, 46, '📖 이야기', () => this.scene.start('Opening', { next: 'Title' }), { size: 16, tip: '오프닝 다시 보기' });
+    button(this, 640, 423, 260, 50, '도감', () => this.scene.start('Codex'), { size: 20 });
+    button(this, 640, 484, 260, 50, '해금', () => this.scene.start('Unlock'), { size: 20 });
     // 크롬에서 설치할 수 있을 때만 보이는 '앱으로 설치' 버튼
-    const inst = button(this, 640, 570, 260, 48, '📲 앱으로 설치', async () => {
+    const inst = button(this, 640, 655, 260, 44, '📲 앱으로 설치', async () => {
       const p = window.__installPrompt; if (!p) return;
       p.prompt(); const r = await p.userChoice.catch(() => null);
       if (r?.outcome === 'accepted') inst.setVisible(false);
@@ -33,7 +36,7 @@ export default class TitleScene extends Phaser.Scene {
     const onDone = () => inst.setVisible(false);
     this.game.events.on('installable', onAble); this.game.events.on('installed', onDone);
     this.events.once('shutdown', () => { this.game.events.off('installable', onAble); this.game.events.off('installed', onDone); });
-    this.add.text(640, 575, `에센스 ${save.essence}   업적 ${save.achievements.length}/5`, style(18, '#ffd84d')).setOrigin(0.5);
+    this.add.text(640, 603, `에센스 ${save.essence}   업적 ${save.achievements.length}/5`, style(18, '#ffd84d', { stroke: '#2a1a08', strokeThickness: 4 })).setOrigin(0.5);
     const reset = button(this, 1180, 690, 160, 36, '진행 초기화', () => {
       if (this.confirmReset) { this.registry.set('save', defaultSave()); writeSave(this.registry.get('storage'), this.registry.get('save')); this.scene.restart(); }
       else { this.confirmReset = true; reset.set('한 번 더 누르면 초기화'); }

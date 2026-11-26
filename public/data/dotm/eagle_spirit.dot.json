@@ -1,0 +1,857 @@
+{
+ "note": "eagle 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "eagle_spirit",
+ "sheet": "dot-m-eagle_spirit",
+ "file": "assets/dotm/eagle_spirit.png",
+ "frameW": 145,
+ "frameH": 148,
+ "foot": 146,
+ "cols": 1,
+ "anchorX": 74,
+ "palette": [
+  "#0c0207",
+  "#291a1f",
+  "#526b99",
+  "#5c3633",
+  "#6c300c",
+  "#76adda",
+  "#835340",
+  "#908ba4",
+  "#aa6c37",
+  "#ac8f7c",
+  "#c3c7da",
+  "#d49333",
+  "#dfa85e",
+  "#f4be30",
+  "#fce77a",
+  "#fefefe"
+ ],
+ "rects": {
+  "eagle_myth_a1_00": [
+   194,
+   275,
+   114,
+   106,
+   -54,
+   -108
+  ],
+  "eagle_myth_a1_01": [
+   1871,
+   275,
+   136,
+   103,
+   -67,
+   -105
+  ],
+  "eagle_myth_a1_02": [
+   498,
+   0,
+   119,
+   141,
+   -62,
+   -143
+  ],
+  "eagle_myth_a1_03": [
+   0,
+   0,
+   119,
+   145,
+   -53,
+   -147
+  ],
+  "eagle_myth_a1_04": [
+   120,
+   0,
+   124,
+   144,
+   -56,
+   -146
+  ],
+  "eagle_myth_a1_05": [
+   1071,
+   0,
+   133,
+   135,
+   -67,
+   -137
+  ],
+  "eagle_myth_a1_06": [
+   1435,
+   275,
+   141,
+   104,
+   -71,
+   -106
+  ],
+  "eagle_myth_a1_07": [
+   1743,
+   146,
+   98,
+   107,
+   -48,
+   -109
+  ],
+  "eagle_myth_a2_00": [
+   471,
+   383,
+   104,
+   102,
+   -53,
+   -104
+  ],
+  "eagle_myth_a2_01": [
+   791,
+   383,
+   115,
+   100,
+   -61,
+   -102
+  ],
+  "eagle_myth_a2_02": [
+   1214,
+   146,
+   121,
+   116,
+   -66,
+   -120
+  ],
+  "eagle_myth_a2_03": [
+   847,
+   0,
+   107,
+   136,
+   -50,
+   -147
+  ],
+  "eagle_myth_a2_04": [
+   955,
+   0,
+   115,
+   136,
+   -58,
+   -146
+  ],
+  "eagle_myth_a2_05": [
+   222,
+   146,
+   121,
+   127,
+   -66,
+   -129
+  ],
+  "eagle_myth_a2_06": [
+   576,
+   383,
+   110,
+   102,
+   -58,
+   -104
+  ],
+  "eagle_myth_a2_07": [
+   309,
+   275,
+   94,
+   106,
+   -45,
+   -108
+  ],
+  "eagle_myth_down_00": [
+   698,
+   275,
+   98,
+   105,
+   -48,
+   -107
+  ],
+  "eagle_myth_down_01": [
+   1440,
+   146,
+   100,
+   109,
+   -49,
+   -111
+  ],
+  "eagle_myth_down_02": [
+   1587,
+   0,
+   104,
+   131,
+   -53,
+   -135
+  ],
+  "eagle_myth_down_03": [
+   1640,
+   146,
+   102,
+   108,
+   -55,
+   -110
+  ],
+  "eagle_myth_down_04": [
+   1336,
+   146,
+   103,
+   112,
+   -53,
+   -114
+  ],
+  "eagle_myth_down_05": [
+   687,
+   383,
+   103,
+   101,
+   -53,
+   -104
+  ],
+  "eagle_myth_down_06": [
+   907,
+   383,
+   121,
+   69,
+   -61,
+   -72
+  ],
+  "eagle_myth_down_07": [
+   1029,
+   383,
+   137,
+   55,
+   -71,
+   -56
+  ],
+  "eagle_myth_el_00": [
+   797,
+   275,
+   105,
+   105,
+   -53,
+   -107
+  ],
+  "eagle_myth_el_01": [
+   0,
+   383,
+   122,
+   103,
+   -62,
+   -105
+  ],
+  "eagle_myth_el_02": [
+   1692,
+   0,
+   135,
+   131,
+   -64,
+   -133
+  ],
+  "eagle_myth_el_03": [
+   722,
+   0,
+   124,
+   140,
+   -59,
+   -142
+  ],
+  "eagle_myth_el_04": [
+   374,
+   0,
+   123,
+   143,
+   -57,
+   -145
+  ],
+  "eagle_myth_el_05": [
+   245,
+   0,
+   128,
+   144,
+   -58,
+   -146
+  ],
+  "eagle_myth_el_06": [
+   123,
+   383,
+   140,
+   103,
+   -74,
+   -105
+  ],
+  "eagle_myth_el_07": [
+   404,
+   275,
+   97,
+   106,
+   -48,
+   -108
+  ],
+  "eagle_myth_hit_00": [
+   905,
+   146,
+   99,
+   122,
+   -51,
+   -124
+  ],
+  "eagle_myth_hit_01": [
+   618,
+   0,
+   103,
+   141,
+   -56,
+   -143
+  ],
+  "eagle_myth_hit_02": [
+   264,
+   383,
+   99,
+   103,
+   -51,
+   -105
+  ],
+  "eagle_myth_hit_03": [
+   502,
+   275,
+   97,
+   106,
+   -48,
+   -108
+  ],
+  "eagle_myth_idle_00": [
+   1577,
+   275,
+   97,
+   104,
+   -48,
+   -104
+  ],
+  "eagle_myth_idle_01": [
+   1675,
+   275,
+   96,
+   104,
+   -48,
+   -104
+  ],
+  "eagle_myth_idle_02": [
+   903,
+   275,
+   97,
+   105,
+   -48,
+   -105
+  ],
+  "eagle_myth_idle_03": [
+   600,
+   275,
+   97,
+   106,
+   -48,
+   -106
+  ],
+  "eagle_myth_ult_00": [
+   1001,
+   275,
+   101,
+   105,
+   -48,
+   -107
+  ],
+  "eagle_myth_ult_01": [
+   1005,
+   146,
+   105,
+   121,
+   -50,
+   -123
+  ],
+  "eagle_myth_ult_02": [
+   0,
+   146,
+   108,
+   128,
+   -51,
+   -130
+  ],
+  "eagle_myth_ult_03": [
+   695,
+   146,
+   104,
+   124,
+   -51,
+   -126
+  ],
+  "eagle_myth_ult_04": [
+   1111,
+   146,
+   102,
+   121,
+   -51,
+   -123
+  ],
+  "eagle_myth_ult_05": [
+   800,
+   146,
+   104,
+   123,
+   -51,
+   -125
+  ],
+  "eagle_myth_ult_06": [
+   586,
+   146,
+   108,
+   125,
+   -52,
+   -127
+  ],
+  "eagle_myth_ult_07": [
+   109,
+   146,
+   112,
+   128,
+   -55,
+   -130
+  ],
+  "eagle_myth_ult_08": [
+   1205,
+   0,
+   115,
+   134,
+   -58,
+   -135
+  ],
+  "eagle_myth_ult_09": [
+   1828,
+   0,
+   120,
+   130,
+   -64,
+   -135
+  ],
+  "eagle_myth_ult_10": [
+   344,
+   146,
+   120,
+   126,
+   -67,
+   -135
+  ],
+  "eagle_myth_ult_11": [
+   465,
+   146,
+   120,
+   126,
+   -70,
+   -139
+  ],
+  "eagle_myth_ult_12": [
+   1460,
+   0,
+   126,
+   132,
+   -74,
+   -147
+  ],
+  "eagle_myth_ult_13": [
+   1321,
+   0,
+   138,
+   134,
+   -71,
+   -140
+  ],
+  "eagle_myth_ult_14": [
+   1103,
+   275,
+   135,
+   105,
+   -66,
+   -106
+  ],
+  "eagle_myth_ult_15": [
+   364,
+   383,
+   106,
+   103,
+   -49,
+   -105
+  ],
+  "eagle_myth_walk_00": [
+   1842,
+   146,
+   97,
+   107,
+   -49,
+   -108
+  ],
+  "eagle_myth_walk_01": [
+   1940,
+   146,
+   96,
+   107,
+   -49,
+   -110
+  ],
+  "eagle_myth_walk_02": [
+   0,
+   275,
+   95,
+   107,
+   -50,
+   -110
+  ],
+  "eagle_myth_walk_03": [
+   1239,
+   275,
+   97,
+   105,
+   -52,
+   -108
+  ],
+  "eagle_myth_walk_04": [
+   1772,
+   275,
+   98,
+   104,
+   -53,
+   -106
+  ],
+  "eagle_myth_walk_05": [
+   1337,
+   275,
+   97,
+   105,
+   -51,
+   -107
+  ],
+  "eagle_myth_walk_06": [
+   96,
+   275,
+   97,
+   107,
+   -49,
+   -109
+  ],
+  "eagle_myth_walk_07": [
+   1541,
+   146,
+   98,
+   109,
+   -48,
+   -111
+  ]
+ },
+ "frames": [
+  "eagle_myth_a1_00",
+  "eagle_myth_a1_01",
+  "eagle_myth_a1_02",
+  "eagle_myth_a1_03",
+  "eagle_myth_a1_04",
+  "eagle_myth_a1_05",
+  "eagle_myth_a1_06",
+  "eagle_myth_a1_07",
+  "eagle_myth_a2_00",
+  "eagle_myth_a2_01",
+  "eagle_myth_a2_02",
+  "eagle_myth_a2_03",
+  "eagle_myth_a2_04",
+  "eagle_myth_a2_05",
+  "eagle_myth_a2_06",
+  "eagle_myth_a2_07",
+  "eagle_myth_down_00",
+  "eagle_myth_down_01",
+  "eagle_myth_down_02",
+  "eagle_myth_down_03",
+  "eagle_myth_down_04",
+  "eagle_myth_down_05",
+  "eagle_myth_down_06",
+  "eagle_myth_down_07",
+  "eagle_myth_el_00",
+  "eagle_myth_el_01",
+  "eagle_myth_el_02",
+  "eagle_myth_el_03",
+  "eagle_myth_el_04",
+  "eagle_myth_el_05",
+  "eagle_myth_el_06",
+  "eagle_myth_el_07",
+  "eagle_myth_hit_00",
+  "eagle_myth_hit_01",
+  "eagle_myth_hit_02",
+  "eagle_myth_hit_03",
+  "eagle_myth_idle_00",
+  "eagle_myth_idle_01",
+  "eagle_myth_idle_02",
+  "eagle_myth_idle_03",
+  "eagle_myth_ult_00",
+  "eagle_myth_ult_01",
+  "eagle_myth_ult_02",
+  "eagle_myth_ult_03",
+  "eagle_myth_ult_04",
+  "eagle_myth_ult_05",
+  "eagle_myth_ult_06",
+  "eagle_myth_ult_07",
+  "eagle_myth_ult_08",
+  "eagle_myth_ult_09",
+  "eagle_myth_ult_10",
+  "eagle_myth_ult_11",
+  "eagle_myth_ult_12",
+  "eagle_myth_ult_13",
+  "eagle_myth_ult_14",
+  "eagle_myth_ult_15",
+  "eagle_myth_walk_00",
+  "eagle_myth_walk_01",
+  "eagle_myth_walk_02",
+  "eagle_myth_walk_03",
+  "eagle_myth_walk_04",
+  "eagle_myth_walk_05",
+  "eagle_myth_walk_06",
+  "eagle_myth_walk_07"
+ ],
+ "standing": [
+  "eagle_myth_idle_00",
+  "eagle_myth_idle_01",
+  "eagle_myth_idle_02",
+  "eagle_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 41,
+   "attack": {
+    "frames": [
+     "eagle_myth_a1_00",
+     "eagle_myth_a1_01",
+     "eagle_myth_a1_02",
+     "eagle_myth_a1_03",
+     "eagle_myth_a1_04",
+     "eagle_myth_a1_05",
+     "eagle_myth_a1_06",
+     "eagle_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "eagle_myth_a2_00",
+     "eagle_myth_a2_01",
+     "eagle_myth_a2_02",
+     "eagle_myth_a2_03",
+     "eagle_myth_a2_04",
+     "eagle_myth_a2_05",
+     "eagle_myth_a2_06",
+     "eagle_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "eagle_myth_down_00",
+     "eagle_myth_down_01",
+     "eagle_myth_down_02",
+     "eagle_myth_down_03",
+     "eagle_myth_down_04",
+     "eagle_myth_down_05",
+     "eagle_myth_down_06",
+     "eagle_myth_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "eagle_myth_el_00",
+     "eagle_myth_el_01",
+     "eagle_myth_el_02",
+     "eagle_myth_el_03",
+     "eagle_myth_el_04",
+     "eagle_myth_el_05",
+     "eagle_myth_el_06",
+     "eagle_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.15,
+      "cast"
+     ],
+     [
+      0.16,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "eagle_myth_hit_00",
+     "eagle_myth_hit_01",
+     "eagle_myth_hit_02",
+     "eagle_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "eagle_myth_idle_00",
+     "eagle_myth_idle_01",
+     "eagle_myth_idle_02",
+     "eagle_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "eagle_myth_ult_00",
+     "eagle_myth_ult_01",
+     "eagle_myth_ult_02",
+     "eagle_myth_ult_03",
+     "eagle_myth_ult_04",
+     "eagle_myth_ult_05",
+     "eagle_myth_ult_06",
+     "eagle_myth_ult_07",
+     "eagle_myth_ult_08",
+     "eagle_myth_ult_09",
+     "eagle_myth_ult_10",
+     "eagle_myth_ult_11",
+     "eagle_myth_ult_12",
+     "eagle_myth_ult_13",
+     "eagle_myth_ult_14",
+     "eagle_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.15,
+      "cast"
+     ],
+     [
+      0.16,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "eagle_myth_walk_00",
+     "eagle_myth_walk_01",
+     "eagle_myth_walk_02",
+     "eagle_myth_walk_03",
+     "eagle_myth_walk_04",
+     "eagle_myth_walk_05",
+     "eagle_myth_walk_06",
+     "eagle_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

@@ -800,6 +800,13 @@
   "dot-frog_spirit": "assets/dot/frog_spirit.png",
   "dot-crow_spirit": "assets/dot/crow_spirit.png",
   "dot-eagle_spirit": "assets/dot/eagle_spirit.png",
-  "dot-rooster_spirit": "assets/dot/rooster_spirit.png"
+  "dot-rooster_spirit": "assets/dot/rooster_spirit.png",
+  "fx-proj-eagle": "assets/fx/proj/eagle.png",
+  "fx-proj-crow": "assets/fx/proj/crow.png",
+  "fx-proj-fox": "assets/fx/proj/fox.png",
+  "fx-proj-rooster": "assets/fx/proj/rooster.png",
+  "fx-proj-grasshopper": "assets/fx/proj/grasshopper.png",
+  "fx-proj-frog": "assets/fx/proj/frog.png",
+  "fx-proj-monkey": "assets/fx/proj/monkey.png"
  }
 }

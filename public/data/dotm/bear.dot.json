@@ -1,0 +1,1533 @@
+{
+ "note": "bear 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "bear",
+ "sheet": "dot-m-bear",
+ "file": "assets/dotm/bear.png",
+ "frameW": 110,
+ "frameH": 112,
+ "foot": 109,
+ "cols": 1,
+ "anchorX": 55,
+ "palette": [
+  "#060202",
+  "#160506",
+  "#291a1f",
+  "#412e2b",
+  "#44170c",
+  "#443435",
+  "#5f423c",
+  "#7f523f",
+  "#864a37",
+  "#946148",
+  "#a07c6e",
+  "#a66c4f",
+  "#b4805c",
+  "#bc936a",
+  "#d1b087",
+  "#fcf9f9"
+ ],
+ "rects": {
+  "bear_baby_a1_00": [
+   1411,
+   267,
+   51,
+   49,
+   -26,
+   -49
+  ],
+  "bear_baby_a1_01": [
+   1165,
+   267,
+   51,
+   53,
+   -27,
+   -53
+  ],
+  "bear_baby_a1_02": [
+   901,
+   267,
+   50,
+   57,
+   -27,
+   -57
+  ],
+  "bear_baby_a1_03": [
+   952,
+   267,
+   51,
+   56,
+   -27,
+   -56
+  ],
+  "bear_baby_a1_04": [
+   1217,
+   267,
+   52,
+   53,
+   -27,
+   -53
+  ],
+  "bear_baby_a1_05": [
+   1859,
+   267,
+   50,
+   46,
+   -25,
+   -46
+  ],
+  "bear_baby_a1_06": [
+   1626,
+   267,
+   52,
+   47,
+   -25,
+   -47
+  ],
+  "bear_baby_a1_07": [
+   335,
+   330,
+   52,
+   45,
+   -25,
+   -45
+  ],
+  "bear_baby_down_00": [
+   706,
+   330,
+   52,
+   44,
+   -24,
+   -44
+  ],
+  "bear_baby_down_01": [
+   809,
+   330,
+   52,
+   43,
+   -23,
+   -43
+  ],
+  "bear_baby_down_02": [
+   1212,
+   330,
+   62,
+   38,
+   -30,
+   -38
+  ],
+  "bear_baby_down_03": [
+   1275,
+   330,
+   66,
+   31,
+   -33,
+   -31
+  ],
+  "bear_baby_hit_00": [
+   862,
+   330,
+   54,
+   43,
+   -26,
+   -43
+  ],
+  "bear_baby_hit_01": [
+   971,
+   330,
+   55,
+   41,
+   -26,
+   -41
+  ],
+  "bear_baby_hit_02": [
+   917,
+   330,
+   53,
+   42,
+   -25,
+   -42
+  ],
+  "bear_baby_hit_03": [
+   759,
+   330,
+   49,
+   44,
+   -22,
+   -44
+  ],
+  "bear_baby_idle_00": [
+   1910,
+   267,
+   51,
+   46,
+   -25,
+   -46
+  ],
+  "bear_baby_idle_01": [
+   1358,
+   267,
+   52,
+   50,
+   -25,
+   -50
+  ],
+  "bear_baby_idle_02": [
+   1463,
+   267,
+   51,
+   49,
+   -25,
+   -49
+  ],
+  "bear_baby_idle_03": [
+   1679,
+   267,
+   70,
+   47,
+   -25,
+   -47
+  ],
+  "bear_baby_walk_00": [
+   1962,
+   267,
+   51,
+   46,
+   -25,
+   -46
+  ],
+  "bear_baby_walk_01": [
+   388,
+   330,
+   51,
+   45,
+   -25,
+   -45
+  ],
+  "bear_baby_walk_02": [
+   440,
+   330,
+   52,
+   45,
+   -25,
+   -45
+  ],
+  "bear_baby_walk_03": [
+   0,
+   330,
+   52,
+   46,
+   -25,
+   -46
+  ],
+  "bear_baby_walk_04": [
+   53,
+   330,
+   52,
+   46,
+   -25,
+   -46
+  ],
+  "bear_baby_walk_05": [
+   493,
+   330,
+   52,
+   45,
+   -25,
+   -45
+  ],
+  "bear_baby_walk_06": [
+   106,
+   330,
+   51,
+   46,
+   -25,
+   -46
+  ],
+  "bear_baby_walk_07": [
+   546,
+   330,
+   51,
+   45,
+   -25,
+   -45
+  ],
+  "bear_teen_a1_00": [
+   263,
+   267,
+   80,
+   61,
+   -39,
+   -61
+  ],
+  "bear_teen_a1_01": [
+   469,
+   192,
+   78,
+   69,
+   -41,
+   -69
+  ],
+  "bear_teen_a1_02": [
+   1912,
+   110,
+   77,
+   74,
+   -43,
+   -74
+  ],
+  "bear_teen_a1_03": [
+   1733,
+   110,
+   81,
+   75,
+   -43,
+   -75
+  ],
+  "bear_teen_a1_04": [
+   0,
+   192,
+   79,
+   74,
+   -42,
+   -74
+  ],
+  "bear_teen_a1_05": [
+   548,
+   192,
+   77,
+   69,
+   -41,
+   -69
+  ],
+  "bear_teen_a1_06": [
+   887,
+   192,
+   78,
+   66,
+   -40,
+   -66
+  ],
+  "bear_teen_a1_07": [
+   1279,
+   192,
+   78,
+   64,
+   -39,
+   -63
+  ],
+  "bear_teen_a2_00": [
+   344,
+   267,
+   78,
+   61,
+   -39,
+   -61
+  ],
+  "bear_teen_a2_01": [
+   661,
+   267,
+   78,
+   59,
+   -39,
+   -59
+  ],
+  "bear_teen_a2_02": [
+   1662,
+   0,
+   70,
+   83,
+   -41,
+   -83
+  ],
+  "bear_teen_a2_03": [
+   1145,
+   0,
+   62,
+   89,
+   -40,
+   -89
+  ],
+  "bear_teen_a2_04": [
+   1399,
+   0,
+   68,
+   85,
+   -41,
+   -86
+  ],
+  "bear_teen_a2_05": [
+   966,
+   192,
+   76,
+   66,
+   -42,
+   -72
+  ],
+  "bear_teen_a2_06": [
+   1618,
+   192,
+   76,
+   62,
+   -39,
+   -62
+  ],
+  "bear_teen_a2_07": [
+   1695,
+   192,
+   78,
+   62,
+   -38,
+   -62
+  ],
+  "bear_teen_down_00": [
+   1774,
+   192,
+   79,
+   62,
+   -38,
+   -62
+  ],
+  "bear_teen_down_01": [
+   503,
+   267,
+   78,
+   60,
+   -37,
+   -60
+  ],
+  "bear_teen_down_02": [
+   1004,
+   267,
+   80,
+   56,
+   -37,
+   -56
+  ],
+  "bear_teen_down_03": [
+   1270,
+   267,
+   87,
+   51,
+   -44,
+   -51
+  ],
+  "bear_teen_down_04": [
+   158,
+   330,
+   88,
+   46,
+   -43,
+   -47
+  ],
+  "bear_teen_down_05": [
+   247,
+   330,
+   87,
+   46,
+   -44,
+   -46
+  ],
+  "bear_teen_down_06": [
+   1027,
+   330,
+   89,
+   40,
+   -44,
+   -40
+  ],
+  "bear_teen_down_07": [
+   1117,
+   330,
+   94,
+   39,
+   -48,
+   -39
+  ],
+  "bear_teen_hit_00": [
+   740,
+   267,
+   80,
+   58,
+   -39,
+   -58
+  ],
+  "bear_teen_hit_01": [
+   1085,
+   267,
+   79,
+   56,
+   -38,
+   -56
+  ],
+  "bear_teen_hit_02": [
+   821,
+   267,
+   79,
+   58,
+   -39,
+   -58
+  ],
+  "bear_teen_hit_03": [
+   1854,
+   192,
+   78,
+   62,
+   -39,
+   -62
+  ],
+  "bear_teen_idle_00": [
+   1200,
+   192,
+   78,
+   65,
+   -40,
+   -65
+  ],
+  "bear_teen_idle_01": [
+   705,
+   192,
+   78,
+   67,
+   -41,
+   -67
+  ],
+  "bear_teen_idle_02": [
+   626,
+   192,
+   78,
+   68,
+   -42,
+   -68
+  ],
+  "bear_teen_idle_03": [
+   1043,
+   192,
+   78,
+   66,
+   -41,
+   -66
+  ],
+  "bear_teen_walk_00": [
+   1933,
+   192,
+   78,
+   62,
+   -39,
+   -62
+  ],
+  "bear_teen_walk_01": [
+   582,
+   267,
+   78,
+   60,
+   -39,
+   -60
+  ],
+  "bear_teen_walk_02": [
+   423,
+   267,
+   79,
+   61,
+   -40,
+   -61
+  ],
+  "bear_teen_walk_03": [
+   0,
+   267,
+   78,
+   62,
+   -40,
+   -62
+  ],
+  "bear_teen_walk_04": [
+   1463,
+   192,
+   77,
+   63,
+   -40,
+   -63
+  ],
+  "bear_teen_walk_05": [
+   1122,
+   192,
+   77,
+   66,
+   -40,
+   -66
+  ],
+  "bear_teen_walk_06": [
+   1541,
+   192,
+   76,
+   63,
+   -39,
+   -63
+  ],
+  "bear_teen_walk_07": [
+   79,
+   267,
+   77,
+   62,
+   -39,
+   -62
+  ],
+  "bear_adult_a1_00": [
+   80,
+   192,
+   97,
+   74,
+   -49,
+   -75
+  ],
+  "bear_adult_a1_01": [
+   1468,
+   0,
+   96,
+   84,
+   -50,
+   -85
+  ],
+  "bear_adult_a1_02": [
+   576,
+   0,
+   99,
+   99,
+   -51,
+   -100
+  ],
+  "bear_adult_a1_03": [
+   184,
+   0,
+   102,
+   106,
+   -51,
+   -107
+  ],
+  "bear_adult_a1_04": [
+   473,
+   0,
+   102,
+   103,
+   -51,
+   -104
+  ],
+  "bear_adult_a1_05": [
+   769,
+   0,
+   93,
+   97,
+   -50,
+   -98
+  ],
+  "bear_adult_a1_06": [
+   1304,
+   0,
+   94,
+   87,
+   -48,
+   -88
+  ],
+  "bear_adult_a1_07": [
+   1830,
+   0,
+   94,
+   81,
+   -46,
+   -81
+  ],
+  "bear_adult_a2_00": [
+   178,
+   192,
+   95,
+   74,
+   -47,
+   -74
+  ],
+  "bear_adult_a2_01": [
+   674,
+   110,
+   95,
+   78,
+   -48,
+   -78
+  ],
+  "bear_adult_a2_02": [
+   863,
+   0,
+   93,
+   95,
+   -51,
+   -96
+  ],
+  "bear_adult_a2_03": [
+   0,
+   0,
+   91,
+   109,
+   -52,
+   -110
+  ],
+  "bear_adult_a2_04": [
+   379,
+   0,
+   93,
+   104,
+   -52,
+   -105
+  ],
+  "bear_adult_a2_05": [
+   957,
+   0,
+   92,
+   95,
+   -51,
+   -96
+  ],
+  "bear_adult_a2_06": [
+   1565,
+   0,
+   96,
+   84,
+   -49,
+   -85
+  ],
+  "bear_adult_a2_07": [
+   770,
+   110,
+   96,
+   78,
+   -48,
+   -79
+  ],
+  "bear_adult_down_00": [
+   1444,
+   110,
+   95,
+   76,
+   -46,
+   -76
+  ],
+  "bear_adult_down_01": [
+   274,
+   192,
+   97,
+   73,
+   -46,
+   -73
+  ],
+  "bear_adult_down_02": [
+   784,
+   192,
+   102,
+   67,
+   -49,
+   -67
+  ],
+  "bear_adult_down_03": [
+   1358,
+   192,
+   104,
+   64,
+   -51,
+   -64
+  ],
+  "bear_adult_down_04": [
+   157,
+   267,
+   105,
+   62,
+   -53,
+   -62
+  ],
+  "bear_adult_down_05": [
+   1515,
+   267,
+   110,
+   49,
+   -55,
+   -49
+  ],
+  "bear_adult_down_06": [
+   1750,
+   267,
+   108,
+   47,
+   -55,
+   -46
+  ],
+  "bear_adult_down_07": [
+   598,
+   330,
+   107,
+   45,
+   -54,
+   -44
+  ],
+  "bear_adult_el_00": [
+   288,
+   110,
+   96,
+   79,
+   -49,
+   -79
+  ],
+  "bear_adult_el_01": [
+   676,
+   0,
+   92,
+   99,
+   -50,
+   -100
+  ],
+  "bear_adult_el_02": [
+   92,
+   0,
+   91,
+   107,
+   -50,
+   -108
+  ],
+  "bear_adult_el_03": [
+   287,
+   0,
+   91,
+   106,
+   -50,
+   -107
+  ],
+  "bear_adult_el_04": [
+   1208,
+   0,
+   95,
+   88,
+   -50,
+   -89
+  ],
+  "bear_adult_el_05": [
+   1925,
+   0,
+   95,
+   81,
+   -48,
+   -80
+  ],
+  "bear_adult_el_06": [
+   964,
+   110,
+   95,
+   77,
+   -47,
+   -78
+  ],
+  "bear_adult_el_07": [
+   1815,
+   110,
+   96,
+   75,
+   -47,
+   -75
+  ],
+  "bear_adult_hit_00": [
+   372,
+   192,
+   96,
+   72,
+   -46,
+   -72
+  ],
+  "bear_adult_hit_01": [
+   1060,
+   110,
+   93,
+   77,
+   -52,
+   -93
+  ],
+  "bear_adult_hit_02": [
+   1733,
+   0,
+   96,
+   82,
+   -50,
+   -94
+  ],
+  "bear_adult_hit_03": [
+   1050,
+   0,
+   94,
+   90,
+   -48,
+   -90
+  ],
+  "bear_adult_idle_00": [
+   1154,
+   110,
+   96,
+   77,
+   -48,
+   -77
+  ],
+  "bear_adult_idle_01": [
+   1540,
+   110,
+   96,
+   76,
+   -48,
+   -76
+  ],
+  "bear_adult_idle_02": [
+   867,
+   110,
+   96,
+   78,
+   -48,
+   -78
+  ],
+  "bear_adult_idle_03": [
+   385,
+   110,
+   96,
+   79,
+   -48,
+   -79
+  ],
+  "bear_adult_walk_00": [
+   1251,
+   110,
+   96,
+   77,
+   -48,
+   -77
+  ],
+  "bear_adult_walk_01": [
+   1637,
+   110,
+   95,
+   76,
+   -47,
+   -76
+  ],
+  "bear_adult_walk_02": [
+   1348,
+   110,
+   95,
+   77,
+   -47,
+   -77
+  ],
+  "bear_adult_walk_03": [
+   482,
+   110,
+   94,
+   79,
+   -47,
+   -79
+  ],
+  "bear_adult_walk_04": [
+   192,
+   110,
+   95,
+   80,
+   -48,
+   -80
+  ],
+  "bear_adult_walk_05": [
+   0,
+   110,
+   95,
+   81,
+   -48,
+   -81
+  ],
+  "bear_adult_walk_06": [
+   96,
+   110,
+   95,
+   81,
+   -48,
+   -81
+  ],
+  "bear_adult_walk_07": [
+   577,
+   110,
+   96,
+   79,
+   -48,
+   -79
+  ]
+ },
+ "frames": [
+  "bear_baby_a1_00",
+  "bear_baby_a1_01",
+  "bear_baby_a1_02",
+  "bear_baby_a1_03",
+  "bear_baby_a1_04",
+  "bear_baby_a1_05",
+  "bear_baby_a1_06",
+  "bear_baby_a1_07",
+  "bear_baby_down_00",
+  "bear_baby_down_01",
+  "bear_baby_down_02",
+  "bear_baby_down_03",
+  "bear_baby_hit_00",
+  "bear_baby_hit_01",
+  "bear_baby_hit_02",
+  "bear_baby_hit_03",
+  "bear_baby_idle_00",
+  "bear_baby_idle_01",
+  "bear_baby_idle_02",
+  "bear_baby_idle_03",
+  "bear_baby_walk_00",
+  "bear_baby_walk_01",
+  "bear_baby_walk_02",
+  "bear_baby_walk_03",
+  "bear_baby_walk_04",
+  "bear_baby_walk_05",
+  "bear_baby_walk_06",
+  "bear_baby_walk_07",
+  "bear_teen_a1_00",
+  "bear_teen_a1_01",
+  "bear_teen_a1_02",
+  "bear_teen_a1_03",
+  "bear_teen_a1_04",
+  "bear_teen_a1_05",
+  "bear_teen_a1_06",
+  "bear_teen_a1_07",
+  "bear_teen_a2_00",
+  "bear_teen_a2_01",
+  "bear_teen_a2_02",
+  "bear_teen_a2_03",
+  "bear_teen_a2_04",
+  "bear_teen_a2_05",
+  "bear_teen_a2_06",
+  "bear_teen_a2_07",
+  "bear_teen_down_00",
+  "bear_teen_down_01",
+  "bear_teen_down_02",
+  "bear_teen_down_03",
+  "bear_teen_down_04",
+  "bear_teen_down_05",
+  "bear_teen_down_06",
+  "bear_teen_down_07",
+  "bear_teen_hit_00",
+  "bear_teen_hit_01",
+  "bear_teen_hit_02",
+  "bear_teen_hit_03",
+  "bear_teen_idle_00",
+  "bear_teen_idle_01",
+  "bear_teen_idle_02",
+  "bear_teen_idle_03",
+  "bear_teen_walk_00",
+  "bear_teen_walk_01",
+  "bear_teen_walk_02",
+  "bear_teen_walk_03",
+  "bear_teen_walk_04",
+  "bear_teen_walk_05",
+  "bear_teen_walk_06",
+  "bear_teen_walk_07",
+  "bear_adult_a1_00",
+  "bear_adult_a1_01",
+  "bear_adult_a1_02",
+  "bear_adult_a1_03",
+  "bear_adult_a1_04",
+  "bear_adult_a1_05",
+  "bear_adult_a1_06",
+  "bear_adult_a1_07",
+  "bear_adult_a2_00",
+  "bear_adult_a2_01",
+  "bear_adult_a2_02",
+  "bear_adult_a2_03",
+  "bear_adult_a2_04",
+  "bear_adult_a2_05",
+  "bear_adult_a2_06",
+  "bear_adult_a2_07",
+  "bear_adult_down_00",
+  "bear_adult_down_01",
+  "bear_adult_down_02",
+  "bear_adult_down_03",
+  "bear_adult_down_04",
+  "bear_adult_down_05",
+  "bear_adult_down_06",
+  "bear_adult_down_07",
+  "bear_adult_el_00",
+  "bear_adult_el_01",
+  "bear_adult_el_02",
+  "bear_adult_el_03",
+  "bear_adult_el_04",
+  "bear_adult_el_05",
+  "bear_adult_el_06",
+  "bear_adult_el_07",
+  "bear_adult_hit_00",
+  "bear_adult_hit_01",
+  "bear_adult_hit_02",
+  "bear_adult_hit_03",
+  "bear_adult_idle_00",
+  "bear_adult_idle_01",
+  "bear_adult_idle_02",
+  "bear_adult_idle_03",
+  "bear_adult_walk_00",
+  "bear_adult_walk_01",
+  "bear_adult_walk_02",
+  "bear_adult_walk_03",
+  "bear_adult_walk_04",
+  "bear_adult_walk_05",
+  "bear_adult_walk_06",
+  "bear_adult_walk_07"
+ ],
+ "standing": [
+  "bear_baby_idle_00",
+  "bear_baby_idle_01",
+  "bear_baby_idle_02",
+  "bear_baby_idle_03",
+  "bear_teen_idle_00",
+  "bear_teen_idle_01",
+  "bear_teen_idle_02",
+  "bear_teen_idle_03",
+  "bear_adult_idle_00",
+  "bear_adult_idle_01",
+  "bear_adult_idle_02",
+  "bear_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "baby": {
+   "top": 60,
+   "attack": {
+    "frames": [
+     "bear_baby_a1_00",
+     "bear_baby_a1_01",
+     "bear_baby_a1_02",
+     "bear_baby_a1_03",
+     "bear_baby_a1_04",
+     "bear_baby_a1_05",
+     "bear_baby_a1_06",
+     "bear_baby_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "bear_baby_down_00",
+     "bear_baby_down_01",
+     "bear_baby_down_02",
+     "bear_baby_down_03"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "bear_baby_hit_00",
+     "bear_baby_hit_01",
+     "bear_baby_hit_02",
+     "bear_baby_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "bear_baby_idle_00",
+     "bear_baby_idle_01",
+     "bear_baby_idle_02",
+     "bear_baby_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "bear_baby_walk_00",
+     "bear_baby_walk_01",
+     "bear_baby_walk_02",
+     "bear_baby_walk_03",
+     "bear_baby_walk_04",
+     "bear_baby_walk_05",
+     "bear_baby_walk_06",
+     "bear_baby_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "teen": {
+   "top": 42,
+   "attack": {
+    "frames": [
+     "bear_teen_a1_00",
+     "bear_teen_a1_01",
+     "bear_teen_a1_02",
+     "bear_teen_a1_03",
+     "bear_teen_a1_04",
+     "bear_teen_a1_05",
+     "bear_teen_a1_06",
+     "bear_teen_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "bear_teen_a2_00",
+     "bear_teen_a2_01",
+     "bear_teen_a2_02",
+     "bear_teen_a2_03",
+     "bear_teen_a2_04",
+     "bear_teen_a2_05",
+     "bear_teen_a2_06",
+     "bear_teen_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "bear_teen_down_00",
+     "bear_teen_down_01",
+     "bear_teen_down_02",
+     "bear_teen_down_03",
+     "bear_teen_down_04",
+     "bear_teen_down_05",
+     "bear_teen_down_06",
+     "bear_teen_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "bear_teen_hit_00",
+     "bear_teen_hit_01",
+     "bear_teen_hit_02",
+     "bear_teen_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "bear_teen_idle_00",
+     "bear_teen_idle_01",
+     "bear_teen_idle_02",
+     "bear_teen_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "bear_teen_walk_00",
+     "bear_teen_walk_01",
+     "bear_teen_walk_02",
+     "bear_teen_walk_03",
+     "bear_teen_walk_04",
+     "bear_teen_walk_05",
+     "bear_teen_walk_06",
+     "bear_teen_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "adult": {
+   "top": 31,
+   "attack": {
+    "frames": [
+     "bear_adult_a1_00",
+     "bear_adult_a1_01",
+     "bear_adult_a1_02",
+     "bear_adult_a1_03",
+     "bear_adult_a1_04",
+     "bear_adult_a1_05",
+     "bear_adult_a1_06",
+     "bear_adult_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.205,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "bear_adult_a2_00",
+     "bear_adult_a2_01",
+     "bear_adult_a2_02",
+     "bear_adult_a2_03",
+     "bear_adult_a2_04",
+     "bear_adult_a2_05",
+     "bear_adult_a2_06",
+     "bear_adult_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "bear_adult_down_00",
+     "bear_adult_down_01",
+     "bear_adult_down_02",
+     "bear_adult_down_03",
+     "bear_adult_down_04",
+     "bear_adult_down_05",
+     "bear_adult_down_06",
+     "bear_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "bear_adult_el_00",
+     "bear_adult_el_01",
+     "bear_adult_el_02",
+     "bear_adult_el_03",
+     "bear_adult_el_04",
+     "bear_adult_el_05",
+     "bear_adult_el_06",
+     "bear_adult_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "bear_adult_hit_00",
+     "bear_adult_hit_01",
+     "bear_adult_hit_02",
+     "bear_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "bear_adult_idle_00",
+     "bear_adult_idle_01",
+     "bear_adult_idle_02",
+     "bear_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "bear_adult_walk_00",
+     "bear_adult_walk_01",
+     "bear_adult_walk_02",
+     "bear_adult_walk_03",
+     "bear_adult_walk_04",
+     "bear_adult_walk_05",
+     "bear_adult_walk_06",
+     "bear_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
+}

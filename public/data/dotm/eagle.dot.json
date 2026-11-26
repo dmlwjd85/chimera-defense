@@ -1,0 +1,1535 @@
+{
+ "note": "eagle 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "eagle",
+ "sheet": "dot-m-eagle",
+ "file": "assets/dotm/eagle.png",
+ "frameW": 119,
+ "frameH": 113,
+ "foot": 109,
+ "cols": 1,
+ "anchorX": 57,
+ "palette": [
+  "#0c040b",
+  "#291a1f",
+  "#582c24",
+  "#673b2e",
+  "#747773",
+  "#7d483f",
+  "#7e3e0b",
+  "#afb8ba",
+  "#b2a799",
+  "#b7762f",
+  "#c97d11",
+  "#d2c8c2",
+  "#ebece7",
+  "#efbd47",
+  "#f8b219",
+  "#f8f1ea"
+ ],
+ "rects": {
+  "eagle_baby_a1_00": [
+   934,
+   297,
+   75,
+   75,
+   -37,
+   -75
+  ],
+  "eagle_baby_a1_01": [
+   1359,
+   379,
+   81,
+   52,
+   -40,
+   -56
+  ],
+  "eagle_baby_a1_02": [
+   1441,
+   379,
+   71,
+   52,
+   -34,
+   -60
+  ],
+  "eagle_baby_a1_03": [
+   1165,
+   379,
+   55,
+   57,
+   -26,
+   -63
+  ],
+  "eagle_baby_a1_04": [
+   1513,
+   379,
+   67,
+   52,
+   -33,
+   -61
+  ],
+  "eagle_baby_a1_05": [
+   1279,
+   379,
+   79,
+   53,
+   -39,
+   -55
+  ],
+  "eagle_baby_a1_06": [
+   1898,
+   297,
+   80,
+   66,
+   -40,
+   -66
+  ],
+  "eagle_baby_a1_07": [
+   400,
+   297,
+   67,
+   78,
+   -33,
+   -77
+  ],
+  "eagle_baby_down_00": [
+   1395,
+   297,
+   73,
+   71,
+   -35,
+   -70
+  ],
+  "eagle_baby_down_01": [
+   0,
+   379,
+   76,
+   64,
+   -38,
+   -64
+  ],
+  "eagle_baby_down_02": [
+   0,
+   444,
+   78,
+   41,
+   -39,
+   -44
+  ],
+  "eagle_baby_down_03": [
+   450,
+   444,
+   76,
+   33,
+   -36,
+   -33
+  ],
+  "eagle_baby_down_04": [
+   284,
+   444,
+   68,
+   35,
+   -33,
+   -34
+  ],
+  "eagle_baby_down_05": [
+   527,
+   444,
+   68,
+   32,
+   -33,
+   -31
+  ],
+  "eagle_baby_hit_00": [
+   1245,
+   297,
+   74,
+   73,
+   -36,
+   -75
+  ],
+  "eagle_baby_hit_01": [
+   468,
+   297,
+   72,
+   78,
+   -34,
+   -81
+  ],
+  "eagle_baby_hit_02": [
+   333,
+   297,
+   66,
+   80,
+   -32,
+   -81
+  ],
+  "eagle_baby_hit_03": [
+   541,
+   297,
+   67,
+   78,
+   -33,
+   -77
+  ],
+  "eagle_baby_idle_00": [
+   1010,
+   297,
+   72,
+   75,
+   -35,
+   -75
+  ],
+  "eagle_baby_idle_01": [
+   1728,
+   297,
+   75,
+   70,
+   -36,
+   -72
+  ],
+  "eagle_baby_idle_02": [
+   1083,
+   297,
+   72,
+   75,
+   -35,
+   -75
+  ],
+  "eagle_baby_idle_03": [
+   609,
+   297,
+   67,
+   78,
+   -33,
+   -77
+  ],
+  "eagle_baby_walk_00": [
+   1320,
+   297,
+   74,
+   73,
+   -35,
+   -73
+  ],
+  "eagle_baby_walk_01": [
+   341,
+   379,
+   78,
+   61,
+   -38,
+   -63
+  ],
+  "eagle_baby_walk_02": [
+   1659,
+   379,
+   81,
+   51,
+   -39,
+   -56
+  ],
+  "eagle_baby_walk_03": [
+   1221,
+   379,
+   57,
+   57,
+   -26,
+   -59
+  ],
+  "eagle_baby_walk_04": [
+   1741,
+   379,
+   69,
+   51,
+   -31,
+   -58
+  ],
+  "eagle_baby_walk_05": [
+   1581,
+   379,
+   77,
+   52,
+   -37,
+   -57
+  ],
+  "eagle_baby_walk_06": [
+   1469,
+   297,
+   76,
+   71,
+   -37,
+   -73
+  ],
+  "eagle_baby_walk_07": [
+   677,
+   297,
+   67,
+   78,
+   -33,
+   -77
+  ],
+  "eagle_teen_a1_00": [
+   1739,
+   111,
+   89,
+   88,
+   -45,
+   -87
+  ],
+  "eagle_teen_a1_01": [
+   745,
+   297,
+   96,
+   78,
+   -45,
+   -80
+  ],
+  "eagle_teen_a1_02": [
+   506,
+   379,
+   92,
+   60,
+   -44,
+   -64
+  ],
+  "eagle_teen_a1_03": [
+   77,
+   379,
+   86,
+   63,
+   -42,
+   -67
+  ],
+  "eagle_teen_a1_04": [
+   707,
+   379,
+   87,
+   59,
+   -43,
+   -66
+  ],
+  "eagle_teen_a1_05": [
+   795,
+   379,
+   93,
+   59,
+   -46,
+   -63
+  ],
+  "eagle_teen_a1_06": [
+   842,
+   297,
+   91,
+   76,
+   -47,
+   -76
+  ],
+  "eagle_teen_a1_07": [
+   701,
+   111,
+   89,
+   92,
+   -45,
+   -90
+  ],
+  "eagle_teen_a2_00": [
+   722,
+   210,
+   91,
+   84,
+   -47,
+   -84
+  ],
+  "eagle_teen_a2_01": [
+   1804,
+   297,
+   93,
+   70,
+   -48,
+   -73
+  ],
+  "eagle_teen_a2_02": [
+   889,
+   379,
+   95,
+   58,
+   -49,
+   -64
+  ],
+  "eagle_teen_a2_03": [
+   253,
+   379,
+   87,
+   62,
+   -43,
+   -66
+  ],
+  "eagle_teen_a2_04": [
+   985,
+   379,
+   89,
+   58,
+   -45,
+   -64
+  ],
+  "eagle_teen_a2_05": [
+   1546,
+   297,
+   92,
+   71,
+   -48,
+   -74
+  ],
+  "eagle_teen_a2_06": [
+   1265,
+   210,
+   91,
+   83,
+   -47,
+   -84
+  ],
+  "eagle_teen_a2_07": [
+   791,
+   111,
+   89,
+   92,
+   -45,
+   -90
+  ],
+  "eagle_teen_down_00": [
+   881,
+   111,
+   90,
+   92,
+   -42,
+   -91
+  ],
+  "eagle_teen_down_01": [
+   972,
+   111,
+   91,
+   92,
+   -44,
+   -94
+  ],
+  "eagle_teen_down_02": [
+   1639,
+   297,
+   88,
+   71,
+   -43,
+   -76
+  ],
+  "eagle_teen_down_03": [
+   191,
+   444,
+   92,
+   37,
+   -45,
+   -40
+  ],
+  "eagle_teen_down_04": [
+   353,
+   444,
+   96,
+   34,
+   -48,
+   -36
+  ],
+  "eagle_teen_down_05": [
+   596,
+   444,
+   97,
+   32,
+   -49,
+   -34
+  ],
+  "eagle_teen_hit_00": [
+   415,
+   111,
+   87,
+   93,
+   -45,
+   -93
+  ],
+  "eagle_teen_hit_01": [
+   327,
+   111,
+   87,
+   95,
+   -45,
+   -95
+  ],
+  "eagle_teen_hit_02": [
+   503,
+   111,
+   88,
+   93,
+   -45,
+   -93
+  ],
+  "eagle_teen_hit_03": [
+   1064,
+   111,
+   89,
+   92,
+   -45,
+   -90
+  ],
+  "eagle_teen_idle_00": [
+   1424,
+   111,
+   87,
+   91,
+   -44,
+   -92
+  ],
+  "eagle_teen_idle_01": [
+   0,
+   210,
+   88,
+   86,
+   -46,
+   -87
+  ],
+  "eagle_teen_idle_02": [
+   1154,
+   111,
+   89,
+   92,
+   -45,
+   -92
+  ],
+  "eagle_teen_idle_03": [
+   1244,
+   111,
+   89,
+   92,
+   -45,
+   -90
+  ],
+  "eagle_teen_walk_00": [
+   1829,
+   111,
+   88,
+   88,
+   -45,
+   -87
+  ],
+  "eagle_teen_walk_01": [
+   1156,
+   297,
+   88,
+   75,
+   -45,
+   -77
+  ],
+  "eagle_teen_walk_02": [
+   1075,
+   379,
+   89,
+   58,
+   -46,
+   -62
+  ],
+  "eagle_teen_walk_03": [
+   420,
+   379,
+   85,
+   61,
+   -42,
+   -64
+  ],
+  "eagle_teen_walk_04": [
+   164,
+   379,
+   88,
+   63,
+   -45,
+   -67
+  ],
+  "eagle_teen_walk_05": [
+   89,
+   210,
+   92,
+   85,
+   -48,
+   -86
+  ],
+  "eagle_teen_walk_06": [
+   1918,
+   111,
+   89,
+   88,
+   -45,
+   -87
+  ],
+  "eagle_teen_walk_07": [
+   1334,
+   111,
+   89,
+   92,
+   -45,
+   -90
+  ],
+  "eagle_adult_a1_00": [
+   592,
+   111,
+   108,
+   93,
+   -53,
+   -92
+  ],
+  "eagle_adult_a1_01": [
+   814,
+   210,
+   113,
+   84,
+   -54,
+   -86
+  ],
+  "eagle_adult_a1_02": [
+   1357,
+   210,
+   104,
+   83,
+   -51,
+   -89
+  ],
+  "eagle_adult_a1_03": [
+   182,
+   210,
+   106,
+   85,
+   -50,
+   -90
+  ],
+  "eagle_adult_a1_04": [
+   1462,
+   210,
+   103,
+   83,
+   -50,
+   -90
+  ],
+  "eagle_adult_a1_05": [
+   289,
+   210,
+   111,
+   85,
+   -56,
+   -87
+  ],
+  "eagle_adult_a1_06": [
+   218,
+   111,
+   108,
+   97,
+   -53,
+   -97
+  ],
+  "eagle_adult_a1_07": [
+   108,
+   0,
+   107,
+   108,
+   -53,
+   -106
+  ],
+  "eagle_adult_a2_00": [
+   1621,
+   0,
+   108,
+   102,
+   -53,
+   -102
+  ],
+  "eagle_adult_a2_01": [
+   1624,
+   111,
+   114,
+   89,
+   -55,
+   -91
+  ],
+  "eagle_adult_a2_02": [
+   0,
+   297,
+   117,
+   81,
+   -57,
+   -86
+  ],
+  "eagle_adult_a2_03": [
+   118,
+   297,
+   107,
+   81,
+   -53,
+   -88
+  ],
+  "eagle_adult_a2_04": [
+   226,
+   297,
+   106,
+   81,
+   -53,
+   -87
+  ],
+  "eagle_adult_a2_05": [
+   1897,
+   210,
+   118,
+   82,
+   -56,
+   -85
+  ],
+  "eagle_adult_a2_06": [
+   0,
+   111,
+   108,
+   98,
+   -53,
+   -98
+  ],
+  "eagle_adult_a2_07": [
+   216,
+   0,
+   107,
+   108,
+   -53,
+   -106
+  ],
+  "eagle_adult_down_00": [
+   1403,
+   0,
+   110,
+   103,
+   -54,
+   -104
+  ],
+  "eagle_adult_down_01": [
+   1730,
+   0,
+   111,
+   102,
+   -55,
+   -106
+  ],
+  "eagle_adult_down_02": [
+   599,
+   379,
+   107,
+   60,
+   -51,
+   -71
+  ],
+  "eagle_adult_down_03": [
+   1811,
+   379,
+   109,
+   48,
+   -53,
+   -55
+  ],
+  "eagle_adult_down_04": [
+   1921,
+   379,
+   110,
+   42,
+   -54,
+   -49
+  ],
+  "eagle_adult_down_05": [
+   79,
+   444,
+   111,
+   40,
+   -55,
+   -47
+  ],
+  "eagle_adult_el_00": [
+   1842,
+   0,
+   108,
+   102,
+   -53,
+   -102
+  ],
+  "eagle_adult_el_01": [
+   928,
+   210,
+   113,
+   84,
+   -56,
+   -87
+  ],
+  "eagle_adult_el_02": [
+   1566,
+   210,
+   111,
+   83,
+   -53,
+   -89
+  ],
+  "eagle_adult_el_03": [
+   1678,
+   210,
+   109,
+   83,
+   -53,
+   -91
+  ],
+  "eagle_adult_el_04": [
+   1788,
+   210,
+   108,
+   83,
+   -53,
+   -89
+  ],
+  "eagle_adult_el_05": [
+   1042,
+   210,
+   114,
+   84,
+   -56,
+   -86
+  ],
+  "eagle_adult_el_06": [
+   1514,
+   0,
+   106,
+   103,
+   -53,
+   -103
+  ],
+  "eagle_adult_el_07": [
+   324,
+   0,
+   107,
+   108,
+   -53,
+   -106
+  ],
+  "eagle_adult_hit_00": [
+   972,
+   0,
+   106,
+   104,
+   -52,
+   -105
+  ],
+  "eagle_adult_hit_01": [
+   1079,
+   0,
+   106,
+   104,
+   -51,
+   -107
+  ],
+  "eagle_adult_hit_02": [
+   432,
+   0,
+   107,
+   108,
+   -53,
+   -108
+  ],
+  "eagle_adult_hit_03": [
+   540,
+   0,
+   107,
+   108,
+   -53,
+   -106
+  ],
+  "eagle_adult_idle_00": [
+   1186,
+   0,
+   107,
+   104,
+   -53,
+   -104
+  ],
+  "eagle_adult_idle_01": [
+   1294,
+   0,
+   108,
+   104,
+   -53,
+   -105
+  ],
+  "eagle_adult_idle_02": [
+   0,
+   0,
+   107,
+   110,
+   -53,
+   -110
+  ],
+  "eagle_adult_idle_03": [
+   648,
+   0,
+   107,
+   108,
+   -53,
+   -106
+  ],
+  "eagle_adult_walk_00": [
+   864,
+   0,
+   107,
+   106,
+   -53,
+   -105
+  ],
+  "eagle_adult_walk_01": [
+   1512,
+   111,
+   111,
+   91,
+   -55,
+   -91
+  ],
+  "eagle_adult_walk_02": [
+   1157,
+   210,
+   107,
+   84,
+   -53,
+   -85
+  ],
+  "eagle_adult_walk_03": [
+   401,
+   210,
+   105,
+   85,
+   -52,
+   -87
+  ],
+  "eagle_adult_walk_04": [
+   507,
+   210,
+   106,
+   85,
+   -52,
+   -87
+  ],
+  "eagle_adult_walk_05": [
+   614,
+   210,
+   107,
+   85,
+   -53,
+   -85
+  ],
+  "eagle_adult_walk_06": [
+   109,
+   111,
+   108,
+   98,
+   -53,
+   -97
+  ],
+  "eagle_adult_walk_07": [
+   756,
+   0,
+   107,
+   108,
+   -53,
+   -106
+  ]
+ },
+ "frames": [
+  "eagle_baby_a1_00",
+  "eagle_baby_a1_01",
+  "eagle_baby_a1_02",
+  "eagle_baby_a1_03",
+  "eagle_baby_a1_04",
+  "eagle_baby_a1_05",
+  "eagle_baby_a1_06",
+  "eagle_baby_a1_07",
+  "eagle_baby_down_00",
+  "eagle_baby_down_01",
+  "eagle_baby_down_02",
+  "eagle_baby_down_03",
+  "eagle_baby_down_04",
+  "eagle_baby_down_05",
+  "eagle_baby_hit_00",
+  "eagle_baby_hit_01",
+  "eagle_baby_hit_02",
+  "eagle_baby_hit_03",
+  "eagle_baby_idle_00",
+  "eagle_baby_idle_01",
+  "eagle_baby_idle_02",
+  "eagle_baby_idle_03",
+  "eagle_baby_walk_00",
+  "eagle_baby_walk_01",
+  "eagle_baby_walk_02",
+  "eagle_baby_walk_03",
+  "eagle_baby_walk_04",
+  "eagle_baby_walk_05",
+  "eagle_baby_walk_06",
+  "eagle_baby_walk_07",
+  "eagle_teen_a1_00",
+  "eagle_teen_a1_01",
+  "eagle_teen_a1_02",
+  "eagle_teen_a1_03",
+  "eagle_teen_a1_04",
+  "eagle_teen_a1_05",
+  "eagle_teen_a1_06",
+  "eagle_teen_a1_07",
+  "eagle_teen_a2_00",
+  "eagle_teen_a2_01",
+  "eagle_teen_a2_02",
+  "eagle_teen_a2_03",
+  "eagle_teen_a2_04",
+  "eagle_teen_a2_05",
+  "eagle_teen_a2_06",
+  "eagle_teen_a2_07",
+  "eagle_teen_down_00",
+  "eagle_teen_down_01",
+  "eagle_teen_down_02",
+  "eagle_teen_down_03",
+  "eagle_teen_down_04",
+  "eagle_teen_down_05",
+  "eagle_teen_hit_00",
+  "eagle_teen_hit_01",
+  "eagle_teen_hit_02",
+  "eagle_teen_hit_03",
+  "eagle_teen_idle_00",
+  "eagle_teen_idle_01",
+  "eagle_teen_idle_02",
+  "eagle_teen_idle_03",
+  "eagle_teen_walk_00",
+  "eagle_teen_walk_01",
+  "eagle_teen_walk_02",
+  "eagle_teen_walk_03",
+  "eagle_teen_walk_04",
+  "eagle_teen_walk_05",
+  "eagle_teen_walk_06",
+  "eagle_teen_walk_07",
+  "eagle_adult_a1_00",
+  "eagle_adult_a1_01",
+  "eagle_adult_a1_02",
+  "eagle_adult_a1_03",
+  "eagle_adult_a1_04",
+  "eagle_adult_a1_05",
+  "eagle_adult_a1_06",
+  "eagle_adult_a1_07",
+  "eagle_adult_a2_00",
+  "eagle_adult_a2_01",
+  "eagle_adult_a2_02",
+  "eagle_adult_a2_03",
+  "eagle_adult_a2_04",
+  "eagle_adult_a2_05",
+  "eagle_adult_a2_06",
+  "eagle_adult_a2_07",
+  "eagle_adult_down_00",
+  "eagle_adult_down_01",
+  "eagle_adult_down_02",
+  "eagle_adult_down_03",
+  "eagle_adult_down_04",
+  "eagle_adult_down_05",
+  "eagle_adult_el_00",
+  "eagle_adult_el_01",
+  "eagle_adult_el_02",
+  "eagle_adult_el_03",
+  "eagle_adult_el_04",
+  "eagle_adult_el_05",
+  "eagle_adult_el_06",
+  "eagle_adult_el_07",
+  "eagle_adult_hit_00",
+  "eagle_adult_hit_01",
+  "eagle_adult_hit_02",
+  "eagle_adult_hit_03",
+  "eagle_adult_idle_00",
+  "eagle_adult_idle_01",
+  "eagle_adult_idle_02",
+  "eagle_adult_idle_03",
+  "eagle_adult_walk_00",
+  "eagle_adult_walk_01",
+  "eagle_adult_walk_02",
+  "eagle_adult_walk_03",
+  "eagle_adult_walk_04",
+  "eagle_adult_walk_05",
+  "eagle_adult_walk_06",
+  "eagle_adult_walk_07"
+ ],
+ "standing": [
+  "eagle_baby_idle_00",
+  "eagle_baby_idle_01",
+  "eagle_baby_idle_02",
+  "eagle_baby_idle_03",
+  "eagle_teen_idle_00",
+  "eagle_teen_idle_01",
+  "eagle_teen_idle_02",
+  "eagle_teen_idle_03",
+  "eagle_adult_idle_00",
+  "eagle_adult_idle_01",
+  "eagle_adult_idle_02",
+  "eagle_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "baby": {
+   "top": 33,
+   "attack": {
+    "frames": [
+     "eagle_baby_a1_00",
+     "eagle_baby_a1_01",
+     "eagle_baby_a1_02",
+     "eagle_baby_a1_03",
+     "eagle_baby_a1_04",
+     "eagle_baby_a1_05",
+     "eagle_baby_a1_06",
+     "eagle_baby_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "eagle_baby_down_00",
+     "eagle_baby_down_01",
+     "eagle_baby_down_02",
+     "eagle_baby_down_03",
+     "eagle_baby_down_04",
+     "eagle_baby_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "eagle_baby_hit_00",
+     "eagle_baby_hit_01",
+     "eagle_baby_hit_02",
+     "eagle_baby_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "eagle_baby_walk_00",
+     "eagle_baby_walk_01",
+     "eagle_baby_walk_02",
+     "eagle_baby_walk_03",
+     "eagle_baby_walk_04",
+     "eagle_baby_walk_05",
+     "eagle_baby_walk_06",
+     "eagle_baby_walk_07"
+    ],
+    "durs": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "eagle_baby_walk_00",
+     "eagle_baby_walk_01",
+     "eagle_baby_walk_02",
+     "eagle_baby_walk_03",
+     "eagle_baby_walk_04",
+     "eagle_baby_walk_05",
+     "eagle_baby_walk_06",
+     "eagle_baby_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "teen": {
+   "top": 18,
+   "attack": {
+    "frames": [
+     "eagle_teen_a1_00",
+     "eagle_teen_a1_01",
+     "eagle_teen_a1_02",
+     "eagle_teen_a1_03",
+     "eagle_teen_a1_04",
+     "eagle_teen_a1_05",
+     "eagle_teen_a1_06",
+     "eagle_teen_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "eagle_teen_a2_00",
+     "eagle_teen_a2_01",
+     "eagle_teen_a2_02",
+     "eagle_teen_a2_03",
+     "eagle_teen_a2_04",
+     "eagle_teen_a2_05",
+     "eagle_teen_a2_06",
+     "eagle_teen_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.14,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "eagle_teen_down_00",
+     "eagle_teen_down_01",
+     "eagle_teen_down_02",
+     "eagle_teen_down_03",
+     "eagle_teen_down_04",
+     "eagle_teen_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "hit": {
+    "frames": [
+     "eagle_teen_hit_00",
+     "eagle_teen_hit_01",
+     "eagle_teen_hit_02",
+     "eagle_teen_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "eagle_teen_walk_00",
+     "eagle_teen_walk_01",
+     "eagle_teen_walk_02",
+     "eagle_teen_walk_03",
+     "eagle_teen_walk_04",
+     "eagle_teen_walk_05",
+     "eagle_teen_walk_06",
+     "eagle_teen_walk_07"
+    ],
+    "durs": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "eagle_teen_walk_00",
+     "eagle_teen_walk_01",
+     "eagle_teen_walk_02",
+     "eagle_teen_walk_03",
+     "eagle_teen_walk_04",
+     "eagle_teen_walk_05",
+     "eagle_teen_walk_06",
+     "eagle_teen_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  },
+  "adult": {
+   "top": 0,
+   "attack": {
+    "frames": [
+     "eagle_adult_a1_00",
+     "eagle_adult_a1_01",
+     "eagle_adult_a1_02",
+     "eagle_adult_a1_03",
+     "eagle_adult_a1_04",
+     "eagle_adult_a1_05",
+     "eagle_adult_a1_06",
+     "eagle_adult_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "eagle_adult_a2_00",
+     "eagle_adult_a2_01",
+     "eagle_adult_a2_02",
+     "eagle_adult_a2_03",
+     "eagle_adult_a2_04",
+     "eagle_adult_a2_05",
+     "eagle_adult_a2_06",
+     "eagle_adult_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.335,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "eagle_adult_down_00",
+     "eagle_adult_down_01",
+     "eagle_adult_down_02",
+     "eagle_adult_down_03",
+     "eagle_adult_down_04",
+     "eagle_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "eagle_adult_el_00",
+     "eagle_adult_el_01",
+     "eagle_adult_el_02",
+     "eagle_adult_el_03",
+     "eagle_adult_el_04",
+     "eagle_adult_el_05",
+     "eagle_adult_el_06",
+     "eagle_adult_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.15,
+      "cast"
+     ],
+     [
+      0.16,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "eagle_adult_hit_00",
+     "eagle_adult_hit_01",
+     "eagle_adult_hit_02",
+     "eagle_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "eagle_adult_walk_00",
+     "eagle_adult_walk_01",
+     "eagle_adult_walk_02",
+     "eagle_adult_walk_03",
+     "eagle_adult_walk_04",
+     "eagle_adult_walk_05",
+     "eagle_adult_walk_06",
+     "eagle_adult_walk_07"
+    ],
+    "durs": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "eagle_adult_walk_00",
+     "eagle_adult_walk_01",
+     "eagle_adult_walk_02",
+     "eagle_adult_walk_03",
+     "eagle_adult_walk_04",
+     "eagle_adult_walk_05",
+     "eagle_adult_walk_06",
+     "eagle_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "young": {
+   "set": "baby",
+   "scale": 0.5
+  },
+  "teen": {
+   "set": "teen",
+   "scale": 0.5
+  },
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ }
+}

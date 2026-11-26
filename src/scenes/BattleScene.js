@@ -12,7 +12,7 @@ import { makeEnemy } from '../logic/waves.js';
 import { dotOn, dotify } from './dotfx.js';
 import { crumb, debugOn } from './debug.js';
 import { DOT_PX } from '../rig/dotData.js';
-import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS } from './rigs.js';
+import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets } from './rigs.js';
 import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
 import { soundOf, ELEM_SOUND } from './onomato.js';
@@ -45,7 +45,18 @@ const ENGAGE_RING = [[0, 0], [14, -20], [14, 20], [36, -10], [36, 12]];
 export default class BattleScene extends Phaser.Scene {
   constructor() { super('Battle'); }
 
+  /** 덱에 든 종의 동작 시트만 불러옴(폰 메모리). 못 불러오면 정지 그림으로 싸움. */
+  preload(d) {
+    try {
+      const data = buildData(this.registry.get('raw'));
+      const pool = window.__forcePool ?? battleOptions(this.registry.get('save'), data, d?.stageId ?? 'forest-1').pool ?? [];
+      queueMotionSheets(this, pool);
+    } catch (e) { console.warn('motion sheets', e); }
+    this.load.on('loaderror', (f) => console.warn('motion sheet missing', f.key));
+  }
+
   create(d) {
+    this.events.once('shutdown', () => dropMotionSheets(this));
     this.T = this.registry.get('T');
     this.data2 = buildData(this.registry.get('raw'));
     this.save = this.registry.get('save');
@@ -493,6 +504,9 @@ export default class BattleScene extends Phaser.Scene {
   }
 
   /** Screen spot of the gate doorway (where animals come out and go back in). */
+  /** 하늘에 떠서 그리는 유닛: 나는 새(독수리·까마귀)라도 신화급은 손 달린 사람 모양이라 땅에 서서 싸움(2026-11-26). 전투 규칙(나는 유닛)은 그대로. */
+  airborne(u) { return !!u?.stats?.flyer && u.stage !== 'spirit'; }
+
   gateXY() { const c = this.data2.config; return { x: tileToX(gatePos(c)), y: this.groundY(gateDepth(c, this.state)) }; }
 
   drawBaitShop() {
@@ -1002,7 +1016,7 @@ export default class BattleScene extends Phaser.Scene {
     if (v) {
       v.container?.setVisible(true);
       const u = this.state?.field?.find((x) => x.uid === st.uid);
-      if (v.shadow) v.shadow.setVisible(!!u?.stats?.flyer && !u?.down);
+      if (v.shadow) v.shadow.setVisible(this.airborne(u) && !u?.down);
     }
     this.time.paused = st.wasTimePaused ?? false;
     this.tweens.resumeAll();
@@ -1057,13 +1071,13 @@ export default class BattleScene extends Phaser.Scene {
     const r = v.rig;
     if (!r) return;
     const m = r.inst.motion;
-    const mv = u.stats.flyer && r.inst.anims.fly ? 'fly' : 'move';   // 나는 새는 걷지 않고 날갯짓
+    const mv = this.airborne(u) && r.inst.anims.fly ? 'fly' : 'move';   // 나는 새는 걷지 않고 날갯짓
     const busy = [...ATTACK_MOTIONS, 'skill', 'hit', 'merge_in', 'evolve', 'respawn'].includes(m) && !r.inst.finished;
     if (this.state.result === 'clear') { if (m !== 'victory') r.inst.play('victory', { loop: true }); }
     else if (u.down) { if (m !== 'down') r.inst.play('down'); }
     else if (v.wasDown) { r.inst.play('respawn'); this.fx.respawn(v.container.x, v.container.y); sfx('respawn'); }
     else if (onField && (u.moving || v.walking)) { if (m !== mv) r.inst.play(mv, { loop: true }); r.inst.moveVelocity = (u.moving ? Math.sign(u.targetPos - u.pos) : v.walkDir) * 180; }
-    else if (!busy && onField && u.stats.flyer) { if (m !== mv) r.inst.play(mv, { loop: true }); }
+    else if (!busy && onField && this.airborne(u)) { if (m !== mv) r.inst.play(mv, { loop: true }); }
     else if (!busy && m !== 'idle') r.inst.play('idle', { loop: true });
     if (!u.moving && !v.walking) r.inst.moveVelocity = 0;
     r.inst.setFacing(onField && ((u.moving && u.targetPos < u.pos) || (!u.moving && v.walking && v.walkDir < 0)) ? -1 : 1);
@@ -1075,7 +1089,7 @@ export default class BattleScene extends Phaser.Scene {
   syncUnits() {
     const s = this.state;
     const live = [
-      ...s.field.map((u) => [u, tileToX(u.pos), u.stats.flyer ? (u.inGate || u.via ? this.groundY(gateDepth(this.data2.config, s)) - 40 : (u.skyY ?? 200) - 30) : this.groundY(u.y ?? (u.lane ?? 1) / 2), true]),
+      ...s.field.map((u) => [u, tileToX(u.pos), this.airborne(u) ? (u.inGate || u.via ? this.groundY(gateDepth(this.data2.config, s)) - 40 : (u.skyY ?? 200) - 30) : this.groundY(u.y ?? (u.skyRow ?? u.lane ?? 1) / 2), true]),
       ...s.bench.map((u, i) => (u ? [u, benchSlotPos(i).x, benchSlotPos(i).y - 6, false] : null)).filter(Boolean),
     ];
     const seen = new Set();
@@ -1086,7 +1100,7 @@ export default class BattleScene extends Phaser.Scene {
       if (onField && v.wasDown && !u.down && u.inGate) { v.curX = null; v.curY = null; }   // 성문에서 부활: 쓰러진 자리에서 미끄러지지 않고 문에서 나타남
       if (onField !== v.wasField) { if (onField) { v.curX = null; v.curY = null; } v.wasField = onField; }   // 케이지 → 출전: 케이지 자리에서 끌려가지 않게
       if (this.dragUid !== u.uid) {
-        if (onField && u.stats.flyer) {
+        if (onField && this.airborne(u)) {
           v.skyCur ??= y; v.skyCur += (y - v.skyCur) * Math.min(1, this.frameDt * 4 || 0.1);
           if (v.curX == null) v.curX = u.inGate && s.phase === 'prep' ? x + 150 : x;
           { const dt0 = (this.realDt || 0.016) * (this.paused ? 0 : this.speed), dx = x - v.curX, cap = (u.inGate ? 240 : 600) * dt0; v.curX = Math.abs(dx) > cap ? v.curX + Math.sign(dx) * cap : v.curX + dx * Math.min(1, 6 * dt0); v.walking = Math.abs(dx) > 6; v.walkDir = Math.sign(dx); }
@@ -1114,11 +1128,11 @@ export default class BattleScene extends Phaser.Scene {
           v.container.setPosition(v.curX + lx, v.curY);
         } else { v.curX = x; v.curY = y; v.walking = false; v.container.setPosition(x, y); if (this.pendingEnt?.has(u.uid) && !this.hidden.has(u.uid)) this.startEntrance(u.uid); if (v.ent) this.tickEntrance(u, v, x, y); }
       } else { v.curX = undefined; v.curY = undefined; }
-      v.container.setDepth(onField ? (u.stats.flyer ? 900 + y : 50 + y) : 60);
+      v.container.setDepth(onField ? (this.airborne(u) ? 900 + y : 50 + y) : 60);
       if (v.ent && (onField || this.dragUid === u.uid)) this.endEntrance(v);
-      if (!v.ent && this.dragUid !== u.uid) { const k = (onField ? (u.stats.flyer ? LANE_SCALE[u.skyRow ?? 1] * 0.96 : this.depthScale(u.y ?? (u.lane ?? 1) / 2)) : BENCH_K) * (u.soul && onField ? 1 + 0.3 * Math.min(1, (u.soulKills ?? 0) / this.data2.config.soul.maxKills) : 1); if (Math.abs((v.persp ?? 1) - k) > 0.001) { v.persp = k; v.container.setScale(k); } }
-      if (v.foot2) v.foot2.setVisible(!u.stats.flyer || !onField);
-      if (v.shadow) { v.shadow.setVisible(onField && u.stats.flyer && !u.down); v.shadow.setPosition(v.container.x, this.laneY(u.skyRow ?? 1) + 34); }
+      if (!v.ent && this.dragUid !== u.uid) { const k = (onField ? (this.airborne(u) ? LANE_SCALE[u.skyRow ?? 1] * 0.96 : this.depthScale(u.y ?? (u.skyRow ?? u.lane ?? 1) / 2)) : BENCH_K) * (u.soul && onField ? 1 + 0.3 * Math.min(1, (u.soulKills ?? 0) / this.data2.config.soul.maxKills) : 1); if (Math.abs((v.persp ?? 1) - k) > 0.001) { v.persp = k; v.container.setScale(k); } }
+      if (v.foot2) v.foot2.setVisible(!this.airborne(u) || !onField);
+      if (v.shadow) { v.shadow.setVisible(onField && this.airborne(u) && !u.down); v.shadow.setPosition(v.container.x, this.laneY(u.skyRow ?? 1) + 34); }
       if (onField && u.hp < (v.hpSeen ?? u.hp) - 0.4 && !u.down) {
         const d = v.hpSeen - u.hp; v.shakeT = 0.18;
         this.floatText(v.container.x + Phaser.Math.Between(-8, 8), v.container.y - 60, `-${Math.round(d)}`, '#ff6b6b', d >= (u.maxHp ?? u.stats.hp) * 0.2 ? 22 : 15);
@@ -1474,7 +1488,7 @@ export default class BattleScene extends Phaser.Scene {
     for (const ev of this.state.events) {
       const v = ev.uid != null ? this.unitViews.get(ev.uid) : null;
       if (ev.type === 'attack' && v?.rig) playAttack(v.rig.inst, ev.move);
-      if (ev.type === 'ult' && v?.rig) v.rig.inst.play(v.rig.inst.anims.skill ? 'skill' : 'attack');
+      if (ev.type === 'ult' && v?.rig) { const a = v.rig.inst; a.play(a.dot?.sets?.[a.stageDef?.set]?.ult ? 'ult' : a.anims.skill ? 'skill' : 'attack'); }
       if (ev.type === 'skill' && v?.rig && ev.name) v.rig.inst.play('skill');
       if (ev.type === 'merge') this.pendingBirth.set(ev.uid, ev.kind === 'evolve' || ev.kind === 'spirit' ? 'evolve' : 'merge_in');
       if (ev.type === 'summon') this.pendingBirth.set(ev.uid, 'merge_in');
@@ -1514,7 +1528,13 @@ export default class BattleScene extends Phaser.Scene {
             this.time.delayedCall(170, () => { this.fx.gust(ve.lastX, ve.lastY, 1, u.speciesId === 'phoenix' ? 0xffb35c : 0xe0f7ff); this.fx.hit(ve.lastX, ve.lastY, u.speciesId === 'phoenix' ? 'orange' : 'white', true); if (ev.aoe) this.fx.groundAoe(ve.lastX, ve.lastY + 26, 80, u.speciesId === 'thunderbird' ? 0xfff6a0 : u.speciesId === 'phoenix' ? 0xff8a3c : 0xcfefff, { shake: false }); if (u.speciesId === 'thunderbird') this.fx.bolt(ve.lastX, ve.lastY - 150, ve.lastX, ve.lastY); this.kick2(ev, ux); });
             sfx('slash');
           } else if (kind === 'drop') { this.fx.drop(ve.lastX, ve.lastY, 'fx-stone', u.speciesId === 'cheese_thief' ? 0xffe9a8 : 0xffffff); this.time.delayedCall(200, () => this.kick2(ev, ux)); sfx('shoot'); }
-          else if (u.stats.range >= 3) { this.fx.projectile(u.speciesId, ux, uy, ve.lastX, ve.lastY, ev.aoe); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); }
+          else if (u.stats.range >= 3) {
+            // 동작 그림이 있으면 던지는 장(타격 순간)에 맞춰 날림
+            const clip = this.unitViews.get(ev.uid)?.rig?.inst?.cur?.clip;
+            const hitT = clip?.events?.find((e) => e[1] === 'hit')?.[0];
+            const fire = () => { const [x0, y0] = unitPos(ev.uid); this.fx.projectile(u.speciesId, x0, y0, ve.lastX, ve.lastY, ev.aoe); sfx(SHOT_SFX[u.speciesId] ?? 'shoot'); };
+            if (hitT > 0.02) this.time.delayedCall(Math.min(0.4, hitT) * 1000 / (this.speed || 1), fire); else fire();
+          }
           else {
             const v = this.unitViews.get(ev.uid);
             if (v) { v.lungeT = 0; v.lungeDir = Math.sign(ve.lastX - ux) || 1; }

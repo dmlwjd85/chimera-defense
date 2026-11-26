@@ -15,9 +15,24 @@ export function preloadRigs(scene) {
   });
   // 도트 그림이 있는 종: 설정 파일만 여기서 읽음(시트 그림은 manifest/art-pack에 dot-<종> 키로 들어 있음)
   scene.load.json('dotIndex', 'data/dot/index.json');
+  scene.load.json('dotmIndex', 'data/dotm/index.json');
   scene.load.once('filecomplete-json-dotIndex', (k, t, idx) => {
     for (const id of idx?.species ?? []) scene.load.json('dotD-' + id, `data/dot/${id}.dot.json`);
   });
+}
+
+/** 동작 도트 시트(PixelLab 동작): 폰 메모리 때문에 전투에 들어갈 때 덱에 든 종만 불러오고, 전투가 끝나면 내림. */
+export function queueMotionSheets(scene, speciesIds) {
+  const have = new Set(scene.cache.json.get('dotmIndex')?.species ?? []);
+  for (const id of new Set(speciesIds)) for (const key of [id, id + '_spirit']) {
+    if (!have.has(key)) continue;
+    if (scene.cache.json.exists('dotM-' + key)) { const d = scene.cache.json.get('dotM-' + key); if (!scene.textures.exists(d.sheet)) scene.load.image(d.sheet, d.file); continue; }
+    scene.load.json('dotM-' + key, `data/dotm/${key}.dot.json`);
+    scene.load.once('filecomplete-json-dotM-' + key, (k, t, d) => { if (d?.sheet && !scene.textures.exists(d.sheet)) scene.load.image(d.sheet, d.file); });
+  }
+}
+export function dropMotionSheets(scene) {
+  for (const key of scene.textures.getTextureKeys()) if (key.startsWith('dot-m-')) scene.textures.remove(key);
 }
 
 /** 도트 그림 켜짐 여부. ?dotart=0 이면 예전 조각 리그로 비교해 볼 수 있음(저장하지 않음). */
@@ -28,6 +43,12 @@ const dotBad = new Set();
 export function dotDataFor(scene, speciesId, stage) {
   if (!dotArtOn()) return null;
   // 신화급은 따로 그린 시트(<종>_spirit)가 있으면 그걸로(팔레트 16색이 단계 묶음마다 따로라서)
+  // 동작 시트가 불러와져 있으면 그걸 먼저(전투), 없으면 정지 그림 시트(덱·지도·초상화)
+  const mv = scene.cache.json.get('dotM-' + speciesId + (stage === 'spirit' ? '_spirit' : ''));
+  if (mv && mv.stages?.[stage] && !dotBad.has(mv.species + 'm') && scene.textures.exists(mv.sheet)) {
+    if (!mv._checked) { const errs = validateDot(mv); if (errs.length) { console.warn(`dotm ${mv.species}:`, errs); dotBad.add(mv.species + 'm'); } else mv._checked = true; }
+    if (mv._checked && ensureDotFrames(scene, mv)) return mv;
+  }
   const d = (stage === 'spirit' && scene.cache.json.get('dotD-' + speciesId + '_spirit')) || scene.cache.json.get('dotD-' + speciesId);
   if (!d || dotBad.has(d.species)) return null;
   if (stage === 'spirit' && !d.stages.spirit) return null;
@@ -47,6 +68,7 @@ export const ATTACK_MOTIONS = ['attack', 'claw', 'butt', 'bite', 'pounce', 'peck
 export function playAttack(inst, move = null) {
   const list = (inst.rig.attacks || []).filter((n) => inst.anims[n]);
   // 기술 묶음: 기본1 = 첫 공격 동작, 기본2 = 둘째 동작, 속성·필살기 = 기술 동작
+  if (move === 'ult' && inst.dot?.sets?.[inst.stageDef?.set]?.ult) return inst.play('ult');
   if (move === 'el' || move === 'ult') return inst.play(inst.anims.skill ? 'skill' : list.at(-1) ?? 'attack');
   if (move === 'a1' || move === 'a2') { if (!list.length) return inst.play('attack'); return inst.play(list[move === 'a2' ? Math.min(1, list.length - 1) : 0]); }
   if (!list.length) return inst.play('attack');

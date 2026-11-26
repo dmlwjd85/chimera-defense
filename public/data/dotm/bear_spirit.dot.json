@@ -1,0 +1,846 @@
+{
+ "note": "bear 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "bear_spirit",
+ "sheet": "dot-m-bear_spirit",
+ "file": "assets/dotm/bear_spirit.png",
+ "frameW": 144,
+ "frameH": 145,
+ "foot": 141,
+ "cols": 1,
+ "anchorX": 65,
+ "palette": [
+  "#291a1f",
+  "#434338",
+  "#612b29",
+  "#647453",
+  "#7a8f71",
+  "#88a182",
+  "#88ab5c",
+  "#8a4638",
+  "#a4b889",
+  "#b37351",
+  "#b8cda2",
+  "#ba986e",
+  "#dd4a4a",
+  "#ddb688",
+  "#e6d593",
+  "#f0e3cc"
+ ],
+ "rects": {
+  "bear_myth_a1_00": [
+   89,
+   252,
+   89,
+   102,
+   -44,
+   -102
+  ],
+  "bear_myth_a1_01": [
+   179,
+   252,
+   89,
+   102,
+   -44,
+   -102
+  ],
+  "bear_myth_a1_02": [
+   536,
+   0,
+   82,
+   127,
+   -44,
+   -135
+  ],
+  "bear_myth_a1_03": [
+   369,
+   0,
+   71,
+   129,
+   -44,
+   -142
+  ],
+  "bear_myth_a1_04": [
+   619,
+   0,
+   76,
+   124,
+   -45,
+   -134
+  ],
+  "bear_myth_a1_05": [
+   1744,
+   143,
+   96,
+   103,
+   -44,
+   -103
+  ],
+  "bear_myth_a1_06": [
+   1468,
+   143,
+   94,
+   104,
+   -44,
+   -104
+  ],
+  "bear_myth_a1_07": [
+   181,
+   143,
+   93,
+   107,
+   -44,
+   -107
+  ],
+  "bear_myth_a2_00": [
+   1841,
+   143,
+   89,
+   103,
+   -44,
+   -103
+  ],
+  "bear_myth_a2_01": [
+   275,
+   143,
+   90,
+   107,
+   -44,
+   -107
+  ],
+  "bear_myth_a2_02": [
+   763,
+   0,
+   95,
+   116,
+   -49,
+   -120
+  ],
+  "bear_myth_a2_03": [
+   859,
+   0,
+   98,
+   115,
+   -52,
+   -125
+  ],
+  "bear_myth_a2_04": [
+   958,
+   0,
+   98,
+   115,
+   -53,
+   -125
+  ],
+  "bear_myth_a2_05": [
+   1057,
+   0,
+   96,
+   115,
+   -51,
+   -117
+  ],
+  "bear_myth_a2_06": [
+   1561,
+   0,
+   91,
+   109,
+   -46,
+   -109
+  ],
+  "bear_myth_a2_07": [
+   740,
+   143,
+   89,
+   105,
+   -44,
+   -105
+  ],
+  "bear_myth_down_00": [
+   830,
+   143,
+   90,
+   105,
+   -42,
+   -105
+  ],
+  "bear_myth_down_01": [
+   1931,
+   143,
+   93,
+   103,
+   -44,
+   -103
+  ],
+  "bear_myth_down_02": [
+   728,
+   252,
+   100,
+   98,
+   -47,
+   -99
+  ],
+  "bear_myth_down_03": [
+   1071,
+   252,
+   104,
+   96,
+   -47,
+   -95
+  ],
+  "bear_myth_down_04": [
+   1250,
+   252,
+   124,
+   76,
+   -57,
+   -76
+  ],
+  "bear_myth_down_05": [
+   1375,
+   252,
+   144,
+   53,
+   -65,
+   -52
+  ],
+  "bear_myth_down_06": [
+   1520,
+   252,
+   131,
+   46,
+   -65,
+   -45
+  ],
+  "bear_myth_el_00": [
+   1154,
+   0,
+   88,
+   112,
+   -45,
+   -112
+  ],
+  "bear_myth_el_01": [
+   278,
+   0,
+   90,
+   132,
+   -51,
+   -132
+  ],
+  "bear_myth_el_02": [
+   187,
+   0,
+   90,
+   139,
+   -56,
+   -139
+  ],
+  "bear_myth_el_03": [
+   0,
+   0,
+   95,
+   142,
+   -58,
+   -142
+  ],
+  "bear_myth_el_04": [
+   96,
+   0,
+   90,
+   140,
+   -56,
+   -140
+  ],
+  "bear_myth_el_05": [
+   441,
+   0,
+   94,
+   129,
+   -52,
+   -129
+  ],
+  "bear_myth_el_06": [
+   1382,
+   0,
+   92,
+   110,
+   -44,
+   -110
+  ],
+  "bear_myth_el_07": [
+   1563,
+   143,
+   90,
+   104,
+   -43,
+   -104
+  ],
+  "bear_myth_hit_00": [
+   425,
+   252,
+   85,
+   101,
+   -44,
+   -101
+  ],
+  "bear_myth_hit_01": [
+   829,
+   252,
+   87,
+   98,
+   -43,
+   -104
+  ],
+  "bear_myth_hit_02": [
+   366,
+   143,
+   102,
+   107,
+   -53,
+   -125
+  ],
+  "bear_myth_hit_03": [
+   921,
+   143,
+   108,
+   105,
+   -56,
+   -123
+  ],
+  "bear_myth_idle_00": [
+   1654,
+   143,
+   89,
+   104,
+   -44,
+   -104
+  ],
+  "bear_myth_idle_01": [
+   1030,
+   143,
+   89,
+   105,
+   -44,
+   -105
+  ],
+  "bear_myth_idle_02": [
+   1833,
+   0,
+   89,
+   108,
+   -44,
+   -108
+  ],
+  "bear_myth_idle_03": [
+   1653,
+   0,
+   89,
+   109,
+   -44,
+   -109
+  ],
+  "bear_myth_ult_00": [
+   649,
+   143,
+   90,
+   106,
+   -44,
+   -106
+  ],
+  "bear_myth_ult_01": [
+   1120,
+   143,
+   85,
+   105,
+   -44,
+   -105
+  ],
+  "bear_myth_ult_02": [
+   269,
+   252,
+   78,
+   102,
+   -45,
+   -102
+  ],
+  "bear_myth_ult_03": [
+   917,
+   252,
+   75,
+   98,
+   -49,
+   -98
+  ],
+  "bear_myth_ult_04": [
+   993,
+   252,
+   77,
+   98,
+   -51,
+   -98
+  ],
+  "bear_myth_ult_05": [
+   652,
+   252,
+   75,
+   99,
+   -50,
+   -99
+  ],
+  "bear_myth_ult_06": [
+   511,
+   252,
+   68,
+   101,
+   -41,
+   -101
+  ],
+  "bear_myth_ult_07": [
+   696,
+   0,
+   66,
+   121,
+   -44,
+   -122
+  ],
+  "bear_myth_ult_08": [
+   1243,
+   0,
+   66,
+   112,
+   -43,
+   -134
+  ],
+  "bear_myth_ult_09": [
+   1310,
+   0,
+   71,
+   111,
+   -45,
+   -139
+  ],
+  "bear_myth_ult_10": [
+   1206,
+   143,
+   86,
+   105,
+   -50,
+   -135
+  ],
+  "bear_myth_ult_11": [
+   1475,
+   0,
+   85,
+   110,
+   -49,
+   -122
+  ],
+  "bear_myth_ult_12": [
+   348,
+   252,
+   76,
+   102,
+   -48,
+   -102
+  ],
+  "bear_myth_ult_13": [
+   1176,
+   252,
+   73,
+   95,
+   -45,
+   -95
+  ],
+  "bear_myth_ult_14": [
+   580,
+   252,
+   71,
+   100,
+   -43,
+   -100
+  ],
+  "bear_myth_ult_15": [
+   1293,
+   143,
+   85,
+   105,
+   -46,
+   -105
+  ],
+  "bear_myth_walk_00": [
+   0,
+   252,
+   88,
+   103,
+   -43,
+   -104
+  ],
+  "bear_myth_walk_01": [
+   1379,
+   143,
+   88,
+   105,
+   -43,
+   -106
+  ],
+  "bear_myth_walk_02": [
+   469,
+   143,
+   89,
+   107,
+   -44,
+   -108
+  ],
+  "bear_myth_walk_03": [
+   1923,
+   0,
+   89,
+   108,
+   -44,
+   -109
+  ],
+  "bear_myth_walk_04": [
+   0,
+   143,
+   90,
+   108,
+   -45,
+   -109
+  ],
+  "bear_myth_walk_05": [
+   91,
+   143,
+   89,
+   108,
+   -44,
+   -106
+  ],
+  "bear_myth_walk_06": [
+   559,
+   143,
+   89,
+   107,
+   -42,
+   -105
+  ],
+  "bear_myth_walk_07": [
+   1743,
+   0,
+   89,
+   109,
+   -42,
+   -107
+  ]
+ },
+ "frames": [
+  "bear_myth_a1_00",
+  "bear_myth_a1_01",
+  "bear_myth_a1_02",
+  "bear_myth_a1_03",
+  "bear_myth_a1_04",
+  "bear_myth_a1_05",
+  "bear_myth_a1_06",
+  "bear_myth_a1_07",
+  "bear_myth_a2_00",
+  "bear_myth_a2_01",
+  "bear_myth_a2_02",
+  "bear_myth_a2_03",
+  "bear_myth_a2_04",
+  "bear_myth_a2_05",
+  "bear_myth_a2_06",
+  "bear_myth_a2_07",
+  "bear_myth_down_00",
+  "bear_myth_down_01",
+  "bear_myth_down_02",
+  "bear_myth_down_03",
+  "bear_myth_down_04",
+  "bear_myth_down_05",
+  "bear_myth_down_06",
+  "bear_myth_el_00",
+  "bear_myth_el_01",
+  "bear_myth_el_02",
+  "bear_myth_el_03",
+  "bear_myth_el_04",
+  "bear_myth_el_05",
+  "bear_myth_el_06",
+  "bear_myth_el_07",
+  "bear_myth_hit_00",
+  "bear_myth_hit_01",
+  "bear_myth_hit_02",
+  "bear_myth_hit_03",
+  "bear_myth_idle_00",
+  "bear_myth_idle_01",
+  "bear_myth_idle_02",
+  "bear_myth_idle_03",
+  "bear_myth_ult_00",
+  "bear_myth_ult_01",
+  "bear_myth_ult_02",
+  "bear_myth_ult_03",
+  "bear_myth_ult_04",
+  "bear_myth_ult_05",
+  "bear_myth_ult_06",
+  "bear_myth_ult_07",
+  "bear_myth_ult_08",
+  "bear_myth_ult_09",
+  "bear_myth_ult_10",
+  "bear_myth_ult_11",
+  "bear_myth_ult_12",
+  "bear_myth_ult_13",
+  "bear_myth_ult_14",
+  "bear_myth_ult_15",
+  "bear_myth_walk_00",
+  "bear_myth_walk_01",
+  "bear_myth_walk_02",
+  "bear_myth_walk_03",
+  "bear_myth_walk_04",
+  "bear_myth_walk_05",
+  "bear_myth_walk_06",
+  "bear_myth_walk_07"
+ ],
+ "standing": [
+  "bear_myth_idle_00",
+  "bear_myth_idle_01",
+  "bear_myth_idle_02",
+  "bear_myth_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "myth": {
+   "top": 33,
+   "attack": {
+    "frames": [
+     "bear_myth_a1_00",
+     "bear_myth_a1_01",
+     "bear_myth_a1_02",
+     "bear_myth_a1_03",
+     "bear_myth_a1_04",
+     "bear_myth_a1_05",
+     "bear_myth_a1_06",
+     "bear_myth_a1_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.335,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "bear_myth_a2_00",
+     "bear_myth_a2_01",
+     "bear_myth_a2_02",
+     "bear_myth_a2_03",
+     "bear_myth_a2_04",
+     "bear_myth_a2_05",
+     "bear_myth_a2_06",
+     "bear_myth_a2_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.075,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "bear_myth_down_00",
+     "bear_myth_down_01",
+     "bear_myth_down_02",
+     "bear_myth_down_03",
+     "bear_myth_down_04",
+     "bear_myth_down_05",
+     "bear_myth_down_06"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "bear_myth_el_00",
+     "bear_myth_el_01",
+     "bear_myth_el_02",
+     "bear_myth_el_03",
+     "bear_myth_el_04",
+     "bear_myth_el_05",
+     "bear_myth_el_06",
+     "bear_myth_el_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "bear_myth_hit_00",
+     "bear_myth_hit_01",
+     "bear_myth_hit_02",
+     "bear_myth_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "bear_myth_idle_00",
+     "bear_myth_idle_01",
+     "bear_myth_idle_02",
+     "bear_myth_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "ult": {
+    "frames": [
+     "bear_myth_ult_00",
+     "bear_myth_ult_01",
+     "bear_myth_ult_02",
+     "bear_myth_ult_03",
+     "bear_myth_ult_04",
+     "bear_myth_ult_05",
+     "bear_myth_ult_06",
+     "bear_myth_ult_07",
+     "bear_myth_ult_08",
+     "bear_myth_ult_09",
+     "bear_myth_ult_10",
+     "bear_myth_ult_11",
+     "bear_myth_ult_12",
+     "bear_myth_ult_13",
+     "bear_myth_ult_14",
+     "bear_myth_ult_15"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ],
+    "hold": {
+     "frame": 0,
+     "sec": 0.06
+    },
+    "events": [
+     [
+      0.01,
+      "cast"
+     ],
+     [
+      0.02,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "bear_myth_walk_00",
+     "bear_myth_walk_01",
+     "bear_myth_walk_02",
+     "bear_myth_walk_03",
+     "bear_myth_walk_04",
+     "bear_myth_walk_05",
+     "bear_myth_walk_06",
+     "bear_myth_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "spirit": {
+   "set": "myth",
+   "scale": 0.5
+  }
+ }
+}

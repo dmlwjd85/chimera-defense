@@ -33,10 +33,20 @@ const PROJECTILE = {
   grasshopper: ['fx-note', 0x9cff6b, 1.1], frog: ['fx-bubble', 0x9fe4ff, 1.1], cheese_thief: ['fx-stone', 0xffe9a8, 1], thunderbird: ['fx-bolt', 0xfff6a0, 0.6],
   phoenix: ['fx-orb', 0xff9800, 1.2], monkey: ['fx-orb', 0xffb347, 0.9], bullfrog: ['fx-bubble', 0x9fe4ff, 1.4],
 };
+// 도트 투사체 날리는 법(그림은 public/assets/fx/proj/<종>.png). 깃털은 오른쪽 위(-45°)를 가리키게 그려져 있음.
+const DOT_PROJ = {
+  eagle: { mode: 'aim', base: Math.PI / 4, scale: 1.6, hit: 'white', burst: ['leaf', 0xffffff] },
+  crow: { mode: 'aim', base: Math.PI / 4, scale: 1.5, hit: 'purple', burst: ['leaf', 0x5b4a8a] },
+  fox: { mode: 'aim', base: 0, scale: 1.5, hit: 'green', burst: ['rise', 0x7fffd4] },
+  frog: { mode: 'aim', base: 0, scale: 1.5, hit: 'blue', burst: ['bubble', 0x9fe4ff] },
+  rooster: { mode: 'wob', scale: 1.5, hit: 'gold', burst: ['note', 0xffe066] },
+  grasshopper: { mode: 'spin', scale: 1.4, hit: 'green', burst: ['leaf', 0x7CFC9A] },
+  monkey: { mode: 'wob', scale: 1.5, hit: 'orange' },
+};
 /** How each kind of animal lands its blows. */
 export const STRIKE = {
   ant: 'bite', dog: 'bite', bear: 'paw', bear_tiger: 'paw', bison: 'horn', bighorn: 'horn', tiger: 'claw', rabbit: 'kick', jackalope: 'kick', wolf: 'bite', wolf_in_sheep: 'bite',
-  crow: 'drop', cheese_thief: 'drop', eagle: 'dive', thunderbird: 'dive', phoenix: 'dive', fox: 'foxfire', frog: 'bubble', bullfrog: 'bubble', rooster: 'song', grasshopper: 'song',
+  cheese_thief: 'drop', thunderbird: 'dive', phoenix: 'dive', fox: 'foxfire', frog: 'bubble', bullfrog: 'bubble', rooster: 'song', grasshopper: 'song',
 };
 
 export class FX {
@@ -109,9 +119,41 @@ export class FX {
     this.scene.tweens.add({ targets: r, scaleX: size, scaleY: size * 0.55, alpha: 0, duration: dur, ease: 'Cubic.out', onComplete: () => r.destroy() });
   }
 
+  /**
+   * 도트 투사체(PixelLab 그림): 크게, 날아가는 방향으로 기울이고, 뒤에 옅은 잔상 + 아래에 그림자를 둬서 풀밭에서도 잘 보이게.
+   * aim: 그림이 가리키는 방향(라디안)을 날아가는 방향에 맞춤, spin: 빙글빙글, wob: 살짝 흔들림.
+   */
+  dotProjectile(species, x1, y1, x2, y2, aoe) {
+    const sc = this.scene, P = DOT_PROJ[species] ?? { mode: 'wob', scale: 1.5, hit: 'white' };
+    const p = sc.add.image(x1 + 10, y1 - 34, 'fx-proj-' + species).setDepth(1596).setScale(P.scale);
+    const sh = sc.add.ellipse(x1, y1 + 4, 22, 7, 0x000000, 0.28).setDepth(36);
+    const dist = Math.hypot(x2 - x1, y2 - y1), lift = Math.min(60, dist * 0.18);
+    const t = { k: 0 }; let px = p.x, py = p.y, n = 0;
+    sc.tweens.add({
+      targets: t, k: 1, duration: Math.min(520, 200 + dist * 0.55), ease: 'Linear',
+      onUpdate: () => {
+        const k = t.k, x = x1 + 10 + (x2 - x1 - 10) * k, y = y1 - 34 + (y2 - 18 - (y1 - 34)) * k - Math.sin(k * Math.PI) * lift;
+        const ang = Math.atan2(y - py, x - px);
+        if (P.mode === 'aim' && (x !== px || y !== py)) p.setRotation(ang + (P.base ?? 0));
+        else if (P.mode === 'spin') p.rotation += 0.45;
+        else p.setRotation(Math.sin(k * 14) * 0.25);
+        p.setPosition(x, y); sh.setPosition(x, y1 + 4 + (y2 - y1) * k).setScale(0.8 + 0.4 * k);
+        if ((n++ & 1) === 0) { const gh = sc.add.image(px, py, 'fx-proj-' + species).setDepth(1595).setScale(P.scale * 0.85).setRotation(p.rotation).setAlpha(0.35); sc.tweens.add({ targets: gh, alpha: 0, scale: P.scale * 0.5, duration: 160, onComplete: () => gh.destroy() }); }
+        px = x; py = y;
+      },
+      onComplete: () => {
+        p.destroy(); sh.destroy();
+        this.hit(x2, y2 - 10, P.hit, aoe);
+        if (P.burst) this.burst(P.burst[0], x2, y2 - 10, 8, P.burst[1]);
+        if (aoe) { this.ring(x2, y2, TINT[P.hit] ?? 0xffffff, 1.2); this.groundAoe(x2, y2 + 26, 70, TINT[P.hit] ?? 0xffffff); }
+      },
+    });
+  }
+
   /** Arc a projectile from a ranged unit to its target, then pop. */
   projectile(species, x1, y1, x2, y2, aoe) {
     if (!this.ok) return;
+    if (this.scene.textures.exists('fx-proj-' + species)) return this.dotProjectile(species, x1, y1, x2, y2, aoe);
     const [tex, tint, sc] = PROJECTILE[species] ?? ['fx-orb', 0xffffff, 0.8];
     const p = this.scene.add.image(x1, y1 - 20, tex).setDepth(1595).setTint(tint).setScale(sc);
     if (tex === 'fx-orb' || tex === 'fx-bolt') p.setBlendMode('ADD');

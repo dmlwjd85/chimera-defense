@@ -1,0 +1,9 @@
+{
+ "note": "동작 시트가 있는 종(전투에 들어갈 때 덱에 든 종만 불러옴)",
+ "species": [
+  "bear",
+  "bear_spirit",
+  "eagle",
+  "eagle_spirit"
+ ]
+}

@@ -153,3 +153,25 @@ test('DotInstance: baby attack (no drawn claw) still hits on time, lunges forwar
   f.silhouette = true; assert.equal(f.getPose().silhouette, true);
   f.setFacing(-1); assert.equal(f.getPose().facing, -1);
 });
+
+// 동작 시트(PixelLab 동작, public/data/dotm): 규격 + 잘라 묶은 칸(rects)이 시트 안에 있고 장마다 칸 검사(반투명·팔레트 밖·외딴 점)를 통과
+test('motion dot sheets (dotm) pass the rules', () => {
+  if (!existsSync(pub('data/dotm/index.json'))) return;
+  for (const key of readJson('data/dotm/index.json').species) {
+    const d = readJson(`data/dotm/${key}.dot.json`);
+    assert.deepEqual(validateDot(d), [], key);
+    const sheet = decodePng(readFileSync(pub(d.file)));
+    assert.ok(d.palette.length <= 16 && d.palette.includes(OUTLINE), `${key} palette`);
+    for (const name of d.frames) {
+      const [x, y, w, h] = d.rects[name];
+      assert.ok(x + w <= sheet.width && y + h <= sheet.height, `${key} ${name} rect inside sheet`);
+      const r = checkFrame(sheet, x, y, { frameW: w, frameH: h, foot: h + 99, palette: d.palette });
+      const bad = r.errors.filter((e) => !/outline broken|foot line/.test(e));
+      assert.deepEqual(bad, [], `${key} ${name}`);
+    }
+    // 기술 묶음 동작이 단계마다 있는지: 아기 기본1, 성장기 +기본2, 성체 +속성, 신화급 +필살기
+    const own = readJson('data/config.json').moves?.ultOwn ?? [];   // 전용 필살기 연출이 있는 종(산군)은 공용 필살기 동작 없음
+    const need = { baby: ['idle', 'move', 'attack', 'hit', 'down'], teen: ['attack2'], adult: ['attack2', 'skill'], myth: ['attack2', 'skill', ...(own.includes(d.species.replace('_spirit', '')) ? [] : ['ult'])] };
+    for (const [set, ms] of Object.entries(need)) if (d.sets[set]) for (const m of ms) assert.ok(d.sets[set][m], `${key} ${set} ${m}`);
+  }
+});

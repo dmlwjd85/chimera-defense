@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { loadData } from './helpers.js';
-import { createGauntlet, tickGauntlet, autoRun, takeReward, moveAnimal, nextEncounter, planEncounters, closeRanks, unitsIn, castG, fighters } from '../src/logic/gauntlet.js';
+import { createGauntlet, tickGauntlet, autoRun, takeReward, moveAnimal, nextEncounter, planEncounters, closeRanks, unitsIn, castG, fighters, setPlan, cycleTactic, TACTICS, styleOf, rollRewards } from '../src/logic/gauntlet.js';
 import { starGoals, settleRun, defaultSave } from '../src/logic/meta.js';
 import { makeRng } from '../src/logic/rng.js';
 
@@ -158,4 +158,34 @@ test('금화 부활·놓아주기, 앞줄은 브루저만, 진형 붕괴, 레벨
   for (const u of st2.field) if (baseStyle(u) === 'bruiser') { u.hp = 0; u.down = true; }
   st2.events.length = 0; tickGauntlet(st2, D, 0.1);
   if (st2.phase === 'fight') assert.ok(st2.collapse.u);
+});
+
+test('수싸움: 1스테이지는 앞라인만, 2스테이지 수업(벽→사냥, 돌파 당함→지키기), 작전 바꾸기', () => {
+  const s1 = autoRun(createGauntlet(D, 'forest-1', 11, {}), D);
+  assert.ok(!s1.dstat?.uMark && !s1.dstat?.eMark, '1스테이지엔 돌파 예고 없음');
+  // 2스테이지: 3번째 교전에서 '벽' 안내, 5번째에서 '돌파 당함' 안내
+  const st = createGauntlet(D, 'forest-2', 5, {});
+  const seen = new Set();
+  for (let guard = 0; guard < 400 && st.phase !== 'ended'; guard++) {
+    while (st.phase === 'fight') { tickGauntlet(st, D, 0.5); for (const ev of st.events) if (ev.type === 'lesson') { seen.add(ev.kind); setPlan(st, D, ev.kind === 'wall' ? 'hunt' : 'guard'); } st.events.length = 0; }
+    if (st.phase !== 'regroup') break;
+    if (st.offer && !st.offer.taken) takeReward(st, D, 'food', st.field[0].uid);
+    nextEncounter(st, D);
+  }
+  assert.ok(seen.has('wall'), '벽 수업');
+  // 작전 고르기: 딜러 돕기 → 사냥 → 요격, 브루저 버티기 ↔ 지키기
+  const s3 = createGauntlet(D, 'forest-3', 3, {});
+  const sk = s3.field.find((u) => styleOf(u) === 'skirm'), br = s3.field.find((u) => styleOf(u) === 'bruiser');
+  if (sk) { const a = cycleTactic(s3, D, sk.uid).tactic, b = cycleTactic(s3, D, sk.uid).tactic; assert.notEqual(a, b); assert.ok(TACTICS.skirm.includes(a)); }
+  if (br) assert.ok(['hold', 'guard'].includes(cycleTactic(s3, D, br.uid).tactic));
+  assert.equal(cycleTactic(createGauntlet(D, 'forest-1', 3, {}), D, s1.field[0]?.uid ?? 0).ok, false);
+});
+
+test('보상 밸런스: 성장기→어른은 먹이 두 그릇, 연전 유물만 나옴', () => {
+  const st = createGauntlet(D, 'forest-1', 9, {});
+  const teen = st.field[0]; teen.stage = 'teen';
+  st.phase = 'regroup'; st.offer = { food: true, taken: null };
+  const r1 = takeReward(st, D, 'food', teen.uid);
+  assert.equal(r1.meal, 1); assert.equal(r1.need, 2);
+  for (let i = 0; i < 30; i++) { st.offer = rollRewards(st, D); for (const id of st.offer.relic ?? []) { const r = D.relicById[id]; assert.ok(!(D.config.gauntlet.relicBan ?? []).includes(id), id); assert.ok(r); } }
 });

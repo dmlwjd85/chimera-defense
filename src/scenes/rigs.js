@@ -115,6 +115,11 @@ export function stageEnemyIds(stage, data) {
   return [...ids].map((id) => 'en_' + id);
 }
 
+/** 원래 그림이 이미 왼쪽(또는 정면에서 왼쪽)을 보는 적 — 뒤집으면 오른쪽을 보게 되므로 뒤집지 않음(2026-11-26 전장 나란히 확인) */
+export const ENEMY_FACES_LEFT = new Set(['boss_frost', 'boss_bat', 'bat', 'wisp']);
+/** 적이 동물 쪽(왼쪽)을 볼 때 setFacing 값 */
+export const enemyFace = (id, back = false) => (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1);
+
 /** 적 도트(동작 시트가 불러와져 있을 때만). 오른쪽을 보는 그림 → 왼쪽(동물 쪽)을 보게 뒤집음. */
 function enemyDot(scene, enemy, parent, scale) {
   if (!dotArtOn()) return null;
@@ -123,7 +128,7 @@ function enemyDot(scene, enemy, parent, scale) {
   if (!mv._checked) { const errs = validateDot(mv); if (errs.length) { console.warn(`dotm ${mv.species}:`, errs); dotBad.add(mv.species + 'm'); return null; } mv._checked = true; }
   if (!ensureDotFrames(scene, mv)) return null;
   const inst = new DotInstance(mv, { stage: 'adult', scale, motion: 'move' });
-  inst.setFacing(-1);
+  inst.setFacing(enemyFace(enemy.id));
   return { inst, view: new DotView(scene, inst, { parent, px: DOT_PX * (scale / 0.22) }), dot: true };
 }
 

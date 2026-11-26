@@ -93,6 +93,8 @@ export function battleOptions(save, data, stageId = null) {
     legend: save.legend ?? null,
     // 고급 모드일 때만 고른 빌드가 적용됨(기본은 추천)
     builds: save.advanced ? { ...(save.builds ?? {}) } : {},
+    pouch: save.pouch ?? 0,
+    prep: save.prep ?? null,
   };
 }
 
@@ -205,6 +207,9 @@ export function settleRun(save, state, data) {
   const rec = (save.stages[stageId] ??= { cleared: false, bestWave: 0 });
   const waves = state.wavesCleared ?? 0;
   const lines = [];
+  // 남은 금화는 주머니로(다음 스테이지에 들고 가거나 상점에서 씀). 연전만
+  let pouchIn = 0;
+  if (state.mode === 'gauntlet') { const cap = data.config.gauntlet?.pouchMax ?? 200; pouchIn = Math.max(0, Math.min(state.gold ?? 0, cap - (save.pouch ?? 0))); save.pouch = (save.pouch ?? 0) + pouchIn; if (clear) save.shop = null; }
   let essence = waves * ec.perWave;
   lines.push(['웨이브 ' + waves + '개', waves * ec.perWave]);
   if (clear) {
@@ -291,7 +296,7 @@ export function settleRun(save, state, data) {
     }
   }
   save.shards = (save.shards ?? 0) + shards;
-  return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
+  return { pouchIn, pouch: save.pouch ?? 0, clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
     mvp: Object.values(state.dmgRun ?? {}).sort((a, b) => b.dmg - a.dmg).slice(0, 3).map((r) => ({ ...r, dmg: Math.round(r.dmg) })),
     stars, goals, totalStars: starsAfter, joined, gauge, legends: clear && state.mode === 'gauntlet' ? legendCandidates(state) : [], newSpells: spellsUnlocked(save, data).filter((id) => !spellsBefore.includes(id)), time: Math.round(state.time) };
 }
@@ -369,4 +374,49 @@ export function buyFavor(save, data, id) {
   if (!st.ok) return st;
   save.essence -= st.cost; (save.favor ??= {})[id] = st.level + 1;
   return { ...st, level: st.level + 1 };
+}
+
+// ---------- 스테이지 사이 상점(주머니 금화) ----------
+const SHOP_PRICE = { common: 25, rare: 40, epic: 60 };
+/** 상점 진열: 연전 유물 2 · 먹이 꾸러미 · 불사조 깃털(공짜 부활) · 훈련(덱 동물 레벨 +1). 같은 진열은 새로 고칠 때까지 유지 */
+export function shopOffers(save, data, rng = Math.random) {
+  if (save.shop?.items?.length) return save.shop;
+  const pool = data.relicCfg.relics.filter((r) => r.gauntlet && !(save.prep?.relics ?? []).includes(r.id));
+  const relics = [];
+  while (relics.length < 2 && pool.length) relics.push(pool.splice(Math.floor(rng() * pool.length), 1)[0]);
+  const deck = (save.deck ?? []).filter((id) => data.unitById[id]);
+  const trainee = deck.length ? deck[Math.floor(rng() * deck.length)] : data.units[0].id;
+  const items = [
+    ...relics.map((r) => ({ kind: 'relic', id: r.id, icon: r.icon, name: r.name, desc: r.desc, price: SHOP_PRICE[r.rarity] ?? 30 })),
+    { kind: 'food', icon: '🍖', name: '먹이 꾸러미', desc: '다음 스테이지 시작 때 가장 어린 동물이 한 단계 자람', price: 20 },
+    { kind: 'feather', icon: '🪶', name: '부활 깃털', desc: '다음 스테이지에서 부활 한 번 공짜', price: 18 },
+    { kind: 'train', id: trainee, icon: '🏋', name: `${data.unitById[trainee]?.name ?? ''} 훈련`, desc: '이 동물 레벨 +1(출전 단계가 빨리 자람)', price: 30 },
+  ];
+  save.shop = { items: items.map((x) => ({ ...x, sold: false })) };
+  return save.shop;
+}
+export function rerollShop(save, data, rng = Math.random) {
+  const cost = 5;
+  if ((save.pouch ?? 0) < cost) return { ok: false, reason: 'gold' };
+  save.pouch -= cost; save.shop = null; shopOffers(save, data, rng);
+  return { ok: true, cost };
+}
+/** 사기: 산 것은 다음 연전 시작 때 적용(save.prep) — 유물·먹이·깃털은 최대 2개씩 */
+export function buyShop(save, data, index) {
+  const it = save.shop?.items?.[index];
+  if (!it || it.sold) return { ok: false, reason: 'notFound' };
+  if ((save.pouch ?? 0) < it.price) return { ok: false, reason: 'gold' };
+  const prep = (save.prep ??= { relics: [], food: 0, feathers: 0 });
+  if (it.kind === 'relic') { if (prep.relics.length >= 2) return { ok: false, reason: 'full' }; prep.relics.push(it.id); }
+  else if (it.kind === 'food') { if (prep.food >= 2) return { ok: false, reason: 'full' }; prep.food += 1; }
+  else if (it.kind === 'feather') { if (prep.feathers >= 2) return { ok: false, reason: 'full' }; prep.feathers += 1; }
+  else if (it.kind === 'train') { const cur = levelInfo(save.speciesXp[it.id] ?? 0, data.config); if (cur.need <= 0) return { ok: false, reason: 'full' }; save.speciesXp[it.id] = (save.speciesXp[it.id] ?? 0) + (cur.need - cur.xp); }
+  save.pouch -= it.price; it.sold = true;
+  return { ok: true, item: it };
+}
+/** 연전을 시작하면 주머니 금화와 산 물건을 들고 감 */
+export function takeOutForRun(save) {
+  const out = { pouch: save.pouch ?? 0, prep: save.prep ?? null };
+  save.pouch = 0; save.prep = null; save.shop = null;
+  return out;
 }

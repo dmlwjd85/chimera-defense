@@ -101,6 +101,8 @@ export const totalStars = (save) => Object.values(save.stages ?? {}).reduce((n, 
 export function starGoals(state, data) {
   const sc = data.config.stars ?? { life: 60, par: 420 };
   const clear = state.result === 'clear';
+  // 연전: ★ 클리어 / ★ 생명 지킴(하드는 자동) / ★ 쓰러진 아군 적게
+  if (state.mode === 'gauntlet') { const need = data.config.gauntlet?.lowStars ?? 3; return { clear, life: clear && (state.hard || state.life >= state.maxLife * sc.life / 100), time: clear && state.downs <= need, lifeNeed: sc.life, downs: state.downs, downNeed: need, gauntlet: true, hard: !!state.hard }; }
   const par = state.stage.par ?? sc.par;
   return { clear, life: clear && state.life >= (state.maxLife ?? data.config.life) * sc.life / 100, time: clear && state.time <= par, par, lifeNeed: sc.life };
 }
@@ -208,7 +210,15 @@ export function settleRun(save, state, data) {
   }
   const sc = data.talents?.shards ?? {};
   const fromRelics = (state.relics ?? []).reduce((n, id) => n + (sc[data.relicById?.[id]?.rarity] ?? 0), 0);
-  const shards = fromRelics + Math.floor(waves / (sc.perWaves ?? 3));
+  let shards = fromRelics + Math.floor(waves / (sc.perWaves ?? 3));
+  // 하드: 에센스·유물 조각을 더 줌, 하드로 깨면 왕관 기록
+  if (state.hard) {
+    const ge = data.config.gauntlet ?? {};
+    const extra = Math.round(essence * ((ge.hardEssence ?? 1.5) - 1));
+    if (extra > 0) { save.essence += extra; essence += extra; lines.push(['하드 보너스', extra]); }
+    shards = Math.round(shards * (ge.hardShards ?? 2));
+    if (clear) rec.hard = true;
+  }
   save.shards = (save.shards ?? 0) + shards;
   return { clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
     mvp: Object.values(state.dmgRun ?? {}).sort((a, b) => b.dmg - a.dmg).slice(0, 3).map((r) => ({ ...r, dmg: Math.round(r.dmg) })),

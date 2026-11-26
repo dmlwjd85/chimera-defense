@@ -20,7 +20,10 @@ export default class ResultScene extends Phaser.Scene {
       const g = r.goals, mm = (t) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`;
       const st = this.add.text(640, 112, '★'.repeat(r.stars) + '☆'.repeat(3 - r.stars), style(34, '#ffd84d', { stroke: '#000', strokeThickness: 5 })).setOrigin(0.5).setScale(0.2);
       this.tweens.add({ targets: st, scale: 1, duration: 500, ease: 'Back.out' });
-      this.add.text(640, 150, `✔ 클리어    ${g.life ? '✔' : '✘'} 생명 ${g.lifeNeed}% 이상    ${g.time ? '✔' : '✘'} ${mm(g.par)} 안에 (걸린 시간 ${mm(r.time)})    ·    모은 별 ⭐${r.totalStars}`, style(14, '#cfe8ff')).setOrigin(0.5);
+      const goalLine = g.gauntlet
+        ? `✔ 클리어    ${g.life ? '✔' : '✘'} ${g.hard ? '하드(생명 자동)' : `생명 ${g.lifeNeed}% 이상`}    ${g.time ? '✔' : '✘'} 쓰러진 아군 ${g.downNeed} 이하 (${g.downs})    ·    모은 별 ⭐${r.totalStars}${g.hard ? '    👑 하드 클리어' : ''}`
+        : `✔ 클리어    ${g.life ? '✔' : '✘'} 생명 ${g.lifeNeed}% 이상    ${g.time ? '✔' : '✘'} ${mm(g.par)} 안에 (걸린 시간 ${mm(r.time)})    ·    모은 별 ⭐${r.totalStars}`;
+      this.add.text(640, 150, goalLine, style(14, '#cfe8ff')).setOrigin(0.5);
       if (r.newSpells?.length) {
         const sp = D.config.spells.list.filter((x) => r.newSpells.includes(x.id));
         this.add.text(640, 172, `🔮 새 마법을 배웠어요: ${sp.map((x) => `${x.icon} ${x.name}`).join(', ')} — ${sp[0].desc}`, style(15, '#d7bde2', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(20);
@@ -30,7 +33,7 @@ export default class ResultScene extends Phaser.Scene {
         this.tweens.add({ targets: t, scale: { from: 1, to: 1.06 }, yoyo: true, repeat: -1, duration: 700 });
       }
     }
-    this.add.text(640, r.clear && r.goals ? 84 : 130, `${D.stageById[d.stageId]?.name ?? ''} · 도달 웨이브 ${d.wave}/${d.total} · 남은 생명 ${d.life}${d.bossLeaked ? ' · 보스가 방어선을 넘음(보스 처치 보상 없음)' : ''}`, style(r.clear ? 13 : 18, '#dddddd')).setOrigin(0.5);
+    this.add.text(640, r.clear && r.goals ? 84 : 130, `${D.stageById[d.stageId]?.name ?? ''} · ${d.gauntlet ? `${d.hard ? '하드 · ' : ''}도달 교전` : '도달 웨이브'} ${d.wave}/${d.total}${d.gauntlet && d.hard ? '' : ` · 남은 생명 ${d.life}`}${d.bossLeaked ? ' · 보스가 방어선을 넘음(보스 처치 보상 없음)' : ''}`, style(r.clear ? 13 : 18, '#dddddd')).setOrigin(0.5);
 
     panel(this, 60, 165, 560, 375);
     this.add.text(85, 180, `에센스 +${r.essence}`, style(24, '#ffd84d'));
@@ -83,11 +86,11 @@ export default class ResultScene extends Phaser.Scene {
       picks.forEach((c, i) => btns.push(button(this, 640 - (picks.length - 1) * 75 + i * 150, 598, 140, 34, label(c), () => { setCarry(save, D, d.stageId, c); writeSave(this.registry.get('storage'), save); mark(i); }, { size: 13, fill: 0x2e5a3a })));
       mark(0);
     }
-    button(this, 440, 650, 200, 56, '다시 하기 (R)', () => this.scene.start('Battle', { stageId: d.stageId }), { size: 20 });
+    button(this, 440, 650, 200, 56, '다시 하기 (R)', () => this.scene.start(d.gauntlet ? 'Gauntlet' : 'Battle', { stageId: d.stageId, hard: d.gauntlet ? !!d.hard : undefined }), { size: 20 });
     button(this, 660, 650, 200, 56, '스테이지 선택', () => this.scene.start('StageSelect'), { size: 20, fill: 0x3a7bd5 });
     button(this, 870, 650, 140, 56, '타이틀 (ESC)', () => this.scene.start('Title'), { size: 16 });
     button(this, 1050, 650, 200, 56, '✨ 별자리 나무', () => this.scene.start('Talent', { back: 'StageSelect' }), { size: 18, fill: 0x3a2466, stroke: 0xc77dff });
-    this.input.keyboard.on('keydown-R', () => this.scene.start('Battle', { stageId: d.stageId }));
+    this.input.keyboard.on('keydown-R', () => this.scene.start(d.gauntlet ? 'Gauntlet' : 'Battle', { stageId: d.stageId, hard: d.gauntlet ? !!d.hard : undefined }));
     this.input.keyboard.on('keydown-ESC', () => this.scene.start('Title'));
   }
 }

@@ -7,6 +7,7 @@ import { buildData } from '../logic/data.js';
 import { battleOptions, settleRun, writeSave, carryCandidates, setCarry, takeOutForRun } from '../logic/meta.js';
 import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost, recommendReward, buyPotion, trainUnit, trainCost, tuneOf, laneOf } from '../logic/gauntlet.js';
 import { spellDef, spellCost } from '../logic/spells.js';
+import { duelData, myDuelDeck, DUEL } from '../logic/duel.js';
 import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, enemyFace } from './rigs.js';
 import { FX, ambient, weather } from './fx.js';
 import { sfx, unlockAudio, isMuted, setMuted, ENEMY_HIT_DB } from './sfx.js';
@@ -47,8 +48,11 @@ export default class GauntletScene extends Phaser.Scene {
     try {
       const data = buildData(this.registry.get('raw'));
       const pool = battleOptions(this.registry.get('save'), data, d?.stageId ?? 'forest-1').pool ?? [];
+      if (d?.duel) { queueMotionSheets(this, myDuelDeck(this.registry.get('save'), data).map((x) => x.id)); queueMotionSheets(this, d.duel.foe.deck.map((x) => x.id)); }
+      else {
       queueMotionSheets(this, pool);
-      queueMotionSheets(this, stageEnemyIds(data.stageById[d?.stageId ?? 'forest-1'], data));   // 그 판 적의 PixelLab 동작
+      queueMotionSheets(this, stageEnemyIds(data.stageById[d?.stageId ?? 'forest-1'], data));
+      }   // 그 판 적의 PixelLab 동작
     } catch (e) { console.warn('motion sheets', e); }
     this.load.on('loaderror', (f) => console.warn('motion sheet missing', f.key));
   }
@@ -57,7 +61,9 @@ export default class GauntletScene extends Phaser.Scene {
     this.events.once('shutdown', () => dropMotionSheets(this));
     this.D = buildData(this.registry.get('raw'));
     this.save = this.registry.get('save');
-    this.stageId = d?.stageId ?? 'forest-1';
+    this.duelIn = d?.duel ?? null;
+    if (this.duelIn) { this.dd = duelData(this.D, this.duelIn.foe); this.D = this.dd.data; }
+    this.stageId = this.duelIn ? 'arena' : d?.stageId ?? 'forest-1';
     this.stage = this.D.stageById[this.stageId];
     Object.assign(this, { speed: 1, slow: 0, uViews: new Map(), eViews: new Map(), ui: [], leaving: false, state: null, mode: null });
     this.cameras.main.setBackgroundColor('#0b0d12');
@@ -66,7 +72,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.input.on('pointerdown', unlockAudio);
     this.input.keyboard.on('keydown-ONE', () => { this.speed = 1; });
     this.input.keyboard.on('keydown-TWO', () => { this.speed = 2; });
-    if (d?.hard != null) this.begin(!!d.hard, d.tier ?? null); else this.chooseDifficulty();
+    if (this.duelIn) this.beginDuel(); else if (d?.hard != null) this.begin(!!d.hard, d.tier ?? null); else this.chooseDifficulty();
   }
 
   // ---------- 배경: 어둡게 깔고 가운데만 밝게(다키스트 던전 느낌) ----------
@@ -133,6 +139,22 @@ export default class GauntletScene extends Phaser.Scene {
     });
   }
 
+  /** 덱 대결: 내 대표 덱(해금한 동물·레벨 단계) vs 친구 덱(컴퓨터). 3판 2선승, 마법·유물·금화 없음 */
+  beginDuel() {
+    this.bindCheer();
+    const mine = myDuelDeck(this.save, this.D);
+    const teenAt = gcfg(this.D).growLv?.teen ?? 4;
+    const seed = Number(new URLSearchParams(window.location.search).get('seed')) || Date.now() % 100000;
+    this.state = createGauntlet(this.D, 'arena', seed, {
+      pool: mine.map((x) => x.id), levels: Object.fromEntries(mine.map((x) => [x.id, x.stage === 'teen' ? teenAt : 1])), builds: Object.fromEntries(mine.filter((x) => x.build).map((x) => [x.id, x.build])),
+      spells: [], plan: this.dd.plan, duel: { hpMul: DUEL.hpMul, need: DUEL.need, foePlan: this.dd.foePlan, code: this.duelIn.code, name: this.duelIn.name }, prelude: true,
+    });
+    window.__gauntlet = { scene: this, get state() { return this.scene.state; }, data: this.D };
+    this.drawHud();
+    this.state.events.length = 0;
+    this.time.delayedCall(80, () => this.showRegroup());
+  }
+
   begin(hard, tier = null) {
     this.bindCheer();
     const seed = Number(new URLSearchParams(window.location.search).get('seed')) || Date.now() % 100000;
@@ -191,7 +213,7 @@ export default class GauntletScene extends Phaser.Scene {
     top.fillStyle(0x0d1222, 0.92).fillRect(0, 0, 1280, 54);
     this.hudEnc = this.add.text(24, 14, '', style(24, '#ffffff')).setDepth(1801);
     this.hudInfo = this.add.text(1256, 18, '', style(16, '#f4f1e8')).setOrigin(1, 0).setDepth(1801);
-    this.hudMode = this.add.text(250, 20, s.hard ? '하드 · 한 번 지면 끝' : '노멀', style(14, s.hard ? '#ff8a7a' : '#9fe0a0', { backgroundColor: '#1f2a4a', padding: { x: 10, y: 3 } })).setDepth(1801);
+    this.hudMode = this.add.text(s.duel ? 420 : 250, 20, s.duel ? '덱 대결' : s.hard ? '하드 · 한 번 지면 끝' : '노멀', style(14, s.hard ? '#ff8a7a' : '#9fe0a0', { backgroundColor: '#1f2a4a', padding: { x: 10, y: 3 } })).setDepth(1801);
     this.timeBg = this.add.rectangle(640, 66, 900, 10, 0x0d1222).setDepth(1801);
     this.timeBar = this.add.rectangle(190, 66, 900, 10, 0x8fd3ff).setOrigin(0, 0.5).setDepth(1802);
     this.timeText = this.add.text(1100, 58, '', style(15, '#cfe8ff')).setDepth(1802);
@@ -216,8 +238,8 @@ export default class GauntletScene extends Phaser.Scene {
   updateHud() {
     const s = this.state, g = gcfg(this.D);
     const spec = s.plan[Math.min(s.enc, s.plan.length - 1)];
-    this.hudEnc.setText(spec?.boss ? `보스 교전` : `교전 ${Math.min(s.enc + 1, s.plan.length)} / ${s.plan.length}`);
-    this.hudInfo.setText(`${s.hard ? '' : `♥ ${s.life}/${s.maxLife}   `}💰 ${s.gold}`);
+    this.hudEnc.setText(s.duel ? `⚔ 라운드 ${Math.min(s.enc + 1, s.plan.length)}  나 ${s.wins} : ${s.losses} 친구` : spec?.boss ? `보스 교전` : `교전 ${Math.min(s.enc + 1, s.plan.length)} / ${s.plan.length}`);
+    this.hudInfo.setText(s.duel ? `🏆 3판 2선승  ·  ${s.duel.name ?? '친구 덱'}` : `${s.hard ? '' : `♥ ${s.life}/${s.maxLife}   `}💰 ${s.gold}`);
     const fight = s.phase === 'fight';
     const left = Math.max(0, g.timeLimit - s.encTime);
     this.timeBar.setVisible(fight).setScale(Math.max(0, left / g.timeLimit), 1); this.timeBg.setVisible(fight);
@@ -343,7 +365,9 @@ export default class GauntletScene extends Phaser.Scene {
     const size = e.boss ? 60 : e.id === 'swarm' ? 30 : 34;
     const holder = this.add.container(0, 0);
     const px = size * 2.2 * (e.boss ? 1.25 : 1.3);
-    const rig = enemyRig(this, e, holder, px, UNIT_SCALE);
+    // 대결: 친구 동물은 동물 그림(왼쪽을 봄)
+    const rig = def?.animal ? unitRig(this, { kind: 'base', speciesId: def.animal, stage: def.stage ?? 'teen', uid: e.eid }, holder, UNIT_SCALE * this.sizeFix({ kind: 'base', speciesId: def.animal, stage: def.stage ?? 'teen' })) : enemyRig(this, e, holder, px, UNIT_SCALE);
+    if (def?.animal) rig?.inst.setFacing?.(-1);
     if (rig && !rig.dot && dotOn()) dotify(this, holder);
     const body = rig ? null : this.add.rectangle(0, -size / 2, size, size, hex(def.color));
     if (body) holder.add(body);
@@ -1183,9 +1207,9 @@ export default class GauntletScene extends Phaser.Scene {
     const g = this.addUi(this.add.graphics().setDepth(2000));
     g.fillStyle(0x0d1222, 0.95).fillRoundedRect(660, 80, 600, 620, 16).lineStyle(2, 0xd4b06a, 0.7).strokeRoundedRect(660, 80, 600, 620, 16);
     const win = s.lastWin;
-    this.addUi(this.add.text(684, 96, s.prelude ? '출전 준비' : win ? '승리!' : '후퇴…', style(30, s.prelude ? '#9cff6b' : win ? '#ffd84d' : '#ff8a7a')).setDepth(2001));
+    this.addUi(this.add.text(684, 96, s.duel ? `⚔ 라운드 ${s.enc + 1} 준비  (나 ${s.wins} : ${s.losses} 친구)` : s.prelude ? '출전 준비' : win ? '승리!' : '후퇴…', style(30, s.prelude ? '#9cff6b' : win ? '#ffd84d' : '#ff8a7a')).setDepth(2001));
     if (s.prelude) this.addUi(this.add.text(684, 142, '자리와 작전을 보고, 다음 적을 확인한 뒤 ▶ 출발', style(15, '#d8d2c2')).setDepth(2001));
-    this.goldText = this.addUi(this.add.text(1236, 104, `💰 ${s.gold}`, style(24, '#ffd84d')).setOrigin(1, 0).setDepth(2001));
+    this.goldText = this.addUi(this.add.text(1236, 104, s.duel ? '' : `💰 ${s.gold}`, style(24, '#ffd84d')).setOrigin(1, 0).setDepth(2001));
     if (s.mvp) this.addUi(this.add.text(684, 140, s.mvp.grew ? `⭐ ${s.mvp.from} → ${s.mvp.to}` : `⭐ ${s.mvp.from}`, style(16, '#9cff6b')).setDepth(2001));
     if (s.mvp?.grew) { const p = this.posOf('u', s.mvp.uid); if (p) { this.fx.evolve(p[0], p[1], false); sfx('evolve'); } }
     // 왜 이겼나 / 왜 졌나: 가장 큰 요인 넷
@@ -1388,6 +1412,17 @@ export default class GauntletScene extends Phaser.Scene {
   finish() {
     this.leaving = true;
     const s = this.state;
+    if (s.duel) {
+      const rec = (this.save.duel ??= { wins: 0, losses: 0, foes: {} });
+      const win = s.result === 'clear';
+      if (win) rec.wins += 1; else rec.losses += 1;
+      const f = (rec.foes[s.duel.code] ??= { w: 0, l: 0, name: s.duel.name ?? null });
+      if (win) f.w += 1; else f.l += 1;
+      writeSave(this.registry.get('storage'), this.save);
+      this.fx.banner(win ? '대결 승리!' : '대결 패배…', win ? '#ffd84d' : '#ff8a7a', `나 ${s.wins} : ${s.losses} 친구`);
+      this.time.delayedCall(2400, () => this.scene.start('Duel', { last: { win, wins: s.wins, losses: s.losses, code: s.duel.code } }));
+      return;
+    }
     if (this.tut && this.tut.step >= 5) this.save.tutorialDone = true;
     this.tutShow?.('');
     const report = settleRun(this.save, s, this.D);

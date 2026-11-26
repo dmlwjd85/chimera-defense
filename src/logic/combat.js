@@ -46,7 +46,9 @@ export function pickTarget(state, u) {
   for (const e of state.enemies) if (e.blockedBy === u.uid && hittable(u, e) && (!best || e.pos < best.pos)) best = e;
   if (best) return best;
   const range = u.stats.range <= 1 ? (state.meleeReach ?? 1) + Math.max(0, effRange(u) - 1) : effRange(u);
-  const inRange = state.enemies.filter((e) => hittable(u, e) && gap(state, u, e) <= range);
+  // 사격 구역(formation.killZone): 원거리는 땅의 적이 앞줄(근접 동물) 가까이 와야 쏨 → 적이 포탈 입구에서 녹지 않고 앞줄과 맞붙는 게 보임(2026-11-26)
+  const kz = u.stats.range > 1 ? state.killLine : null;
+  const inRange = state.enemies.filter((e) => hittable(u, e) && gap(state, u, e) <= range && (kz == null || e.flying || e.pos <= kz));
   if (!inRange.length) return null;
   const mis = flags(u).misTarget;
   if (mis && inRange.length > 1 && state.rng() < mis / 100) return inRange[Math.floor(state.rng() * inRange.length)];
@@ -440,6 +442,9 @@ export function combatTick(state, data, dt) {
     if (e.boss) for (const o of state.field) if (o !== b && !o.down && !o.stats.flyer && gap(state, o, b) <= 1) hitUnit(state, data, o, e.attack, e);
   }
 
+  // 사격 구역 끝 = 가장 앞에 선 근접(땅) 동물 + killZone칸. 근접 동물이 없으면 제한 없음
+  { const kz = cfg.formation?.killZone; const melee = kz != null ? state.field.filter((o) => !o.down && !o.inGate && !o.stats.flyer && o.stats.range <= 1) : [];
+    state.killLine = melee.length ? Math.max(...melee.map((o) => o.pos)) + kz : null; }
   // unit attacks
   for (const u of state.field) {
     if (!standing(u)) continue;

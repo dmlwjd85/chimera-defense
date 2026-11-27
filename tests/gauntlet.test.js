@@ -471,3 +471,49 @@ test('먹이: 진화까지 남은 그릇(어린 1, 성장기 adultMeals), 다 �
   assert.equal(G.mealInfo({ kind: 'base', stage: 'adult' }, D), null);
   assert.equal(G.mealInfo({ kind: 'chimera', stage: 'adult' }, D), null);
 });
+
+test('부활 스킬: 타고난 응원 신화급·키메라만, 교전마다 한 번, 쓰러진 친구를 체력 35%로 일으킴', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  const B = await import('../src/logic/battle.js');
+  const st = createGauntlet(D, 'forest-3', 5, {});
+  const mk = (sp, stage) => B.makeUnit(st, D, { kind: 'base', speciesId: sp, stage, parts: null, traits: [] });
+  const sup = mk('rabbit', 'spirit'), kid = mk('rabbit', 'adult'), a = mk('bear', 'adult'), b = mk('tiger', 'adult');
+  assert.equal(G.canReviveSkill(sup), true);
+  assert.equal(G.canReviveSkill(kid), false);            // 신화급·키메라가 아니면 못 함
+  assert.equal(G.canReviveSkill(mk('tiger', 'spirit')), false);   // 응원 역할이 아니면 못 함
+  st.field = [sup, a, b]; st.seats = st.seats.map(() => null);
+  [[sup, 6], [a, 0], [b, 1]].forEach(([u, seat]) => { st.seats[seat] = u.uid; u.seat = seat; });
+  st.charging = false;
+  for (const u of st.field) Object.assign(u, { skillT: {}, statusT: {}, gauge: 0, ultGauge: 0, elCd: 0, temp: [], stance: null, reviveUsed: 0 });
+  for (const e of st.enemies) { e.hp = e.maxHp = 1e7; e.attack = 0; }   // 싸움이 끝나지 않게
+  const down = (u) => { u.hp = 0; u.down = true; u.downAt = st.time; };
+  down(a);
+  let ev = null;
+  for (let i = 0; i < 80 && !ev; i++) { tickGauntlet(st, D, 0.05); ev = st.events.find((x) => x.type === 'reviveSkill') ?? null; st.events.length = 0; }
+  assert.ok(ev, '부활 사건'); assert.equal(ev.uid, sup.uid); assert.equal(ev.to, a.uid);
+  assert.equal(a.down, false); assert.ok(a.hp > 0 && a.hp <= a.maxHp * 0.36);
+  down(b);
+  for (let i = 0; i < 80; i++) { tickGauntlet(st, D, 0.05); assert.ok(!st.events.some((x) => x.type === 'reviveSkill'), '교전마다 한 번'); st.events.length = 0; }
+  assert.equal(b.down, true);
+});
+
+test('응원 이상 해제: 기절한 친구를 풀어 주고(도움 사건), 응원 동물마다 cleanseCd초에 한 번', async () => {
+  const B = await import('../src/logic/battle.js');
+  const st = createGauntlet(D, 'forest-3', 5, {});
+  const mk = (sp, stage) => B.makeUnit(st, D, { kind: 'base', speciesId: sp, stage, parts: null, traits: [] });
+  const sup = mk('rooster', 'adult'), a = mk('bear', 'adult'), b = mk('tiger', 'adult');
+  st.field = [sup, a, b]; st.seats = st.seats.map(() => null);
+  [[sup, 6], [a, 0], [b, 1]].forEach(([u, seat]) => { st.seats[seat] = u.uid; u.seat = seat; });
+  st.charging = false;
+  for (const u of st.field) Object.assign(u, { skillT: {}, statusT: {}, gauge: 0, ultGauge: 0, elCd: 0, temp: [], stance: null, cleanseAt: -99 });
+  for (const e of st.enemies) { e.hp = e.maxHp = 1e7; e.attack = 0; }
+  b.stunLeft = 30;
+  let ev = null, heal = null;
+  for (let i = 0; i < 200 && !ev; i++) { tickGauntlet(st, D, 0.05); ev = st.events.find((x) => x.type === 'aid' && x.kind === 'cleanse') ?? null; heal ??= st.events.find((x) => x.type === 'cheer' && 'heal' in x) ?? null; st.events.length = 0; }
+  assert.ok(ev, '해제 사건'); assert.deepEqual(ev.to, [b.uid]); assert.ok(ev.what.includes('stun'));
+  assert.ok(heal, '응원 사건에 회복량이 실림');
+  assert.ok((b.stunLeft ?? 0) <= 0);
+  b.stunLeft = 30;   // 바로 또 걸려도 쿨다운 동안은 못 풂
+  tickGauntlet(st, D, 0.05); sup.gauge = 1; tickGauntlet(st, D, 0.05);
+  assert.ok(b.stunLeft > 20);
+});

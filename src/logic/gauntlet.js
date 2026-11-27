@@ -1541,11 +1541,12 @@ export function takeReward(state, data, kind, arg) {
     if (!c) return fail('notFound');
     const slot = state.bench.indexOf(null);
     const seat = state.seats.indexOf(null);
-    if (slot < 0 && seat < 0) return fail('benchFull');
+    const fieldOk = seat >= 0 && state.field.length < (data.config.maxDeployed ?? 6);   // 전투 최대 6마리
+    if (slot < 0 && !fieldOk) return fail('benchFull');
     // 지구본: 중반(교전 globeTeenAt~)부터는 성장기로 와서 바로 한몫함
     const u = newAnimal(state, data, c.speciesId, state.enc >= (gcfg(data).globeTeenAt ?? 3) ? 'teen' : 'young');
     u.traits = c.traits;
-    if (seat >= 0 && slot < 0) { state.field.push(u); state.seats[seat] = u.uid; u.seat = seat; }
+    if (slot < 0) { state.field.push(u); state.seats[seat] = u.uid; u.seat = seat; }
     else state.bench[slot] = u;
     o.taken = 'globe'; o.globe.splice(arg, 1);
     state.events.push({ type: 'reward', kind, uid: u.uid });
@@ -1608,6 +1609,8 @@ export function moveAnimal(state, data, from, to) {
   if (from.where === to.where && from.index === to.index) return fail('same');
   if (!b) {
     if (to.where === 'seat') {
+      // 전투에는 최대 6마리(config.maxDeployed, 2026-11-27 사용자 "전투에는 6마리가 최대야")
+      if (from.where !== 'seat' && state.field.length >= (data.config.maxDeployed ?? 6)) return fail('fieldFull');
       if (from.where === 'seat') { state.seats[from.index] = null; }
       else { state.bench[from.index] = null; state.field.push(a); }
       state.seats[to.index] = a.uid; a.seat = to.index;

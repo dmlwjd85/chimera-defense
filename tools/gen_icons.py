@@ -60,6 +60,7 @@ def bbox(im: Image.Image, thr: int = 16):
 def place_on_canvas(im: Image.Image, size: int, scale: float, fill=None) -> Image.Image:
     """Scale the artwork (by its opaque bbox) to `scale` of the canvas short side and center it.
     If fill is an RGBA tuple, the canvas is opaque with that color (alpha forced to 255).
+    Used for store/desktop-style square icons that are not cropped to a circle.
     """
     if fill is None:
         canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
@@ -82,6 +83,92 @@ def place_on_canvas(im: Image.Image, size: int, scale: float, fill=None) -> Imag
         a = Image.new("L", (size, size), 255)
         canvas = Image.merge("RGBA", (r, g, b, a))
     return canvas
+
+
+def art_circumradius(im: Image.Image, bg=None, thr: int = 16) -> float:
+    """Max distance from the canvas center to any artwork pixel.
+    For opaque images, pixels close to `bg` are treated as backdrop, not art.
+    """
+    a = np.array(im.convert("RGBA"))
+    h, w = a.shape[:2]
+    if bg is not None and int(a[..., 3].min()) == 255:
+        dist = np.linalg.norm(a[..., :3].astype(int) - np.array(bg[:3]), axis=2)
+        fg = dist > 12
+    else:
+        fg = a[..., 3] > thr
+    ys, xs = np.where(fg)
+    if len(xs) == 0:
+        return 0.0
+    cx, cy = (w - 1) / 2.0, (h - 1) / 2.0
+    return float(np.sqrt((xs - cx) ** 2 + (ys - cy) ** 2).max())
+
+
+def place_in_safe_circle(im: Image.Image, size: int, safe_diam: float = 0.80, margin: float = 0.05, fill=None) -> Image.Image:
+    """Scale the shield so every opaque pixel sits inside a circle of
+    diameter `safe_diam * size`, leaving `margin` (fraction of that radius)
+    as a small gap. This is for maskable / round-cropped icons.
+    """
+    x0, y0, x1, y1 = bbox(im)
+    art = im.crop((x0, y0, x1, y1))
+    aa = np.array(art)
+    ys, xs = np.where(aa[..., 3] > 16)
+    cx, cy = (art.size[0] - 1) / 2.0, (art.size[1] - 1) / 2.0
+    r = float(np.sqrt((xs - cx) ** 2 + (ys - cy) ** 2).max())
+    target_r = (safe_diam * size / 2.0) * (1.0 - margin)
+    if r <= 0:
+        raise SystemExit("place_in_safe_circle: empty artwork")
+    s = target_r / r
+    nw, nh = max(1, int(round(art.size[0] * s))), max(1, int(round(art.size[1] * s)))
+    art = art.resize((nw, nh), Image.Resampling.LANCZOS)
+    if fill is None:
+        canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    else:
+        canvas = Image.new("RGBA", (size, size), fill)
+    canvas.paste(art, ((size - nw) // 2, (size - nh) // 2), art)
+    if fill is not None:
+        bg = Image.new("RGBA", (size, size), fill)
+        canvas = Image.alpha_composite(bg, canvas)
+        canvas = canvas.convert("RGB").convert("RGBA")
+        rch, gch, bch, ach = canvas.split()
+        ach = Image.new("L", (size, size), 255)
+        canvas = Image.merge("RGBA", (rch, gch, bch, ach))
+    # rounding can push a pixel over the line; shrink once if needed
+    cap = (safe_diam * size / 2.0) * (1.0 - margin * 0.4)  # still inside the circle
+    got = art_circumradius(canvas, bg=fill)
+    limit = safe_diam * size / 2.0
+    if got > limit and got > 0:
+        fix = (limit * (1.0 - margin * 0.5)) / got
+        # rebuild slightly smaller
+        nw2, nh2 = max(1, int(round(nw * fix))), max(1, int(round(nh * fix)))
+        art2 = im.crop((x0, y0, x1, y1)).resize((nw2, nh2), Image.Resampling.LANCZOS)
+        if fill is None:
+            canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+        else:
+            canvas = Image.new("RGBA", (size, size), fill)
+        canvas.paste(art2, ((size - nw2) // 2, (size - nh2) // 2), art2)
+        if fill is not None:
+            bg = Image.new("RGBA", (size, size), fill)
+            canvas = Image.alpha_composite(bg, canvas)
+            canvas = canvas.convert("RGB").convert("RGBA")
+            rch, gch, bch, ach = canvas.split()
+            ach = Image.new("L", (size, size), 255)
+            canvas = Image.merge("RGBA", (rch, gch, bch, ach))
+    return canvas
+
+
+def check_inside_circle(im: Image.Image, safe_diam: float, label: str, bg=None, report=None):
+    size = im.size[0]
+    got = art_circumradius(im, bg=bg)
+    limit = safe_diam * size / 2.0
+    ok = got <= limit + 0.51  # half-pixel AA
+    line = (
+        f"{label}: 그림 반지름 {got:.1f}  안전 원 {limit:.1f}  "
+        f"여유 {limit - got:.1f}px  {'통과' if ok else '벗어남'}"
+    )
+    if report is not None:
+        report.append(line)
+    if not ok:
+        raise SystemExit(line)
 
 
 def flatten_rgb(im: Image.Image, fill=BG_OPAQUE) -> Image.Image:
@@ -223,10 +310,10 @@ def make_comparison(full, s48, s32, s16, maskable_512, apple_180, store_512, pat
 
     title = "키mera 디펜스  설치 아이콘  최종안"
     # typo risk - use Korean only
-    title = "키메라 디펜스  설치 아이콘  최종안"
+    title = "키메라 디펜스  설치 아이콘  최종안(고침)"
     tb = d.textbbox((0, 0), title, font=font_title)
     d.text(((width - (tb[2] - tb[0])) // 2, 28), title, fill=(32, 24, 28), font=font_title)
-    sub = "48칸 이상은 세 수호자 방패 원본  ·  32·16칸은 산군 얼굴을 키워 손봄  ·  글자는 아이콘에 넣지 않음"
+    sub = "갤럭시·아이폰용은 방패 전체가 80% 안전 원 안에 들어가게 조금 줄임  ·  창·상점 아이콘은 그대로"
     sb = d.textbbox((0, 0), sub, font=font_s)
     d.text(((width - (sb[2] - sb[0])) // 2, 84), sub, fill=(90, 80, 78), font=font_s)
 
@@ -313,7 +400,7 @@ def make_comparison(full, s48, s32, s16, maskable_512, apple_180, store_512, pat
 
     # OS mask row
     y2 = y1 + row2
-    os_title = "폰 바탕화면에서 잘리는 모양으로 본 모습 (갤럭시 원·둥근네모, 아이폰 둥근네모)"
+    os_title = "폰 바탕화면에서 잘리는 모양  ·  빨간 원은 80% 안전 구역(방패 전체가 이 안에 들어감)"
     d.text((40, y2 + 16), os_title, fill=(50, 40, 42), font=font_h)
 
     # Prepare preview tiles at 180
@@ -340,15 +427,25 @@ def make_comparison(full, s48, s32, s16, maskable_512, apple_180, store_512, pat
         return Image.alpha_composite(out, cut)
 
     def with_safe_ring(src, bg):
-        # show maskable 512 downscaled with a red-ish ring at 80% circle
+        # show maskable 512 downscaled, dim outside the 80% circle, draw the ring
         tile = src.convert("RGBA").resize((PS, PS), Image.Resampling.LANCZOS)
         out = Image.new("RGBA", (PS, PS), bg)
-        # clip to circle first? for this preview show the full square then a ring
         out = Image.alpha_composite(out, tile)
+        # dim pixels outside the 80% circle so the fit is obvious
+        arr = np.array(out)
+        yy, xx = np.ogrid[:PS, :PS]
+        cx = cy = (PS - 1) / 2.0
+        rad = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2)
+        safe = 0.80 * PS / 2.0
+        outside = rad > safe
+        arr[outside, 0] = (arr[outside, 0] * 0.45).astype(np.uint8)
+        arr[outside, 1] = (arr[outside, 1] * 0.45).astype(np.uint8)
+        arr[outside, 2] = (arr[outside, 2] * 0.45).astype(np.uint8)
+        out = Image.fromarray(arr, "RGBA")
         ov = Image.new("RGBA", (PS, PS), (0, 0, 0, 0))
         od = ImageDraw.Draw(ov)
-        m = 0.10 * PS  # 80% diameter → 10% margin each side
-        od.ellipse([m, m, PS - 1 - m, PS - 1 - m], outline=(255, 80, 80, 200), width=3)
+        m = 0.10 * PS
+        od.ellipse([m, m, PS - 1 - m, PS - 1 - m], outline=(255, 80, 80, 220), width=3)
         return Image.alpha_composite(out, ov)
 
     y3 = y2 + os_header
@@ -365,7 +462,7 @@ def make_comparison(full, s48, s32, s16, maskable_512, apple_180, store_512, pat
             ("갤럭시 원", compose_preview(opaque180, circle_mask(PS), bg)),
             ("갤럭시 둥근네모", compose_preview(opaque180, android_squircle_mask(PS), bg)),
             ("아이폰 둥근네모", compose_preview(opaque180, squircle_mask(PS, 0.2237), bg)),
-            ("마스크형 80% 원", with_safe_ring(maskable_512, bg)),
+            ("안전 원 안에 들어감", with_safe_ring(maskable_512, bg)),
         ]
         for cap, tile in items:
             page.paste(tile.convert("RGBA"), (x, yy + 24), tile.convert("RGBA"))
@@ -412,28 +509,29 @@ def main():
     save_png(s512, OUT_PUBLIC / "icon-512.png")
     save_png(s64, OUT_PUBLIC / "favicon.png")
 
-    # --- maskable (opaque, art in 80% safe circle) ---
-    # 80% diameter circle → artwork bbox should fit in 0.80 * size
-    maskable_512 = place_on_canvas(full, 512, scale=0.78, fill=BG_OPAQUE)
-    maskable_192 = place_on_canvas(full, 192, scale=0.78, fill=BG_OPAQUE)
+    # --- maskable (opaque, whole shield inside the 80% safe circle + a little gap) ---
+    maskable_512 = place_in_safe_circle(full, 512, safe_diam=0.80, margin=0.05, fill=BG_OPAQUE)
+    maskable_192 = place_in_safe_circle(full, 192, safe_diam=0.80, margin=0.05, fill=BG_OPAQUE)
     save_png(maskable_192, OUT_PUBLIC / "icon-maskable-192.png")
     save_png(maskable_512, OUT_PUBLIC / "icon-maskable-512.png")
+    check_inside_circle(maskable_512, 0.80, "마스크형 512", bg=BG_OPAQUE, report=report)
+    check_inside_circle(maskable_192, 0.80, "마스크형 192", bg=BG_OPAQUE, report=report)
 
-    # --- store 512 (opaque, no rounded corners) ---
+    # --- store 512 (opaque, no rounded corners; keep previous size, not circle-fitted) ---
     store_512 = place_on_canvas(full, 512, scale=0.86, fill=BG_OPAQUE)
     save_png(store_512, OUT_PUBLIC / "store-icon-512.png", flatten=True)
 
-    # --- iOS apple-touch (opaque, square, iOS rounds) ---
-    # ~8% padding so the squircle does not clip the shield point
+    # --- iOS apple-touch / App Store (opaque, square; phone rounds them) ---
+    # Fit the whole shield inside the same 80% safe circle as the maskable icons.
     for size, name in (
         (180, "apple-touch-icon.png"),
         (167, "apple-touch-icon-167.png"),
         (152, "apple-touch-icon-152.png"),
         (120, "apple-touch-icon-120.png"),
     ):
-        save_png(place_on_canvas(full, size, scale=0.86, fill=BG_OPAQUE), OUT_PUBLIC / name, flatten=True)
-    # App Store 1024, no alpha
-    appstore = place_on_canvas(full, 1024, scale=0.86, fill=BG_OPAQUE)
+        save_png(place_in_safe_circle(full, size, safe_diam=0.80, margin=0.05, fill=BG_OPAQUE), OUT_PUBLIC / name, flatten=True)
+    # App Store 1024, no alpha — also round-cropped by the store, so same safe circle
+    appstore = place_in_safe_circle(full, 1024, safe_diam=0.80, margin=0.05, fill=BG_OPAQUE)
     # ensure no alpha
     appstore_rgb = appstore.convert("RGB")
     p = OUT_PUBLIC / "appstore-1024.png"
@@ -446,19 +544,22 @@ def main():
     apple_180 = Image.open(OUT_PUBLIC / "apple-touch-icon.png")
 
     # --- Android adaptive layers, 432px = 108dp at 4x ---
-    # Safe zone diameter = 66/108 of the asset
-    fg_scale = 66 / 108 * 0.96  # a little air inside the 66dp circle
-    fg = place_on_canvas(full, 432, scale=fg_scale, fill=None)  # transparent around shield
+    # Official safe zone is a 66dp circle in a 108dp asset, plus a small gap.
+    android_safe = 66 / 108
+    fg = place_in_safe_circle(full, 432, safe_diam=android_safe, margin=0.05, fill=None)
     bg = Image.new("RGBA", (432, 432), BG_OPAQUE)
     save_png(fg, OUT_ANDROID / "ic_launcher_foreground.png")
     save_png(bg, OUT_ANDROID / "ic_launcher_background.png")
-    # also a 108px pair for 1x reference
-    save_png(place_on_canvas(full, 108, scale=fg_scale, fill=None), OUT_ANDROID / "ic_launcher_foreground-108.png")
+    save_png(place_in_safe_circle(full, 108, safe_diam=android_safe, margin=0.05, fill=None), OUT_ANDROID / "ic_launcher_foreground-108.png")
     save_png(Image.new("RGBA", (108, 108), BG_OPAQUE), OUT_ANDROID / "ic_launcher_background-108.png")
+    check_inside_circle(fg, android_safe, "갤럭시 앞장 432", bg=None, report=report)
+    apple_chk = Image.open(OUT_PUBLIC / "apple-touch-icon.png")
+    check_inside_circle(apple_chk, 0.80, "아이폰 180", bg=BG_OPAQUE, report=report)
+    check_inside_circle(appstore, 0.80, "앱스토어 1024", bg=BG_OPAQUE, report=report)
 
     make_comparison(
         full, s48, s32, s16, maskable_512, apple_180, store_512,
-        OUT_SHOTS / "최종_비교.png",
+        OUT_SHOTS / "최종_비교_v2.png",
     )
 
     print("\n수치 검사")

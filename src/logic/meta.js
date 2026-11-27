@@ -109,7 +109,7 @@ export function starGoals(state, data) {
   const sc = data.config.stars ?? { life: 60, par: 420 };
   const clear = state.result === 'clear';
   // 연전: ★ 클리어 / ★ 생명 지킴(하드는 자동) / ★ 쓰러진 아군 적게
-  if (state.mode === 'gauntlet') { const need = data.config.gauntlet?.lowStars ?? 3; return { clear, life: clear && (state.hard || state.life >= state.maxLife * sc.life / 100), time: clear && state.downs <= need, lifeNeed: sc.life, downs: state.downs, downNeed: need, gauntlet: true, hard: !!state.hard }; }
+  if (state.mode === 'gauntlet') { const need = data.config.gauntlet?.lowStars ?? 5; return { clear, life: clear && (state.hard || state.life >= state.maxLife * sc.life / 100), time: clear && state.downs <= need, lifeNeed: sc.life, downs: state.downs, downNeed: need, gauntlet: true, hard: !!state.hard }; }
   const par = state.stage.par ?? sc.par;
   return { clear, life: clear && state.life >= (state.maxLife ?? data.config.life) * sc.life / 100, time: clear && state.time <= par, par, lifeNeed: sc.life };
 }

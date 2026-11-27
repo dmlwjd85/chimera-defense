@@ -188,7 +188,7 @@ export default class GauntletScene extends Phaser.Scene {
     box.fillStyle(0x141a2e, 1).fillRoundedRect(300, 70, 680, 600, 18).lineStyle(2, 0xd4b06a, 0.9).strokeRoundedRect(300, 70, 680, 600, 18);
     add(this.add.text(640, 108, this.stage.name, style(30, '#ffffff')).setOrigin(0.5).setDepth(3001));
     const prof = stageProfile(this.stage, this.D);
-    add(this.add.text(640, 144, `교전 ${g.encounters}번 + 보스 · ${prof.tags.join('  ')}`, style(14, '#b9b4a6')).setOrigin(0.5).setDepth(3001));
+    add(this.add.text(640, 144, `교전 ${g.encounters}번(마지막은 보스) · 처음엔 ${g.startUnits ?? 6}마리 · ${prof.tags.join('  ')}`, style(14, '#b9b4a6')).setOrigin(0.5).setDepth(3001));
     // 사다리: 노멀 → 하드 → 하드코어 → 신계 (앞 단계를 깨야 열림)
     const best = this.save.godBest?.[weekKey(Date.now())]?.[this.stageId];
     const rows = [
@@ -320,7 +320,7 @@ export default class GauntletScene extends Phaser.Scene {
   updateHud() {
     const s = this.state, g = gcfg(this.D);
     const spec = s.plan[Math.min(s.enc, s.plan.length - 1)];
-    this.hudEnc.setText(s.duel ? `⚔ 라운드 ${Math.min(s.enc + 1, s.plan.length)}  나 ${s.wins} : ${s.losses} 친구` : spec?.boss ? `보스 교전` : `교전 ${Math.min(s.enc + 1, s.plan.length)} / ${s.plan.length}`);
+    this.hudEnc.setText(s.duel ? `⚔ 라운드 ${Math.min(s.enc + 1, s.plan.length)}  나 ${s.wins} : ${s.losses} 친구` : spec?.boss ? `보스 교전 ${Math.min(s.enc + 1, s.plan.length)} / ${s.plan.length}` : `교전 ${Math.min(s.enc + 1, s.plan.length)} / ${s.plan.length}`);
     this.hudInfo.setText(s.duel ? `🏆 3판 2선승  ·  ${s.duel.name ?? '친구 덱'}` : `${s.hard ? '' : `♥ ${s.life}/${s.maxLife}   `}💰 ${s.gold}`);
     const fight = s.phase === 'fight';
     const left = Math.max(0, g.timeLimit - s.encTime);

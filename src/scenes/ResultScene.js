@@ -15,7 +15,7 @@ export default class ResultScene extends Phaser.Scene {
   constructor() { super('Result'); }
 
   create(d) {
-    d = d?.report ? d : { report: { clear: false, essence: 0, lines: [], xp: [], newRecipes: [], newSpecies: [], newFlops: [], achievements: [], hintsMade: [] }, wave: 0, total: 8, life: 0, stageId: 'forest-1' };
+    d = d?.report ? d : { report: { clear: false, essence: 0, lines: [], xp: [], newRecipes: [], newSpecies: [], newFlops: [], achievements: [], hintsMade: [] }, wave: 0, total: 12, life: 0, stageId: 'forest-1' };
     const D = this.D = buildData(this.registry.get('raw'));
     const r = d.report, save = this.registry.get('save'), storage = this.registry.get('storage');
     this.cameras.main.setBackgroundColor('#141a21');

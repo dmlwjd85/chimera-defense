@@ -1,0 +1,668 @@
+{
+ "note": "ch_ant_monkey 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_ant_monkey",
+ "sheet": "dot-m-auto_ant_monkey",
+ "file": "assets/dotm/auto_ant_monkey.png",
+ "frameW": 117,
+ "frameH": 117,
+ "foot": 114,
+ "cols": 1,
+ "anchorX": 58,
+ "palette": [
+  "#150205",
+  "#291a1f",
+  "#551f1e",
+  "#60271f",
+  "#6a1b22",
+  "#7c4029",
+  "#854a2e",
+  "#8d1e24",
+  "#a32623",
+  "#aa5c48",
+  "#cb6a5a",
+  "#ce2f13",
+  "#db4f22",
+  "#ec7a3f",
+  "#f09779",
+  "#f2ece8"
+ ],
+ "rects": {
+  "ch_ant_monkey_adult_a1_00": [
+   1741,
+   0,
+   111,
+   94,
+   -55,
+   -94
+  ],
+  "ch_ant_monkey_adult_a1_01": [
+   533,
+   0,
+   112,
+   100,
+   -56,
+   -100
+  ],
+  "ch_ant_monkey_adult_a1_02": [
+   0,
+   0,
+   109,
+   103,
+   -56,
+   -103
+  ],
+  "ch_ant_monkey_adult_a1_03": [
+   646,
+   0,
+   105,
+   100,
+   -55,
+   -100
+  ],
+  "ch_ant_monkey_adult_a1_04": [
+   965,
+   0,
+   106,
+   99,
+   -56,
+   -99
+  ],
+  "ch_ant_monkey_adult_a1_05": [
+   1297,
+   0,
+   107,
+   96,
+   -56,
+   -96
+  ],
+  "ch_ant_monkey_adult_a1_06": [
+   445,
+   199,
+   112,
+   86,
+   -56,
+   -86
+  ],
+  "ch_ant_monkey_adult_a1_07": [
+   558,
+   199,
+   110,
+   86,
+   -55,
+   -86
+  ],
+  "ch_ant_monkey_adult_a2_00": [
+   1766,
+   104,
+   108,
+   89,
+   -55,
+   -90
+  ],
+  "ch_ant_monkey_adult_a2_01": [
+   336,
+   104,
+   110,
+   93,
+   -57,
+   -97
+  ],
+  "ch_ant_monkey_adult_a2_02": [
+   1405,
+   0,
+   113,
+   96,
+   -58,
+   -106
+  ],
+  "ch_ant_monkey_adult_a2_03": [
+   316,
+   0,
+   108,
+   102,
+   -58,
+   -115
+  ],
+  "ch_ant_monkey_adult_a2_04": [
+   425,
+   0,
+   107,
+   102,
+   -58,
+   -109
+  ],
+  "ch_ant_monkey_adult_a2_05": [
+   752,
+   0,
+   108,
+   100,
+   -58,
+   -100
+  ],
+  "ch_ant_monkey_adult_a2_06": [
+   1072,
+   0,
+   114,
+   97,
+   -57,
+   -97
+  ],
+  "ch_ant_monkey_adult_a2_07": [
+   1101,
+   104,
+   112,
+   90,
+   -55,
+   -90
+  ],
+  "ch_ant_monkey_adult_down_00": [
+   668,
+   104,
+   110,
+   92,
+   -54,
+   -92
+  ],
+  "ch_ant_monkey_adult_down_01": [
+   1853,
+   0,
+   106,
+   94,
+   -54,
+   -94
+  ],
+  "ch_ant_monkey_adult_down_02": [
+   669,
+   199,
+   98,
+   82,
+   -49,
+   -83
+  ],
+  "ch_ant_monkey_adult_down_03": [
+   768,
+   199,
+   111,
+   77,
+   -56,
+   -76
+  ],
+  "ch_ant_monkey_adult_down_04": [
+   880,
+   199,
+   112,
+   69,
+   -57,
+   -68
+  ],
+  "ch_ant_monkey_adult_down_05": [
+   993,
+   199,
+   112,
+   66,
+   -57,
+   -65
+  ],
+  "ch_ant_monkey_adult_el_00": [
+   1875,
+   104,
+   104,
+   89,
+   -55,
+   -90
+  ],
+  "ch_ant_monkey_adult_el_01": [
+   779,
+   104,
+   101,
+   92,
+   -56,
+   -100
+  ],
+  "ch_ant_monkey_adult_el_02": [
+   0,
+   199,
+   106,
+   89,
+   -57,
+   -102
+  ],
+  "ch_ant_monkey_adult_el_03": [
+   1519,
+   0,
+   107,
+   96,
+   -58,
+   -111
+  ],
+  "ch_ant_monkey_adult_el_04": [
+   861,
+   0,
+   103,
+   100,
+   -58,
+   -115
+  ],
+  "ch_ant_monkey_adult_el_05": [
+   110,
+   0,
+   100,
+   103,
+   -56,
+   -114
+  ],
+  "ch_ant_monkey_adult_el_06": [
+   211,
+   0,
+   104,
+   103,
+   -54,
+   -106
+  ],
+  "ch_ant_monkey_adult_el_07": [
+   1627,
+   0,
+   113,
+   96,
+   -54,
+   -96
+  ],
+  "ch_ant_monkey_adult_hit_00": [
+   0,
+   104,
+   112,
+   94,
+   -56,
+   -94
+  ],
+  "ch_ant_monkey_adult_hit_01": [
+   113,
+   104,
+   112,
+   94,
+   -57,
+   -94
+  ],
+  "ch_ant_monkey_adult_hit_02": [
+   447,
+   104,
+   110,
+   93,
+   -58,
+   -93
+  ],
+  "ch_ant_monkey_adult_hit_03": [
+   226,
+   104,
+   109,
+   94,
+   -57,
+   -94
+  ],
+  "ch_ant_monkey_adult_idle_00": [
+   881,
+   104,
+   108,
+   91,
+   -54,
+   -91
+  ],
+  "ch_ant_monkey_adult_idle_01": [
+   1187,
+   0,
+   109,
+   97,
+   -54,
+   -97
+  ],
+  "ch_ant_monkey_adult_idle_02": [
+   558,
+   104,
+   109,
+   93,
+   -54,
+   -93
+  ],
+  "ch_ant_monkey_adult_idle_03": [
+   1214,
+   104,
+   108,
+   90,
+   -54,
+   -90
+  ],
+  "ch_ant_monkey_adult_walk_00": [
+   1323,
+   104,
+   109,
+   90,
+   -55,
+   -91
+  ],
+  "ch_ant_monkey_adult_walk_01": [
+   220,
+   199,
+   111,
+   88,
+   -56,
+   -89
+  ],
+  "ch_ant_monkey_adult_walk_02": [
+   332,
+   199,
+   112,
+   88,
+   -56,
+   -88
+  ],
+  "ch_ant_monkey_adult_walk_03": [
+   1433,
+   104,
+   111,
+   90,
+   -56,
+   -90
+  ],
+  "ch_ant_monkey_adult_walk_04": [
+   990,
+   104,
+   110,
+   91,
+   -56,
+   -91
+  ],
+  "ch_ant_monkey_adult_walk_05": [
+   107,
+   199,
+   112,
+   89,
+   -56,
+   -89
+  ],
+  "ch_ant_monkey_adult_walk_06": [
+   1545,
+   104,
+   111,
+   90,
+   -55,
+   -89
+  ],
+  "ch_ant_monkey_adult_walk_07": [
+   1657,
+   104,
+   108,
+   90,
+   -54,
+   -90
+  ]
+ },
+ "frames": [
+  "ch_ant_monkey_adult_a1_00",
+  "ch_ant_monkey_adult_a1_01",
+  "ch_ant_monkey_adult_a1_02",
+  "ch_ant_monkey_adult_a1_03",
+  "ch_ant_monkey_adult_a1_04",
+  "ch_ant_monkey_adult_a1_05",
+  "ch_ant_monkey_adult_a1_06",
+  "ch_ant_monkey_adult_a1_07",
+  "ch_ant_monkey_adult_a2_00",
+  "ch_ant_monkey_adult_a2_01",
+  "ch_ant_monkey_adult_a2_02",
+  "ch_ant_monkey_adult_a2_03",
+  "ch_ant_monkey_adult_a2_04",
+  "ch_ant_monkey_adult_a2_05",
+  "ch_ant_monkey_adult_a2_06",
+  "ch_ant_monkey_adult_a2_07",
+  "ch_ant_monkey_adult_down_00",
+  "ch_ant_monkey_adult_down_01",
+  "ch_ant_monkey_adult_down_02",
+  "ch_ant_monkey_adult_down_03",
+  "ch_ant_monkey_adult_down_04",
+  "ch_ant_monkey_adult_down_05",
+  "ch_ant_monkey_adult_el_00",
+  "ch_ant_monkey_adult_el_01",
+  "ch_ant_monkey_adult_el_02",
+  "ch_ant_monkey_adult_el_03",
+  "ch_ant_monkey_adult_el_04",
+  "ch_ant_monkey_adult_el_05",
+  "ch_ant_monkey_adult_el_06",
+  "ch_ant_monkey_adult_el_07",
+  "ch_ant_monkey_adult_hit_00",
+  "ch_ant_monkey_adult_hit_01",
+  "ch_ant_monkey_adult_hit_02",
+  "ch_ant_monkey_adult_hit_03",
+  "ch_ant_monkey_adult_idle_00",
+  "ch_ant_monkey_adult_idle_01",
+  "ch_ant_monkey_adult_idle_02",
+  "ch_ant_monkey_adult_idle_03",
+  "ch_ant_monkey_adult_walk_00",
+  "ch_ant_monkey_adult_walk_01",
+  "ch_ant_monkey_adult_walk_02",
+  "ch_ant_monkey_adult_walk_03",
+  "ch_ant_monkey_adult_walk_04",
+  "ch_ant_monkey_adult_walk_05",
+  "ch_ant_monkey_adult_walk_06",
+  "ch_ant_monkey_adult_walk_07"
+ ],
+ "standing": [
+  "ch_ant_monkey_adult_idle_00",
+  "ch_ant_monkey_adult_idle_01",
+  "ch_ant_monkey_adult_idle_02",
+  "ch_ant_monkey_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 18,
+   "attack": {
+    "frames": [
+     "ch_ant_monkey_adult_a1_00",
+     "ch_ant_monkey_adult_a1_01",
+     "ch_ant_monkey_adult_a1_02",
+     "ch_ant_monkey_adult_a1_03",
+     "ch_ant_monkey_adult_a1_04",
+     "ch_ant_monkey_adult_a1_05",
+     "ch_ant_monkey_adult_a1_06",
+     "ch_ant_monkey_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_ant_monkey_adult_a2_00",
+     "ch_ant_monkey_adult_a2_01",
+     "ch_ant_monkey_adult_a2_02",
+     "ch_ant_monkey_adult_a2_03",
+     "ch_ant_monkey_adult_a2_04",
+     "ch_ant_monkey_adult_a2_05",
+     "ch_ant_monkey_adult_a2_06",
+     "ch_ant_monkey_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_ant_monkey_adult_down_00",
+     "ch_ant_monkey_adult_down_01",
+     "ch_ant_monkey_adult_down_02",
+     "ch_ant_monkey_adult_down_03",
+     "ch_ant_monkey_adult_down_04",
+     "ch_ant_monkey_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_ant_monkey_adult_el_00",
+     "ch_ant_monkey_adult_el_01",
+     "ch_ant_monkey_adult_el_02",
+     "ch_ant_monkey_adult_el_03",
+     "ch_ant_monkey_adult_el_04",
+     "ch_ant_monkey_adult_el_05",
+     "ch_ant_monkey_adult_el_06",
+     "ch_ant_monkey_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_ant_monkey_adult_hit_00",
+     "ch_ant_monkey_adult_hit_01",
+     "ch_ant_monkey_adult_hit_02",
+     "ch_ant_monkey_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_ant_monkey_adult_idle_00",
+     "ch_ant_monkey_adult_idle_01",
+     "ch_ant_monkey_adult_idle_02",
+     "ch_ant_monkey_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_ant_monkey_adult_walk_00",
+     "ch_ant_monkey_adult_walk_01",
+     "ch_ant_monkey_adult_walk_02",
+     "ch_ant_monkey_adult_walk_03",
+     "ch_ant_monkey_adult_walk_04",
+     "ch_ant_monkey_adult_walk_05",
+     "ch_ant_monkey_adult_walk_06",
+     "ch_ant_monkey_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_ant_monkey_adult_down_00",
+     "ch_ant_monkey_adult_down_01",
+     "ch_ant_monkey_adult_down_02",
+     "ch_ant_monkey_adult_down_03",
+     "ch_ant_monkey_adult_down_04",
+     "ch_ant_monkey_adult_down_05",
+     "ch_ant_monkey_adult_down_04",
+     "ch_ant_monkey_adult_down_03",
+     "ch_ant_monkey_adult_down_02",
+     "ch_ant_monkey_adult_down_01",
+     "ch_ant_monkey_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "ant_monkey"
+}

@@ -938,6 +938,12 @@
   "garden-lantern": "assets/garden/lantern.png",
   "garden-flowers": "assets/garden/flowers.png",
   "garden-bridge": "assets/garden/bridge.png",
-  "bg-garden": "assets/bg/bg-garden.png"
+  "bg-garden": "assets/bg/bg-garden.png",
+  "legend-auto_bison_eagle": "assets/legend/auto_bison_eagle.png",
+  "legend-auto_eagle_frog": "assets/legend/auto_eagle_frog.png",
+  "legend-auto_eagle_monkey": "assets/legend/auto_eagle_monkey.png",
+  "legend-auto_ant_monkey": "assets/legend/auto_ant_monkey.png",
+  "legend-auto_fox_grasshopper": "assets/legend/auto_fox_grasshopper.png",
+  "legend-auto_ant_bear": "assets/legend/auto_ant_bear.png"
  }
 }

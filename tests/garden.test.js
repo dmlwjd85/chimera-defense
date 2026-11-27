@@ -47,3 +47,18 @@ test('무릉도원: 소품 놓기·옮기기·치우기, 12개까지', () => {
   assert.equal(G.meetKind({ id: 'rabbit' }, { id: 'wolf' }, D), 'flee');
   assert.equal(G.meetKind({ id: 'dog' }, { id: 'dog' }, D), 'same');
 });
+
+test('전설 조각: 한 판에 전설 짝 두 종 성체가 함께 있으면 조각 하나(판마다 한 번), 6개면 레시피 공개', async () => {
+  const { createGauntlet, legendCheck } = await import('../src/logic/gauntlet.js');
+  const { settleRun } = await import('../src/logic/meta.js');
+  const st = createGauntlet(D, 'forest-1', 3, {});
+  const mk = (id) => ({ ...st.field[0], uid: 900 + id.length, kind: 'base', speciesId: id, stage: 'adult' });
+  st.bench[0] = mk('bison'); st.bench[1] = mk('eagle');
+  legendCheck(st, D); legendCheck(st, D);
+  assert.deepEqual(st.finds.legendShards, ['bison+eagle']);
+  assert.equal(st.events.filter((e) => e.type === 'legendShard').length, 1);
+  const s = withStars(0);
+  for (let i = 0; i < 6; i++) { const r = settleRun(s, st, D); if (i < 5) assert.equal(r.legendShards[0].done, false); else assert.equal(r.legendShards[0].done, true); }
+  assert.equal(s.legendShards['bison+eagle'], 6);
+  assert.ok(s.codex.legends.includes('bison+eagle'));
+});

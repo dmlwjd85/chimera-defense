@@ -1,0 +1,668 @@
+{
+ "note": "ch_fox_grasshopper 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_fox_grasshopper",
+ "sheet": "dot-m-auto_fox_grasshopper",
+ "file": "assets/dotm/auto_fox_grasshopper.png",
+ "frameW": 115,
+ "frameH": 115,
+ "foot": 113,
+ "cols": 1,
+ "anchorX": 56,
+ "palette": [
+  "#150a0c",
+  "#291a1f",
+  "#387137",
+  "#43332c",
+  "#65ab3e",
+  "#692d18",
+  "#6aa55d",
+  "#7dbb66",
+  "#91cb7e",
+  "#a5410a",
+  "#b5e69e",
+  "#bf4e0d",
+  "#d0a58c",
+  "#ef670d",
+  "#f98f2b",
+  "#fdedd2"
+ ],
+ "rects": {
+  "ch_fox_grasshopper_adult_a1_00": [
+   1386,
+   108,
+   105,
+   83,
+   -52,
+   -83
+  ],
+  "ch_fox_grasshopper_adult_a1_01": [
+   635,
+   108,
+   105,
+   84,
+   -52,
+   -84
+  ],
+  "ch_fox_grasshopper_adult_a1_02": [
+   1492,
+   108,
+   102,
+   83,
+   -51,
+   -84
+  ],
+  "ch_fox_grasshopper_adult_a1_03": [
+   1595,
+   108,
+   108,
+   83,
+   -53,
+   -84
+  ],
+  "ch_fox_grasshopper_adult_a1_04": [
+   741,
+   108,
+   113,
+   84,
+   -54,
+   -85
+  ],
+  "ch_fox_grasshopper_adult_a1_05": [
+   1164,
+   0,
+   109,
+   89,
+   -52,
+   -90
+  ],
+  "ch_fox_grasshopper_adult_a1_06": [
+   1700,
+   0,
+   105,
+   86,
+   -52,
+   -87
+  ],
+  "ch_fox_grasshopper_adult_a1_07": [
+   1806,
+   0,
+   105,
+   86,
+   -52,
+   -86
+  ],
+  "ch_fox_grasshopper_adult_a2_00": [
+   855,
+   108,
+   105,
+   84,
+   -53,
+   -85
+  ],
+  "ch_fox_grasshopper_adult_a2_01": [
+   429,
+   0,
+   104,
+   96,
+   -54,
+   -99
+  ],
+  "ch_fox_grasshopper_adult_a2_02": [
+   0,
+   0,
+   110,
+   107,
+   -54,
+   -114
+  ],
+  "ch_fox_grasshopper_adult_a2_03": [
+   111,
+   0,
+   109,
+   102,
+   -53,
+   -110
+  ],
+  "ch_fox_grasshopper_adult_a2_04": [
+   221,
+   0,
+   104,
+   102,
+   -52,
+   -107
+  ],
+  "ch_fox_grasshopper_adult_a2_05": [
+   326,
+   0,
+   102,
+   99,
+   -51,
+   -100
+  ],
+  "ch_fox_grasshopper_adult_a2_06": [
+   954,
+   0,
+   103,
+   93,
+   -51,
+   -93
+  ],
+  "ch_fox_grasshopper_adult_a2_07": [
+   1380,
+   0,
+   105,
+   87,
+   -52,
+   -87
+  ],
+  "ch_fox_grasshopper_adult_down_00": [
+   1704,
+   108,
+   106,
+   83,
+   -52,
+   -83
+  ],
+  "ch_fox_grasshopper_adult_down_01": [
+   0,
+   108,
+   106,
+   85,
+   -52,
+   -85
+  ],
+  "ch_fox_grasshopper_adult_down_02": [
+   1486,
+   0,
+   106,
+   87,
+   -51,
+   -87
+  ],
+  "ch_fox_grasshopper_adult_down_03": [
+   1912,
+   0,
+   106,
+   86,
+   -51,
+   -86
+  ],
+  "ch_fox_grasshopper_adult_down_04": [
+   636,
+   194,
+   105,
+   76,
+   -50,
+   -76
+  ],
+  "ch_fox_grasshopper_adult_down_05": [
+   742,
+   194,
+   103,
+   56,
+   -48,
+   -56
+  ],
+  "ch_fox_grasshopper_adult_el_00": [
+   1593,
+   0,
+   106,
+   87,
+   -54,
+   -87
+  ],
+  "ch_fox_grasshopper_adult_el_01": [
+   1058,
+   0,
+   105,
+   90,
+   -55,
+   -91
+  ],
+  "ch_fox_grasshopper_adult_el_02": [
+   743,
+   0,
+   105,
+   94,
+   -56,
+   -95
+  ],
+  "ch_fox_grasshopper_adult_el_03": [
+   534,
+   0,
+   104,
+   95,
+   -56,
+   -96
+  ],
+  "ch_fox_grasshopper_adult_el_04": [
+   639,
+   0,
+   103,
+   95,
+   -55,
+   -96
+  ],
+  "ch_fox_grasshopper_adult_el_05": [
+   849,
+   0,
+   104,
+   94,
+   -55,
+   -95
+  ],
+  "ch_fox_grasshopper_adult_el_06": [
+   1274,
+   0,
+   105,
+   89,
+   -54,
+   -90
+  ],
+  "ch_fox_grasshopper_adult_el_07": [
+   961,
+   108,
+   106,
+   84,
+   -53,
+   -84
+  ],
+  "ch_fox_grasshopper_adult_hit_00": [
+   1811,
+   108,
+   105,
+   83,
+   -52,
+   -84
+  ],
+  "ch_fox_grasshopper_adult_hit_01": [
+   107,
+   108,
+   105,
+   85,
+   -52,
+   -86
+  ],
+  "ch_fox_grasshopper_adult_hit_02": [
+   213,
+   108,
+   104,
+   85,
+   -51,
+   -85
+  ],
+  "ch_fox_grasshopper_adult_hit_03": [
+   318,
+   108,
+   104,
+   85,
+   -51,
+   -85
+  ],
+  "ch_fox_grasshopper_adult_idle_00": [
+   1917,
+   108,
+   105,
+   83,
+   -52,
+   -83
+  ],
+  "ch_fox_grasshopper_adult_idle_01": [
+   0,
+   194,
+   105,
+   83,
+   -52,
+   -83
+  ],
+  "ch_fox_grasshopper_adult_idle_02": [
+   106,
+   194,
+   105,
+   83,
+   -52,
+   -83
+  ],
+  "ch_fox_grasshopper_adult_idle_03": [
+   212,
+   194,
+   105,
+   83,
+   -52,
+   -83
+  ],
+  "ch_fox_grasshopper_adult_walk_00": [
+   318,
+   194,
+   105,
+   83,
+   -52,
+   -83
+  ],
+  "ch_fox_grasshopper_adult_walk_01": [
+   1068,
+   108,
+   105,
+   84,
+   -52,
+   -84
+  ],
+  "ch_fox_grasshopper_adult_walk_02": [
+   423,
+   108,
+   105,
+   85,
+   -52,
+   -85
+  ],
+  "ch_fox_grasshopper_adult_walk_03": [
+   1174,
+   108,
+   105,
+   84,
+   -52,
+   -84
+  ],
+  "ch_fox_grasshopper_adult_walk_04": [
+   1280,
+   108,
+   105,
+   84,
+   -52,
+   -85
+  ],
+  "ch_fox_grasshopper_adult_walk_05": [
+   529,
+   108,
+   105,
+   85,
+   -52,
+   -86
+  ],
+  "ch_fox_grasshopper_adult_walk_06": [
+   424,
+   194,
+   105,
+   83,
+   -52,
+   -84
+  ],
+  "ch_fox_grasshopper_adult_walk_07": [
+   530,
+   194,
+   105,
+   83,
+   -52,
+   -83
+  ]
+ },
+ "frames": [
+  "ch_fox_grasshopper_adult_a1_00",
+  "ch_fox_grasshopper_adult_a1_01",
+  "ch_fox_grasshopper_adult_a1_02",
+  "ch_fox_grasshopper_adult_a1_03",
+  "ch_fox_grasshopper_adult_a1_04",
+  "ch_fox_grasshopper_adult_a1_05",
+  "ch_fox_grasshopper_adult_a1_06",
+  "ch_fox_grasshopper_adult_a1_07",
+  "ch_fox_grasshopper_adult_a2_00",
+  "ch_fox_grasshopper_adult_a2_01",
+  "ch_fox_grasshopper_adult_a2_02",
+  "ch_fox_grasshopper_adult_a2_03",
+  "ch_fox_grasshopper_adult_a2_04",
+  "ch_fox_grasshopper_adult_a2_05",
+  "ch_fox_grasshopper_adult_a2_06",
+  "ch_fox_grasshopper_adult_a2_07",
+  "ch_fox_grasshopper_adult_down_00",
+  "ch_fox_grasshopper_adult_down_01",
+  "ch_fox_grasshopper_adult_down_02",
+  "ch_fox_grasshopper_adult_down_03",
+  "ch_fox_grasshopper_adult_down_04",
+  "ch_fox_grasshopper_adult_down_05",
+  "ch_fox_grasshopper_adult_el_00",
+  "ch_fox_grasshopper_adult_el_01",
+  "ch_fox_grasshopper_adult_el_02",
+  "ch_fox_grasshopper_adult_el_03",
+  "ch_fox_grasshopper_adult_el_04",
+  "ch_fox_grasshopper_adult_el_05",
+  "ch_fox_grasshopper_adult_el_06",
+  "ch_fox_grasshopper_adult_el_07",
+  "ch_fox_grasshopper_adult_hit_00",
+  "ch_fox_grasshopper_adult_hit_01",
+  "ch_fox_grasshopper_adult_hit_02",
+  "ch_fox_grasshopper_adult_hit_03",
+  "ch_fox_grasshopper_adult_idle_00",
+  "ch_fox_grasshopper_adult_idle_01",
+  "ch_fox_grasshopper_adult_idle_02",
+  "ch_fox_grasshopper_adult_idle_03",
+  "ch_fox_grasshopper_adult_walk_00",
+  "ch_fox_grasshopper_adult_walk_01",
+  "ch_fox_grasshopper_adult_walk_02",
+  "ch_fox_grasshopper_adult_walk_03",
+  "ch_fox_grasshopper_adult_walk_04",
+  "ch_fox_grasshopper_adult_walk_05",
+  "ch_fox_grasshopper_adult_walk_06",
+  "ch_fox_grasshopper_adult_walk_07"
+ ],
+ "standing": [
+  "ch_fox_grasshopper_adult_idle_00",
+  "ch_fox_grasshopper_adult_idle_01",
+  "ch_fox_grasshopper_adult_idle_02",
+  "ch_fox_grasshopper_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 31,
+   "attack": {
+    "frames": [
+     "ch_fox_grasshopper_adult_a1_00",
+     "ch_fox_grasshopper_adult_a1_01",
+     "ch_fox_grasshopper_adult_a1_02",
+     "ch_fox_grasshopper_adult_a1_03",
+     "ch_fox_grasshopper_adult_a1_04",
+     "ch_fox_grasshopper_adult_a1_05",
+     "ch_fox_grasshopper_adult_a1_06",
+     "ch_fox_grasshopper_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_fox_grasshopper_adult_a2_00",
+     "ch_fox_grasshopper_adult_a2_01",
+     "ch_fox_grasshopper_adult_a2_02",
+     "ch_fox_grasshopper_adult_a2_03",
+     "ch_fox_grasshopper_adult_a2_04",
+     "ch_fox_grasshopper_adult_a2_05",
+     "ch_fox_grasshopper_adult_a2_06",
+     "ch_fox_grasshopper_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_fox_grasshopper_adult_down_00",
+     "ch_fox_grasshopper_adult_down_01",
+     "ch_fox_grasshopper_adult_down_02",
+     "ch_fox_grasshopper_adult_down_03",
+     "ch_fox_grasshopper_adult_down_04",
+     "ch_fox_grasshopper_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_fox_grasshopper_adult_el_00",
+     "ch_fox_grasshopper_adult_el_01",
+     "ch_fox_grasshopper_adult_el_02",
+     "ch_fox_grasshopper_adult_el_03",
+     "ch_fox_grasshopper_adult_el_04",
+     "ch_fox_grasshopper_adult_el_05",
+     "ch_fox_grasshopper_adult_el_06",
+     "ch_fox_grasshopper_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_fox_grasshopper_adult_hit_00",
+     "ch_fox_grasshopper_adult_hit_01",
+     "ch_fox_grasshopper_adult_hit_02",
+     "ch_fox_grasshopper_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_fox_grasshopper_adult_idle_00",
+     "ch_fox_grasshopper_adult_idle_01",
+     "ch_fox_grasshopper_adult_idle_02",
+     "ch_fox_grasshopper_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_fox_grasshopper_adult_walk_00",
+     "ch_fox_grasshopper_adult_walk_01",
+     "ch_fox_grasshopper_adult_walk_02",
+     "ch_fox_grasshopper_adult_walk_03",
+     "ch_fox_grasshopper_adult_walk_04",
+     "ch_fox_grasshopper_adult_walk_05",
+     "ch_fox_grasshopper_adult_walk_06",
+     "ch_fox_grasshopper_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_fox_grasshopper_adult_down_00",
+     "ch_fox_grasshopper_adult_down_01",
+     "ch_fox_grasshopper_adult_down_02",
+     "ch_fox_grasshopper_adult_down_03",
+     "ch_fox_grasshopper_adult_down_04",
+     "ch_fox_grasshopper_adult_down_05",
+     "ch_fox_grasshopper_adult_down_04",
+     "ch_fox_grasshopper_adult_down_03",
+     "ch_fox_grasshopper_adult_down_02",
+     "ch_fox_grasshopper_adult_down_01",
+     "ch_fox_grasshopper_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "fox_grasshopper"
+}

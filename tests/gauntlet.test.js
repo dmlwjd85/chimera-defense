@@ -462,3 +462,12 @@ test('산군: 연전에서는 필살기를 씀(장면이 전용 v6 연출), 예�
   assert.ok(!movesOf(u, D.config).includes('ult'));
   assert.ok(movesOf(u, D.config, true).includes('ult'));
 });
+
+test('먹이: 진화까지 남은 그릇(어린 1, 성장기 adultMeals), 다 자라면 없음', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  const need = D.config.gauntlet?.adultMeals ?? 2;
+  assert.deepEqual(G.mealInfo({ kind: 'base', stage: 'young', meals: 0 }, D), { meals: 0, need: 1, left: 1, next: 'teen' });
+  assert.equal(G.mealInfo({ kind: 'base', stage: 'teen', meals: 1 }, D).left, need - 1);
+  assert.equal(G.mealInfo({ kind: 'base', stage: 'adult' }, D), null);
+  assert.equal(G.mealInfo({ kind: 'chimera', stage: 'adult' }, D), null);
+});

@@ -34,6 +34,7 @@ export default class BootScene extends Phaser.Scene {
     for (const n of PFX) this.load.atlas('pfx-' + n, `assets/fx/pfx/${n}.png`, `assets/fx/pfx/${n}.json`);
     // 산군 필살기 v6 (8방향 회전 + under/over 이펙트 레이어 + 시간표 JSON)
     this.load.json('sangunUlt', 'data/sangun_ult.json');
+    this.load.json('skillfx', 'data/skillfx.json');   // 신화급·키메라 스킬 이펙트 설정
     for (const layer of ['char', 'under', 'over']) {
       this.load.atlas(`sangun-ult-${layer}`, `assets/fx/sangun-ult/${layer}.png`, `assets/fx/sangun-ult/${layer}.json`);
     }

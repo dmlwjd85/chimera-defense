@@ -358,23 +358,33 @@ export default class GauntletScene extends Phaser.Scene {
   /** 크기 맞춤: 종마다 그림 칸의 실제 키가 달라 어떤 동물(까마귀·원숭이 등)은 너무 커 보임.
    *  같은 단계 기준 키(아기 47 · 성장기 63 · 성체 78)에 맞추고, 새는 조금 더 작게. 신화급·키메라는 그대로 */
   sizeFix(u) {
-    // 자동 키메라 정식 그림 · 돌연변이 슬라임(PixelLab): 성체 키 80 / 슬라임 50에 맞춤(주문서 크기 기준)
+    // 2026-11-27 덩치 맞춤: 키만 보던 걸 몸 넓이(가만히 선 그림 너비×높이의 제곱근)로 바꿈 — 옆으로 긴 성체 개미·메뚜기가 커 보이던 문제.
+    // 목표는 화면 px(원근 1배 기준). 호랑이 성체 120을 1로 두고 종별 실제 덩치 느낌 + 단계(어린 0.62·성장기 0.8)
+    const B = gcfg(this.D).bodySize ?? {};
+    const area = (d, setName, sc) => {
+      const set = d?.sets?.[setName];
+      if (!set) return 0;
+      d._area ??= {};
+      if (d._area[setName] == null) {
+        const fr = (set.idle?.frames ?? []).slice(1).map((f) => d.rects?.[f]).filter(Boolean);
+        const sq = fr.map((r) => Math.sqrt(r[2] * r[3])).sort((x, y) => x - y);
+        d._area[setName] = sq.length ? sq[sq.length >> 1] : (d.foot + 1 - (set.top ?? 0));
+      }
+      return d._area[setName] * 2 * (UNIT_SCALE / 0.22) * sc;   // 배율 1일 때 화면 px
+    };
+    const fit = (target, a) => (a > 0 ? Math.max(0.3, Math.min(1.8, target / a)) : 1);
     if (u.kind === 'chimera' || u.kind === 'weak') {
       const d = u.kind === 'weak' ? this.cache.json.get('dotM-slime') : dotDataFor(this, u.speciesId, 'adult');
-      const set = d?.stages?.adult && d.sets?.[d.stages.adult.set];
-      if (!set || !d.chimera) return 1;
-      const h = (d.foot + 1 - (set.top ?? 0)) * (d.stages.adult.scale ?? 0.5) / 0.5;
-      return Math.max(0.45, Math.min(1.1, (u.kind === 'weak' ? 50 : 80) / h));
+      const st = d?.stages?.adult;
+      if (!st || !d.chimera) return 1;
+      return fit(u.kind === 'weak' ? (B.slime ?? 72) : (B.chimera ?? 128), area(d, st.set, st.scale ?? 0.5));
     }
     if (u.stage === 'spirit' || u.kind !== 'base') return 1;
     const d = dotDataFor(this, u.speciesId, u.stage);   // 리그가 실제로 쓰는 시트와 같은 것
-    const st = d?.stages?.[u.stage], set = st && d.sets[st.set];
-    if (!set) return 1;
-    const h = d.foot + 1 - (set.top ?? 0);
-    // 실제 덩치 느낌(호랑이 1 기준, 작은 동물도 잘 보이게 너무 줄이지는 않음)
-    const bird = { crow: 0.72, eagle: 0.86, monkey: 0.8, rabbit: 0.78, rooster: 0.82, fox: 0.88, dog: 0.92, frog: 0.8, ant: 0.8, grasshopper: 0.78, bighorn: 0.96, bison: 1.05, bear: 1.03 }[u.speciesId] ?? 1;
-    const target = ({ young: 47, teen: 63, adult: 78 }[u.stage] ?? h) * bird;
-    return Math.max(0.45, Math.min(1.1, target / h));
+    const st = d?.stages?.[u.stage];
+    if (!st) return 1;
+    const target = (B.adult?.[u.speciesId] ?? B.adult?.tiger ?? 120) * (B.stage?.[u.stage] ?? 1);
+    return fit(Math.max(B.min ?? 36, target), area(d, st.set, st.scale ?? 0.5));
   }
 
   makeUnitView(u) {

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { buildData } from '../src/logic/data.js';
 
-const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'talents', 'story'];
+const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'talents', 'story', 'battlefield'];
 export function loadRaw() {
   const raw = {};
   for (const n of NAMES) raw[n] = JSON.parse(readFileSync(new URL(`../public/data/${n}.json`, import.meta.url), 'utf8'));

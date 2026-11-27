@@ -73,5 +73,19 @@
   "result.wave": "도달 웨이브 {wave}/{total}",
   "result.life": "남은 생명 {life}",
   "result.retry": "다시 하기",
-  "result.title": "타이틀로"
+  "result.title": "타이틀로",
+  "mid.ult.title": "✨ {skill}!",
+  "mid.ult.who": "{name}의 필살기",
+  "mid.start.1": "성문은 우리가 지킨다!",
+  "mid.start.2": "다 같이 가자!",
+  "mid.start.3": "한 발짝도 못 지나가!",
+  "mid.boss.1": "대장이 나왔다! 힘을 모아!",
+  "mid.boss.2": "큰 녀석이야… 버텨!",
+  "mid.bossTaunt.1": "성문은 내 거다!",
+  "mid.bossTaunt.2": "작은 녀석들이 감히!",
+  "mid.down.1": "{name}, 쉬고 있어! 내가 막을게!",
+  "mid.down.2": "{name}의 몫까지!",
+  "mid.win.1": "해냈다!",
+  "mid.win.2": "성문 무사!",
+  "mid.nextBoss": "⚠ 다음 교전: 보스 {name} 등장!"
 }

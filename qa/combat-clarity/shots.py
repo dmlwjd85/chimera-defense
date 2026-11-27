@@ -10,7 +10,7 @@ os.makedirs(out, exist_ok=True)
 SC = [
   # 이름, 스테이지, 교전, 준비(JS), 신호(JS: ev → bool), 신호 뒤 ms, 최대 초
   ('heal', 'forest-1', 6, '', "(ev.type === 'echeer' || ev.type === 'eheal') && sc.state.time > 4", 330, 40),
-  ('drain', 'forest-1', 2, "TIGER", "ev.type === 'act' && ev.side === 'u' && ev.style === 'skirm' && window.__rose(ev.uid)", 520, 40),
+  ('drain', 'forest-1', 2, "TIGER", "ev.type === 'act' && ev.side === 'u' && ev.style === 'skirm' && window.__rose(ev.uid)", 520, 70),
   ('block', 'stage-4', 7, "for (const u of s.field) if (u) { u.stats.hp *= 4; }", "ev.type === 'bossSlam'", 200, 60),
   ('buff', 'forest-1', 3, "WOLF", "ev.type === 'act' && ev.action === 'allyBuff'", 1000, 40),
 ]

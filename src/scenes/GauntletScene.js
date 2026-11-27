@@ -17,6 +17,7 @@ import { dotOn, dotify } from './dotfx.js';
 import { stageProfile } from '../logic/matchup.js';
 import { bfOf, fightLaneY, laneSpread, laneBounds, labelFull, labelBar, LABEL_HOLD } from '../logic/battlefield.js';
 import { MidStage } from './midstage.js';
+import { RaidFx } from './raidfx.js';   // 보스 레이드 예고(시전 막대·표식·장판)
 
 // 작전 한 줄 설명(7살도 알게)
 const TACTIC_TIP = { hold: '앞에서 힘싸움', guard: '뒤 친구를 막아 줌', help: '앞 싸움을 도움', hunt: '적 뒷줄을 노림', intercept: '달려드는 적을 막음', front: '앞 친구를 응원', back: '뒤 친구에게 보호막' };
@@ -762,6 +763,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.drawFlow();
     this.drawPortalSwirl();
     this.mid?.update();
+    if (this.state.raidMarks) { if (!this.raidFx?.g?.scene) this.raidFx = new RaidFx(this); this.raidFx.update(); }
     if (dt > 0) this.silly(dt);
     if (dt > 0) { this.guideT = (this.guideT ?? 0) - dt; if (this.guideT <= 0) { this.guideT = 0.6; this.guideFight(); } }
     this.updateHud();
@@ -1017,6 +1019,7 @@ export default class GauntletScene extends Phaser.Scene {
   }
 
   onEvent(ev) {
+    if (ev.type?.startsWith('raid') && this.raidFx) return this.raidFx.onEvent(ev);
     const s = this.state;
     switch (ev.type) {
       case 'act': return ev.side === 'u' ? this.unitAct(ev) : this.enemyAct(ev);

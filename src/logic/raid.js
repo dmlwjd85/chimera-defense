@@ -232,7 +232,7 @@ function fire(state, data, e, p) {
     case 'mark': {
       const n = p.count ?? 1, picked = [];
       for (let i = 0; i < n; i++) { const t = pickTarget(state, e, p.target ?? 'random'); if (t && !picked.includes(t)) picked.push(t); }
-      for (const t of picked) state.raidMarks.push({ uid: t.uid, eid: e.eid, pid: p.id, at: state.time + W, p, taste: !!p.taste });
+      for (const t of picked) state.raidMarks.push({ uid: t.uid, eid: e.eid, pid: p.id, from: state.time, at: state.time + W, p, taste: !!p.taste });
       if (picked.length) ev({ type: 'raidMark', uids: picked.map((u) => u.uid), warn: W });
       break;
     }

@@ -54,6 +54,8 @@ const UNIT_SCALE = 0.34;
 const WALK_PX = 80;
 /** 치고 빠지기 시간표(초·ms): 0.27초 달려가 닿음 → 0.4초 그 자리에서 침 → 0.3초 깡충 돌아옴 */
 const DASH_DUR = 0.95, DASH_ARRIVE = 270;
+/** 교전 뒤 제자리로 걸어가는 빠르기(px/초) */
+const HOME_WALK = 150;
 /** 하던 동작을 끊지 않는 동작들 */
 const BUSY_MOTIONS = [...ATTACK_MOTIONS, 'skill', 'ult', 'hit', 'block', 'sweep', 'grab', 'fall', 'leap', 'down', 'victory'];
 // 앞으로 튀어나왔다 돌아오는 곡선(0→1→0)
@@ -785,6 +787,8 @@ export default class GauntletScene extends Phaser.Scene {
       if (!v) { v = this.makeUnitView(u); this.uViews.set(u.uid, v); v.c.setPosition(at.x, at.y); }
       this.stepOffsets(v, this.realDt || 0.016);
       if (s.phase !== 'fight') { v.lunge = v.kick = v.cu = v.dash = null; v.ox = v.oy = 0; v.z = 1; }
+      // 승리 포즈(2026-11-27 "흔들지 말고 위아래로 점프"): 제자리에서 통통 세 번
+      if (v.hop) { v.hop.t += this.realDt || 0.016; const k = v.hop.t / v.hop.dur; if (k >= 1) { v.hop = null; if (v.rig) { v.rig.inst.play('idle', { loop: true }); v.rig.inst.timeScale = 1; } } else v.oy = -Math.abs(Math.sin(k * Math.PI * 3)) * 24; }
       // 교전 중 자리: 가운데로 모임, 힘겨루기 중이면 맞댄 자리(밀고 당김에 따라 좌우로)
       const fight = s.phase === 'fight' && !at.bench;
       let home = fight ? fightXY2('u', u.seat ?? 0) : at;
@@ -793,13 +797,21 @@ export default class GauntletScene extends Phaser.Scene {
       v.baseX = home.x; v.baseY = home.y;
       if (v.dive && (s.phase !== 'fight' || v.dragging || !this.stepDive(v, home, (this.realDt || 0.016) * Math.max(0.5, this.slow > 0 ? 0.45 : 1)))) v.dive = null;
       if (v.dive) { v.walking = false; v.c.setScale(home.s * v.z).setDepth(100 + v.c.y + 60); }
+      else if (!v.dragging && v.homeWalk && !fight && !at.bench) {
+        // 교전이 끝나면 제자리로 천천히 걸어서 돌아감(2026-11-27) — 미끄러지듯 휙 돌아가지 않게
+        const dx = home.x - v.c.x, dy = home.y - v.c.y, d = Math.hypot(dx, dy), st = HOME_WALK * (this.realDt || 0.016);
+        if (d <= st + 1) { v.c.x = home.x; v.c.y = home.y; v.homeWalk = false; v.walking = false; }
+        else { v.c.x += (dx / d) * st; v.c.y += (dy / d) * st; v.walking = true; v.walkDir = dx < 0 ? -1 : 1; }
+        v.c.setScale(at.s * v.z).setDepth(100 + v.c.y);
+        this.applyLabel(v, this.labelOpen('u' + u.uid));
+      }
       else if (!v.dragging) {
         const tx = Math.max(70, Math.min(1210, home.x + v.ox)), ty = at.bench && !fight ? home.y + 6 : Math.max(190, Math.min(fight ? LANE_B.max : 570, home.y + v.oy));   // 화면 밖으로 안 나가게(대기석은 케이지 안에)
-        const f = v.lunge || v.kick || v.cu || v.dash ? 1 : Math.min(1, (this.realDt || 0.016) * (s.charging ? 4 : cl ? 10 : 4.5));
+        const f = v.lunge || v.kick || v.cu || v.dash || v.hop ? 1 : Math.min(1, (this.realDt || 0.016) * (s.charging ? 4 : cl ? 10 : 4.5));
         const px = v.c.x;
         v.c.x += (tx - v.c.x) * f;
         v.c.y += (ty - v.c.y) * f;
-        v.walking = !(v.lunge || v.kick || v.cu || v.dash) && Math.abs(v.c.x - px) > WALK_PX * (this.realDt || 0.016);   // 자리 고르기로 살짝 미끄러지는 건 걷기 아님
+        v.walking = !(v.lunge || v.kick || v.cu || v.dash || v.hop) && Math.abs(v.c.x - px) > WALK_PX * (this.realDt || 0.016);   // 자리 고르기로 살짝 미끄러지는 건 걷기 아님
         const peek = this.labelOpen('u' + u.uid);
         v.c.setScale((fight ? home.s : at.s) * v.z).setDepth(v.z > 1.01 ? 960 : peek && fight ? 1700 : 100 + v.c.y + (v.dash ? 40 : 0));
         this.applyLabel(v, peek);
@@ -833,8 +845,8 @@ export default class GauntletScene extends Phaser.Scene {
         if (s.result === 'clear') { if (m !== 'victory' && r.anims.victory) r.play('victory', { loop: true }); }
         else if (u.down) { if (m !== 'down') r.play('down'); }
         else if (v.dive) { /* 돌파 시간표가 동작을 정함 */ }
-        else if ((v.fillUntil ?? 0) > this.time.now && !busy) { /* 쉬지 않는 동작(fidget)이 잠깐 정함 */ }
-        else if (!busy && (v.walking || v.dash) && r.anims.move) { if (m !== 'move') r.play('move', { loop: true }); r.timeScale = s.phase === 'fight' ? 1.6 : 1; }   // 교전 중 이동은 달려감
+        else if (((v.fillUntil ?? 0) > this.time.now || v.hop) && !busy) { /* 쉬지 않는 동작(fidget)·승리 점프가 잠깐 정함 */ }
+        else if (!busy && (v.walking || v.dash) && r.anims.move) { if (m !== 'move') r.play('move', { loop: true }); r.timeScale = s.phase === 'fight' ? 1.6 : v.homeWalk ? 0.9 : 1; }   // 교전 중 이동은 달려감
         else if (!busy && !v.walking && !v.dash && m !== 'idle') { r.play('idle', { loop: true }); r.timeScale = 1; }
         if (s.phase === 'fight' && !s.result && !u.down && !v.dive && !v.walking && !v.dash && !((u.stunLeft ?? 0) > 0) && !busy) this.fidget(v, 'u', dt, cl);
         // 피해는 규칙에서 먼저 깎이고 주먹은 조금 뒤에 닿음 → 맞는 동작은 닿을 때(hitReact). 공격 아닌 피해(지형·독·옆구리)는 0.26초 뒤 대신 움찔
@@ -849,6 +861,20 @@ export default class GauntletScene extends Phaser.Scene {
       v.lastHp = u.hp;
     }
     for (const [uid, v] of this.uViews) if (!live.has(uid)) { v.c.destroy(); this.uViews.delete(uid); }
+    // 교전이 끝난 순간: 모두 제자리로 걸어가기 시작 / 다 돌아오면 승리 점프
+    if (this.prevPhase === 'fight' && s.phase !== 'fight') for (const v of this.uViews.values()) { v.homeWalk = true; v.hop = null; }
+    if (s.phase === 'fight') { this.winPose = false; for (const v of this.uViews.values()) { v.homeWalk = false; v.hop = null; } }
+    this.prevPhase = s.phase;
+    if (this.winPose && s.phase !== 'fight' && [...this.uViews.values()].every((v) => !v.homeWalk || v.dragging)) {
+      this.winPose = false;
+      [...this.uViews.values()].forEach((v, i) => this.time.delayedCall(i * 110, () => {
+        if (!v.c.scene || v.dragging) return;
+        v.hop = { t: 0, dur: 1.2 };
+        const r = v.rig?.inst; if (r) { if (r.anims.leap) r.play('leap', { loop: true }); else r.play(r.anims.victory ? 'victory' : 'idle', { loop: true }); }
+        this.fx.burst?.('star', v.c.x, v.c.y - 60, 3, 0xffe066);
+        if (i === 0) sfx('respawn');
+      }));
+    }
     // 적
     const seen = new Set();
     for (const e of s.enemies) {
@@ -1326,6 +1352,7 @@ export default class GauntletScene extends Phaser.Scene {
   /** 아군이 볼 방향(1 오른쪽 · -1 왼쪽) */
   faceOfUnit(v, u) {
     const s = this.state;
+    if (s.phase !== 'fight' && v.homeWalk) return v.walkDir ?? -1;   // 제자리로 걸어갈 때는 가는 쪽
     if (s.phase !== 'fight' || u.down) return 1;
     if (v.dashBack) return (v.baseX ?? v.c.x) < v.c.x - 6 ? -1 : 1;
     const c = clashOfU(s, u.uid);
@@ -1391,7 +1418,8 @@ export default class GauntletScene extends Phaser.Scene {
     const near = !!clash || (foe && bd < 220);
     v.fidT = near ? 0.36 + Math.random() * 0.36 : 0.8 + Math.random() * 0.8;
     const atk = ['attack', 'attack2'].filter(has);
-    const hold = (name, ms, ts = 1) => { if (!has(name)) return false; r.play(name, { loop: true }); r.timeScale = ts; v.fillUntil = this.time.now + ms; return true; };
+    const hold = (name, ms, ts = 1) => { if (!has(name)) return false; r.play(name, { loop: !BUSY_MOTIONS.includes(name) });   // 깡충(leap)처럼 하던 동작으로 치는 장은 한 번만(계속 돌면 끝나지 않아 멈춤)
+ r.timeScale = ts; v.fillUntil = this.time.now + ms; return true; };
     const answer = (f) => {   // 맞은 쪽: 막거나 움찔
       const fr = f?.rig?.inst; if (!fr || f.dive || f.dying) return;
       if (BUSY_MOTIONS.includes(fr.motion) && !fr.finished) return;
@@ -1907,9 +1935,8 @@ export default class GauntletScene extends Phaser.Scene {
     if (last) { const cam = this.cameras.main; this.tweens.add({ targets: cam, zoom: 1.04, duration: 420, yoyo: true, hold: 380, ease: 'Sine.inOut' }); }
     this.time.delayedCall(1150, () => {
       sfx(ev.boss ? 'clear' : 'coin');
-      for (const v of this.uViews.values()) if (v.rig?.inst.anims.victory) v.rig.inst.play('victory');
-      // 뻘한 승리 춤: 좌우로 씰룩씰룩
-      [...this.uViews.values()].forEach((v, i) => this.tweens.add({ targets: v.c, angle: { from: -12, to: 12 }, duration: 140, yoyo: true, repeat: 3, delay: 200 + i * 60, onComplete: () => v.c.setAngle(0) }));
+      // 승리 포즈는 다들 제자리에 돌아온 뒤 위아래 점프(sync의 winHop)
+      this.winPose = true;
       if (ev.boss) { this.fx.confetti(); this.fx.banner('스테이지 클리어!', '#7CFC9A'); }
       else this.fx.banner('승리!', '#ffd84d', '전열 정비');
     });

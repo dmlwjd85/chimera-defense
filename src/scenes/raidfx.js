@@ -7,6 +7,9 @@ import { style, button } from './ui.js';
 import { sfx } from './sfx.js';
 
 const DEPTH = 1450;
+// 시전 막대는 전장 글자·말풍선·'쾅!'(1700~1760)과 가운데 하늘 띠(midstage 1840)보다 위,
+// 위 알림(1850)·필살기 컷(1900)·배너(2400)보다 아래(2026-11-28 선생님 "안가리게 해줘"). 판은 y 100 아래라 위쪽 HUD와 안 겹침
+export const CAST_DEPTH = 1845;
 const COL = { cast: 0x9b6cf0, hard: 0xff3b3b, mark: 0xff9f1a, zone: 0xff5a1f, shield: 0xd2b4ff, armor: 0xc08a4a, poison: 0x7bd36b, duel: 0xffe066 };
 
 export class RaidFx {
@@ -15,6 +18,8 @@ export class RaidFx {
     const dict = sc.cache.json.get('text') ?? {};
     this.T = sc.registry.get('T') ?? ((k, v = {}) => String(dict[k] ?? k).replace(/\{(\w+)\}/g, (_, n) => v[n] ?? ''));
     this.g = sc.add.graphics().setDepth(DEPTH);
+    this.gc = sc.add.graphics().setDepth(CAST_DEPTH);   // 시전 막대 판(이름·막대·끊기 점·안내를 한 판에)
+    this.castRects = [];   // 시전 막대 판 자리(검수·겹침 재기용)
     this.labels = new Map();   // key → Text (다시 쓰고, 안 쓰이면 지움)
     this.used = new Set();
     this.hit = null;           // 시전 막대 누르는 자리
@@ -26,10 +31,10 @@ export class RaidFx {
     return this.T(`raid.pat.${boss}.${ev.pid}`);
   }
 
-  label(key, x, y, text, color = '#ffffff', size = 14) {
+  label(key, x, y, text, color = '#ffffff', size = 14, depth = DEPTH + 2) {
     this.used.add(key);
     let t = this.labels.get(key);
-    if (!t) { t = this.sc.add.text(x, y, text, style(size, color, { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(DEPTH + 2); this.labels.set(key, t); }
+    if (!t) { t = this.sc.add.text(x, y, text, style(size, color, { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setDepth(depth); this.labels.set(key, t); }
     t.setPosition(x, y); if (t.text !== text) t.setText(text); t.setColor(color);
     return t;
   }
@@ -37,7 +42,7 @@ export class RaidFx {
   /** 매 프레임 */
   update() {
     const sc = this.sc, s = sc.state, g = this.g;
-    g.clear(); this.used.clear();
+    g.clear(); this.gc.clear(); this.used.clear(); this.castRects = [];
     if (!s?.raidMarks || s.phase !== 'fight') { this.sweep(); return; }
     const now = s.time;
     let castBar = null;
@@ -56,17 +61,25 @@ export class RaidFx {
         if (r.armor.need) this.label(`ar${e.eid}`, x, y - 110, `🪨 ${r.armor.hits}/${r.armor.need}`, '#f0c890');
       }
       if (r.hide && now < r.hide) { g.fillStyle(0x3a2a1a, 0.55).fillEllipse(x, y + 30, 120, 30); this.label(`hd${e.eid}`, x, y - 60, '🕳', '#ffffff', 26); }
-      // 시전 막대(보라 = 끊을 수 있음, 빨강 = 못 끊음)
+      // 시전 막대(보라 = 끊을 수 있음, 빨강 = 못 끊음): 기술 이름·막대·끊기 점·안내를 어두운 판 하나에 모아 맨 위 층에
+      //  (2026-11-28 "안가리게": 이름 말풍선·'쾅!'·다른 말풍선이 막대를 덮지 않게. 이름은 판 안 막대 바로 위)
       if (r.cast) {
-        const c = r.cast, k = Math.min(1, Math.max(0, 1 - (c.end - now) / c.len));
-        const bx = x - 90, by = y - 165, col = c.need != null ? COL.cast : COL.hard;
-        g.fillStyle(0x000000, 0.7).fillRoundedRect(bx - 3, by - 3, 186, 22, 8);
-        g.fillStyle(col, 1).fillRoundedRect(bx, by, 180 * k, 16, 6);
-        g.lineStyle(2, 0xffffff, 0.8).strokeRoundedRect(bx - 3, by - 3, 186, 22, 8);
-        if (c.need != null) for (let i = 0; i < c.need; i++) g.fillStyle(i < c.pts ? 0xffe066 : 0x333344, 1).fillCircle(bx + 186 + 12 + i * 14, by + 8, 5);
-        this.label(`cn${e.eid}`, x, by - 14, `${this.patName({ boss: e.raid.minion ? s.stage?.boss : e.id, pid: c.pid, taste: c.taste })}${c.need != null ? '' : ' ⚠'}`, c.need != null ? '#e6d4ff' : '#ffb0a0', 16);
-        this.label(`ch${e.eid}`, x, by + 30, c.need != null ? this.T('raid.cast.tap') : this.T('raid.cast.hard'), '#ffffff', 12);
-        if (c.need != null) castBar = { x: bx - 3, y: by - 3, w: 186, h: 22 };
+        const c = r.cast, k = Math.min(1, Math.max(0, 1 - (c.end - now) / c.len)), gc = this.gc;
+        const can = c.need != null, dots = can ? c.need * 14 + 8 : 0;
+        const pw = 206 + dots, ph = 84;
+        const px = Math.max(8, Math.min(1272 - pw, x - pw / 2)), py = Math.max(100, y - 199);
+        const bx = px + 10, by = py + 34, col = can ? COL.cast : COL.hard;
+        gc.fillStyle(0x0b0816, 0.88).fillRoundedRect(px, py, pw, ph, 12);
+        gc.lineStyle(2, col, 0.95).strokeRoundedRect(px, py, pw, ph, 12);
+        gc.fillStyle(0x000000, 0.7).fillRoundedRect(bx - 3, by - 3, 186, 22, 8);
+        gc.fillStyle(col, 1).fillRoundedRect(bx, by, 180 * k, 16, 6);
+        gc.lineStyle(2, 0xffffff, 0.8).strokeRoundedRect(bx - 3, by - 3, 186, 22, 8);
+        if (can) for (let i = 0; i < c.need; i++) gc.fillStyle(i < c.pts ? 0xffe066 : 0x333344, 1).fillCircle(bx + 186 + 10 + i * 14, by + 8, 5);
+        const nm = this.label(`cn${e.eid}`, px + pw / 2, by - 16, `${this.patName({ boss: e.raid.minion ? s.stage?.boss : e.id, pid: c.pid, taste: c.taste })}${can ? '' : ' ⚠'}`, can ? '#e6d4ff' : '#ffb0a0', 16, CAST_DEPTH + 1);
+        if (nm.width > pw - 16) nm.setScale((pw - 16) / nm.width); else if (!sc.tweens.isTweening(nm)) nm.setScale(1);
+        this.label(`ch${e.eid}`, px + pw / 2, by + 34, can ? this.T('raid.cast.tap') : this.T('raid.cast.hard'), '#ffffff', 12, CAST_DEPTH + 1);
+        this.castRects.push({ eid: e.eid, x: px, y: py, w: pw, h: ph });
+        if (can) castBar = { x: px, y: py, w: pw, h: ph };
       }
       // 결투 줄
       if (r.duel) { const u = sc.uViews.get(r.duel.uid); if (u) { g.lineStyle(3, COL.duel, 0.8).lineBetween(x, y - 30, u.c.x, u.c.y - 30); this.label(`du${e.eid}`, (x + u.c.x) / 2, (y + u.c.y) / 2 - 40, '⚔', '#ffe066', 22); } }
@@ -121,7 +134,7 @@ export class RaidFx {
         if (r.ok) { sfx('hold'); try { navigator.vibrate?.(25); } catch { /* 없음 */ } } else if (r.reason === 'noCheers') this.sc.toast?.(this.T('raid.noCheers'));
       });
     }
-    this.hit.setPosition(bar.x - 20, bar.y - 20);
+    this.hit.setSize(bar.w + 40, bar.h + 40).setPosition(bar.x - 20, bar.y - 20);
   }
 
   sweep() { for (const [k, t] of this.labels) if (!this.used.has(k)) { t.destroy(); this.labels.delete(k); } }
@@ -139,8 +152,9 @@ export class RaidFx {
       }
       case 'raidEnrage': sc.ticker(T('raid.enrage', { n: ev.step }), '#ff6b5a'); return true;
       case 'raidDoom': sc.cameras.main.flash(160, 120, 0, 0); sc.ticker(T('raid.doom'), '#ff3b3b'); sfx('slam'); return true;
-      case 'raidCast': { const p = at('e', ev.eid); if (p) sc.say(p[0], p[1] - 200, name + '…', ev.need != null ? 0xd2b4ff : 0xff6b5a, { force: true }); sfx('magic'); return true; }
-      case 'raidInterruptPt': { const p = at('e', ev.eid); if (p) sc.floatAt(p[0] + 110, p[1] - 160, T('raid.cast.pts', { pts: ev.pts, need: ev.need }), '#ffe066', 14); return true; }
+      // 시전 시작: 예전엔 머리 위에 이름 말풍선을 따로 띄워 막대를 가렸음 → 막대 판 안의 이름을 톡 튀게(같은 글자를 두 번 쓰지 않음)
+      case 'raidCast': { sc.time.delayedCall(0, () => { const t = this.labels.get(`cn${ev.eid}`); if (t?.scene) sc.tweens.add({ targets: t, scale: { from: 1.5, to: 1 }, duration: 260, ease: 'Back.out' }); }); sfx('magic'); return true; }
+      case 'raidInterruptPt': { const p = at('e', ev.eid), rc = this.castRects.find((q) => q.eid === ev.eid); if (p) sc.floatAt(rc ? rc.x + rc.w / 2 : p[0], rc ? rc.y + rc.h + 14 : p[1] - 110, T('raid.cast.pts', { pts: ev.pts, need: ev.need }), '#ffe066', 14); return true; }
       case 'raidInterrupt': { const p = at('e', ev.eid); if (p) { sc.fx.impact?.(p[0], p[1] - 160, 0xffe066, 1.4); } sc.ticker(T('raid.interrupt', { name }), '#ffe066'); sfx('evolve'); return true; }
       case 'raidCastDone': { sc.ticker(T('raid.castDone', { name }), '#ff6b5a'); sc.cameras.main.shake(220, 0.01); if (ev.uid != null) { const p = at('u', ev.uid); if (p) sc.fx.impact?.(p[0], p[1] - 10, 0xff3b3b, 1.5); } sfx('slam'); return true; }
       case 'raidLearned': sc.registry.set('raidLearned', { ...(sc.registry.get('raidLearned') ?? {}), [`${ev.boss}:${ev.pid}`]: true }); sc.ticker(T('raid.learned', { name: T(`raid.pat.${ev.boss}.${ev.pid}`) }), '#9cff6b'); return true;
@@ -163,7 +177,7 @@ export class RaidFx {
     }
   }
 
-  destroy() { this.g.destroy(); this.hit?.destroy(); for (const t of this.labels.values()) t.destroy(); this.labels.clear(); }
+  destroy() { this.g.destroy(); this.gc.destroy(); this.hit?.destroy(); for (const t of this.labels.values()) t.destroy(); this.labels.clear(); }
 }
 
 /** 보스 카드(카드12): 속성·약점·필요한 역할·기술(단계별)·추천 동물. 난이도·덱 화면에서 열림. 닫는 함수 돌려줌 */

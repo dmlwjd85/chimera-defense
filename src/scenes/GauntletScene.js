@@ -975,7 +975,7 @@ export default class GauntletScene extends Phaser.Scene {
         if (this.state.phase !== 'fight' || v.walking || this.time.now > (v.turnedUntil ?? 0)) v.turned = false;
         r.setFacing(enemyFaceRig(v.rig, v.rig.faceId ?? e.id, !!v.turned));
         if (e.stunLeft > 0 && !v.dive && r.flashLeft > 0) r.flashLeft = Math.max(0, r.flashLeft - dt);   // 기절로 멈춰 있어도 흰 번쩍은 끝나게
-        v.rig.view.update(e.stunLeft > 0 && !v.dive ? 0 : dt * this.finaleK());
+        v.rig.view.update(e.stunLeft > 0 && e.hp > 0 && !v.dying && !v.dive ? 0 : dt * this.finaleK());   // 기절한 채 쓰러지면 쓰러짐 그림은 움직여야 함
       }
       v.lastHp = e.hp;
       if (e.hp <= 0 && !v.dying) this.enemyDeath(v, e);
@@ -986,6 +986,8 @@ export default class GauntletScene extends Phaser.Scene {
       if (this.finaleOn() && v.eRef && v.c.scene) { if (this.fleeIds?.has(eid)) this.enemyFlee(v); else this.enemyDeath(v, v.eRef); }
       else { v.c.destroy(); this.eViews.delete(eid); }
     }
+    // 규칙 목록에서 빠진 채 쓰러지는/달아나는 적도 그림 움직임은 계속(안 돌리면 쓰러짐 첫 장에서 멈춰 선 채로 보였음)
+    for (const [eid, v] of this.eViews) if (!seen.has(eid) && v.dying && v.c.scene && v.rig) v.rig.view.update(dt * this.finaleK());
   }
 
   /** 힘겨루기 줄: 맞댄 두 동물 위에 금색(우리)·보라(적) 막대, 가운데 표시가 밀리는 쪽으로 움직임 */
@@ -1056,6 +1058,9 @@ export default class GauntletScene extends Phaser.Scene {
     sfx(e.boss ? 'bigKill' : 'kill');
     // 여운 있게(2026-11-27): 튕겨 나가며 하얗게 번쩍 → 옆으로 쓰러져 잠깐 누움 → 빛 가루가 되어 천천히 사라짐
     v.bar?.setVisible(false); v.barBg?.setVisible(false); v.gBg?.setVisible(false); v.name?.setVisible(false); v.tag?.setVisible(false);
+    // 체력바 잔상·머리 위 글자·아이콘·기절 별도 같이 숨김(마지막 적은 규칙 목록에서 빠져 더는 안 고쳐지므로)
+    for (const o of v.c.list) if (o.type === 'Text' || (o.type === 'Rectangle' && o.height <= 10)) o.setVisible(false);
+    this.stunStars(v, false);
     const x0 = v.c.x, y0 = v.c.y;
     v.c.list.forEach((o) => o.setTintFill?.(0xffffff));
     this.time.delayedCall(90, () => v.c.list.forEach((o) => o.clearTint?.()));

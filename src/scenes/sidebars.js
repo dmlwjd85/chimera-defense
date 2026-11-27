@@ -139,6 +139,7 @@ export class Altar {
     if (!a || !b) return;
     const p = mergePreview(a, b, this.scene.data2, s.known);
     this.scene.runDropPlan?.({ action: 'merge', fromRef: refOf(s, a.uid), toRef: refOf(s, b.uid), preview: p });
-    this.uids = [null, null];
+    // 확인 창이 뜨는 성체 합성은, 합성에 성공한 뒤에만 칸을 비움(취소하면 제단에 그대로).
+    if (!p.needsConfirm) this.uids = [null, null];
   }
 }

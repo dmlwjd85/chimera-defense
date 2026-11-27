@@ -32,10 +32,10 @@ const fail = (reason) => ({ ok: false, reason });
 /** Settings with defaults (config.gauntlet). */
 export function gcfg(data) {
   return {
-    encounters: 8, squadMin: 3, squadMax: 6, timeLimit: 60, healPct: 30, restBackPct: 50, life: 5,
-    stagger: 0.15, enemyHp: 20, enemyAtk: 1.5, bossHp: 4, bossAtk: 1, growth: 0.15, atkGrowth: 0.12, squash: 0.55, summonCap: 2, bossBase: 6000, bossTune: { boss_bone: { hp: 0.45, atk: 0.55 } }, minionHp: 0.5, summonerHp: 0.7, bossSquad: 3, healMult: 0.3, hardHp: 1, lossRevive: 80, mvpGrow: true, stageHpPow: 0.5, stageAtkPow: 0.4, zeroAttack: 4, zeroInterval: 1.3,
+    encounters: 12, startUnits: 3, squadMin: 2, squadMax: 6, timeLimit: 60, healPct: 30, restBackPct: 50, life: 5,
+    stagger: 0.15, enemyHp: 20, enemyAtk: 1.5, bossHp: 4, bossAtk: 1, growth: 0.05, atkGrowth: 0.04, squash: 0.55, summonCap: 2, bossBase: 6000, bossTune: { boss_bone: { hp: 0.45, atk: 0.55 } }, minionHp: 0.5, summonerHp: 0.7, bossSquad: 3, healMult: 0.3, hardHp: 1, lossRevive: 80, mvpGrow: true, stageHpPow: 0.5, stageAtkPow: 0.4, zeroAttack: 4, zeroInterval: 1.3,
     backMelee: 0.5, frontRanged: 0.75, taunt: 2, startStage: 'young', manaRegen: 0.6,
-    hardEssence: 1.5, hardShards: 2, lowStars: 3,
+    hardEssence: 1.5, hardShards: 2, lowStars: 5,
     clashRate: 0.5, clashNoise: 1, clashLean: 0.6, clashBoss: 0.6, gangMax: 2, gangPower: 0.5, charge: 1.1, protectCd: 3,
     // 적 역할(우리와 같은 문법): bruiser 힘겨루기 / skirm 뒷줄 노리고 치고 빠지기 / ranged 뒤에서 쏨 / support 자기 편 거들기
     enemyRole: { normal: 'bruiser', tough: 'bruiser', zombie: 'bruiser', swarm: 'bruiser', skeleton: 'bruiser', miniboss: 'bruiser',
@@ -347,7 +347,10 @@ export function createGauntlet(data, stageId, seed = 1, opts = {}) {
   // 출전 단계: 종 레벨이 오르면 성장기(Lv3)·성체(Lv6)로 시작. 신화급은 혼자 못 됨(합성만)
   const lvStage = (id) => { const lv = state.levels[id] ?? 1; return lv >= g.growLv.adult ? 'adult' : lv >= g.growLv.teen ? 'teen' : g.startStage; };
   const legend = opts.legend ?? null;
-  const deckIds = state.pool.filter((id) => data.unitById[id]).slice(0, legend ? 5 : 6);
+  // 2026-11-27 사용자 "초반엔 3마리로 시작": 덱 앞에서부터 startUnits마리만 먼저 출전, 나머지는 보상(지구본)으로 합류
+  // (덱 대결은 상대와 같은 조건이라 덱 6마리 그대로, 시험용으로 opts.startUnits로 바꿀 수 있음)
+  const startN = Math.max(1, Math.min(6, opts.startUnits ?? (opts.duel ? 6 : g.startUnits ?? 6)));
+  const deckIds = state.pool.filter((id) => data.unitById[id]).slice(0, legend ? startN - 1 : startN);
   const units = deckIds.map((id) => newAnimal(state, data, id, lvStage(id)));
   // 전설 카드: 덱 한 칸을 차지하고 성체로 출전(같은 종 성체와 합치면 다시 신화급). 키메라는 키메라 그대로
   if (legend) {

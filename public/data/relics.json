@@ -340,6 +340,10 @@
     {"id": "phoenix_plume", "icon": "🔥", "name": "불사조 깃털", "rarity": "epic", "gauntlet": true, "desc": "교전마다 처음 쓰러지는 동물이 체력 30%로 일어남", "eco": {"phoenix": 1}},
     {"id": "iron_chain", "icon": "⛓️", "name": "쇠사슬", "rarity": "rare", "gauntlet": true, "desc": "제압된 적이 받는 피해 +20%", "eco": {"supPlus": 20}},
     {"id": "thunder_drum", "icon": "🪘", "name": "천둥 북", "rarity": "common", "gauntlet": true, "desc": "힘싸움에서 이기면 적이 0.4초 더 기절", "eco": {"clashStun": 0.4}},
-    {"id": "mana_spring", "icon": "💧", "name": "마력 샘", "rarity": "common", "gauntlet": true, "desc": "마력이 30% 빨리 참", "eco": {"manaRegen": 30}}
+    {"id": "mana_spring", "icon": "💧", "name": "마력 샘", "rarity": "common", "gauntlet": true, "desc": "마력이 30% 빨리 참", "eco": {"manaRegen": 30}},
+    {"id": "mad_notes", "icon": "📓", "name": "괴짜 박사의 노트", "rarity": "rare", "gauntlet": true, "desc": "강이 다른 합성(기적) 성공 +8%, 슬라임이 나오면 금화 +10", "eco": {"crossGene": 8, "slimeGold": 10}},
+    {"id": "mole_lamp", "icon": "🏮", "name": "두더지 등불", "rarity": "rare", "gauntlet": true, "desc": "적 증원이 오지 않음, 지형 피해 -50%", "eco": {"noReinforce": true, "hazardHalf": true}},
+    {"id": "comeback_flag", "icon": "🚩", "name": "역전의 깃발", "rarity": "epic", "gauntlet": true, "desc": "역전 찬스가 교전마다 두 번", "eco": {"rallyPlus": 1}},
+    {"id": "god_gene", "icon": "🧬", "name": "신의 염색체", "rarity": "epic", "gauntlet": true, "desc": "합성 성공 +15%(강이 달라도)", "eco": {"geneAll": 15}}
   ]
 }

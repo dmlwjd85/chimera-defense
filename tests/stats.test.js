@@ -26,7 +26,8 @@ test('bear hold count and modifiers', () => {
 
 test('chimera and weak chimera', () => {
   const c = unitStats({ uid: 2, kind: 'chimera', speciesId: 'cheese_thief', stage: 'adult', parts: ['fox', 'crow'] }, D);
-  assert.deepEqual([c.hp, c.damage, c.range, c.block, eff(c, 'poison').dps], [158, 43.2, 4, 1, 10]);
+  // 치즈 도둑(여우+까마귀)은 강이 다른 '기적의 키메라' → 체력·피해 +15%
+  assert.deepEqual([c.hp, c.damage, c.range, c.block, eff(c, 'poison').dps, c.cross], [Math.round(D.config.chimeraHpRatio * (D.unitById.fox.hp + D.unitById.crow.hp) * D.config.stageMult.adult.damage * 1.15), Math.round(43.2 * 1.15 * 10) / 10, 4, 1, 10, true]);
   const w = unitStats({ uid: 3, kind: 'weak', speciesId: null, stage: 'adult', parts: ['fox', 'bear'] }, D);
   assert.deepEqual([w.damage, w.hp, w.interval, w.range, w.block, w.respawn, w.effects.length], [7, 55, 1.2, 1, 1, 8, 0]);
   assert.ok(w.name.endsWith('슬라임'), w.name);

@@ -23,16 +23,19 @@ export function buildData(raw) {
   const { config, units, enemies, stages } = raw;
   for (const r of raw.recipes) if (!Array.isArray(r.parts) || r.parts.length !== 2) throw new Error('buildData: invalid recipe parts ' + r.id);
   // 염색체 합성: 강이 다른 옛 조합(치즈 도둑·황소개구리)은 막힘(oldRecipes, 그림·저장은 그대로), 같은 강 빈 짝은 자동 키메라
+  // 강이 다른 짝은 '기적의 키메라'(crossRecipes): 이야기 조합(치즈 도둑·황소개구리 + 전설 6)과 자동 이종 키메라
   const ok = (r) => !config.genes || sameClass(r.parts[0], r.parts[1], { config });
-  const story = raw.recipes.filter(ok), oldRecipes = raw.recipes.filter((r) => !ok(r));
-  const recipes = [...story, ...autoRecipes(units, story, config)];
+  const autos = autoRecipes(units, raw.recipes, config);
+  const story = raw.recipes.filter(ok), oldRecipes = raw.recipes.filter((r) => !ok(r)).map((r) => ({ ...r, cross: true, legend: true }));
+  const recipes = [...story, ...autos.filter((r) => !r.cross)];
+  const crossRecipes = [...oldRecipes, ...autos.filter((r) => r.cross)];
   const recipeByPair = {};
-  for (const r of recipes) recipeByPair[pairKey(r.parts[0], r.parts[1])] = r;
+  for (const r of [...recipes, ...crossRecipes]) recipeByPair[pairKey(r.parts[0], r.parts[1])] = r;
   return {
-    config, units, recipes, oldRecipes, enemies, stages, recipeByPair,
+    config, units, recipes, crossRecipes, oldRecipes, enemies, stages, recipeByPair,
     traits: raw.traits ?? {}, lore: raw.lore ?? { passives: {}, bonds: [] },
     tales: raw.tales ?? {}, talents: raw.talents ?? { branches: [], costs: [] }, talentById: Object.fromEntries((raw.talents?.branches ?? []).flatMap((b) => b.nodes.map((n, i) => [n.id, { ...n, branch: b.id, index: i }]))), relicCfg: raw.relics ?? { offerWaves: [], relics: [] }, relicById: Object.fromEntries((raw.relics?.relics ?? []).map((r) => [r.id, r])),
-    unitById: indexById(units), recipeById: indexById([...recipes, ...oldRecipes]),
+    unitById: indexById(units), recipeById: indexById([...recipes, ...crossRecipes]),
     enemyById: indexById(enemies), stageById: indexById(stages),
   };
 }

@@ -73,23 +73,25 @@ function chimeraStats(inst, data) {
   if (!r) throw new Error('unitStats: unknown recipe ' + inst.speciesId);
   const [a, b] = partsOf(inst, data);
   const m = data.config.stageMult.adult;
+  // 기적의 키메라(강이 다른 짝): 능력치 +statUp%
+  const up = r.cross ? 1 + (data.config.genes?.miracle?.statUp ?? 0) / 100 : 1;
   return {
     name: r.name,
-    hp: Math.round(data.config.chimeraHpRatio * (a.hp + b.hp) * m.damage),
-    damage: round1(r.damage * ((damageBoost(a, data.config) + damageBoost(b, data.config)) / 2) * m.damage * tempoD(data)),
+    hp: Math.round(data.config.chimeraHpRatio * (a.hp + b.hp) * m.damage * up),
+    damage: round1(r.damage * ((damageBoost(a, data.config) + damageBoost(b, data.config)) / 2) * m.damage * tempoD(data) * up),
     interval: round2(r.interval * tempoU(data)), range: r.range, aoeRadius: r.aoeRadius,
     block: r.block ?? Math.max(a.block, b.block), respawn: Math.max(a.respawn, b.respawn),
     effects: scaleEffects(r.effects, m), skills: [r.desc], skillTales: [{ name: r.name, tale: data.tales?.recipes?.[r.id] ?? r.codex ?? '', desc: r.desc }],
     element: r.element ?? null, continents: uniq([a.continent, b.continent]), habitats: uniq([a.habitat, b.habitat]), color: r.color, image: r.image ?? null, role: r.role, flyer: !!r.flyer,
-    look: r.auto ? r.look : null, lookTint: r.auto ? autoTint(r, data) : null,
+    look: r.auto ? r.look : null, lookTint: r.auto ? autoTint(r, data) : null, cross: !!r.cross,
   };
 }
 
 function weakStats(inst, data) {
   const [a, b] = partsOf(inst, data);
   return {
-    name: data.config.slimeName ? (inst.reversal ? '역전의 ' : '') + data.config.slimeName.replace('{a}', a.name).replace('{b}', b.name) : (inst.reversal ? '역전의 ' : data.config.weakNamePrefix) + a.name + b.name,
-    hp: Math.min(a.hp, b.hp), damage: round1(Math.min(a.damage * damageBoost(a, data.config), b.damage * damageBoost(b, data.config)) * tempoD(data)),
+    name: data.config.slimeName ? (inst.reversal ? '역전의 ' : '') + (inst.king ? '왕 ' : '') + data.config.slimeName.replace('{a}', a.name).replace('{b}', b.name) : (inst.reversal ? '역전의 ' : data.config.weakNamePrefix) + a.name + b.name,
+    hp: Math.round(Math.min(a.hp, b.hp) * (inst.king ? data.config.genes?.miracle?.kingHp ?? 1.6 : 1)), damage: round1(Math.min(a.damage * damageBoost(a, data.config), b.damage * damageBoost(b, data.config)) * tempoD(data) * (inst.king ? data.config.genes?.miracle?.kingDmg ?? 1.3 : 1)),
     interval: round2(Math.max(a.interval, b.interval) * tempoU(data)), range: Math.min(a.range, b.range), aoeRadius: 0,
     block: Math.min(a.block, b.block), respawn: Math.max(a.respawn, b.respawn),
     effects: [], skills: [], skillTales: [],

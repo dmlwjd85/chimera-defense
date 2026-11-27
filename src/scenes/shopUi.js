@@ -30,7 +30,7 @@ export function showShop(scene, data, save, storage, onClose = () => {}) {
       b.setEnabled(!it.sold && (save.pouch ?? 0) >= it.price);
     });
     const prep = save.prep;
-    add(scene.add.text(200, 612, `🎒 챙긴 것: ${prep ? [...(prep.relics ?? []).map((id) => data.relicById[id]?.icon ?? '✨'), ...(prep.food ? [`🍖×${prep.food}`] : []), ...(prep.feathers ? [`🪶×${prep.feathers}`] : [])].join(' ') || '없음' : '없음'}`, style(16, '#9cff6b')).setDepth(3002));
+    add(scene.add.text(200, 612, `🎒 챙긴 것: ${prep ? [...(prep.relics ?? []).map((id) => data.relicById[id]?.icon ?? '✨'), ...(prep.food ? [`🍖×${prep.food}`] : []), ...(prep.feathers ? [`🪶×${prep.feathers}`] : []), ...(prep.gene ? ['🧪유전자 물약'] : [])].join(' ') || '없음' : '없음'}`, style(16, '#9cff6b')).setDepth(3002));
     const rb = add(button(scene, 880, 616, 150, 38, '🔄 새로 진열 💰5', () => { if (rerollShop(save, data).ok) { sfx('click'); writeSave(storage, save); paint(); } }, { depth: 3003, size: 14 }));
     rb.setEnabled((save.pouch ?? 0) >= 5);
     add(button(scene, 1050, 616, 120, 38, '닫기', close, { depth: 3003, size: 16 }));

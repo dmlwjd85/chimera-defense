@@ -31,10 +31,13 @@ export function rollOffer(state, data) {
   const cfg = data.relicCfg;
   // 연전(gauntlet) 전용 유물은 연전에서만, 연전에서 쓸모없는 유물(ban)은 연전에서 뺌
   const ban = state.gauntletRelicBan;
-  const pool = cfg.relics.filter((r) => !(state.relics ?? []).includes(r.id) && (ban ? !ban.includes(r.id) : !r.gauntlet));
+  // 재도전 동기(2026-11-27): 스테이지 전리품 유물은 그 스테이지(relicHome)에서만, 하드·신계 전용은 그 모드에서만 나옴. 한 번 얻으면(foundRelics) 어디서나
+  const gc = data.config.gauntlet ?? {}, found = state.foundRelics ?? new Set(), here = state.stage?.id;
+  const open = (r) => !ban || found.has(r.id) || ((!gc.relicHome?.[r.id] || gc.relicHome[r.id] === here) && (!(gc.relicHard ?? []).includes(r.id) || state.hard || state.tier) && (!(gc.relicTier ?? []).includes(r.id) || state.tier));
+  const pool = cfg.relics.filter((r) => !(state.relics ?? []).includes(r.id) && (ban ? !ban.includes(r.id) : !r.gauntlet) && open(r));
   const out = [];
   while (out.length < (cfg.choices ?? 3) && pool.length) {
-    const wt = (r) => (cfg.weights?.[r.rarity] ?? 1) * (ban && r.gauntlet ? 3 : 1);
+    const wt = (r) => (cfg.weights?.[r.rarity] ?? 1) * (ban && r.gauntlet ? 3 : 1) * (ban && !found.has(r.id) && gc.relicHome?.[r.id] === here ? gc.relicHomeWeight ?? 1 : 1);
     const total = pool.reduce((s, r) => s + wt(r), 0);
     let t = state.rng() * total;
     const i = pool.findIndex((r) => (t -= wt(r)) < 0);

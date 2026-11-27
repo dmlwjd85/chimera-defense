@@ -422,3 +422,17 @@ test('진형 상성·지형 영향·보스 필살 예고·스테이지 전리품
   const r3 = createGauntlet(D, 'stage-12', 1, {}); r3.gauntletRelicBan = G.gcfg(D).relicBan ?? [];
   for (let i = 0; i < 30; i++) assert.ok(!rollOffer(r3, D).includes('phoenix_plume'), '불사조 깃털은 하드 전용');
 });
+
+test('등 뒤 공격: 깊이 뛰어든 녀석을 다른 쪽이 치거나, 뛰어든 녀석이 앞줄을 뒤에서 치면 back 표시(가끔만)', () => {
+  let acts = 0, back = 0;
+  for (const seed of [1, 2, 3]) for (const sid of ['forest-3', 'stage-7']) {
+    const st = createGauntlet(D, sid, seed, {});
+    for (let enc = 0; enc < 3; enc++) {
+      if (st.phase === 'regroup') nextEncounter(st, D);
+      for (let i = 0; i < 4000 && st.phase === 'fight'; i++) { tickGauntlet(st, D, 0.05); for (const e of st.events) if (e.type === 'act') { acts++; if (e.back) back++; } st.events.length = 0; }
+      if (st.phase !== 'regroup') break;
+    }
+  }
+  assert.ok(back > 0, '등 뒤 공격이 한 번은 나와야 함');
+  assert.ok(back / acts < 0.08, `너무 잦음 ${back}/${acts}`);
+});

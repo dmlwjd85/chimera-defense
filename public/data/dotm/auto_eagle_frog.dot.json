@@ -1,0 +1,635 @@
+{
+ "note": "ch_eagle_frog 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_eagle_frog",
+ "sheet": "dot-m-auto_eagle_frog",
+ "file": "assets/dotm/auto_eagle_frog.png",
+ "frameW": 115,
+ "frameH": 114,
+ "foot": 112,
+ "cols": 1,
+ "anchorX": 58,
+ "palette": [
+  "#0f080b",
+  "#275a6b",
+  "#291a1f",
+  "#308398",
+  "#3c783a",
+  "#4c2621",
+  "#599639",
+  "#6ab42f",
+  "#76293c",
+  "#9bad43",
+  "#9c2e37",
+  "#a87845",
+  "#d3433a",
+  "#ddea6f",
+  "#e0b34f",
+  "#fefcf5"
+ ],
+ "rects": {
+  "ch_eagle_frog_adult_a1_00": [
+   543,
+   102,
+   106,
+   90,
+   -54,
+   -90
+  ],
+  "ch_eagle_frog_adult_a1_01": [
+   1313,
+   0,
+   104,
+   92,
+   -54,
+   -93
+  ],
+  "ch_eagle_frog_adult_a1_02": [
+   998,
+   0,
+   103,
+   93,
+   -54,
+   -94
+  ],
+  "ch_eagle_frog_adult_a1_03": [
+   1102,
+   0,
+   105,
+   93,
+   -54,
+   -94
+  ],
+  "ch_eagle_frog_adult_a1_04": [
+   1208,
+   0,
+   104,
+   93,
+   -55,
+   -94
+  ],
+  "ch_eagle_frog_adult_a1_05": [
+   1418,
+   0,
+   104,
+   92,
+   -55,
+   -93
+  ],
+  "ch_eagle_frog_adult_a1_06": [
+   1523,
+   0,
+   106,
+   91,
+   -55,
+   -91
+  ],
+  "ch_eagle_frog_adult_a1_07": [
+   1630,
+   0,
+   107,
+   91,
+   -54,
+   -91
+  ],
+  "ch_eagle_frog_adult_a2_00": [
+   109,
+   194,
+   111,
+   85,
+   -55,
+   -85
+  ],
+  "ch_eagle_frog_adult_a2_01": [
+   776,
+   0,
+   110,
+   95,
+   -53,
+   -98
+  ],
+  "ch_eagle_frog_adult_a2_02": [
+   332,
+   0,
+   110,
+   99,
+   -53,
+   -108
+  ],
+  "ch_eagle_frog_adult_a2_03": [
+   0,
+   0,
+   111,
+   101,
+   -54,
+   -113
+  ],
+  "ch_eagle_frog_adult_a2_04": [
+   443,
+   0,
+   112,
+   99,
+   -55,
+   -111
+  ],
+  "ch_eagle_frog_adult_a2_05": [
+   1738,
+   0,
+   114,
+   91,
+   -58,
+   -106
+  ],
+  "ch_eagle_frog_adult_a2_06": [
+   1853,
+   0,
+   110,
+   91,
+   -55,
+   -96
+  ],
+  "ch_eagle_frog_adult_a2_07": [
+   758,
+   102,
+   111,
+   89,
+   -57,
+   -89
+  ],
+  "ch_eagle_frog_adult_down_00": [
+   1303,
+   102,
+   108,
+   88,
+   -54,
+   -88
+  ],
+  "ch_eagle_frog_adult_down_01": [
+   221,
+   194,
+   106,
+   85,
+   -54,
+   -86
+  ],
+  "ch_eagle_frog_adult_down_02": [
+   328,
+   194,
+   107,
+   79,
+   -56,
+   -80
+  ],
+  "ch_eagle_frog_adult_down_03": [
+   436,
+   194,
+   110,
+   72,
+   -56,
+   -73
+  ],
+  "ch_eagle_frog_adult_down_04": [
+   547,
+   194,
+   111,
+   70,
+   -56,
+   -71
+  ],
+  "ch_eagle_frog_adult_down_05": [
+   659,
+   194,
+   111,
+   69,
+   -56,
+   -69
+  ],
+  "ch_eagle_frog_adult_el_00": [
+   0,
+   102,
+   109,
+   91,
+   -55,
+   -91
+  ],
+  "ch_eagle_frog_adult_el_01": [
+   556,
+   0,
+   108,
+   99,
+   -56,
+   -100
+  ],
+  "ch_eagle_frog_adult_el_02": [
+   112,
+   0,
+   109,
+   100,
+   -57,
+   -101
+  ],
+  "ch_eagle_frog_adult_el_03": [
+   222,
+   0,
+   109,
+   100,
+   -57,
+   -101
+  ],
+  "ch_eagle_frog_adult_el_04": [
+   665,
+   0,
+   110,
+   99,
+   -57,
+   -100
+  ],
+  "ch_eagle_frog_adult_el_05": [
+   887,
+   0,
+   110,
+   95,
+   -56,
+   -96
+  ],
+  "ch_eagle_frog_adult_el_06": [
+   110,
+   102,
+   110,
+   91,
+   -56,
+   -92
+  ],
+  "ch_eagle_frog_adult_el_07": [
+   1412,
+   102,
+   110,
+   88,
+   -56,
+   -88
+  ],
+  "ch_eagle_frog_adult_hit_00": [
+   870,
+   102,
+   107,
+   89,
+   -55,
+   -89
+  ],
+  "ch_eagle_frog_adult_idle_00": [
+   1741,
+   102,
+   108,
+   87,
+   -54,
+   -87
+  ],
+  "ch_eagle_frog_adult_idle_01": [
+   1850,
+   102,
+   108,
+   87,
+   -54,
+   -87
+  ],
+  "ch_eagle_frog_adult_idle_02": [
+   0,
+   194,
+   108,
+   87,
+   -54,
+   -87
+  ],
+  "ch_eagle_frog_adult_idle_03": [
+   1523,
+   102,
+   108,
+   88,
+   -54,
+   -88
+  ],
+  "ch_eagle_frog_adult_walk_00": [
+   978,
+   102,
+   107,
+   89,
+   -54,
+   -89
+  ],
+  "ch_eagle_frog_adult_walk_01": [
+   650,
+   102,
+   107,
+   90,
+   -55,
+   -91
+  ],
+  "ch_eagle_frog_adult_walk_02": [
+   221,
+   102,
+   106,
+   91,
+   -55,
+   -92
+  ],
+  "ch_eagle_frog_adult_walk_03": [
+   328,
+   102,
+   106,
+   91,
+   -56,
+   -92
+  ],
+  "ch_eagle_frog_adult_walk_04": [
+   435,
+   102,
+   107,
+   91,
+   -56,
+   -92
+  ],
+  "ch_eagle_frog_adult_walk_05": [
+   1086,
+   102,
+   107,
+   89,
+   -55,
+   -90
+  ],
+  "ch_eagle_frog_adult_walk_06": [
+   1194,
+   102,
+   108,
+   89,
+   -55,
+   -89
+  ],
+  "ch_eagle_frog_adult_walk_07": [
+   1632,
+   102,
+   108,
+   88,
+   -54,
+   -88
+  ]
+ },
+ "frames": [
+  "ch_eagle_frog_adult_a1_00",
+  "ch_eagle_frog_adult_a1_01",
+  "ch_eagle_frog_adult_a1_02",
+  "ch_eagle_frog_adult_a1_03",
+  "ch_eagle_frog_adult_a1_04",
+  "ch_eagle_frog_adult_a1_05",
+  "ch_eagle_frog_adult_a1_06",
+  "ch_eagle_frog_adult_a1_07",
+  "ch_eagle_frog_adult_a2_00",
+  "ch_eagle_frog_adult_a2_01",
+  "ch_eagle_frog_adult_a2_02",
+  "ch_eagle_frog_adult_a2_03",
+  "ch_eagle_frog_adult_a2_04",
+  "ch_eagle_frog_adult_a2_05",
+  "ch_eagle_frog_adult_a2_06",
+  "ch_eagle_frog_adult_a2_07",
+  "ch_eagle_frog_adult_down_00",
+  "ch_eagle_frog_adult_down_01",
+  "ch_eagle_frog_adult_down_02",
+  "ch_eagle_frog_adult_down_03",
+  "ch_eagle_frog_adult_down_04",
+  "ch_eagle_frog_adult_down_05",
+  "ch_eagle_frog_adult_el_00",
+  "ch_eagle_frog_adult_el_01",
+  "ch_eagle_frog_adult_el_02",
+  "ch_eagle_frog_adult_el_03",
+  "ch_eagle_frog_adult_el_04",
+  "ch_eagle_frog_adult_el_05",
+  "ch_eagle_frog_adult_el_06",
+  "ch_eagle_frog_adult_el_07",
+  "ch_eagle_frog_adult_hit_00",
+  "ch_eagle_frog_adult_idle_00",
+  "ch_eagle_frog_adult_idle_01",
+  "ch_eagle_frog_adult_idle_02",
+  "ch_eagle_frog_adult_idle_03",
+  "ch_eagle_frog_adult_walk_00",
+  "ch_eagle_frog_adult_walk_01",
+  "ch_eagle_frog_adult_walk_02",
+  "ch_eagle_frog_adult_walk_03",
+  "ch_eagle_frog_adult_walk_04",
+  "ch_eagle_frog_adult_walk_05",
+  "ch_eagle_frog_adult_walk_06",
+  "ch_eagle_frog_adult_walk_07"
+ ],
+ "standing": [
+  "ch_eagle_frog_adult_idle_00",
+  "ch_eagle_frog_adult_idle_01",
+  "ch_eagle_frog_adult_idle_02",
+  "ch_eagle_frog_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 25,
+   "attack": {
+    "frames": [
+     "ch_eagle_frog_adult_a1_00",
+     "ch_eagle_frog_adult_a1_01",
+     "ch_eagle_frog_adult_a1_02",
+     "ch_eagle_frog_adult_a1_03",
+     "ch_eagle_frog_adult_a1_04",
+     "ch_eagle_frog_adult_a1_05",
+     "ch_eagle_frog_adult_a1_06",
+     "ch_eagle_frog_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_eagle_frog_adult_a2_00",
+     "ch_eagle_frog_adult_a2_01",
+     "ch_eagle_frog_adult_a2_02",
+     "ch_eagle_frog_adult_a2_03",
+     "ch_eagle_frog_adult_a2_04",
+     "ch_eagle_frog_adult_a2_05",
+     "ch_eagle_frog_adult_a2_06",
+     "ch_eagle_frog_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_eagle_frog_adult_down_00",
+     "ch_eagle_frog_adult_down_01",
+     "ch_eagle_frog_adult_down_02",
+     "ch_eagle_frog_adult_down_03",
+     "ch_eagle_frog_adult_down_04",
+     "ch_eagle_frog_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_eagle_frog_adult_el_00",
+     "ch_eagle_frog_adult_el_01",
+     "ch_eagle_frog_adult_el_02",
+     "ch_eagle_frog_adult_el_03",
+     "ch_eagle_frog_adult_el_04",
+     "ch_eagle_frog_adult_el_05",
+     "ch_eagle_frog_adult_el_06",
+     "ch_eagle_frog_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_eagle_frog_adult_hit_00"
+    ],
+    "durs": [
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_eagle_frog_adult_idle_00",
+     "ch_eagle_frog_adult_idle_01",
+     "ch_eagle_frog_adult_idle_02",
+     "ch_eagle_frog_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_eagle_frog_adult_walk_00",
+     "ch_eagle_frog_adult_walk_01",
+     "ch_eagle_frog_adult_walk_02",
+     "ch_eagle_frog_adult_walk_03",
+     "ch_eagle_frog_adult_walk_04",
+     "ch_eagle_frog_adult_walk_05",
+     "ch_eagle_frog_adult_walk_06",
+     "ch_eagle_frog_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_eagle_frog_adult_down_00",
+     "ch_eagle_frog_adult_down_01",
+     "ch_eagle_frog_adult_down_02",
+     "ch_eagle_frog_adult_down_03",
+     "ch_eagle_frog_adult_down_04",
+     "ch_eagle_frog_adult_down_05",
+     "ch_eagle_frog_adult_down_04",
+     "ch_eagle_frog_adult_down_03",
+     "ch_eagle_frog_adult_down_02",
+     "ch_eagle_frog_adult_down_01",
+     "ch_eagle_frog_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "eagle_frog"
+}

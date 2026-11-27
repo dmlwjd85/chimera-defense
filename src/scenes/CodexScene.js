@@ -6,7 +6,7 @@ import { buildData, pairKey } from '../logic/data.js';
 import { levelInfo, favorState, buyFavor, writeSave } from '../logic/meta.js';
 import { classOf, chromoOf, className, geneChance, miracleChance } from '../logic/genes.js';
 
-const TABS = [['units', '동물'], ['traits', '강점·약점'], ['spirits', '신화급'], ['chimeras', '키메라'], ['flops', '슬라임'], ['bonds', '인연'], ['enemies', '적']];
+const TABS = [['units', '동물'], ['traits', '강점·약점'], ['spirits', '신화급'], ['chimeras', '키메라'], ['flops', '슬라임'], ['bonds', '인연'], ['legends', '전설'], ['enemies', '적']];
 const CONT = { eurasia: '유라시아', america: '아메리카', africa: '아프리카' };
 
 export default class CodexScene extends Phaser.Scene {
@@ -19,7 +19,7 @@ export default class CodexScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#141a21');
     if (this.textures.exists('bg-title')) this.add.image(640, 360, 'bg-title').setDisplaySize(1280, 720).setAlpha(0.45);
     title(this, 640, 45, '도감', 36);
-    TABS.forEach(([id, label], i) => button(this, 640 - (TABS.length - 1) * 75 + i * 150, 100, 140, 40, label, () => this.scene.restart({ tab: id }), { fill: id === this.tab ? 0xb8742a : 0x2f4f6f }));
+    TABS.forEach(([id, label], i) => button(this, 640 - (TABS.length - 1) * 74 + i * 148, 100, 138, 40, label, () => this.scene.restart({ tab: id }), { fill: id === this.tab ? 0xb8742a : 0x2f4f6f }));
     panel(this, 40, 130, 1200, 520);
     // 탭 내용은 한 판(page)에 모아 가림막을 씌우고 휠·끌기로 스크롤(인연·흑역사가 넘쳐서)
     const before = new Set(this.children.list);
@@ -181,6 +181,49 @@ export default class CodexScene extends Phaser.Scene {
     this.detail = [...objs, { destroy: () => cb.destroy() }];
   }
 
+  /** 전설 그림자 퍼즐(2026-11-28): 조각은 검은 그림자, 자리·방향을 섞어 한눈에는 누군지 모르게. 다 모이면 제자리로 맞춰지고 색과 레시피 공개 */
+  legends() {
+    const D = this.data2, S = this.save, L = D.config.genes?.legends ?? {}, need = D.config.genes?.legendPieces ?? 6;
+    this.add.text(60, 140, `🧩 전설 그림자 퍼즐 — 전설 짝이 될 두 동물이 한 판 안에서 함께 성체가 되면 조각 하나(판마다). ${need}조각을 모으면 레시피 공개!`, style(14, '#ffd84d', { wordWrap: { width: 1160 } }));
+    Object.keys(L).forEach((key, i) => {
+      const c = this.cell(i, 3, 385, 236); c.y += 34;
+      const r = D.recipeByPair?.[key], n = Math.min(need, S.legendShards?.[key] ?? 0), done = (S.codex.legends ?? []).includes(key);
+      const g = this.add.graphics();
+      g.fillStyle(done ? 0x2a1d10 : 0x15131f, 0.85).fillRoundedRect(c.x, c.y, c.w, c.h, 12).lineStyle(2, done ? 0xffd84d : 0x6a5a8a, 0.9).strokeRoundedRect(c.x, c.y, c.w, c.h, 12);
+      const tex = 'legend-' + (r?.id ?? ''), bx = c.x + 14, by = c.y + 40, BW = 186, BH = 156;
+      g.fillStyle(done ? 0x0a0a12 : 0xb9ad94, done ? 0.9 : 1).fillRect(bx, by, BW, BH);   // 퍼즐 판: 밝은 한지색(검은 그림자 조각이 보이게)
+      if (this.textures.exists(tex)) {
+        const src = this.textures.get(tex).getSourceImage(), cols = 3, rows = 2;
+        const tw = Math.ceil(src.width / cols), th = Math.ceil(src.height / rows), k = Math.min((BW - 12) / src.width, (BH - 12) / src.height);
+        if (done) this.add.image(bx + BW / 2, by + BH / 2, tex).setScale(k).texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+        else {
+          // 조각 순서·돌림은 전설마다 고정(이름 글자로 섞음): k번째로 얻은 조각은 원래 자리와 다른 칸에, 돌려서 놓임
+          let h = 0; for (const ch of key) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+          const order = [0, 1, 2, 3, 4, 5].sort((a, b) => ((h >> (a * 3)) & 7) - ((h >> (b * 3)) & 7) || a - b);
+          const slots = [3, 0, 5, 1, 4, 2];
+          for (let p = 0; p < cols * rows; p++) {
+            const sx = bx + 6 + (slots[p] % cols) * ((BW - 12) / cols), sy = by + 6 + Math.floor(slots[p] / cols) * ((BH - 12) / rows);
+            g.lineStyle(1, 0x7a6e58, 1).strokeRect(sx, sy, (BW - 12) / cols, (BH - 12) / rows);
+            if (p >= n) { this.add.text(sx + (BW - 12) / cols / 2, sy + (BH - 12) / rows / 2, '?', style(20, '#8a7e66')).setOrigin(0.5); continue; }
+            const piece = order[p], key2 = `${tex}-p${piece}`;
+            if (!this.textures.exists(key2)) { const cv = this.textures.createCanvas(key2, tw, th); cv.context.drawImage(src, (piece % cols) * tw, Math.floor(piece / cols) * th, tw, th, 0, 0, tw, th); cv.refresh(); }
+            const ang = [90, 180, 270, 180, 90, 270][p], side = ang % 180 ? [th, tw] : [tw, th], cw = (BW - 12) / cols, ch = (BH - 12) / rows;
+            this.add.image(sx + cw / 2, sy + ch / 2, key2).setScale(Math.min(cw * 0.9 / side[0], ch * 0.9 / side[1])).setAngle(ang).setTintFill(0x14101c);
+          }
+        }
+      }
+      const tx = bx + BW + 14;
+      this.add.text(tx, c.y + 12, done ? `✨ ${r?.name ?? '전설'}` : '??? 전설', style(19, done ? '#ffd84d' : '#9a8cc0'));
+      this.add.text(tx, c.y + 44, `조각 ${n} / ${need}`, style(15, n >= need ? '#9cff6b' : '#ffffff'));
+      const bar = this.add.graphics(); bar.fillStyle(0x2a2540, 1).fillRect(tx, c.y + 70, 150, 8).fillStyle(0xffd84d, 1).fillRect(tx, c.y + 70, 150 * n / need, 8);
+      if (done && r) {
+        this.add.text(tx, c.y + 90, r.parts.map((p) => D.unitById[p]?.name ?? p).join(' + '), style(15, '#9cff6b'));
+        this.add.text(tx, c.y + 116, L[key]?.[1] ?? r.desc ?? '', style(12, '#dddddd', { wordWrap: { width: 160 } }));
+        this.add.text(tx, c.y + 196, L[key]?.[2] ?? '', style(11, '#a89a80'));
+      } else this.add.text(tx, c.y + 90, n ? '그림자가 조금씩 모여요…\n누구일까?' : '아직 조각이 없어요', style(12, '#aabbcc'));
+    });
+  }
+
   chimeras() {
     const D = this.data2, S = this.save;
     // 염색체 합성 안내 줄: 같은 강끼리만, 염색체 수가 비슷할수록 잘 붙음
@@ -199,7 +242,8 @@ export default class CodexScene extends Phaser.Scene {
       const tok = unitToken(this, { kind: 'chimera', speciesId: r.id, stage: 'adult', parts: r.parts, stats: {} }, D);
       tok.setPosition(c.x + 40, c.y + 50).setAlpha(known ? 1 : 0.5);
       if (!known) tok.list.forEach((o) => o.setTint?.(0x000000));
-      const parts = r.parts.map((p) => (known || hint.includes(p) ? D.unitById[p].name : `?(${CONT[D.unitById[p].continent]})`)).join(' + ');
+      const lgOpen = (S.codex.legends ?? []).includes([...r.parts].sort().join('+'));
+      const parts = r.parts.map((p) => (known || lgOpen || hint.includes(p) ? D.unitById[p].name : `?(${CONT[D.unitById[p].continent]})`)).join(' + ');
       const [cn, ci] = className(classOf(r.parts[0], D), D);
       this.add.text(c.x + 85, c.y + 8, known ? r.name : '???', style(18, old ? '#777777' : known ? '#d7bde2' : '#888888'));
       this.add.text(c.x + c.w - 8, c.y + 10, cross ? `🌈 기적 ${miracleChance(r.parts[0], r.parts[1], D, S.codex.bonds)}%` : `${ci}${cn} · 🧬${geneChance(r.parts[0], r.parts[1], D)}%`, style(12, cross ? '#e8a0ff' : '#c9f27a')).setOrigin(1, 0);

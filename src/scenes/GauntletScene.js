@@ -1125,6 +1125,13 @@ export default class GauntletScene extends Phaser.Scene {
         });
         sfx('hit'); break;
       }
+      case 'legendShard': {   // 전설 조각: 어느 전설인지는 숨김(그림자 조각만)
+        this.ticker('🧩 전설 그림자 조각을 찾았어요! 판이 끝나면 도감 퍼즐에 맞춰져요', '#ffd84d');
+        const pc = this.add.rectangle(640, 300, 34, 34, 0x05040a).setStrokeStyle(3, 0xffd84d).setAngle(20).setDepth(2600);
+        const q = this.add.text(640, 300, '?', style(20, '#ffd84d')).setOrigin(0.5).setDepth(2601);
+        this.tweens.add({ targets: [pc, q], y: 40, x: 1220, angle: 380, scale: 0.6, duration: 1200, ease: 'Cubic.in', delay: 500, onComplete: () => { pc.destroy(); q.destroy(); } });
+        sfx('evolve'); break;
+      }
       case 'reinforce': { this.ticker('👿 적 증원! 문에서 하나 더 나옴', '#c4a6ff'); const v = this.eViews.get(ev.eid); if (v) this.fx.ring(v.c.x, v.c.y + 20, 0x9b6cf0, 1.4, 420); this.cameras.main.shake(160, 0.006); sfx('hold'); break; }
       case 'eRally': { this.ticker('👿 적 대장의 함성! 적이 다시 일어섬', '#c4a6ff'); for (const v of this.eViews.values()) { this.fx.ring(v.c.x, v.c.y + 20, 0x9b6cf0, 1.2, 380); } this.cameras.main.flash(160, 120, 60, 200); sfx('hold'); break; }
       case 'trained': { const v = this.uViews.get(ev.uid); if (v) { this.fx.ring(v.c.x, v.c.y + 20, 0xffd84d, 1, 320); this.floatAt(v.c.x, v.c.y - 120, `🔨 단련 ${ev.n}`, '#ffd84d', 18); } sfx('evolve'); break; }

@@ -389,7 +389,7 @@ export function startEncounter(state, data) {
   if (fighters(state).length < 2) for (const u of unitsIn(state)) if (u?.resting) { u.resting = false; u.hp = Math.max(u.hp, u.maxHp * 0.3); }
   for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; u.stance = canStance(u) ? u.prefStance ?? nativeStance(u) : null; u.stanceT = 0.3 + state.rng() * 0.6; }
   state.encTime = 0; state.actGap = 0; state.phase = 'fight'; state.allyBuffs = []; state.clashes = [];
-  state.collapse = { u: false, e: false }; state.isolated = { u: false, e: false }; state.diveAt = { u: -99, e: -99 }; state.taps = 0; state.awoke = false; state.awoke2 = false; state.focus = null; state.tempo = g.tempo ?? 1; state.ultSlow = g.ultSlow ?? 1; state.ultMax = g.ultMax ?? 99; state.snareT = 0; state.cheers = 0; state.phoenixUsed = false; state.dataRef = data; state.cheerAt = -9; state.encStat = { ...(state.dstat ?? {}) };
+  state.collapse = { u: false, e: false }; state.isolated = { u: false, e: false }; state.diveAt = { u: -99, e: -99 }; state.taps = 0; state.awoke = false; state.awoke2 = false; state.focus = null; state.tempo = g.tempo ?? 1; state.ultSlow = g.ultSlow ?? 1; state.ultMax = g.ultMax ?? 99; state.snareT = 0; state.cheers = 0; state.phoenixUsed = false; state.dataRef = data; legendCheck(state, data); state.cheerAt = -9; state.encStat = { ...(state.dstat ?? {}) };
   for (const u of state.field) { u.ultUsed = 0; u.ultRevive = 0; u.awake = null; u.advance = false; u.suppressed = false; u.pinnedBy = null; u.slipNote = false; u.clutchOn = false; u.wobbly = false; }
   // 역전: 투지(지는 쪽이 세짐) · 역전 찬스(한 번) · 동물마다 역전 특성
   // 진형 상성(가위바위보): 🛡철벽 > 🎯돌격 > 🏹진지 > 🛡철벽. 유리한 쪽 피해 +adv%
@@ -1656,6 +1656,19 @@ function grow(state, data, u) {
   return n;
 }
 
+/** 전설 조각(2026-11-28 사용자 "전설키메라 가능한 성체가 한 전투 안에서 탄생하면 전설조각이 그림자 퍼즐로 모이고, 다 모이면 레시피 공개"):
+ *  한 판 안에 전설 짝 두 종의 성체가 함께 있으면 그 전설의 조각 하나(판마다 짝마다 한 번). 판이 끝나면 저장(meta.settleRun) */
+export function legendCheck(state, data) {
+  const L = data.config?.genes?.legends;
+  if (!L || !state.finds) return;
+  const adults = new Set([...state.field, ...state.bench].filter((u) => u && u.kind === 'base' && u.stage === 'adult').map((u) => u.speciesId));
+  const got = (state.finds.legendShards ??= []);
+  for (const key of Object.keys(L)) {
+    const [a, b] = key.split('+');
+    if (adults.has(a) && adults.has(b) && !got.includes(key)) { got.push(key); state.events.push({ type: 'legendShard', key }); }
+  }
+}
+
 function replace(state, old, n) {
   if (n.tactic == null && old.tactic != null) n.tactic = old.tactic;
   if (old.trained) n.trained = old.trained;
@@ -1664,6 +1677,7 @@ function replace(state, old, n) {
   if (fi >= 0) { state.field[fi] = n; const s = state.seats.indexOf(old.uid); if (s >= 0) { state.seats[s] = n.uid; n.seat = s; } }
   const bi = state.bench.indexOf(old);
   if (bi >= 0) state.bench[bi] = n;
+  if (n.kind === 'base' && n.stage === 'adult' && state.dataRef) legendCheck(state, state.dataRef);
 }
 
 /**

@@ -11,6 +11,7 @@ import DeckScene from './scenes/DeckScene.js';
 import OpeningScene from './scenes/OpeningScene.js';
 import GauntletScene from './scenes/GauntletScene.js';
 import DuelScene from './scenes/DuelScene.js';
+import HomeOverlay from './scenes/HomeOverlay.js';
 import { FONT } from './text.js';
 
 // 선명도: 화면이 1280x720보다 크게 보이면 내부 해상도를 2배로 그리고 카메라를 2배 확대한다(?k=1로 끔).
@@ -32,7 +33,7 @@ const config = {
   height: 720 * K,
   backgroundColor: '#1b1f24',
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-  scene: [BootScene, TitleScene, StageSelectScene, BattleScene, ResultScene, CodexScene, UnlockScene, TalentScene, OpeningScene, DeckScene, GauntletScene, DuelScene]
+  scene: [BootScene, TitleScene, StageSelectScene, BattleScene, ResultScene, CodexScene, UnlockScene, TalentScene, OpeningScene, DeckScene, GauntletScene, DuelScene, HomeOverlay]
 };
 
 // Phaser는 한 프레임이 끝나야 다음 프레임을 예약하므로, 프레임 안에서 오류가 하나만 나도 게임이 영영 멈춘다.

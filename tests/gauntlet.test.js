@@ -229,7 +229,7 @@ test('고급 빌드·수치·주인공·각성·톡 보호막·난이도 사다�
   const st = G.createGauntlet(D, 'forest-3', 4, { pool: ['tiger', 'bear', 'eagle', 'rabbit'], builds: { tiger: 'dodgetank' } });
   const tiger = st.field.find((u) => u.speciesId === 'tiger');
   assert.equal(G.styleOf(tiger), 'bruiser');
-  assert.equal(G.statLine(tiger, D).dodge, 35);
+  assert.equal(G.statLine(tiger, D).dodge, Math.round((0.35 + G.smallDodge(tiger, D)) * 100), '회피탱 35% + 작은 몸');
   const before = G.statLine(tiger, D).hp;
   G.cycleBuild(st, D, tiger.uid);   // 회피탱 → 딜탱
   assert.equal(tiger.build, 'dealtank'); assert.equal(G.styleOf(tiger), 'skirm');

@@ -33,7 +33,7 @@ const COL_X = { u: [520, 372, 224], e: [760, 908, 1056] };
 const PERSP_CX = { u: 372, e: 908 };
 const perspX = (side, x, s) => PERSP_CX[side] + (x - PERSP_CX[side]) * (0.55 + 0.45 * s);
 const seatXY = (side, seat) => { const c = Math.floor((seat ?? 1) / 3), l = (seat ?? 1) % 3; const sc = LANE_S[l]; return { x: perspX(side, COL_X[side][c] ?? COL_X[side][0], sc), y: LANE_Y[l], s: sc }; };
-const CLASH_GAP = 40;
+const CLASH_GAP = 60;   // 힘싸움 둘이 서로 가리지 않게(이마를 맞댈 만큼만 붙음)
 const SCRUM_Y = 418, FIGHT_LANE_Y = [318, 418, 518];
 const FIGHT_COL_X = { u: [548, 430, 310], e: [732, 850, 970] };
 const fightXY2 = (side, seat) => {
@@ -229,7 +229,7 @@ export default class GauntletScene extends Phaser.Scene {
     const s = this.state;
     const top = this.add.graphics().setDepth(1800);
     top.fillStyle(0x0d1222, 0.92).fillRect(0, 0, 1280, 54);
-    this.hudEnc = this.add.text(24, 14, '', style(24, '#ffffff')).setDepth(1801);
+    this.hudEnc = this.add.text(64, 14, '', style(24, '#ffffff')).setDepth(1801);   // 왼쪽 위 🏠 자리 비움
     this.hudInfo = this.add.text(1256, 18, '', style(16, '#f4f1e8')).setOrigin(1, 0).setDepth(1801);
     this.hudMode = this.add.text(s.duel ? 420 : 250, 20, s.duel ? '덱 대결' : s.hard ? '하드 · 한 번 지면 끝' : '노멀', style(14, s.hard ? '#ff8a7a' : '#9fe0a0', { backgroundColor: '#1f2a4a', padding: { x: 10, y: 3 } })).setDepth(1801);
     this.timeBg = this.add.rectangle(640, 66, 900, 10, 0x0d1222).setDepth(1801);
@@ -517,6 +517,57 @@ export default class GauntletScene extends Phaser.Scene {
     return out;
   }
 
+  /** 베기 자국: 흰 초승달이 휙 그어지고 사라짐 */
+  slashFx(x, y, k = 0) {
+    const g = this.add.graphics().setDepth(1450).setPosition(x, y).setAngle(-30 + k * 35).setBlendMode('ADD');
+    g.lineStyle(5, 0xffffff, 1).beginPath(); g.arc(0, 0, 26, -1.1, 1.1); g.strokePath();
+    g.lineStyle(2, 0xffe066, 1).beginPath(); g.arc(0, 0, 21, -0.9, 0.9); g.strokePath();
+    this.tweens.add({ targets: g, scale: { from: 0.6, to: 1.25 }, alpha: { from: 1, to: 0 }, duration: 180, onComplete: () => g.destroy() });
+  }
+
+  /** 겹침 풀기(2026-11-27): 교전 중 모든 동물·적의 '설 자리'를 조금씩 밀어 서로 가리지 않게.
+   *  같은 편은 위아래로, 맞붙은 상대는 좌우로(우리 왼쪽·적 오른쪽) — 살짝 닿을 만큼만 떨어짐 */
+  separate(scrum) {
+    const s = this.state, items = [];
+    // 실제 그림 너비(처음 한 번 재서 기억, 크기 1 기준)
+    const wOf = (v, def) => {
+      if (!v) return def;
+      if (v.w == null) { const part = v.tok ?? v.holder; const b = part?.getBounds?.(); const sc = v.c.scaleX || 1; v.w = b && b.width > 10 ? Math.max(44, Math.min(150, b.width / sc)) : def; }
+      return v.w;
+    };
+    for (const u of s.field) {
+      if (u.down || u.resting || u.seat == null) continue;
+      const p = scrum.u.get(u.uid) ?? fightXY2('u', u.seat), v = this.uViews.get(u.uid);
+      items.push({ side: 'u', id: u.uid, x: p.x, y: p.y, s: p.s, w: wOf(v, { young: 46, teen: 56, adult: 68, spirit: 76 }[u.stage] ?? 66) * (p.s ?? 1), clash: !!clashOfU(s, u.uid) });
+    }
+    for (const e of s.enemies) {
+      if (e.hp <= 0 || e.seat == null) continue;
+      const p = scrum.e.get(e.eid) ?? fightXY2('e', e.seat), v = this.eViews.get(e.eid);
+      items.push({ side: 'e', id: e.eid, x: p.x, y: p.y, s: p.s, w: wOf(v, e.boss ? 100 : 60) * (p.s ?? 1), clash: !!clashOfE(s, e.eid) });
+    }
+    const MY = 44;
+    for (let it = 0; it < 7; it++) {
+      for (let i = 0; i < items.length; i++) for (let j = i + 1; j < items.length; j++) {
+        const a = items[i], b = items[j], dx = b.x - a.x, dy = b.y - a.y, minX = (a.w + b.w) * (a.side === b.side ? 0.7 : 0.62);
+        if (Math.abs(dx) >= minX || Math.abs(dy) >= MY) continue;
+        if (a.side === b.side) {
+          // 같은 편: 위아래로 비켜 섬(힘싸움 중인 쪽은 덜 움직임)
+          // 위아래 + 조금 옆으로(뒤쪽 친구는 뒤로 반 발짝)
+          const push = (MY - Math.abs(dy)) / 2 + 1, sgn = dy >= 0 ? 1 : -1, ka = a.clash ? 0.3 : 1, kb = b.clash ? 0.3 : 1;
+          a.y -= sgn * push * ka; b.y += sgn * push * kb;
+          const back = a.side === 'u' ? -1 : 1, mover = a.clash ? b : b.clash ? a : (Math.abs(a.x - (a.side === 'u' ? 640 : 640)) > Math.abs(b.x - 640) ? a : b);
+          mover.x += back * Math.min(14, (minX - Math.abs(dx)) * 0.25);
+        } else {
+          // 상대끼리: 좌우로 벌림(지금 놓인 순서대로)
+          const push = (minX - Math.abs(dx)) / 2 + 1, sgn = dx >= 0 ? 1 : -1;
+          a.x -= sgn * push; b.x += sgn * push;
+        }
+      }
+      for (const q of items) q.y = Math.max(292, Math.min(552, q.y));
+    }
+    for (const q of items) (q.side === 'u' ? scrum.u : scrum.e).set(q.id, { x: q.x, y: q.y, s: scaleAtY(q.y) });
+  }
+
   stepOffsets(v, dt) {
     let ox = 0, oy = 0, z = 0;
     if (v.lunge) { v.lunge.t += dt; const k = v.lunge.t / v.lunge.dur; if (k >= 1) v.lunge = null; else ox += v.lunge.reach * bump(k); }
@@ -570,6 +621,7 @@ export default class GauntletScene extends Phaser.Scene {
     const live = new Set();
     const regroup = s.phase === 'regroup';
     const scrum = this.scrumLayout();
+    if (s.phase === 'fight') this.separate(scrum);
     const place = [];
     s.seats.forEach((uid, i) => { const u = uid && s.field.find((x) => x.uid === uid); if (u) place.push([u, seatXY('u', i)]); });
     s.bench.forEach((u, i) => { if (u) place.push([u, { ...BENCH(i), s: 0.72, bench: true }]); });
@@ -599,6 +651,7 @@ export default class GauntletScene extends Phaser.Scene {
         v.walking = !(v.lunge || v.kick || v.cu || v.dash) && Math.abs(v.c.x - px) > 0.9;
         v.c.setScale((fight ? home.s : at.s) * v.z).setDepth(v.z > 1.01 ? 960 : 100 + v.c.y + (v.dash ? 40 : 0));
       }
+      if (v.lean && !(s.phase === 'fight' && clashOfU(s, u.uid))) { v.lean = 0; if (!this.tweens.isTweening(v.c)) v.c.setAngle(0); }
       v.bar.setScale(Math.max(0, u.hp / u.maxHp), 1).setFillStyle(u.hp / u.maxHp < 0.3 ? 0xff6b5a : u.hp / u.maxHp < 0.6 ? 0xe6c14a : 0x7ddc6f);
       v.gBar.setScale(Math.min(1, u.gauge ?? 0), 1).setVisible(s.phase === 'fight');
       const melee = u.stats.range <= 1;
@@ -650,6 +703,7 @@ export default class GauntletScene extends Phaser.Scene {
         v.walking = !(v.lunge || v.kick || v.cu) && Math.abs(v.c.x - px) > 0.9;
       }
       v.c.setScale(at.s * v.z).setDepth(v.z > 1.01 ? 960 : 100 + v.c.y);
+      if (v.lean && !v.dying && !(s.phase === 'fight' && cl)) { v.lean = 0; v.c.setAngle(0); }
       v.bar.setScale(Math.max(0, e.hp / e.maxHp), 1);
       v.gBar.setScale(Math.min(1, e.gauge ?? 0), 1).setVisible(e.hp > 0);
       v.tag.setText(e.stunLeft > 0.3 ? '💫' : '');
@@ -675,13 +729,27 @@ export default class GauntletScene extends Phaser.Scene {
     this.clashBars = [];
     this.clashTexts ??= new Map();
     const seen = new Set();
+    const lanesUsed = [];
     if (s.phase === 'fight') for (const c of s.clashes ?? []) {
       const u = s.field.find((x) => x.uid === c.uid);
       if (!u) continue;
       const v = this.uViews.get(c.uid), ev = this.eViews.get(c.eid);
       if (!v || !ev) continue;
+      // 힘겨루기 자세: 서로 이마를 맞대고 앞으로 기울임(미는 쪽이 더 숙임) + 맞닿은 곳 불꽃·발밑 흙먼지
+      if (!v.dying && !v.dash && !v.dive) { v.lean = 8 + Math.max(0, c.push) * 6 + Math.sin(this.time.now / 90 + c.uid) * 1.5; v.c.setAngle(v.lean); }
+      if (!ev.dying && !ev.dash && !ev.dive) { ev.lean = -(8 + Math.max(0, -c.push) * 6) + Math.sin(this.time.now / 95 + c.eid) * 1.5; ev.c.setAngle(ev.lean); }
+      c.fxT = (c.fxT ?? 0) - (this.realDt || 0.016);
+      if (c.fxT <= 0) {
+        c.fxT = 0.28 + Math.random() * 0.2;
+        const mx = (v.c.x + ev.c.x) / 2, my = Math.min(v.c.y, ev.c.y) - 26;
+        this.fx.burst?.('spark', mx, my + (Math.random() - 0.5) * 20, 3, c.push > 0 ? 0xffd84d : 0xc4a6ff);
+        if (Math.random() < 0.5) { const back = c.push > 0 ? ev : v; this.fx.burst?.('puff', back.c.x + (back === ev ? 24 : -24), back.c.y + 34, 2, 0xc9b48a); }
+      }
       // 힘싸움 막대(크게): 금색 = 우리, 보라 = 적. 누르면 응원(영차!)
-      const y = Math.min(v.c.y, ev.c.y) - 112, x = (v.c.x + ev.c.x) / 2, w = 150;
+      // 막대 자리(2026-11-27): 동물을 가리지 않게 화면 위쪽 띠에 라인별로(위·가운데·아래 = 왼쪽·가운데·오른쪽). 발밑 고리 색으로 짝을 알아봄
+      const lane = laneOf(u.seat ?? 1), slot = (lanesUsed[lane] = (lanesUsed[lane] ?? 0) + 1) - 1;
+      const x = 430 + lane * 210, y = 170 + slot * 34, w = 130, crowded = false;
+      g.lineStyle(1.5, 0xffd84d, 0.25).lineBetween(x, y + 10, (v.c.x + ev.c.x) / 2, Math.min(v.c.y, ev.c.y) - 70);
       const k = (c.push + 1) / 2, pulse = 0.5 + 0.5 * Math.sin(this.time.now / 140);
       g.fillStyle(0x000000, 0.7).fillRoundedRect(x - w / 2 - 4, y - 10, w + 8, 20, 8);
       g.fillStyle(0xffd84d, 1).fillRoundedRect(x - w / 2, y - 7, w * k, 14, 6);
@@ -696,7 +764,7 @@ export default class GauntletScene extends Phaser.Scene {
       let t = this.clashTexts.get(c.uid);
       if (!t) { t = this.add.text(0, 0, '', style(13, '#ffffff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(1401); this.clashTexts.set(c.uid, t); }
       const left = 8 - (s.cheers ?? 0);
-      t.setPosition(x, y - 26).setText(left > 0 ? `👆 톡! 응원 (${left})` : (c.push > 0.3 ? '우리가 민다!' : c.push < -0.3 ? '밀린다…' : '팽팽!')).setAlpha(0.65 + 0.35 * pulse);
+      t.setPosition(x, y - 20).setText(left > 0 ? `👆 톡! 응원 (${left})` : (c.push > 0.3 ? '우리가 민다!' : c.push < -0.3 ? '밀린다…' : '팽팽!')).setAlpha(0.65 + 0.35 * pulse);
     }
     for (const [uid, t] of this.clashTexts) if (!seen.has(uid)) { t.destroy(); this.clashTexts.delete(uid); }
   }
@@ -856,7 +924,7 @@ export default class GauntletScene extends Phaser.Scene {
         const p = this.uViews.get(ev.uid), f = this.uViews.get(ev.for), e = this.eViews.get(ev.eid);
         if (p && e) {
           // 딜러가 노린 적에게 달려가 떼어 냄
-          p.dash = { t: 0, dur: 0.66, dx: (e.baseX ?? e.c.x) - 64 - (p.baseX ?? p.c.x), dy: (e.baseY ?? e.c.y) + 6 - (p.baseY ?? p.c.y) };
+          p.dash = { t: 0, dur: 0.66, dx: (e.baseX ?? e.c.x) - 92 - (p.baseX ?? p.c.x), dy: (e.baseY ?? e.c.y) + 6 - (p.baseY ?? p.c.y) };
           if (p.rig) playAttack(p.rig.inst, 'a2');
           this.say(p.c.x, p.c.y - 120, ev.intercept ? '요격!' : '떨어져!', 0x9cff6b, { size: ev.intercept ? 22 : 19, force: !!ev.intercept });
           if (ev.intercept) { this.slow = Math.max(this.slow ?? 0, 0.3); try { navigator.vibrate?.(20); } catch { /* 없음 */ } }
@@ -1197,7 +1265,7 @@ export default class GauntletScene extends Phaser.Scene {
     let hitDelay = big ? 200 : ev.melee ? 120 : 60;
     if (v.dive) hitDelay = Math.round((v.dive.segs[0]?.d ?? 0.4) * 1000) + 40;   // 뛰어드는 중: 도착해서 침
     else if (!big && ev.style === 'skirm' && tv) {
-      const dx = (tv.baseX ?? tv.c.x) - 64 - (v.baseX ?? v.c.x), dy = (tv.baseY ?? tv.c.y) + 6 - (v.baseY ?? v.c.y);
+      const dx = (tv.baseX ?? tv.c.x) - 92 - (v.baseX ?? v.c.x), dy = (tv.baseY ?? tv.c.y) + 6 - (v.baseY ?? v.c.y);
       v.dash = { t: 0, dur: 0.66, dx, dy };
       v.lunge = null;
       hitDelay = 230;
@@ -1206,9 +1274,15 @@ export default class GauntletScene extends Phaser.Scene {
       hitDelay = 90;
     } else if (!big) {
       const tx = tv ? tv.c.x : v.c.x + 200;
-      v.lunge = { t: 0, dur: ev.melee ? 0.34 : 0.22, reach: ev.melee ? Math.max(30, (tx - v.c.x) - 110) : ev.style === 'support' ? 14 : 26 };
+      v.lunge = { t: 0, dur: ev.melee ? 0.34 : 0.22, reach: ev.melee ? Math.max(20, (tx - v.c.x) - 84) : ev.style === 'support' ? 14 : 26 };   // 살짝 닿을 만큼 다가가 침
     }
     if (v.ring) { v.ring.setStrokeStyle(3, COLORS.gold, 1); this.tweens.add({ targets: v.ring, alpha: { from: 1, to: 0 }, duration: 500, onComplete: () => v.ring.setAlpha(1).setStrokeStyle(3, COLORS.gold, 0) }); }
+    // 적진 깊숙이 파고든 딜러: 몰아치기(짧은 찌르기 세 번 + 베기 자국) — 적극적으로 딜 넣는 손맛
+    if ((u.deepT ?? 0) > s.time && tv && !big) {
+      for (let k = 1; k <= 2; k++) this.time.delayedCall(k * 120, () => { if (!v.c.scene) return; v.lunge = { t: 0, dur: 0.13, reach: 20 }; this.slashFx(tv.c.x - 6, tv.c.y - 20, k); tv.kick = { t: 0, dur: 0.12, px: 8 }; });
+      this.slashFx(tv.c.x - 6, tv.c.y - 20, 0);
+      if (Math.random() < 0.4) this.say(v.c.x, v.c.y - 120, '⚡ 몰아치기!', 0xffe066, { size: 16 });
+    }
     const launched = !ev.melee && !!tv && ev.move !== 'skill';   // 투사체를 쏘는 공격인가
     const impact = () => {
       for (const h of ev.hits ?? []) {
@@ -1242,9 +1316,9 @@ export default class GauntletScene extends Phaser.Scene {
     if (diving) { /* 뛰어드는 중 */ }
     else if (ev.style === 'skirm' && !ev.clash && t) {
       // 적 돌격대: 우리 뒷줄까지 달려와 치고 빠짐
-      v.dash = { t: 0, dur: 0.66, dx: (t.baseX ?? t.c.x) + 64 - (v.baseX ?? v.c.x), dy: (t.baseY ?? t.c.y) + 6 - (v.baseY ?? v.c.y) };
+      v.dash = { t: 0, dur: 0.66, dx: (t.baseX ?? t.c.x) + 92 - (v.baseX ?? v.c.x), dy: (t.baseY ?? t.c.y) + 6 - (v.baseY ?? v.c.y) };
     } else {
-      const reach = ev.clash ? -18 : ev.melee ? -Math.max(30, (v.c.x - tx) - 110) : ev.style === 'support' ? -14 : -24;
+      const reach = ev.clash ? -18 : ev.melee ? -Math.max(20, (v.c.x - tx) - 84) : ev.style === 'support' ? -14 : -24;
       v.lunge = { t: 0, dur: ev.clash ? 0.24 : ev.melee ? 0.36 : 0.22, reach };
     }
     const impact = () => {
@@ -1670,7 +1744,7 @@ export default class GauntletScene extends Phaser.Scene {
         const cx = 724 + i * 66, cy = y + 56, sz = x.boss ? 54 : 40, key = 'enemy-' + x.id;
         const im = this.textures.exists(key) ? this.add.image(cx, cy, key).setDisplaySize(sz, sz) : this.add.rectangle(cx, cy, sz * 0.7, sz * 0.8, 0x000000);
         im.setTintFill?.(0x0b0e14); im.setAlpha(0.92).setDepth(2002); this.addUi(im);
-        this.addUi(this.add.text(cx, cy - sz / 2 - 2, '?', style(14, '#c4a6ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5, 1).setDepth(2003));
+        this.addUi(this.add.text(cx, cy, '?', style(16, '#c4a6ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(2003));   // 물음표는 실루엣 안에(위 글자를 가리지 않게)
         this.addUi(this.add.text(cx + sz / 2 - 2, cy + sz / 2 - 4, `${RI[roleOfEnemyS(gg, x.id, this.D.enemyById[x.id])] ?? ''}${x.n > 1 ? '×' + x.n : ''}`, style(12, '#ffd84d', { stroke: '#000', strokeThickness: 3 })).setOrigin(1, 0.5).setDepth(2003));
       }); }
     // 역할 아이콘 수 + 짐작: 덱을 보고 상대 작전을 예상
@@ -1783,6 +1857,19 @@ export default class GauntletScene extends Phaser.Scene {
   }
 
   // ---------- 끝 ----------
+  /** 🏠 버튼으로 나가기: 이번 판은 진 것으로 정리(찾은 도감·동물은 남음) → 처음 화면 */
+  quitHome() {
+    const s = this.state;
+    this.leaving = true;
+    if (s && s.phase !== 'ended') {
+      s.phase = 'ended'; s.result = 'lose'; s.quit = true;
+      if (s.duel) { const rec = (this.save.duel ??= { wins: 0, losses: 0, foes: {} }); rec.losses += 1; }
+      else { s.wavesCleared = Math.round((s.enc * s.stage.waves.length) / s.plan.length); settleRun(this.save, s, this.D); }
+      writeSave(this.registry.get('storage'), this.save);
+    }
+    this.scene.start('Title');
+  }
+
   finish() {
     this.leaving = true;
     const s = this.state;

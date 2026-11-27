@@ -58,6 +58,7 @@ export default class BootScene extends Phaser.Scene {
       this.scene.start('Battle', { stageId: 'forest-1', testSangunUlt: true });
       return;
     }
+    this.scene.launch('HomeOverlay');   // 어디서든 🏠 버튼
     this.scene.start('Title');
   }
 }

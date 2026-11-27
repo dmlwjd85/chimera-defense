@@ -52,18 +52,18 @@ export function gcfg(data) {
       bear: { hp: 20, interval: 25, pro: '아주 튼튼, 셋까지 붙잡음', con: '느림' },
       bison: { push: 1.15, taken: 15, pro: '힘싸움 미는 힘 +20%', con: '받는 피해 +10%' },
       dog: { interval: -15, hp: -10, pro: '빠르게 물고 늘어짐', con: '체력 조금 낮음' },
-      ant: { dmg: 20, taken: 10, pro: '여럿이 막고 낚아챔, 피해 +20%', con: '체력이 낮고 잘 다침' },
-      frog: { interval: 5, hp: 25, dmg: 15, pro: '혀로 낚아채는 원거리 탱커', con: '조금 느림' },
-      tiger: { dmg: 20, hp: -5, pro: '한 방이 셈', con: '체력 낮고 탱커에게 잘 붙잡힘' },
-      fox: { dmg: 40, hp: 10, pro: '빠져나가며 세게 침', con: '아주 약한 몸' },
-      rabbit: { dodge: 0.2, dmg: 10, hp: 20, pro: '엄청 빠르고 잘 피함', con: '한 방이 약함' },
+      ant: { dmg: 20, taken: -10, interval: -15, pro: '단단한 껍질·빠른 집게, 떼로 낚아챔', con: '체력이 낮음' },
+      frog: { interval: 5, hp: 25, dmg: 15, push: 1.1, pro: '혀로 낚아채는 탱커', con: '조금 느림' },
+      tiger: { dmg: 8, hp: -5, pro: '한 방이 셈', con: '탱커에게 잘 붙잡힘' },
+      fox: { dmg: 50, hp: 10, pro: '작은 몸으로 잘 피하고 세게 침', con: '맞으면 금방 쓰러짐' },
+      rabbit: { dodge: 0.15, dmg: 10, hp: 20, pro: '엄청 빠르고 잘 피하는 응원', con: '한 방이 약함' },
       rooster: { heal: 1.4, hp: 10, pro: '응원 회복 +30%', con: '몸이 약함' },
       crow: { dmg: -10, pro: '날아서 붙잡히지 않음, 멀리서 침', con: '피해 -10%' },
-      wolf: { dmg: 10, heal: 0.8, pro: '응원하며 함께 싸움', con: '회복이 적음' },
+      wolf: { dmg: 5, pro: '무리 사냥꾼: 동료가 쓰러질수록 세짐', con: '혼자일 땐 평범' },
       eagle: { dmg: 15, interval: 10, pro: '가장 센 한 방, 날아서 빠져나감', con: '아주 느림' },
-      bighorn: { taken: -15, dmg: 0, pro: '받는 피해 -10%, 둘까지 붙잡음', con: '피해가 약함' },
+      bighorn: { taken: -15, dmg: 0, push: 1.2, pro: '박치기: 힘싸움 +20%, 받는 피해 -15%', con: '피해가 약함' },
       grasshopper: { push: 1.6, hp: 20, heal: 1.2, pro: '응원이 힘싸움을 크게 밀어 줌', con: '몸이 아주 약함' },
-      monkey: { dmg: 25, hp: 15, interval: 10, pro: '꼬리로 낚아채고 잘 빠져나감', con: '조금 느림' },
+      monkey: { dmg: 35, hp: 15, interval: 10, pro: '꼬리로 낚아채고 잘 빠져나감', con: '조금 느림' },
     },
     // 잡아채기: 후열을 노리고 들어오는 딜러를 낚아채는 동물(우리: 개구리 혀·원숭이 꼬리·개미 떼 / 적: 좀비 손·해골 손·뼈 보스)
     catchers: { frog: 'tongue', monkey: 'tail', ant: 'swarm' }, eCatchers: { zombie: 'hand', skeleton: 'bone', boss_bone: 'bone', boss_lich: 'shadow' },
@@ -107,12 +107,20 @@ export const BUILDS = {
   support: { icon: '✚', name: '응원', style: 'support', dmg: -45, heal: 1.1, tip: '앞 친구를 살림' },
   battlecheer: { icon: '✚⚔', name: '전투응원', style: 'support', dmg: -15, heal: 0.5, tip: '응원하며 같이 싸움' },
 };
+/** 작은 몸 피하기(2026-11-27): 몸이 작을수록(기본 체력이 낮을수록) 잘 피함 — 체력 차이를 다른 장점으로 메움. 힘싸움 중엔 반만 */
+export function smallDodge(u, data) {
+  const sc = data?.config?.gauntlet?.smallBody;
+  if (!sc || !u || u.kind === 'weak') return 0;
+  const ids = u.kind === 'chimera' ? u.parts ?? [] : [u.speciesId];
+  const hp = ids.reduce((a, id) => a + (data.unitById[id]?.hp ?? sc.ref), 0) / Math.max(1, ids.length);
+  return Math.max(0, Math.min(sc.max, (sc.ref - hp) / sc.span));
+}
 /** 화면용 수치: ❤ 체력 · ⚔ 공격(한 번) · ⚡ 빠르기(1초에 몇 번) · 🛡 막기(받는 피해 줄임 %) · 💨 피하기 % */
 export function statLine(u, data) {
   const g = gcfg(data);
   const def = -((u.mods?.taken ?? 0) + (u.stance === 'tank' ? (nativeStance(u) === 'tank' ? -35 : -25) : 0));
   const bd = u.kind === 'base' && u.build ? BUILDS[u.build]?.dodge : undefined;
-  const dodge = bd != null ? bd : styleOf(u) === 'skirm' ? g.dodge : 0;
+  const dodge = Math.min(0.6, (bd != null ? bd : styleOf(u) === 'skirm' ? g.dodge : 0) + (tuneOf(u, g)?.dodge ?? 0) + smallDodge(u, data));
   return { hp: Math.round(u.maxHp ?? u.stats.hp), atk: Math.round(effDamage(u)), spd: Math.round((1 / effInterval(u)) * 10) / 10, def: Math.round(def), dodge: Math.round(dodge * 100) };
 }
 /** 덱 화면용: 종·단계·빌드의 기본 수치(전투 덤 제외) */
@@ -160,7 +168,7 @@ export function cycleBuild(state, data, uid) {
 }
 // 종마다 어울리는 싸움 모양(사거리보다 먼저): 개구리는 긴 혀를 가진 브루저
 const SPECIES_STYLE = { frog: 'bruiser' };
-export const baseStyle = (u) => (u.kind === 'base' && u.build && BUILDS[u.build] ? BUILDS[u.build].style : SPECIES_STYLE[u.kind === 'chimera' ? null : u.speciesId] ?? (u.stats.range > 1 ? 'ranged' : u.stats.role === 'bruiser' ? 'bruiser' : u.stats.role === 'buffer' ? 'support' : u.stats.role === 'weak' ? 'support' : 'skirm'));
+export const baseStyle = (u) => (u.kind === 'base' && u.build && BUILDS[u.build] ? BUILDS[u.build].style : SPECIES_STYLE[u.kind === 'chimera' ? null : u.speciesId] ?? (u.stats.role === 'buffer' ? 'support' : u.stats.range > 1 ? 'ranged' : u.stats.role === 'bruiser' ? 'bruiser' : u.stats.role === 'buffer' ? 'support' : u.stats.role === 'weak' ? 'support' : 'skirm'));
 /** 작전(정비 때 고름): 브루저 버티기/지키기, 딜러 사냥/요격, 응원 앞/뒤. 없는 역할은 null */
 export const TACTICS = { bruiser: ['hold', 'guard'], skirm: ['help', 'hunt', 'intercept'], support: ['front', 'back'], ranged: ['hold', 'hunt'] };
 /** 작전 이름(한 단어)·아이콘: 화면과 안내에 씀 */
@@ -1219,7 +1227,9 @@ function enemyAct(state, data, e, g) {
   const td = tuneOf(t, g)?.dodge ?? 0;
   const cdg = clutchOf(state, t)?.dodge ?? 0;
   if (cdg && state.rng() < cdg / 100) { state.events.push({ type: 'act', side: 'e', eid: e.eid, uid: t.uid, dmg: 0, dodged: true, melee: !e.ranged, boss: e.boss, clutch: true }); return; }
-  if (bd != null ? state.rng() < bd + td : !clash && styleOf(t) === 'skirm' && state.rng() < g.dodge + td) {
+  // 피하기 = 빌드(고급) 또는 돌격 딜러 기본 + 종 보정 + 작은 몸(힘싸움 중엔 반). 최대 60%
+  const dch = (bd != null ? bd : !clash && styleOf(t) === 'skirm' ? g.dodge : 0) + td + smallDodge(t, data) * (clash ? 0.5 : 1);
+  if (dch > 0 && state.rng() < Math.min(0.6, dch)) {
     state.events.push({ type: 'act', side: 'e', eid: e.eid, uid: t.uid, dmg: 0, dodged: true, melee: !e.ranged, boss: e.boss });
     return;
   }

@@ -72,7 +72,8 @@ const AID = {
 /** 차분한 전투에서 교전 중엔 띄우지 않는 잡담 사건 */
 const CHATTER = new Set(['step', 'summon', 'slip', 'herb', 'edodge', 'fear', 'thorns', 'gang', 'clashStart', 'cheer']);
 /** 하던 동작을 끊지 않는 동작들 */
-const MREG = { x: 1010, y: 612, w: 150, h: 30 };   // 정비 화면 '📊 전투 기록' 단추 자리
+const MREG = { x: 1080, y: 115, w: 130, h: 30 };   // 정비 화면 '📊 전투 기록' 단추 자리(오른쪽 판 맨 위 '승리!' 줄 오른쪽)
+const MREG_ALT = [{ x: 1165, y: 452, w: 130, h: 30 }, { x: 1080, y: 150, w: 130, h: 30 }, { x: 540, y: 670, w: 130, h: 30 }];   // 겹치면 차례로 시도
 const BUSY_MOTIONS = [...ATTACK_MOTIONS, 'skill', 'ult', 'hit', 'block', 'sweep', 'grab', 'fall', 'leap', 'down', 'victory'];
 // 앞으로 튀어나왔다 돌아오는 곡선(0→1→0)
 const bump = (k) => Math.sin(Math.min(1, Math.max(0, k)) * Math.PI);
@@ -919,12 +920,13 @@ export default class GauntletScene extends Phaser.Scene {
     for (const [uid, v] of this.uViews) if (!live.has(uid)) { v.c.destroy(); this.uViews.delete(uid); }
     // 교전이 끝난 순간: 모두 제자리로 걸어가기 시작 / 다 돌아오면 승리 점프
     if (this.prevPhase === 'fight' && s.phase !== 'fight') for (const v of this.uViews.values()) { if (this.finaleOn()) { v.homeWalk = false; v.finY = v.c.y; } else { v.homeWalk = true; v.hop = null; } }
-    if (s.phase === 'fight') { this.winPose = false; for (const v of this.uViews.values()) { v.homeWalk = false; v.hop = null; } }
+    if (s.phase === 'fight') { this.winPose = false; for (const v of this.uViews.values()) { v.homeWalk = false; v.hop = null; v.finCheer = false; } }
     this.prevPhase = s.phase;
     if (this.winPose && s.phase !== 'fight' && [...this.uViews.values()].every((v) => !v.homeWalk || v.dragging)) {
       this.winPose = false;
       [...this.uViews.values()].forEach((v, i) => this.time.delayedCall(i * 110, () => {
         if (!v.c.scene || v.dragging) return;
+        if (v.finCheer) { v.finCheer = false; return; }   // 마무리 슬로우모션에서 이미 세리머니로 뛴 동물은 한 번만(두 번 뛰지 않게)
         v.hop = { t: 0, dur: 1.2 };
         const r = v.rig?.inst; if (r) { if (r.anims.leap) r.play('leap', { loop: true }); else r.play(r.anims.victory ? 'victory' : 'idle', { loop: true }); }
         this.fx.burst?.('star', v.c.x, v.c.y - 60, 3, 0xffe066);
@@ -2290,7 +2292,7 @@ export default class GauntletScene extends Phaser.Scene {
     const ups = alive.map((u) => this.uViews.get(u.uid));
     ups.forEach((v, i) => this.time.delayedCall(Math.min(ms * 0.4, 70 * i), () => {
       if (!v.c.scene || v.dragging) return;
-      v.hop = { t: 0, dur: Math.max(0.6, (ms - 70 * i) / 1000) };
+      v.hop = { t: 0, dur: Math.max(0.6, (ms - 70 * i) / 1000) }; v.finCheer = true;
       const r = v.rig?.inst; if (r) { r.timeScale = 1; if (r.anims.victory) r.play('victory', { loop: true }); else if (r.anims.leap) r.play('leap', { loop: true }); }
       this.fx.burst?.(i % 2 ? 'star' : 'note', v.c.x, v.c.y - 70, 3, i % 2 ? 0xffe066 : 0x9cff6b);
     }));
@@ -2337,7 +2339,6 @@ export default class GauntletScene extends Phaser.Scene {
     this.clearUi();
     // 딜 미터기: 교전이 끝나고 정비 화면이 처음 뜰 때 기록 카드(끄기 가능) · 다시 보는 단추
     if (this.meterLast) {
-      this.addUi(button(this, MREG.x, MREG.y, MREG.w, MREG.h, this.registry.get('T')?.('meter.button') ?? 'meter.button', () => this.openMeter(), { depth: 2002, size: 13, fill: 0x24303f }));
       if (this.meterPending) { this.meterPending = false; if (this.save.meterAuto !== false) this.time.delayedCall(120, () => { if (this.state?.phase === 'regroup' && !this.leaving) this.openMeter(); }); }
     }
     this.eViews.forEach((v) => v.c.destroy()); this.eViews.clear();
@@ -2407,6 +2408,23 @@ export default class GauntletScene extends Phaser.Scene {
       this.addUi(button(this, 1056, 660, 44, 50, '?', () => this.planHelp(), { depth: 2002, size: 20, fill: 0x2a3a6a }));
     }
     this.addUi(button(this, 1170, 660, 140, 56, s.prelude ? '▶ 출발' : '다음 ▶', () => this.goNext(), { depth: 2002, fill: 0x8a6a1a, stroke: 0xffd84d, size: 22 }));
+    if (this.meterLast) this.addMeterBtn();
+  }
+
+  /** 정비 화면 '📊 전투 기록' 단추: 다른 글자·단추·'다음 적' 상자와 안 겹치는 빈자리를 골라 놓음(화면 안) */
+  addMeterBtn() {
+    const busy = [{ x: 684, y: 500, w: 552, h: 116 }];   // '다음 적' 상자(그래픽이라 크기를 직접 적음)
+    for (const o of this.ui) {
+      if (!o?.visible || !o.getBounds || o.type === 'Graphics') continue;
+      const b = o.getBounds(); if (b.width < 2 || b.height < 2 || b.width > 600) continue;
+      busy.push({ x: b.x, y: b.y, w: b.width, h: b.height });
+    }
+    const hit = (r) => busy.some((q) => r.x < q.x + q.w + 4 && q.x < r.x + r.w + 4 && r.y < q.y + q.h + 4 && q.y < r.y + r.h + 4);
+    const cand = [MREG, ...MREG_ALT].map((c) => ({ x: c.x - c.w / 2, y: c.y - c.h / 2, w: c.w, h: c.h }))
+      .filter((r) => r.x >= 4 && r.y >= 4 && r.x + r.w <= 1276 && r.y + r.h <= 716);
+    const r = cand.find((c) => !hit(c)) ?? cand[0];
+    this.meterBtnRect = r;
+    this.addUi(button(this, r.x + r.w / 2, r.y + r.h / 2, r.w, r.h, this.registry.get('T')?.('meter.button') ?? 'meter.button', () => this.openMeter(), { depth: 2002, size: 13, fill: 0x24303f }));
   }
 
   drawRewards() {

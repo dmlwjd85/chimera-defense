@@ -17,7 +17,7 @@ import { dotOn, dotify } from './dotfx.js';
 import { stageProfile } from '../logic/matchup.js';
 import { bfOf, fightLaneY, laneSpread, laneBounds, labelFull, labelBar, LABEL_HOLD } from '../logic/battlefield.js';
 import { MidStage } from './midstage.js';
-import { RaidFx } from './raidfx.js';   // 보스 레이드 예고(시전 막대·표식·장판)
+import { RaidFx, showBossCard } from './raidfx.js';   // 보스 레이드 예고(시전 막대·표식·장판)
 
 // 작전 한 줄 설명(7살도 알게)
 const TACTIC_TIP = { hold: '앞에서 힘싸움', guard: '뒤 친구를 막아 줌', help: '앞 싸움을 도움', hunt: '적 뒷줄을 노림', intercept: '달려드는 적을 막음', front: '앞 친구를 응원', back: '뒤 친구에게 보호막' };
@@ -208,6 +208,7 @@ export default class GauntletScene extends Phaser.Scene {
       b.setEnabled(r.open); btns.push(b);
       add(this.add.text(600, y, r.desc, style(14, r.open ? '#f0e6d0' : '#777777', { wordWrap: { width: 350 } })).setOrigin(0, 0.5).setDepth(3001));
     });
+    if (this.D.raid?.bosses?.[this.stage.boss]) btns.push(button(this, 850, 640, 170, 40, this.registry.get('T')?.('raid.card.button') ?? 'raid.card.button', () => showBossCard(this, this.D, this.stage, 3100), { depth: 3002, size: 15, fill: 0x3a2a6a, stroke: 0x9b6cf0, tip: this.registry.get('T')?.('raid.card.tip') }));   // 보스 레이드 카드12
     btns.push(button(this, 640, 640, 180, 40, '← 돌아가기', () => this.scene.start('StageSelect'), { depth: 3002, size: 15 }));
   }
 

@@ -226,5 +226,11 @@
   "raid.card.hidden": "🎯 보스 카드는 보통·하드에서만 보여요",
   "raid.card.learned": "📖 배움",
   "raid.reward.bossFit": "🎯 보스 대비",
-  "raid.enrageTimer": "광포화까지 {sec}초"
+  "raid.enrageTimer": "광포화까지 {sec}초",
+  "raid.card.button": "🎯 보스 카드",
+  "raid.card.tip": "보스 기술·약점·추천 동물(노멀·하드 도우미)",
+  "raid.card.close": "닫기",
+  "raid.lanes": " 라인",
+  "raid.noCheers": "응원 톡을 다 썼어요",
+  "raid.boss": "보스"
 }

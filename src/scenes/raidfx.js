@@ -1,9 +1,9 @@
 // 보스 레이드 예고 연출(설계안 카드9·13). 엔진은 src/logic/raid.js, 글자는 text.json raid.* 에서만.
 // 매 프레임 상태를 보고 다시 그림(따로 지울 것 없음): 보라/빨간 시전 막대(누르면 끊기) · 표식 고리 · 장판 · 보호막/껍질 고리 ·
 // 독·저주 표시 · 결투 줄 · 광포화 시계. 사건(raid*)은 자막·배너로.
-import { raidTap } from '../logic/raid.js';
+import { raidTap, bossCard } from '../logic/raid.js';
 import { laneOf } from '../logic/gauntlet.js';
-import { style } from './ui.js';
+import { style, button } from './ui.js';
 import { sfx } from './sfx.js';
 
 const DEPTH = 1450;
@@ -49,7 +49,7 @@ export class RaidFx {
       if (r.shield) {
         g.lineStyle(4, COL.shield, 0.9).strokeEllipse(x, y - 30, 150, 170);
         const n = r.shield.mode === 'lanes' ? r.shield.lanes.size : r.shield.hit.size;
-        this.label(`sh${e.eid}`, x, y - 128, `🛡 ${n}/${r.shield.need}${r.shield.mode === 'lanes' ? ' 라인' : ''}`, '#e6d4ff');
+        this.label(`sh${e.eid}`, x, y - 128, `🛡 ${n}/${r.shield.need}${r.shield.mode === 'lanes' ? this.T('raid.lanes') : ''}`, '#e6d4ff');
       }
       if (r.armor) {
         g.lineStyle(5, COL.armor, 0.9).strokeEllipse(x, y - 25, 140, 150);
@@ -118,7 +118,7 @@ export class RaidFx {
       this.hit.on('pointerdown', (p, lx, ly, evt) => {
         evt?.stopPropagation?.();
         const r = raidTap(this.sc.state, this.sc.D);
-        if (r.ok) { sfx('hold'); try { navigator.vibrate?.(25); } catch { /* 없음 */ } } else if (r.reason === 'noCheers') this.sc.toast?.('응원 톡을 다 썼어요');
+        if (r.ok) { sfx('hold'); try { navigator.vibrate?.(25); } catch { /* 없음 */ } } else if (r.reason === 'noCheers') this.sc.toast?.(this.T('raid.noCheers'));
       });
     }
     this.hit.setPosition(bar.x - 20, bar.y - 20);
@@ -133,7 +133,7 @@ export class RaidFx {
     const at = (side, id) => sc.posOf(side, id);
     switch (ev.type) {
       case 'raidPhase': {
-        const boss = sc.D.enemyById[ev.boss]?.name ?? '보스';
+        const boss = sc.D.enemyById[ev.boss]?.name ?? T('raid.boss');
         sc.fx.banner?.(T('raid.phase', { boss, n: ev.phase }), '#ff6b5a', ev.element !== undefined && sc.D.raid?.bosses?.[ev.boss]?.phaseElements ? T('raid.phaseElem', { el: T(`raid.el.${ev.element ?? 'none'}`) }) : T('raid.phaseSub'));
         sc.cameras.main.shake(300, 0.012); sfx('stampede'); return true;
       }
@@ -143,7 +143,7 @@ export class RaidFx {
       case 'raidInterruptPt': { const p = at('e', ev.eid); if (p) sc.floatAt(p[0] + 110, p[1] - 160, T('raid.cast.pts', { pts: ev.pts, need: ev.need }), '#ffe066', 14); return true; }
       case 'raidInterrupt': { const p = at('e', ev.eid); if (p) { sc.fx.impact?.(p[0], p[1] - 160, 0xffe066, 1.4); } sc.ticker(T('raid.interrupt', { name }), '#ffe066'); sfx('evolve'); return true; }
       case 'raidCastDone': { sc.ticker(T('raid.castDone', { name }), '#ff6b5a'); sc.cameras.main.shake(220, 0.01); if (ev.uid != null) { const p = at('u', ev.uid); if (p) sc.fx.impact?.(p[0], p[1] - 10, 0xff3b3b, 1.5); } sfx('slam'); return true; }
-      case 'raidLearned': sc.ticker(T('raid.learned', { name: T(`raid.pat.${ev.boss}.${ev.pid}`) }), '#9cff6b'); return true;
+      case 'raidLearned': sc.registry.set('raidLearned', { ...(sc.registry.get('raidLearned') ?? {}), [`${ev.boss}:${ev.pid}`]: true }); sc.ticker(T('raid.learned', { name: T(`raid.pat.${ev.boss}.${ev.pid}`) }), '#9cff6b'); return true;
       case 'raidMark': sc.ticker(ev.taste ? T('raid.taste', { name }) : T('raid.mark', { name }), '#ff9f1a'); sfx('hold'); try { navigator.vibrate?.(60); } catch { /* 없음 */ } return true;
       case 'raidMarkHit': { const p = at('u', ev.uid); if (p) { sc.fx.impact?.(p[0], p[1] - 10, ev.shield ? 0x8fd3ff : 0xff9f1a, 1.3); if (ev.shield) sc.floatAt(p[0], p[1] - 130, T('raid.markSafe'), '#8fd3ff', 18); else if (ev.guard) sc.floatAt(p[0], p[1] - 130, T('raid.guard'), '#ffe066', 16); } return true; }
       case 'raidShield': sc.ticker(T(ev.mode === 'lanes' ? 'raid.shield.lanes' : 'raid.shield.distinct', { name, need: ev.need }), '#d2b4ff'); sfx('shield'); return true;
@@ -164,4 +164,39 @@ export class RaidFx {
   }
 
   destroy() { this.g.destroy(); this.hit?.destroy(); for (const t of this.labels.values()) t.destroy(); this.labels.clear(); }
+}
+
+/** 보스 카드(카드12): 속성·약점·필요한 역할·기술(단계별)·추천 동물. 난이도·덱 화면에서 열림. 닫는 함수 돌려줌 */
+export function showBossCard(sc, D, stage, depth = 3100) {
+  const card = bossCard(D, stage);
+  if (!card) return null;
+  const dict = sc.cache.json.get('text') ?? {};
+  const T = sc.registry.get('T') ?? ((k, v = {}) => String(dict[k] ?? k).replace(/\{(\w+)\}/g, (_, n) => v[n] ?? ''));
+  const parts = [];
+  const add = (o) => { parts.push(o); return o; };
+  const close = () => parts.forEach((p) => p.destroy());
+  const g = add(sc.add.graphics().setDepth(depth));
+  g.fillStyle(0x000000, 0.72).fillRect(0, 0, 1280, 720);
+  g.fillStyle(0x16122a, 1).fillRoundedRect(250, 50, 780, 620, 18).lineStyle(3, 0x9b6cf0, 1).strokeRoundedRect(250, 50, 780, 620, 18);
+  const blocker = add(sc.add.zone(0, 0, 1280, 720).setOrigin(0).setDepth(depth).setInteractive());
+  blocker.on('pointerdown', (p, x, y, e) => e?.stopPropagation?.());
+  const txt = (x, y, t, c = '#ffffff', size = 15, o = {}) => add(sc.add.text(x, y, t, style(size, c, { stroke: '#000', strokeThickness: 3, ...o })).setDepth(depth + 1));
+  txt(640, 84, T('raid.card.title', { name: card.name }), '#e6d4ff', 26).setOrigin(0.5);
+  const el = (k) => T(`raid.el.${k ?? 'none'}`);
+  const elLine = card.phaseElements ? T('raid.card.phases', { list: card.phaseElements.map(el).join(' → ') }) : T('raid.card.element', { el: el(card.element) });
+  txt(290, 122, `${elLine}   ·   ${T('raid.card.weak', { list: (card.weak ?? []).map(el).join('·') || '-' })}`, '#ffd84d', 16);
+  txt(290, 150, T('raid.card.need', { list: card.need.map((n) => T(`raid.need.${n}`)).join(', ') }), '#9cff6b', 16);
+  txt(290, 184, T('raid.card.patterns'), '#ffffff', 17);
+  let y = 212;
+  for (const p of card.patterns) {
+    const icon = p.telegraph === 'bar' ? '🟪' : p.telegraph === 'barHard' ? '🟥' : p.telegraph === 'mark' ? '🎯' : p.telegraph === 'zone' ? '🔥' : '▫';
+    const ph = p.phase > 1 ? `  (${T('raid.card.phase', { n: p.phase })})` : '';
+    const learned = sc.registry.get('raidLearned')?.[`${card.id}:${p.id}`] ? `  ${T('raid.card.learned')}` : '';
+    txt(300, y, `${icon} ${T(`raid.pat.${card.id}.${p.id}`)}${ph}${learned}`, '#e6d4ff', 16);
+    txt(330, y + 22, T(`raid.hint.${card.id}.${p.id}`), '#c9c2e0', 13, { wordWrap: { width: 660 } });
+    y += 62;
+  }
+  txt(290, Math.max(y + 6, 520), `${T('raid.card.good')}: ${card.good.map((id) => D.unitById[id]?.name ?? id).join(' · ')}`, '#7CFC9A', 16, { wordWrap: { width: 700 } });
+  add(button(sc, 640, 630, 180, 40, T('raid.card.close'), close, { depth: depth + 2, size: 16 }));
+  return close;
 }

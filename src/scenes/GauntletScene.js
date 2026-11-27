@@ -17,6 +17,7 @@ import { dotOn, dotify } from './dotfx.js';
 import { stageProfile } from '../logic/matchup.js';
 import { bfOf, fightLaneY, laneSpread, laneBounds, labelFull, labelBar, LABEL_HOLD } from '../logic/battlefield.js';
 import { MidStage } from './midstage.js';
+import { SkillFX } from './skillfx.js';
 
 // 작전 한 줄 설명(7살도 알게)
 const TACTIC_TIP = { hold: '앞에서 힘싸움', guard: '뒤 친구를 막아 줌', help: '앞 싸움을 도움', hunt: '적 뒷줄을 노림', intercept: '달려드는 적을 막음', front: '앞 친구를 응원', back: '뒤 친구에게 보호막' };
@@ -101,6 +102,7 @@ export default class GauntletScene extends Phaser.Scene {
     Object.assign(this, { speed: 1, slow: 0, uViews: new Map(), eViews: new Map(), ui: [], leaving: false, state: null, mode: null });
     this.cameras.main.setBackgroundColor('#0b0d12');
     this.fx = new FX(this);
+    this.skfx = new SkillFX(this, this.cache.json.get('skillfx'), this.D.unitById);   // 신화급·키메라 스킬 이펙트(public/data/skillfx.json)
     this.BF = bfOf(this.D.battlefield);
     this.art = this.stage.art ?? this.stage.id;
     setFightLanes(this.BF, this.art);
@@ -1612,10 +1614,15 @@ export default class GauntletScene extends Phaser.Scene {
     const lightUlt = ev.move === 'ult' && this.time.now - (this.lastUltCut ?? -99999) < 8000;
     let sangunLand = 0;
     if (ev.move === 'ult' && !lightUlt) this.lastUltCut = this.time.now;
+    // 스킬 이펙트 계획(2026-11-27 "신화급·키메라 스킬 이펙트 화려하게"): 필살기·시간 기술·신화급 속성 공격. 키메라 필살기는 그때 쓴 부위 동물 모양
+    const ultKind = ev.move === 'ult' ? (this.lastUlt?.uid === ev.uid ? this.lastUlt.kind : u.kind === 'chimera' ? u.parts?.[0] : u.speciesId) : null;
+    let plan = ['ult', 'skill', 'el'].includes(ev.move) ? this.skfx?.plan({ u, move: ev.move, kind: ultKind, name: ev.name, action: ev.action, el: ev.el }) ?? null : null;
+    const cutFx = plan ? { ...this.skfx.theme(plan.theme), myth: plan.tier !== 'normal', ...(this.skfx.cfg.banner ?? {}) } : null;
+    let fxDelay = 0;
     // 가벼운 필살기 이름은 머리 위 말 대신 가운데 하늘에 이름 띠로(2026-11-27 "가운데 공간에 필살기") — 자리가 없을 때만 예전처럼 머리 위
-    if (lightUlt) { if (!this.mid?.ult(u.stats.name, ev.name ?? '필살기', v.c.x, 0xffd84d, u.kind === 'base' ? u.speciesId : null, u.stage)) this.say(v.c.x, v.c.y - 140, `✨ ${ev.name ?? '필살기'}!`, 0xffd84d, { size: 21, hold: 750, force: true }); this.fx.ring(v.c.x, v.c.y + 24, 0xffd84d, 1.5, 520); this.fx.burst?.('star', v.c.x, v.c.y - 50, 8, 0xffe066); this.cameras.main.flash(90, 255, 230, 140); }
-    else if (ev.move === 'ult' && targets.length && (sangunLand = this.sangunCut(u, v, ev))) { /* 산군 전용 v6 연출이 대신함 */ }
-    else if (ev.move === 'ult' && targets.length && this.robotCut(u, ev, targets)) { /* 3단 컷이 대신함 */ } else if (ev.move === 'ult' && targets.length) this.closeUp([v], targets.slice(0, 3), ev.name ?? '기술', ev.move === 'ult' ? 0xffd84d : ev.move === 'skill' ? 0x9cff6b : 0x8fd3ff, ev.move === 'ult');
+    if (lightUlt) { if (!this.mid?.ult(u.stats.name, ev.name ?? '필살기', v.c.x, 0xffd84d, u.kind === 'base' ? u.speciesId : null, u.stage, cutFx)) this.say(v.c.x, v.c.y - 140, `✨ ${ev.name ?? '필살기'}!`, 0xffd84d, { size: 21, hold: 750, force: true }); this.fx.ring(v.c.x, v.c.y + 24, 0xffd84d, 1.5, 520); this.fx.burst?.('star', v.c.x, v.c.y - 50, 8, 0xffe066); if (!plan) this.cameras.main.flash(90, 255, 230, 140); }
+    else if (ev.move === 'ult' && targets.length && (sangunLand = this.sangunCut(u, v, ev))) { plan = null; /* 산군 전용 v6 연출이 대신함 */ }
+    else if (ev.move === 'ult' && targets.length && this.robotCut(u, ev, targets)) { fxDelay = 1450; /* 3단 컷이 대신함 — 컷이 끝나면 전장에서 이펙트 */ } else if (ev.move === 'ult' && targets.length) this.closeUp([v], targets.slice(0, 3), ev.name ?? '기술', ev.move === 'ult' ? 0xffd84d : ev.move === 'skill' ? 0x9cff6b : 0x8fd3ff, ev.move === 'ult');
     // 한 수 한 수가 보이게: 강타·기술·속성 공격은 늘 이름표(2026-11-27 느린 템포)
     else if (ev.move === 'a2') this.say(v.c.x, v.c.y - 112, `💥 강타!${ev.name ? ' ' + ev.name : ''}`, 0xffb27a, { size: 18, hold: 520 });
     else if (ev.move === 'skill' || ev.move === 'el') this.say(v.c.x, v.c.y - 112, `✨ ${ev.name ?? '기술'}`, 0x9fd8ff, { size: 18, hold: 560 });
@@ -1647,13 +1654,15 @@ export default class GauntletScene extends Phaser.Scene {
       if (Math.random() < 0.4) this.say(v.c.x, v.c.y - 120, '⚡ 몰아치기!', 0xffe066, { size: 16 });
     }
     const launched = !ev.melee && !!tv && ev.move !== 'skill';   // 투사체를 쏘는 공격인가
+    const fxCtx = () => ({ at: [v.c.x, v.c.y], targets: (ev.hits ?? []).map((h) => this.eViews.get(h.eid)).filter((t) => t?.c?.scene).map((t) => [t.c.x, t.c.y]), allies: [...this.uViews.values()].filter((a) => a.c?.scene).map((a) => [a.c.x, a.c.y]) });
     const impact = () => {
       for (const h of ev.hits ?? []) {
         const t = this.eViews.get(h.eid);
         if (!t) continue;
         const heavy = big || h.dmg >= 0.18 * (s.enemies.find((e) => e.eid === h.eid)?.maxHp ?? 1e9);
         const ehp = s.enemies.find((e) => e.eid === h.eid)?.maxHp ?? 1e9;
-        if (heavy || h.dmg >= ehp * 0.08) this.dmgNumber(t.c.x, t.c.y - 90, h.dmg, heavy);
+        if (plan && plan.tier !== 'normal' && plan.move !== 'el') this.skfx.number(t.c.x, t.c.y - 96, h.dmg, plan);   // 신화급·키메라 기술: 속성 색 큰 숫자
+        else if (heavy || h.dmg >= ehp * 0.08) this.dmgNumber(t.c.x, t.c.y - 90, h.dmg, heavy);
         this.fx.hit(t.c.x, t.c.y - 10, heavy ? 'orange' : 'white', heavy);
         if (ev.el) this.react(t, h.eff === 'strong' ? 'bad' : h.eff === 'weak' ? 'good' : 'none', 'e', h.eff === 'strong' ? '▼ 약점! 💦' : h.eff === 'weak' ? '▲ 버팀' : '…');
         else if (h.eff === 'strong' || h.eff === 'prey') this.effWord(t.c.x, t.c.y - 128, h.eff);
@@ -1664,10 +1673,15 @@ export default class GauntletScene extends Phaser.Scene {
         if (ev.back && h.eid === ev.eid) this.backstabFx(t, v.c.x > t.c.x);
       }
       if (ev.el) try { this.fx.element(ev.el, [v.c.x, v.c.y], targets.map((t) => [t.c.x, t.c.y])); } catch { /* */ }
+      if (plan?.move === 'el') try { this.skfx.accent(plan, fxCtx()); } catch { /* */ }
       if (ev.move === 'skill' && ev.action) try { this.fx.skillFx(ev.action, [v.c.x, v.c.y], targets.map((t) => [t.c.x, t.c.y]), { allies: [...this.uViews.values()].map((a) => [a.c.x, a.c.y]) }); } catch { /* */ }
       if (big) sfx('slam'); else if (ev.melee) sfx('hit'); else if (!launched) sfx('shoot');   // 날아가는 공격은 쏠 때 한 번만(맞을 때 또 울리지 않음)
     };
-    if (launched) {
+    if (plan && plan.move !== 'el') {
+      // 기 모으기 → 발동 → 타격(맞는 순간에 원래 피해 숫자·맞는 동작). 투사체 대신 속성 모양이 날아감
+      const go = () => { if (v.c.scene) this.skfx.play(plan, fxCtx(), impact); else impact(); };
+      if (fxDelay) this.time.delayedCall(fxDelay, go); else go();
+    } else if (launched) {
       sfx('shoot');
       this.fx.projectile(u.speciesId, v.c.x + 20, v.c.y - 20, tv.c.x, tv.c.y - 10, ev.move === 'ult', impact);
     } else this.time.delayedCall(hitDelay, impact);

@@ -1,0 +1,503 @@
+{
+  "_설명": "신화급·키메라 스킬 이펙트 설정(2026-11-27 선생님 '신화급 및 키메라들 스킬 이펙트 화려하게, 영물이랑 키메라가 활약하는 맛이 살게'). 그림은 모두 코드로 찍는 도트(외부 그림 없음). 수치(피해·쿨타임)와는 상관없고 보이는 것만 바꿈. 색은 #RRGGBB, 시간은 ms.",
+  "enabled": true,
+  "shake": true,
+  "flash": true,
+  "hitStop": true,
+  "_흔들림끄기": "브라우저 저장소 chimera-shake=0 이거나 기기 '동작 줄이기' 설정이면 흔들림·섬광을 끔",
+  "limits": {
+    "_설명": "동시에 여러 기술이 터져도 느려지지 않게: 화려한 연출은 maxFull개까지, 넘으면 가벼운 연출. 입자는 particleCap개를 넘지 않게 줄임. 섬광은 flashGap ms에 한 번만.",
+    "maxFull": 3,
+    "particleCap": 420,
+    "perEmitter": 90,
+    "shapePool": 48,
+    "flashGap": 900,
+    "numberGap": 60
+  },
+  "tiers": {
+    "_설명": "normal = 성체 등 일반, myth = 신화급, chimera = 키메라. scale은 도트 한 칸 크기(화면 px), particles는 입자 수 배율, charge는 기 모으기 시간",
+    "normal": {
+      "scale": 2,
+      "particles": 1,
+      "charge": 160,
+      "shake": 0,
+      "flash": 0,
+      "hitStop": 0,
+      "ring": 1,
+      "number": 1
+    },
+    "myth": {
+      "scale": 3,
+      "particles": 1.8,
+      "charge": 340,
+      "shake": 0.006,
+      "flash": 0.22,
+      "hitStop": 0.06,
+      "ring": 1.6,
+      "number": 1.35
+    },
+    "chimera": {
+      "scale": 3,
+      "particles": 2,
+      "charge": 360,
+      "shake": 0.007,
+      "flash": 0.24,
+      "hitStop": 0.07,
+      "ring": 1.75,
+      "number": 1.4,
+      "dual": true
+    }
+  },
+  "moves": {
+    "_설명": "기술 종류별 덧셈 배율. ult = 필살기, skill = 시간마다 쓰는 기술, el = 속성 공격(신화급·키메라만 화려하게)",
+    "ult": {
+      "particles": 1.3,
+      "shake": 1.3,
+      "flash": 1,
+      "hitStop": 1,
+      "banner": true
+    },
+    "skill": {
+      "particles": 1,
+      "shake": 0.7,
+      "flash": 0.6,
+      "hitStop": 0.6,
+      "banner": false
+    },
+    "el": {
+      "particles": 0.55,
+      "shake": 0.35,
+      "flash": 0,
+      "hitStop": 0.4,
+      "banner": false,
+      "charge": 0.45
+    }
+  },
+  "themes": {
+    "_설명": "c = [밝은 속, 주색, 짙은 색, 아주 짙은 색], o = 외곽선(킹덤 러쉬처럼 굵고 진한 테두리), sprite = 주로 뿌리는 도트 조각(flame 불꽃, wisp 여우불, shard 조각, drop 물방울, leaf 잎, rock 돌, star 별, note 음표, feather 깃털, pix 알갱이)",
+    "fire": {
+      "name": "불",
+      "c": [
+        "#fff4b8",
+        "#ffb02e",
+        "#ff5a1a",
+        "#9c1c08"
+      ],
+      "o": "#2a0a04",
+      "sprite": "flame"
+    },
+    "foxfire": {
+      "name": "여우불",
+      "c": [
+        "#eafff7",
+        "#7dffd8",
+        "#22c7b8",
+        "#13637a"
+      ],
+      "o": "#062028",
+      "sprite": "wisp"
+    },
+    "thunder": {
+      "name": "번개",
+      "c": [
+        "#ffffff",
+        "#fff27a",
+        "#ffc21a",
+        "#7a5cff"
+      ],
+      "o": "#1a1030",
+      "sprite": "shard"
+    },
+    "water": {
+      "name": "물",
+      "c": [
+        "#effcff",
+        "#8fe0ff",
+        "#2f9bea",
+        "#1a4f9c"
+      ],
+      "o": "#06142e",
+      "sprite": "drop"
+    },
+    "wind": {
+      "name": "바람",
+      "c": [
+        "#ffffff",
+        "#d8fff0",
+        "#7fe0b8",
+        "#2f8f78"
+      ],
+      "o": "#0a2a22",
+      "sprite": "leaf"
+    },
+    "earth": {
+      "name": "땅",
+      "c": [
+        "#fff0c8",
+        "#e0a458",
+        "#a8642a",
+        "#5a3414"
+      ],
+      "o": "#1e0f04",
+      "sprite": "rock"
+    },
+    "moon": {
+      "name": "달",
+      "c": [
+        "#ffffff",
+        "#e6dcff",
+        "#a88cff",
+        "#4c3a9c"
+      ],
+      "o": "#120a2a",
+      "sprite": "star"
+    },
+    "light": {
+      "name": "빛",
+      "c": [
+        "#ffffff",
+        "#fff3a0",
+        "#ffd23a",
+        "#c07a10"
+      ],
+      "o": "#2a1a04",
+      "sprite": "star"
+    },
+    "grass": {
+      "name": "풀",
+      "c": [
+        "#f4ffd8",
+        "#b6ff6b",
+        "#4fc23a",
+        "#1f6a24"
+      ],
+      "o": "#08200a",
+      "sprite": "leaf"
+    },
+    "sound": {
+      "name": "노래",
+      "c": [
+        "#ffffff",
+        "#ffd6f4",
+        "#ff7ad0",
+        "#9c2a8a"
+      ],
+      "o": "#2a0624",
+      "sprite": "note"
+    },
+    "shadow": {
+      "name": "까마귀 그림자",
+      "c": [
+        "#ffe88a",
+        "#7a6ab8",
+        "#3a2a6a",
+        "#140c2a"
+      ],
+      "o": "#05020c",
+      "sprite": "feather"
+    },
+    "amber": {
+      "name": "개미 떼",
+      "c": [
+        "#fff0b0",
+        "#ffb84a",
+        "#c4621a",
+        "#5a2408"
+      ],
+      "o": "#1a0a02",
+      "sprite": "pix"
+    },
+    "gold": {
+      "name": "금빛 방벽",
+      "c": [
+        "#ffffff",
+        "#ffe9a0",
+        "#ffc83a",
+        "#a86a10"
+      ],
+      "o": "#2a1804",
+      "sprite": "shard"
+    }
+  },
+  "elements": {
+    "fire": "fire",
+    "water": "water",
+    "wind": "wind",
+    "earth": "earth",
+    "thunder": "thunder",
+    "moon": "moon",
+    "grass": "grass",
+    "light": "light"
+  },
+  "speciesElement": {
+    "_설명": "속성 공격 색을 종마다 바꿀 때(여우는 불 대신 여우불)",
+    "fox": "foxfire",
+    "crow": "shadow",
+    "ant": "amber",
+    "grasshopper": "sound",
+    "bighorn": "gold"
+  },
+  "ults": {
+    "_설명": "필살기(종 = 키메라는 그때 쓰는 부위 동물). theme 색, release 터지는 모양, word 화면에 크게 뜨는 소리 글자, count 표적·입자 수",
+    "bear": {
+      "theme": "earth",
+      "release": "quake",
+      "aura": "gold",
+      "word": "쿠웅!",
+      "count": 6
+    },
+    "bison": {
+      "theme": "earth",
+      "release": "stampede",
+      "word": "우다다다!",
+      "count": 5
+    },
+    "dog": {
+      "theme": "fire",
+      "release": "guardHeal",
+      "word": "왈왈왈!",
+      "count": 3
+    },
+    "ant": {
+      "theme": "amber",
+      "release": "swarm",
+      "word": "와글와글!",
+      "count": 26
+    },
+    "frog": {
+      "theme": "water",
+      "release": "rain",
+      "word": "쏴아아!",
+      "count": 30
+    },
+    "tiger": {
+      "theme": "thunder",
+      "release": "roar",
+      "word": "어흥!",
+      "count": 4
+    },
+    "fox": {
+      "theme": "foxfire",
+      "release": "wisps",
+      "word": "홀려라~",
+      "count": 9
+    },
+    "rabbit": {
+      "theme": "moon",
+      "release": "moon",
+      "word": "쿵덕쿵덕!",
+      "count": 8
+    },
+    "rooster": {
+      "theme": "light",
+      "release": "dawn",
+      "word": "꼬끼오!",
+      "count": 12
+    },
+    "crow": {
+      "theme": "shadow",
+      "release": "feathers",
+      "word": "까아악!",
+      "count": 16
+    },
+    "wolf": {
+      "theme": "moon",
+      "release": "howl",
+      "word": "아우우~",
+      "count": 4
+    },
+    "eagle": {
+      "theme": "thunder",
+      "release": "skybolt",
+      "word": "콰과광!",
+      "count": 4
+    },
+    "bighorn": {
+      "theme": "gold",
+      "release": "wall",
+      "word": "탕!",
+      "count": 3
+    },
+    "grasshopper": {
+      "theme": "sound",
+      "release": "notes",
+      "word": "랄랄라♪",
+      "count": 14
+    },
+    "monkey": {
+      "theme": "wind",
+      "release": "clones",
+      "word": "얍얍얍!",
+      "count": 3
+    },
+    "_default": {
+      "theme": "light",
+      "release": "slam",
+      "word": "펑!",
+      "count": 6
+    }
+  },
+  "skills": {
+    "_설명": "시간마다 쓰는 기술(이름으로 찾고, 없으면 action으로)",
+    "byName": {
+      "앞발 후려치기": {
+        "theme": "earth",
+        "release": "slam",
+        "word": "퍽!"
+      },
+      "어흥": {
+        "theme": "thunder",
+        "release": "roar",
+        "word": "어흥!"
+      },
+      "뒷발 강타": {
+        "theme": "moon",
+        "release": "slam",
+        "word": "쿵!"
+      },
+      "새벽 네 시": {
+        "theme": "light",
+        "release": "dawn",
+        "word": "꼬끼오!"
+      },
+      "떼 지어 달리기": {
+        "theme": "earth",
+        "release": "stampede",
+        "word": "우다다!"
+      },
+      "하울링": {
+        "theme": "moon",
+        "release": "howl",
+        "word": "아우~"
+      },
+      "뿔 자랑": {
+        "theme": "gold",
+        "release": "slam",
+        "word": "탕!"
+      },
+      "방석 착지": {
+        "theme": "water",
+        "release": "slam",
+        "word": "철퍽!"
+      },
+      "전국 투어": {
+        "theme": "sound",
+        "release": "notes",
+        "word": "♪♪"
+      },
+      "개미 군단": {
+        "theme": "amber",
+        "release": "swarm",
+        "word": "와글!"
+      },
+      "세 머리 포효": {
+        "theme": "fire",
+        "release": "roar",
+        "word": "크르릉!"
+      },
+      "여의봉": {
+        "theme": "wind",
+        "release": "slam",
+        "word": "늘어나라!"
+      }
+    },
+    "byAction": {
+      "damageHeld": {
+        "theme": "earth",
+        "release": "slam"
+      },
+      "damageAll": {
+        "theme": "earth",
+        "release": "stampede"
+      },
+      "flee": {
+        "theme": "thunder",
+        "release": "roar"
+      },
+      "stunRadius": {
+        "theme": "wind",
+        "release": "slam"
+      },
+      "pushHeld": {
+        "theme": "gold",
+        "release": "slam"
+      },
+      "allyBuff": {
+        "theme": "sound",
+        "release": "notes"
+      },
+      "halveRespawn": {
+        "theme": "light",
+        "release": "dawn"
+      }
+    }
+  },
+  "releases": {
+    "_설명": "터지는 모양마다 걸리는 시간(travel: 쏘고 나서 맞을 때까지)",
+    "quake": {
+      "travel": 260
+    },
+    "stampede": {
+      "travel": 320
+    },
+    "guardHeal": {
+      "travel": 180
+    },
+    "swarm": {
+      "travel": 420
+    },
+    "rain": {
+      "travel": 360
+    },
+    "roar": {
+      "travel": 200
+    },
+    "wisps": {
+      "travel": 460
+    },
+    "moon": {
+      "travel": 380
+    },
+    "dawn": {
+      "travel": 260
+    },
+    "feathers": {
+      "travel": 380
+    },
+    "howl": {
+      "travel": 240
+    },
+    "skybolt": {
+      "travel": 140
+    },
+    "wall": {
+      "travel": 200
+    },
+    "notes": {
+      "travel": 300
+    },
+    "clones": {
+      "travel": 300
+    },
+    "slam": {
+      "travel": 120
+    },
+    "pillar": {
+      "travel": 200
+    }
+  },
+  "number": {
+    "_설명": "필살기·신화급 기술 피해 숫자: 크기(px), 테두리 굵기, 머무는 시간",
+    "size": 30,
+    "stroke": 7,
+    "hold": 520,
+    "wordSize": 30
+  },
+  "banner": {
+    "_설명": "필살기 이름 띠(가운데 하늘)를 컷인처럼: 비스듬한 판 + 줄무늬 + 옆에서 미끄러져 들어옴",
+    "slant": 18,
+    "stripes": 7,
+    "slide": 90,
+    "life": 1700
+  }
+}

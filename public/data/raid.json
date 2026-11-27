@@ -1,1 +1,346 @@
-{ "_설명": "보스 레이드 패턴. 비어 있으면 지금 규칙 그대로" }
+{
+ "_설명": "보스 레이드 패턴(2026-11-28 선생님 승인 '좋아 진행하자', 설계안 design/보스_패턴_상성_설계안.md). 이 파일이 비어 있거나 bosses가 없으면 지금 규칙(enemies.json pattern + config.gauntlet.bossSkill) 그대로. 숫자는 시뮬레이션(tools/boss-sim.mjs)으로 맞춘 값이고, 이름·문구는 text.json raid.* 에 있음. kind: summon 졸개 · charge 돌진 · shield 보호막 · armor 껍질 · cast 시전 막대(need = 끊는 데 필요한 점수, null이면 못 끊음) · mark 표식 · zone 장판 · hide 숨기 · poison 독 쌓기 · blizzard 눈보라 · rally 호령 · rocks 낙석",
+ "common": {
+  "phases": [
+   0.7,
+   0.4
+  ],
+  "earlyPhases": [
+   0.6
+  ],
+  "phaseAtk": 1.15,
+  "phaseAtkHard": 1.25,
+  "phasePause": 0.8,
+  "phase3Speed": 0.85,
+  "warn": {
+   "normal": 2.2,
+   "hardcoreMult": 0.75
+  },
+  "enrage": {
+   "at": 70,
+   "every": 10,
+   "atk": 25,
+   "final": 100,
+   "doomEvery": 5,
+   "doomPct": 12,
+   "cap": 150
+  },
+  "interruptStun": 1.5,
+  "tapShieldBoss": 4,
+  "tapGap": 0.4,
+  "poisonPct": 0.5,
+  "tastePower": 0.5,
+  "tasteWarn": 1.5,
+  "minionPower": 0.3,
+  "tasteAt": [
+   1,
+   3
+  ],
+  "minibossAt": null,
+  "_minibossAt": "미니보스를 옮길 교전 번호(0부터). null이면 지금 자리(스테이지 10웨이브 = 연전 중간) 그대로"
+ },
+ "bosses": {
+  "boss_boar": {
+   "element": "earth",
+   "need": [
+    "frontline2"
+   ],
+   "good": [
+    "bighorn",
+    "dog",
+    "crow",
+    "rooster",
+    "fox",
+    "rabbit"
+   ],
+   "bad": [
+    "dog",
+    "fox",
+    "tiger",
+    "rooster",
+    "rabbit",
+    "wolf"
+   ],
+   "spell": "wall"
+  },
+  "boss_bat": {
+   "element": "moon",
+   "need": [
+    "antiAir"
+   ],
+   "good": [
+    "dog",
+    "bighorn",
+    "fox",
+    "crow",
+    "rooster",
+    "rabbit"
+   ],
+   "bad": [
+    "bighorn",
+    "ant",
+    "bear",
+    "wolf",
+    "monkey",
+    "frog"
+   ],
+   "spell": "chain"
+  },
+  "boss_shadow": {
+   "element": "moon",
+   "need": [
+    "spread"
+   ],
+   "good": [
+    "dog",
+    "bighorn",
+    "fox",
+    "rooster",
+    "ant",
+    "crow"
+   ],
+   "bad": [
+    "bear",
+    "bison",
+    "frog",
+    "wolf",
+    "rabbit",
+    "tiger"
+   ],
+   "spell": "meteor"
+  },
+  "boss_bone": {
+   "element": "earth",
+   "weak": [
+    "earth",
+    "light"
+   ],
+   "need": [
+    "push"
+   ],
+   "good": [
+    "bighorn",
+    "ant",
+    "bear",
+    "rooster",
+    "frog",
+    "monkey"
+   ],
+   "bad": [
+    "fox",
+    "crow",
+    "eagle",
+    "tiger",
+    "rabbit",
+    "dog"
+   ],
+   "spell": "gust"
+  },
+  "boss_frost": {
+   "element": "water",
+   "weak": [
+    "fire",
+    "light"
+   ],
+   "need": [
+    "ranged"
+   ],
+   "good": [
+    "dog",
+    "bighorn",
+    "fox",
+    "rooster",
+    "grasshopper",
+    "eagle"
+   ],
+   "bad": [
+    "wolf",
+    "monkey",
+    "frog",
+    "bear",
+    "ant",
+    "rabbit"
+   ],
+   "spell": "drum"
+  },
+  "boss_lich": {
+   "element": "moon",
+   "weak": [
+    "light"
+   ],
+   "need": [
+    "interrupt",
+    "backline"
+   ],
+   "good": [
+    "bighorn",
+    "ant",
+    "rooster",
+    "wolf",
+    "tiger",
+    "dog"
+   ],
+   "bad": [
+    "frog",
+    "bear",
+    "bison",
+    "grasshopper",
+    "rabbit",
+    "monkey"
+   ],
+   "spell": "wall"
+  },
+  "boss_lava": {
+   "element": "fire",
+   "weak": [
+    "water"
+   ],
+   "need": [
+    "tankSwap"
+   ],
+   "good": [
+    "bear",
+    "bison",
+    "bighorn",
+    "frog",
+    "rooster",
+    "ant"
+   ],
+   "bad": [
+    "dog",
+    "fox",
+    "crow",
+    "eagle",
+    "grasshopper",
+    "rabbit"
+   ],
+   "spell": "guard"
+  },
+  "boss_witch": {
+   "element": "water",
+   "weak": [
+    "light"
+   ],
+   "need": [
+    "healer"
+   ],
+   "good": [
+    "bear",
+    "dog",
+    "tiger",
+    "grasshopper",
+    "rooster",
+    "rabbit"
+   ],
+   "bad": [
+    "fox",
+    "wolf",
+    "monkey",
+    "bighorn",
+    "ant",
+    "eagle"
+   ],
+   "spell": "guard"
+  },
+  "boss_knight": {
+   "element": "moon",
+   "weak": [
+    "earth",
+    "light"
+   ],
+   "need": [
+    "guard"
+   ],
+   "good": [
+    "bighorn",
+    "dog",
+    "rooster",
+    "bear",
+    "monkey",
+    "fox"
+   ],
+   "bad": [
+    "crow",
+    "eagle",
+    "frog",
+    "rabbit",
+    "grasshopper",
+    "tiger"
+   ],
+   "spell": "snare"
+  },
+  "boss_gate": {
+   "element": "thunder",
+   "need": [
+    "allLanes"
+   ],
+   "good": [
+    "bear",
+    "bison",
+    "bighorn",
+    "ant",
+    "eagle",
+    "rooster"
+   ],
+   "bad": [
+    "frog",
+    "crow",
+    "monkey",
+    "wolf",
+    "tiger",
+    "rabbit"
+   ],
+   "spell": "meteor"
+  },
+  "boss_mole": {
+   "element": "grass",
+   "need": [
+    "flyer"
+   ],
+   "good": [
+    "dog",
+    "bighorn",
+    "crow",
+    "eagle",
+    "fox",
+    "monkey"
+   ],
+   "bad": [
+    "bear",
+    "bison",
+    "ant",
+    "frog",
+    "wolf",
+    "grasshopper"
+   ],
+   "spell": "chain"
+  },
+  "overlord": {
+   "phaseElements": [
+    "fire",
+    "moon",
+    null
+   ],
+   "need": [
+    "allround"
+   ],
+   "good": [
+    "frog",
+    "bear",
+    "rooster",
+    "dog",
+    "fox",
+    "eagle"
+   ],
+   "bad": [
+    "ant",
+    "bighorn",
+    "bison",
+    "grasshopper",
+    "crow",
+    "monkey"
+   ],
+   "spell": "guard"
+  }
+ }
+}

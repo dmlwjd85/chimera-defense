@@ -22,3 +22,12 @@ test('raid.json이 비면 예전(main) 게임과 결과가 똑같다', () => {
     assert.equal(fp({ ...BASE, raid: {} }, id, +seed, hard === 'true'), line);
   }
 });
+
+test('늦은 보스 6마리도 속성이 생기고(raid.json), 파일이 비면 예전처럼 속성 없음', async () => {
+  const { enemyElement } = await import('../src/logic/matchup.js');
+  const want = { boss_lava: 'fire', boss_witch: 'water', boss_knight: 'moon', boss_gate: 'thunder', boss_mole: 'grass', overlord: 'fire' };
+  for (const [id, el] of Object.entries(want)) {
+    assert.equal(enemyElement(BASE, { id: 'x' }, id), el, id);
+    assert.equal(enemyElement(OFF, { id: 'x' }, id), null, id);
+  }
+});

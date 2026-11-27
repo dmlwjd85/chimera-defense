@@ -4,6 +4,7 @@ import { button, title, style, panel } from './ui.js';
 import { buildData } from '../logic/data.js';
 import { writeSave, unlockGauge, setLegend } from '../logic/meta.js';
 import { drawGauge, showUnlockPicker } from './unlockFx.js';
+import { showMeterCard } from './meterUi.js';   // 딜 미터기(2026-11-28): 이번 판 전체·마지막 교전 기록
 
 const ACH = { firstSummon: '첫 소환', firstSpirit: '첫 영물', firstChimera: '첫 키메라', allRecipes: '레시피 7개 모두 발견', flawlessBoss: '무결점 보스 처치' };
 
@@ -66,6 +67,12 @@ export default class ResultScene extends Phaser.Scene {
     button(this, 770, 650, 200, 56, `🛒 상점 💰${save.pouch ?? 0}`, () => showShop(this, D, save, this.registry.get('storage'), () => this.scene.restart(d)), { size: 18, fill: 0x5a4a14, stroke: 0xffd84d });
     button(this, 990, 650, 200, 56, '📋 자세히', () => this.details(r), { size: 20 });
     if (r.pouchIn) this.add.text(640, 600, `💰 남은 금화 ${r.pouchIn} → 주머니(${r.pouch}) · 다음 스테이지에 들고 가거나 상점에서 써요`, style(15, '#ffd84d')).setOrigin(0.5);
+    // 딜 미터기: 이번 판 전체·마지막 교전(항목별 막대·숫자·1등)
+    if (d.meter?.run) {
+      const T = this.registry.get('T') ?? ((k) => k), names = d.meter.names ?? {};
+      const open = () => { if (this.meterCard) return; this.meterCard = showMeterCard(this, { tabs: [{ label: T('meter.run'), meter: d.meter.run, nameOf: (uid) => d.meter.runNames?.[uid] ?? names[uid] ?? '?' }, ...(d.meter.last ? [{ label: T('meter.last'), meter: d.meter.last }] : [])], nameOf: (uid) => names[uid] ?? '?', depth: 4500, onClose: () => { this.meterCard = null; } }); };
+      button(this, 1150, 40, 200, 40, T('meter.button'), open, { size: 16, fill: 0x24303f });
+    }
     this.input.keyboard.on('keydown-R', retry);
     this.input.keyboard.on('keydown-ESC', () => this.scene.start('Title'));
   }

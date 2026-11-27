@@ -33,3 +33,15 @@ for s in shown[:40]:
     ex.append(dict(t=round(s['t'], 2), who=names.get(s['who'], s['who']), shown=s['d'], real_drop_1s=round(sum(d[2] for d in c), 1)))
 out['examples'] = ex
 print(json.dumps(out, ensure_ascii=False, indent=1))
+
+if r.get('rows') is not None:
+    rows = r['rows']
+    first = hp[0]; last = hp[-1]
+    tot = {}
+    for x in rows:
+        if x['key']: tot[x['key']] = tot.get(x['key'], 0) + x['d']
+    worst = 0
+    for k in tot:
+        if k in first and k in last:
+            worst = max(worst, abs((last[k] - first[k]) - tot[k]))
+    print(json.dumps(dict(rows_shown=len(rows), texts=len(r['texts']), worst_gap_hp=round(worst, 2), kinds={k: sum(1 for x in rows if x['kind'] == k) for k in set(x['kind'] for x in rows)}, sample=[t['txt'] for t in r['texts'][:40]]), ensure_ascii=False))

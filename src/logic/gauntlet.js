@@ -584,8 +584,8 @@ function sub(state, data, d, g) {
   // 상태: 독·불·둔화·기절·저주
   for (const e of state.enemies) {
     if (!aliveE(e)) continue;
-    if (e.poisonLeft > 0) { e.poisonLeft -= d; hurtEnemy(state, data, e, e.poisonDps * d, null, true); }
-    if (e.burnLeft > 0) { e.burnLeft -= d; hurtEnemy(state, data, e, e.burnDps * d, null, true); }
+    if (e.poisonLeft > 0) { e.poisonLeft -= d; hurtEnemy(state, data, e, e.poisonDps * d, null, true, { kind: 'dot', cause: 'poison' }); }
+    if (e.burnLeft > 0) { e.burnLeft -= d; hurtEnemy(state, data, e, e.burnDps * d, null, true, { kind: 'dot', cause: 'burn' }); }
     if (e.slowLeft > 0) e.slowLeft -= d;
     if (e.curseLeft > 0) e.curseLeft -= d;
     if (e.elite === 'regen') setHp(state, e, Math.min(e.maxHp, e.hp + e.maxHp * 0.015 * d), 'regen', e, 'regen');

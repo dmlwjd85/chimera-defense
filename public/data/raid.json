@@ -196,7 +196,7 @@
      }
     }
    },
-   "hpMult": 0.6
+   "hpMult": 0.75
   },
   "boss_shadow": {
    "element": "moon",
@@ -273,7 +273,7 @@
      }
     }
    },
-   "hpMult": 0.65
+   "hpMult": 0.9
   },
   "boss_bone": {
    "element": "earth",
@@ -358,7 +358,7 @@
      }
     }
    },
-   "hpMult": 0.75
+   "hpMult": 0.85
   },
   "boss_frost": {
    "element": "water",
@@ -438,7 +438,7 @@
      }
     }
    },
-   "hpMult": 0.55
+   "hpMult": 0.75
   },
   "boss_lich": {
    "element": "moon",
@@ -524,7 +524,7 @@
      }
     }
    },
-   "hpMult": 0.8
+   "hpMult": 0.95
   },
   "boss_lava": {
    "element": "fire",
@@ -861,7 +861,7 @@
      }
     }
    },
-   "hpMult": 0.6
+   "hpMult": 0.7
   },
   "boss_mole": {
    "element": "grass",
@@ -939,7 +939,7 @@
      }
     }
    },
-   "hpMult": 1.4
+   "hpMult": 1.25
   },
   "overlord": {
    "phaseElements": [
@@ -1024,7 +1024,7 @@
      }
     }
    },
-   "hpMult": 0.5
+   "hpMult": 0.6
   },
   "miniboss": {
    "taste": true

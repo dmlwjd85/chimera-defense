@@ -37,6 +37,7 @@ export function buildData(raw) {
     tales: raw.tales ?? {}, talents: raw.talents ?? { branches: [], costs: [] }, talentById: Object.fromEntries((raw.talents?.branches ?? []).flatMap((b) => b.nodes.map((n, i) => [n.id, { ...n, branch: b.id, index: i }]))), relicCfg: raw.relics ?? { offerWaves: [], relics: [] }, relicById: Object.fromEntries((raw.relics?.relics ?? []).map((r) => [r.id, r])),
     unitById: indexById(units), recipeById: indexById([...recipes, ...crossRecipes]),
     enemyById: indexById(enemies), stageById: indexById(stages),
-    battlefield: raw.battlefield ?? null,   // 교전 땅·성·차원문 자리(public/data/battlefield.json)
+    battlefield: raw.battlefield ?? null,
+    raid: raw.raid && typeof raw.raid === 'object' ? raw.raid : null,   // 보스 레이드 패턴(public/data/raid.json, 없거나 비면 지금 규칙)   // 교전 땅·성·차원문 자리(public/data/battlefield.json)
   };
 }

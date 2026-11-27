@@ -1,0 +1,16 @@
+forest-1,3,false,clear,7,0,2,17985
+forest-1,3,true,clear,7,1,1,19580
+forest-1,11,false,clear,7,1,2,16830
+forest-1,11,true,clear,7,0,1,21390
+forest-3,3,false,clear,7,6,2,41900
+forest-3,3,true,lose,5,7,0,23015
+forest-3,11,false,lose,5,11,0,24985
+forest-3,11,true,lose,3,7,0,16520
+stage-6,3,false,lose,7,15,0,50935
+stage-6,3,true,clear,7,14,1,53665
+stage-6,11,false,clear,7,13,1,47595
+stage-6,11,true,lose,2,7,0,17665
+stage-12,3,false,lose,6,13,0,27390
+stage-12,3,true,lose,5,13,0,25185
+stage-12,11,false,lose,4,12,0,16850
+stage-12,11,true,lose,4,11,0,21245

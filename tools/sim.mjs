@@ -8,7 +8,7 @@ import { summonCost } from '../src/logic/economy.js';
 import { newRollCtx, rollSummon, advanceRollCtx } from '../src/logic/roulette.js';
 import { makeRng } from '../src/logic/rng.js';
 
-const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'talents', 'story'];
+const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'talents', 'story', 'raid'];
 const SPOTS = [3, 4.5, 6, 7.5, 2, 9];
 const PRIORITY = ['chimera', 'evolve', 'spirit'];
 const DT = 0.05, TURN = 0.5, MAX_TIME = 3600;

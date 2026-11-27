@@ -1,0 +1,668 @@
+{
+ "note": "ch_bison_monkey 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_bison_monkey",
+ "sheet": "dot-m-auto_bison_monkey",
+ "file": "assets/dotm/auto_bison_monkey.png",
+ "frameW": 116,
+ "frameH": 117,
+ "foot": 114,
+ "cols": 1,
+ "anchorX": 56,
+ "palette": [
+  "#0e0203",
+  "#200405",
+  "#291a1f",
+  "#3b3534",
+  "#3e110d",
+  "#51201b",
+  "#562920",
+  "#655a58",
+  "#7e3c2a",
+  "#9e4d40",
+  "#ae5f5c",
+  "#c0736e",
+  "#cf6e69",
+  "#da7c79",
+  "#efa198",
+  "#f8dcd5"
+ ],
+ "rects": {
+  "ch_bison_monkey_adult_a1_00": [
+   846,
+   114,
+   106,
+   79,
+   -53,
+   -81
+  ],
+  "ch_bison_monkey_adult_a1_01": [
+   106,
+   114,
+   106,
+   80,
+   -54,
+   -86
+  ],
+  "ch_bison_monkey_adult_a1_02": [
+   1289,
+   0,
+   110,
+   83,
+   -56,
+   -89
+  ],
+  "ch_bison_monkey_adult_a1_03": [
+   1400,
+   0,
+   112,
+   83,
+   -55,
+   -91
+  ],
+  "ch_bison_monkey_adult_a1_04": [
+   1834,
+   0,
+   113,
+   81,
+   -56,
+   -91
+  ],
+  "ch_bison_monkey_adult_a1_05": [
+   1513,
+   0,
+   109,
+   82,
+   -54,
+   -88
+  ],
+  "ch_bison_monkey_adult_a1_06": [
+   213,
+   114,
+   103,
+   80,
+   -51,
+   -82
+  ],
+  "ch_bison_monkey_adult_a1_07": [
+   953,
+   114,
+   103,
+   79,
+   -50,
+   -79
+  ],
+  "ch_bison_monkey_adult_a2_00": [
+   1694,
+   114,
+   103,
+   78,
+   -50,
+   -80
+  ],
+  "ch_bison_monkey_adult_a2_01": [
+   782,
+   0,
+   99,
+   89,
+   -52,
+   -93
+  ],
+  "ch_bison_monkey_adult_a2_02": [
+   579,
+   0,
+   99,
+   99,
+   -53,
+   -108
+  ],
+  "ch_bison_monkey_adult_a2_03": [
+   476,
+   0,
+   102,
+   100,
+   -54,
+   -111
+  ],
+  "ch_bison_monkey_adult_a2_04": [
+   679,
+   0,
+   102,
+   95,
+   -53,
+   -108
+  ],
+  "ch_bison_monkey_adult_a2_05": [
+   1088,
+   0,
+   96,
+   85,
+   -47,
+   -90
+  ],
+  "ch_bison_monkey_adult_a2_06": [
+   106,
+   196,
+   101,
+   75,
+   -48,
+   -77
+  ],
+  "ch_bison_monkey_adult_a2_07": [
+   1057,
+   114,
+   104,
+   79,
+   -51,
+   -79
+  ],
+  "ch_bison_monkey_adult_down_00": [
+   1162,
+   114,
+   106,
+   79,
+   -52,
+   -78
+  ],
+  "ch_bison_monkey_adult_down_01": [
+   208,
+   196,
+   106,
+   75,
+   -51,
+   -74
+  ],
+  "ch_bison_monkey_adult_down_02": [
+   420,
+   196,
+   106,
+   65,
+   -50,
+   -66
+  ],
+  "ch_bison_monkey_adult_down_03": [
+   527,
+   196,
+   112,
+   57,
+   -52,
+   -56
+  ],
+  "ch_bison_monkey_adult_down_04": [
+   640,
+   196,
+   112,
+   53,
+   -54,
+   -52
+  ],
+  "ch_bison_monkey_adult_down_05": [
+   753,
+   196,
+   114,
+   52,
+   -55,
+   -51
+  ],
+  "ch_bison_monkey_adult_el_00": [
+   315,
+   196,
+   104,
+   75,
+   -51,
+   -76
+  ],
+  "ch_bison_monkey_adult_el_01": [
+   882,
+   0,
+   102,
+   89,
+   -53,
+   -91
+  ],
+  "ch_bison_monkey_adult_el_02": [
+   282,
+   0,
+   95,
+   104,
+   -52,
+   -106
+  ],
+  "ch_bison_monkey_adult_el_03": [
+   0,
+   0,
+   92,
+   113,
+   -52,
+   -115
+  ],
+  "ch_bison_monkey_adult_el_04": [
+   93,
+   0,
+   93,
+   111,
+   -53,
+   -113
+  ],
+  "ch_bison_monkey_adult_el_05": [
+   187,
+   0,
+   94,
+   110,
+   -53,
+   -112
+  ],
+  "ch_bison_monkey_adult_el_06": [
+   378,
+   0,
+   97,
+   101,
+   -51,
+   -103
+  ],
+  "ch_bison_monkey_adult_el_07": [
+   985,
+   0,
+   102,
+   86,
+   -50,
+   -87
+  ],
+  "ch_bison_monkey_adult_hit_00": [
+   1798,
+   114,
+   105,
+   78,
+   -52,
+   -78
+  ],
+  "ch_bison_monkey_adult_hit_01": [
+   0,
+   196,
+   105,
+   76,
+   -52,
+   -76
+  ],
+  "ch_bison_monkey_adult_hit_02": [
+   1623,
+   0,
+   105,
+   82,
+   -53,
+   -82
+  ],
+  "ch_bison_monkey_adult_hit_03": [
+   1185,
+   0,
+   103,
+   85,
+   -52,
+   -85
+  ],
+  "ch_bison_monkey_adult_idle_00": [
+   1269,
+   114,
+   105,
+   79,
+   -51,
+   -79
+  ],
+  "ch_bison_monkey_adult_idle_01": [
+   1375,
+   114,
+   105,
+   79,
+   -51,
+   -79
+  ],
+  "ch_bison_monkey_adult_idle_02": [
+   1481,
+   114,
+   105,
+   79,
+   -52,
+   -79
+  ],
+  "ch_bison_monkey_adult_idle_03": [
+   317,
+   114,
+   105,
+   80,
+   -52,
+   -80
+  ],
+  "ch_bison_monkey_adult_walk_00": [
+   423,
+   114,
+   105,
+   80,
+   -52,
+   -80
+  ],
+  "ch_bison_monkey_adult_walk_01": [
+   0,
+   114,
+   105,
+   81,
+   -52,
+   -81
+  ],
+  "ch_bison_monkey_adult_walk_02": [
+   1729,
+   0,
+   104,
+   82,
+   -51,
+   -82
+  ],
+  "ch_bison_monkey_adult_walk_03": [
+   529,
+   114,
+   104,
+   80,
+   -51,
+   -80
+  ],
+  "ch_bison_monkey_adult_walk_04": [
+   1904,
+   114,
+   105,
+   78,
+   -52,
+   -79
+  ],
+  "ch_bison_monkey_adult_walk_05": [
+   1587,
+   114,
+   106,
+   79,
+   -53,
+   -81
+  ],
+  "ch_bison_monkey_adult_walk_06": [
+   634,
+   114,
+   105,
+   80,
+   -52,
+   -82
+  ],
+  "ch_bison_monkey_adult_walk_07": [
+   740,
+   114,
+   105,
+   80,
+   -52,
+   -80
+  ]
+ },
+ "frames": [
+  "ch_bison_monkey_adult_a1_00",
+  "ch_bison_monkey_adult_a1_01",
+  "ch_bison_monkey_adult_a1_02",
+  "ch_bison_monkey_adult_a1_03",
+  "ch_bison_monkey_adult_a1_04",
+  "ch_bison_monkey_adult_a1_05",
+  "ch_bison_monkey_adult_a1_06",
+  "ch_bison_monkey_adult_a1_07",
+  "ch_bison_monkey_adult_a2_00",
+  "ch_bison_monkey_adult_a2_01",
+  "ch_bison_monkey_adult_a2_02",
+  "ch_bison_monkey_adult_a2_03",
+  "ch_bison_monkey_adult_a2_04",
+  "ch_bison_monkey_adult_a2_05",
+  "ch_bison_monkey_adult_a2_06",
+  "ch_bison_monkey_adult_a2_07",
+  "ch_bison_monkey_adult_down_00",
+  "ch_bison_monkey_adult_down_01",
+  "ch_bison_monkey_adult_down_02",
+  "ch_bison_monkey_adult_down_03",
+  "ch_bison_monkey_adult_down_04",
+  "ch_bison_monkey_adult_down_05",
+  "ch_bison_monkey_adult_el_00",
+  "ch_bison_monkey_adult_el_01",
+  "ch_bison_monkey_adult_el_02",
+  "ch_bison_monkey_adult_el_03",
+  "ch_bison_monkey_adult_el_04",
+  "ch_bison_monkey_adult_el_05",
+  "ch_bison_monkey_adult_el_06",
+  "ch_bison_monkey_adult_el_07",
+  "ch_bison_monkey_adult_hit_00",
+  "ch_bison_monkey_adult_hit_01",
+  "ch_bison_monkey_adult_hit_02",
+  "ch_bison_monkey_adult_hit_03",
+  "ch_bison_monkey_adult_idle_00",
+  "ch_bison_monkey_adult_idle_01",
+  "ch_bison_monkey_adult_idle_02",
+  "ch_bison_monkey_adult_idle_03",
+  "ch_bison_monkey_adult_walk_00",
+  "ch_bison_monkey_adult_walk_01",
+  "ch_bison_monkey_adult_walk_02",
+  "ch_bison_monkey_adult_walk_03",
+  "ch_bison_monkey_adult_walk_04",
+  "ch_bison_monkey_adult_walk_05",
+  "ch_bison_monkey_adult_walk_06",
+  "ch_bison_monkey_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bison_monkey_adult_idle_00",
+  "ch_bison_monkey_adult_idle_01",
+  "ch_bison_monkey_adult_idle_02",
+  "ch_bison_monkey_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 35,
+   "attack": {
+    "frames": [
+     "ch_bison_monkey_adult_a1_00",
+     "ch_bison_monkey_adult_a1_01",
+     "ch_bison_monkey_adult_a1_02",
+     "ch_bison_monkey_adult_a1_03",
+     "ch_bison_monkey_adult_a1_04",
+     "ch_bison_monkey_adult_a1_05",
+     "ch_bison_monkey_adult_a1_06",
+     "ch_bison_monkey_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bison_monkey_adult_a2_00",
+     "ch_bison_monkey_adult_a2_01",
+     "ch_bison_monkey_adult_a2_02",
+     "ch_bison_monkey_adult_a2_03",
+     "ch_bison_monkey_adult_a2_04",
+     "ch_bison_monkey_adult_a2_05",
+     "ch_bison_monkey_adult_a2_06",
+     "ch_bison_monkey_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bison_monkey_adult_down_00",
+     "ch_bison_monkey_adult_down_01",
+     "ch_bison_monkey_adult_down_02",
+     "ch_bison_monkey_adult_down_03",
+     "ch_bison_monkey_adult_down_04",
+     "ch_bison_monkey_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_bison_monkey_adult_el_00",
+     "ch_bison_monkey_adult_el_01",
+     "ch_bison_monkey_adult_el_02",
+     "ch_bison_monkey_adult_el_03",
+     "ch_bison_monkey_adult_el_04",
+     "ch_bison_monkey_adult_el_05",
+     "ch_bison_monkey_adult_el_06",
+     "ch_bison_monkey_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bison_monkey_adult_hit_00",
+     "ch_bison_monkey_adult_hit_01",
+     "ch_bison_monkey_adult_hit_02",
+     "ch_bison_monkey_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bison_monkey_adult_idle_00",
+     "ch_bison_monkey_adult_idle_01",
+     "ch_bison_monkey_adult_idle_02",
+     "ch_bison_monkey_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bison_monkey_adult_walk_00",
+     "ch_bison_monkey_adult_walk_01",
+     "ch_bison_monkey_adult_walk_02",
+     "ch_bison_monkey_adult_walk_03",
+     "ch_bison_monkey_adult_walk_04",
+     "ch_bison_monkey_adult_walk_05",
+     "ch_bison_monkey_adult_walk_06",
+     "ch_bison_monkey_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bison_monkey_adult_down_00",
+     "ch_bison_monkey_adult_down_01",
+     "ch_bison_monkey_adult_down_02",
+     "ch_bison_monkey_adult_down_03",
+     "ch_bison_monkey_adult_down_04",
+     "ch_bison_monkey_adult_down_05",
+     "ch_bison_monkey_adult_down_04",
+     "ch_bison_monkey_adult_down_03",
+     "ch_bison_monkey_adult_down_02",
+     "ch_bison_monkey_adult_down_01",
+     "ch_bison_monkey_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bison_monkey"
+}

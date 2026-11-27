@@ -1,0 +1,552 @@
+{
+ "note": "en_boss_witch 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_witch",
+ "sheet": "dot-m-en_boss_witch",
+ "file": "assets/dotm/en_boss_witch.png",
+ "frameW": 126,
+ "frameH": 165,
+ "foot": 162,
+ "cols": 1,
+ "anchorX": 64,
+ "palette": [
+  "#1b0c08",
+  "#291a1f",
+  "#413143",
+  "#433d2d",
+  "#515332",
+  "#543129",
+  "#605c3f",
+  "#6c493e",
+  "#6c6e44",
+  "#7e8052",
+  "#815955",
+  "#838f40",
+  "#939563",
+  "#9ca87b",
+  "#c0a880",
+  "#d190e4"
+ ],
+ "rects": {
+  "en_boss_witch_adult_a1_00": [
+   1199,
+   0,
+   82,
+   90,
+   -41,
+   -90
+  ],
+  "en_boss_witch_adult_a1_01": [
+   525,
+   0,
+   89,
+   93,
+   -43,
+   -93
+  ],
+  "en_boss_witch_adult_a1_02": [
+   1282,
+   0,
+   85,
+   90,
+   -46,
+   -90
+  ],
+  "en_boss_witch_adult_a1_03": [
+   1368,
+   0,
+   108,
+   90,
+   -48,
+   -90
+  ],
+  "en_boss_witch_adult_a1_04": [
+   1477,
+   0,
+   111,
+   90,
+   -50,
+   -90
+  ],
+  "en_boss_witch_adult_a1_05": [
+   1589,
+   0,
+   109,
+   90,
+   -49,
+   -90
+  ],
+  "en_boss_witch_adult_a1_06": [
+   332,
+   164,
+   107,
+   87,
+   -47,
+   -87
+  ],
+  "en_boss_witch_adult_a1_07": [
+   440,
+   164,
+   96,
+   87,
+   -41,
+   -87
+  ],
+  "en_boss_witch_adult_down_00": [
+   1944,
+   0,
+   78,
+   89,
+   -38,
+   -88
+  ],
+  "en_boss_witch_adult_down_01": [
+   704,
+   164,
+   79,
+   86,
+   -36,
+   -86
+  ],
+  "en_boss_witch_adult_down_02": [
+   869,
+   164,
+   100,
+   79,
+   -45,
+   -79
+  ],
+  "en_boss_witch_adult_down_03": [
+   970,
+   164,
+   107,
+   72,
+   -53,
+   -74
+  ],
+  "en_boss_witch_adult_down_04": [
+   1078,
+   164,
+   121,
+   53,
+   -63,
+   -52
+  ],
+  "en_boss_witch_adult_down_05": [
+   1200,
+   164,
+   126,
+   47,
+   -64,
+   -46
+  ],
+  "en_boss_witch_adult_el_00": [
+   784,
+   164,
+   84,
+   86,
+   -40,
+   -86
+  ],
+  "en_boss_witch_adult_el_01": [
+   446,
+   0,
+   78,
+   110,
+   -38,
+   -110
+  ],
+  "en_boss_witch_adult_el_02": [
+   269,
+   0,
+   88,
+   159,
+   -58,
+   -159
+  ],
+  "en_boss_witch_adult_el_03": [
+   0,
+   0,
+   90,
+   163,
+   -63,
+   -163
+  ],
+  "en_boss_witch_adult_el_04": [
+   91,
+   0,
+   89,
+   163,
+   -62,
+   -163
+  ],
+  "en_boss_witch_adult_el_05": [
+   181,
+   0,
+   87,
+   163,
+   -60,
+   -163
+  ],
+  "en_boss_witch_adult_el_06": [
+   358,
+   0,
+   87,
+   124,
+   -47,
+   -124
+  ],
+  "en_boss_witch_adult_el_07": [
+   615,
+   0,
+   87,
+   92,
+   -42,
+   -92
+  ],
+  "en_boss_witch_adult_hit_00": [
+   537,
+   164,
+   81,
+   87,
+   -40,
+   -87
+  ],
+  "en_boss_witch_adult_hit_01": [
+   868,
+   0,
+   81,
+   91,
+   -40,
+   -91
+  ],
+  "en_boss_witch_adult_hit_02": [
+   703,
+   0,
+   81,
+   92,
+   -42,
+   -92
+  ],
+  "en_boss_witch_adult_idle_00": [
+   1699,
+   0,
+   82,
+   90,
+   -41,
+   -90
+  ],
+  "en_boss_witch_adult_idle_01": [
+   785,
+   0,
+   82,
+   92,
+   -41,
+   -92
+  ],
+  "en_boss_witch_adult_idle_02": [
+   950,
+   0,
+   82,
+   91,
+   -41,
+   -91
+  ],
+  "en_boss_witch_adult_idle_03": [
+   0,
+   164,
+   82,
+   89,
+   -41,
+   -89
+  ],
+  "en_boss_witch_adult_walk_00": [
+   83,
+   164,
+   81,
+   89,
+   -40,
+   -90
+  ],
+  "en_boss_witch_adult_walk_01": [
+   1782,
+   0,
+   80,
+   90,
+   -39,
+   -91
+  ],
+  "en_boss_witch_adult_walk_02": [
+   1863,
+   0,
+   80,
+   90,
+   -38,
+   -90
+  ],
+  "en_boss_witch_adult_walk_03": [
+   619,
+   164,
+   84,
+   87,
+   -41,
+   -87
+  ],
+  "en_boss_witch_adult_walk_04": [
+   165,
+   164,
+   83,
+   89,
+   -40,
+   -89
+  ],
+  "en_boss_witch_adult_walk_05": [
+   1033,
+   0,
+   82,
+   91,
+   -39,
+   -91
+  ],
+  "en_boss_witch_adult_walk_06": [
+   1116,
+   0,
+   82,
+   91,
+   -40,
+   -91
+  ],
+  "en_boss_witch_adult_walk_07": [
+   249,
+   164,
+   82,
+   89,
+   -41,
+   -89
+  ]
+ },
+ "frames": [
+  "en_boss_witch_adult_a1_00",
+  "en_boss_witch_adult_a1_01",
+  "en_boss_witch_adult_a1_02",
+  "en_boss_witch_adult_a1_03",
+  "en_boss_witch_adult_a1_04",
+  "en_boss_witch_adult_a1_05",
+  "en_boss_witch_adult_a1_06",
+  "en_boss_witch_adult_a1_07",
+  "en_boss_witch_adult_down_00",
+  "en_boss_witch_adult_down_01",
+  "en_boss_witch_adult_down_02",
+  "en_boss_witch_adult_down_03",
+  "en_boss_witch_adult_down_04",
+  "en_boss_witch_adult_down_05",
+  "en_boss_witch_adult_el_00",
+  "en_boss_witch_adult_el_01",
+  "en_boss_witch_adult_el_02",
+  "en_boss_witch_adult_el_03",
+  "en_boss_witch_adult_el_04",
+  "en_boss_witch_adult_el_05",
+  "en_boss_witch_adult_el_06",
+  "en_boss_witch_adult_el_07",
+  "en_boss_witch_adult_hit_00",
+  "en_boss_witch_adult_hit_01",
+  "en_boss_witch_adult_hit_02",
+  "en_boss_witch_adult_idle_00",
+  "en_boss_witch_adult_idle_01",
+  "en_boss_witch_adult_idle_02",
+  "en_boss_witch_adult_idle_03",
+  "en_boss_witch_adult_walk_00",
+  "en_boss_witch_adult_walk_01",
+  "en_boss_witch_adult_walk_02",
+  "en_boss_witch_adult_walk_03",
+  "en_boss_witch_adult_walk_04",
+  "en_boss_witch_adult_walk_05",
+  "en_boss_witch_adult_walk_06",
+  "en_boss_witch_adult_walk_07"
+ ],
+ "standing": [
+  "en_boss_witch_adult_idle_00",
+  "en_boss_witch_adult_idle_01",
+  "en_boss_witch_adult_idle_02",
+  "en_boss_witch_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 71,
+   "attack": {
+    "frames": [
+     "en_boss_witch_adult_a1_00",
+     "en_boss_witch_adult_a1_01",
+     "en_boss_witch_adult_a1_02",
+     "en_boss_witch_adult_a1_03",
+     "en_boss_witch_adult_a1_04",
+     "en_boss_witch_adult_a1_05",
+     "en_boss_witch_adult_a1_06",
+     "en_boss_witch_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_witch_adult_down_00",
+     "en_boss_witch_adult_down_01",
+     "en_boss_witch_adult_down_02",
+     "en_boss_witch_adult_down_03",
+     "en_boss_witch_adult_down_04",
+     "en_boss_witch_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_witch_adult_el_00",
+     "en_boss_witch_adult_el_01",
+     "en_boss_witch_adult_el_02",
+     "en_boss_witch_adult_el_03",
+     "en_boss_witch_adult_el_04",
+     "en_boss_witch_adult_el_05",
+     "en_boss_witch_adult_el_06",
+     "en_boss_witch_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "en_boss_witch_adult_hit_00",
+     "en_boss_witch_adult_hit_01",
+     "en_boss_witch_adult_hit_02"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_witch_adult_idle_00",
+     "en_boss_witch_adult_idle_01",
+     "en_boss_witch_adult_idle_02",
+     "en_boss_witch_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_boss_witch_adult_walk_00",
+     "en_boss_witch_adult_walk_01",
+     "en_boss_witch_adult_walk_02",
+     "en_boss_witch_adult_walk_03",
+     "en_boss_witch_adult_walk_04",
+     "en_boss_witch_adult_walk_05",
+     "en_boss_witch_adult_walk_06",
+     "en_boss_witch_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_boss_witch_adult_down_00",
+     "en_boss_witch_adult_down_01",
+     "en_boss_witch_adult_down_02",
+     "en_boss_witch_adult_down_03",
+     "en_boss_witch_adult_down_04",
+     "en_boss_witch_adult_down_05",
+     "en_boss_witch_adult_down_04",
+     "en_boss_witch_adult_down_03",
+     "en_boss_witch_adult_down_02",
+     "en_boss_witch_adult_down_01",
+     "en_boss_witch_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

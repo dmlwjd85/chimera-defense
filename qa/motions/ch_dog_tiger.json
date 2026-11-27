@@ -1,0 +1,53 @@
+{
+ "species": "ch_dog_tiger",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 11.4,
+   "foot±": 1
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 10.1,
+   "foot±": 0
+  },
+  "adult_down": {
+   "n": 5,
+   "max|h%|": 41.8,
+   "foot±": 2
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 10.1,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 6.3,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.3,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 3.8,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   215
+  ],
+  "box": [
+   108,
+   90
+  ],
+  "frames": 45,
+  "colors": 16,
+  "px": 440320
+ }
+}

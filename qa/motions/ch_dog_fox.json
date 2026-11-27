@@ -1,0 +1,53 @@
+{
+ "species": "ch_dog_fox",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 8.5,
+   "foot±": 0
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 7.3,
+   "foot±": 26
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 35.4,
+   "foot±": 2
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 3.7,
+   "foot±": 3
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 9.8,
+   "foot±": 6
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.4,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.4,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   224
+  ],
+  "box": [
+   109,
+   107
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 458752
+ }
+}

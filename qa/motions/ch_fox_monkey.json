@@ -1,0 +1,53 @@
+{
+ "species": "ch_fox_monkey",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 31.0,
+   "foot±": 3
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 10.3,
+   "foot±": 20
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 5.7,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 9.2,
+   "foot±": 3
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 27.6,
+   "foot±": 4
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.3,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.3,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   287
+  ],
+  "box": [
+   113,
+   118
+  ],
+  "frames": 48,
+  "colors": 16,
+  "px": 587776
+ }
+}

@@ -1,0 +1,53 @@
+{
+ "species": "ch_bison_tiger",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 7.3,
+   "foot±": 2
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 3.7,
+   "foot±": 2
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 22.0,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 2.4,
+   "foot±": 2
+  },
+  "adult_hit": {
+   "n": 2,
+   "max|h%|": 3.7,
+   "foot±": 4
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 0.0,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 1.2,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   251
+  ],
+  "box": [
+   117,
+   92
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 514048
+ }
+}

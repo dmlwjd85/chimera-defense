@@ -1,0 +1,48 @@
+{
+ "species": "en_boss_gate",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 3.8,
+   "foot±": 1
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 57.7,
+   "foot±": 3
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 6.4,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 2,
+   "max|h%|": 2.6,
+   "foot±": 1
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.3,
+   "foot±": 2
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 1.3,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   156
+  ],
+  "box": [
+   145,
+   85
+  ],
+  "frames": 36,
+  "colors": 16,
+  "px": 319488
+ }
+}

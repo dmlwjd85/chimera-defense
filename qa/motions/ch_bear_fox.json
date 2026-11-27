@@ -1,0 +1,53 @@
+{
+ "species": "ch_bear_fox",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 4.7,
+   "foot±": 2
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 31.4,
+   "foot±": 2
+  },
+  "adult_down": {
+   "n": 1,
+   "max|h%|": 1.2,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 7.0,
+   "foot±": 2
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 7.0,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.3,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 7.0,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   291
+  ],
+  "box": [
+   112,
+   116
+  ],
+  "frames": 41,
+  "colors": 16,
+  "px": 595968
+ }
+}

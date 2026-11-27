@@ -1,0 +1,48 @@
+{
+ "species": "en_boss_mole",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 9.3,
+   "foot±": 1
+  },
+  "adult_down": {
+   "n": 4,
+   "max|h%|": 46.5,
+   "foot±": 2
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 16.3,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 2,
+   "max|h%|": 3.5,
+   "foot±": 1
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 4.7,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 5.8,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   174
+  ],
+  "box": [
+   128,
+   93
+  ],
+  "frames": 34,
+  "colors": 16,
+  "px": 356352
+ }
+}

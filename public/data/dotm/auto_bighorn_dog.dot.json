@@ -1,0 +1,590 @@
+{
+ "note": "ch_bighorn_dog 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_bighorn_dog",
+ "sheet": "dot-m-auto_bighorn_dog",
+ "file": "assets/dotm/auto_bighorn_dog.png",
+ "frameW": 103,
+ "frameH": 93,
+ "foot": 91,
+ "cols": 1,
+ "anchorX": 52,
+ "palette": [
+  "#291a1f",
+  "#461609",
+  "#6e3623",
+  "#8e5236",
+  "#aa7353",
+  "#ae2d33",
+  "#c17544",
+  "#c3926f",
+  "#d2ad85",
+  "#e3ba98",
+  "#e84f46",
+  "#e8aa7b",
+  "#eb9f60",
+  "#f3d2a5",
+  "#f59c4f",
+  "#fce5c1"
+ ],
+ "rects": {
+  "ch_bighorn_dog_adult_a1_00": [
+   0,
+   89,
+   88,
+   79,
+   -44,
+   -79
+  ],
+  "ch_bighorn_dog_adult_a1_01": [
+   461,
+   89,
+   91,
+   77,
+   -47,
+   -77
+  ],
+  "ch_bighorn_dog_adult_a1_02": [
+   823,
+   89,
+   93,
+   76,
+   -49,
+   -82
+  ],
+  "ch_bighorn_dog_adult_a1_03": [
+   272,
+   89,
+   96,
+   78,
+   -52,
+   -86
+  ],
+  "ch_bighorn_dog_adult_a1_04": [
+   1092,
+   89,
+   94,
+   73,
+   -48,
+   -83
+  ],
+  "ch_bighorn_dog_adult_a1_05": [
+   553,
+   89,
+   89,
+   77,
+   -45,
+   -80
+  ],
+  "ch_bighorn_dog_adult_a1_06": [
+   917,
+   89,
+   87,
+   76,
+   -44,
+   -78
+  ],
+  "ch_bighorn_dog_adult_a1_07": [
+   1132,
+   0,
+   84,
+   81,
+   -42,
+   -81
+  ],
+  "ch_bighorn_dog_adult_a2_00": [
+   1742,
+   0,
+   85,
+   80,
+   -42,
+   -80
+  ],
+  "ch_bighorn_dog_adult_a2_01": [
+   1005,
+   89,
+   86,
+   76,
+   -42,
+   -76
+  ],
+  "ch_bighorn_dog_adult_a2_02": [
+   643,
+   89,
+   87,
+   77,
+   -45,
+   -79
+  ],
+  "ch_bighorn_dog_adult_a2_03": [
+   1217,
+   0,
+   92,
+   81,
+   -52,
+   -84
+  ],
+  "ch_bighorn_dog_adult_a2_04": [
+   88,
+   0,
+   91,
+   87,
+   -52,
+   -90
+  ],
+  "ch_bighorn_dog_adult_a2_05": [
+   180,
+   0,
+   90,
+   87,
+   -51,
+   -92
+  ],
+  "ch_bighorn_dog_adult_a2_06": [
+   1275,
+   89,
+   91,
+   71,
+   -47,
+   -75
+  ],
+  "ch_bighorn_dog_adult_a2_07": [
+   271,
+   0,
+   84,
+   85,
+   -42,
+   -85
+  ],
+  "ch_bighorn_dog_adult_down_00": [
+   1187,
+   89,
+   87,
+   72,
+   -40,
+   -73
+  ],
+  "ch_bighorn_dog_adult_down_01": [
+   1367,
+   89,
+   90,
+   58,
+   -41,
+   -58
+  ],
+  "ch_bighorn_dog_adult_down_02": [
+   1458,
+   89,
+   94,
+   55,
+   -43,
+   -55
+  ],
+  "ch_bighorn_dog_adult_el_00": [
+   1828,
+   0,
+   87,
+   80,
+   -44,
+   -80
+  ],
+  "ch_bighorn_dog_adult_el_01": [
+   369,
+   89,
+   91,
+   78,
+   -48,
+   -79
+  ],
+  "ch_bighorn_dog_adult_el_02": [
+   0,
+   0,
+   87,
+   88,
+   -48,
+   -91
+  ],
+  "ch_bighorn_dog_adult_el_03": [
+   1310,
+   0,
+   89,
+   81,
+   -45,
+   -81
+  ],
+  "ch_bighorn_dog_adult_el_04": [
+   704,
+   0,
+   85,
+   82,
+   -42,
+   -82
+  ],
+  "ch_bighorn_dog_adult_hit_00": [
+   89,
+   89,
+   90,
+   79,
+   -46,
+   -79
+  ],
+  "ch_bighorn_dog_adult_hit_01": [
+   731,
+   89,
+   91,
+   77,
+   -48,
+   -77
+  ],
+  "ch_bighorn_dog_adult_hit_02": [
+   180,
+   89,
+   91,
+   79,
+   -48,
+   -79
+  ],
+  "ch_bighorn_dog_adult_hit_03": [
+   356,
+   0,
+   86,
+   83,
+   -44,
+   -83
+  ],
+  "ch_bighorn_dog_adult_idle_00": [
+   1400,
+   0,
+   84,
+   81,
+   -42,
+   -81
+  ],
+  "ch_bighorn_dog_adult_idle_01": [
+   1485,
+   0,
+   84,
+   81,
+   -42,
+   -81
+  ],
+  "ch_bighorn_dog_adult_idle_02": [
+   790,
+   0,
+   84,
+   82,
+   -42,
+   -82
+  ],
+  "ch_bighorn_dog_adult_idle_03": [
+   875,
+   0,
+   84,
+   82,
+   -42,
+   -82
+  ],
+  "ch_bighorn_dog_adult_walk_00": [
+   443,
+   0,
+   84,
+   83,
+   -42,
+   -83
+  ],
+  "ch_bighorn_dog_adult_walk_01": [
+   1570,
+   0,
+   84,
+   81,
+   -42,
+   -83
+  ],
+  "ch_bighorn_dog_adult_walk_02": [
+   1655,
+   0,
+   86,
+   81,
+   -44,
+   -83
+  ],
+  "ch_bighorn_dog_adult_walk_03": [
+   1916,
+   0,
+   87,
+   80,
+   -45,
+   -82
+  ],
+  "ch_bighorn_dog_adult_walk_04": [
+   528,
+   0,
+   87,
+   83,
+   -45,
+   -83
+  ],
+  "ch_bighorn_dog_adult_walk_05": [
+   616,
+   0,
+   87,
+   83,
+   -45,
+   -83
+  ],
+  "ch_bighorn_dog_adult_walk_06": [
+   960,
+   0,
+   86,
+   82,
+   -44,
+   -82
+  ],
+  "ch_bighorn_dog_adult_walk_07": [
+   1047,
+   0,
+   84,
+   82,
+   -42,
+   -82
+  ]
+ },
+ "frames": [
+  "ch_bighorn_dog_adult_a1_00",
+  "ch_bighorn_dog_adult_a1_01",
+  "ch_bighorn_dog_adult_a1_02",
+  "ch_bighorn_dog_adult_a1_03",
+  "ch_bighorn_dog_adult_a1_04",
+  "ch_bighorn_dog_adult_a1_05",
+  "ch_bighorn_dog_adult_a1_06",
+  "ch_bighorn_dog_adult_a1_07",
+  "ch_bighorn_dog_adult_a2_00",
+  "ch_bighorn_dog_adult_a2_01",
+  "ch_bighorn_dog_adult_a2_02",
+  "ch_bighorn_dog_adult_a2_03",
+  "ch_bighorn_dog_adult_a2_04",
+  "ch_bighorn_dog_adult_a2_05",
+  "ch_bighorn_dog_adult_a2_06",
+  "ch_bighorn_dog_adult_a2_07",
+  "ch_bighorn_dog_adult_down_00",
+  "ch_bighorn_dog_adult_down_01",
+  "ch_bighorn_dog_adult_down_02",
+  "ch_bighorn_dog_adult_el_00",
+  "ch_bighorn_dog_adult_el_01",
+  "ch_bighorn_dog_adult_el_02",
+  "ch_bighorn_dog_adult_el_03",
+  "ch_bighorn_dog_adult_el_04",
+  "ch_bighorn_dog_adult_hit_00",
+  "ch_bighorn_dog_adult_hit_01",
+  "ch_bighorn_dog_adult_hit_02",
+  "ch_bighorn_dog_adult_hit_03",
+  "ch_bighorn_dog_adult_idle_00",
+  "ch_bighorn_dog_adult_idle_01",
+  "ch_bighorn_dog_adult_idle_02",
+  "ch_bighorn_dog_adult_idle_03",
+  "ch_bighorn_dog_adult_walk_00",
+  "ch_bighorn_dog_adult_walk_01",
+  "ch_bighorn_dog_adult_walk_02",
+  "ch_bighorn_dog_adult_walk_03",
+  "ch_bighorn_dog_adult_walk_04",
+  "ch_bighorn_dog_adult_walk_05",
+  "ch_bighorn_dog_adult_walk_06",
+  "ch_bighorn_dog_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bighorn_dog_adult_idle_00",
+  "ch_bighorn_dog_adult_idle_01",
+  "ch_bighorn_dog_adult_idle_02",
+  "ch_bighorn_dog_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 10,
+   "attack": {
+    "frames": [
+     "ch_bighorn_dog_adult_a1_00",
+     "ch_bighorn_dog_adult_a1_01",
+     "ch_bighorn_dog_adult_a1_02",
+     "ch_bighorn_dog_adult_a1_03",
+     "ch_bighorn_dog_adult_a1_04",
+     "ch_bighorn_dog_adult_a1_05",
+     "ch_bighorn_dog_adult_a1_06",
+     "ch_bighorn_dog_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bighorn_dog_adult_a2_00",
+     "ch_bighorn_dog_adult_a2_01",
+     "ch_bighorn_dog_adult_a2_02",
+     "ch_bighorn_dog_adult_a2_03",
+     "ch_bighorn_dog_adult_a2_04",
+     "ch_bighorn_dog_adult_a2_05",
+     "ch_bighorn_dog_adult_a2_06",
+     "ch_bighorn_dog_adult_a2_07"
+    ],
+    "durs": [
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.114,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bighorn_dog_adult_down_00",
+     "ch_bighorn_dog_adult_down_01",
+     "ch_bighorn_dog_adult_down_02"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_bighorn_dog_adult_el_00",
+     "ch_bighorn_dog_adult_el_01",
+     "ch_bighorn_dog_adult_el_02",
+     "ch_bighorn_dog_adult_el_03",
+     "ch_bighorn_dog_adult_el_04"
+    ],
+    "durs": [
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.185,
+      "cast"
+     ],
+     [
+      0.195,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bighorn_dog_adult_hit_00",
+     "ch_bighorn_dog_adult_hit_01",
+     "ch_bighorn_dog_adult_hit_02",
+     "ch_bighorn_dog_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bighorn_dog_adult_idle_00",
+     "ch_bighorn_dog_adult_idle_01",
+     "ch_bighorn_dog_adult_idle_02",
+     "ch_bighorn_dog_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bighorn_dog_adult_walk_00",
+     "ch_bighorn_dog_adult_walk_01",
+     "ch_bighorn_dog_adult_walk_02",
+     "ch_bighorn_dog_adult_walk_03",
+     "ch_bighorn_dog_adult_walk_04",
+     "ch_bighorn_dog_adult_walk_05",
+     "ch_bighorn_dog_adult_walk_06",
+     "ch_bighorn_dog_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bighorn_dog_adult_down_00",
+     "ch_bighorn_dog_adult_down_01",
+     "ch_bighorn_dog_adult_down_02",
+     "ch_bighorn_dog_adult_down_01",
+     "ch_bighorn_dog_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bighorn_dog"
+}

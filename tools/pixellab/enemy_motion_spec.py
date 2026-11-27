@@ -57,6 +57,16 @@ E = {
                 'grips the scythe with both hands and swings it down in front of him, the scythe stays in his hands the whole time, then returns to the start pose',
                 'raises his free hand high above his head, cape billows, then lowers it back to the start pose'),
 }
+# 새 보스 5종(스테이지 7~11): 몸·공격·기술 문장은 boss2_spec.py 한 곳에서 관리
+from boss2_spec import B2
+E.update({k: (v[2], 176, False, v[3], v[4]) for k, v in B2.items()})
+
+# 어려운 난이도 보스 단계(boss_tier_spec.py): <id>_t1 성난 모습 · <id>_t2 깨어난 마왕 모습. 동작 문장은 원래 보스 것을 쓰고 몸 설명만 바꿈
+from boss_tier_spec import BASE as _TB, SP as _TSP
+for _k in _TB:
+    for _t, _w in ((1, 'an enraged spiked version of '), (2, 'a terrifying awakened demon-lord version of ')):
+        if _k in E: E[f'{_k}_t{_t}'] = (_w + E[_k][0][2:] + ', ' + _TSP[(_k, _t)], 176, E[_k][2], E[_k][3], E[_k][4])
+
 FRAMES = {'idle': 4, 'walk': 8, 'a1': 8, 'el': 8, 'hit': 4, 'down': 8}
 LAST = {'idle', 'walk'}
 
@@ -97,6 +107,9 @@ DROP = {
     ('boss_shadow', 'hit'): [0, 1], ('boss_shadow', 'down'): [1], ('boss_shadow', 'el'): [2, 3], ('boss_shadow', 'idle'): [0, 1], ('boss_shadow', 'walk'): [1, 2],
     ('boss_bone', 'hit'): [0], ('boss_frost', 'hit'): [0, 1], ('boss_frost', 'down'): [1, 2], ('boss_frost', 'idle'): [0],
     ('overlord', 'down'): [1],
+    # 새 보스 5종(2026-11-27): 맞기 덧그림 장
+    ('boss_mole', 'hit'): [0, 1], ('boss_gate', 'hit'): [2, 3], ('boss_mole', 'down'): [0, 1, 2], ('boss_lava', 'hit'): [0, 1, 2], ('boss_lava', 'el'): [4], ('boss_lava', 'down'): [0, 1, 2],
+    ('boss_witch', 'hit'): [0], ('boss_knight', 'hit'): [0, 1],
     # 공격: 여러 번 뽑아 가장 나은 판(meta.json에 실제 쓴 문장)을 쓰고 자국 있는 장만 뺌
     ('fast', 'a1'): [2, 3, 4], ('miniboss', 'a1'): [2], ('boss_boar', 'a1'): [1, 2, 3], ('boss_shadow', 'a1'): [1, 2, 3], ('boss_frost', 'a1'): [1, 2],
 }

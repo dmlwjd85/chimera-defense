@@ -1,0 +1,53 @@
+{
+ "species": "ch_bear_dog",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 11.0,
+   "foot±": 13
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 30.5,
+   "foot±": 3
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 32.9,
+   "foot±": 3
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 3.7,
+   "foot±": 16
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 3.7,
+   "foot±": 4
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.2,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.4,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   263
+  ],
+  "box": [
+   111,
+   112
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 538624
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "species": "en_boss_gate_t1",
+ "motions": {
+  "adult_a1": {
+   "n": 5,
+   "max|h%|": 5.9,
+   "foot±": 5
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 52.9,
+   "foot±": 4
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 5.9,
+   "foot±": 1
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.0,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   205
+  ],
+  "box": [
+   150,
+   108
+  ],
+  "frames": 25,
+  "colors": 16,
+  "px": 419840
+ }
+}

@@ -1,0 +1,418 @@
+{
+ "note": "en_boss_gate_t2 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_gate_t2",
+ "sheet": "dot-m-en_boss_gate_t2",
+ "file": "assets/dotm/en_boss_gate_t2.png",
+ "frameW": 145,
+ "frameH": 101,
+ "foot": 96,
+ "cols": 1,
+ "anchorX": 72,
+ "palette": [
+  "#17050e",
+  "#291a1f",
+  "#493540",
+  "#54232f",
+  "#72313b",
+  "#7d6f79",
+  "#913345",
+  "#978591",
+  "#9d6237",
+  "#bb9aa7",
+  "#c82e43",
+  "#ca8b47",
+  "#d2c1ca",
+  "#f05540",
+  "#f1bf60",
+  "#f7903a"
+ ],
+ "rects": {
+  "en_boss_gate_t2_adult_a1_00": [
+   817,
+   0,
+   121,
+   93,
+   -60,
+   -91
+  ],
+  "en_boss_gate_t2_adult_a1_01": [
+   1445,
+   0,
+   115,
+   92,
+   -56,
+   -92
+  ],
+  "en_boss_gate_t2_adult_a1_02": [
+   471,
+   0,
+   110,
+   94,
+   -54,
+   -93
+  ],
+  "en_boss_gate_t2_adult_a1_03": [
+   582,
+   0,
+   106,
+   94,
+   -52,
+   -94
+  ],
+  "en_boss_gate_t2_adult_a1_04": [
+   0,
+   0,
+   104,
+   97,
+   -51,
+   -97
+  ],
+  "en_boss_gate_t2_adult_a1_05": [
+   105,
+   0,
+   105,
+   95,
+   -51,
+   -95
+  ],
+  "en_boss_gate_t2_adult_a1_06": [
+   939,
+   0,
+   124,
+   93,
+   -61,
+   -91
+  ],
+  "en_boss_gate_t2_adult_a1_07": [
+   1561,
+   0,
+   129,
+   92,
+   -63,
+   -92
+  ],
+  "en_boss_gate_t2_adult_down_00": [
+   1691,
+   0,
+   128,
+   91,
+   -66,
+   -90
+  ],
+  "en_boss_gate_t2_adult_down_01": [
+   1820,
+   0,
+   126,
+   91,
+   -66,
+   -88
+  ],
+  "en_boss_gate_t2_adult_down_02": [
+   725,
+   98,
+   123,
+   87,
+   -62,
+   -85
+  ],
+  "en_boss_gate_t2_adult_down_03": [
+   849,
+   98,
+   125,
+   83,
+   -62,
+   -81
+  ],
+  "en_boss_gate_t2_adult_down_04": [
+   975,
+   98,
+   129,
+   63,
+   -64,
+   -62
+  ],
+  "en_boss_gate_t2_adult_down_05": [
+   1105,
+   98,
+   145,
+   44,
+   -72,
+   -42
+  ],
+  "en_boss_gate_t2_adult_el_00": [
+   0,
+   98,
+   122,
+   91,
+   -61,
+   -90
+  ],
+  "en_boss_gate_t2_adult_el_01": [
+   363,
+   98,
+   121,
+   90,
+   -61,
+   -88
+  ],
+  "en_boss_gate_t2_adult_el_02": [
+   485,
+   98,
+   119,
+   90,
+   -60,
+   -88
+  ],
+  "en_boss_gate_t2_adult_el_03": [
+   123,
+   98,
+   116,
+   91,
+   -58,
+   -88
+  ],
+  "en_boss_gate_t2_adult_el_04": [
+   605,
+   98,
+   119,
+   89,
+   -60,
+   -88
+  ],
+  "en_boss_gate_t2_adult_el_05": [
+   240,
+   98,
+   122,
+   91,
+   -61,
+   -90
+  ],
+  "en_boss_gate_t2_adult_el_06": [
+   689,
+   0,
+   127,
+   94,
+   -63,
+   -93
+  ],
+  "en_boss_gate_t2_adult_el_07": [
+   211,
+   0,
+   132,
+   95,
+   -65,
+   -94
+  ],
+  "en_boss_gate_t2_adult_idle_00": [
+   1064,
+   0,
+   126,
+   93,
+   -63,
+   -93
+  ],
+  "en_boss_gate_t2_adult_idle_01": [
+   344,
+   0,
+   126,
+   95,
+   -63,
+   -95
+  ],
+  "en_boss_gate_t2_adult_idle_02": [
+   1191,
+   0,
+   126,
+   93,
+   -63,
+   -93
+  ],
+  "en_boss_gate_t2_adult_idle_03": [
+   1318,
+   0,
+   126,
+   93,
+   -63,
+   -92
+  ]
+ },
+ "frames": [
+  "en_boss_gate_t2_adult_a1_00",
+  "en_boss_gate_t2_adult_a1_01",
+  "en_boss_gate_t2_adult_a1_02",
+  "en_boss_gate_t2_adult_a1_03",
+  "en_boss_gate_t2_adult_a1_04",
+  "en_boss_gate_t2_adult_a1_05",
+  "en_boss_gate_t2_adult_a1_06",
+  "en_boss_gate_t2_adult_a1_07",
+  "en_boss_gate_t2_adult_down_00",
+  "en_boss_gate_t2_adult_down_01",
+  "en_boss_gate_t2_adult_down_02",
+  "en_boss_gate_t2_adult_down_03",
+  "en_boss_gate_t2_adult_down_04",
+  "en_boss_gate_t2_adult_down_05",
+  "en_boss_gate_t2_adult_el_00",
+  "en_boss_gate_t2_adult_el_01",
+  "en_boss_gate_t2_adult_el_02",
+  "en_boss_gate_t2_adult_el_03",
+  "en_boss_gate_t2_adult_el_04",
+  "en_boss_gate_t2_adult_el_05",
+  "en_boss_gate_t2_adult_el_06",
+  "en_boss_gate_t2_adult_el_07",
+  "en_boss_gate_t2_adult_idle_00",
+  "en_boss_gate_t2_adult_idle_01",
+  "en_boss_gate_t2_adult_idle_02",
+  "en_boss_gate_t2_adult_idle_03"
+ ],
+ "standing": [
+  "en_boss_gate_t2_adult_idle_00",
+  "en_boss_gate_t2_adult_idle_01",
+  "en_boss_gate_t2_adult_idle_02",
+  "en_boss_gate_t2_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 2,
+   "attack": {
+    "frames": [
+     "en_boss_gate_t2_adult_a1_00",
+     "en_boss_gate_t2_adult_a1_01",
+     "en_boss_gate_t2_adult_a1_02",
+     "en_boss_gate_t2_adult_a1_03",
+     "en_boss_gate_t2_adult_a1_04",
+     "en_boss_gate_t2_adult_a1_05",
+     "en_boss_gate_t2_adult_a1_06",
+     "en_boss_gate_t2_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_gate_t2_adult_down_00",
+     "en_boss_gate_t2_adult_down_01",
+     "en_boss_gate_t2_adult_down_02",
+     "en_boss_gate_t2_adult_down_03",
+     "en_boss_gate_t2_adult_down_04",
+     "en_boss_gate_t2_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_gate_t2_adult_el_00",
+     "en_boss_gate_t2_adult_el_01",
+     "en_boss_gate_t2_adult_el_02",
+     "en_boss_gate_t2_adult_el_03",
+     "en_boss_gate_t2_adult_el_04",
+     "en_boss_gate_t2_adult_el_05",
+     "en_boss_gate_t2_adult_el_06",
+     "en_boss_gate_t2_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_gate_t2_adult_idle_00",
+     "en_boss_gate_t2_adult_idle_01",
+     "en_boss_gate_t2_adult_idle_02",
+     "en_boss_gate_t2_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_boss_gate_t2_adult_down_00",
+     "en_boss_gate_t2_adult_down_01",
+     "en_boss_gate_t2_adult_down_02",
+     "en_boss_gate_t2_adult_down_03",
+     "en_boss_gate_t2_adult_down_04",
+     "en_boss_gate_t2_adult_down_05",
+     "en_boss_gate_t2_adult_down_04",
+     "en_boss_gate_t2_adult_down_03",
+     "en_boss_gate_t2_adult_down_02",
+     "en_boss_gate_t2_adult_down_01",
+     "en_boss_gate_t2_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

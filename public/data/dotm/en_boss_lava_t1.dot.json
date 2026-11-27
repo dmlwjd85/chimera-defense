@@ -1,0 +1,315 @@
+{
+ "note": "en_boss_lava_t1 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_lava_t1",
+ "sheet": "dot-m-en_boss_lava_t1",
+ "file": "assets/dotm/en_boss_lava_t1.png",
+ "frameW": 139,
+ "frameH": 111,
+ "foot": 107,
+ "cols": 1,
+ "anchorX": 68,
+ "palette": [
+  "#14060f",
+  "#291a1f",
+  "#422b33",
+  "#4d393d",
+  "#5f4c50",
+  "#6a2928",
+  "#755e5c",
+  "#7f3b34",
+  "#947575",
+  "#9723d0",
+  "#a93327",
+  "#b55a40",
+  "#dc7b41",
+  "#e6bdc2",
+  "#ed4919",
+  "#f7a84a"
+ ],
+ "rects": {
+  "en_boss_lava_t1_adult_a1_00": [
+   918,
+   0,
+   95,
+   96,
+   -48,
+   -95
+  ],
+  "en_boss_lava_t1_adult_a1_01": [
+   1190,
+   0,
+   108,
+   93,
+   -55,
+   -92
+  ],
+  "en_boss_lava_t1_adult_a1_02": [
+   521,
+   0,
+   118,
+   98,
+   -62,
+   -97
+  ],
+  "en_boss_lava_t1_adult_a1_03": [
+   1299,
+   0,
+   121,
+   93,
+   -68,
+   -92
+  ],
+  "en_boss_lava_t1_adult_a1_04": [
+   362,
+   0,
+   62,
+   99,
+   -28,
+   -98
+  ],
+  "en_boss_lava_t1_adult_a1_05": [
+   1103,
+   0,
+   86,
+   94,
+   -38,
+   -93
+  ],
+  "en_boss_lava_t1_adult_down_00": [
+   1553,
+   0,
+   134,
+   65,
+   -63,
+   -63
+  ],
+  "en_boss_lava_t1_adult_down_01": [
+   1421,
+   0,
+   131,
+   66,
+   -61,
+   -64
+  ],
+  "en_boss_lava_t1_adult_down_02": [
+   1688,
+   0,
+   132,
+   63,
+   -62,
+   -61
+  ],
+  "en_boss_lava_t1_adult_el_00": [
+   826,
+   0,
+   91,
+   97,
+   -43,
+   -96
+  ],
+  "en_boss_lava_t1_adult_el_01": [
+   87,
+   0,
+   89,
+   104,
+   -39,
+   -103
+  ],
+  "en_boss_lava_t1_adult_el_02": [
+   0,
+   0,
+   86,
+   109,
+   -43,
+   -108
+  ],
+  "en_boss_lava_t1_adult_el_03": [
+   177,
+   0,
+   89,
+   104,
+   -44,
+   -103
+  ],
+  "en_boss_lava_t1_adult_el_04": [
+   425,
+   0,
+   95,
+   99,
+   -45,
+   -98
+  ],
+  "en_boss_lava_t1_adult_el_05": [
+   1014,
+   0,
+   88,
+   96,
+   -43,
+   -94
+  ],
+  "en_boss_lava_t1_adult_el_06": [
+   640,
+   0,
+   93,
+   98,
+   -46,
+   -97
+  ],
+  "en_boss_lava_t1_adult_el_07": [
+   267,
+   0,
+   94,
+   100,
+   -46,
+   -99
+  ],
+  "en_boss_lava_t1_adult_idle_00": [
+   734,
+   0,
+   91,
+   98,
+   -45,
+   -97
+  ]
+ },
+ "frames": [
+  "en_boss_lava_t1_adult_a1_00",
+  "en_boss_lava_t1_adult_a1_01",
+  "en_boss_lava_t1_adult_a1_02",
+  "en_boss_lava_t1_adult_a1_03",
+  "en_boss_lava_t1_adult_a1_04",
+  "en_boss_lava_t1_adult_a1_05",
+  "en_boss_lava_t1_adult_down_00",
+  "en_boss_lava_t1_adult_down_01",
+  "en_boss_lava_t1_adult_down_02",
+  "en_boss_lava_t1_adult_el_00",
+  "en_boss_lava_t1_adult_el_01",
+  "en_boss_lava_t1_adult_el_02",
+  "en_boss_lava_t1_adult_el_03",
+  "en_boss_lava_t1_adult_el_04",
+  "en_boss_lava_t1_adult_el_05",
+  "en_boss_lava_t1_adult_el_06",
+  "en_boss_lava_t1_adult_el_07",
+  "en_boss_lava_t1_adult_idle_00"
+ ],
+ "standing": [
+  "en_boss_lava_t1_adult_idle_00"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 11,
+   "attack": {
+    "frames": [
+     "en_boss_lava_t1_adult_a1_00",
+     "en_boss_lava_t1_adult_a1_01",
+     "en_boss_lava_t1_adult_a1_02",
+     "en_boss_lava_t1_adult_a1_03",
+     "en_boss_lava_t1_adult_a1_04",
+     "en_boss_lava_t1_adult_a1_05"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_lava_t1_adult_down_00",
+     "en_boss_lava_t1_adult_down_01",
+     "en_boss_lava_t1_adult_down_02"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_lava_t1_adult_el_00",
+     "en_boss_lava_t1_adult_el_01",
+     "en_boss_lava_t1_adult_el_02",
+     "en_boss_lava_t1_adult_el_03",
+     "en_boss_lava_t1_adult_el_04",
+     "en_boss_lava_t1_adult_el_05",
+     "en_boss_lava_t1_adult_el_06",
+     "en_boss_lava_t1_adult_el_07"
+    ],
+    "durs": [
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.122,
+      "cast"
+     ],
+     [
+      0.132,
+      "hit"
+     ]
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_lava_t1_adult_idle_00"
+    ],
+    "durs": [
+     0.16
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_boss_lava_t1_adult_down_00",
+     "en_boss_lava_t1_adult_down_01",
+     "en_boss_lava_t1_adult_down_02",
+     "en_boss_lava_t1_adult_down_01",
+     "en_boss_lava_t1_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

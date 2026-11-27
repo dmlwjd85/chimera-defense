@@ -1,0 +1,38 @@
+{
+ "species": "en_boss_lich_t2",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 36.8,
+   "foot±": 0
+  },
+  "adult_down": {
+   "n": 7,
+   "max|h%|": 47.9,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 39.3,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 0.9,
+   "foot±": 0
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   276
+  ],
+  "box": [
+   143,
+   165
+  ],
+  "frames": 27,
+  "colors": 16,
+  "px": 565248
+ }
+}

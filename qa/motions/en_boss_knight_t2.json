@@ -1,0 +1,38 @@
+{
+ "species": "en_boss_knight_t2",
+ "motions": {
+  "adult_a1": {
+   "n": 5,
+   "max|h%|": 27.9,
+   "foot±": 1
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 50.0,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 28.7,
+   "foot±": 1
+  },
+  "adult_idle": {
+   "n": 2,
+   "max|h%|": 11.5,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   277
+  ],
+  "box": [
+   161,
+   158
+  ],
+  "frames": 23,
+  "colors": 16,
+  "px": 567296
+ }
+}

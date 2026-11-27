@@ -29,7 +29,7 @@ SP = {   # 보스마다 단계에 더할 것
  ('boss_bone', 1): 'a cracked red-edged sword, a ripped black cape', ('boss_bone', 2): 'a second skull on the shoulder, a giant two-handed bone sword',
  ('boss_frost', 1): 'jagged icicle spikes on the robe and crown', ('boss_frost', 2): 'a dark blue-black robe, a crown of black ice horns, an ice scythe',
  ('boss_lich', 1): 'a cracked crow mask with red eyes, black feathers on the shoulders', ('boss_lich', 2): 'three crow skulls on the staff, huge black feathered wings folded on its back',
- ('boss_lava', 1): 'a bigger solid rock cone on its back, spiky obsidian shoulders', ('boss_lava', 2): 'black obsidian body with crimson cracks, two volcano cones like horns',
+ ('boss_lava', 1): 'a bigger solid rock cone on its back, spiky obsidian shoulders', ('boss_lava', 2): 'black obsidian body with crimson cracks, two solid rock horns',
  ('boss_witch', 1): 'a bigger cauldron, a crooked crown of thorns on the hood', ('boss_witch', 2): 'four long clawed arms, a frog skull on the hood, a black cauldron staff',
  ('boss_knight', 1): 'red glowing helmet eyes, spikes on the armor', ('boss_knight', 2): 'a burning-red cape, a giant black greatsword, horned pauldrons',
  ('boss_gate', 1): 'spiked iron door shields, bigger horns', ('boss_gate', 2): 'dark crimson skin, the door shields have a demon face, crowns of black horns',

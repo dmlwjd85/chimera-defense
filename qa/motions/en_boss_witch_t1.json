@@ -1,0 +1,38 @@
+{
+ "species": "en_boss_witch_t1",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 7.8,
+   "foot±": 0
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 53.9,
+   "foot±": 3
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 54.9,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.0,
+   "foot±": 0
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   259
+  ],
+  "box": [
+   144,
+   162
+  ],
+  "frames": 28,
+  "colors": 16,
+  "px": 530432
+ }
+}

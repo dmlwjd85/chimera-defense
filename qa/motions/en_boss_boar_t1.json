@@ -1,0 +1,38 @@
+{
+ "species": "en_boss_boar_t1",
+ "motions": {
+  "adult_a1": {
+   "n": 6,
+   "max|h%|": 15.0,
+   "foot±": 21
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 23.4,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 0.9,
+   "foot±": 2
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.9,
+   "foot±": 0
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   230
+  ],
+  "box": [
+   132,
+   138
+  ],
+  "frames": 24,
+  "colors": 16,
+  "px": 471040
+ }
+}

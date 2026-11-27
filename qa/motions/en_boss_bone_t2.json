@@ -1,0 +1,38 @@
+{
+ "species": "en_boss_bone_t2",
+ "motions": {
+  "adult_a1": {
+   "n": 5,
+   "max|h%|": 3.4,
+   "foot±": 1
+  },
+  "adult_down": {
+   "n": 4,
+   "max|h%|": 52.1,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 36.1,
+   "foot±": 1
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 3.4,
+   "foot±": 0
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   260
+  ],
+  "box": [
+   137,
+   164
+  ],
+  "frames": 21,
+  "colors": 16,
+  "px": 532480
+ }
+}

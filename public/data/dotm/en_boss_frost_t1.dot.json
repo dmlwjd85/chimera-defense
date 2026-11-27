@@ -1,0 +1,331 @@
+{
+ "note": "en_boss_frost_t1 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_frost_t1",
+ "sheet": "dot-m-en_boss_frost_t1",
+ "file": "assets/dotm/en_boss_frost_t1.png",
+ "frameW": 137,
+ "frameH": 165,
+ "foot": 162,
+ "cols": 1,
+ "anchorX": 68,
+ "palette": [
+  "#1f2347",
+  "#291a1f",
+  "#303a64",
+  "#3e507e",
+  "#496a9c",
+  "#617fad",
+  "#6e9ac4",
+  "#72233c",
+  "#87b4d6",
+  "#96c9e1",
+  "#af5570",
+  "#b0ddeb",
+  "#c3aec2",
+  "#c4e7f2",
+  "#dff7fb",
+  "#eefcfe"
+ ],
+ "rects": {
+  "en_boss_frost_t1_adult_a1_00": [
+   764,
+   0,
+   98,
+   118,
+   -52,
+   -117
+  ],
+  "en_boss_frost_t1_adult_a1_01": [
+   1126,
+   0,
+   111,
+   109,
+   -49,
+   -122
+  ],
+  "en_boss_frost_t1_adult_a1_02": [
+   1238,
+   0,
+   109,
+   107,
+   -49,
+   -122
+  ],
+  "en_boss_frost_t1_adult_a1_03": [
+   1348,
+   0,
+   119,
+   103,
+   -50,
+   -116
+  ],
+  "en_boss_frost_t1_adult_a1_04": [
+   1468,
+   0,
+   99,
+   102,
+   -52,
+   -102
+  ],
+  "en_boss_frost_t1_adult_down_00": [
+   1568,
+   0,
+   97,
+   94,
+   -48,
+   -94
+  ],
+  "en_boss_frost_t1_adult_down_01": [
+   1666,
+   0,
+   115,
+   75,
+   -61,
+   -76
+  ],
+  "en_boss_frost_t1_adult_down_02": [
+   1782,
+   0,
+   129,
+   51,
+   -62,
+   -51
+  ],
+  "en_boss_frost_t1_adult_down_03": [
+   1912,
+   0,
+   129,
+   48,
+   -62,
+   -48
+  ],
+  "en_boss_frost_t1_adult_el_00": [
+   1037,
+   0,
+   88,
+   111,
+   -43,
+   -111
+  ],
+  "en_boss_frost_t1_adult_el_01": [
+   488,
+   0,
+   85,
+   131,
+   -38,
+   -134
+  ],
+  "en_boss_frost_t1_adult_el_02": [
+   574,
+   0,
+   109,
+   129,
+   -53,
+   -148
+  ],
+  "en_boss_frost_t1_adult_el_03": [
+   363,
+   0,
+   124,
+   133,
+   -66,
+   -160
+  ],
+  "en_boss_frost_t1_adult_el_04": [
+   111,
+   0,
+   125,
+   136,
+   -67,
+   -163
+  ],
+  "en_boss_frost_t1_adult_el_05": [
+   237,
+   0,
+   125,
+   135,
+   -68,
+   -162
+  ],
+  "en_boss_frost_t1_adult_el_06": [
+   0,
+   0,
+   110,
+   139,
+   -55,
+   -148
+  ],
+  "en_boss_frost_t1_adult_el_07": [
+   684,
+   0,
+   79,
+   127,
+   -36,
+   -132
+  ],
+  "en_boss_frost_t1_adult_idle_00": [
+   863,
+   0,
+   82,
+   117,
+   -38,
+   -117
+  ],
+  "en_boss_frost_t1_adult_idle_01": [
+   946,
+   0,
+   90,
+   113,
+   -45,
+   -113
+  ]
+ },
+ "frames": [
+  "en_boss_frost_t1_adult_a1_00",
+  "en_boss_frost_t1_adult_a1_01",
+  "en_boss_frost_t1_adult_a1_02",
+  "en_boss_frost_t1_adult_a1_03",
+  "en_boss_frost_t1_adult_a1_04",
+  "en_boss_frost_t1_adult_down_00",
+  "en_boss_frost_t1_adult_down_01",
+  "en_boss_frost_t1_adult_down_02",
+  "en_boss_frost_t1_adult_down_03",
+  "en_boss_frost_t1_adult_el_00",
+  "en_boss_frost_t1_adult_el_01",
+  "en_boss_frost_t1_adult_el_02",
+  "en_boss_frost_t1_adult_el_03",
+  "en_boss_frost_t1_adult_el_04",
+  "en_boss_frost_t1_adult_el_05",
+  "en_boss_frost_t1_adult_el_06",
+  "en_boss_frost_t1_adult_el_07",
+  "en_boss_frost_t1_adult_idle_00",
+  "en_boss_frost_t1_adult_idle_01"
+ ],
+ "standing": [
+  "en_boss_frost_t1_adult_idle_00",
+  "en_boss_frost_t1_adult_idle_01"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 46,
+   "attack": {
+    "frames": [
+     "en_boss_frost_t1_adult_a1_00",
+     "en_boss_frost_t1_adult_a1_01",
+     "en_boss_frost_t1_adult_a1_02",
+     "en_boss_frost_t1_adult_a1_03",
+     "en_boss_frost_t1_adult_a1_04"
+    ],
+    "durs": [
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.114,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_frost_t1_adult_down_00",
+     "en_boss_frost_t1_adult_down_01",
+     "en_boss_frost_t1_adult_down_02",
+     "en_boss_frost_t1_adult_down_03"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_frost_t1_adult_el_00",
+     "en_boss_frost_t1_adult_el_01",
+     "en_boss_frost_t1_adult_el_02",
+     "en_boss_frost_t1_adult_el_03",
+     "en_boss_frost_t1_adult_el_04",
+     "en_boss_frost_t1_adult_el_05",
+     "en_boss_frost_t1_adult_el_06",
+     "en_boss_frost_t1_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.185,
+      "cast"
+     ],
+     [
+      0.195,
+      "hit"
+     ]
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_frost_t1_adult_idle_00",
+     "en_boss_frost_t1_adult_idle_01"
+    ],
+    "durs": [
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_boss_frost_t1_adult_down_00",
+     "en_boss_frost_t1_adult_down_01",
+     "en_boss_frost_t1_adult_down_02",
+     "en_boss_frost_t1_adult_down_03",
+     "en_boss_frost_t1_adult_down_02",
+     "en_boss_frost_t1_adult_down_01",
+     "en_boss_frost_t1_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

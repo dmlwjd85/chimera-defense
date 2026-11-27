@@ -1,0 +1,397 @@
+{
+ "note": "en_overlord_t1 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_overlord_t1",
+ "sheet": "dot-m-en_overlord_t1",
+ "file": "assets/dotm/en_overlord_t1.png",
+ "frameW": 143,
+ "frameH": 141,
+ "foot": 138,
+ "cols": 1,
+ "anchorX": 71,
+ "palette": [
+  "#160309",
+  "#291a1f",
+  "#392e3d",
+  "#501c2a",
+  "#54464f",
+  "#673742",
+  "#6d5b69",
+  "#7c5c56",
+  "#842431",
+  "#937e7b",
+  "#9c95a0",
+  "#b13946",
+  "#c9628c",
+  "#d0ac94",
+  "#d0c3bf",
+  "#ebe3dc"
+ ],
+ "rects": {
+  "en_overlord_t1_adult_a1_00": [
+   758,
+   0,
+   117,
+   110,
+   -59,
+   -110
+  ],
+  "en_overlord_t1_adult_a1_01": [
+   1363,
+   0,
+   123,
+   108,
+   -61,
+   -108
+  ],
+  "en_overlord_t1_adult_a1_02": [
+   0,
+   140,
+   131,
+   106,
+   -65,
+   -106
+  ],
+  "en_overlord_t1_adult_a1_03": [
+   132,
+   140,
+   132,
+   105,
+   -67,
+   -105
+  ],
+  "en_overlord_t1_adult_a1_04": [
+   265,
+   140,
+   135,
+   105,
+   -70,
+   -105
+  ],
+  "en_overlord_t1_adult_a1_05": [
+   401,
+   140,
+   131,
+   105,
+   -67,
+   -105
+  ],
+  "en_overlord_t1_adult_a1_06": [
+   1487,
+   0,
+   129,
+   108,
+   -62,
+   -108
+  ],
+  "en_overlord_t1_adult_a1_07": [
+   876,
+   0,
+   123,
+   110,
+   -61,
+   -110
+  ],
+  "en_overlord_t1_adult_down_00": [
+   1617,
+   0,
+   121,
+   108,
+   -61,
+   -108
+  ],
+  "en_overlord_t1_adult_down_01": [
+   1739,
+   0,
+   125,
+   107,
+   -65,
+   -107
+  ],
+  "en_overlord_t1_adult_down_02": [
+   1865,
+   0,
+   125,
+   107,
+   -66,
+   -107
+  ],
+  "en_overlord_t1_adult_down_03": [
+   533,
+   140,
+   130,
+   104,
+   -70,
+   -105
+  ],
+  "en_overlord_t1_adult_down_04": [
+   664,
+   140,
+   128,
+   79,
+   -62,
+   -81
+  ],
+  "en_overlord_t1_adult_down_05": [
+   793,
+   140,
+   127,
+   64,
+   -56,
+   -63
+  ],
+  "en_overlord_t1_adult_down_06": [
+   921,
+   140,
+   131,
+   51,
+   -59,
+   -50
+  ],
+  "en_overlord_t1_adult_el_00": [
+   1116,
+   0,
+   118,
+   109,
+   -54,
+   -109
+  ],
+  "en_overlord_t1_adult_el_01": [
+   256,
+   0,
+   116,
+   128,
+   -56,
+   -128
+  ],
+  "en_overlord_t1_adult_el_02": [
+   132,
+   0,
+   123,
+   138,
+   -63,
+   -138
+  ],
+  "en_overlord_t1_adult_el_03": [
+   0,
+   0,
+   131,
+   139,
+   -71,
+   -139
+  ],
+  "en_overlord_t1_adult_el_04": [
+   373,
+   0,
+   125,
+   126,
+   -65,
+   -126
+  ],
+  "en_overlord_t1_adult_el_05": [
+   499,
+   0,
+   127,
+   119,
+   -65,
+   -119
+  ],
+  "en_overlord_t1_adult_el_06": [
+   627,
+   0,
+   130,
+   113,
+   -70,
+   -113
+  ],
+  "en_overlord_t1_adult_el_07": [
+   1235,
+   0,
+   127,
+   109,
+   -69,
+   -109
+  ],
+  "en_overlord_t1_adult_idle_00": [
+   1000,
+   0,
+   115,
+   110,
+   -57,
+   -110
+  ]
+ },
+ "frames": [
+  "en_overlord_t1_adult_a1_00",
+  "en_overlord_t1_adult_a1_01",
+  "en_overlord_t1_adult_a1_02",
+  "en_overlord_t1_adult_a1_03",
+  "en_overlord_t1_adult_a1_04",
+  "en_overlord_t1_adult_a1_05",
+  "en_overlord_t1_adult_a1_06",
+  "en_overlord_t1_adult_a1_07",
+  "en_overlord_t1_adult_down_00",
+  "en_overlord_t1_adult_down_01",
+  "en_overlord_t1_adult_down_02",
+  "en_overlord_t1_adult_down_03",
+  "en_overlord_t1_adult_down_04",
+  "en_overlord_t1_adult_down_05",
+  "en_overlord_t1_adult_down_06",
+  "en_overlord_t1_adult_el_00",
+  "en_overlord_t1_adult_el_01",
+  "en_overlord_t1_adult_el_02",
+  "en_overlord_t1_adult_el_03",
+  "en_overlord_t1_adult_el_04",
+  "en_overlord_t1_adult_el_05",
+  "en_overlord_t1_adult_el_06",
+  "en_overlord_t1_adult_el_07",
+  "en_overlord_t1_adult_idle_00"
+ ],
+ "standing": [
+  "en_overlord_t1_adult_idle_00"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 29,
+   "attack": {
+    "frames": [
+     "en_overlord_t1_adult_a1_00",
+     "en_overlord_t1_adult_a1_01",
+     "en_overlord_t1_adult_a1_02",
+     "en_overlord_t1_adult_a1_03",
+     "en_overlord_t1_adult_a1_04",
+     "en_overlord_t1_adult_a1_05",
+     "en_overlord_t1_adult_a1_06",
+     "en_overlord_t1_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_overlord_t1_adult_down_00",
+     "en_overlord_t1_adult_down_01",
+     "en_overlord_t1_adult_down_02",
+     "en_overlord_t1_adult_down_03",
+     "en_overlord_t1_adult_down_04",
+     "en_overlord_t1_adult_down_05",
+     "en_overlord_t1_adult_down_06"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_overlord_t1_adult_el_00",
+     "en_overlord_t1_adult_el_01",
+     "en_overlord_t1_adult_el_02",
+     "en_overlord_t1_adult_el_03",
+     "en_overlord_t1_adult_el_04",
+     "en_overlord_t1_adult_el_05",
+     "en_overlord_t1_adult_el_06",
+     "en_overlord_t1_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.185,
+      "cast"
+     ],
+     [
+      0.195,
+      "hit"
+     ]
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_overlord_t1_adult_idle_00"
+    ],
+    "durs": [
+     0.16
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_overlord_t1_adult_down_00",
+     "en_overlord_t1_adult_down_01",
+     "en_overlord_t1_adult_down_02",
+     "en_overlord_t1_adult_down_03",
+     "en_overlord_t1_adult_down_04",
+     "en_overlord_t1_adult_down_05",
+     "en_overlord_t1_adult_down_06",
+     "en_overlord_t1_adult_down_05",
+     "en_overlord_t1_adult_down_04",
+     "en_overlord_t1_adult_down_03",
+     "en_overlord_t1_adult_down_02",
+     "en_overlord_t1_adult_down_01",
+     "en_overlord_t1_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

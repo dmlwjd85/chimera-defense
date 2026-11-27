@@ -1,0 +1,38 @@
+{
+ "species": "en_boss_frost_t2",
+ "motions": {
+  "adult_a1": {
+   "n": 4,
+   "max|h%|": 23.6,
+   "foot±": 17
+  },
+  "adult_down": {
+   "n": 4,
+   "max|h%|": 40.0,
+   "foot±": 4
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 24.5,
+   "foot±": 21
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.8,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   205
+  ],
+  "box": [
+   139,
+   163
+  ],
+  "frames": 20,
+  "colors": 16,
+  "px": 419840
+ }
+}

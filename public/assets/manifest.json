@@ -931,6 +931,13 @@
   "relic-phoenix_plume": "assets/ui/relic-phoenix_plume.png",
   "relic-iron_chain": "assets/ui/relic-iron_chain.png",
   "relic-mana_spring": "assets/ui/relic-mana_spring.png",
-  "relic-thunder_drum": "assets/ui/relic-thunder_drum.png"
+  "relic-thunder_drum": "assets/ui/relic-thunder_drum.png",
+  "garden-pavilion": "assets/garden/pavilion.png",
+  "garden-peach": "assets/garden/peach.png",
+  "garden-pond": "assets/garden/pond.png",
+  "garden-lantern": "assets/garden/lantern.png",
+  "garden-flowers": "assets/garden/flowers.png",
+  "garden-bridge": "assets/garden/bridge.png",
+  "bg-garden": "assets/bg/bg-garden.png"
  }
 }

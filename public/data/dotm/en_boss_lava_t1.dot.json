@@ -288,6 +288,29 @@
     ],
     "loop": true
    },
+   "move": {
+    "frames": [
+     "en_boss_lava_t1_adult_idle_00",
+     "en_boss_lava_t1_adult_idle_00",
+     "en_boss_lava_t1_adult_idle_00",
+     "en_boss_lava_t1_adult_idle_00"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.12,
+     0.12
+    ],
+    "loop": true
+   },
+   "hit": {
+    "frames": [
+     "en_boss_lava_t1_adult_idle_00"
+    ],
+    "durs": [
+     0.22
+    ]
+   },
    "fall": {
     "frames": [
      "en_boss_lava_t1_adult_down_00",

@@ -182,6 +182,11 @@ def build(sp):
                     if m in ('el', 'ult'): clip['events'].append([round(t_hit + 0.01, 3), 'hit'])
                 sset[name] = clip
                 report['motions'][f'{st}_{m}'] = {'n': len(ims), 'max|h%|': max(abs(r['h%']) for r in q), 'foot±': max(abs(r['foot']) for r in q)}
+            # 보스 단계 그림(en_<id>_t1/_t2)은 대기·공격·기술·쓰러짐만 주문함 → 걷기·맞기는 자기 대기 장을 그대로 씀(새 장 없음, 맞기는 번쩍임을 코드로)
+            if enemy and sp[-3:] in ('_t1', '_t2') and ('idle' in sset or 'move' in sset):
+                idf = (sset.get('idle') or sset['move'])['frames']
+                if 'move' not in sset: fr = (idf * 4)[:max(4, len(idf))]; sset['move'] = {'frames': fr, 'durs': [0.12] * len(fr), 'loop': True}
+                if 'hit' not in sset: sset['hit'] = {'frames': idf[:1], 'durs': [0.22]}
             # 넘어짐(다리걸기·발목잡기 당함): 자기 쓰러짐 장을 앞으로 → 가장 낮은 장에서 멈춤 → 거꾸로(일어남). 새 장을 만들지 않고 순서만 씀
             if 'down' in sset and 'fall' not in sset:
                 dfr = sset['down']['frames']

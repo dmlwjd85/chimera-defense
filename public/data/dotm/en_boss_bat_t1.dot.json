@@ -282,6 +282,14 @@
     ],
     "loop": true
    },
+   "hit": {
+    "frames": [
+     "en_boss_bat_t1_adult_walk_00"
+    ],
+    "durs": [
+     0.22
+    ]
+   },
    "fall": {
     "frames": [
      "en_boss_bat_t1_adult_down_00",

@@ -1042,7 +1042,7 @@
      }
     }
    },
-   "hpMult": 1,
+   "hpMult": 0.95,
    "weak": [
     "fire",
     "wind"
@@ -1054,7 +1054,8 @@
     "moon"
    ],
    "weakX": 1.6,
-   "resistX": 0.4
+   "resistX": 0.4,
+   "hardHp": 1.3
   },
   "overlord": {
    "phaseElements": [

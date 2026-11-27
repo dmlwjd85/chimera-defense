@@ -436,3 +436,29 @@ test('등 뒤 공격: 깊이 뛰어든 녀석을 다른 쪽이 치거나, 뛰어
   assert.ok(back > 0, '등 뒤 공격이 한 번은 나와야 함');
   assert.ok(back / acts < 0.08, `너무 잦음 ${back}/${acts}`);
 });
+
+test('지구본 다시 돌리기: 금화를 내고 후보 셋을 새로, 돌릴수록 비쌈, 고른 뒤·한도 넘으면 안 됨', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  const st = createGauntlet(D, 'forest-3', 21, {});
+  st.phase = 'regroup'; st.offer = rollRewards(st, D); st.offer.dropped = null;
+  st.gold = 0;
+  assert.equal(G.rerollGlobe(st, D).reason, 'gold');
+  st.gold = 100;
+  const c0 = G.globeRerollCost(st, D), before = st.offer.globe.map((c) => c.speciesId).join();
+  const r = G.rerollGlobe(st, D);
+  assert.ok(r.ok); assert.equal(st.gold, 100 - c0); assert.equal(st.offer.globe.length, 3);
+  if (st.pool.length >= 6) assert.notEqual(st.offer.globe.map((c) => c.speciesId).join(), before);
+  assert.ok(G.globeRerollCost(st, D) > c0);
+  while (G.rerollGlobe(st, D).ok) { /* 한도까지 */ }
+  assert.equal(G.rerollGlobe(st, D).reason, st.gold < G.globeRerollCost(st, D) ? 'gold' : 'max');
+  const st2 = createGauntlet(D, 'forest-3', 22, {}); st2.phase = 'regroup'; st2.offer = rollRewards(st2, D); st2.offer.dropped = null; st2.gold = 100;
+  st2.offer.taken = 'food';
+  assert.equal(G.rerollGlobe(st2, D).ok, false);
+});
+
+test('산군: 연전에서는 필살기를 씀(장면이 전용 v6 연출), 예전 방어전은 그대로 뺌', async () => {
+  const { movesOf } = await import('../src/logic/moves.js');
+  const u = { kind: 'base', speciesId: 'tiger', stage: 'spirit', stats: { element: 'metal' } };
+  assert.ok(!movesOf(u, D.config).includes('ult'));
+  assert.ok(movesOf(u, D.config, true).includes('ult'));
+});

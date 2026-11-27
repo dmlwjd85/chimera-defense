@@ -5,7 +5,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { loadData } from './helpers.js';
 import { createGauntlet, tickGauntlet, tapShield, botRegroup, nextEncounter, botPick } from '../src/logic/gauntlet.js';
-import { newMeter, meterAddRow, meterPull, meterEvent, meterMerge, meterRows, meterLeaders, meterTotals } from '../src/logic/meter.js';
+import { newMeter, meterAddRow, meterPull, meterEvent, meterMerge, meterRows, meterLeaders, meterTotals, meterLink } from '../src/logic/meter.js';
 
 const D = loadData();
 
@@ -103,4 +103,16 @@ test('미터: 보스 레이드 교전도 맞음(막기·끊기 포함)', () => {
   for (const [uid, b] of Object.entries(st.clBook)) for (const k of ['dmg', 'taken', 'block', 'heal']) assert.ok(Math.abs((m.units[uid]?.[k] ?? 0) - b[k]) < 1e-6);
   const t = meterTotals(m);
   assert.ok(t.block > 0 && t.heal > 0 && t.dmg > 0, `보스전엔 막음·회복·피해가 다 있어야 ${JSON.stringify(t)}`);
+});
+
+test('미터: 자라서 번호가 바뀐 동물은 판 전체 기록에서 한 줄로 이어 셈(합성으로 생긴 다른 종은 따로)', () => {
+  const alias = new Map();
+  let root = meterLink(alias, [{ uid: 1, speciesId: 'dog' }, { uid: 2, speciesId: 'fox' }, { uid: 3, speciesId: 'rabbit' }], [{ uid: 7, speciesId: 'dog' }, { uid: 2, speciesId: 'fox' }, { uid: 8, speciesId: 'chimera_x' }]);
+  assert.equal(root(7), 1); assert.equal(root(2), 2); assert.equal(root(8), 8);
+  root = meterLink(alias, [{ uid: 7, speciesId: 'dog' }], [{ uid: 9, speciesId: 'dog' }]);
+  assert.equal(root(9), 1);
+  const a = newMeter(); meterAddRow(a, { n: 1, side: 'e', id: 1, d: -10, by: { side: 'u', id: 1 } });
+  const b = newMeter(); meterAddRow(b, { n: 2, side: 'e', id: 1, d: -5, by: { side: 'u', id: 9 } });
+  const run = meterMerge(meterMerge(newMeter(), a, root), b, root);
+  assert.deepEqual(Object.keys(run.units), ['1']); assert.equal(run.units[1].dmg, 15);
 });

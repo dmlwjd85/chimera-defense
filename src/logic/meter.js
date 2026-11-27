@@ -37,9 +37,9 @@ export function meterPull(m, rows) { let n = 0; for (const r of rows ?? []) if (
 /** 사건 → 미터(보스 기술 끊기) */
 export function meterEvent(m, ev) { if (ev?.type === 'raidInterrupt') m.team.breaks += 1; }
 
-/** 교전 미터를 판 전체 미터에 더함 */
-export function meterMerge(into, m) {
-  for (const [uid, r] of Object.entries(m.units)) { const t = row(into, uid); for (const k of [...METER_KEYS, ...METER_EXTRA]) t[k] += r[k]; }
+/** 교전 미터를 판 전체 미터에 더함. keyOf(uid) → 판 전체에서 쓸 번호(자라서 번호가 바뀐 동물을 한 줄로 모을 때) */
+export function meterMerge(into, m, keyOf = (uid) => uid) {
+  for (const [uid, r] of Object.entries(m.units)) { const t = row(into, keyOf(+uid)); for (const k of [...METER_KEYS, ...METER_EXTRA]) t[k] += r[k]; }
   into.team.breaks += m.team.breaks;
   return into;
 }
@@ -67,4 +67,18 @@ export function meterTotals(m) {
   const t = zero();
   for (const r of Object.values(m.units)) for (const k of Object.keys(t)) t[k] += r[k];
   return t;
+}
+
+/** 자람(성장기·성체)은 규칙에서 새 번호의 동물로 바뀜 → 판 전체 기록은 같은 동물로 이어 셈.
+ *  prev·now = [{ uid, speciesId }] (정비 전·후 명단), alias = Map(새 번호 → 처음 번호). 같은 종이 사라지고 새로 생기면 이어 붙임(합성으로 생긴 다른 종은 새 동물) */
+export function meterLink(alias, prev, now) {
+  const root = (u) => { let x = u, n = 0; while (alias.has(x) && n++ < 50) x = alias.get(x); return x; };
+  const nowIds = new Set(now.map((n) => n.uid)), prevIds = new Set(prev.map((p) => p.uid));
+  const gone = prev.filter((p) => !nowIds.has(p.uid));
+  for (const n of now) {
+    if (prevIds.has(n.uid) || alias.has(n.uid)) continue;
+    const i = gone.findIndex((g) => g.speciesId === n.speciesId);
+    if (i >= 0) { alias.set(n.uid, root(gone[i].uid)); gone.splice(i, 1); }
+  }
+  return root;
 }

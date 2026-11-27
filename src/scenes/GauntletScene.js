@@ -22,6 +22,8 @@ import { MidStage } from './midstage.js';
 import { SkillFX } from './skillfx.js';
 import { RaidFx, showBossCard } from './raidfx.js';   // 보스 레이드 예고(시전 막대·표식·장판)
 import { CombatClarity, summaryRows } from './clarity.js';
+import { newMeter, meterPull, meterEvent, meterMerge, meterLeaders, meterLink } from '../logic/meter.js';
+import { MeterHud, showMeterCard } from './meterUi.js';   // 딜 미터기(2026-11-28)
 
 // 작전 한 줄 설명(7살도 알게)
 const TACTIC_TIP = { hold: '앞에서 힘싸움', guard: '뒤 친구를 막아 줌', help: '앞 싸움을 도움', hunt: '적 뒷줄을 노림', intercept: '달려드는 적을 막음', front: '앞 친구를 응원', back: '뒤 친구에게 보호막' };
@@ -70,6 +72,7 @@ const AID = {
 /** 차분한 전투에서 교전 중엔 띄우지 않는 잡담 사건 */
 const CHATTER = new Set(['step', 'summon', 'slip', 'herb', 'edodge', 'fear', 'thorns', 'gang', 'clashStart', 'cheer']);
 /** 하던 동작을 끊지 않는 동작들 */
+const MREG = { x: 1010, y: 612, w: 150, h: 30 };   // 정비 화면 '📊 전투 기록' 단추 자리
 const BUSY_MOTIONS = [...ATTACK_MOTIONS, 'skill', 'ult', 'hit', 'block', 'sweep', 'grab', 'fall', 'leap', 'down', 'victory'];
 // 앞으로 튀어나왔다 돌아오는 곡선(0→1→0)
 const bump = (k) => Math.sin(Math.min(1, Math.max(0, k)) * Math.PI);
@@ -114,6 +117,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.stageId = this.duelIn ? 'arena' : d?.stageId ?? 'forest-1';
     this.stage = this.D.stageById[this.stageId];
     this.tweens.timeScale = 1; this.finale = null;
+    Object.assign(this, { meterEnc: null, meterRun: null, meterLast: null, meterNames: null, meterRunNames: null, meterAlias: null, meterPrev: null, meterWas: false, meterPending: false, meterCard: null, fleeIds: null });   // 판마다 새로
     Object.assign(this, { speed: 1, slow: 0, uViews: new Map(), eViews: new Map(), ui: [], leaving: false, state: null, mode: null });
     this.cameras.main.setBackgroundColor('#0b0d12');
     this.fx = new FX(this);
@@ -335,6 +339,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.bottom = this.add.graphics().setDepth(1800);
     this.bottom.fillStyle(0x0d1222, 0.9).fillRect(0, 604, 1280, 116);
     this.logText = this.add.text(24, 616, '', style(15, '#cfd6e6', { lineSpacing: 6 })).setDepth(1801);
+    this.meterHud?.destroy(); this.meterHud = new MeterHud(this, 1803);   // 딜 미터기: 아래 띠 왼쪽, 접힘이 기본(전장을 안 가림)
     this.muteBtn = button(this, 770, 662, 52, 48, isMuted() ? '🔇' : '🔊', () => { setMuted(!isMuted()); unlockAudio(); this.muteBtn.set(isMuted() ? '🔇' : '🔊'); sfx('click'); }, { depth: 1802, size: 18, tip: '소리 켜기/끄기' });
     this.speedBtn = button(this, 860, 662, 90, 48, '×1', () => { this.speed = this.speed === 1 ? 1.5 : this.speed === 1.5 ? 2 : 1; this.speedBtn.set('×' + this.speed); }, { depth: 1802, size: 18 });
     this.spellBtns = (s.spells ?? []).slice(-3).map((id, i) => {
@@ -375,7 +380,8 @@ export default class GauntletScene extends Phaser.Scene {
     const left = Math.max(0, g.timeLimit - s.encTime);
     this.timeBar.setVisible(fight).setScale(Math.max(0, left / g.timeLimit), 1); this.timeBg.setVisible(fight);
     this.timeText.setVisible(fight).setText(`0:${String(Math.ceil(left)).padStart(2, '0')}`);
-    this.logText.setVisible(fight && !this.calm()).setText(s.log.slice(-3).join('\n'));   // 차분한 전투: 아래 전투 기록 줄은 숨김
+    this.logText.setVisible(fight && !this.calm() && !this.meterHud?.open).setText(s.log.slice(-3).join('\n'));   // 차분한 전투: 아래 전투 기록 줄은 숨김 · 딜 미터를 펼치면 그 자리
+    this.meterHud?.setVisible(fight);
     const max = this.D.config.spells?.max ?? 100;
     this.manaText.setText(`마력 ${Math.floor(s.mana)} / ${max}`);
     for (const b of this.spellBtns) {
@@ -784,9 +790,14 @@ export default class GauntletScene extends Phaser.Scene {
     // 기본 속도 늦춤(2026-11-27): 전투 시계 전체를 viewTempo배로(밸런스는 그대로, 한 수 한 수가 보이게). ×1.5 · ×2는 그 위에 곱함
     const base = gcfg(this.D).viewTempo ?? 1;
     const dt = this.state.phase === 'fight' && !(this.paused > 0) && !this.lessonHold && !this.leaving ? real * this.speed * base * k : 0;
+    const fightNow = this.state.phase === 'fight';
+    if (fightNow && !this.meterWas) this.meterStart();
     if (dt > 0) tickGauntlet(this.state, this.D, dt);
+    if (fightNow) this.meterRead();   // 장부 새 줄(사건 처리·마무리 연출보다 먼저 → 마지막 일격까지 들어감)
     if (this.tut && this.tut.step === 6 && this.spellBtns?.length && !spellBlockG(this.state, this.D, this.spellBtns[0].id)) this.tutAt('mana');
     this.drain();
+    if (fightNow && this.state.phase !== 'fight') this.meterEnd();
+    this.meterWas = this.state.phase === 'fight';
     this.clar?.update();
     this.tickFinale();
     this.sync(real * (this.slow > 0 ? 0.45 : 1) * (this.state.phase === 'fight' ? this.speed * Math.max(base, 0.8) : 1));
@@ -798,6 +809,7 @@ export default class GauntletScene extends Phaser.Scene {
     if (dt > 0) this.silly(dt);
     if (dt > 0) { this.guideT = (this.guideT ?? 0) - dt; if (this.guideT <= 0) { this.guideT = 0.6; this.guideFight(); } }
     this.updateHud();
+    if (this.meterHud) { const op = this.meterHud.open; this.meterHud.update(real, this.meterEnc, this.meterName, this.calm() || op ? 612 : 692); }
     if (this.state.phase === 'ended' && !this.leaving) this.finish();
   }
 
@@ -1074,6 +1086,7 @@ export default class GauntletScene extends Phaser.Scene {
     for (const ev of s.events) {
       this.evPri = CHATTER.has(ev.type) ? 0 : 1;
       try { this.clar?.onEvent(ev); this.onEvent(ev); } catch (err) { console.warn('gauntlet fx', err); }
+      if (this.meterEnc) meterEvent(this.meterEnc, ev);
       this.evPri = null;
     }
     s.events.length = 0;
@@ -2205,6 +2218,41 @@ export default class GauntletScene extends Phaser.Scene {
     });
   }
 
+  // ---------- 딜 미터기(2026-11-28) — 계산은 logic/meter.js(장부 읽기만), 그림은 meterUi.js ----------
+  meterRoster() { return [...this.state.field, ...this.state.bench].filter(Boolean).map((u) => ({ uid: u.uid, speciesId: u.speciesId ?? u.kind })); }
+  meterStart() {
+    this.meterEnc = newMeter(this.state.hpN ?? 0);
+    this.meterRun ??= newMeter(this.state.hpN ?? 0);
+    this.meterNames ??= new Map(); this.meterRunNames ??= new Map(); this.meterAlias ??= new Map();
+    // 정비 중에 자란 동물(새 번호)은 판 전체 기록에서 같은 줄로
+    this.meterRoot = meterLink(this.meterAlias, this.meterPrev ?? [], this.meterRoster());
+    this.meterName = (uid) => this.meterNames.get(uid) ?? this.state.field.find((u) => u?.uid === uid)?.stats?.name ?? '?';
+    this.meterRunName = (uid) => this.meterRunNames.get(uid) ?? this.meterName(uid);
+  }
+  meterRead() {
+    if (!this.meterEnc) this.meterStart();
+    meterPull(this.meterEnc, this.state.hpLog);
+    for (const uid of Object.keys(this.meterEnc.units)) { const u = this.state.field.find((x) => x?.uid === +uid); if (u) { this.meterNames.set(+uid, u.stats.name); this.meterRunNames.set(this.meterRoot(+uid), u.stats.name); } }
+  }
+  meterEnd() {
+    if (!this.meterEnc) return;
+    meterMerge(this.meterRun, this.meterEnc, this.meterRoot);
+    this.meterLast = this.meterEnc; this.meterEnc = null; this.meterPending = true;
+    this.meterPrev = this.meterRoster();
+  }
+  /** 이번 교전 항목 1등 uid */
+  meterTop(k) { const m = this.meterEnc ?? this.meterLast; return m ? meterLeaders(m)[k] ?? null : null; }
+  /** 기록 카드(이번 교전 · 이번 판 전체) */
+  openMeter() {
+    if (this.meterCard || !this.meterLast) return;
+    const T = this.registry.get('T') ?? ((k) => k);
+    this.meterCard = showMeterCard(this, {
+      tabs: [{ label: T('meter.enc'), meter: this.meterLast }, { label: T('meter.run'), meter: this.meterRun, nameOf: this.meterRunName }],
+      nameOf: this.meterName, depth: 3300, onClose: () => { this.meterCard = null; },
+      auto: { get: () => this.save.meterAuto !== false, set: (v) => { this.save.meterAuto = v; writeSave(this.registry.get('storage'), this.save); } },
+    });
+  }
+
   // ---------- 마지막 적 슬로우모션 + 세리머니(2026-11-28) ----------
   //  값은 public/data/combatfx.json finale, 대사는 text.json finale.*. 규칙 시계는 이미 멈춰 있음(교전이 끝난 뒤라) → 화면만 느리게
   finaleCfg() { return this.cache.json.get('combatfx')?.finale ?? {}; }
@@ -2282,6 +2330,11 @@ export default class GauntletScene extends Phaser.Scene {
     if (this.leaving || this.state.phase !== 'regroup') return;
     const s = this.state, D = this.D;
     this.clearUi();
+    // 딜 미터기: 교전이 끝나고 정비 화면이 처음 뜰 때 기록 카드(끄기 가능) · 다시 보는 단추
+    if (this.meterLast) {
+      this.addUi(button(this, MREG.x, MREG.y, MREG.w, MREG.h, this.registry.get('T')?.('meter.button') ?? 'meter.button', () => this.openMeter(), { depth: 2002, size: 13, fill: 0x24303f }));
+      if (this.meterPending) { this.meterPending = false; if (this.save.meterAuto !== false) this.time.delayedCall(120, () => { if (this.state?.phase === 'regroup' && !this.leaving) this.openMeter(); }); }
+    }
     this.eViews.forEach((v) => v.c.destroy()); this.eViews.clear();
     // 자리 칸(끌어 놓을 곳)
     this.slots = [];
@@ -2744,7 +2797,7 @@ export default class GauntletScene extends Phaser.Scene {
     const candidates = s.result === 'clear' ? carryCandidates(s, this.D) : [];
     if (candidates.length) setCarry(this.save, this.D, this.stageId, candidates[0]);
     writeSave(this.registry.get('storage'), this.save);
-    this.time.delayedCall(s.result === 'clear' ? 2600 + Math.max(0, this.finaleLeft() - 1150) : 1600, () => this.scene.start('Result', { report, candidates, stageId: this.stageId, wave: Math.min(s.enc + 1, s.plan.length), total: s.plan.length, life: s.life, gauntlet: true, hard: s.hard, tier: s.tier }));
+    this.time.delayedCall(s.result === 'clear' ? 2600 + Math.max(0, this.finaleLeft() - 1150) : 1600, () => this.scene.start('Result', { report, candidates, stageId: this.stageId, wave: Math.min(s.enc + 1, s.plan.length), total: s.plan.length, life: s.life, gauntlet: true, hard: s.hard, tier: s.tier, meter: this.meterRun ? { run: this.meterRun, last: this.meterLast, names: Object.fromEntries(this.meterNames ?? []), runNames: Object.fromEntries(this.meterRunNames ?? []) } : null }));
   }
 }
 

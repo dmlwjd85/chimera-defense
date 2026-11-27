@@ -629,6 +629,7 @@ export default class GauntletScene extends Phaser.Scene {
         if (v.pendHit != null && this.time.now - v.pendHit > 260) { if ((v.hitAt ?? -999) < v.pendHit) this.hitReact(v); v.pendHit = null; }
         if (s.phase !== 'fight' || v.dash || v.walking) v.turned = false;
         r.setFacing(v.dashBack !== !!v.turned ? -1 : 1);
+        if (u.stunLeft > 0 && !v.dive && r.flashLeft > 0) r.flashLeft = Math.max(0, r.flashLeft - dt);   // 기절로 멈춰 있어도 흰 번쩍은 끝나게
         v.rig.view.update(u.stunLeft > 0 && !v.dive ? 0 : dt);
       }
       v.lastHp = u.hp;
@@ -667,6 +668,7 @@ export default class GauntletScene extends Phaser.Scene {
         if (v.pendHit != null && this.time.now - v.pendHit > 260) { if ((v.hitAt ?? -999) < v.pendHit && e.hp > 0) this.hitReact(v); v.pendHit = null; }
         if (this.state.phase !== 'fight' || v.walking) v.turned = false;
         r.setFacing(enemyFace(v.rig.faceId ?? e.id, v.dashBack !== !!v.turned));   // 적은 모두 왼쪽(동물 쪽)을 봄
+        if (e.stunLeft > 0 && !v.dive && r.flashLeft > 0) r.flashLeft = Math.max(0, r.flashLeft - dt);   // 기절로 멈춰 있어도 흰 번쩍은 끝나게
         v.rig.view.update(e.stunLeft > 0 && !v.dive ? 0 : dt);
       }
       v.lastHp = e.hp;
@@ -1074,7 +1076,7 @@ export default class GauntletScene extends Phaser.Scene {
   /** 맞으면 피격 동작(2026-11-27 "공격 받으면 피격 모션 추가"): 기술·막기·쓰러짐 중이거나 공격을 막 휘두르는 중(앞 55%)이면 번쩍임만 */
   hitReact(v, heavy = false) {
     const r = v?.rig?.inst; if (!r || v.dive) return;
-    r.hitFlash(heavy ? 0.16 : 0.1);
+    r.hitFlash(heavy ? 0.07 : 0.045);   // 2026-11-27 "피격시 하얘지는 효과 짧게"
     const now = this.time.now; if (now - (v.hitAt ?? -999) < 260) return;
     const m = r.motion, cur = r.cur;
     if (['skill', 'ult', 'block', 'sweep', 'grab', 'fall', 'leap', 'down', 'victory'].includes(m) && !r.finished) return;

@@ -53,3 +53,16 @@ test('보스 카드·보스 대비: good 목록이면 +1, bad면 -1, raid 없으
   assert.equal(bossFit(OFF, st, c.good[0]), 0);
   assert.equal(bossCard(OFF, st), null);
 });
+
+test('12교전 기준: 맛보기(tasteAt)는 1~4번, 미니보스는 8번째(5~8번), 보스는 12번째', async () => {
+  const { planEncounters } = await import('../src/logic/gauntlet.js');
+  const { makeRng } = await import('../src/logic/rng.js');
+  const plan = planEncounters(BASE.stageById['stage-7'], BASE, makeRng(5));
+  assert.equal(plan.length, 12);
+  assert.equal(plan.findIndex((s) => s.ids.includes('miniboss')), 7);
+  assert.ok(plan[11].boss);
+  for (const i of BASE.raid.common.tasteAt) assert.ok(i >= 0 && i <= 3 && !plan[i].boss);
+  // minibossAt으로 옮길 수 있음
+  const moved = planEncounters(BASE.stageById['stage-7'], { ...BASE, raid: { ...BASE.raid, common: { ...BASE.raid.common, minibossAt: 5 } } }, makeRng(5));
+  assert.equal(moved.findIndex((s) => s.ids.includes('miniboss')), 5);
+});

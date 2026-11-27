@@ -7,13 +7,14 @@ import { climateSide } from './elements.js';
 const M = (cfg) => cfg.moves ?? null;
 
 /** Which moves this unit has (by stage / chimera). */
-export function movesOf(u, cfg) {
+/** ownUlt: 연전처럼 전용 연출을 장면이 직접 트는 곳에서는 산군도 필살기 게이지·필살기를 씀 */
+export function movesOf(u, cfg, ownUlt = false) {
   const m = M(cfg);
   if (!m) return ['a1'];
   const key = u.kind === 'chimera' ? 'chimera' : u.kind === 'weak' ? 'young' : u.stage;
   let list = m.stages[key] ?? m.stages.young;
   // 전용 필살기 연출이 따로 있는 신화급(산군 '어흥' 블릿 타임 등)은 공용 필살기를 쓰지 않음
-  if (u.kind !== 'chimera' && (m.ultOwn ?? []).includes(u.speciesId)) list = list.filter((k) => k !== 'ult');
+  if (!ownUlt && u.kind !== 'chimera' && (m.ultOwn ?? []).includes(u.speciesId)) list = list.filter((k) => k !== 'ult');
   return u.stats.element ? list : list.filter((k) => k !== 'el');
 }
 
@@ -65,9 +66,9 @@ export function pickMove(state, u, target, cfg) {
 }
 
 /** Charge the ultimate gauge (only units that have one). */
-export function chargeUlt(u, cfg, kind, amount = 1) {
+export function chargeUlt(u, cfg, kind, amount = 1, ownUlt = false) {
   const m = M(cfg);
-  if (!m || !movesOf(u, cfg).includes('ult')) return;
+  if (!m || !movesOf(u, cfg, ownUlt).includes('ult')) return;
   const add = kind === 'hit' ? m.ult.perHit : kind === 'kill' ? m.ult.perKill : kind === 'hurt' ? m.ult.perHurtPct * amount : 0;
   u.ultGauge = Math.min(m.ult.gauge, (u.ultGauge ?? 0) + add);
 }

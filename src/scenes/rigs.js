@@ -67,6 +67,7 @@ const json = (scene, key) => scene.cache.json.get(key);
 /** 공격 동작들(할퀴기·들이받기·물기·덮치기 포함). 리그의 attacks 목록을 차례로 돌려 써서 공격이 단조롭지 않게 함. */
 export const ATTACK_MOTIONS = ['attack', 'claw', 'butt', 'bite', 'pounce', 'peck', 'swoop'];
 export function playAttack(inst, move = null) {
+  inst.timeScale = 1;   // 쉬는 동작(fidget)·달리기에서 바꾼 빠르기를 되돌림
   const list = (inst.rig.attacks || []).filter((n) => inst.anims[n]);
   // 기술 묶음: 기본1 = 첫 공격 동작, 기본2 = 둘째 동작, 속성·필살기 = 기술 동작
   if (move === 'ult' && inst.dot?.sets?.[inst.stageDef?.set]?.ult) return inst.play('ult');

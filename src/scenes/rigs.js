@@ -191,16 +191,8 @@ export function stageEnemyIds(stage, data) {
   return [...ids].map((id) => 'en_' + id);
 }
 
-/** 원래 그림이 이미 왼쪽(또는 정면에서 왼쪽)을 보는 적 — 뒤집으면 오른쪽을 보게 되므로 뒤집지 않음(2026-11-26 전장 나란히 확인) */
-// 2026-11-27 사용자 "적들은 전부 왼쪽을 보고 있어야 해" → 시트별로 다시 봄: 왼쪽을 보는 원화는 얼음 망령·박쥐·도깨비불뿐
-export const ENEMY_FACES_LEFT = new Set(['boss_frost', 'bat', 'wisp']);
-/** 적이 동물 쪽(왼쪽)을 볼 때 setFacing 값 */
-// 예전 한 장 초상화(enemy-<id>.png: 도감·다음 적)는 오른쪽을 보는 것들이 있어서 뒤집어 왼쪽으로(2026-11-27 "초록색 멧돼지 오른쪽 보고 있다")
-export const PORTRAIT_FACES_RIGHT = new Set(['normal', 'fast', 'swarm', 'flying', 'healer', 'miniboss', 'ghost', 'zombie', 'boss_bone']);
-export const enemyPortraitFlip = (id) => PORTRAIT_FACES_RIGHT.has(id);
-export const enemyFace = (id0, back = false) => { const id = SKIN_OF[id0] ?? id0; return (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1); };
-const SKIN_OF = {};   // 새 보스 5종도 전용 그림(2026-11-27)이 생겨서 빌려 쓰는 그림 없음
-export const enemyFaceOld = (id, back = false) => (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1);
+/** 적 방향 표(왼쪽을 보는 원화는 뒤집지 않음). 내용은 src/logic/enemyFace.js */
+export { ENEMY_FACES_LEFT, PORTRAIT_FACES_RIGHT, enemyPortraitFlip, enemyFace, enemyFaceOld } from '../logic/enemyFace.js';
 
 /** 적 도트(동작 시트가 불러와져 있을 때만). 오른쪽을 보는 그림 → 왼쪽(동물 쪽)을 보게 뒤집음. */
 function enemyDot(scene, enemy, parent, scale) {
@@ -214,7 +206,7 @@ function enemyDot(scene, enemy, parent, scale) {
   // 적 등급(푸른·붉은·검은): 몸 색은 그대로 두고 외곽선만 등급 색으로 바꾼 시트를 씀(몸 전체 물들이기 대신)
   const rk = enemy.rankTint ? rankDot(scene, mv, enemy.rankTint) : null;
   const inst = new DotInstance(rk ?? mv, { stage: 'adult', scale, motion: 'move' });
-  const faceId = tierMv && mv === tierMv ? mv.species.slice(3) : enemy.skin ?? enemy.id;   // 단계 그림은 새로 그린 것(오른쪽을 봄) → 뒤집어 왼쪽으로
+  const faceId = tierMv && mv === tierMv ? mv.species.slice(3) : enemy.skin ?? enemy.id;   // 단계 그림은 종 이름에 _t1/_t2가 붙음. 방향은 enemyFace(faceId)가 정함
   inst.setFacing(enemyFace(faceId));
   const view = new DotView(scene, inst, { parent, px: DOT_PX * (scale / 0.22) });
   if (enemy.tint && !rk) view.tint = enemy.tint;

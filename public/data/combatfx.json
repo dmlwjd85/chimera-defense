@@ -1,0 +1,100 @@
+{
+  "note": "전투 알아보기 쉽게(2026-11-27 선생님 \"누가 어떤 공격·서포트·회복·마법을 해서 그렇게 되는건지 이펙트로 직관적으로\"). 숫자 = 실제 줄어든·찬 체력(logic 체력 장부). 색·모양·시간·상한만 여기서 바꿈. 글자는 text.json clarity.*",
+  "colors": {
+    "hitEnemy": "#ffffff",
+    "hitAlly": "#ff6b5a",
+    "big": "#ffe066",
+    "crit": "#ff9f43",
+    "strong": "#ffe066",
+    "weak": "#9aa7b8",
+    "blocked": "#8fd3ff",
+    "heal": "#6dff8a",
+    "dotPoison": "#b07cff",
+    "dotBurn": "#ff9f43",
+    "env": "#ffd27a",
+    "revive": "#c8ffd0",
+    "hitAllyStrong": "#ff3b3b",
+    "hitAllyWeak": "#ffb0a8"
+  },
+  "beam": {
+    "heal": "0x6dff8a",
+    "buff": "0xffd84d",
+    "debuff": "0xb07cff",
+    "drain": "0xff4d5a",
+    "magic": "0xb07cff",
+    "revive": "0xc8ffd0",
+    "ms": 520,
+    "width": 4,
+    "arc": 46,
+    "max": 12,
+    "skyY": 120
+  },
+  "elementColors": {
+    "fire": "0xff7a3c",
+    "water": "0x5ab0ff",
+    "wind": "0x9cf0d0",
+    "earth": "0xc8a26a",
+    "thunder": "0xffe066",
+    "moon": "0xc4a6ff",
+    "grass": "0x7ddc6f",
+    "light": "0xfff2b0",
+    "dark": "0x9b6cf0"
+  },
+  "strike": {
+    "ms": 140,
+    "width": 3
+  },
+  "number": {
+    "small": 15,
+    "normal": 19,
+    "big": 28,
+    "heal": 18,
+    "blocked": 14,
+    "rise": 34,
+    "hold": 380,
+    "fade": 380,
+    "stackPx": 19,
+    "stackMs": 520,
+    "max": 30,
+    "mergeMs": 260,
+    "dotMs": 700,
+    "regenMs": 900,
+    "minShow": 0.5
+  },
+  "bar": {
+    "ghostDelay": 240,
+    "ghostSpeed": 0.55,
+    "healSpeed": 0.7,
+    "ghostWhite": "0xffffff",
+    "ghostRed": "0xff5a5a",
+    "healColor": "0x6dff8a",
+    "shieldColor": "0x8fd3ff"
+  },
+  "hold": {
+    "act": 3000,
+    "guard": 200,
+    "peel": 230,
+    "hazard": 380,
+    "eguard": 420,
+    "snatch": 220,
+    "clashWin": 0,
+    "clashLose": 0,
+    "bossSlam": 0
+  },
+  "icons": {
+    "shield": "🛡",
+    "atk": "⚔",
+    "haste": "💨",
+    "poison": "☠",
+    "burn": "🔥",
+    "slow": "🐢",
+    "curse": "🌙",
+    "awake": "✨",
+    "mana": "🔮",
+    "snare": "🪤",
+    "stun": "💫",
+    "push": "↩"
+  },
+  "iconEvery": 0.2,
+  "bubbleGap": 900
+}

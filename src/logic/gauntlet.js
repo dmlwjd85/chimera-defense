@@ -67,7 +67,7 @@ export function gcfg(data) {
     },
     // 잡아채기: 후열을 노리고 들어오는 딜러를 낚아채는 동물(우리: 개구리 혀·원숭이 꼬리·개미 떼 / 적: 좀비 손·해골 손·뼈 보스)
     catchers: { frog: 'tongue', monkey: 'tail', ant: 'swarm' }, eCatchers: { zombie: 'hand', skeleton: 'bone', boss_bone: 'bone', boss_lich: 'shadow' },
-    snatchCd: 7, snatchChance: 0.75, eSnatchChance: 0.5, snatchStun: 1.2, snatchPin: 2.5, deepT: 3, deepTaken: 20, deepFocus: 0.45, sellWeak: 25, extraCost: 15, extraUp: 1, extraMax: 2, pouchMax: 150, pouchTake: 40, potionCost: 10, potionHeal: 35, trainCost: 20, trainDmg: 10, trainMax: 3,
+    snatchCd: 7, snatchChance: 0.75, eSnatchChance: 0.5, snatchStun: 1.2, snatchPin: 2.5, deepT: 3, deepTaken: 20, backstab: 1.3, deepFocus: 0.45, sellWeak: 25, extraCost: 15, extraUp: 1, extraMax: 2, pouchMax: 150, pouchTake: 40, potionCost: 10, potionHeal: 35, trainCost: 20, trainDmg: 10, trainMax: 3,
     // 붙잡기: 남는 정원이 있는 탱커는 같은 라인 딜러에게 붙어 후열 노리기를 막음. 고급 딜러(나는 동물·신화·키메라·날쌘 종 성장기 이상)는 빠져나감
     slippery: ['fox', 'monkey', 'rabbit'], eSlippery: ['ghost', 'bat', 'boss_bat'], enemyCap: { bruiser: 2, boss: 3 },
     // 역전 각성(약할수록 큼), 주인공(선택과 집중), 무쌍 견제(한 마리가 피해를 독식하면 적이 집중)
@@ -1082,6 +1082,14 @@ function matchK(state, data, u, e) {
   return { mult: em * fc.mult, tag };
 }
 
+/** 등 뒤 공격(2026-11-27 사용자 "뒤에서 공격하면 멘트와 이펙트와 추가 데미지"): 근접으로
+ *  ① 적진 깊이 뛰어든 녀석(자기가 노린 상대만 보고 있음)을 다른 쪽이 침  ② 뛰어든 녀석이 상대 앞줄(1열)을 뒤에서 침 */
+function isBackstab(state, atk, atkTarget, tgt, tgtTarget, melee) {
+  if (!melee) return false;
+  const now = state.time;
+  return ((tgt.deepT ?? 0) > now && tgtTarget !== atk) || ((atk.deepT ?? 0) > now && atkTarget !== tgt && colOf(tgt.seat) === 0);
+}
+
 function unitAct(state, data, u, g) {
   const cfg = data.config;
   const t = pickUnitTarget(state, u);
@@ -1177,6 +1185,8 @@ function unitAct(state, data, u, g) {
     for (const h of hits) if (h[0] === t) h[1] = 0;
     state.events.push({ type: 'edodge', eid: t.eid, uid: u.uid });
   }
+  const back = aliveE(t) && isBackstab(state, u, u.deepEid != null ? findE(state, u.deepEid) : null, t, t.deepUid != null ? findU(state, t.deepUid) : null, melee);
+  if (back) { for (const h of hits) if (h[0] === t) h[1] *= g.backstab ?? 1.3; dstat(state, 'uBackstab'); }
   const aw = (u.awake?.dmg ?? 1) * (rule(state, 'myth') ? (u.kind === 'chimera' || u.stage === 'spirit' ? 1.4 : 0.85) : 1) * (rule(state, 'glass') ? 1.5 : 1);
   const dealt = hits.filter(([, a]) => a > 0).map(([e, a]) => { const k = matchK(state, data, u, e); return { eid: e.eid, dmg: Math.round(hurtEnemy(state, data, e, a * k.mult * aw, u)), eff: k.tag }; });
   // 가시 정예: 근접으로 때리면 20%를 되돌려 받음
@@ -1204,7 +1214,7 @@ function unitAct(state, data, u, g) {
       state.events.push({ type: 'cheer', uid: u.uid, to: to.uid });
     }
   }
-  state.events.push({ type: 'act', side: 'u', uid: u.uid, eid: t.eid, move, name, big, el, melee, style: st, cheer, hits: dealt });
+  state.events.push({ type: 'act', side: 'u', uid: u.uid, eid: t.eid, move, name, big, el, melee, style: st, cheer, hits: dealt, back });
   const tot = dealt.reduce((s, h) => s + h.dmg, 0);
   { const ls = eco(state, data, 'lifesteal') ?? 0; if (ls && st === 'skirm' && tot > 0) u.hp = Math.min(u.maxHp, u.hp + tot * ls / 100); }
   if (name || big) say(state, `${u.stats.name} · ${name ?? '공격'} → ${t.name} ${tot}`);
@@ -1278,6 +1288,10 @@ function enemyAct(state, data, e, g) {
     if (marked) { e.deepT = state.time + g.deepT; e.deepUid = t.uid; dstat(state, 'eBreach'); state.events.push({ type: 'breach', side: 'e', eid: e.eid, uid: t.uid, deep: true, mv: diveMove(e, g) }); }
     if (marked && state.lesson === 'dive' && !state.lessonShown) { state.lessonShown = true; state.events.push({ type: 'lesson', kind: 'dive' }); }
   }
+  const back = isBackstab(state, e, e.deepUid != null ? findU(state, e.deepUid) : null, t, t.deepEid != null ? findE(state, t.deepEid) : null, !e.ranged);
+  if (back) { dmg *= g.backstab ?? 1.3; dstat(state, 'eBackstab'); }
+  // 속성 상성 표시용(유리·불리 반응)
+  const eff = e.element && t.stats.element ? (() => { const m = mcfg(data), k = elemMult(e.element, t.stats.element, m, m.eStrong, m.eWeak); return k > 1 ? 'strong' : k < 1 ? 'weak' : null; })() : null;
   const a = hurtUnit(state, data, t, dmg * (e.style === 'support' ? 0.6 : 1), e);
   { const th = eco(state, data, 'thornsU') ?? 0; if (th && styleOf(t) === 'bruiser' && !e.ranged && a > 0) hurtEnemy(state, data, e, a * th / 100, t, true); }
   if (!clash) assist(state, 'u', t.uid, g.assistPush * 1.5);
@@ -1293,7 +1307,7 @@ function enemyAct(state, data, e, g) {
       state.events.push({ type: 'echeer', eid: e.eid, to: to.eid });
     }
   }
-  state.events.push({ type: 'act', side: 'e', eid: e.eid, uid: t.uid, dmg: Math.round(a), melee: !e.ranged, boss: e.boss, clash: !!clash, style: e.style, cheer });
+  state.events.push({ type: 'act', side: 'e', eid: e.eid, uid: t.uid, dmg: Math.round(a), melee: !e.ranged, boss: e.boss, clash: !!clash, style: e.style, cheer, back, eff });
   if (e.boss) say(state, `${e.name} → ${t.stats.name} ${Math.round(a)}`);
 }
 
@@ -1720,7 +1734,7 @@ function hazardTick(state, data, g, d) {
     if (hz.stun && !(t.x.boss)) t.x.stunLeft = Math.max(t.x.stunLeft ?? 0, hz.stun * (t.side === 'u' ? half : 1));
     hits.push({ side: t.side, id: t.side === 'u' ? t.x.uid : t.x.eid, dmg: Math.round(a) });
   }
-  state.events.push({ type: 'hazard', icon: hz.icon, name: hz.name, line: hz.line, hits }); dstat(state, 'hazard');
+  state.events.push({ type: 'hazard', icon: hz.icon, name: hz.name, line: hz.line, hits, immune: hz.immune ?? null }); dstat(state, 'hazard');
 }
 
 // ---------- 역전 · 부상 · 치료 (2026-11-27) ----------

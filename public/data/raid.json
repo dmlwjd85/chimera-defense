@@ -699,8 +699,15 @@
      }
     }
    },
-   "hpMult": 0.25,
-   "atkMult": 0.7
+   "hpMult": 0.35,
+   "atkMult": 0.7,
+   "resist": [
+    "grass",
+    "wind",
+    "fire"
+   ],
+   "resistX": 0.7,
+   "hardHp": 1.6
   },
   "boss_witch": {
    "element": "water",

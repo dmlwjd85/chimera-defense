@@ -38,3 +38,10 @@
 - boss_witch_t2: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
 - ghost: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
 - healer: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+
+### 묶음 4: miniboss normal overlord overlord_t1 overlord_t2
+- miniboss: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- normal: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- overlord: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- overlord_t1: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- overlord_t2: 동작 6칸 모두 뒤집기=예(왼쪽) ✔

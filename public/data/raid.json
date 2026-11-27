@@ -312,7 +312,8 @@
     "water"
    ],
    "weakX": 1.5,
-   "resistX": 0.4
+   "resistX": 0.4,
+   "hardHp": 1.5
   },
   "boss_bone": {
    "element": "earth",

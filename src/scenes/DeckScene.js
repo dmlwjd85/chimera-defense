@@ -82,7 +82,7 @@ export default class DeckScene extends Phaser.Scene {
 
     // ---- right: roster grid ----
     g.fillStyle(0x0d141d, 0.92).fillRoundedRect(476, 76, 774, 572, 16).lineStyle(2, 0xd4b06a, 0.8).strokeRoundedRect(476, 76, 774, 572, 16);
-    add(this.add.text(496, 88, `덱 ${deck.length}/${sc.deckSize}${S.legend ? `   ⭐ 데려가는 친구: ${S.legend.name} (한 칸, 어른으로 출전)` : ''}`, style(14, '#ffe2b8')));
+    add(this.add.text(496, 88, `덱 ${deck.length}/${sc.deckSize}${(this.D?.config?.gauntlet?.startUnits ?? 6) < sc.deckSize ? `  (처음엔 앞 ${this.D.config.gauntlet.startUnits}마리만 출전, 나머지는 보상으로 합류)` : ''}${S.legend ? `   ⭐ 데려가는 친구: ${S.legend.name} (한 칸, 어른으로 출전)` : ''}`, style(14, '#ffe2b8')));
     if (S.legend) this.btns.push(button(this, 1180, 96, 110, 26, '⭐ 두고 가기', () => { S.legend = null; this.save(); this.paint(); }, { size: 12, fill: 0x4a3d14 }));
     order.forEach((id, i) => {
       const a = D.unitById[id]; if (!a) return;

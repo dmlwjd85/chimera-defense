@@ -14,4 +14,6 @@ let sw = readFileSync(join(dist, 'sw.js'), 'utf8');
 sw = sw.replace(/const CACHE = '[^']*';/, `const CACHE = 'chimera-${ver}';`)
   .replace(/const CORE = \[[^\]]*\];/, `const CORE = ${JSON.stringify(['./', ...files.map((f) => './' + f)])};`);
 writeFileSync(join(dist, 'sw.js'), sw);
+// 앱 안 '🔄 업데이트' 버튼이 비교하는 최신 버전 표(캐시 이름과 같은 값)
+writeFileSync(join(dist, 'version.json'), JSON.stringify({ ver, at: new Date().toISOString() }));
 console.log('sw precache:', files.length, 'files, cache', ver);

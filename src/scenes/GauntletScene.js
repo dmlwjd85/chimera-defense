@@ -1367,7 +1367,7 @@ export default class GauntletScene extends Phaser.Scene {
     else atkC.add(this.add.text(0, 0, STYLE_ICON[styleOf(u)] ?? '⭐', style(160)).setOrigin(0.5));
     const tgtC = this.add.container(420, 240).setAlpha(0); stageC.add(tgtC);
     const tr = e ? enemyRig(this, e, tgtC, 220, 0.7) : null;
-    if (tr) { tr.inst.setFacing?.(enemyFace(e.id)); tr.view.update(0); }
+    if (tr) { tr.inst.setFacing?.(enemyFace(tr.faceId ?? e.id)); tr.view.update(0); }
     const nameT = this.add.text(640, 110, ev.name ?? '필살기', style(64, '#ffffff', { stroke: '#b8860b', strokeThickness: 12 })).setOrigin(0.5).setAngle(-6).setScale(2.4).setAlpha(0);
     const udesc = ev.desc ?? (this.lastUlt?.uid === u.uid ? this.lastUlt.desc : null);
     const who = this.add.text(640, 176, udesc ? `${u.stats.name} · ${udesc}` : u.stats.name, style(22, '#ffe9a8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setAlpha(0);

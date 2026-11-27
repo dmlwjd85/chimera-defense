@@ -1557,7 +1557,7 @@ export default class GauntletScene extends Phaser.Scene {
     const to = this.slotAt(v.c.x, v.c.y), from = this.refOf(v.uid);
     if (!to || !from) return;
     const r = moveAnimal(this.state, this.D, from, to);
-    if (!r.ok) { if (r.reason !== 'same') this.toast(r.reason === 'last' ? '한 마리는 남아야 함' : '못 옮김'); return; }
+    if (!r.ok) { if (r.reason !== 'same') this.toast(r.reason === 'last' ? '한 마리는 남아야 함' : r.reason === 'fieldFull' ? '전투는 최대 6마리' : '못 옮김'); return; }
     if (r.kind === 'move' || r.kind === 'swap') { sfx('click'); this.tutAt('moved'); return; }
     const at = to.where === 'seat' ? seatXY('u', to.index) : BENCH(to.index);
     if (r.kind === 'evolve') { this.fx.evolve(at.x, at.y, false); sfx('evolve'); this.tutAt('evolve'); }

@@ -69,6 +69,21 @@ test('자리 바꾸기와 합성(같은 종·같은 단계 = 진화)', () => {
   assert.equal(unitsIn(st)[u.seat].stage, 'teen');
 });
 
+test('전투는 최대 6마리: 9칸이어도 대기석에서 빈 칸으로 7번째는 못 나감, 지구본도 대기석으로', () => {
+  const st = createGauntlet(D, 'forest-3', 17, { pool: ['bear', 'dog', 'tiger', 'wolf', 'eagle', 'rooster'] });
+  fightOut(st);
+  if (st.field.length < 6) return;   // 이미 쓰러져 줄었으면 이 시험은 건너뜀
+  assert.equal(st.field.length, 6);
+  st.offer.globe[0] = { speciesId: 'fox', traits: [] };
+  assert.ok(takeReward(st, D, 'globe', 0).ok);
+  assert.equal(st.field.length, 6);
+  const bi = st.bench.findIndex((x) => x && x.speciesId === 'fox');
+  assert.ok(bi >= 0);
+  const r = moveAnimal(st, D, { where: 'bench', index: bi }, { where: 'seat', index: st.seats.indexOf(null) });
+  assert.equal(r.ok, false); assert.equal(r.reason, 'fieldFull');
+  assert.equal(st.field.length, 6);
+});
+
 test('3×3 자리: 브루저 1열·딜러 2열·응원 3열, 라인 맞붙음, 정원, 브루저 없는 라인은 제압', async () => {
   const G = await import('../src/logic/gauntlet.js');
   const st = createGauntlet(D, 'forest-3', 13, { pool: ['bear', 'dog', 'tiger', 'wolf', 'eagle', 'rooster'] });

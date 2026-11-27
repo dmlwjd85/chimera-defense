@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { SOUND_FILES, SOUND_NAMES, sfx } from '../src/scenes/sfx.js';
 
-const FILE_ROLES = ['click', 'coin', 'evolve', 'clear'];   // lose·boss는 밝은 합성음(2026-11-27)
+const FILE_ROLES = ['clear'];   // 나머지는 밝은 합성음(2026-11-27, 파일 음높이가 내려가거나 둔탁)
 const SYNTH_ROLES = ['hit', 'slam', 'shoot', 'kill', 'magic', 'skill', 'shield', 'heal'];
 
 test('sfx: file roles are wired and present (Kenney CC0, ogg and mp3)', () => {

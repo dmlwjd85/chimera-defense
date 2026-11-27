@@ -1,4 +1,4 @@
-// Sound effects. Four roles (click, coin, evolve, clear) play Kenney CC0 files in public/assets/sfx/ (lose·boss는 2026-11-27 밝은 합성음으로 바꿈).
+// Sound effects. Only clear (승리 징글, 음이 올라감) plays a Kenney CC0 file in public/assets/sfx/ (2026-11-27: 파일 음높이를 재 보니 evolve 344→301Hz·lose·boss는 내려가고 click은 236Hz 둔탁 → 모두 밝은 합성음으로).
 // Battle roles (hit, slam, shoot, kill, magic, skill, shield, heal) use the original WebAudio synth (same recipes as before PR #62).
 // Every other effect — and any file role that fails to load — is also synthesized.
 let ctx = null, master = null, bus = null, noiseBuf = null;
@@ -38,9 +38,6 @@ export function setMuted(m) { muted = m; try { localStorage.setItem('chimera-mut
 // sound name -> files in public/assets/sfx/ (several files = variants, played in turn). All of them are Kenney CC0
 // (see docs/에셋_출처.md). Anything that fails to load simply keeps the synthesized sound below.
 export const SOUND_FILES = {
-  click: { files: ['click'] },
-  coin: { files: ['coin'] },
-  evolve: { files: ['evolve'] },
   clear: { files: ['win'] },
 };
 const FILE_BASE = 'assets/sfx/';
@@ -147,7 +144,8 @@ const SOUNDS = {
   bigKill: () => { [72, 76, 79, 84, 88].forEach((n, i) => tone('triangle', N(n), N(n), 0.35, 0.13, i * 0.07)); noise(0.5, 0.08, 0.1, { type: 'highpass', f: 6000 }); tone('sine', N(96), N(96), 0.6, 0.06, 0.4, { vib: 6, vibDepth: 8 }); },
   summon: () => [72, 76, 79, 84].forEach((n, i) => tone('triangle', N(n), N(n), 0.14, 0.12, i * 0.07)),
   reveal: () => { tone('sine', N(84), N(84), 0.5, 0.12, 0, { vib: 6, vibDepth: 6 }); tone('sine', N(91), N(91), 0.5, 0.08, 0.06); },
-  evolve: () => { [67, 71, 74, 79, 83].forEach((n, i) => tone('triangle', N(n + 5), N(n + 5), 0.3, 0.12, i * 0.06)); noise(0.6, 0.06, 0, { type: 'highpass', f: 7000 }); },
+  // 진화: 아래에서 위로 쭉 올라가는 도-미-솔-도-미 + 위로 휘익 + 반짝(점점 올라감)
+  evolve: () => { tone('sine', 400, 1600, 0.35, 0.08, 0, { glide: 1 }); [72, 76, 79, 84, 88].forEach((n, i) => tone('triangle', N(n), N(n), 0.28, 0.12, 0.05 + i * 0.07)); tone('sine', N(96), N(96), 0.5, 0.06, 0.42, { vib: 6, vibDepth: 8 }); noise(0.5, 0.05, 0.1, { type: 'highpass', f: 7000 }); },
   spirit: () => { [60, 67, 72, 76, 79, 84].forEach((n, i) => tone('sine', N(n + 5), N(n + 5), 1.0, 0.11, i * 0.08, { vib: 5, vibDepth: 4 })); tone('triangle', N(96), N(96), 1.2, 0.06, 0.5); },
   // 키메라: 휘리릭 올라가는 바람 + 반짝이는 장조 화음
   chimera: () => { noise(0.4, 0.15, 0, { type: 'bandpass', f: 800, q: 3 }, 6000); [72, 76, 79, 84, 88].forEach((n, i) => tone('triangle', N(n), N(n), 0.45, 0.08, 0.3 + i * 0.07)); },

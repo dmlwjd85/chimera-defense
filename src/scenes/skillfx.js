@@ -48,6 +48,13 @@ export class SkillFX {
     this.cap = L.particleCap ?? 420; this.perEm = L.perEmitter ?? 90; this.shapeMax = L.shapePool ?? 48;
     this.aliveCache = { t: -1, n: 0 };
     window.__skillfx = this;   // 시험용(입자 수·동시 연출 수 확인)
+    // 도트 조각 그림을 미리 조금씩 찍어 둠(처음 터질 때 화면이 멈칫하지 않게, 한 프레임에 6장씩)
+    if (this.on) {
+      const todo = [];
+      for (const [k, t] of Object.entries(this.cfg.themes ?? {})) if (!k.startsWith('_')) for (const sp of new Set([t.sprite, 'pix', 'ember', 'star'])) todo.push([k, sp]);
+      const step = () => { for (let i = 0; i < 6 && todo.length; i++) { const [k, sp] = todo.pop(); try { this.tex(k, sp); } catch { /* */ } } if (todo.length && this.sc.sys?.isActive()) this.sc.time.delayedCall(16, step); };
+      this.sc.time.delayedCall(200, step);
+    }
   }
 
   get on() { return !!this.cfg && this.cfg.enabled !== false; }

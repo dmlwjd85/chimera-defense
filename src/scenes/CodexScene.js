@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { button, title, style, panel, unitToken, speciesImage } from './ui.js';
+import { enemyPortraitFlip } from './rigs.js';
 import { ULTS, tuneOf, gcfg } from '../logic/gauntlet.js';
 import { buildData, pairKey } from '../logic/data.js';
 import { levelInfo, favorState, buyFavor, writeSave } from '../logic/meta.js';
@@ -274,7 +275,7 @@ export default class CodexScene extends Phaser.Scene {
     const D = this.data2, S = this.save;
     D.enemies.forEach((e, i) => {
       const c = this.cell(i, 4, 290, 100), seen = S.codex.enemies.includes(e.id);
-      if (this.textures.exists('enemy-' + e.id)) { const im = this.add.image(c.x + 30, c.y + 40, 'enemy-' + e.id).setDisplaySize(e.boss ? 58 : 46, e.boss ? 58 : 46); if (!seen) im.setTint(0x000000).setAlpha(0.4); }
+      if (this.textures.exists('enemy-' + e.id)) { const im = this.add.image(c.x + 30, c.y + 40, 'enemy-' + e.id).setDisplaySize(e.boss ? 58 : 46, e.boss ? 58 : 46).setFlipX(enemyPortraitFlip(e.id)); if (!seen) im.setTint(0x000000).setAlpha(0.4); }
       else this.add.rectangle(c.x + 30, c.y + 40, e.boss ? 44 : 30, e.boss ? 44 : 30, Phaser.Display.Color.HexStringToColor(e.color).color).setAlpha(seen ? 1 : 0.15);
       this.add.text(c.x + 65, c.y + 8, seen ? e.name : '???', style(17));
       if (seen) {

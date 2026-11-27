@@ -195,6 +195,9 @@ export function stageEnemyIds(stage, data) {
 // 2026-11-27 사용자 "적들은 전부 왼쪽을 보고 있어야 해" → 시트별로 다시 봄: 왼쪽을 보는 원화는 얼음 망령·박쥐·도깨비불뿐
 export const ENEMY_FACES_LEFT = new Set(['boss_frost', 'bat', 'wisp']);
 /** 적이 동물 쪽(왼쪽)을 볼 때 setFacing 값 */
+// 예전 한 장 초상화(enemy-<id>.png: 도감·다음 적)는 오른쪽을 보는 것들이 있어서 뒤집어 왼쪽으로(2026-11-27 "초록색 멧돼지 오른쪽 보고 있다")
+export const PORTRAIT_FACES_RIGHT = new Set(['normal', 'fast', 'swarm', 'flying', 'healer', 'miniboss', 'ghost', 'zombie', 'boss_bone']);
+export const enemyPortraitFlip = (id) => PORTRAIT_FACES_RIGHT.has(id);
 export const enemyFace = (id0, back = false) => { const id = SKIN_OF[id0] ?? id0; return (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1); };
 const SKIN_OF = {};   // 새 보스 5종도 전용 그림(2026-11-27)이 생겨서 빌려 쓰는 그림 없음
 export const enemyFaceOld = (id, back = false) => (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1);

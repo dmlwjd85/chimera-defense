@@ -1,0 +1,53 @@
+{
+ "species": "ch_slime",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 31.7,
+   "foot±": 7
+  },
+  "adult_a2": {
+   "n": 5,
+   "max|h%|": 40.0,
+   "foot±": 1
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 31.7,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 36.7,
+   "foot±": 7
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 31.7,
+   "foot±": 18
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 3.3,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 26.7,
+   "foot±": 8
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   143
+  ],
+  "box": [
+   75,
+   86
+  ],
+  "frames": 45,
+  "colors": 16,
+  "px": 292864
+ }
+}

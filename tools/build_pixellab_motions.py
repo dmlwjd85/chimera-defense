@@ -10,6 +10,7 @@ import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__
 from myth_recolor import recolor   # 신화급 털색 다듬기(tools/pixellab/myth_recolor.json)
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pixellab'))
 from enemy_motion_spec import E as ENEMY, DROP as ENEMY_DROP   # 적(en_<id>): 단계 하나(adult), 칸 크기는 적마다
+from chimera_motion_spec import C as CHIM, DROP as CHIM_DROP     # 자동 키메라·슬라임(ch_<id>): 단계 하나(adult) → 시트 이름 auto_<짝> / slime
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SRC = os.path.join(ROOT, 'art-src', 'pixellab')
@@ -124,18 +125,19 @@ def hit_frame(ims, ref=None):
 
 def build(sp):
     report = {'species': sp, 'motions': {}}
-    enemy = sp.startswith('en_')
-    groups = {'main': ['adult']} if enemy else {'main': ['baby', 'teen', 'adult'], 'spirit': ['myth']}
+    enemy = sp.startswith('en_'); chim = sp.startswith('ch_')
+    one = enemy or chim
+    groups = {'main': ['adult']} if one else {'main': ['baby', 'teen', 'adult'], 'spirit': ['myth']}
     for gname, stages in groups.items():
         pal = palette_of([os.path.join(SRC, f'{sp}_{st}.png') for st in stages])
         assert len(pal) <= 16, f'{sp} {gname} palette {len(pal)}'
         # 적: PixelLab이 맞기·쓰러짐에 덧그리는 빛·연기·휘두름 자국이 잦아서, 원화 팔레트에서 먼 색은 지움(2026-11-26)
-        pfn = nearest(pal, far=9 * 40 ** 2 if enemy else None)
+        pfn = nearest(pal, far=9 * 40 ** 2 if one else None)
         frames = []          # (이름, 칸 그림(주문 칸 크기), 단계)
         sets = {}
         for st in stages:
             src = Image.open(os.path.join(SRC, f'{sp}_{st}.png'))
-            C = ENEMY[sp[3:]][1] if enemy else CANVAS[st]; ox = (C - src.width) // 2; oy = C - src.height - FOOT_PAD
+            C = ENEMY[sp[3:]][1] if enemy else CHIM[sp[3:]][1] if chim else CANVAS[st]; ox = (C - src.width) // 2; oy = C - src.height - FOOT_PAD
             foot_c, anchor_c = oy + src.height - 1, ox + src.width // 2
             ref_h = src.getbbox()[3] - src.getbbox()[1]
             # PixelLab이 발을 1~3줄 옮겨 그려서, 그 단계 대기 장들의 발 높이(가운데값)를 발밑선으로 삼음(뛰는 장은 그대로 뜸)
@@ -147,8 +149,8 @@ def build(sp):
                 m = d.rsplit('_', 1)[1]
                 if m not in CLIP: continue
                 fs = sorted(glob.glob(os.path.join(d, 'f[0-9]*.png')))[1:]   # f00 = 넣은 원화와 같은 장 → 뺌
-                if enemy:   # 덧그린 번쩍임이 있는 장 빼기(enemy_motion_spec.DROP)
-                    dr = set(ENEMY_DROP.get((sp[3:], m), [])); fs = [f for i, f in enumerate(fs) if i not in dr]
+                if one:   # 덧그린 번쩍임이 있는 장 빼기(enemy_motion_spec.DROP / chimera_motion_spec.DROP)
+                    dr = set((ENEMY_DROP if enemy else CHIM_DROP).get((sp[3:], m), [])); fs = [f for i, f in enumerate(fs) if i not in dr]
                 ims = [clean(Image.open(f), pfn) for f in fs]
                 if st == 'myth': ims = [recolor(im, sp) for im in ims]
                 if not ims: continue
@@ -203,6 +205,7 @@ def build(sp):
         for n, im, st, lx, ty in cut:
             if '_idle_' in n: tops[st] = min(tops.get(st, 99999), foot + 1 + ty)   # 머리 높이(체력바 자리)는 대기 장으로
         key = sp if gname == 'main' else f'{sp}_spirit'
+        if chim: key = 'slime' if sp == 'ch_slime' else 'auto_' + sp[3:]   # 게임 쪽 이름(자동 키메라 레시피 id = auto_<짝>)
         os.makedirs(os.path.join(PUB, 'assets', 'dotm'), exist_ok=True)
         S.save(os.path.join(PUB, 'assets', 'dotm', f'{key}.png'), optimize=True)
         used = sorted({'#%02x%02x%02x' % p[:3] for p in S.get_flattened_data() if p[3]})
@@ -217,6 +220,7 @@ def build(sp):
             'sets': {st: sets[st] for st in stages},
             # 적: 졸병은 성체 동물과 키가 맞게 크게(0.62, 전장 크기 비교 2026-11-26), 보스는 원화가 이미 큼(0.55)
             'stages': {STAGE_OF[st]: {'set': st, 'scale': (0.55 if ENEMY[sp[3:]][1] >= 176 else 0.62) if enemy else SCALE} for st in stages},
+            **({'chimera': sp[3:]} if chim else {}),
         }
         os.makedirs(os.path.join(PUB, 'data', 'dotm'), exist_ok=True)
         json.dump(d, open(os.path.join(PUB, 'data', 'dotm', f'{key}.dot.json'), 'w'), ensure_ascii=False, indent=1)

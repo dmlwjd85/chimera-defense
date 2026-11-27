@@ -8,7 +8,7 @@ import { battleOptions, settleRun, writeSave, carryCandidates, setCarry, takeOut
 import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, mergeOddsG, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost, recommendReward, buyPotion, trainUnit, trainCost, tuneOf, laneOf } from '../logic/gauntlet.js';
 import { spellDef, spellCost } from '../logic/spells.js';
 import { duelData, myDuelDeck, DUEL } from '../logic/duel.js';
-import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, enemyFace } from './rigs.js';
+import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, poolExtraIds, enemyFace } from './rigs.js';
 import { FX, ambient, weather } from './fx.js';
 import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
 import { button, style, unitToken, hex, COLORS, speciesImage, pixIcon } from './ui.js';
@@ -49,9 +49,10 @@ export default class GauntletScene extends Phaser.Scene {
     try {
       const data = buildData(this.registry.get('raw'));
       const pool = battleOptions(this.registry.get('save'), data, d?.stageId ?? 'forest-1').pool ?? [];
-      if (d?.duel) { queueMotionSheets(this, myDuelDeck(this.registry.get('save'), data).map((x) => x.id)); queueMotionSheets(this, d.duel.foe.deck.map((x) => x.id)); }
+      if (d?.duel) { queueMotionSheets(this, myDuelDeck(this.registry.get('save'), data).map((x) => x.id)); queueMotionSheets(this, d.duel.foe.deck.map((x) => x.id)); queueMotionSheets(this, poolExtraIds([...myDuelDeck(this.registry.get('save'), data).map((x) => x.id), ...d.duel.foe.deck.map((x) => x.id)])); }
       else {
       queueMotionSheets(this, pool);
+      queueMotionSheets(this, poolExtraIds(pool));   // 돌연변이 슬라임 + 덱 종끼리의 자동 키메라(PixelLab 동작)
       queueMotionSheets(this, stageEnemyIds(data.stageById[d?.stageId ?? 'forest-1'], data));
       }   // 그 판 적의 PixelLab 동작
     } catch (e) { console.warn('motion sheets', e); }
@@ -165,6 +166,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.state = createGauntlet(this.D, this.stageId, seed, { ...battleOptions(this.save, this.D, this.stageId), hard, tier, pouch: bag.pouch, prep: bag.prep, prelude: true });
     if (bag.pouch || bag.prep) this.time.delayedCall(900, () => this.toast(`🎒 들고 옴: 💰${this.state.gold}${bag.prep?.relics?.length ? ` · 유물 ${bag.prep.relics.length}` : ''}${bag.prep?.food ? ` · 🍖${bag.prep.food}` : ''}${bag.prep?.feathers ? ` · 🪶${bag.prep.feathers}` : ''}`, '#ffd84d'));
     window.__gauntlet = { scene: this, get state() { return this.scene.state; }, data: this.D,
+      rigs: { unitRig, queue: (ids) => { queueMotionSheets(this, ids); this.load.start(); } },   // 시험용: 그림 검수(키메라·슬라임 도트)
       jump: (n) => { const st = this.state; st.enc = n; st.prelude = false; this.clearUi?.(); this.tutShow?.(''); this.eViews.forEach((v) => v.c.destroy()); this.eViews.clear(); startEncounter(st, this.D); this.startFightView(); } };   // 시험용: n번째 교전으로
     this.drawHud();
     // 스테이지 1 튜토리얼: 처음 한 번, 하나씩 따라 하며 진행
@@ -310,6 +312,14 @@ export default class GauntletScene extends Phaser.Scene {
   /** 크기 맞춤: 종마다 그림 칸의 실제 키가 달라 어떤 동물(까마귀·원숭이 등)은 너무 커 보임.
    *  같은 단계 기준 키(아기 47 · 성장기 63 · 성체 78)에 맞추고, 새는 조금 더 작게. 신화급·키메라는 그대로 */
   sizeFix(u) {
+    // 자동 키메라 정식 그림 · 돌연변이 슬라임(PixelLab): 성체 키 80 / 슬라임 50에 맞춤(주문서 크기 기준)
+    if (u.kind === 'chimera' || u.kind === 'weak') {
+      const d = u.kind === 'weak' ? this.cache.json.get('dotM-slime') : dotDataFor(this, u.speciesId, 'adult');
+      const set = d?.stages?.adult && d.sets?.[d.stages.adult.set];
+      if (!set || !d.chimera) return 1;
+      const h = (d.foot + 1 - (set.top ?? 0)) * (d.stages.adult.scale ?? 0.5) / 0.5;
+      return Math.max(0.45, Math.min(1.1, (u.kind === 'weak' ? 50 : 80) / h));
+    }
     if (u.stage === 'spirit' || u.kind !== 'base') return 1;
     const d = dotDataFor(this, u.speciesId, u.stage);   // 리그가 실제로 쓰는 시트와 같은 것
     const st = d?.stages?.[u.stage], set = st && d.sets[st.set];
@@ -1251,7 +1261,7 @@ export default class GauntletScene extends Phaser.Scene {
     if (s.prelude) return;
     add(this.add.text(684, 184, o?.taken ? `보상 ✔${o.bought ? ` (+${o.bought})` : ''}` : o?.bought ? '하나 더 고르기' : '보상 1개', style(18, '#ffffff')).setDepth(2001));
     // 금화로 하나 더
-    if (o?.taken) { const c = extraCost(s, D); const bb = add(button(this, 1150, 192, 170, 34, `💰${c} 하나 더`, () => { const r = buyExtraReward(s, D); if (!r.ok) { this.toast('금화가 모자람'); return; } sfx('coin'); this.goldText?.setText(`💰 ${s.gold}`); this.drawRewards(); }, { depth: 2003, size: 14, fill: s.gold >= c ? 0x5a4a14 : 0x333333, stroke: 0xffd84d })); bb.setEnabled(s.gold >= c); }
+    if (o?.taken) { const c = extraCost(s, D); const bb = add(button(this, 1150, 192, 170, 34, this.textures.exists('icon-coin') ? `     ${c} 하나 더` : `💰${c} 하나 더`, () => { const r = buyExtraReward(s, D); if (!r.ok) { this.toast('금화가 모자람'); return; } sfx('coin'); this.goldText?.setText(`💰 ${s.gold}`); this.drawRewards(); }, { depth: 2003, size: 14, fill: s.gold >= c ? 0x5a4a14 : 0x333333, stroke: 0xffd84d })); bb.setEnabled(s.gold >= c); if (this.textures.exists('icon-coin')) add(pixIcon(this, 'coin', 1150 - 52, 192, 28).setDepth(2004)); }
     if (!o) return;
     if (o.taken) this.tutAt('reward');
     const y = 214, w = 180;

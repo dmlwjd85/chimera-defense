@@ -1,0 +1,53 @@
+{
+ "species": "ch_rabbit_tiger",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 27.4,
+   "foot±": 13
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 20.2,
+   "foot±": 16
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 33.3,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 31.0,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 11.9,
+   "foot±": 3
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.4,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 3.6,
+   "foot±": 3
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   255
+  ],
+  "box": [
+   100,
+   116
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 522240
+ }
+}

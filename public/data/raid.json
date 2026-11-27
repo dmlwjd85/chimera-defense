@@ -578,15 +578,17 @@
      }
     }
    },
-   "hpMult": 0.3,
+   "hpMult": 0.8,
    "atkMult": 0.7,
    "resist": [
     "moon",
     "water",
-    "grass"
+    "grass",
+    "earth"
    ],
-   "weakX": 1.6,
-   "resistX": 0.4
+   "weakX": 2,
+   "resistX": 0.3,
+   "hardHp": 1.5
   },
   "boss_lava": {
    "element": "fire",

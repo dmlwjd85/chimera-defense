@@ -404,6 +404,10 @@ export function raidHitMult(state, e, src) {
   const r = e.raid;
   if (!r) return 1;
   let k = 1;
+  // 보스별 상성 배율: 약점 속성(weak) 동물은 weakX배 더, 강한 속성(resist) 동물은 resistX배만
+  const el = src?.stats?.element;
+  if (el && r.def.weakX && (r.def.weak ?? []).includes(el)) k *= r.def.weakX;
+  if (el && (r.def.resist ?? []).includes(el)) k *= r.def.resistX ?? 0.6;
   if (r.hide && state.time < r.hide && src && (src.stats?.range ?? 1) <= 1 && !src.stats?.flyer) k *= 0.1;
   if (r.shield) {
     k *= 0.3;

@@ -61,7 +61,7 @@ if (isMain) {
   const R0 = structuredClone(D.raid.bosses[boss]);
   for (const set of sets.length ? sets : ['']) {
     const R = structuredClone(R0);
-    for (const kv of set.split(',').filter(Boolean)) { const [k, v] = kv.split('='); const path = k.split('.'); let o = R; for (const p of path.slice(0, -1)) o = o[p] ??= {}; o[path.at(-1)] = isNaN(+v) ? v : +v; }
+    for (const kv of set.split(',').filter(Boolean)) { const [k, v] = kv.split('='); const path = k.split('.'); let o = R; for (const p of path.slice(0, -1)) o = o[p] ??= {}; o[path.at(-1)] = v.includes(':') ? v.split(':').filter(Boolean) : isNaN(+v) ? v : +v; }
     D.raid.bosses[boss] = R;
     const row = [];
     for (const md of [{ hard: false }, { hard: true }]) snaps.forEach((ss, di) => { let w = 0; ss.forEach((s, i) => { w += fightFrom(s, D, 1000 + i * 31, md) ? 1 : 0; }); row.push(Math.round((w / ss.length) * 100)); });

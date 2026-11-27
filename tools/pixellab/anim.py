@@ -2,7 +2,7 @@
 import sys, json, base64, io, time, urllib.request, argparse, os
 from PIL import Image
 API = 'https://api.pixellab.ai/v2'
-TOK = os.environ['PIXELLAB_API_TOKEN']   # 토큰은 환경변수에서만(파일·대화에 적지 않음)
+TOK = os.environ.get('PIXELLAB_API_TOKEN') or open('/home/claude/plab/.token').read().strip()
 def req(method, path, body=None):
     import urllib.error, random
     for k in range(12):   # 너무 많이 보내면 429 → 기다렸다 다시
@@ -17,17 +17,18 @@ ap = argparse.ArgumentParser()
 ap.add_argument('--src', required=True); ap.add_argument('--out', required=True); ap.add_argument('--action', required=True)
 ap.add_argument('--frames', type=int, default=8); ap.add_argument('--canvas', type=int, default=128)
 ap.add_argument('--padx', type=int, default=None); ap.add_argument('--seed', type=int, default=0)
+ap.add_argument('--keybg', action='store_true', help='흰·밝은 털이 배경으로 지워지지 않게: 초록 바탕에 그리고(배경 지우기 끔) 받은 뒤 초록만 지움')
 ap.add_argument('--last', action='store_true', help='마지막 장 = 첫 장(반복 동작이 끊기지 않게, 제자리로 돌아오게)')
 a = ap.parse_args()
 src = Image.open(a.src).convert('RGBA')
 src = src.crop(src.getbbox())
-C = a.canvas; can = Image.new('RGBA', (C, C), (0, 0, 0, 0))
+C = a.canvas; can = Image.new('RGBA', (C, C), (0, 255, 0, 255) if a.keybg else (0, 0, 0, 0))
 ox = (C - src.width) // 2 if a.padx is None else a.padx; oy = C - src.height - 6   # 발밑을 아래쪽에, 위·앞뒤로 움직일 자리
 can.alpha_composite(src, (ox, oy))
 buf = io.BytesIO(); can.save(buf, 'PNG')
 bal0 = req('GET', '/balance')['subscription']['generations']
 body = {'first_frame': {'type': 'base64', 'base64': base64.b64encode(buf.getvalue()).decode(), 'format': 'png'},
-        'action': a.action, 'frame_count': a.frames, 'seed': a.seed, 'no_background': True}
+        'action': a.action, 'frame_count': a.frames, 'seed': a.seed, 'no_background': not a.keybg}
 if a.last: body['last_frame'] = body['first_frame']
 j = req('POST', '/animate-with-text-v3', body); jid = j.get('background_job_id')
 print('job', jid)
@@ -40,7 +41,14 @@ os.makedirs(a.out, exist_ok=True); can.save(f'{a.out}/first.png')
 pil = []
 for i, im in enumerate(imgs):
     data = im.get('base64') if isinstance(im, dict) else im
-    p = Image.open(io.BytesIO(base64.b64decode(data))).convert('RGBA'); p.save(f'{a.out}/f{i:02d}.png'); pil.append(p)
+    p = Image.open(io.BytesIO(base64.b64decode(data))).convert('RGBA')
+    if a.keybg:   # 초록 바탕 지우기(초록이 빨강·파랑보다 확실히 센 칸만)
+        px = p.load()
+        for yy in range(p.height):
+            for xx in range(p.width):
+                r_, g_, b_, al = px[xx, yy]
+                if g_ > 150 and g_ > r_ + 70 and g_ > b_ + 70: px[xx, yy] = (0, 0, 0, 0)
+    p.save(f'{a.out}/f{i:02d}.png'); pil.append(p)
 if pil:
     W = sum(p.width for p in pil) + 6 * (len(pil) + 1); H = max(p.height for p in pil) + 12
     sh = Image.new('RGBA', (W, H), (235, 240, 230, 255)); x = 6

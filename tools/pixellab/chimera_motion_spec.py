@@ -52,6 +52,9 @@ C.update({k: ('a chibi ' + v[2].split(' ', 1)[1], 128, v[3], v[4], v[5]) for k, 
 from story_spec import S
 C.update({k: ('a chibi ' + v[2].split(' ', 1)[1], 128, v[3], v[4], v[5]) for k, v in S.items()})
 STORY = set(S)
+# 전설(기적 합성) 키메라 6종(2026-11-28): legend_spec.py 한 곳에서 관리. 시트 이름 auto_<짝>
+from legend_spec import L
+C.update({k: ('a chibi ' + v[2].split(' ', 1)[1], 128, v[3], v[4], v[5]) for k, v in L.items()})
 FLY = {k for k, v in S.items() if v[6]}
 
 FRAMES = {'idle': 4, 'walk': 8, 'a1': 8, 'a2': 8, 'el': 8, 'hit': 4, 'down': 8}
@@ -80,6 +83,8 @@ def jobs(ids):
 
 # 장 빼기(검수 2026-11-27): (id, 동작): [f01부터 0인 번호] — 덧그린 흰 별·자국·먼지가 있는 장만 뺌
 DROP = {
+    # 전설 6종(2026-11-28 검수): 케찰코아틀 맞기 반짝이, 가루다 맞기 머리 위 점, 불가사리 기술 몸 번쩍(색 바뀜)
+    ('eagle_frog', 'hit'): [0, 1, 2], ('eagle_monkey', 'hit'): [1, 2], ('ant_bear', 'el'): [1, 2, 3],
     ('slime', 'a2'): [4, 5, 6],
     # 2순위 27종(2026-11-27 검수): 덧그린 표식·흰 자국이 있는 장
     ('bear_bighorn', 'hit'): [2, 3], ('bear_bison', 'hit'): [0, 1], ('bear_rabbit', 'a1'): [3], ('bear_wolf', 'a1'): [1, 2, 3],

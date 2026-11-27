@@ -11,6 +11,7 @@ import DeckScene from './scenes/DeckScene.js';
 import OpeningScene from './scenes/OpeningScene.js';
 import GauntletScene from './scenes/GauntletScene.js';
 import DuelScene from './scenes/DuelScene.js';
+import GardenScene from './scenes/GardenScene.js';
 import HomeOverlay from './scenes/HomeOverlay.js';
 import { FONT } from './text.js';
 
@@ -33,7 +34,7 @@ const config = {
   height: 720 * K,
   backgroundColor: '#1b1f24',
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-  scene: [BootScene, TitleScene, StageSelectScene, BattleScene, ResultScene, CodexScene, UnlockScene, TalentScene, OpeningScene, DeckScene, GauntletScene, DuelScene, HomeOverlay]
+  scene: [BootScene, TitleScene, StageSelectScene, BattleScene, ResultScene, CodexScene, UnlockScene, TalentScene, OpeningScene, DeckScene, GauntletScene, DuelScene, GardenScene, HomeOverlay]
 };
 
 // Phaser는 한 프레임이 끝나야 다음 프레임을 예약하므로, 프레임 안에서 오류가 하나만 나도 게임이 영영 멈춘다.

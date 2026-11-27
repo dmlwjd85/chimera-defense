@@ -31,6 +31,8 @@ export default class TitleScene extends Phaser.Scene {
     button(this, 907, 686, 125, 40, '📖 이야기', () => this.scene.start('Opening', { next: 'Title' }), { size: 15, ...WOOD, tip: '오프닝 다시 보기' });
     button(this, 1042, 686, 125, 40, '도감', () => this.scene.start('Codex'), { size: 18, ...WOOD });
     button(this, 1177, 686, 125, 40, '강화', () => this.scene.start('Unlock'), { size: 18, ...WOOD });
+    // 무릉도원(2026-11-27): 도감 동물이 거니는 동산
+    button(this, 1110, 590, 260, 40, '🍑 무릉도원', () => this.scene.start('Garden'), { size: 18, ...WOOD, tip: '도감에서 고른 동물이 복숭아꽃 동산을 거닐어요' });
     // 크롬에서 설치할 수 있을 때만 보이는 '앱으로 설치' 버튼
     const inst = button(this, 740, 631, 165, 36, '📲 앱으로 설치', async () => {
       const p = window.__installPrompt; if (!p) return;

@@ -1,0 +1,53 @@
+{
+ "species": "ch_ant_monkey",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 14.4,
+   "foot±": 0
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 13.3,
+   "foot±": 13
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 26.7,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 14.4,
+   "foot±": 15
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 4.4,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 7.8,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.2,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   288
+  ],
+  "box": [
+   117,
+   117
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 589824
+ }
+}

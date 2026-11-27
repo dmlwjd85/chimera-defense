@@ -72,9 +72,11 @@ export class MidStage {
     return g;
   }
 
-  /** 필살기 이름 띠: [얼굴] ✨ 기술 이름! / 누구의 필살기. 쓴 동물 쪽에서 */
-  ult(who, skill, x, color = 0xffd84d, speciesId = null, stage = 'adult') {
+  /** 필살기 이름 띠: [얼굴] ✨ 기술 이름! / 누구의 필살기. 쓴 동물 쪽에서
+   *  fx = { c: [밝은, 주, 짙은, 아주 짙은], o: 외곽선, myth, slant, stripes, slide } 이면 컷인처럼(비스듬한 판 + 속성 색 줄무늬 + 옆에서 미끄러져 들어옴) */
+  ult(who, skill, x, color = 0xffd84d, speciesId = null, stage = 'adult', fx = null) {
     const sc = this.sc;
+    if (fx?.c) return this.ultCut(who, skill, x, speciesId, stage, fx);
     const title = this.T('mid.ult.title', { skill }), sub = this.T('mid.ult.who', { name: who });
     const probe = sc.add.text(0, 0, title, { fontFamily: FONT, fontSize: '22px', fontStyle: 'bold' });
     const tw = Math.ceil(probe.width); probe.destroy();
@@ -97,6 +99,51 @@ export class MidStage {
       }
       return out;
     }, 1700);
+  }
+
+  /** 컷인 띠(스킬 이펙트, 2026-11-27): 평행사변형 판 + 속성 색 줄무늬가 흘러감 + 얼굴 + 이름. 쓴 동물 쪽에서 미끄러져 들어옴 */
+  ultCut(who, skill, x, speciesId, stage, fx) {
+    const sc = this.sc;
+    const title = this.T('mid.ult.title', { skill }), sub = this.T('mid.ult.who', { name: who });
+    const size = fx.myth ? 26 : 22;
+    const probe = sc.add.text(0, 0, title, { fontFamily: FONT, fontSize: size + 'px', fontStyle: 'bold' });
+    const tw = Math.ceil(probe.width); probe.destroy();
+    const sl = fx.slant ?? 18, face = speciesId ? 52 : 0, w = Math.max(200, tw + 48 + face + sl), h = fx.myth ? 62 : 54;
+    const hx = (c) => '#' + c.toString(16).padStart(6, '0');
+    const [c0, c1, c2, c3] = fx.c, o = fx.o ?? 0x140c18;
+    const fromLeft = x < 640;
+    return this.place(w, h, x, (at) => {
+      const X = Math.round(at.x - w / 2), Y = Math.round(at.y - h / 2);
+      const quad = (g, inset, col, a = 1) => g.fillStyle(col, a).fillPoints([{ x: X + sl + inset, y: Y + inset }, { x: X + w - inset, y: Y + inset }, { x: X + w - sl - inset, y: Y + h - inset }, { x: X + inset, y: Y + h - inset }], true);
+      const g = sc.add.graphics();
+      quad(g, -4, o); quad(g, 0, c1); quad(g, 4, c3, 0.96);
+      // 줄무늬(비스듬히) — 흘러가게 따로 그림
+      const st = sc.add.graphics(); st.__z = 1;
+      const n = fx.stripes ?? 7, step = Math.ceil(w / n);
+      const mask = sc.make.graphics({ add: false }); quad(mask, 4, 0xffffff);
+      st.setMask(mask.createGeometryMask());
+      const paint = (off) => { st.clear(); for (let i = -2; i < n + 2; i++) { const sx = X + i * step + (off % step); st.fillStyle(i % 2 ? c2 : c1, 0.28).fillPoints([{ x: sx + sl, y: Y }, { x: sx + sl + step * 0.45, y: Y }, { x: sx + step * 0.45, y: Y + h }, { x: sx, y: Y + h }], true); } };
+      const flow = { v: 0 }; paint(0);
+      sc.tweens.add({ targets: flow, v: step * 6, duration: (fx.life ?? 1700), onUpdate: () => paint(flow.v) });
+      const edge = sc.add.graphics(); edge.__z = 2;
+      edge.fillStyle(c0, 1).fillRect(X + sl + 6, Y + 5, w - sl - 14, 3);
+      const left = X + sl + 12 + face;
+      const t = sc.add.text(left, at.y - (fx.myth ? 12 : 11), title, { fontFamily: FONT, fontSize: size + 'px', fontStyle: 'bold', color: hx(c0), stroke: hx(o), strokeThickness: 6 }).setOrigin(0, 0.5);
+      t.setShadow(2, 3, hx(c2), 0, true, true);
+      const s2 = sc.add.text(left, at.y + (fx.myth ? 17 : 14), sub, { fontFamily: FONT, fontSize: '13px', color: hx(c1), stroke: hx(o), strokeThickness: 3 }).setOrigin(0, 0.5);
+      t.__z = 3; s2.__z = 3;
+      const out = [g, st, edge, t, s2];
+      if (speciesId) {
+        const img = speciesImage(sc, speciesId, stage, X + sl + 6 + face / 2, at.y - 2, 48);
+        if (img) { const fh = img.height || 1, k = [2, 1, 1 / 2, 1 / 3, 1 / 4].find((q) => fh * q <= 56) ?? 1 / 4; img.setScale(k); img.__z = 4; out.push(img); }
+      }
+      // 옆에서 쓱 미끄러져 들어옴(쓴 동물 쪽에서)
+      const dx = (fx.slide ?? 90) * (fromLeft ? -1 : 1);
+      for (const ob of out) { const x0 = ob.x; ob.x = x0 + dx; sc.tweens.add({ targets: ob, x: x0, duration: 200, ease: 'Back.out' }); }
+      mask.x = dx; sc.tweens.add({ targets: mask, x: 0, duration: 200, ease: 'Back.out' });
+      st.once('destroy', () => { sc.tweens.killTweensOf(flow); mask.destroy(); });
+      return out;
+    }, fx.life ?? 1700);
   }
 
   /** 말풍선: 말하는 쪽(x) 위 하늘에, 꼬리는 아래로 */

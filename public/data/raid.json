@@ -215,14 +215,15 @@
     "fire",
     "light"
    ],
-   "atkMult": 0.8,
+   "atkMult": 0.7,
    "resist": [
     "earth",
     "moon",
     "water"
    ],
-   "weakX": 1.6,
-   "resistX": 0.4
+   "weakX": 2.4,
+   "resistX": 0.4,
+   "hardHp": 1.7
   },
   "boss_shadow": {
    "element": "moon",

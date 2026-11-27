@@ -14,7 +14,7 @@ import { spellDef, spellCost } from './spells.js';
 import { mergeKind, mergeOdds } from './merge.js';
 import { geneCtx } from './genes.js';
 import { mcfg, elemMult, enemyElement, foodChain } from './matchup.js';
-import { setRaidApi, raidEncStart, raidTick, raidBusy, raidHitMult, raidTakenMult, raidUlt, raidMarkOf, raidTapMax, raidHoldTime, moveMiniboss, raidSlamFx, raidTap, bossFit } from './raid.js';
+import { setRaidApi, raidEncStart, raidTick, raidBusy, raidHitMult, raidTakenMult, raidUlt, raidMarkOf, raidTapMax, raidHoldTime, raidBossDown, moveMiniboss, raidSlamFx, raidTap, bossFit } from './raid.js';
 
 // 3×3 자리: seat = 열×3 + 라인. 열 0 = 1열(브루저), 1 = 2열(딜러), 2 = 3열(응원·원거리). 라인 0 위 · 1 가운데 · 2 아래
 export const SEATS = 9;
@@ -1416,6 +1416,7 @@ function timerSkills(state, data, u, d) {
 }
 
 function checkEnd(state, data, g) {
+  raidBossDown(state);
   const eAlive = state.enemies.some(aliveE), uAlive = fighters(state).length > 0;
   if (!eAlive) return endEncounter(state, data, true);
   if (!uAlive) return endEncounter(state, data, false);

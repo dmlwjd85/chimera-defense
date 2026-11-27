@@ -50,14 +50,17 @@ export function raidEncStart(state, data) {
   for (const e of state.enemies) {
     const R = raidDef(data, e.id);
     if (!R || !e.boss) continue;
+    // 그 스테이지의 진짜 보스인가(아니면 미니보스 = 맛보기 기술). 예전엔 R.taste로 갈랐는데 보스마다 taste(맛보기 기술 이름)가 있어
+    // 진짜 보스가 미니보스로 잘못 잡혀 단계·광포화·호위 체력이 꺼져 있었음(2026-11-28 고침)
+    const isStageBoss = e.id === state.stage?.boss;
     let def = R;
-    if (R.taste && stageBoss) {
+    if (!isStageBoss && stageBoss) {
       // 미니보스: 그 스테이지 보스의 맛보기 기술 하나(위력 tastePower, 예고 tasteWarn배)
       const tp = (stageBoss.patterns ?? []).find((x) => x.id === stageBoss.taste);
       def = { ...R, patterns: [...(R.patterns ?? []), ...(tp ? [{ ...tp, phase: 1, power: C(data).tastePower ?? 0.5, warnX: C(data).tasteWarn ?? 1.5, first: 5, taste: true }] : [])], phases: [] };
     }
     attach(state, data, e, def);
-    if (!R.taste) state.raidBoss = e.eid;
+    if (isStageBoss) state.raidBoss = e.eid;
   }
   // 보스 교전의 호위 적은 체력을 줄임(common.escortHp) — 보스 기술과 상성이 승부를 가르게
   if (state.raidBoss != null && (C(data).escortHp ?? 1) !== 1) for (const e of state.enemies) if (e.eid !== state.raidBoss && !e.boss) { e.maxHp = Math.max(1, Math.round(e.maxHp * C(data).escortHp)); e.hp = Math.min(e.hp, e.maxHp); }
@@ -467,6 +470,14 @@ export const raidMarkOf = (state, uid) => (state.raidMarks ?? []).find((m) => m.
 /** 🧿 톡 횟수: 레이드 보스 교전이면 tapShieldBoss */
 export const raidTapMax = (state, data, base) => (state.raidBoss != null ? C(data).tapShieldBoss ?? base : base);
 /** 보스 교전은 시간 판정 대신 광포화(cap초까지) */
+/** 보스가 쓰러지면 보스가 부른 졸개(minion)도 흩어짐 — 보스를 잡고도 졸개에게 지는 일 없게 */
+export function raidBossDown(state) {
+  if (state.raidBoss == null) return;
+  const b = state.enemies.find((x) => x.eid === state.raidBoss);
+  if (alive(b)) return;
+  for (const e of state.enemies) if (e.minion && alive(e)) { e.hp = 0; state.events.push({ type: 'raidMinionFlee', eid: e.eid }); }
+}
+
 export function raidHoldTime(state, data) {
   const en = C(data).enrage;
   if (!en || state.raidBoss == null) return false;

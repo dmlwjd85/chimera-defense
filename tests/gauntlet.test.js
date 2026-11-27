@@ -419,6 +419,8 @@ test('진형 상성·지형 영향·보스 필살 예고·스테이지 전리품
   // 보스 필살: 예고 → 그 라인을 누르면 막기 → 피해
   const b = createGauntlet(D, 'stage-7', 5, { startUnits: 6 });
   b.enc = b.plan.length - 1; G.startEncounter(b, D);
+  // 보스가 필살 전에 쓰러지지 않게(보스 체력 손잡이와 상관없이 필살 자체만 시험)
+  for (const e of b.enemies) if (e.boss) e.hp = e.maxHp = e.maxHp * 20;
   let warn = null, slam = null;
   for (let i = 0; i < 2000 && !slam && b.phase === 'fight'; i++) {
     tickGauntlet(b, D, 0.05);

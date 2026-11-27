@@ -24,3 +24,10 @@
 - boss_bone: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
 - boss_frost: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
 - boss_gate: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+
+### 묶음 2: boss_knight boss_lava boss_lich boss_mole boss_shadow
+- boss_knight: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- boss_lava: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- boss_lich: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- boss_mole: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- boss_shadow: 동작 6칸 모두 뒤집기=예(왼쪽) ✔

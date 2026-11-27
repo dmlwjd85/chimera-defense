@@ -659,6 +659,7 @@ export default class GauntletScene extends Phaser.Scene {
       v.gBar.setScale(Math.min(1, u.gauge ?? 0), 1).setVisible(s.phase === 'fight');
       const melee = u.stats.range <= 1;
       v.tag.setText(u.resting ? `🤕부상${u.injured ? ' ' + u.injured : ''}` : u.wobbly && s.phase === 'fight' ? '🫠흐물' : (u.deepT ?? 0) > s.time && s.phase === 'fight' ? '⚠깊숙이' : u.suppressed && s.phase === 'fight' ? '⛓제압' : u.pinnedBy != null && s.phase === 'fight' ? '✋붙잡힘' : u.awake && s.phase === 'fight' ? '🔥각성' : s.star === u.uid ? '⭐주인공' : s.focus === u.uid && s.phase === 'fight' ? '🎯' : '');
+      this.stunStars(v, s.phase === 'fight' && (u.stunLeft ?? 0) > 0.15 && !u.down && !v.dive, this.realDt || 0.016);
       { const want = s.phase === 'regroup' ? (() => { const p = statLine(u, this.D); return `❤${Math.round(u.hp)}\n⚔${p.atk}${u.trained ? `\n🔨${u.trained}` : ''}`; })() : ''; if (v.stat.text !== want) v.stat.setText(want); }
       { const tc = (s.tLevel ?? 2) > 0 ? tacticOf(u, gcfg(this.D)) : null; const ic = tc && !['hold', 'help', 'front'].includes(tc) ? TACTIC_LABEL[tc].split(' ')[0] : ''; if (v.tac.text !== ic) v.tac.setText(ic); }
       v.c.setAlpha(u.down ? 0.35 : u.resting ? 0.5 : 1);
@@ -714,7 +715,8 @@ export default class GauntletScene extends Phaser.Scene {
       if (v.lean && !v.dying && !(s.phase === 'fight' && cl)) { v.lean = 0; v.c.setAngle(0); }
       v.bar.setScale(Math.max(0, e.hp / e.maxHp), 1);
       v.gBar.setScale(Math.min(1, e.gauge ?? 0), 1).setVisible(e.hp > 0);
-      v.tag.setText(e.stunLeft > 0.3 ? '💫' : '');
+      v.tag.setText('');
+      this.stunStars(v, this.state.phase === 'fight' && (e.stunLeft ?? 0) > 0.15 && e.hp > 0 && !v.dive, this.realDt || 0.016);   // 기절: 머리 위 별이 빙글빙글(2026-11-27)
       if (v.rig) {
         const r = v.rig.inst, m = r.motion;
         const eb = (['attack', 'hit', 'skill', 'block', 'sweep', 'grab', 'fall', 'leap', 'down'].includes(m) && !r.finished) || !!v.dive;
@@ -1156,6 +1158,24 @@ export default class GauntletScene extends Phaser.Scene {
     const dx = fv.c.x - v.c.x;
     v.face = dx < -24 ? -1 : dx > 24 ? 1 : (v.face ?? 1);
     return v.face;
+  }
+
+  /** 기절: 머리 위에 별 세 개가 납작한 원을 그리며 빙글빙글(뒤로 갈 때는 작고 흐리게) */
+  stunStars(v, on, dt) {
+    if (!on) { if (v.stars) { v.stars.destroy(); v.stars = null; } return; }
+    if (!v.stars) {
+      // 머리 꼭대기 바로 위: 도트 그림의 맨 윗줄(발 기준) + 받침 높이(아군 30 · 적 holder 34)
+      const head = v.rig?.dot && v.rig.view.topY ? (v.holder?.y ?? 30) + v.rig.view.topY() : (v.tag?.y ?? -90);
+      const g = this.add.container(0, head - 6);
+      for (let i = 0; i < 3; i++) g.add(this.textures.exists('fx-star') ? this.add.image(0, 0, 'fx-star').setScale(0.26) : this.add.text(0, 0, '★', style(16, '#ffe066', { stroke: '#5a3a00', strokeThickness: 3 })).setOrigin(0.5));
+      v.c.add(g); v.stars = g; v.starT = 0;
+    }
+    v.starT += dt;
+    v.stars.list.forEach((st, i) => {
+      const a = v.starT * 5.5 + (i * Math.PI * 2) / 3, front = Math.sin(a);
+      st.setPosition(Math.cos(a) * 24, front * 7);
+      st.setAlpha(0.55 + 0.45 * (front + 1) / 2).setScale((st.type === 'Image' ? 0.26 : 1) * (0.78 + 0.22 * (front + 1) / 2)).setAngle(v.starT * 220 + i * 40);
+    });
   }
 
   /** 맞으면 피격 동작(2026-11-27 "공격 받으면 피격 모션 추가"): 기술·막기·쓰러짐 중이거나 공격을 막 휘두르는 중(앞 55%)이면 번쩍임만 */

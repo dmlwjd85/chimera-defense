@@ -67,8 +67,11 @@ function relicSimple(r) {
 export default class GauntletScene extends Phaser.Scene {
   constructor() { super('Gauntlet'); }
 
-  preload(d) {
+  // Phaser preload()에는 장면 시작 값(어떤 판인지)이 인자로 안 넘어옴. init에서 받아 둔다.
+  init(d) { this.bootData = d ?? {}; }
+  preload() {
     try {
+      const d = this.bootData ?? {};
       const data = buildData(this.registry.get('raw'));
       const pool = battleOptions(this.registry.get('save'), data, d?.stageId ?? 'forest-1').pool ?? [];
       if (d?.duel) { queueMotionSheets(this, myDuelDeck(this.registry.get('save'), data).map((x) => x.id)); queueMotionSheets(this, d.duel.foe.deck.map((x) => x.id)); queueMotionSheets(this, poolExtraIds([...myDuelDeck(this.registry.get('save'), data).map((x) => x.id), ...d.duel.foe.deck.map((x) => x.id)], data.recipes?.filter((r) => !r.auto))); }

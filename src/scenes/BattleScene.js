@@ -46,8 +46,11 @@ export default class BattleScene extends Phaser.Scene {
   constructor() { super('Battle'); }
 
   /** 덱에 든 종의 동작 시트만 불러옴(폰 메모리). 못 불러오면 정지 그림으로 싸움. */
-  preload(d) {
+  // Phaser preload()에는 장면 시작 값(어떤 판인지)이 인자로 안 넘어옴. init에서 받아 둔다.
+  init(d) { this.bootData = d ?? {}; }
+  preload() {
     try {
+      const d = this.bootData ?? {};
       const data = buildData(this.registry.get('raw'));
       const pool = window.__forcePool ?? battleOptions(this.registry.get('save'), data, d?.stageId ?? 'forest-1').pool ?? [];
       queueMotionSheets(this, pool);

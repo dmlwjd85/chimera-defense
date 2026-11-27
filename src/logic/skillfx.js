@@ -88,3 +88,10 @@ export function motionOk(cfg, stored, reduced) {
   if (stored === '0') return false;
   return !reduced;
 }
+
+/** 반복 피로 줄이기: 같은 동물·같은 기술을 window 안에 또 쓰면 짧고 가볍게(처음 한 번만 화려하게). last = 그 동물이 마지막으로 쓴 시각(ms) */
+export function damp(plan, cfg, last, now) {
+  const R = cfg?.repeat;
+  if (!plan || !R || last == null || now - last > (R.window ?? 12000)) return plan;
+  return { ...plan, repeat: true, charge: Math.round(plan.charge * (R.charge ?? 0.5)), particles: plan.particles * (R.particles ?? 0.6), shake: plan.shake * (R.shake ?? 0.4), hitStop: plan.hitStop * (R.hitStop ?? 0.5), flash: plan.flash * (R.flash ?? 0), word: R.word === false ? null : plan.word, banner: R.banner === false ? false : plan.banner };
+}

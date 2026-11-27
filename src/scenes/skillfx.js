@@ -6,7 +6,7 @@
 //       살아 있는 입자가 상한을 넘으면 새로 뿌릴 수를 줄이고, 동시에 화려한 연출이 너무 많으면 가벼운 연출로.
 import Phaser from 'phaser';
 import { FONT } from '../text.js';
-import { planFx, hex, budget, fullOk, motionOk } from '../logic/skillfx.js';
+import { planFx, hex, budget, fullOk, motionOk, damp } from '../logic/skillfx.js';
 
 // 도트 조각(o 외곽선, 1 밝은 속, 2 주색, 3 짙은 색, 4 아주 짙은 색, . 빈칸)
 const SPRITES = {
@@ -53,7 +53,18 @@ export class SkillFX {
   get on() { return !!this.cfg && this.cfg.enabled !== false; }
 
   /** 기술 한 번의 계획(없으면 null) */
-  plan(info) { return this.on ? planFx(this.cfg, { ...info, units: this.units }) : null; }
+  plan(info) {
+    if (!this.on) return null;
+    const p = planFx(this.cfg, { ...info, units: this.units });
+    if (!p || info.u?.uid == null) return p;
+    // 같은 동물이 같은 종류 기술을 금방 또 쓰면 짧고 가볍게(필살기가 교전당 6번까지라 반복해도 피곤하지 않게)
+    this.lastUse ??= new Map();
+    const key = `${info.u.uid}:${p.move}`, now = this.sc.time.now;
+    const out = damp(p, this.cfg, this.lastUse.get(key), now);
+    this.lastUse.set(key, now);
+    if (out.repeat) this.stats.repeats = (this.stats.repeats ?? 0) + 1;
+    return out;
+  }
 
   theme(name) { const t = this.cfg?.themes?.[name] ?? this.cfg?.themes?.light; return { c: (t?.c ?? ['#ffffff', '#ffe066', '#ffb02e', '#8a4a10']).map(hex), o: hex(t?.o ?? '#1a1020'), sprite: t?.sprite ?? 'star' }; }
 
@@ -290,14 +301,14 @@ export class SkillFX {
     const ms = plan.charge;
     // 발밑 마법진이 조여 들며 빛남
     this.ring(at[0], at[1] + 30, R * 1.25, th, { from: 1.15, to: 0.55, dur: ms + 80, ease: 'Quad.in', px: s });
-    if (plan.tier !== 'normal') this.ring(at[0], at[1] + 30, R * 0.9, th, { from: 0.4, to: 1.1, dur: ms + 160, delay: 60, shade: 0, px: s });
+    if (plan.tier !== 'normal' && !plan.repeat) this.ring(at[0], at[1] + 30, R * 0.9, th, { from: 0.4, to: 1.1, dur: ms + 160, delay: 60, shade: 0, px: s });
     // 둘레에서 모여드는 알갱이와 별
     this.converge(plan.theme, 'pix', [at[0], at[1] - 20], R * 1.2, 10 * P, ms, s);
     this.converge(plan.theme, th.sprite, [at[0], at[1] - 20], R * 1.5, 4 * P, ms, s);
     if (plan.theme2) this.converge(plan.theme2, 'star', [at[0], at[1] - 20], R * 1.3, 4 * P, ms, s);
     // 몸에서 피어오르는 불씨
     this.emit(plan.theme, 'ember', 'rise', at[0], at[1] - 10, 5 * P, s);
-    if (plan.tier !== 'normal') this.column(at[0], at[1] + 30, 150 * plan.ring, 26, th, ms + 120);
+    if (plan.tier !== 'normal' && !plan.repeat) this.column(at[0], at[1] + 30, 150 * plan.ring, 26, th, ms + 120);
   }
 
   impact(plan, { at, targets }, full) {
@@ -312,7 +323,7 @@ export class SkillFX {
     });
     if (!full) return;
     const k = T.length ? 1 : 0.5;
-    this.shake(plan.move === 'ult' ? 240 : 160, plan.shake * k);
+    this.shake(plan.move === 'ult' ? 180 : 130, plan.shake * k);
     this.flash(th, plan.flash);
     this.hitStop(plan.hitStop);
     if (plan.word && plan.move !== 'el') { const w = T[0] ?? at; this.word(w[0] - 10, w[1] - 150, plan.word, plan); }

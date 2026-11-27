@@ -6,12 +6,12 @@
   "hitStop": true,
   "_흔들림끄기": "브라우저 저장소 chimera-shake=0 이거나 기기 '동작 줄이기' 설정이면 흔들림·섬광을 끔",
   "limits": {
-    "_설명": "동시에 여러 기술이 터져도 느려지지 않게: 화려한 연출은 maxFull개까지, 넘으면 가벼운 연출. 입자는 particleCap개를 넘지 않게 줄임. 섬광은 flashGap ms에 한 번만.",
+    "_설명": "동시에 여러 기술이 터져도 느려지지 않게: 화려한 연출은 maxFull개까지, 넘으면 가벼운 연출. 입자는 particleCap개를 넘지 않게 줄임. 섬광은 flashGap ms에 한 번만. (2026-11-27 필살기가 교전당 6번까지 늘어서 섬광 간격 900→2500ms)",
     "maxFull": 3,
     "particleCap": 420,
     "perEmitter": 90,
     "shapePool": 48,
-    "flashGap": 900,
+    "flashGap": 2500,
     "numberGap": 60
   },
   "tiers": {
@@ -29,9 +29,9 @@
     "myth": {
       "scale": 3,
       "particles": 1.8,
-      "charge": 340,
+      "charge": 280,
       "shake": 0.006,
-      "flash": 0.22,
+      "flash": 0.16,
       "hitStop": 0.06,
       "ring": 1.6,
       "number": 1.35
@@ -39,9 +39,9 @@
     "chimera": {
       "scale": 3,
       "particles": 2,
-      "charge": 360,
+      "charge": 300,
       "shake": 0.007,
-      "flash": 0.24,
+      "flash": 0.18,
       "hitStop": 0.07,
       "ring": 1.75,
       "number": 1.4,
@@ -499,5 +499,16 @@
     "stripes": 7,
     "slide": 90,
     "life": 1700
+  },
+  "repeat": {
+    "_설명": "같은 동물이 window ms 안에 같은 종류 기술을 또 쓰면(필살기 교전당 최대 6번) 짧고 가볍게: 기 모으기·입자·흔들림을 줄이고 섬광·소리 글자·이름 띠는 생략. 처음 한 번은 화려하게.",
+    "window": 12000,
+    "charge": 0.45,
+    "particles": 0.6,
+    "shake": 0.4,
+    "hitStop": 0.5,
+    "flash": 0,
+    "word": false,
+    "banner": false
   }
 }

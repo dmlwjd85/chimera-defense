@@ -1617,7 +1617,7 @@ export default class GauntletScene extends Phaser.Scene {
     // 스킬 이펙트 계획(2026-11-27 "신화급·키메라 스킬 이펙트 화려하게"): 필살기·시간 기술·신화급 속성 공격. 키메라 필살기는 그때 쓴 부위 동물 모양
     const ultKind = ev.move === 'ult' ? (this.lastUlt?.uid === ev.uid ? this.lastUlt.kind : u.kind === 'chimera' ? u.parts?.[0] : u.speciesId) : null;
     let plan = ['ult', 'skill', 'el'].includes(ev.move) ? this.skfx?.plan({ u, move: ev.move, kind: ultKind, name: ev.name, action: ev.action, el: ev.el }) ?? null : null;
-    const cutFx = plan ? { ...this.skfx.theme(plan.theme), myth: plan.tier !== 'normal', ...(this.skfx.cfg.banner ?? {}) } : null;
+    const cutFx = plan && plan.banner !== false ? { ...this.skfx.theme(plan.theme), myth: plan.tier !== 'normal', ...(this.skfx.cfg.banner ?? {}) } : null;
     let fxDelay = 0;
     // 가벼운 필살기 이름은 머리 위 말 대신 가운데 하늘에 이름 띠로(2026-11-27 "가운데 공간에 필살기") — 자리가 없을 때만 예전처럼 머리 위
     if (lightUlt) { if (!this.mid?.ult(u.stats.name, ev.name ?? '필살기', v.c.x, 0xffd84d, u.kind === 'base' ? u.speciesId : null, u.stage, cutFx)) this.say(v.c.x, v.c.y - 140, `✨ ${ev.name ?? '필살기'}!`, 0xffd84d, { size: 21, hold: 750, force: true }); this.fx.ring(v.c.x, v.c.y + 24, 0xffd84d, 1.5, 520); this.fx.burst?.('star', v.c.x, v.c.y - 50, 8, 0xffe066); if (!plan) this.cameras.main.flash(90, 255, 230, 140); }

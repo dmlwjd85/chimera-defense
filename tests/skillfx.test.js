@@ -86,3 +86,13 @@ test('입자 상한·동시 연출 상한', () => {
 test('꺼 두면 계획 없음', () => {
   assert.equal(planFx({ ...cfg, enabled: false }, { u: { kind: 'chimera', parts: ['fox'] }, move: 'ult', kind: 'fox' }), null);
 });
+
+test('반복 줄이기: 같은 동물이 금방 또 쓰면 짧고 가볍게, 처음·오래 뒤엔 그대로', async () => {
+  const { damp } = await import('../src/logic/skillfx.js');
+  const p = planFx(cfg, { u: { kind: 'base', stage: 'spirit', speciesId: 'fox', uid: 1, stats: {} }, move: 'ult', kind: 'fox' });
+  assert.equal(damp(p, cfg, null, 1000), p);
+  assert.equal(damp(p, cfg, 0, cfg.repeat.window + 1), p);
+  const r = damp(p, cfg, 0, 3000);
+  assert.ok(r.repeat); assert.ok(r.charge < p.charge); assert.ok(r.particles < p.particles); assert.equal(r.flash, 0); assert.equal(r.word, null); assert.equal(r.banner, false);
+  assert.ok(cfg.limits.flashGap >= 2000);
+});

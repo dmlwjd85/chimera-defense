@@ -1,0 +1,53 @@
+{
+ "species": "ch_eagle_monkey",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 4.4,
+   "foot±": 18
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 8.8,
+   "foot±": 21
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 23.1,
+   "foot±": 2
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 4.4,
+   "foot±": 15
+  },
+  "adult_hit": {
+   "n": 2,
+   "max|h%|": 3.3,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.2,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 4.4,
+   "foot±": 5
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   277
+  ],
+  "box": [
+   114,
+   113
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 567296
+ }
+}

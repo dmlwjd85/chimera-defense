@@ -1,0 +1,676 @@
+{
+ "note": "ch_eagle_monkey 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_eagle_monkey",
+ "sheet": "dot-m-auto_eagle_monkey",
+ "file": "assets/dotm/auto_eagle_monkey.png",
+ "frameW": 114,
+ "frameH": 113,
+ "foot": 109,
+ "cols": 1,
+ "anchorX": 56,
+ "palette": [
+  "#120a11",
+  "#291a1f",
+  "#50251c",
+  "#5b2b1f",
+  "#693423",
+  "#733d27",
+  "#7d4329",
+  "#995717",
+  "#a45644",
+  "#be7a1d",
+  "#cbb7ad",
+  "#d96c59",
+  "#e8a724",
+  "#f0b936",
+  "#f69d7f",
+  "#fcf8f6"
+ ],
+ "rects": {
+  "ch_eagle_monkey_adult_a1_00": [
+   1937,
+   98,
+   106,
+   87,
+   -53,
+   -88
+  ],
+  "ch_eagle_monkey_adult_a1_01": [
+   1286,
+   0,
+   108,
+   92,
+   -55,
+   -93
+  ],
+  "ch_eagle_monkey_adult_a1_02": [
+   1496,
+   98,
+   108,
+   88,
+   -55,
+   -100
+  ],
+  "ch_eagle_monkey_adult_a1_03": [
+   1059,
+   98,
+   109,
+   89,
+   -55,
+   -107
+  ],
+  "ch_eagle_monkey_adult_a1_04": [
+   1605,
+   98,
+   110,
+   88,
+   -56,
+   -104
+  ],
+  "ch_eagle_monkey_adult_a1_05": [
+   1716,
+   98,
+   108,
+   88,
+   -54,
+   -92
+  ],
+  "ch_eagle_monkey_adult_a1_06": [
+   1169,
+   98,
+   108,
+   89,
+   -56,
+   -92
+  ],
+  "ch_eagle_monkey_adult_a1_07": [
+   1395,
+   0,
+   106,
+   92,
+   -54,
+   -92
+  ],
+  "ch_eagle_monkey_adult_a2_00": [
+   757,
+   0,
+   105,
+   93,
+   -53,
+   -94
+  ],
+  "ch_eagle_monkey_adult_a2_01": [
+   0,
+   0,
+   106,
+   97,
+   -55,
+   -102
+  ],
+  "ch_eagle_monkey_adult_a2_02": [
+   863,
+   0,
+   104,
+   93,
+   -55,
+   -106
+  ],
+  "ch_eagle_monkey_adult_a2_03": [
+   0,
+   98,
+   106,
+   91,
+   -55,
+   -110
+  ],
+  "ch_eagle_monkey_adult_a2_04": [
+   324,
+   190,
+   105,
+   83,
+   -54,
+   -104
+  ],
+  "ch_eagle_monkey_adult_a2_05": [
+   1502,
+   0,
+   107,
+   92,
+   -55,
+   -101
+  ],
+  "ch_eagle_monkey_adult_a2_06": [
+   325,
+   0,
+   108,
+   94,
+   -55,
+   -98
+  ],
+  "ch_eagle_monkey_adult_a2_07": [
+   1610,
+   0,
+   104,
+   92,
+   -52,
+   -92
+  ],
+  "ch_eagle_monkey_adult_down_00": [
+   107,
+   98,
+   106,
+   91,
+   -53,
+   -91
+  ],
+  "ch_eagle_monkey_adult_down_01": [
+   951,
+   98,
+   107,
+   90,
+   -54,
+   -90
+  ],
+  "ch_eagle_monkey_adult_down_02": [
+   1278,
+   98,
+   111,
+   89,
+   -56,
+   -89
+  ],
+  "ch_eagle_monkey_adult_down_03": [
+   1825,
+   98,
+   111,
+   88,
+   -56,
+   -88
+  ],
+  "ch_eagle_monkey_adult_down_04": [
+   430,
+   190,
+   109,
+   83,
+   -54,
+   -83
+  ],
+  "ch_eagle_monkey_adult_down_05": [
+   540,
+   190,
+   109,
+   81,
+   -54,
+   -81
+  ],
+  "ch_eagle_monkey_adult_down_06": [
+   650,
+   190,
+   113,
+   74,
+   -55,
+   -73
+  ],
+  "ch_eagle_monkey_adult_down_07": [
+   764,
+   190,
+   113,
+   70,
+   -55,
+   -68
+  ],
+  "ch_eagle_monkey_adult_el_00": [
+   1715,
+   0,
+   106,
+   92,
+   -54,
+   -93
+  ],
+  "ch_eagle_monkey_adult_el_01": [
+   107,
+   0,
+   109,
+   95,
+   -54,
+   -100
+  ],
+  "ch_eagle_monkey_adult_el_02": [
+   217,
+   0,
+   107,
+   95,
+   -55,
+   -105
+  ],
+  "ch_eagle_monkey_adult_el_03": [
+   434,
+   0,
+   107,
+   94,
+   -55,
+   -109
+  ],
+  "ch_eagle_monkey_adult_el_04": [
+   968,
+   0,
+   107,
+   93,
+   -55,
+   -108
+  ],
+  "ch_eagle_monkey_adult_el_05": [
+   542,
+   0,
+   107,
+   94,
+   -55,
+   -104
+  ],
+  "ch_eagle_monkey_adult_el_06": [
+   1822,
+   0,
+   106,
+   92,
+   -54,
+   -98
+  ],
+  "ch_eagle_monkey_adult_el_07": [
+   214,
+   98,
+   104,
+   91,
+   -52,
+   -94
+  ],
+  "ch_eagle_monkey_adult_hit_00": [
+   650,
+   0,
+   106,
+   94,
+   -53,
+   -94
+  ],
+  "ch_eagle_monkey_adult_hit_01": [
+   319,
+   98,
+   105,
+   91,
+   -53,
+   -91
+  ],
+  "ch_eagle_monkey_adult_idle_00": [
+   1929,
+   0,
+   104,
+   92,
+   -52,
+   -92
+  ],
+  "ch_eagle_monkey_adult_idle_01": [
+   1076,
+   0,
+   104,
+   93,
+   -52,
+   -93
+  ],
+  "ch_eagle_monkey_adult_idle_02": [
+   1181,
+   0,
+   104,
+   93,
+   -52,
+   -93
+  ],
+  "ch_eagle_monkey_adult_idle_03": [
+   425,
+   98,
+   104,
+   91,
+   -52,
+   -91
+  ],
+  "ch_eagle_monkey_adult_walk_00": [
+   530,
+   98,
+   104,
+   91,
+   -52,
+   -91
+  ],
+  "ch_eagle_monkey_adult_walk_01": [
+   635,
+   98,
+   104,
+   91,
+   -52,
+   -92
+  ],
+  "ch_eagle_monkey_adult_walk_02": [
+   740,
+   98,
+   105,
+   91,
+   -53,
+   -92
+  ],
+  "ch_eagle_monkey_adult_walk_03": [
+   0,
+   190,
+   106,
+   87,
+   -54,
+   -91
+  ],
+  "ch_eagle_monkey_adult_walk_04": [
+   107,
+   190,
+   107,
+   87,
+   -54,
+   -92
+  ],
+  "ch_eagle_monkey_adult_walk_05": [
+   215,
+   190,
+   108,
+   87,
+   -54,
+   -91
+  ],
+  "ch_eagle_monkey_adult_walk_06": [
+   1390,
+   98,
+   105,
+   89,
+   -53,
+   -90
+  ],
+  "ch_eagle_monkey_adult_walk_07": [
+   846,
+   98,
+   104,
+   91,
+   -52,
+   -91
+  ]
+ },
+ "frames": [
+  "ch_eagle_monkey_adult_a1_00",
+  "ch_eagle_monkey_adult_a1_01",
+  "ch_eagle_monkey_adult_a1_02",
+  "ch_eagle_monkey_adult_a1_03",
+  "ch_eagle_monkey_adult_a1_04",
+  "ch_eagle_monkey_adult_a1_05",
+  "ch_eagle_monkey_adult_a1_06",
+  "ch_eagle_monkey_adult_a1_07",
+  "ch_eagle_monkey_adult_a2_00",
+  "ch_eagle_monkey_adult_a2_01",
+  "ch_eagle_monkey_adult_a2_02",
+  "ch_eagle_monkey_adult_a2_03",
+  "ch_eagle_monkey_adult_a2_04",
+  "ch_eagle_monkey_adult_a2_05",
+  "ch_eagle_monkey_adult_a2_06",
+  "ch_eagle_monkey_adult_a2_07",
+  "ch_eagle_monkey_adult_down_00",
+  "ch_eagle_monkey_adult_down_01",
+  "ch_eagle_monkey_adult_down_02",
+  "ch_eagle_monkey_adult_down_03",
+  "ch_eagle_monkey_adult_down_04",
+  "ch_eagle_monkey_adult_down_05",
+  "ch_eagle_monkey_adult_down_06",
+  "ch_eagle_monkey_adult_down_07",
+  "ch_eagle_monkey_adult_el_00",
+  "ch_eagle_monkey_adult_el_01",
+  "ch_eagle_monkey_adult_el_02",
+  "ch_eagle_monkey_adult_el_03",
+  "ch_eagle_monkey_adult_el_04",
+  "ch_eagle_monkey_adult_el_05",
+  "ch_eagle_monkey_adult_el_06",
+  "ch_eagle_monkey_adult_el_07",
+  "ch_eagle_monkey_adult_hit_00",
+  "ch_eagle_monkey_adult_hit_01",
+  "ch_eagle_monkey_adult_idle_00",
+  "ch_eagle_monkey_adult_idle_01",
+  "ch_eagle_monkey_adult_idle_02",
+  "ch_eagle_monkey_adult_idle_03",
+  "ch_eagle_monkey_adult_walk_00",
+  "ch_eagle_monkey_adult_walk_01",
+  "ch_eagle_monkey_adult_walk_02",
+  "ch_eagle_monkey_adult_walk_03",
+  "ch_eagle_monkey_adult_walk_04",
+  "ch_eagle_monkey_adult_walk_05",
+  "ch_eagle_monkey_adult_walk_06",
+  "ch_eagle_monkey_adult_walk_07"
+ ],
+ "standing": [
+  "ch_eagle_monkey_adult_idle_00",
+  "ch_eagle_monkey_adult_idle_01",
+  "ch_eagle_monkey_adult_idle_02",
+  "ch_eagle_monkey_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 17,
+   "attack": {
+    "frames": [
+     "ch_eagle_monkey_adult_a1_00",
+     "ch_eagle_monkey_adult_a1_01",
+     "ch_eagle_monkey_adult_a1_02",
+     "ch_eagle_monkey_adult_a1_03",
+     "ch_eagle_monkey_adult_a1_04",
+     "ch_eagle_monkey_adult_a1_05",
+     "ch_eagle_monkey_adult_a1_06",
+     "ch_eagle_monkey_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_eagle_monkey_adult_a2_00",
+     "ch_eagle_monkey_adult_a2_01",
+     "ch_eagle_monkey_adult_a2_02",
+     "ch_eagle_monkey_adult_a2_03",
+     "ch_eagle_monkey_adult_a2_04",
+     "ch_eagle_monkey_adult_a2_05",
+     "ch_eagle_monkey_adult_a2_06",
+     "ch_eagle_monkey_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_eagle_monkey_adult_down_00",
+     "ch_eagle_monkey_adult_down_01",
+     "ch_eagle_monkey_adult_down_02",
+     "ch_eagle_monkey_adult_down_03",
+     "ch_eagle_monkey_adult_down_04",
+     "ch_eagle_monkey_adult_down_05",
+     "ch_eagle_monkey_adult_down_06",
+     "ch_eagle_monkey_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_eagle_monkey_adult_el_00",
+     "ch_eagle_monkey_adult_el_01",
+     "ch_eagle_monkey_adult_el_02",
+     "ch_eagle_monkey_adult_el_03",
+     "ch_eagle_monkey_adult_el_04",
+     "ch_eagle_monkey_adult_el_05",
+     "ch_eagle_monkey_adult_el_06",
+     "ch_eagle_monkey_adult_el_07"
+    ],
+    "durs": [
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.122,
+      "cast"
+     ],
+     [
+      0.132,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_eagle_monkey_adult_hit_00",
+     "ch_eagle_monkey_adult_hit_01"
+    ],
+    "durs": [
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_eagle_monkey_adult_idle_00",
+     "ch_eagle_monkey_adult_idle_01",
+     "ch_eagle_monkey_adult_idle_02",
+     "ch_eagle_monkey_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_eagle_monkey_adult_walk_00",
+     "ch_eagle_monkey_adult_walk_01",
+     "ch_eagle_monkey_adult_walk_02",
+     "ch_eagle_monkey_adult_walk_03",
+     "ch_eagle_monkey_adult_walk_04",
+     "ch_eagle_monkey_adult_walk_05",
+     "ch_eagle_monkey_adult_walk_06",
+     "ch_eagle_monkey_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_eagle_monkey_adult_down_00",
+     "ch_eagle_monkey_adult_down_01",
+     "ch_eagle_monkey_adult_down_02",
+     "ch_eagle_monkey_adult_down_03",
+     "ch_eagle_monkey_adult_down_04",
+     "ch_eagle_monkey_adult_down_05",
+     "ch_eagle_monkey_adult_down_06",
+     "ch_eagle_monkey_adult_down_07",
+     "ch_eagle_monkey_adult_down_06",
+     "ch_eagle_monkey_adult_down_05",
+     "ch_eagle_monkey_adult_down_04",
+     "ch_eagle_monkey_adult_down_03",
+     "ch_eagle_monkey_adult_down_02",
+     "ch_eagle_monkey_adult_down_01",
+     "ch_eagle_monkey_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "eagle_monkey"
+}

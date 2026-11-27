@@ -133,12 +133,14 @@
     "grass",
     "wind"
    ],
-   "hpMult": 2,
+   "hpMult": 1.4,
    "atkMult": 1.4,
    "resist": [
     "fire",
     "thunder"
-   ]
+   ],
+   "resistX": 0.8,
+   "hardHp": 1.5
   },
   "boss_bat": {
    "element": "moon",

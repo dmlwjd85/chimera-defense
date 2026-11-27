@@ -12,6 +12,8 @@ import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionS
 import { FX, ambient, weather } from './fx.js';
 import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
 import { button, style, unitToken, hex, COLORS, speciesImage, pixIcon, relicIcon, hideTip } from './ui.js';
+import { mergeConfirmBox } from './widgets.js';
+import { mergePreview, mergeResultView, needsMergeConfirm } from '../logic/merge.js';
 import { Globe, HAB_SPOT } from './globe.js';
 import { dotOn, dotify } from './dotfx.js';
 import { stageProfile } from '../logic/matchup.js';
@@ -521,12 +523,12 @@ export default class GauntletScene extends Phaser.Scene {
     const meal = this.add.text(0, 85, '', style(13, '#ffc9a0', { stroke: '#000', strokeThickness: 3, backgroundColor: '#00000066', padding: { x: 4, y: 1 } })).setOrigin(0.5);
     c.add([shadow, rainbow, aura, ring, tok, barBg, bar, gBg, gBar, name, tag, crown, pref, tac, stat, meal].filter(Boolean));
     c.setSize(90, 110).setInteractive({ draggable: true, useHandCursor: true });
-    c.on('drag', (p, x, y) => { if (this.state.phase !== 'regroup') return; c.x = x; c.y = y; c.setDepth(2500); v.dragging = true; this.showDropHint(v, x, y); });
+    c.on('drag', (p, x, y) => { if (this.state.phase !== 'regroup' || this.modalOpen) return; c.x = x; c.y = y; c.setDepth(2500); v.dragging = true; this.showDropHint(v, x, y); });
     c.on('dragend', () => { if (!v.dragging) return; v.dragging = false; this.dropUnit(v); });
     c.on('pointerover', () => this.hoverLabel('u' + u.uid, true));
     c.on('pointerout', () => this.hoverLabel('u' + u.uid, false));
     c.on('pointerup', (p) => {
-      if (v.dragging) return;
+      if (v.dragging || this.modalOpen) return;
       if (this.pickFood) { this.feed(u.uid); return; }
       if (this.state?.phase === 'fight') { this.peekLabel('u' + u.uid); const r = tapShield(this.state, u.uid); if (!r.ok && r.reason === 'noTaps') this.toast('보호막은 교전마다 3번'); return; }
       // 정비 때 신화급·키메라를 누르면 선호 태세가 바뀜(자동 → 탱 → 딜 → 서폿)
@@ -2360,6 +2362,37 @@ export default class GauntletScene extends Phaser.Scene {
     this.hintT?.destroy();
     const to = this.slotAt(v.c.x, v.c.y), from = this.refOf(v.uid);
     if (!to || !from) return;
+    const a = from.where === 'seat' ? this.state.field.find((u) => u.uid === this.state.seats[from.index]) : this.state.bench[from.index];
+    const b = to.where === 'seat' ? this.state.field.find((u) => u.uid === this.state.seats[to.index]) : this.state.bench[to.index];
+    // 성체끼리 합성은 확인 창을 먼저. 취소하면 moveAnimal을 부르지 않아 두 동물이 제자리로 돌아감.
+    // 합성은 정비(regroup)에서만 되므로 교전을 따로 멈출 필요는 없음.
+    if (a && b && a !== b && needsMergeConfirm(a, b, this.D)) {
+      const homeOf = (ref) => (ref.where === 'seat' ? seatXY('u', ref.index) : BENCH(ref.index));
+      const va = this.uViews.get(a.uid), ha = homeOf(from);
+      if (va) va.c.setPosition(ha.x, ha.y);
+      const T = this.registry.get('T');
+      const preview = mergePreview(a, b, this.D, this.state.known);
+      const result = mergeResultView(a, b, this.D, this.state.known);
+      const resultName = result.unknown
+        ? (result.chance != null ? T('merge.chance', { chance: result.chance }) : T('merge.resultUnknown'))
+        : ((result.name ?? (preview.textKey === 'merge.weakKnown' ? T('merge.weakKnown') : T('merge.resultUnknown'))) + (result.chance != null ? `\n${T('merge.chance', { chance: result.chance })}` : ''));
+      const warn = preview.kind === 'spirit' ? T('merge.spiritConfirm') : T('merge.confirmWarn');
+      mergeConfirmBox(this, {
+        data: this.D, from: a, to: b, result,
+        fromName: a.stats.name, toName: b.stats.name,
+        resultName,
+        title: T('merge.confirmTitle'), warn,
+        yesLabel: T('merge.do'), noLabel: T('ui.cancel'),
+        unknownLabel: T('merge.resultUnknown'),
+        onYes: () => this.applyDrop(from, to),
+        onNo: () => {},
+      });
+      return;
+    }
+    this.applyDrop(from, to);
+  }
+
+  applyDrop(from, to) {
     const r = moveAnimal(this.state, this.D, from, to);
     if (!r.ok) { if (r.reason !== 'same') this.toast(r.reason === 'last' ? '한 마리는 남아야 함' : r.reason === 'fieldFull' ? '전투는 최대 6마리' : '못 옮김'); return; }
     if (r.kind === 'move' || r.kind === 'swap') { sfx('click'); this.tutAt('moved'); return; }

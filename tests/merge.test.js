@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { loadData } from './helpers.js';
-import { mergeKind, mergeUnits, mergePreview } from '../src/logic/merge.js';
+import { mergeKind, mergeUnits, mergePreview, needsMergeConfirm, mergeResultView } from '../src/logic/merge.js';
 
 const D = loadData();
 let n = 0;
@@ -69,4 +69,29 @@ test('염색체 합성: 같은 강만, 염색체 수 차이로 성공률', async
   assert.equal(mergeKind(sl, u('bear', 'adult'), D), 'swap');
   // 같은 강 짝은 전부 키메라가 있음
   for (const a of D.units) for (const b of D.units) if (a.id < b.id && sameClass(a.id, b.id, D)) assert.ok(D.recipeByPair[a.id < b.id ? `${a.id}+${b.id}` : `${b.id}+${a.id}`], a.id + b.id);
+});
+
+test('성체끼리 합성은 확인이 필요하고, 아기끼리·자리 바꾸기는 바로', () => {
+  assert.equal(needsMergeConfirm(u('fox', 'adult'), u('fox', 'adult'), D), true, '같은 성체 → 영물');
+  assert.equal(needsMergeConfirm(u('fox', 'adult'), u('bear', 'adult'), D), true, '다른 성체 → 키메라');
+  assert.equal(needsMergeConfirm(u('fox', 'young'), u('fox', 'young'), D), false, '아기끼리 진화는 바로');
+  assert.equal(needsMergeConfirm(u('fox', 'teen'), u('fox', 'teen'), D), false, '성장기끼리 진화는 바로');
+  assert.equal(needsMergeConfirm(u('fox', 'adult'), u('fox', 'teen'), D), false, '단계가 다르면 자리 바꾸기');
+  assert.equal(needsMergeConfirm(u('fox', 'spirit'), u('fox', 'spirit'), D), false, '영물끼리는 합성 안 됨');
+  const sl = { uid: ++n, kind: 'weak', speciesId: null, stage: 'adult', parts: ['crow', 'fox'] };
+  assert.equal(needsMergeConfirm(sl, u('fox', 'adult'), D), true, '슬라임 다시 합성도 성체끼리');
+  assert.equal(mergePreview(u('fox', 'adult'), u('bear', 'adult'), D, none).needsConfirm, true);
+  assert.equal(mergePreview(u('fox', 'young'), u('fox', 'young'), D, none).needsConfirm, false);
+});
+
+test('확인 창 결과는 알면 이름·그림을, 모르면 ???, 입력은 그대로', () => {
+  const foxA = u('fox', 'adult'), foxB = u('fox', 'adult');
+  const before = JSON.stringify([foxA, foxB]);
+  const spirit = mergeResultView(foxA, foxB, D, none);
+  assert.equal(JSON.stringify([foxA, foxB]), before);
+  assert.deepEqual([spirit.unknown, spirit.name, spirit.unit.stage], [false, D.unitById.fox.stageNames.spirit, 'spirit']);
+  const hidden = mergeResultView(u('rabbit', 'adult'), u('bighorn', 'adult'), D, none);
+  assert.deepEqual([hidden.unknown, hidden.name, hidden.unit], [true, '???', null]);
+  const known = mergeResultView(u('rabbit', 'adult'), u('bighorn', 'adult'), D, { recipes: new Set(['jackalope']), failed: new Set() });
+  assert.deepEqual([known.unknown, known.name, known.unit.speciesId], [false, D.recipeById.jackalope.name, 'jackalope']);
 });

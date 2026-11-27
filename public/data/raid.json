@@ -855,14 +855,15 @@
      }
     }
    },
-   "hpMult": 0.35,
-   "atkMult": 0.8,
+   "hpMult": 0.2,
+   "atkMult": 0.6,
    "resist": [
     "moon",
     "wind",
     "water"
    ],
-   "weakX": 1.5
+   "weakX": 2,
+   "hardHp": 1.7
   },
   "boss_gate": {
    "element": "thunder",

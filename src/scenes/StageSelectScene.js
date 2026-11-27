@@ -131,7 +131,7 @@ export default class StageSelectScene extends Phaser.Scene {
     const mid = 760;
     add(this.add.text(mid, y + 4, `${stars(starsOf(rec))}`, style(26, '#ffd84d', { stroke: '#000', strokeThickness: 4 })));
     add(this.add.text(mid, y + 42, rec?.cleared ? `클리어 ✔${rec.bestTime ? `  최고 ${mmss(rec.bestTime)}` : ''}` : rec ? `최고 웨이브 ${rec.bestWave}` : '처음', style(14, rec?.cleared ? '#58d68d' : '#cccccc')));
-    add(this.add.text(mid, y + 64, `★ 클리어  ★ 생명 ${cfg.stars?.life ?? 60}% 이상  ★ 쓰러진 아군 ${cfg.gauntlet?.lowStars ?? 3} 이하${rec?.hard ? '  👑 하드' : ''}`, style(13, '#aabbcc')));
+    add(this.add.text(mid, y + 64, `★ 클리어  ★ 생명 ${cfg.stars?.life ?? 60}% 이상  ★ 쓰러진 아군 ${cfg.gauntlet?.lowStars ?? 5} 이하${rec?.hard ? '  👑 하드' : ''}`, style(13, '#aabbcc')));
     // 재도전 동기: 이 스테이지 전리품 유물(여기서만 나옴, 한 번 얻으면 어디서나) · 하드·신계 전용
     { const gc = cfg.gauntlet ?? {}, found = save.codex.relics ?? [];
       const home = Object.entries(gc.relicHome ?? {}).filter(([, sid]) => sid === st.id).map(([id]) => id);

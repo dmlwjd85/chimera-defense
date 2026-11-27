@@ -45,7 +45,8 @@ export function gcfg(data) {
     ranks: [null, { prefix: '푸른', tint: 0x7fb8ff, hp: 1.25, atk: 1.15 }, { prefix: '붉은', tint: 0xff7a6a, hp: 1.55, atk: 1.3 }, { prefix: '검은', tint: 0x9a7cff, hp: 1.9, atk: 1.5 }],
     rankChance: [[0, 0, 0], [0, 0, 0], [0.08, 0, 0], [0.15, 0.04, 0], [0.18, 0.07, 0], [0.22, 0.1, 0.02], [0.25, 0.12, 0.03], [0.26, 0.14, 0.05], [0.28, 0.16, 0.06], [0.3, 0.18, 0.08], [0.3, 0.2, 0.1], [0.3, 0.22, 0.12]],
     // 신화·키메라 필살기(2026-11-26): 피해만이 아니라 동물 특성에 맞게 판을 바꿈. 게이지 ×ultSlow, 교전마다 한 마리 ultMax번
-    ultSlow: 2, ultMax: 1, ultDmg: 1.2,
+    // 2026-11-27 사용자 "보는 맛이 있게 적당히 하고 위력을 낮춰서 여러가지 기술 자주": 게이지 2배 빠르게(ultSlow 2→1), 교전마다 3번(1→3), 피해 1.2→0.7, 부가 효과 ×0.6
+    ultSlow: 1, ultMax: 3, ultDmg: 0.7, ultPow: 0.6,
     // growLv.adult 99: 레벨로는 성장기까지만 출전(성체로 시작하면 바로 신화급·키메라가 태어나서)
     // 종마다 장점·단점(연전): hp·dmg·interval·taken %, dodge(피하기 더함), heal(응원 회복 배수), push(힘싸움 미는 힘 배수)
     speciesTune: {
@@ -388,7 +389,7 @@ export function startEncounter(state, data) {
   for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; u.stance = canStance(u) ? u.prefStance ?? nativeStance(u) : null; u.stanceT = 0.3 + state.rng() * 0.6; }
   state.encTime = 0; state.actGap = 0; state.phase = 'fight'; state.allyBuffs = []; state.clashes = [];
   state.collapse = { u: false, e: false }; state.isolated = { u: false, e: false }; state.diveAt = { u: -99, e: -99 }; state.taps = 0; state.awoke = false; state.awoke2 = false; state.focus = null; state.tempo = g.tempo ?? 1; state.ultSlow = g.ultSlow ?? 1; state.ultMax = g.ultMax ?? 99; state.snareT = 0; state.cheers = 0; state.phoenixUsed = false; state.dataRef = data; state.cheerAt = -9; state.encStat = { ...(state.dstat ?? {}) };
-  for (const u of state.field) { u.ultUsed = 0; u.awake = null; u.advance = false; u.suppressed = false; u.pinnedBy = null; u.slipNote = false; u.clutchOn = false; u.wobbly = false; }
+  for (const u of state.field) { u.ultUsed = 0; u.ultRevive = 0; u.awake = null; u.advance = false; u.suppressed = false; u.pinnedBy = null; u.slipNote = false; u.clutchOn = false; u.wobbly = false; }
   // 역전: 투지(지는 쪽이 세짐) · 역전 찬스(한 번) · 동물마다 역전 특성
   // 진형 상성(가위바위보): 🛡철벽 > 🎯돌격 > 🏹진지 > 🛡철벽. 유리한 쪽 피해 +adv%
   { const fc = g.formation; if (fc) { const fu = formOf(state.field.filter((u) => !u.resting).map((u) => styleOf(u))), fe = formOf(state.enemies.map((e) => e.style)); const adv = fc.beats[fu] === fe ? 1 : fc.beats[fe] === fu ? -1 : 0; state.form = { u: fu, e: fe, adv }; state.events.push({ type: 'formation', u: fu, e: fe, adv }); } }
@@ -781,26 +782,29 @@ export const ULTS = {
   monkey: { name: '분신술', desc: '6초 동안 뒤를 노리는 적을 모두 낚아챔, 금화 +8' },
 };
 function teamUlt(state, data, u, t, g) {
-  const id = u.kind === 'chimera' ? (u.parts ?? [])[0] : u.speciesId;
+  // 키메라는 부위 동물 기술을 번갈아 씀(여러 가지 기술을 보게)
+  const id = u.kind === 'chimera' ? (u.parts ?? [])[((u.ultUsed ?? 1) - 1) % Math.max(1, (u.parts ?? []).length)] : u.speciesId;
   const U = ULTS[id] ?? { name: '필살 일격', desc: '큰 피해' };
   const es = state.enemies.filter(aliveE), us = fighters(state);
   const buff = (stat, percent, left) => state.allyBuffs.push({ stat, percent, left });
+  // 위력 낮춤(2026-11-27 "위력을 낮춰서 여러가지 기술 자주 보게"): 수치·시간 × P(ultPow), 대신 게이지 빠르고 교전마다 여러 번
+  const P = g.ultPow ?? 1, T = (x) => x * P, Pc = (x) => Math.round(x * P);
   switch (id) {
-    case 'bear': buff('taken', -30, 5); state.focus = u.uid; state.focusUntil = state.time + 3; break;
-    case 'bison': for (const c of state.clashes ?? []) c.push = Math.min(0.95, c.push + 0.6); for (const e of es.filter((x) => isFront(x.seat) && !x.boss)) e.stunLeft = Math.max(e.stunLeft ?? 0, 1); break;
-    case 'dog': { const w = lowest(us); if (w) { w.hp = Math.min(w.maxHp, w.hp + w.maxHp * 0.4); w.shieldT = state.time + 3; } break; }
-    case 'ant': for (const e of es) { e.slowPct = 40; e.slowLeft = 4; if (e.style === 'skirm' && !e.boss) { e.pinnedBy = u.uid; e.pinUntil = state.time + 4; e.diveMark = null; } } break;
-    case 'frog': for (const x of us) { x.hp = Math.min(x.maxHp, x.hp + x.maxHp * 0.2); x.stunLeft = 0; x.suppressed = false; } break;
-    case 'tiger': for (const e of es) e.gauge = 0; buff('dmg', 20, 5); break;
-    case 'fox': for (const e of [...es].sort(() => state.rng() - 0.5).slice(0, 3)) if (!e.boss) e.stunLeft = Math.max(e.stunLeft ?? 0, 2); break;
-    case 'rabbit': for (const x of us) x.gauge = Math.min(1, (x.gauge ?? 0) + 0.5); buff('taken', -15, 4); break;
-    case 'rooster': { const d = state.field.find((x) => x.down && !x.resting); if (d) { d.down = false; d.hp = d.maxHp * 0.4; state.events.push({ type: 'revive', uid: d.uid }); } for (const x of us) x.hp = Math.min(x.maxHp, x.hp + x.maxHp * 0.15); break; }
-    case 'crow': for (const e of es.filter((x) => x.style === 'ranged' || x.style === 'support')) e.curseLeft = 6; break;
-    case 'wolf': { const back = es.filter((x) => x.style === 'ranged' || x.style === 'support'); for (const x of us.filter((y) => styleOf(y) === 'skirm')) { const v = lowest(back.length ? back : es); if (v) { x.pinnedBy = null; x.deepT = state.time + 2; x.deepEid = v.eid; x.gauge = 1; } } break; }
-    case 'eagle': for (const e of es.filter((x) => x.style === 'ranged' || x.style === 'support')) { if (!e.boss) e.stunLeft = Math.max(e.stunLeft ?? 0, 3); e.shieldLeft = 0; } break;
-    case 'bighorn': for (const x of us.filter(isBack)) x.shieldT = state.time + 4; for (const e of es.filter((x) => x.advance)) { e.advance = false; e.stunLeft = Math.max(e.stunLeft ?? 0, 1.5); } break;
-    case 'grasshopper': state.mana = Math.min(data.config.spells?.max ?? 100, (state.mana ?? 0) + 30); state.cheers = Math.max(-3, (state.cheers ?? 0) - 3); break;
-    case 'monkey': state.snareT = Math.max(state.snareT ?? 0, state.time + 6); state.gold += 8; break;
+    case 'bear': buff('taken', -Pc(30), T(5)); state.focus = u.uid; state.focusUntil = state.time + T(3); break;
+    case 'bison': for (const c of state.clashes ?? []) c.push = Math.min(0.95, c.push + T(0.6)); for (const e of es.filter((x) => isFront(x.seat) && !x.boss)) e.stunLeft = Math.max(e.stunLeft ?? 0, T(1)); break;
+    case 'dog': { const w = lowest(us); if (w) { w.hp = Math.min(w.maxHp, w.hp + w.maxHp * T(0.4)); w.shieldT = state.time + T(3); } break; }
+    case 'ant': for (const e of es) { e.slowPct = Pc(40); e.slowLeft = T(4); if (e.style === 'skirm' && !e.boss) { e.pinnedBy = u.uid; e.pinUntil = state.time + T(4); e.diveMark = null; } } break;
+    case 'frog': for (const x of us) { x.hp = Math.min(x.maxHp, x.hp + x.maxHp * T(0.2)); x.stunLeft = 0; x.suppressed = false; } break;
+    case 'tiger': for (const e of es) e.gauge = Math.max(0, (e.gauge ?? 0) - T(1)); buff('dmg', Pc(20), T(5)); break;
+    case 'fox': for (const e of [...es].sort(() => state.rng() - 0.5).slice(0, 3)) if (!e.boss) e.stunLeft = Math.max(e.stunLeft ?? 0, T(2)); break;
+    case 'rabbit': for (const x of us) x.gauge = Math.min(1, (x.gauge ?? 0) + T(0.5)); buff('taken', -Pc(15), T(4)); break;
+    case 'rooster': { const d = state.field.find((x) => x.down && !x.resting); if (d && (u.ultRevive ?? 0) < 1) { u.ultRevive = (u.ultRevive ?? 0) + 1; d.down = false; d.hp = d.maxHp * T(0.4); state.events.push({ type: 'revive', uid: d.uid }); } for (const x of us) x.hp = Math.min(x.maxHp, x.hp + x.maxHp * T(0.15)); break; }
+    case 'crow': for (const e of es.filter((x) => x.style === 'ranged' || x.style === 'support')) e.curseLeft = T(6); break;
+    case 'wolf': { const back = es.filter((x) => x.style === 'ranged' || x.style === 'support'); for (const x of us.filter((y) => styleOf(y) === 'skirm')) { const v = lowest(back.length ? back : es); if (v) { x.pinnedBy = null; x.deepT = state.time + T(2); x.deepEid = v.eid; x.gauge = Math.min(1, (x.gauge ?? 0) + T(1)); } } break; }
+    case 'eagle': for (const e of es.filter((x) => x.style === 'ranged' || x.style === 'support')) { if (!e.boss) e.stunLeft = Math.max(e.stunLeft ?? 0, T(3)); e.shieldLeft = 0; } break;
+    case 'bighorn': for (const x of us.filter(isBack)) x.shieldT = state.time + T(4); for (const e of es.filter((x) => x.advance)) { e.advance = false; e.stunLeft = Math.max(e.stunLeft ?? 0, T(1.5)); } break;
+    case 'grasshopper': state.mana = Math.min(data.config.spells?.max ?? 100, (state.mana ?? 0) + Pc(30)); state.cheers = Math.max(-3, (state.cheers ?? 0) - 2); break;
+    case 'monkey': state.snareT = Math.max(state.snareT ?? 0, state.time + T(6)); state.gold += 3; break;
     default: break;
   }
   say(state, `${u.stats.name} · ${U.name}!`);

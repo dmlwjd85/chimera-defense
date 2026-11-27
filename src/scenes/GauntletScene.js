@@ -624,7 +624,9 @@ export default class GauntletScene extends Phaser.Scene {
         else if (v.dive) { /* 돌파 시간표가 동작을 정함 */ }
         else if (!busy && (v.walking || v.dash) && r.anims.move) { if (m !== 'move') r.play('move', { loop: true }); }
         else if (!busy && !v.walking && !v.dash && m !== 'idle') r.play('idle', { loop: true });
-        if (u.hp < v.lastHp - 0.5 && !u.down) { r.hitFlash(0.12); if (!busy) r.play('hit'); }
+        // 피해는 규칙에서 먼저 깎이고 주먹은 조금 뒤에 닿음 → 맞는 동작은 닿을 때(hitReact). 공격 아닌 피해(지형·독·옆구리)는 0.26초 뒤 대신 움찔
+        if (u.hp < v.lastHp - 0.5 && !u.down) v.pendHit ??= this.time.now;
+        if (v.pendHit != null && this.time.now - v.pendHit > 260) { if ((v.hitAt ?? -999) < v.pendHit) this.hitReact(v); v.pendHit = null; }
         if (s.phase !== 'fight' || v.dash || v.walking) v.turned = false;
         r.setFacing(v.dashBack !== !!v.turned ? -1 : 1);
         v.rig.view.update(u.stunLeft > 0 && !v.dive ? 0 : dt);
@@ -661,7 +663,8 @@ export default class GauntletScene extends Phaser.Scene {
         const r = v.rig.inst, m = r.motion;
         const eb = (['attack', 'hit', 'skill', 'block', 'sweep', 'grab', 'fall', 'leap', 'down'].includes(m) && !r.finished) || !!v.dive;
         if (!eb && e.hp > 0) { const want = v.walking && r.anims.move ? 'move' : 'idle'; if (m !== want) r.play(want, { loop: true }); }
-        if (e.hp < v.lastHp - 0.5 && e.hp > 0) { r.hitFlash(0.12); if (m !== 'attack') r.play('hit'); }
+        if (e.hp < v.lastHp - 0.5 && e.hp > 0) v.pendHit ??= this.time.now;
+        if (v.pendHit != null && this.time.now - v.pendHit > 260) { if ((v.hitAt ?? -999) < v.pendHit && e.hp > 0) this.hitReact(v); v.pendHit = null; }
         if (this.state.phase !== 'fight' || v.walking) v.turned = false;
         r.setFacing(enemyFace(v.rig.faceId ?? e.id, v.dashBack !== !!v.turned));   // 적은 모두 왼쪽(동물 쪽)을 봄
         v.rig.view.update(e.stunLeft > 0 && !v.dive ? 0 : dt);
@@ -836,6 +839,14 @@ export default class GauntletScene extends Phaser.Scene {
           const drop = this.add.text(v.c.x, v.c.y - 260, ev.icon, style(30)).setOrigin(0.5).setDepth(1500);
           this.tweens.add({ targets: drop, y: v.c.y - 40, duration: 380, ease: 'Quad.in', onComplete: () => { drop.destroy(); this.fx.burst?.('spark', v.c.x, v.c.y - 30, 8, 0xffe066); this.floatAt(v.c.x, v.c.y - 100, h.immune ? '끄떡없음' : h.dmg ? `${ev.icon}${h.dmg}` : `${ev.icon} 꽈당!`, h.immune ? '#9cff6b' : '#ffe066', 16); if (!h.immune) v.kick = { t: 0, dur: 0.2, px: h.side === 'u' ? -10 : 10 }; } });
         }
+        // 지형 효과가 나면 모두 반응: 맞은 개체·날씨에 약한 속성 = 불리, 같은 속성(안 다침)·날씨에 강한 속성 = 유리, 나머지 = 무덤덤
+        this.time.delayedCall(420, () => {
+          const hitIds = new Set((ev.hits ?? []).filter((h) => h.dmg > 0).map((h) => h.side + h.id));
+          const cl = this.D.config.climates?.[s.stage?.climate] ?? null;
+          const judge = (side, id, el) => hitIds.has(side + id) ? 'bad' : el && (el === ev.immune || cl?.strong?.includes(el)) ? 'good' : el && cl?.weak?.includes(el) ? 'bad' : 'none';
+          for (const u of s.field) if (!u.down && !u.resting) { const v = this.uViews.get(u.uid); if (v) this.react(v, judge('u', u.uid, u.stats.element), 'u', hitIds.has('u' + u.uid) ? '▼ 불리' : undefined); }
+          for (const e of s.enemies) if (e.hp > 0) { const v = this.eViews.get(e.eid); if (v) this.react(v, judge('e', e.eid, e.element), 'e', hitIds.has('e' + e.eid) ? '▼ 불리' : undefined); }
+        });
         sfx('hit'); break;
       }
       case 'reinforce': { this.ticker('👿 적 증원! 문에서 하나 더 나옴', '#c4a6ff'); const v = this.eViews.get(ev.eid); if (v) this.fx.ring(v.c.x, v.c.y + 20, 0x9b6cf0, 1.4, 420); this.cameras.main.shake(160, 0.006); sfx('hold'); break; }
@@ -1060,6 +1071,44 @@ export default class GauntletScene extends Phaser.Scene {
     this.fx.shout(x, y, text, color, opts);
   }
 
+  /** 맞으면 피격 동작(2026-11-27 "공격 받으면 피격 모션 추가"): 기술·막기·쓰러짐 중이거나 공격을 막 휘두르는 중(앞 55%)이면 번쩍임만 */
+  hitReact(v, heavy = false) {
+    const r = v?.rig?.inst; if (!r || v.dive) return;
+    r.hitFlash(heavy ? 0.16 : 0.1);
+    const now = this.time.now; if (now - (v.hitAt ?? -999) < 260) return;
+    const m = r.motion, cur = r.cur;
+    if (['skill', 'ult', 'block', 'sweep', 'grab', 'fall', 'leap', 'down', 'victory'].includes(m) && !r.finished) return;
+    if (ATTACK_MOTIONS.includes(m) && !r.finished && cur && cur.t / Math.max(0.01, cur.dur) < 0.55 && !heavy) return;
+    if (r.anims.hit) { r.play('hit'); v.hitAt = now; }
+  }
+
+  /** 등 뒤 공격 연출: 멘트 + 주황 일격 + 살짝 흔들림(추가 피해는 규칙에서 ×1.3) */
+  backstabFx(t, fromRight) {
+    if (!t) return;
+    this.say(t.c.x, t.c.y - 128, '🗡 등 뒤 공격!', 0xff9f43, { size: 20, hold: 650, force: true });
+    this.fx.impact(t.c.x, t.c.y - 24, 0xff7a2e, 1.4);
+    this.fx.slash(t.c.x - 8, t.c.y - 14, 0xffb05a); this.time.delayedCall(70, () => this.fx.slash(t.c.x + 8, t.c.y - 30, 0xffb05a));
+    t.kick = { t: 0, dur: 0.24, px: fromRight ? -30 : 30 };
+    this.cameras.main.shake(110, 0.005);
+    sfx('slam');
+  }
+
+  /** 속성·지형 효과가 날 때 개체마다 반응: good 유리(초록 고리·▲) / bad 불리(움찔·💦·▼) / none 무덤덤(…) */
+  react(v, kind, side, label) {
+    if (!v || v.dying) return;
+    const now = this.time.now; if (now - (v.reactAt ?? -999) < 700) return;
+    v.reactAt = now;
+    const x = v.c.x, y = v.c.y;
+    if (kind === 'good') {
+      this.fx.ring(x, y + 26, 0x9cff6b, 1.1, 420); this.fx.burst?.('spark', x, y - 40, 6, 0x9cff6b);
+      this.floatAt(x, y - 140, label ?? '▲ 유리', '#9cff6b', 21);
+    } else if (kind === 'bad') {
+      this.floatAt(x, y - 140, label ?? '▼ 불리 💦', '#ff8a7a', 21);
+      v.kick = { t: 0, dur: 0.22, px: side === 'u' ? -12 : 12 };
+      this.hitReact(v, false);
+    } else this.floatAt(x, y - 136, label ?? '…', '#b8c2d0', 20);
+  }
+
   /** 상성 글자: 효과 굉장! / 별로… / 🍖 사냥! (한 자리에 겹치지 않게) */
   effWord(x, y, eff) {
     const now = this.time.now;
@@ -1225,10 +1274,13 @@ export default class GauntletScene extends Phaser.Scene {
         const ehp = s.enemies.find((e) => e.eid === h.eid)?.maxHp ?? 1e9;
         if (heavy || h.dmg >= ehp * 0.08) this.dmgNumber(t.c.x, t.c.y - 90, h.dmg, heavy);
         this.fx.hit(t.c.x, t.c.y - 10, heavy ? 'orange' : 'white', heavy);
-        if (h.eff === 'strong' || h.eff === 'prey') this.effWord(t.c.x, t.c.y - 128, h.eff);
+        if (ev.el) this.react(t, h.eff === 'strong' ? 'bad' : h.eff === 'weak' ? 'good' : 'none', 'e', h.eff === 'strong' ? '▼ 약점! 💦' : h.eff === 'weak' ? '▲ 버팀' : '…');
+        else if (h.eff === 'strong' || h.eff === 'prey') this.effWord(t.c.x, t.c.y - 128, h.eff);
         if (ev.melee && !big) this.fx.slash(t.c.x - 10, t.c.y - 10, 0xffffff);
         t.ring.setStrokeStyle(3, 0xff6b5a, 1); this.tweens.add({ targets: t.ring, alpha: { from: 1, to: 0 }, duration: 380, onComplete: () => t.ring.setAlpha(1).setStrokeStyle(3, 0xff6b5a, 0) });
-        t.kick = { t: 0, dur: 0.16, px: heavy ? 26 : 12 };
+        t.kick = { t: 0, dur: 0.16, px: (t.c.x >= v.c.x ? 1 : -1) * (heavy ? 26 : 12) };
+        this.hitReact(t, heavy);
+        if (ev.back && h.eid === ev.eid) this.backstabFx(t, v.c.x > t.c.x);
       }
       if (ev.el) try { this.fx.element(ev.el, [v.c.x, v.c.y], targets.map((t) => [t.c.x, t.c.y])); } catch { /* */ }
       if (ev.move === 'skill' && ev.action) try { this.fx.skillFx(ev.action, [v.c.x, v.c.y], targets.map((t) => [t.c.x, t.c.y]), { allies: [...this.uViews.values()].map((a) => [a.c.x, a.c.y]) }); } catch { /* */ }
@@ -1260,7 +1312,10 @@ export default class GauntletScene extends Phaser.Scene {
       if (ev.dodged) { t.kick = { t: 0, dur: 0.3, px: -46 }; this.floatAt(t.c.x, t.c.y - 96, '💨 회피!', '#9cff6b', 22); sfx('dodge'); return; }
       this.dmgNumber(t.c.x, t.c.y - 90, ev.dmg, ev.boss);
       this.fx.hit(t.c.x, t.c.y - 10, ev.boss ? 'red' : 'white', ev.boss);
-      t.kick = { t: 0, dur: 0.16, px: -14 };
+      t.kick = { t: 0, dur: 0.16, px: (v.c.x >= t.c.x ? -1 : 1) * 14 };
+      this.hitReact(t, ev.boss);
+      if (ev.back) this.backstabFx(t, v.c.x > t.c.x);
+      else if (ev.eff && (ev.boss || ev.dmg >= 0.12 * (this.state.field.find((x) => x.uid === ev.uid)?.maxHp ?? 1e9))) this.react(t, ev.eff === 'strong' ? 'bad' : 'good', 'u', ev.eff === 'strong' ? '▼ 약점! 💦' : '▲ 버팀');
       if (ev.boss) this.cameras.main.shake(120, 0.004);
       sfx(ev.boss ? 'slam' : 'hit');
     };

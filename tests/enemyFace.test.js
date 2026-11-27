@@ -34,3 +34,8 @@ test('한 장 초상화: 오른쪽을 보는 그림만 뒤집어 왼쪽으로', 
     assert.ok(PORTRAIT_FACES_RIGHT.has(id), id);
   }
 });
+
+test('떠도는 넋은 원화가 오른쪽을 보므로 뒤집어 왼쪽을 본다', () => {
+  assert.equal(enemyFace('ghost'), -1);
+  assert.equal(enemyPortraitFlip('ghost'), true);
+});

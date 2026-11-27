@@ -10,6 +10,7 @@ export const ENEMY_FACES_LEFT = new Set([
 ]);
 
 /** 한 장 초상화(도감·다음 적)가 오른쪽을 봐서, 뒤집어 왼쪽으로 보이게 할 것 */
+// 떠도는 넋(ghost)은 여기 둔다(뒤집음). 원화는 등불이 오른쪽이라, ENEMY_FACES_LEFT에 넣으면 오히려 오른쪽을 본다. 2026-11-27 시트 전 동작·도감으로 재확인.
 export const PORTRAIT_FACES_RIGHT = new Set([
   'normal', 'healer', 'miniboss', 'ghost', 'zombie', 'boss_bone',
   'boss_boar', 'boss_lich', 'skeleton',

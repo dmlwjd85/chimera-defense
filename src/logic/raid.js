@@ -59,6 +59,8 @@ export function raidEncStart(state, data) {
     attach(state, data, e, def);
     if (!R.taste) state.raidBoss = e.eid;
   }
+  // 보스 교전의 호위 적은 체력을 줄임(common.escortHp) — 보스 기술과 상성이 승부를 가르게
+  if (state.raidBoss != null && (C(data).escortHp ?? 1) !== 1) for (const e of state.enemies) if (e.eid !== state.raidBoss && !e.boss) { e.maxHp = Math.max(1, Math.round(e.maxHp * C(data).escortHp)); e.hp = Math.min(e.hp, e.maxHp); }
   // 배우기 교전(tasteAt): 보스 없는 교전에서 가장 튼튼한 적이 맛보기 기술을 한 번 씀
   if (spec && !spec.boss && stageBoss && (C(data).tasteAt ?? []).includes(state.enc)) {
     const tp = (stageBoss.patterns ?? []).find((x) => x.id === stageBoss.taste);

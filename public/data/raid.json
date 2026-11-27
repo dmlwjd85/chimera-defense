@@ -37,7 +37,8 @@
    3
   ],
   "minibossAt": null,
-  "_minibossAt": "미니보스를 옮길 교전 번호(0부터). null이면 지금 자리(스테이지 10웨이브 = 연전 중간) 그대로"
+  "_minibossAt": "미니보스를 옮길 교전 번호(0부터). null이면 지금 자리(스테이지 10웨이브 = 연전 중간) 그대로",
+  "escortHp": 0.5
  },
  "bosses": {
   "boss_boar": {
@@ -46,20 +47,20 @@
     "frontline2"
    ],
    "good": [
-    "bighorn",
-    "dog",
+    "frog",
     "crow",
-    "rooster",
-    "fox",
-    "rabbit"
+    "eagle",
+    "grasshopper",
+    "monkey",
+    "bighorn"
    ],
    "bad": [
     "dog",
     "fox",
     "tiger",
-    "rooster",
     "rabbit",
-    "wolf"
+    "wolf",
+    "rooster"
    ],
    "spell": "wall",
    "taste": "tusk",
@@ -126,7 +127,12 @@
       }
      }
     }
-   }
+   },
+   "weak": [
+    "water",
+    "grass",
+    "wind"
+   ]
   },
   "boss_bat": {
    "element": "moon",
@@ -135,18 +141,18 @@
    ],
    "good": [
     "dog",
-    "bighorn",
     "fox",
-    "crow",
     "rooster",
-    "rabbit"
+    "crow",
+    "eagle",
+    "bighorn"
    ],
    "bad": [
-    "bighorn",
-    "ant",
     "bear",
+    "bison",
+    "ant",
     "wolf",
-    "monkey",
+    "rabbit",
     "frog"
    ],
    "spell": "chain",
@@ -196,7 +202,11 @@
      }
     }
    },
-   "hpMult": 0.75
+   "hpMult": 0.75,
+   "weak": [
+    "fire",
+    "light"
+   ]
   },
   "boss_shadow": {
    "element": "moon",
@@ -205,18 +215,18 @@
    ],
    "good": [
     "dog",
-    "bighorn",
-    "fox",
     "rooster",
+    "fox",
     "ant",
-    "crow"
+    "crow",
+    "bighorn"
    ],
    "bad": [
     "bear",
     "bison",
-    "frog",
     "wolf",
     "rabbit",
+    "frog",
     "tiger"
    ],
    "spell": "meteor",
@@ -273,32 +283,38 @@
      }
     }
    },
-   "hpMult": 0.9
+   "hpMult": 0.9,
+   "weak": [
+    "fire",
+    "light"
+   ]
   },
   "boss_bone": {
    "element": "earth",
    "weak": [
-    "earth",
+    "water",
+    "grass",
+    "wind",
     "light"
    ],
    "need": [
     "push"
    ],
    "good": [
-    "bighorn",
-    "ant",
-    "bear",
-    "rooster",
     "frog",
-    "monkey"
+    "monkey",
+    "grasshopper",
+    "crow",
+    "eagle",
+    "bighorn"
    ],
    "bad": [
     "fox",
-    "crow",
-    "eagle",
+    "dog",
     "tiger",
     "rabbit",
-    "dog"
+    "wolf",
+    "rooster"
    ],
    "spell": "gust",
    "taste": "wall",
@@ -363,27 +379,27 @@
   "boss_frost": {
    "element": "water",
    "weak": [
-    "fire",
-    "light"
+    "grass",
+    "thunder"
    ],
    "need": [
     "ranged"
    ],
    "good": [
-    "dog",
-    "bighorn",
-    "fox",
-    "rooster",
+    "tiger",
     "grasshopper",
-    "eagle"
+    "monkey",
+    "crow",
+    "eagle",
+    "rooster"
    ],
    "bad": [
-    "wolf",
-    "monkey",
-    "frog",
+    "dog",
+    "fox",
     "bear",
-    "ant",
-    "rabbit"
+    "bison",
+    "bighorn",
+    "ant"
    ],
    "spell": "drum",
    "taste": "prison",
@@ -443,6 +459,7 @@
   "boss_lich": {
    "element": "moon",
    "weak": [
+    "fire",
     "light"
    ],
    "need": [
@@ -450,20 +467,20 @@
     "backline"
    ],
    "good": [
-    "bighorn",
-    "ant",
     "rooster",
-    "wolf",
+    "fox",
+    "dog",
     "tiger",
-    "dog"
+    "bighorn",
+    "ant"
    ],
    "bad": [
+    "rabbit",
+    "wolf",
     "frog",
     "bear",
     "bison",
-    "grasshopper",
-    "rabbit",
-    "monkey"
+    "grasshopper"
    ],
    "spell": "wall",
    "taste": "prayer",
@@ -631,26 +648,28 @@
   "boss_witch": {
    "element": "water",
    "weak": [
+    "grass",
+    "thunder",
     "light"
    ],
    "need": [
     "healer"
    ],
    "good": [
-    "bear",
-    "dog",
     "tiger",
     "grasshopper",
     "rooster",
-    "rabbit"
+    "rabbit",
+    "wolf",
+    "frog"
    ],
    "bad": [
+    "dog",
     "fox",
-    "wolf",
-    "monkey",
+    "bear",
+    "bison",
     "bighorn",
-    "ant",
-    "eagle"
+    "ant"
    ],
    "spell": "guard",
    "taste": "pull",
@@ -713,27 +732,28 @@
   "boss_knight": {
    "element": "moon",
    "weak": [
-    "earth",
-    "light"
+    "fire",
+    "light",
+    "earth"
    ],
    "need": [
     "guard"
    ],
    "good": [
-    "bighorn",
-    "dog",
     "rooster",
+    "dog",
+    "fox",
+    "bighorn",
     "bear",
-    "monkey",
-    "fox"
+    "monkey"
    ],
    "bad": [
+    "rabbit",
+    "wolf",
     "crow",
     "eagle",
     "frog",
-    "rabbit",
-    "grasshopper",
-    "tiger"
+    "grasshopper"
    ],
    "spell": "snare",
    "taste": "duel",
@@ -794,16 +814,16 @@
     "bison",
     "bighorn",
     "ant",
-    "eagle",
-    "rooster"
+    "rooster",
+    "tiger"
    ],
    "bad": [
     "frog",
     "crow",
+    "eagle",
     "monkey",
-    "wolf",
-    "tiger",
-    "rabbit"
+    "rabbit",
+    "wolf"
    ],
    "spell": "meteor",
    "taste": "banish",
@@ -861,7 +881,10 @@
      }
     }
    },
-   "hpMult": 0.7
+   "hpMult": 0.7,
+   "weak": [
+    "earth"
+   ]
   },
   "boss_mole": {
    "element": "grass",
@@ -869,19 +892,19 @@
     "flyer"
    ],
    "good": [
+    "fox",
     "dog",
-    "bighorn",
     "crow",
     "eagle",
-    "fox",
-    "monkey"
+    "monkey",
+    "rooster"
    ],
    "bad": [
+    "frog",
     "bear",
     "bison",
     "ant",
-    "frog",
-    "wolf",
+    "bighorn",
     "grasshopper"
    ],
    "spell": "chain",
@@ -939,7 +962,11 @@
      }
     }
    },
-   "hpMult": 1.25
+   "hpMult": 1.25,
+   "weak": [
+    "fire",
+    "wind"
+   ]
   },
   "overlord": {
    "phaseElements": [
@@ -956,15 +983,15 @@
     "rooster",
     "dog",
     "fox",
-    "eagle"
+    "bighorn"
    ],
    "bad": [
-    "ant",
-    "bighorn",
-    "bison",
     "grasshopper",
     "crow",
-    "monkey"
+    "eagle",
+    "monkey",
+    "rabbit",
+    "wolf"
    ],
    "spell": "guard",
    "taste": "devour",
@@ -1024,7 +1051,12 @@
      }
     }
    },
-   "hpMult": 0.6
+   "hpMult": 0.6,
+   "weak": [
+    "water",
+    "earth",
+    "light"
+   ]
   },
   "miniboss": {
    "taste": true

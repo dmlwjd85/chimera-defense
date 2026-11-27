@@ -777,8 +777,9 @@
      }
     }
    },
-   "hpMult": 0.3,
-   "atkMult": 0.75
+   "hpMult": 0.22,
+   "atkMult": 0.75,
+   "hardHp": 1.6
   },
   "boss_knight": {
    "element": "moon",

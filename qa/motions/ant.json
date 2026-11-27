@@ -66,6 +66,11 @@
    "max|h%|": 13.6,
    "foot±": 15
   },
+  "adult_block": {
+   "n": 6,
+   "max|h%|": 9.9,
+   "foot±": 0
+  },
   "adult_down": {
    "n": 8,
    "max|h%|": 38.3,
@@ -76,6 +81,11 @@
    "max|h%|": 33.3,
    "foot±": 5
   },
+  "adult_grab": {
+   "n": 8,
+   "max|h%|": 42.0,
+   "foot±": 0
+  },
   "adult_hit": {
    "n": 4,
    "max|h%|": 2.5,
@@ -84,6 +94,11 @@
   "adult_idle": {
    "n": 4,
    "max|h%|": 14.8,
+   "foot±": 0
+  },
+  "adult_sweep": {
+   "n": 8,
+   "max|h%|": 40.7,
    "foot±": 0
   },
   "adult_walk": {
@@ -101,6 +116,11 @@
    "max|h%|": 1.9,
    "foot±": 0
   },
+  "myth_block": {
+   "n": 6,
+   "max|h%|": 1.9,
+   "foot±": 0
+  },
   "myth_down": {
    "n": 7,
    "max|h%|": 53.8,
@@ -111,6 +131,11 @@
    "max|h%|": 42.3,
    "foot±": 0
   },
+  "myth_grab": {
+   "n": 8,
+   "max|h%|": 17.3,
+   "foot±": 27
+  },
   "myth_hit": {
    "n": 4,
    "max|h%|": 2.9,
@@ -120,6 +145,11 @@
    "n": 4,
    "max|h%|": 0.0,
    "foot±": 1
+  },
+  "myth_sweep": {
+   "n": 8,
+   "max|h%|": 2.9,
+   "foot±": 0
   },
   "myth_ult": {
    "n": 16,
@@ -135,27 +165,27 @@
  "main": {
   "sheet": [
    2048,
-   396
+   540
   ],
   "box": [
-   113,
-   115
+   115,
+   117
   ],
-  "frames": 117,
+  "frames": 139,
   "colors": 16,
-  "px": 811008
+  "px": 1105920
  },
  "spirit": {
   "sheet": [
    2048,
-   356
+   462
   ],
   "box": [
    135,
    152
   ],
-  "frames": 63,
+  "frames": 85,
   "colors": 16,
-  "px": 729088
+  "px": 946176
  }
 }

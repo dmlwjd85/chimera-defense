@@ -1,0 +1,48 @@
+{
+ "species": "en_boss_witch",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 4.5,
+   "foot±": 0
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 47.2,
+   "foot±": 2
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 83.1,
+   "foot±": 0
+  },
+  "adult_hit": {
+   "n": 3,
+   "max|h%|": 3.4,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 3.4,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.2,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   253
+  ],
+  "box": [
+   126,
+   165
+  ],
+  "frames": 37,
+  "colors": 16,
+  "px": 518144
+ }
+}

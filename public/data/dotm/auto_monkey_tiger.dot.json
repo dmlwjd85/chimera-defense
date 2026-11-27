@@ -1,0 +1,668 @@
+{
+ "note": "ch_monkey_tiger 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_monkey_tiger",
+ "sheet": "dot-m-auto_monkey_tiger",
+ "file": "assets/dotm/auto_monkey_tiger.png",
+ "frameW": 111,
+ "frameH": 113,
+ "foot": 110,
+ "cols": 1,
+ "anchorX": 54,
+ "palette": [
+  "#1e050c",
+  "#291a1f",
+  "#581b10",
+  "#6f292c",
+  "#903628",
+  "#994e51",
+  "#bb6968",
+  "#c0522e",
+  "#d8a187",
+  "#df8587",
+  "#e17a49",
+  "#ee7930",
+  "#f59da0",
+  "#f5ddc9",
+  "#f9b3b4",
+  "#fe7f3a"
+ ],
+ "rects": {
+  "ch_monkey_tiger_adult_a1_00": [
+   1018,
+   97,
+   100,
+   77,
+   -50,
+   -77
+  ],
+  "ch_monkey_tiger_adult_a1_01": [
+   1614,
+   0,
+   101,
+   79,
+   -51,
+   -80
+  ],
+  "ch_monkey_tiger_adult_a1_02": [
+   796,
+   0,
+   105,
+   81,
+   -54,
+   -82
+  ],
+  "ch_monkey_tiger_adult_a1_03": [
+   578,
+   0,
+   108,
+   82,
+   -54,
+   -82
+  ],
+  "ch_monkey_tiger_adult_a1_04": [
+   687,
+   0,
+   108,
+   82,
+   -54,
+   -82
+  ],
+  "ch_monkey_tiger_adult_a1_05": [
+   902,
+   0,
+   102,
+   81,
+   -51,
+   -81
+  ],
+  "ch_monkey_tiger_adult_a1_06": [
+   1716,
+   0,
+   100,
+   79,
+   -50,
+   -80
+  ],
+  "ch_monkey_tiger_adult_a1_07": [
+   0,
+   97,
+   100,
+   78,
+   -50,
+   -78
+  ],
+  "ch_monkey_tiger_adult_a2_00": [
+   1119,
+   97,
+   102,
+   77,
+   -50,
+   -77
+  ],
+  "ch_monkey_tiger_adult_a2_01": [
+   101,
+   97,
+   104,
+   78,
+   -52,
+   -79
+  ],
+  "ch_monkey_tiger_adult_a2_02": [
+   1005,
+   0,
+   102,
+   81,
+   -53,
+   -91
+  ],
+  "ch_monkey_tiger_adult_a2_03": [
+   1108,
+   0,
+   101,
+   81,
+   -52,
+   -97
+  ],
+  "ch_monkey_tiger_adult_a2_04": [
+   1633,
+   97,
+   101,
+   75,
+   -51,
+   -89
+  ],
+  "ch_monkey_tiger_adult_a2_05": [
+   1222,
+   97,
+   102,
+   77,
+   -50,
+   -77
+  ],
+  "ch_monkey_tiger_adult_a2_06": [
+   1735,
+   97,
+   100,
+   75,
+   -49,
+   -75
+  ],
+  "ch_monkey_tiger_adult_a2_07": [
+   206,
+   97,
+   99,
+   78,
+   -49,
+   -78
+  ],
+  "ch_monkey_tiger_adult_down_00": [
+   1325,
+   97,
+   103,
+   77,
+   -51,
+   -76
+  ],
+  "ch_monkey_tiger_adult_down_01": [
+   0,
+   176,
+   107,
+   74,
+   -53,
+   -73
+  ],
+  "ch_monkey_tiger_adult_down_02": [
+   318,
+   176,
+   102,
+   64,
+   -46,
+   -65
+  ],
+  "ch_monkey_tiger_adult_down_03": [
+   421,
+   176,
+   104,
+   55,
+   -48,
+   -55
+  ],
+  "ch_monkey_tiger_adult_down_04": [
+   526,
+   176,
+   106,
+   52,
+   -50,
+   -52
+  ],
+  "ch_monkey_tiger_adult_down_05": [
+   633,
+   176,
+   110,
+   50,
+   -53,
+   -50
+  ],
+  "ch_monkey_tiger_adult_el_00": [
+   1429,
+   97,
+   100,
+   76,
+   -50,
+   -77
+  ],
+  "ch_monkey_tiger_adult_el_01": [
+   479,
+   0,
+   98,
+   87,
+   -50,
+   -90
+  ],
+  "ch_monkey_tiger_adult_el_02": [
+   189,
+   0,
+   95,
+   94,
+   -51,
+   -103
+  ],
+  "ch_monkey_tiger_adult_el_03": [
+   285,
+   0,
+   94,
+   94,
+   -51,
+   -108
+  ],
+  "ch_monkey_tiger_adult_el_04": [
+   0,
+   0,
+   94,
+   96,
+   -51,
+   -111
+  ],
+  "ch_monkey_tiger_adult_el_05": [
+   95,
+   0,
+   93,
+   95,
+   -49,
+   -104
+  ],
+  "ch_monkey_tiger_adult_el_06": [
+   380,
+   0,
+   98,
+   88,
+   -49,
+   -91
+  ],
+  "ch_monkey_tiger_adult_el_07": [
+   306,
+   97,
+   101,
+   78,
+   -50,
+   -78
+  ],
+  "ch_monkey_tiger_adult_hit_00": [
+   1836,
+   97,
+   104,
+   75,
+   -52,
+   -75
+  ],
+  "ch_monkey_tiger_adult_hit_01": [
+   213,
+   176,
+   104,
+   72,
+   -52,
+   -72
+  ],
+  "ch_monkey_tiger_adult_hit_02": [
+   108,
+   176,
+   104,
+   74,
+   -52,
+   -74
+  ],
+  "ch_monkey_tiger_adult_hit_03": [
+   1530,
+   97,
+   102,
+   76,
+   -52,
+   -76
+  ],
+  "ch_monkey_tiger_adult_idle_00": [
+   408,
+   97,
+   100,
+   78,
+   -50,
+   -78
+  ],
+  "ch_monkey_tiger_adult_idle_01": [
+   1312,
+   0,
+   99,
+   80,
+   -49,
+   -80
+  ],
+  "ch_monkey_tiger_adult_idle_02": [
+   1412,
+   0,
+   99,
+   80,
+   -49,
+   -80
+  ],
+  "ch_monkey_tiger_adult_idle_03": [
+   509,
+   97,
+   100,
+   78,
+   -50,
+   -78
+  ],
+  "ch_monkey_tiger_adult_walk_00": [
+   610,
+   97,
+   100,
+   78,
+   -50,
+   -79
+  ],
+  "ch_monkey_tiger_adult_walk_01": [
+   1817,
+   0,
+   101,
+   79,
+   -51,
+   -81
+  ],
+  "ch_monkey_tiger_adult_walk_02": [
+   711,
+   97,
+   102,
+   78,
+   -52,
+   -80
+  ],
+  "ch_monkey_tiger_adult_walk_03": [
+   814,
+   97,
+   102,
+   78,
+   -52,
+   -78
+  ],
+  "ch_monkey_tiger_adult_walk_04": [
+   1919,
+   0,
+   102,
+   79,
+   -52,
+   -79
+  ],
+  "ch_monkey_tiger_adult_walk_05": [
+   1210,
+   0,
+   101,
+   81,
+   -51,
+   -81
+  ],
+  "ch_monkey_tiger_adult_walk_06": [
+   1512,
+   0,
+   101,
+   80,
+   -51,
+   -80
+  ],
+  "ch_monkey_tiger_adult_walk_07": [
+   917,
+   97,
+   100,
+   78,
+   -50,
+   -78
+  ]
+ },
+ "frames": [
+  "ch_monkey_tiger_adult_a1_00",
+  "ch_monkey_tiger_adult_a1_01",
+  "ch_monkey_tiger_adult_a1_02",
+  "ch_monkey_tiger_adult_a1_03",
+  "ch_monkey_tiger_adult_a1_04",
+  "ch_monkey_tiger_adult_a1_05",
+  "ch_monkey_tiger_adult_a1_06",
+  "ch_monkey_tiger_adult_a1_07",
+  "ch_monkey_tiger_adult_a2_00",
+  "ch_monkey_tiger_adult_a2_01",
+  "ch_monkey_tiger_adult_a2_02",
+  "ch_monkey_tiger_adult_a2_03",
+  "ch_monkey_tiger_adult_a2_04",
+  "ch_monkey_tiger_adult_a2_05",
+  "ch_monkey_tiger_adult_a2_06",
+  "ch_monkey_tiger_adult_a2_07",
+  "ch_monkey_tiger_adult_down_00",
+  "ch_monkey_tiger_adult_down_01",
+  "ch_monkey_tiger_adult_down_02",
+  "ch_monkey_tiger_adult_down_03",
+  "ch_monkey_tiger_adult_down_04",
+  "ch_monkey_tiger_adult_down_05",
+  "ch_monkey_tiger_adult_el_00",
+  "ch_monkey_tiger_adult_el_01",
+  "ch_monkey_tiger_adult_el_02",
+  "ch_monkey_tiger_adult_el_03",
+  "ch_monkey_tiger_adult_el_04",
+  "ch_monkey_tiger_adult_el_05",
+  "ch_monkey_tiger_adult_el_06",
+  "ch_monkey_tiger_adult_el_07",
+  "ch_monkey_tiger_adult_hit_00",
+  "ch_monkey_tiger_adult_hit_01",
+  "ch_monkey_tiger_adult_hit_02",
+  "ch_monkey_tiger_adult_hit_03",
+  "ch_monkey_tiger_adult_idle_00",
+  "ch_monkey_tiger_adult_idle_01",
+  "ch_monkey_tiger_adult_idle_02",
+  "ch_monkey_tiger_adult_idle_03",
+  "ch_monkey_tiger_adult_walk_00",
+  "ch_monkey_tiger_adult_walk_01",
+  "ch_monkey_tiger_adult_walk_02",
+  "ch_monkey_tiger_adult_walk_03",
+  "ch_monkey_tiger_adult_walk_04",
+  "ch_monkey_tiger_adult_walk_05",
+  "ch_monkey_tiger_adult_walk_06",
+  "ch_monkey_tiger_adult_walk_07"
+ ],
+ "standing": [
+  "ch_monkey_tiger_adult_idle_00",
+  "ch_monkey_tiger_adult_idle_01",
+  "ch_monkey_tiger_adult_idle_02",
+  "ch_monkey_tiger_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 31,
+   "attack": {
+    "frames": [
+     "ch_monkey_tiger_adult_a1_00",
+     "ch_monkey_tiger_adult_a1_01",
+     "ch_monkey_tiger_adult_a1_02",
+     "ch_monkey_tiger_adult_a1_03",
+     "ch_monkey_tiger_adult_a1_04",
+     "ch_monkey_tiger_adult_a1_05",
+     "ch_monkey_tiger_adult_a1_06",
+     "ch_monkey_tiger_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_monkey_tiger_adult_a2_00",
+     "ch_monkey_tiger_adult_a2_01",
+     "ch_monkey_tiger_adult_a2_02",
+     "ch_monkey_tiger_adult_a2_03",
+     "ch_monkey_tiger_adult_a2_04",
+     "ch_monkey_tiger_adult_a2_05",
+     "ch_monkey_tiger_adult_a2_06",
+     "ch_monkey_tiger_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_monkey_tiger_adult_down_00",
+     "ch_monkey_tiger_adult_down_01",
+     "ch_monkey_tiger_adult_down_02",
+     "ch_monkey_tiger_adult_down_03",
+     "ch_monkey_tiger_adult_down_04",
+     "ch_monkey_tiger_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_monkey_tiger_adult_el_00",
+     "ch_monkey_tiger_adult_el_01",
+     "ch_monkey_tiger_adult_el_02",
+     "ch_monkey_tiger_adult_el_03",
+     "ch_monkey_tiger_adult_el_04",
+     "ch_monkey_tiger_adult_el_05",
+     "ch_monkey_tiger_adult_el_06",
+     "ch_monkey_tiger_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.311,
+      "cast"
+     ],
+     [
+      0.321,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_monkey_tiger_adult_hit_00",
+     "ch_monkey_tiger_adult_hit_01",
+     "ch_monkey_tiger_adult_hit_02",
+     "ch_monkey_tiger_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_monkey_tiger_adult_idle_00",
+     "ch_monkey_tiger_adult_idle_01",
+     "ch_monkey_tiger_adult_idle_02",
+     "ch_monkey_tiger_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_monkey_tiger_adult_walk_00",
+     "ch_monkey_tiger_adult_walk_01",
+     "ch_monkey_tiger_adult_walk_02",
+     "ch_monkey_tiger_adult_walk_03",
+     "ch_monkey_tiger_adult_walk_04",
+     "ch_monkey_tiger_adult_walk_05",
+     "ch_monkey_tiger_adult_walk_06",
+     "ch_monkey_tiger_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_monkey_tiger_adult_down_00",
+     "ch_monkey_tiger_adult_down_01",
+     "ch_monkey_tiger_adult_down_02",
+     "ch_monkey_tiger_adult_down_03",
+     "ch_monkey_tiger_adult_down_04",
+     "ch_monkey_tiger_adult_down_05",
+     "ch_monkey_tiger_adult_down_04",
+     "ch_monkey_tiger_adult_down_03",
+     "ch_monkey_tiger_adult_down_02",
+     "ch_monkey_tiger_adult_down_01",
+     "ch_monkey_tiger_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "monkey_tiger"
+}

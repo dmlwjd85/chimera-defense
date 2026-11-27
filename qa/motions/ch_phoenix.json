@@ -1,0 +1,53 @@
+{
+ "species": "ch_phoenix",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 33.3,
+   "foot±": 18
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 25.6,
+   "foot±": 14
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 55.6,
+   "foot±": 7
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 14.4,
+   "foot±": 10
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 7.8,
+   "foot±": 4
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 28.9,
+   "foot±": 2
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 20.0,
+   "foot±": 9
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   258
+  ],
+  "box": [
+   113,
+   117
+  ],
+  "frames": 48,
+  "colors": 16,
+  "px": 528384
+ }
+}

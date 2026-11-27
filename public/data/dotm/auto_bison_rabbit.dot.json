@@ -1,0 +1,626 @@
+{
+ "note": "ch_bison_rabbit 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_bison_rabbit",
+ "sheet": "dot-m-auto_bison_rabbit",
+ "file": "assets/dotm/auto_bison_rabbit.png",
+ "frameW": 97,
+ "frameH": 120,
+ "foot": 117,
+ "cols": 1,
+ "anchorX": 50,
+ "palette": [
+  "#1a0407",
+  "#291a1f",
+  "#2a0603",
+  "#462827",
+  "#5d352c",
+  "#6d3e2e",
+  "#6f4a43",
+  "#895034",
+  "#976459",
+  "#af5e34",
+  "#af8a83",
+  "#d78580",
+  "#d9bcac",
+  "#ead2c4",
+  "#f5ad9c",
+  "#faf2e2"
+ ],
+ "rects": {
+  "ch_bison_rabbit_adult_a1_00": [
+   1439,
+   114,
+   83,
+   77,
+   -41,
+   -77
+  ],
+  "ch_bison_rabbit_adult_a1_01": [
+   923,
+   0,
+   83,
+   88,
+   -42,
+   -90
+  ],
+  "ch_bison_rabbit_adult_a1_02": [
+   413,
+   0,
+   83,
+   101,
+   -44,
+   -103
+  ],
+  "ch_bison_rabbit_adult_a1_03": [
+   0,
+   0,
+   81,
+   113,
+   -45,
+   -115
+  ],
+  "ch_bison_rabbit_adult_a1_04": [
+   82,
+   0,
+   81,
+   113,
+   -45,
+   -115
+  ],
+  "ch_bison_rabbit_adult_a1_05": [
+   497,
+   0,
+   83,
+   101,
+   -43,
+   -103
+  ],
+  "ch_bison_rabbit_adult_a1_06": [
+   1277,
+   0,
+   83,
+   86,
+   -41,
+   -88
+  ],
+  "ch_bison_rabbit_adult_a1_07": [
+   840,
+   114,
+   83,
+   83,
+   -41,
+   -83
+  ],
+  "ch_bison_rabbit_adult_a2_00": [
+   836,
+   0,
+   86,
+   89,
+   -44,
+   -91
+  ],
+  "ch_bison_rabbit_adult_a2_01": [
+   581,
+   0,
+   85,
+   98,
+   -44,
+   -108
+  ],
+  "ch_bison_rabbit_adult_a2_02": [
+   667,
+   0,
+   84,
+   94,
+   -42,
+   -113
+  ],
+  "ch_bison_rabbit_adult_a2_03": [
+   752,
+   0,
+   83,
+   91,
+   -41,
+   -111
+  ],
+  "ch_bison_rabbit_adult_a2_04": [
+   1361,
+   0,
+   83,
+   86,
+   -41,
+   -105
+  ],
+  "ch_bison_rabbit_adult_a2_05": [
+   1445,
+   0,
+   81,
+   86,
+   -39,
+   -93
+  ],
+  "ch_bison_rabbit_adult_a2_06": [
+   1877,
+   0,
+   83,
+   85,
+   -41,
+   -85
+  ],
+  "ch_bison_rabbit_adult_a2_07": [
+   1095,
+   114,
+   82,
+   82,
+   -40,
+   -82
+  ],
+  "ch_bison_rabbit_adult_down_00": [
+   1961,
+   0,
+   83,
+   85,
+   -41,
+   -85
+  ],
+  "ch_bison_rabbit_adult_down_01": [
+   1348,
+   114,
+   90,
+   78,
+   -46,
+   -80
+  ],
+  "ch_bison_rabbit_adult_down_02": [
+   1523,
+   114,
+   97,
+   71,
+   -50,
+   -72
+  ],
+  "ch_bison_rabbit_adult_el_00": [
+   1262,
+   114,
+   85,
+   81,
+   -42,
+   -81
+  ],
+  "ch_bison_rabbit_adult_el_01": [
+   1007,
+   0,
+   87,
+   88,
+   -45,
+   -88
+  ],
+  "ch_bison_rabbit_adult_el_02": [
+   1095,
+   0,
+   89,
+   87,
+   -46,
+   -89
+  ],
+  "ch_bison_rabbit_adult_el_03": [
+   1527,
+   0,
+   92,
+   86,
+   -46,
+   -88
+  ],
+  "ch_bison_rabbit_adult_el_04": [
+   1185,
+   0,
+   91,
+   87,
+   -46,
+   -89
+  ],
+  "ch_bison_rabbit_adult_el_05": [
+   1620,
+   0,
+   88,
+   86,
+   -45,
+   -88
+  ],
+  "ch_bison_rabbit_adult_el_06": [
+   924,
+   114,
+   84,
+   83,
+   -42,
+   -85
+  ],
+  "ch_bison_rabbit_adult_el_07": [
+   1709,
+   0,
+   83,
+   86,
+   -41,
+   -85
+  ],
+  "ch_bison_rabbit_adult_hit_00": [
+   1009,
+   114,
+   85,
+   83,
+   -43,
+   -84
+  ],
+  "ch_bison_rabbit_adult_hit_01": [
+   330,
+   0,
+   82,
+   109,
+   -44,
+   -116
+  ],
+  "ch_bison_rabbit_adult_hit_02": [
+   247,
+   0,
+   82,
+   110,
+   -43,
+   -118
+  ],
+  "ch_bison_rabbit_adult_hit_03": [
+   164,
+   0,
+   82,
+   113,
+   -42,
+   -113
+  ],
+  "ch_bison_rabbit_adult_idle_00": [
+   420,
+   114,
+   83,
+   84,
+   -41,
+   -84
+  ],
+  "ch_bison_rabbit_adult_idle_01": [
+   1793,
+   0,
+   83,
+   86,
+   -41,
+   -86
+  ],
+  "ch_bison_rabbit_adult_idle_02": [
+   0,
+   114,
+   83,
+   85,
+   -41,
+   -85
+  ],
+  "ch_bison_rabbit_adult_idle_03": [
+   504,
+   114,
+   83,
+   84,
+   -41,
+   -84
+  ],
+  "ch_bison_rabbit_adult_walk_00": [
+   84,
+   114,
+   83,
+   85,
+   -41,
+   -85
+  ],
+  "ch_bison_rabbit_adult_walk_01": [
+   168,
+   114,
+   83,
+   85,
+   -41,
+   -85
+  ],
+  "ch_bison_rabbit_adult_walk_02": [
+   1178,
+   114,
+   83,
+   82,
+   -41,
+   -84
+  ],
+  "ch_bison_rabbit_adult_walk_03": [
+   588,
+   114,
+   83,
+   84,
+   -41,
+   -85
+  ],
+  "ch_bison_rabbit_adult_walk_04": [
+   252,
+   114,
+   83,
+   85,
+   -41,
+   -86
+  ],
+  "ch_bison_rabbit_adult_walk_05": [
+   336,
+   114,
+   83,
+   85,
+   -41,
+   -85
+  ],
+  "ch_bison_rabbit_adult_walk_06": [
+   672,
+   114,
+   83,
+   84,
+   -41,
+   -84
+  ],
+  "ch_bison_rabbit_adult_walk_07": [
+   756,
+   114,
+   83,
+   84,
+   -41,
+   -84
+  ]
+ },
+ "frames": [
+  "ch_bison_rabbit_adult_a1_00",
+  "ch_bison_rabbit_adult_a1_01",
+  "ch_bison_rabbit_adult_a1_02",
+  "ch_bison_rabbit_adult_a1_03",
+  "ch_bison_rabbit_adult_a1_04",
+  "ch_bison_rabbit_adult_a1_05",
+  "ch_bison_rabbit_adult_a1_06",
+  "ch_bison_rabbit_adult_a1_07",
+  "ch_bison_rabbit_adult_a2_00",
+  "ch_bison_rabbit_adult_a2_01",
+  "ch_bison_rabbit_adult_a2_02",
+  "ch_bison_rabbit_adult_a2_03",
+  "ch_bison_rabbit_adult_a2_04",
+  "ch_bison_rabbit_adult_a2_05",
+  "ch_bison_rabbit_adult_a2_06",
+  "ch_bison_rabbit_adult_a2_07",
+  "ch_bison_rabbit_adult_down_00",
+  "ch_bison_rabbit_adult_down_01",
+  "ch_bison_rabbit_adult_down_02",
+  "ch_bison_rabbit_adult_el_00",
+  "ch_bison_rabbit_adult_el_01",
+  "ch_bison_rabbit_adult_el_02",
+  "ch_bison_rabbit_adult_el_03",
+  "ch_bison_rabbit_adult_el_04",
+  "ch_bison_rabbit_adult_el_05",
+  "ch_bison_rabbit_adult_el_06",
+  "ch_bison_rabbit_adult_el_07",
+  "ch_bison_rabbit_adult_hit_00",
+  "ch_bison_rabbit_adult_hit_01",
+  "ch_bison_rabbit_adult_hit_02",
+  "ch_bison_rabbit_adult_hit_03",
+  "ch_bison_rabbit_adult_idle_00",
+  "ch_bison_rabbit_adult_idle_01",
+  "ch_bison_rabbit_adult_idle_02",
+  "ch_bison_rabbit_adult_idle_03",
+  "ch_bison_rabbit_adult_walk_00",
+  "ch_bison_rabbit_adult_walk_01",
+  "ch_bison_rabbit_adult_walk_02",
+  "ch_bison_rabbit_adult_walk_03",
+  "ch_bison_rabbit_adult_walk_04",
+  "ch_bison_rabbit_adult_walk_05",
+  "ch_bison_rabbit_adult_walk_06",
+  "ch_bison_rabbit_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bison_rabbit_adult_idle_00",
+  "ch_bison_rabbit_adult_idle_01",
+  "ch_bison_rabbit_adult_idle_02",
+  "ch_bison_rabbit_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 32,
+   "attack": {
+    "frames": [
+     "ch_bison_rabbit_adult_a1_00",
+     "ch_bison_rabbit_adult_a1_01",
+     "ch_bison_rabbit_adult_a1_02",
+     "ch_bison_rabbit_adult_a1_03",
+     "ch_bison_rabbit_adult_a1_04",
+     "ch_bison_rabbit_adult_a1_05",
+     "ch_bison_rabbit_adult_a1_06",
+     "ch_bison_rabbit_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bison_rabbit_adult_a2_00",
+     "ch_bison_rabbit_adult_a2_01",
+     "ch_bison_rabbit_adult_a2_02",
+     "ch_bison_rabbit_adult_a2_03",
+     "ch_bison_rabbit_adult_a2_04",
+     "ch_bison_rabbit_adult_a2_05",
+     "ch_bison_rabbit_adult_a2_06",
+     "ch_bison_rabbit_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bison_rabbit_adult_down_00",
+     "ch_bison_rabbit_adult_down_01",
+     "ch_bison_rabbit_adult_down_02"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true,
+    "fx": {
+     "sink": 3
+    }
+   },
+   "skill": {
+    "frames": [
+     "ch_bison_rabbit_adult_el_00",
+     "ch_bison_rabbit_adult_el_01",
+     "ch_bison_rabbit_adult_el_02",
+     "ch_bison_rabbit_adult_el_03",
+     "ch_bison_rabbit_adult_el_04",
+     "ch_bison_rabbit_adult_el_05",
+     "ch_bison_rabbit_adult_el_06",
+     "ch_bison_rabbit_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bison_rabbit_adult_hit_00",
+     "ch_bison_rabbit_adult_hit_01",
+     "ch_bison_rabbit_adult_hit_02",
+     "ch_bison_rabbit_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bison_rabbit_adult_idle_00",
+     "ch_bison_rabbit_adult_idle_01",
+     "ch_bison_rabbit_adult_idle_02",
+     "ch_bison_rabbit_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bison_rabbit_adult_walk_00",
+     "ch_bison_rabbit_adult_walk_01",
+     "ch_bison_rabbit_adult_walk_02",
+     "ch_bison_rabbit_adult_walk_03",
+     "ch_bison_rabbit_adult_walk_04",
+     "ch_bison_rabbit_adult_walk_05",
+     "ch_bison_rabbit_adult_walk_06",
+     "ch_bison_rabbit_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bison_rabbit_adult_down_00",
+     "ch_bison_rabbit_adult_down_01",
+     "ch_bison_rabbit_adult_down_02",
+     "ch_bison_rabbit_adult_down_01",
+     "ch_bison_rabbit_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bison_rabbit"
+}

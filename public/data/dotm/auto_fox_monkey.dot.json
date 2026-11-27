@@ -1,0 +1,701 @@
+{
+ "note": "ch_fox_monkey 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_fox_monkey",
+ "sheet": "dot-m-auto_fox_monkey",
+ "file": "assets/dotm/auto_fox_monkey.png",
+ "frameW": 113,
+ "frameH": 118,
+ "foot": 116,
+ "cols": 1,
+ "anchorX": 57,
+ "palette": [
+  "#291a1f",
+  "#390b08",
+  "#54211d",
+  "#673629",
+  "#792b12",
+  "#7c3f31",
+  "#963a16",
+  "#975449",
+  "#af400a",
+  "#c05015",
+  "#d3a586",
+  "#ec782c",
+  "#ef670d",
+  "#f6d2aa",
+  "#fa822c",
+  "#fbe2c2"
+ ],
+ "rects": {
+  "ch_fox_monkey_adult_a1_00": [
+   768,
+   203,
+   109,
+   81,
+   -55,
+   -84
+  ],
+  "ch_fox_monkey_adult_a1_01": [
+   1599,
+   0,
+   106,
+   87,
+   -54,
+   -90
+  ],
+  "ch_fox_monkey_adult_a1_02": [
+   106,
+   0,
+   104,
+   111,
+   -53,
+   -114
+  ],
+  "ch_fox_monkey_adult_a1_03": [
+   0,
+   0,
+   105,
+   114,
+   -54,
+   -117
+  ],
+  "ch_fox_monkey_adult_a1_04": [
+   742,
+   0,
+   107,
+   92,
+   -55,
+   -95
+  ],
+  "ch_fox_monkey_adult_a1_05": [
+   1060,
+   0,
+   108,
+   90,
+   -55,
+   -93
+  ],
+  "ch_fox_monkey_adult_a1_06": [
+   325,
+   115,
+   106,
+   86,
+   -53,
+   -89
+  ],
+  "ch_fox_monkey_adult_a1_07": [
+   979,
+   115,
+   108,
+   85,
+   -54,
+   -85
+  ],
+  "ch_fox_monkey_adult_a2_00": [
+   1706,
+   0,
+   108,
+   87,
+   -54,
+   -90
+  ],
+  "ch_fox_monkey_adult_a2_01": [
+   1815,
+   0,
+   108,
+   87,
+   -54,
+   -97
+  ],
+  "ch_fox_monkey_adult_a2_02": [
+   983,
+   203,
+   108,
+   80,
+   -54,
+   -99
+  ],
+  "ch_fox_monkey_adult_a2_03": [
+   1092,
+   203,
+   106,
+   78,
+   -52,
+   -98
+  ],
+  "ch_fox_monkey_adult_a2_04": [
+   878,
+   203,
+   104,
+   81,
+   -50,
+   -94
+  ],
+  "ch_fox_monkey_adult_a2_05": [
+   1088,
+   115,
+   102,
+   85,
+   -48,
+   -88
+  ],
+  "ch_fox_monkey_adult_a2_06": [
+   442,
+   203,
+   106,
+   82,
+   -52,
+   -85
+  ],
+  "ch_fox_monkey_adult_a2_07": [
+   549,
+   203,
+   108,
+   82,
+   -54,
+   -82
+  ],
+  "ch_fox_monkey_adult_down_00": [
+   1734,
+   115,
+   108,
+   84,
+   -53,
+   -84
+  ],
+  "ch_fox_monkey_adult_down_01": [
+   1843,
+   115,
+   107,
+   84,
+   -52,
+   -84
+  ],
+  "ch_fox_monkey_adult_down_02": [
+   1384,
+   0,
+   106,
+   88,
+   -51,
+   -88
+  ],
+  "ch_fox_monkey_adult_down_03": [
+   850,
+   0,
+   100,
+   91,
+   -46,
+   -91
+  ],
+  "ch_fox_monkey_adult_down_04": [
+   1169,
+   0,
+   105,
+   89,
+   -50,
+   -89
+  ],
+  "ch_fox_monkey_adult_down_05": [
+   1191,
+   115,
+   107,
+   85,
+   -52,
+   -85
+  ],
+  "ch_fox_monkey_adult_down_06": [
+   0,
+   203,
+   109,
+   84,
+   -54,
+   -84
+  ],
+  "ch_fox_monkey_adult_down_07": [
+   658,
+   203,
+   109,
+   82,
+   -54,
+   -82
+  ],
+  "ch_fox_monkey_adult_el_00": [
+   110,
+   203,
+   109,
+   83,
+   -55,
+   -86
+  ],
+  "ch_fox_monkey_adult_el_01": [
+   1491,
+   0,
+   107,
+   88,
+   -55,
+   -91
+  ],
+  "ch_fox_monkey_adult_el_02": [
+   524,
+   0,
+   107,
+   93,
+   -57,
+   -96
+  ],
+  "ch_fox_monkey_adult_el_03": [
+   417,
+   0,
+   106,
+   95,
+   -57,
+   -98
+  ],
+  "ch_fox_monkey_adult_el_04": [
+   951,
+   0,
+   108,
+   91,
+   -57,
+   -94
+  ],
+  "ch_fox_monkey_adult_el_05": [
+   432,
+   115,
+   110,
+   86,
+   -56,
+   -89
+  ],
+  "ch_fox_monkey_adult_el_06": [
+   220,
+   203,
+   110,
+   83,
+   -54,
+   -86
+  ],
+  "ch_fox_monkey_adult_el_07": [
+   1275,
+   0,
+   108,
+   89,
+   -54,
+   -89
+  ],
+  "ch_fox_monkey_adult_hit_00": [
+   331,
+   203,
+   110,
+   83,
+   -55,
+   -85
+  ],
+  "ch_fox_monkey_adult_hit_01": [
+   632,
+   0,
+   109,
+   93,
+   -55,
+   -95
+  ],
+  "ch_fox_monkey_adult_hit_02": [
+   211,
+   0,
+   103,
+   111,
+   -49,
+   -115
+  ],
+  "ch_fox_monkey_adult_hit_03": [
+   315,
+   0,
+   101,
+   104,
+   -47,
+   -104
+  ],
+  "ch_fox_monkey_adult_idle_00": [
+   543,
+   115,
+   108,
+   86,
+   -54,
+   -86
+  ],
+  "ch_fox_monkey_adult_idle_01": [
+   1299,
+   115,
+   109,
+   85,
+   -54,
+   -85
+  ],
+  "ch_fox_monkey_adult_idle_02": [
+   652,
+   115,
+   108,
+   86,
+   -54,
+   -86
+  ],
+  "ch_fox_monkey_adult_idle_03": [
+   1924,
+   0,
+   108,
+   87,
+   -54,
+   -87
+  ],
+  "ch_fox_monkey_adult_walk_00": [
+   0,
+   115,
+   107,
+   87,
+   -53,
+   -87
+  ],
+  "ch_fox_monkey_adult_walk_01": [
+   1409,
+   115,
+   106,
+   85,
+   -52,
+   -86
+  ],
+  "ch_fox_monkey_adult_walk_02": [
+   1516,
+   115,
+   108,
+   85,
+   -54,
+   -87
+  ],
+  "ch_fox_monkey_adult_walk_03": [
+   1625,
+   115,
+   108,
+   85,
+   -54,
+   -87
+  ],
+  "ch_fox_monkey_adult_walk_04": [
+   108,
+   115,
+   107,
+   87,
+   -53,
+   -87
+  ],
+  "ch_fox_monkey_adult_walk_05": [
+   761,
+   115,
+   108,
+   86,
+   -54,
+   -86
+  ],
+  "ch_fox_monkey_adult_walk_06": [
+   870,
+   115,
+   108,
+   86,
+   -54,
+   -86
+  ],
+  "ch_fox_monkey_adult_walk_07": [
+   216,
+   115,
+   108,
+   87,
+   -54,
+   -87
+  ]
+ },
+ "frames": [
+  "ch_fox_monkey_adult_a1_00",
+  "ch_fox_monkey_adult_a1_01",
+  "ch_fox_monkey_adult_a1_02",
+  "ch_fox_monkey_adult_a1_03",
+  "ch_fox_monkey_adult_a1_04",
+  "ch_fox_monkey_adult_a1_05",
+  "ch_fox_monkey_adult_a1_06",
+  "ch_fox_monkey_adult_a1_07",
+  "ch_fox_monkey_adult_a2_00",
+  "ch_fox_monkey_adult_a2_01",
+  "ch_fox_monkey_adult_a2_02",
+  "ch_fox_monkey_adult_a2_03",
+  "ch_fox_monkey_adult_a2_04",
+  "ch_fox_monkey_adult_a2_05",
+  "ch_fox_monkey_adult_a2_06",
+  "ch_fox_monkey_adult_a2_07",
+  "ch_fox_monkey_adult_down_00",
+  "ch_fox_monkey_adult_down_01",
+  "ch_fox_monkey_adult_down_02",
+  "ch_fox_monkey_adult_down_03",
+  "ch_fox_monkey_adult_down_04",
+  "ch_fox_monkey_adult_down_05",
+  "ch_fox_monkey_adult_down_06",
+  "ch_fox_monkey_adult_down_07",
+  "ch_fox_monkey_adult_el_00",
+  "ch_fox_monkey_adult_el_01",
+  "ch_fox_monkey_adult_el_02",
+  "ch_fox_monkey_adult_el_03",
+  "ch_fox_monkey_adult_el_04",
+  "ch_fox_monkey_adult_el_05",
+  "ch_fox_monkey_adult_el_06",
+  "ch_fox_monkey_adult_el_07",
+  "ch_fox_monkey_adult_hit_00",
+  "ch_fox_monkey_adult_hit_01",
+  "ch_fox_monkey_adult_hit_02",
+  "ch_fox_monkey_adult_hit_03",
+  "ch_fox_monkey_adult_idle_00",
+  "ch_fox_monkey_adult_idle_01",
+  "ch_fox_monkey_adult_idle_02",
+  "ch_fox_monkey_adult_idle_03",
+  "ch_fox_monkey_adult_walk_00",
+  "ch_fox_monkey_adult_walk_01",
+  "ch_fox_monkey_adult_walk_02",
+  "ch_fox_monkey_adult_walk_03",
+  "ch_fox_monkey_adult_walk_04",
+  "ch_fox_monkey_adult_walk_05",
+  "ch_fox_monkey_adult_walk_06",
+  "ch_fox_monkey_adult_walk_07"
+ ],
+ "standing": [
+  "ch_fox_monkey_adult_idle_00",
+  "ch_fox_monkey_adult_idle_01",
+  "ch_fox_monkey_adult_idle_02",
+  "ch_fox_monkey_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 30,
+   "attack": {
+    "frames": [
+     "ch_fox_monkey_adult_a1_00",
+     "ch_fox_monkey_adult_a1_01",
+     "ch_fox_monkey_adult_a1_02",
+     "ch_fox_monkey_adult_a1_03",
+     "ch_fox_monkey_adult_a1_04",
+     "ch_fox_monkey_adult_a1_05",
+     "ch_fox_monkey_adult_a1_06",
+     "ch_fox_monkey_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_fox_monkey_adult_a2_00",
+     "ch_fox_monkey_adult_a2_01",
+     "ch_fox_monkey_adult_a2_02",
+     "ch_fox_monkey_adult_a2_03",
+     "ch_fox_monkey_adult_a2_04",
+     "ch_fox_monkey_adult_a2_05",
+     "ch_fox_monkey_adult_a2_06",
+     "ch_fox_monkey_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_fox_monkey_adult_down_00",
+     "ch_fox_monkey_adult_down_01",
+     "ch_fox_monkey_adult_down_02",
+     "ch_fox_monkey_adult_down_03",
+     "ch_fox_monkey_adult_down_04",
+     "ch_fox_monkey_adult_down_05",
+     "ch_fox_monkey_adult_down_06",
+     "ch_fox_monkey_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true,
+    "fx": {
+     "sink": 3
+    }
+   },
+   "skill": {
+    "frames": [
+     "ch_fox_monkey_adult_el_00",
+     "ch_fox_monkey_adult_el_01",
+     "ch_fox_monkey_adult_el_02",
+     "ch_fox_monkey_adult_el_03",
+     "ch_fox_monkey_adult_el_04",
+     "ch_fox_monkey_adult_el_05",
+     "ch_fox_monkey_adult_el_06",
+     "ch_fox_monkey_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_fox_monkey_adult_hit_00",
+     "ch_fox_monkey_adult_hit_01",
+     "ch_fox_monkey_adult_hit_02",
+     "ch_fox_monkey_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_fox_monkey_adult_idle_00",
+     "ch_fox_monkey_adult_idle_01",
+     "ch_fox_monkey_adult_idle_02",
+     "ch_fox_monkey_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_fox_monkey_adult_walk_00",
+     "ch_fox_monkey_adult_walk_01",
+     "ch_fox_monkey_adult_walk_02",
+     "ch_fox_monkey_adult_walk_03",
+     "ch_fox_monkey_adult_walk_04",
+     "ch_fox_monkey_adult_walk_05",
+     "ch_fox_monkey_adult_walk_06",
+     "ch_fox_monkey_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_fox_monkey_adult_down_00",
+     "ch_fox_monkey_adult_down_01",
+     "ch_fox_monkey_adult_down_02",
+     "ch_fox_monkey_adult_down_03",
+     "ch_fox_monkey_adult_down_04",
+     "ch_fox_monkey_adult_down_05",
+     "ch_fox_monkey_adult_down_06",
+     "ch_fox_monkey_adult_down_07",
+     "ch_fox_monkey_adult_down_06",
+     "ch_fox_monkey_adult_down_05",
+     "ch_fox_monkey_adult_down_04",
+     "ch_fox_monkey_adult_down_03",
+     "ch_fox_monkey_adult_down_02",
+     "ch_fox_monkey_adult_down_01",
+     "ch_fox_monkey_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "fox_monkey"
+}

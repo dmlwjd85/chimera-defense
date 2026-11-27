@@ -1,0 +1,53 @@
+{
+ "species": "ch_monkey_rabbit",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 30.7,
+   "foot±": 2
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 10.2,
+   "foot±": 17
+  },
+  "adult_down": {
+   "n": 7,
+   "max|h%|": 30.7,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 6.8,
+   "foot±": 2
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 4.5,
+   "foot±": 2
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 29.5,
+   "foot±": 3
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 5.7,
+   "foot±": 3
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   271
+  ],
+  "box": [
+   113,
+   118
+  ],
+  "frames": 47,
+  "colors": 16,
+  "px": 555008
+ }
+}

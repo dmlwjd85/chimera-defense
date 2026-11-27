@@ -1,0 +1,646 @@
+{
+ "note": "ch_bear_bighorn 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_bear_bighorn",
+ "sheet": "dot-m-auto_bear_bighorn",
+ "file": "assets/dotm/auto_bear_bighorn.png",
+ "frameW": 100,
+ "frameH": 118,
+ "foot": 116,
+ "cols": 1,
+ "anchorX": 50,
+ "palette": [
+  "#1e0a09",
+  "#291a1f",
+  "#373639",
+  "#3b170a",
+  "#4d3f39",
+  "#5c3522",
+  "#815a45",
+  "#8a6f5d",
+  "#9c7a61",
+  "#b79371",
+  "#c4a786",
+  "#d0b591",
+  "#ddaa7d",
+  "#dfc8a7",
+  "#f0c283",
+  "#f6e9c9"
+ ],
+ "rects": {
+  "ch_bear_bighorn_adult_a1_00": [
+   573,
+   116,
+   82,
+   77,
+   -39,
+   -77
+  ],
+  "ch_bear_bighorn_adult_a1_01": [
+   1428,
+   0,
+   80,
+   80,
+   -40,
+   -83
+  ],
+  "ch_bear_bighorn_adult_a1_02": [
+   616,
+   0,
+   82,
+   92,
+   -45,
+   -94
+  ],
+  "ch_bear_bighorn_adult_a1_03": [
+   0,
+   0,
+   78,
+   115,
+   -44,
+   -117
+  ],
+  "ch_bear_bighorn_adult_a1_04": [
+   79,
+   0,
+   77,
+   115,
+   -42,
+   -117
+  ],
+  "ch_bear_bighorn_adult_a1_05": [
+   1024,
+   0,
+   78,
+   82,
+   -39,
+   -84
+  ],
+  "ch_bear_bighorn_adult_a1_06": [
+   656,
+   116,
+   80,
+   77,
+   -38,
+   -77
+  ],
+  "ch_bear_bighorn_adult_a1_07": [
+   1103,
+   0,
+   81,
+   82,
+   -40,
+   -82
+  ],
+  "ch_bear_bighorn_adult_a2_00": [
+   737,
+   116,
+   81,
+   77,
+   -39,
+   -77
+  ],
+  "ch_bear_bighorn_adult_a2_01": [
+   898,
+   116,
+   81,
+   76,
+   -39,
+   -76
+  ],
+  "ch_bear_bighorn_adult_a2_02": [
+   980,
+   116,
+   79,
+   76,
+   -38,
+   -76
+  ],
+  "ch_bear_bighorn_adult_a2_03": [
+   819,
+   116,
+   78,
+   77,
+   -39,
+   -78
+  ],
+  "ch_bear_bighorn_adult_a2_04": [
+   946,
+   0,
+   77,
+   84,
+   -39,
+   -86
+  ],
+  "ch_bear_bighorn_adult_a2_05": [
+   781,
+   0,
+   79,
+   86,
+   -40,
+   -88
+  ],
+  "ch_bear_bighorn_adult_a2_06": [
+   1185,
+   0,
+   79,
+   82,
+   -39,
+   -84
+  ],
+  "ch_bear_bighorn_adult_a2_07": [
+   1837,
+   0,
+   80,
+   79,
+   -39,
+   -79
+  ],
+  "ch_bear_bighorn_adult_down_00": [
+   410,
+   116,
+   80,
+   78,
+   -39,
+   -79
+  ],
+  "ch_bear_bighorn_adult_down_01": [
+   1060,
+   116,
+   82,
+   73,
+   -40,
+   -76
+  ],
+  "ch_bear_bighorn_adult_down_02": [
+   1227,
+   116,
+   89,
+   70,
+   -45,
+   -72
+  ],
+  "ch_bear_bighorn_adult_down_03": [
+   1317,
+   116,
+   96,
+   63,
+   -49,
+   -63
+  ],
+  "ch_bear_bighorn_adult_down_04": [
+   1414,
+   116,
+   99,
+   57,
+   -50,
+   -58
+  ],
+  "ch_bear_bighorn_adult_down_05": [
+   1514,
+   116,
+   99,
+   47,
+   -49,
+   -48
+  ],
+  "ch_bear_bighorn_adult_el_00": [
+   1347,
+   0,
+   80,
+   81,
+   -41,
+   -83
+  ],
+  "ch_bear_bighorn_adult_el_01": [
+   538,
+   0,
+   77,
+   96,
+   -42,
+   -98
+  ],
+  "ch_bear_bighorn_adult_el_02": [
+   381,
+   0,
+   74,
+   105,
+   -42,
+   -107
+  ],
+  "ch_bear_bighorn_adult_el_03": [
+   231,
+   0,
+   73,
+   111,
+   -41,
+   -113
+  ],
+  "ch_bear_bighorn_adult_el_04": [
+   157,
+   0,
+   73,
+   113,
+   -40,
+   -115
+  ],
+  "ch_bear_bighorn_adult_el_05": [
+   305,
+   0,
+   75,
+   111,
+   -41,
+   -113
+  ],
+  "ch_bear_bighorn_adult_el_06": [
+   456,
+   0,
+   81,
+   98,
+   -42,
+   -100
+  ],
+  "ch_bear_bighorn_adult_el_07": [
+   699,
+   0,
+   81,
+   92,
+   -40,
+   -92
+  ],
+  "ch_bear_bighorn_adult_hit_00": [
+   1143,
+   116,
+   83,
+   73,
+   -40,
+   -73
+  ],
+  "ch_bear_bighorn_adult_hit_01": [
+   861,
+   0,
+   84,
+   85,
+   -42,
+   -85
+  ],
+  "ch_bear_bighorn_adult_idle_00": [
+   1918,
+   0,
+   81,
+   79,
+   -40,
+   -79
+  ],
+  "ch_bear_bighorn_adult_idle_01": [
+   1509,
+   0,
+   81,
+   80,
+   -40,
+   -80
+  ],
+  "ch_bear_bighorn_adult_idle_02": [
+   1591,
+   0,
+   81,
+   80,
+   -40,
+   -80
+  ],
+  "ch_bear_bighorn_adult_idle_03": [
+   0,
+   116,
+   81,
+   79,
+   -40,
+   -79
+  ],
+  "ch_bear_bighorn_adult_walk_00": [
+   82,
+   116,
+   81,
+   79,
+   -40,
+   -79
+  ],
+  "ch_bear_bighorn_adult_walk_01": [
+   1673,
+   0,
+   81,
+   80,
+   -40,
+   -80
+  ],
+  "ch_bear_bighorn_adult_walk_02": [
+   164,
+   116,
+   81,
+   79,
+   -40,
+   -81
+  ],
+  "ch_bear_bighorn_adult_walk_03": [
+   1265,
+   0,
+   81,
+   82,
+   -40,
+   -82
+  ],
+  "ch_bear_bighorn_adult_walk_04": [
+   1755,
+   0,
+   81,
+   80,
+   -40,
+   -81
+  ],
+  "ch_bear_bighorn_adult_walk_05": [
+   246,
+   116,
+   81,
+   79,
+   -40,
+   -79
+  ],
+  "ch_bear_bighorn_adult_walk_06": [
+   491,
+   116,
+   81,
+   78,
+   -40,
+   -78
+  ],
+  "ch_bear_bighorn_adult_walk_07": [
+   328,
+   116,
+   81,
+   79,
+   -40,
+   -79
+  ]
+ },
+ "frames": [
+  "ch_bear_bighorn_adult_a1_00",
+  "ch_bear_bighorn_adult_a1_01",
+  "ch_bear_bighorn_adult_a1_02",
+  "ch_bear_bighorn_adult_a1_03",
+  "ch_bear_bighorn_adult_a1_04",
+  "ch_bear_bighorn_adult_a1_05",
+  "ch_bear_bighorn_adult_a1_06",
+  "ch_bear_bighorn_adult_a1_07",
+  "ch_bear_bighorn_adult_a2_00",
+  "ch_bear_bighorn_adult_a2_01",
+  "ch_bear_bighorn_adult_a2_02",
+  "ch_bear_bighorn_adult_a2_03",
+  "ch_bear_bighorn_adult_a2_04",
+  "ch_bear_bighorn_adult_a2_05",
+  "ch_bear_bighorn_adult_a2_06",
+  "ch_bear_bighorn_adult_a2_07",
+  "ch_bear_bighorn_adult_down_00",
+  "ch_bear_bighorn_adult_down_01",
+  "ch_bear_bighorn_adult_down_02",
+  "ch_bear_bighorn_adult_down_03",
+  "ch_bear_bighorn_adult_down_04",
+  "ch_bear_bighorn_adult_down_05",
+  "ch_bear_bighorn_adult_el_00",
+  "ch_bear_bighorn_adult_el_01",
+  "ch_bear_bighorn_adult_el_02",
+  "ch_bear_bighorn_adult_el_03",
+  "ch_bear_bighorn_adult_el_04",
+  "ch_bear_bighorn_adult_el_05",
+  "ch_bear_bighorn_adult_el_06",
+  "ch_bear_bighorn_adult_el_07",
+  "ch_bear_bighorn_adult_hit_00",
+  "ch_bear_bighorn_adult_hit_01",
+  "ch_bear_bighorn_adult_idle_00",
+  "ch_bear_bighorn_adult_idle_01",
+  "ch_bear_bighorn_adult_idle_02",
+  "ch_bear_bighorn_adult_idle_03",
+  "ch_bear_bighorn_adult_walk_00",
+  "ch_bear_bighorn_adult_walk_01",
+  "ch_bear_bighorn_adult_walk_02",
+  "ch_bear_bighorn_adult_walk_03",
+  "ch_bear_bighorn_adult_walk_04",
+  "ch_bear_bighorn_adult_walk_05",
+  "ch_bear_bighorn_adult_walk_06",
+  "ch_bear_bighorn_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bear_bighorn_adult_idle_00",
+  "ch_bear_bighorn_adult_idle_01",
+  "ch_bear_bighorn_adult_idle_02",
+  "ch_bear_bighorn_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 37,
+   "attack": {
+    "frames": [
+     "ch_bear_bighorn_adult_a1_00",
+     "ch_bear_bighorn_adult_a1_01",
+     "ch_bear_bighorn_adult_a1_02",
+     "ch_bear_bighorn_adult_a1_03",
+     "ch_bear_bighorn_adult_a1_04",
+     "ch_bear_bighorn_adult_a1_05",
+     "ch_bear_bighorn_adult_a1_06",
+     "ch_bear_bighorn_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bear_bighorn_adult_a2_00",
+     "ch_bear_bighorn_adult_a2_01",
+     "ch_bear_bighorn_adult_a2_02",
+     "ch_bear_bighorn_adult_a2_03",
+     "ch_bear_bighorn_adult_a2_04",
+     "ch_bear_bighorn_adult_a2_05",
+     "ch_bear_bighorn_adult_a2_06",
+     "ch_bear_bighorn_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.35,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bear_bighorn_adult_down_00",
+     "ch_bear_bighorn_adult_down_01",
+     "ch_bear_bighorn_adult_down_02",
+     "ch_bear_bighorn_adult_down_03",
+     "ch_bear_bighorn_adult_down_04",
+     "ch_bear_bighorn_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_bear_bighorn_adult_el_00",
+     "ch_bear_bighorn_adult_el_01",
+     "ch_bear_bighorn_adult_el_02",
+     "ch_bear_bighorn_adult_el_03",
+     "ch_bear_bighorn_adult_el_04",
+     "ch_bear_bighorn_adult_el_05",
+     "ch_bear_bighorn_adult_el_06",
+     "ch_bear_bighorn_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bear_bighorn_adult_hit_00",
+     "ch_bear_bighorn_adult_hit_01"
+    ],
+    "durs": [
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bear_bighorn_adult_idle_00",
+     "ch_bear_bighorn_adult_idle_01",
+     "ch_bear_bighorn_adult_idle_02",
+     "ch_bear_bighorn_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bear_bighorn_adult_walk_00",
+     "ch_bear_bighorn_adult_walk_01",
+     "ch_bear_bighorn_adult_walk_02",
+     "ch_bear_bighorn_adult_walk_03",
+     "ch_bear_bighorn_adult_walk_04",
+     "ch_bear_bighorn_adult_walk_05",
+     "ch_bear_bighorn_adult_walk_06",
+     "ch_bear_bighorn_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bear_bighorn_adult_down_00",
+     "ch_bear_bighorn_adult_down_01",
+     "ch_bear_bighorn_adult_down_02",
+     "ch_bear_bighorn_adult_down_03",
+     "ch_bear_bighorn_adult_down_04",
+     "ch_bear_bighorn_adult_down_05",
+     "ch_bear_bighorn_adult_down_04",
+     "ch_bear_bighorn_adult_down_03",
+     "ch_bear_bighorn_adult_down_02",
+     "ch_bear_bighorn_adult_down_01",
+     "ch_bear_bighorn_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bear_bighorn"
+}

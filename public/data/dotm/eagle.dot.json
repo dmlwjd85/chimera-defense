@@ -1144,24 +1144,16 @@
    },
    "idle": {
     "frames": [
-     "eagle_baby_walk_00",
-     "eagle_baby_walk_01",
-     "eagle_baby_walk_02",
-     "eagle_baby_walk_03",
-     "eagle_baby_walk_04",
-     "eagle_baby_walk_05",
-     "eagle_baby_walk_06",
-     "eagle_baby_walk_07"
+     "eagle_baby_idle_00",
+     "eagle_baby_idle_01",
+     "eagle_baby_idle_02",
+     "eagle_baby_idle_03"
     ],
     "durs": [
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1
+     0.16,
+     0.16,
+     0.16,
+     0.16
     ],
     "loop": true
    },
@@ -1187,6 +1179,34 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "eagle_baby_down_00",
+     "eagle_baby_down_01",
+     "eagle_baby_down_02",
+     "eagle_baby_down_03",
+     "eagle_baby_down_04",
+     "eagle_baby_down_05",
+     "eagle_baby_down_04",
+     "eagle_baby_down_03",
+     "eagle_baby_down_02",
+     "eagle_baby_down_01",
+     "eagle_baby_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   },
   "teen": {
@@ -1290,24 +1310,16 @@
    },
    "idle": {
     "frames": [
-     "eagle_teen_walk_00",
-     "eagle_teen_walk_01",
-     "eagle_teen_walk_02",
-     "eagle_teen_walk_03",
-     "eagle_teen_walk_04",
-     "eagle_teen_walk_05",
-     "eagle_teen_walk_06",
-     "eagle_teen_walk_07"
+     "eagle_teen_idle_00",
+     "eagle_teen_idle_01",
+     "eagle_teen_idle_02",
+     "eagle_teen_idle_03"
     ],
     "durs": [
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1
+     0.16,
+     0.16,
+     0.16,
+     0.16
     ],
     "loop": true
    },
@@ -1333,6 +1345,34 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "eagle_teen_down_00",
+     "eagle_teen_down_01",
+     "eagle_teen_down_02",
+     "eagle_teen_down_03",
+     "eagle_teen_down_04",
+     "eagle_teen_down_05",
+     "eagle_teen_down_04",
+     "eagle_teen_down_03",
+     "eagle_teen_down_02",
+     "eagle_teen_down_01",
+     "eagle_teen_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   },
   "adult": {
@@ -1472,24 +1512,16 @@
    },
    "idle": {
     "frames": [
-     "eagle_adult_walk_00",
-     "eagle_adult_walk_01",
-     "eagle_adult_walk_02",
-     "eagle_adult_walk_03",
-     "eagle_adult_walk_04",
-     "eagle_adult_walk_05",
-     "eagle_adult_walk_06",
-     "eagle_adult_walk_07"
+     "eagle_adult_idle_00",
+     "eagle_adult_idle_01",
+     "eagle_adult_idle_02",
+     "eagle_adult_idle_03"
     ],
     "durs": [
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1,
-     0.1
+     0.16,
+     0.16,
+     0.16,
+     0.16
     ],
     "loop": true
    },
@@ -1515,6 +1547,34 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "eagle_adult_down_00",
+     "eagle_adult_down_01",
+     "eagle_adult_down_02",
+     "eagle_adult_down_03",
+     "eagle_adult_down_04",
+     "eagle_adult_down_05",
+     "eagle_adult_down_04",
+     "eagle_adult_down_03",
+     "eagle_adult_down_02",
+     "eagle_adult_down_01",
+     "eagle_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   }
  },

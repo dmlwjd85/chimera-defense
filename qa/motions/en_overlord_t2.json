@@ -1,0 +1,38 @@
+{
+ "species": "en_overlord_t2",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 5.1,
+   "foot±": 0
+  },
+  "adult_down": {
+   "n": 7,
+   "max|h%|": 47.5,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 61.6,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.0,
+   "foot±": 0
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   260
+  ],
+  "box": [
+   136,
+   162
+  ],
+  "frames": 27,
+  "colors": 16,
+  "px": 532480
+ }
+}

@@ -4,8 +4,8 @@
  "sheet": "dot-m-en_zombie",
  "file": "assets/dotm/en_zombie.png",
  "frameW": 103,
- "frameH": 87,
- "foot": 85,
+ "frameH": 98,
+ "foot": 96,
  "cols": 1,
  "anchorX": 53,
  "palette": [
@@ -28,15 +28,15 @@
  ],
  "rects": {
   "en_zombie_adult_a1_00": [
-   196,
-   81,
+   1759,
+   94,
    95,
    73,
    -47,
    -73
   ],
   "en_zombie_adult_a1_01": [
-   398,
+   1425,
    0,
    97,
    77,
@@ -44,7 +44,7 @@
    -78
   ],
   "en_zombie_adult_a1_02": [
-   496,
+   1523,
    0,
    99,
    77,
@@ -52,23 +52,23 @@
    -84
   ],
   "en_zombie_adult_a1_03": [
-   1869,
-   0,
+   1273,
+   94,
    97,
    74,
    -49,
    -86
   ],
   "en_zombie_adult_a1_04": [
-   1181,
-   0,
+   488,
+   94,
    98,
    75,
    -50,
    -86
   ],
   "en_zombie_adult_a1_05": [
-   0,
+   830,
    0,
    101,
    80,
@@ -76,7 +76,7 @@
    -84
   ],
   "en_zombie_adult_a1_06": [
-   102,
+   932,
    0,
    99,
    79,
@@ -84,15 +84,63 @@
    -79
   ],
   "en_zombie_adult_a1_07": [
-   1280,
-   0,
+   587,
+   94,
    97,
    75,
    -49,
    -75
   ],
+  "en_zombie_adult_block_00": [
+   1855,
+   94,
+   97,
+   73,
+   -49,
+   -73
+  ],
+  "en_zombie_adult_block_01": [
+   0,
+   171,
+   99,
+   73,
+   -51,
+   -74
+  ],
+  "en_zombie_adult_block_02": [
+   1371,
+   94,
+   93,
+   74,
+   -46,
+   -75
+  ],
+  "en_zombie_adult_block_03": [
+   685,
+   94,
+   96,
+   75,
+   -50,
+   -76
+  ],
+  "en_zombie_adult_block_04": [
+   296,
+   171,
+   97,
+   72,
+   -50,
+   -75
+  ],
+  "en_zombie_adult_block_05": [
+   100,
+   171,
+   97,
+   73,
+   -49,
+   -75
+  ],
   "en_zombie_adult_down_00": [
-   596,
+   1820,
    0,
    96,
    76,
@@ -100,87 +148,215 @@
    -76
   ],
   "en_zombie_adult_down_01": [
-   1378,
-   0,
+   782,
+   94,
    98,
    75,
    -50,
    -75
   ],
   "en_zombie_adult_down_02": [
-   390,
-   81,
+   492,
+   171,
    99,
    61,
    -49,
    -61
   ],
   "en_zombie_adult_down_03": [
-   490,
-   81,
+   592,
+   171,
    98,
    58,
    -49,
    -58
   ],
+  "en_zombie_adult_grab_00": [
+   1917,
+   0,
+   94,
+   76,
+   -47,
+   -78
+  ],
+  "en_zombie_adult_grab_01": [
+   639,
+   0,
+   94,
+   84,
+   -48,
+   -88
+  ],
+  "en_zombie_adult_grab_02": [
+   263,
+   0,
+   92,
+   90,
+   -47,
+   -94
+  ],
+  "en_zombie_adult_grab_03": [
+   0,
+   0,
+   84,
+   93,
+   -41,
+   -97
+  ],
+  "en_zombie_adult_grab_04": [
+   85,
+   0,
+   85,
+   92,
+   -41,
+   -96
+  ],
+  "en_zombie_adult_grab_05": [
+   546,
+   0,
+   92,
+   85,
+   -46,
+   -89
+  ],
+  "en_zombie_adult_grab_06": [
+   1623,
+   0,
+   98,
+   77,
+   -50,
+   -80
+  ],
+  "en_zombie_adult_grab_07": [
+   1465,
+   94,
+   97,
+   74,
+   -49,
+   -74
+  ],
   "en_zombie_adult_hit_00": [
-   292,
-   81,
+   198,
+   171,
    97,
    73,
    -49,
    -73
   ],
   "en_zombie_adult_hit_01": [
-   0,
-   81,
+   1563,
+   94,
    97,
    74,
    -49,
    -74
   ],
   "en_zombie_adult_idle_00": [
-   1477,
-   0,
+   881,
+   94,
    97,
    75,
    -49,
    -75
   ],
   "en_zombie_adult_idle_01": [
-   98,
-   81,
+   1661,
+   94,
    97,
    74,
    -49,
    -74
   ],
   "en_zombie_adult_idle_02": [
-   1575,
-   0,
+   979,
+   94,
    97,
    75,
    -49,
    -75
   ],
   "en_zombie_adult_idle_03": [
-   693,
    0,
+   94,
    96,
    76,
    -48,
    -76
   ],
-  "en_zombie_adult_walk_00": [
-   790,
+  "en_zombie_adult_sweep_00": [
+   394,
+   171,
+   97,
+   72,
+   -49,
+   -72
+  ],
+  "en_zombie_adult_sweep_01": [
+   1032,
    0,
+   96,
+   79,
+   -49,
+   -80
+  ],
+  "en_zombie_adult_sweep_02": [
+   734,
+   0,
+   95,
+   83,
+   -49,
+   -87
+  ],
+  "en_zombie_adult_sweep_03": [
+   356,
+   0,
+   92,
+   88,
+   -48,
+   -92
+  ],
+  "en_zombie_adult_sweep_04": [
+   171,
+   0,
+   91,
+   91,
+   -46,
+   -95
+  ],
+  "en_zombie_adult_sweep_05": [
+   449,
+   0,
+   96,
+   87,
+   -49,
+   -91
+  ],
+  "en_zombie_adult_sweep_06": [
+   1129,
+   0,
+   99,
+   78,
+   -52,
+   -82
+  ],
+  "en_zombie_adult_sweep_07": [
+   1722,
+   0,
+   97,
+   77,
+   -49,
+   -77
+  ],
+  "en_zombie_adult_walk_00": [
+   97,
+   94,
    97,
    76,
    -49,
    -76
   ],
   "en_zombie_adult_walk_01": [
-   202,
+   1229,
    0,
    97,
    78,
@@ -188,7 +364,7 @@
    -78
   ],
   "en_zombie_adult_walk_02": [
-   300,
+   1327,
    0,
    97,
    78,
@@ -196,40 +372,40 @@
    -79
   ],
   "en_zombie_adult_walk_03": [
-   888,
-   0,
+   195,
+   94,
    97,
    76,
    -49,
    -78
   ],
   "en_zombie_adult_walk_04": [
-   1673,
-   0,
+   1077,
+   94,
    97,
    75,
    -49,
    -78
   ],
   "en_zombie_adult_walk_05": [
-   986,
-   0,
+   293,
+   94,
    97,
    76,
    -49,
    -79
   ],
   "en_zombie_adult_walk_06": [
-   1771,
-   0,
+   1175,
+   94,
    97,
    75,
    -49,
    -77
   ],
   "en_zombie_adult_walk_07": [
-   1084,
-   0,
+   391,
+   94,
    96,
    76,
    -48,
@@ -245,16 +421,38 @@
   "en_zombie_adult_a1_05",
   "en_zombie_adult_a1_06",
   "en_zombie_adult_a1_07",
+  "en_zombie_adult_block_00",
+  "en_zombie_adult_block_01",
+  "en_zombie_adult_block_02",
+  "en_zombie_adult_block_03",
+  "en_zombie_adult_block_04",
+  "en_zombie_adult_block_05",
   "en_zombie_adult_down_00",
   "en_zombie_adult_down_01",
   "en_zombie_adult_down_02",
   "en_zombie_adult_down_03",
+  "en_zombie_adult_grab_00",
+  "en_zombie_adult_grab_01",
+  "en_zombie_adult_grab_02",
+  "en_zombie_adult_grab_03",
+  "en_zombie_adult_grab_04",
+  "en_zombie_adult_grab_05",
+  "en_zombie_adult_grab_06",
+  "en_zombie_adult_grab_07",
   "en_zombie_adult_hit_00",
   "en_zombie_adult_hit_01",
   "en_zombie_adult_idle_00",
   "en_zombie_adult_idle_01",
   "en_zombie_adult_idle_02",
   "en_zombie_adult_idle_03",
+  "en_zombie_adult_sweep_00",
+  "en_zombie_adult_sweep_01",
+  "en_zombie_adult_sweep_02",
+  "en_zombie_adult_sweep_03",
+  "en_zombie_adult_sweep_04",
+  "en_zombie_adult_sweep_05",
+  "en_zombie_adult_sweep_06",
+  "en_zombie_adult_sweep_07",
   "en_zombie_adult_walk_00",
   "en_zombie_adult_walk_01",
   "en_zombie_adult_walk_02",
@@ -276,7 +474,7 @@
  ],
  "sets": {
   "adult": {
-   "top": 10,
+   "top": 21,
    "attack": {
     "frames": [
      "en_zombie_adult_a1_00",
@@ -309,6 +507,24 @@
      ]
     ]
    },
+   "block": {
+    "frames": [
+     "en_zombie_adult_block_00",
+     "en_zombie_adult_block_01",
+     "en_zombie_adult_block_02",
+     "en_zombie_adult_block_03",
+     "en_zombie_adult_block_04",
+     "en_zombie_adult_block_05"
+    ],
+    "durs": [
+     0.075,
+     0.075,
+     0.075,
+     0.075,
+     0.075,
+     0.075
+    ]
+   },
    "down": {
     "frames": [
      "en_zombie_adult_down_00",
@@ -323,6 +539,28 @@
      0.08
     ],
     "stay": true
+   },
+   "grab": {
+    "frames": [
+     "en_zombie_adult_grab_00",
+     "en_zombie_adult_grab_01",
+     "en_zombie_adult_grab_02",
+     "en_zombie_adult_grab_03",
+     "en_zombie_adult_grab_04",
+     "en_zombie_adult_grab_05",
+     "en_zombie_adult_grab_06",
+     "en_zombie_adult_grab_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ]
    },
    "hit": {
     "frames": [
@@ -349,6 +587,28 @@
     ],
     "loop": true
    },
+   "sweep": {
+    "frames": [
+     "en_zombie_adult_sweep_00",
+     "en_zombie_adult_sweep_01",
+     "en_zombie_adult_sweep_02",
+     "en_zombie_adult_sweep_03",
+     "en_zombie_adult_sweep_04",
+     "en_zombie_adult_sweep_05",
+     "en_zombie_adult_sweep_06",
+     "en_zombie_adult_sweep_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ]
+   },
    "move": {
     "frames": [
      "en_zombie_adult_walk_00",
@@ -371,6 +631,26 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_zombie_adult_down_00",
+     "en_zombie_adult_down_01",
+     "en_zombie_adult_down_02",
+     "en_zombie_adult_down_03",
+     "en_zombie_adult_down_02",
+     "en_zombie_adult_down_01",
+     "en_zombie_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   }
  },

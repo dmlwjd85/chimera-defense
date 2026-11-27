@@ -3,8 +3,8 @@
  "species": "en_normal",
  "sheet": "dot-m-en_normal",
  "file": "assets/dotm/en_normal.png",
- "frameW": 76,
- "frameH": 85,
+ "frameW": 77,
+ "frameH": 86,
  "foot": 83,
  "cols": 1,
  "anchorX": 39,
@@ -28,15 +28,15 @@
  ],
  "rects": {
   "en_normal_adult_a1_00": [
-   1481,
-   0,
+   208,
+   78,
    61,
    62,
    -32,
    -62
   ],
   "en_normal_adult_a1_01": [
-   221,
+   513,
    0,
    56,
    69,
@@ -68,7 +68,7 @@
    -84
   ],
   "en_normal_adult_a1_05": [
-   165,
+   396,
    0,
    55,
    70,
@@ -76,7 +76,7 @@
    -76
   ],
   "en_normal_adult_a1_06": [
-   411,
+   1029,
    0,
    72,
    66,
@@ -84,15 +84,63 @@
    -66
   ],
   "en_normal_adult_a1_07": [
-   1340,
-   0,
+   67,
+   78,
    69,
    63,
    -32,
    -63
   ],
+  "en_normal_adult_block_00": [
+   270,
+   78,
+   65,
+   62,
+   -32,
+   -62
+  ],
+  "en_normal_adult_block_01": [
+   476,
+   78,
+   65,
+   61,
+   -32,
+   -61
+  ],
+  "en_normal_adult_block_02": [
+   1090,
+   78,
+   63,
+   57,
+   -31,
+   -60
+  ],
+  "en_normal_adult_block_03": [
+   1154,
+   78,
+   62,
+   56,
+   -30,
+   -57
+  ],
+  "en_normal_adult_block_04": [
+   822,
+   78,
+   64,
+   59,
+   -31,
+   -60
+  ],
+  "en_normal_adult_block_05": [
+   336,
+   78,
+   66,
+   62,
+   -33,
+   -63
+  ],
   "en_normal_adult_down_00": [
-   1008,
+   1694,
    0,
    68,
    64,
@@ -100,71 +148,135 @@
    -64
   ],
   "en_normal_adult_down_01": [
-   1410,
-   0,
+   137,
+   78,
    70,
    63,
    -36,
    -63
   ],
   "en_normal_adult_down_02": [
-   1543,
-   0,
+   542,
+   78,
    70,
    61,
    -37,
    -61
   ],
   "en_normal_adult_down_03": [
-   1748,
-   0,
+   1023,
+   78,
    66,
    58,
    -37,
    -58
   ],
   "en_normal_adult_down_04": [
-   1815,
-   0,
+   1217,
+   78,
    62,
    45,
    -29,
    -47
   ],
   "en_normal_adult_down_05": [
-   1878,
-   0,
+   1280,
+   78,
    65,
    35,
    -33,
    -35
   ],
   "en_normal_adult_down_06": [
-   1944,
-   0,
+   1346,
+   78,
    70,
    34,
    -34,
    -34
   ],
-  "en_normal_adult_hit_00": [
-   1681,
+  "en_normal_adult_grab_00": [
+   887,
+   78,
+   68,
+   59,
+   -31,
+   -59
+  ],
+  "en_normal_adult_grab_01": [
+   695,
    0,
+   65,
+   67,
+   -35,
+   -69
+  ],
+  "en_normal_adult_grab_02": [
+   452,
+   0,
+   60,
+   70,
+   -35,
+   -78
+  ],
+  "en_normal_adult_grab_03": [
+   165,
+   0,
+   54,
+   73,
+   -35,
+   -84
+  ],
+  "en_normal_adult_grab_04": [
+   340,
+   0,
+   55,
+   71,
+   -33,
+   -83
+  ],
+  "en_normal_adult_grab_05": [
+   570,
+   0,
+   58,
+   69,
+   -32,
+   -77
+  ],
+  "en_normal_adult_grab_06": [
+   613,
+   78,
+   69,
+   61,
+   -31,
+   -61
+  ],
+  "en_normal_adult_grab_07": [
+   1763,
+   0,
+   71,
+   64,
+   -33,
+   -64
+  ],
+  "en_normal_adult_hit_00": [
+   956,
+   78,
    66,
    59,
    -33,
    -60
   ],
   "en_normal_adult_hit_01": [
-   1614,
-   0,
+   683,
+   78,
    66,
    61,
    -33,
    -62
   ],
   "en_normal_adult_hit_02": [
-   751,
+   1369,
    0,
    68,
    65,
@@ -172,7 +284,7 @@
    -65
   ],
   "en_normal_adult_hit_03": [
-   278,
+   761,
    0,
    65,
    67,
@@ -180,7 +292,7 @@
    -67
   ],
   "en_normal_adult_idle_00": [
-   484,
+   1102,
    0,
    66,
    66,
@@ -188,7 +300,7 @@
    -66
   ],
   "en_normal_adult_idle_01": [
-   344,
+   827,
    0,
    66,
    67,
@@ -196,7 +308,7 @@
    -67
   ],
   "en_normal_adult_idle_02": [
-   551,
+   1169,
    0,
    66,
    66,
@@ -204,15 +316,79 @@
    -66
   ],
   "en_normal_adult_idle_03": [
-   1077,
+   1835,
    0,
    66,
    64,
    -33,
    -64
   ],
+  "en_normal_adult_sweep_00": [
+   750,
+   78,
+   71,
+   60,
+   -34,
+   -61
+  ],
+  "en_normal_adult_sweep_01": [
+   403,
+   78,
+   72,
+   62,
+   -35,
+   -63
+  ],
+  "en_normal_adult_sweep_02": [
+   894,
+   0,
+   65,
+   67,
+   -35,
+   -68
+  ],
+  "en_normal_adult_sweep_03": [
+   220,
+   0,
+   56,
+   73,
+   -34,
+   -74
+  ],
+  "en_normal_adult_sweep_04": [
+   277,
+   0,
+   62,
+   72,
+   -34,
+   -73
+  ],
+  "en_normal_adult_sweep_05": [
+   629,
+   0,
+   65,
+   69,
+   -34,
+   -71
+  ],
+  "en_normal_adult_sweep_06": [
+   960,
+   0,
+   68,
+   67,
+   -34,
+   -68
+  ],
+  "en_normal_adult_sweep_07": [
+   1438,
+   0,
+   67,
+   65,
+   -31,
+   -64
+  ],
   "en_normal_adult_walk_00": [
-   1144,
+   1902,
    0,
    66,
    64,
@@ -220,7 +396,7 @@
    -65
   ],
   "en_normal_adult_walk_01": [
-   820,
+   1506,
    0,
    63,
    65,
@@ -228,7 +404,7 @@
    -66
   ],
   "en_normal_adult_walk_02": [
-   884,
+   1570,
    0,
    61,
    65,
@@ -236,7 +412,7 @@
    -66
   ],
   "en_normal_adult_walk_03": [
-   1211,
+   1969,
    0,
    61,
    64,
@@ -244,7 +420,7 @@
    -64
   ],
   "en_normal_adult_walk_04": [
-   946,
+   1632,
    0,
    61,
    65,
@@ -252,7 +428,7 @@
    -65
   ],
   "en_normal_adult_walk_05": [
-   618,
+   1236,
    0,
    64,
    66,
@@ -260,7 +436,7 @@
    -66
   ],
   "en_normal_adult_walk_06": [
-   683,
+   1301,
    0,
    67,
    66,
@@ -268,8 +444,8 @@
    -66
   ],
   "en_normal_adult_walk_07": [
-   1273,
    0,
+   78,
    66,
    64,
    -33,
@@ -285,6 +461,12 @@
   "en_normal_adult_a1_05",
   "en_normal_adult_a1_06",
   "en_normal_adult_a1_07",
+  "en_normal_adult_block_00",
+  "en_normal_adult_block_01",
+  "en_normal_adult_block_02",
+  "en_normal_adult_block_03",
+  "en_normal_adult_block_04",
+  "en_normal_adult_block_05",
   "en_normal_adult_down_00",
   "en_normal_adult_down_01",
   "en_normal_adult_down_02",
@@ -292,6 +474,14 @@
   "en_normal_adult_down_04",
   "en_normal_adult_down_05",
   "en_normal_adult_down_06",
+  "en_normal_adult_grab_00",
+  "en_normal_adult_grab_01",
+  "en_normal_adult_grab_02",
+  "en_normal_adult_grab_03",
+  "en_normal_adult_grab_04",
+  "en_normal_adult_grab_05",
+  "en_normal_adult_grab_06",
+  "en_normal_adult_grab_07",
   "en_normal_adult_hit_00",
   "en_normal_adult_hit_01",
   "en_normal_adult_hit_02",
@@ -300,6 +490,14 @@
   "en_normal_adult_idle_01",
   "en_normal_adult_idle_02",
   "en_normal_adult_idle_03",
+  "en_normal_adult_sweep_00",
+  "en_normal_adult_sweep_01",
+  "en_normal_adult_sweep_02",
+  "en_normal_adult_sweep_03",
+  "en_normal_adult_sweep_04",
+  "en_normal_adult_sweep_05",
+  "en_normal_adult_sweep_06",
+  "en_normal_adult_sweep_07",
   "en_normal_adult_walk_00",
   "en_normal_adult_walk_01",
   "en_normal_adult_walk_02",
@@ -354,6 +552,24 @@
      ]
     ]
    },
+   "block": {
+    "frames": [
+     "en_normal_adult_block_00",
+     "en_normal_adult_block_01",
+     "en_normal_adult_block_02",
+     "en_normal_adult_block_03",
+     "en_normal_adult_block_04",
+     "en_normal_adult_block_05"
+    ],
+    "durs": [
+     0.075,
+     0.075,
+     0.075,
+     0.075,
+     0.075,
+     0.075
+    ]
+   },
    "down": {
     "frames": [
      "en_normal_adult_down_00",
@@ -374,6 +590,28 @@
      0.08
     ],
     "stay": true
+   },
+   "grab": {
+    "frames": [
+     "en_normal_adult_grab_00",
+     "en_normal_adult_grab_01",
+     "en_normal_adult_grab_02",
+     "en_normal_adult_grab_03",
+     "en_normal_adult_grab_04",
+     "en_normal_adult_grab_05",
+     "en_normal_adult_grab_06",
+     "en_normal_adult_grab_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ]
    },
    "hit": {
     "frames": [
@@ -404,6 +642,28 @@
     ],
     "loop": true
    },
+   "sweep": {
+    "frames": [
+     "en_normal_adult_sweep_00",
+     "en_normal_adult_sweep_01",
+     "en_normal_adult_sweep_02",
+     "en_normal_adult_sweep_03",
+     "en_normal_adult_sweep_04",
+     "en_normal_adult_sweep_05",
+     "en_normal_adult_sweep_06",
+     "en_normal_adult_sweep_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ]
+   },
    "move": {
     "frames": [
      "en_normal_adult_walk_00",
@@ -426,6 +686,38 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_normal_adult_down_00",
+     "en_normal_adult_down_01",
+     "en_normal_adult_down_02",
+     "en_normal_adult_down_03",
+     "en_normal_adult_down_04",
+     "en_normal_adult_down_05",
+     "en_normal_adult_down_06",
+     "en_normal_adult_down_05",
+     "en_normal_adult_down_04",
+     "en_normal_adult_down_03",
+     "en_normal_adult_down_02",
+     "en_normal_adult_down_01",
+     "en_normal_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   }
  },

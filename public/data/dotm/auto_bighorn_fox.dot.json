@@ -1,0 +1,653 @@
+{
+ "note": "ch_bighorn_fox 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_bighorn_fox",
+ "sheet": "dot-m-auto_bighorn_fox",
+ "file": "assets/dotm/auto_bighorn_fox.png",
+ "frameW": 111,
+ "frameH": 90,
+ "foot": 87,
+ "cols": 1,
+ "anchorX": 58,
+ "palette": [
+  "#291a1f",
+  "#3f0f09",
+  "#411046",
+  "#643621",
+  "#7f4186",
+  "#82a642",
+  "#92553b",
+  "#ac7f64",
+  "#b2460c",
+  "#c59878",
+  "#d46924",
+  "#d5ac95",
+  "#f0680d",
+  "#f3832e",
+  "#f5dcb3",
+  "#fcead2"
+ ],
+ "rects": {
+  "ch_bighorn_fox_adult_a1_00": [
+   1906,
+   0,
+   95,
+   83,
+   -47,
+   -83
+  ],
+  "ch_bighorn_fox_adult_a1_01": [
+   876,
+   87,
+   94,
+   82,
+   -48,
+   -84
+  ],
+  "ch_bighorn_fox_adult_a1_02": [
+   0,
+   87,
+   96,
+   83,
+   -52,
+   -85
+  ],
+  "ch_bighorn_fox_adult_a1_03": [
+   576,
+   0,
+   97,
+   84,
+   -53,
+   -86
+  ],
+  "ch_bighorn_fox_adult_a1_04": [
+   100,
+   0,
+   98,
+   85,
+   -53,
+   -87
+  ],
+  "ch_bighorn_fox_adult_a1_05": [
+   0,
+   0,
+   99,
+   86,
+   -53,
+   -88
+  ],
+  "ch_bighorn_fox_adult_a1_06": [
+   199,
+   0,
+   99,
+   85,
+   -53,
+   -87
+  ],
+  "ch_bighorn_fox_adult_a1_07": [
+   674,
+   0,
+   96,
+   84,
+   -50,
+   -84
+  ],
+  "ch_bighorn_fox_adult_a2_00": [
+   771,
+   0,
+   91,
+   84,
+   -47,
+   -84
+  ],
+  "ch_bighorn_fox_adult_a2_01": [
+   863,
+   0,
+   98,
+   84,
+   -52,
+   -84
+  ],
+  "ch_bighorn_fox_adult_a2_02": [
+   962,
+   0,
+   105,
+   84,
+   -57,
+   -84
+  ],
+  "ch_bighorn_fox_adult_a2_03": [
+   97,
+   87,
+   106,
+   83,
+   -58,
+   -83
+  ],
+  "ch_bighorn_fox_adult_a2_04": [
+   204,
+   87,
+   103,
+   83,
+   -57,
+   -85
+  ],
+  "ch_bighorn_fox_adult_a2_05": [
+   308,
+   87,
+   96,
+   83,
+   -52,
+   -85
+  ],
+  "ch_bighorn_fox_adult_a2_06": [
+   1068,
+   0,
+   93,
+   84,
+   -47,
+   -84
+  ],
+  "ch_bighorn_fox_adult_a2_07": [
+   299,
+   0,
+   91,
+   85,
+   -45,
+   -85
+  ],
+  "ch_bighorn_fox_adult_down_00": [
+   405,
+   87,
+   95,
+   83,
+   -47,
+   -83
+  ],
+  "ch_bighorn_fox_adult_down_01": [
+   971,
+   87,
+   96,
+   82,
+   -48,
+   -82
+  ],
+  "ch_bighorn_fox_adult_down_02": [
+   98,
+   171,
+   101,
+   79,
+   -50,
+   -79
+  ],
+  "ch_bighorn_fox_adult_down_03": [
+   200,
+   171,
+   102,
+   53,
+   -49,
+   -52
+  ],
+  "ch_bighorn_fox_adult_down_04": [
+   303,
+   171,
+   106,
+   52,
+   -53,
+   -51
+  ],
+  "ch_bighorn_fox_adult_el_00": [
+   1460,
+   87,
+   95,
+   81,
+   -47,
+   -83
+  ],
+  "ch_bighorn_fox_adult_el_01": [
+   0,
+   171,
+   97,
+   80,
+   -49,
+   -81
+  ],
+  "ch_bighorn_fox_adult_el_02": [
+   1556,
+   87,
+   98,
+   81,
+   -52,
+   -81
+  ],
+  "ch_bighorn_fox_adult_el_03": [
+   1655,
+   87,
+   101,
+   81,
+   -57,
+   -81
+  ],
+  "ch_bighorn_fox_adult_el_04": [
+   1757,
+   87,
+   101,
+   81,
+   -55,
+   -81
+  ],
+  "ch_bighorn_fox_adult_el_05": [
+   1859,
+   87,
+   105,
+   81,
+   -56,
+   -81
+  ],
+  "ch_bighorn_fox_adult_el_06": [
+   1068,
+   87,
+   100,
+   82,
+   -53,
+   -82
+  ],
+  "ch_bighorn_fox_adult_el_07": [
+   1162,
+   0,
+   93,
+   84,
+   -48,
+   -84
+  ],
+  "ch_bighorn_fox_adult_hit_00": [
+   1169,
+   87,
+   96,
+   82,
+   -48,
+   -82
+  ],
+  "ch_bighorn_fox_adult_hit_01": [
+   1266,
+   87,
+   100,
+   82,
+   -50,
+   -82
+  ],
+  "ch_bighorn_fox_adult_hit_02": [
+   501,
+   87,
+   96,
+   83,
+   -48,
+   -83
+  ],
+  "ch_bighorn_fox_adult_hit_03": [
+   1256,
+   0,
+   92,
+   84,
+   -46,
+   -84
+  ],
+  "ch_bighorn_fox_adult_idle_00": [
+   598,
+   87,
+   92,
+   83,
+   -46,
+   -83
+  ],
+  "ch_bighorn_fox_adult_idle_01": [
+   1367,
+   87,
+   92,
+   82,
+   -46,
+   -82
+  ],
+  "ch_bighorn_fox_adult_idle_02": [
+   691,
+   87,
+   91,
+   83,
+   -45,
+   -83
+  ],
+  "ch_bighorn_fox_adult_idle_03": [
+   1349,
+   0,
+   91,
+   84,
+   -45,
+   -84
+  ],
+  "ch_bighorn_fox_adult_walk_00": [
+   391,
+   0,
+   91,
+   85,
+   -45,
+   -85
+  ],
+  "ch_bighorn_fox_adult_walk_01": [
+   483,
+   0,
+   92,
+   85,
+   -46,
+   -85
+  ],
+  "ch_bighorn_fox_adult_walk_02": [
+   783,
+   87,
+   92,
+   83,
+   -46,
+   -84
+  ],
+  "ch_bighorn_fox_adult_walk_03": [
+   1441,
+   0,
+   93,
+   84,
+   -47,
+   -85
+  ],
+  "ch_bighorn_fox_adult_walk_04": [
+   1535,
+   0,
+   93,
+   84,
+   -47,
+   -85
+  ],
+  "ch_bighorn_fox_adult_walk_05": [
+   1629,
+   0,
+   92,
+   84,
+   -46,
+   -84
+  ],
+  "ch_bighorn_fox_adult_walk_06": [
+   1722,
+   0,
+   91,
+   84,
+   -45,
+   -84
+  ],
+  "ch_bighorn_fox_adult_walk_07": [
+   1814,
+   0,
+   91,
+   84,
+   -45,
+   -84
+  ]
+ },
+ "frames": [
+  "ch_bighorn_fox_adult_a1_00",
+  "ch_bighorn_fox_adult_a1_01",
+  "ch_bighorn_fox_adult_a1_02",
+  "ch_bighorn_fox_adult_a1_03",
+  "ch_bighorn_fox_adult_a1_04",
+  "ch_bighorn_fox_adult_a1_05",
+  "ch_bighorn_fox_adult_a1_06",
+  "ch_bighorn_fox_adult_a1_07",
+  "ch_bighorn_fox_adult_a2_00",
+  "ch_bighorn_fox_adult_a2_01",
+  "ch_bighorn_fox_adult_a2_02",
+  "ch_bighorn_fox_adult_a2_03",
+  "ch_bighorn_fox_adult_a2_04",
+  "ch_bighorn_fox_adult_a2_05",
+  "ch_bighorn_fox_adult_a2_06",
+  "ch_bighorn_fox_adult_a2_07",
+  "ch_bighorn_fox_adult_down_00",
+  "ch_bighorn_fox_adult_down_01",
+  "ch_bighorn_fox_adult_down_02",
+  "ch_bighorn_fox_adult_down_03",
+  "ch_bighorn_fox_adult_down_04",
+  "ch_bighorn_fox_adult_el_00",
+  "ch_bighorn_fox_adult_el_01",
+  "ch_bighorn_fox_adult_el_02",
+  "ch_bighorn_fox_adult_el_03",
+  "ch_bighorn_fox_adult_el_04",
+  "ch_bighorn_fox_adult_el_05",
+  "ch_bighorn_fox_adult_el_06",
+  "ch_bighorn_fox_adult_el_07",
+  "ch_bighorn_fox_adult_hit_00",
+  "ch_bighorn_fox_adult_hit_01",
+  "ch_bighorn_fox_adult_hit_02",
+  "ch_bighorn_fox_adult_hit_03",
+  "ch_bighorn_fox_adult_idle_00",
+  "ch_bighorn_fox_adult_idle_01",
+  "ch_bighorn_fox_adult_idle_02",
+  "ch_bighorn_fox_adult_idle_03",
+  "ch_bighorn_fox_adult_walk_00",
+  "ch_bighorn_fox_adult_walk_01",
+  "ch_bighorn_fox_adult_walk_02",
+  "ch_bighorn_fox_adult_walk_03",
+  "ch_bighorn_fox_adult_walk_04",
+  "ch_bighorn_fox_adult_walk_05",
+  "ch_bighorn_fox_adult_walk_06",
+  "ch_bighorn_fox_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bighorn_fox_adult_idle_00",
+  "ch_bighorn_fox_adult_idle_01",
+  "ch_bighorn_fox_adult_idle_02",
+  "ch_bighorn_fox_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 4,
+   "attack": {
+    "frames": [
+     "ch_bighorn_fox_adult_a1_00",
+     "ch_bighorn_fox_adult_a1_01",
+     "ch_bighorn_fox_adult_a1_02",
+     "ch_bighorn_fox_adult_a1_03",
+     "ch_bighorn_fox_adult_a1_04",
+     "ch_bighorn_fox_adult_a1_05",
+     "ch_bighorn_fox_adult_a1_06",
+     "ch_bighorn_fox_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bighorn_fox_adult_a2_00",
+     "ch_bighorn_fox_adult_a2_01",
+     "ch_bighorn_fox_adult_a2_02",
+     "ch_bighorn_fox_adult_a2_03",
+     "ch_bighorn_fox_adult_a2_04",
+     "ch_bighorn_fox_adult_a2_05",
+     "ch_bighorn_fox_adult_a2_06",
+     "ch_bighorn_fox_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bighorn_fox_adult_down_00",
+     "ch_bighorn_fox_adult_down_01",
+     "ch_bighorn_fox_adult_down_02",
+     "ch_bighorn_fox_adult_down_03",
+     "ch_bighorn_fox_adult_down_04"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_bighorn_fox_adult_el_00",
+     "ch_bighorn_fox_adult_el_01",
+     "ch_bighorn_fox_adult_el_02",
+     "ch_bighorn_fox_adult_el_03",
+     "ch_bighorn_fox_adult_el_04",
+     "ch_bighorn_fox_adult_el_05",
+     "ch_bighorn_fox_adult_el_06",
+     "ch_bighorn_fox_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.374,
+      "cast"
+     ],
+     [
+      0.384,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bighorn_fox_adult_hit_00",
+     "ch_bighorn_fox_adult_hit_01",
+     "ch_bighorn_fox_adult_hit_02",
+     "ch_bighorn_fox_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bighorn_fox_adult_idle_00",
+     "ch_bighorn_fox_adult_idle_01",
+     "ch_bighorn_fox_adult_idle_02",
+     "ch_bighorn_fox_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bighorn_fox_adult_walk_00",
+     "ch_bighorn_fox_adult_walk_01",
+     "ch_bighorn_fox_adult_walk_02",
+     "ch_bighorn_fox_adult_walk_03",
+     "ch_bighorn_fox_adult_walk_04",
+     "ch_bighorn_fox_adult_walk_05",
+     "ch_bighorn_fox_adult_walk_06",
+     "ch_bighorn_fox_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bighorn_fox_adult_down_00",
+     "ch_bighorn_fox_adult_down_01",
+     "ch_bighorn_fox_adult_down_02",
+     "ch_bighorn_fox_adult_down_03",
+     "ch_bighorn_fox_adult_down_04",
+     "ch_bighorn_fox_adult_down_03",
+     "ch_bighorn_fox_adult_down_02",
+     "ch_bighorn_fox_adult_down_01",
+     "ch_bighorn_fox_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bighorn_fox"
+}

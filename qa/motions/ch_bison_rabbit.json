@@ -1,0 +1,53 @@
+{
+ "species": "ch_bison_rabbit",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 34.5,
+   "foot±": 2
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 16.7,
+   "foot±": 20
+  },
+  "adult_down": {
+   "n": 3,
+   "max|h%|": 15.5,
+   "foot±": 2
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 4.8,
+   "foot±": 2
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 34.5,
+   "foot±": 8
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.4,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.4,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   199
+  ],
+  "box": [
+   97,
+   120
+  ],
+  "frames": 43,
+  "colors": 16,
+  "px": 407552
+ }
+}

@@ -1186,6 +1186,30 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "tiger_baby_down_00",
+     "tiger_baby_down_01",
+     "tiger_baby_down_02",
+     "tiger_baby_down_03",
+     "tiger_baby_down_04",
+     "tiger_baby_down_03",
+     "tiger_baby_down_02",
+     "tiger_baby_down_01",
+     "tiger_baby_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   },
   "teen": {
@@ -1324,6 +1348,34 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "tiger_teen_down_00",
+     "tiger_teen_down_01",
+     "tiger_teen_down_02",
+     "tiger_teen_down_03",
+     "tiger_teen_down_04",
+     "tiger_teen_down_05",
+     "tiger_teen_down_04",
+     "tiger_teen_down_03",
+     "tiger_teen_down_02",
+     "tiger_teen_down_01",
+     "tiger_teen_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   },
   "adult": {
@@ -1502,6 +1554,42 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "tiger_adult_down_00",
+     "tiger_adult_down_01",
+     "tiger_adult_down_02",
+     "tiger_adult_down_03",
+     "tiger_adult_down_04",
+     "tiger_adult_down_05",
+     "tiger_adult_down_06",
+     "tiger_adult_down_07",
+     "tiger_adult_down_06",
+     "tiger_adult_down_05",
+     "tiger_adult_down_04",
+     "tiger_adult_down_03",
+     "tiger_adult_down_02",
+     "tiger_adult_down_01",
+     "tiger_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   }
  },

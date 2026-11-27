@@ -382,6 +382,34 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_fast_adult_down_00",
+     "en_fast_adult_down_01",
+     "en_fast_adult_down_02",
+     "en_fast_adult_down_03",
+     "en_fast_adult_down_04",
+     "en_fast_adult_down_05",
+     "en_fast_adult_down_04",
+     "en_fast_adult_down_03",
+     "en_fast_adult_down_02",
+     "en_fast_adult_down_01",
+     "en_fast_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   }
  },

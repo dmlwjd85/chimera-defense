@@ -1,0 +1,668 @@
+{
+ "note": "ch_bighorn_tiger 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_bighorn_tiger",
+ "sheet": "dot-m-auto_bighorn_tiger",
+ "file": "assets/dotm/auto_bighorn_tiger.png",
+ "frameW": 114,
+ "frameH": 99,
+ "foot": 97,
+ "cols": 1,
+ "anchorX": 58,
+ "palette": [
+  "#291a1f",
+  "#4d0f07",
+  "#551c16",
+  "#6b3e38",
+  "#853a1d",
+  "#996953",
+  "#b77d61",
+  "#bf9476",
+  "#c15a34",
+  "#d9b0ab",
+  "#e58251",
+  "#e9b193",
+  "#f37f44",
+  "#f6d8ad",
+  "#fe7f3a",
+  "#fee6d8"
+ ],
+ "rects": {
+  "ch_bighorn_tiger_adult_a1_00": [
+   216,
+   180,
+   108,
+   75,
+   -54,
+   -75
+  ],
+  "ch_bighorn_tiger_adult_a1_01": [
+   0,
+   180,
+   102,
+   78,
+   -50,
+   -79
+  ],
+  "ch_bighorn_tiger_adult_a1_02": [
+   102,
+   0,
+   100,
+   93,
+   -50,
+   -94
+  ],
+  "ch_bighorn_tiger_adult_a1_03": [
+   0,
+   0,
+   101,
+   97,
+   -52,
+   -98
+  ],
+  "ch_bighorn_tiger_adult_a1_04": [
+   203,
+   0,
+   108,
+   90,
+   -53,
+   -91
+  ],
+  "ch_bighorn_tiger_adult_a1_05": [
+   628,
+   0,
+   108,
+   85,
+   -57,
+   -86
+  ],
+  "ch_bighorn_tiger_adult_a1_06": [
+   957,
+   0,
+   108,
+   82,
+   -55,
+   -83
+  ],
+  "ch_bighorn_tiger_adult_a1_07": [
+   1619,
+   0,
+   107,
+   81,
+   -53,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_a2_00": [
+   1529,
+   98,
+   107,
+   79,
+   -53,
+   -79
+  ],
+  "ch_bighorn_tiger_adult_a2_01": [
+   1637,
+   98,
+   106,
+   79,
+   -52,
+   -79
+  ],
+  "ch_bighorn_tiger_adult_a2_02": [
+   1744,
+   98,
+   104,
+   79,
+   -49,
+   -80
+  ],
+  "ch_bighorn_tiger_adult_a2_03": [
+   1849,
+   98,
+   105,
+   79,
+   -49,
+   -80
+  ],
+  "ch_bighorn_tiger_adult_a2_04": [
+   765,
+   98,
+   107,
+   80,
+   -52,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_a2_05": [
+   1066,
+   0,
+   112,
+   82,
+   -56,
+   -83
+  ],
+  "ch_bighorn_tiger_adult_a2_06": [
+   1179,
+   0,
+   113,
+   82,
+   -58,
+   -83
+  ],
+  "ch_bighorn_tiger_adult_a2_07": [
+   1727,
+   0,
+   108,
+   81,
+   -54,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_down_00": [
+   1836,
+   0,
+   110,
+   81,
+   -56,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_down_01": [
+   103,
+   180,
+   112,
+   77,
+   -58,
+   -77
+  ],
+  "ch_bighorn_tiger_adult_down_02": [
+   537,
+   180,
+   109,
+   64,
+   -54,
+   -64
+  ],
+  "ch_bighorn_tiger_adult_down_03": [
+   756,
+   180,
+   109,
+   52,
+   -54,
+   -52
+  ],
+  "ch_bighorn_tiger_adult_down_04": [
+   866,
+   180,
+   108,
+   50,
+   -53,
+   -50
+  ],
+  "ch_bighorn_tiger_adult_down_05": [
+   975,
+   180,
+   108,
+   48,
+   -53,
+   -48
+  ],
+  "ch_bighorn_tiger_adult_el_00": [
+   873,
+   98,
+   109,
+   80,
+   -55,
+   -80
+  ],
+  "ch_bighorn_tiger_adult_el_01": [
+   847,
+   0,
+   109,
+   83,
+   -57,
+   -84
+  ],
+  "ch_bighorn_tiger_adult_el_02": [
+   417,
+   0,
+   104,
+   87,
+   -54,
+   -88
+  ],
+  "ch_bighorn_tiger_adult_el_03": [
+   312,
+   0,
+   104,
+   89,
+   -51,
+   -90
+  ],
+  "ch_bighorn_tiger_adult_el_04": [
+   522,
+   0,
+   105,
+   87,
+   -52,
+   -88
+  ],
+  "ch_bighorn_tiger_adult_el_05": [
+   737,
+   0,
+   109,
+   84,
+   -56,
+   -85
+  ],
+  "ch_bighorn_tiger_adult_el_06": [
+   1293,
+   0,
+   110,
+   82,
+   -56,
+   -83
+  ],
+  "ch_bighorn_tiger_adult_el_07": [
+   0,
+   98,
+   109,
+   81,
+   -55,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_hit_00": [
+   434,
+   180,
+   102,
+   71,
+   -49,
+   -78
+  ],
+  "ch_bighorn_tiger_adult_hit_01": [
+   647,
+   180,
+   108,
+   60,
+   -55,
+   -76
+  ],
+  "ch_bighorn_tiger_adult_hit_02": [
+   325,
+   180,
+   108,
+   74,
+   -55,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_hit_03": [
+   110,
+   98,
+   109,
+   81,
+   -56,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_idle_00": [
+   983,
+   98,
+   108,
+   80,
+   -54,
+   -80
+  ],
+  "ch_bighorn_tiger_adult_idle_01": [
+   1092,
+   98,
+   108,
+   80,
+   -54,
+   -80
+  ],
+  "ch_bighorn_tiger_adult_idle_02": [
+   1201,
+   98,
+   108,
+   80,
+   -54,
+   -80
+  ],
+  "ch_bighorn_tiger_adult_idle_03": [
+   220,
+   98,
+   108,
+   81,
+   -54,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_walk_00": [
+   329,
+   98,
+   106,
+   81,
+   -52,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_walk_01": [
+   1404,
+   0,
+   105,
+   82,
+   -51,
+   -82
+  ],
+  "ch_bighorn_tiger_adult_walk_02": [
+   1510,
+   0,
+   108,
+   82,
+   -54,
+   -82
+  ],
+  "ch_bighorn_tiger_adult_walk_03": [
+   436,
+   98,
+   108,
+   81,
+   -54,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_walk_04": [
+   1310,
+   98,
+   109,
+   80,
+   -55,
+   -81
+  ],
+  "ch_bighorn_tiger_adult_walk_05": [
+   545,
+   98,
+   110,
+   81,
+   -56,
+   -82
+  ],
+  "ch_bighorn_tiger_adult_walk_06": [
+   1420,
+   98,
+   108,
+   80,
+   -54,
+   -80
+  ],
+  "ch_bighorn_tiger_adult_walk_07": [
+   656,
+   98,
+   108,
+   81,
+   -54,
+   -81
+  ]
+ },
+ "frames": [
+  "ch_bighorn_tiger_adult_a1_00",
+  "ch_bighorn_tiger_adult_a1_01",
+  "ch_bighorn_tiger_adult_a1_02",
+  "ch_bighorn_tiger_adult_a1_03",
+  "ch_bighorn_tiger_adult_a1_04",
+  "ch_bighorn_tiger_adult_a1_05",
+  "ch_bighorn_tiger_adult_a1_06",
+  "ch_bighorn_tiger_adult_a1_07",
+  "ch_bighorn_tiger_adult_a2_00",
+  "ch_bighorn_tiger_adult_a2_01",
+  "ch_bighorn_tiger_adult_a2_02",
+  "ch_bighorn_tiger_adult_a2_03",
+  "ch_bighorn_tiger_adult_a2_04",
+  "ch_bighorn_tiger_adult_a2_05",
+  "ch_bighorn_tiger_adult_a2_06",
+  "ch_bighorn_tiger_adult_a2_07",
+  "ch_bighorn_tiger_adult_down_00",
+  "ch_bighorn_tiger_adult_down_01",
+  "ch_bighorn_tiger_adult_down_02",
+  "ch_bighorn_tiger_adult_down_03",
+  "ch_bighorn_tiger_adult_down_04",
+  "ch_bighorn_tiger_adult_down_05",
+  "ch_bighorn_tiger_adult_el_00",
+  "ch_bighorn_tiger_adult_el_01",
+  "ch_bighorn_tiger_adult_el_02",
+  "ch_bighorn_tiger_adult_el_03",
+  "ch_bighorn_tiger_adult_el_04",
+  "ch_bighorn_tiger_adult_el_05",
+  "ch_bighorn_tiger_adult_el_06",
+  "ch_bighorn_tiger_adult_el_07",
+  "ch_bighorn_tiger_adult_hit_00",
+  "ch_bighorn_tiger_adult_hit_01",
+  "ch_bighorn_tiger_adult_hit_02",
+  "ch_bighorn_tiger_adult_hit_03",
+  "ch_bighorn_tiger_adult_idle_00",
+  "ch_bighorn_tiger_adult_idle_01",
+  "ch_bighorn_tiger_adult_idle_02",
+  "ch_bighorn_tiger_adult_idle_03",
+  "ch_bighorn_tiger_adult_walk_00",
+  "ch_bighorn_tiger_adult_walk_01",
+  "ch_bighorn_tiger_adult_walk_02",
+  "ch_bighorn_tiger_adult_walk_03",
+  "ch_bighorn_tiger_adult_walk_04",
+  "ch_bighorn_tiger_adult_walk_05",
+  "ch_bighorn_tiger_adult_walk_06",
+  "ch_bighorn_tiger_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bighorn_tiger_adult_idle_00",
+  "ch_bighorn_tiger_adult_idle_01",
+  "ch_bighorn_tiger_adult_idle_02",
+  "ch_bighorn_tiger_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 17,
+   "attack": {
+    "frames": [
+     "ch_bighorn_tiger_adult_a1_00",
+     "ch_bighorn_tiger_adult_a1_01",
+     "ch_bighorn_tiger_adult_a1_02",
+     "ch_bighorn_tiger_adult_a1_03",
+     "ch_bighorn_tiger_adult_a1_04",
+     "ch_bighorn_tiger_adult_a1_05",
+     "ch_bighorn_tiger_adult_a1_06",
+     "ch_bighorn_tiger_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bighorn_tiger_adult_a2_00",
+     "ch_bighorn_tiger_adult_a2_01",
+     "ch_bighorn_tiger_adult_a2_02",
+     "ch_bighorn_tiger_adult_a2_03",
+     "ch_bighorn_tiger_adult_a2_04",
+     "ch_bighorn_tiger_adult_a2_05",
+     "ch_bighorn_tiger_adult_a2_06",
+     "ch_bighorn_tiger_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.35,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bighorn_tiger_adult_down_00",
+     "ch_bighorn_tiger_adult_down_01",
+     "ch_bighorn_tiger_adult_down_02",
+     "ch_bighorn_tiger_adult_down_03",
+     "ch_bighorn_tiger_adult_down_04",
+     "ch_bighorn_tiger_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_bighorn_tiger_adult_el_00",
+     "ch_bighorn_tiger_adult_el_01",
+     "ch_bighorn_tiger_adult_el_02",
+     "ch_bighorn_tiger_adult_el_03",
+     "ch_bighorn_tiger_adult_el_04",
+     "ch_bighorn_tiger_adult_el_05",
+     "ch_bighorn_tiger_adult_el_06",
+     "ch_bighorn_tiger_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bighorn_tiger_adult_hit_00",
+     "ch_bighorn_tiger_adult_hit_01",
+     "ch_bighorn_tiger_adult_hit_02",
+     "ch_bighorn_tiger_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bighorn_tiger_adult_idle_00",
+     "ch_bighorn_tiger_adult_idle_01",
+     "ch_bighorn_tiger_adult_idle_02",
+     "ch_bighorn_tiger_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bighorn_tiger_adult_walk_00",
+     "ch_bighorn_tiger_adult_walk_01",
+     "ch_bighorn_tiger_adult_walk_02",
+     "ch_bighorn_tiger_adult_walk_03",
+     "ch_bighorn_tiger_adult_walk_04",
+     "ch_bighorn_tiger_adult_walk_05",
+     "ch_bighorn_tiger_adult_walk_06",
+     "ch_bighorn_tiger_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bighorn_tiger_adult_down_00",
+     "ch_bighorn_tiger_adult_down_01",
+     "ch_bighorn_tiger_adult_down_02",
+     "ch_bighorn_tiger_adult_down_03",
+     "ch_bighorn_tiger_adult_down_04",
+     "ch_bighorn_tiger_adult_down_05",
+     "ch_bighorn_tiger_adult_down_04",
+     "ch_bighorn_tiger_adult_down_03",
+     "ch_bighorn_tiger_adult_down_02",
+     "ch_bighorn_tiger_adult_down_01",
+     "ch_bighorn_tiger_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bighorn_tiger"
+}

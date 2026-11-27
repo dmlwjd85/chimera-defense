@@ -1,0 +1,419 @@
+{
+ "note": "en_boss_boar_t1 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_boar_t1",
+ "sheet": "dot-m-en_boss_boar_t1",
+ "file": "assets/dotm/en_boss_boar_t1.png",
+ "frameW": 132,
+ "frameH": 138,
+ "foot": 136,
+ "cols": 1,
+ "anchorX": 61,
+ "palette": [
+  "#1e060b",
+  "#291a1f",
+  "#442b2d",
+  "#573d3c",
+  "#625253",
+  "#6d4a43",
+  "#702626",
+  "#7d706c",
+  "#99684e",
+  "#9c8375",
+  "#a242d5",
+  "#ba7f5b",
+  "#bda28f",
+  "#d1a36a",
+  "#e7d2bf",
+  "#eccb82"
+ ],
+ "rects": {
+  "en_boss_boar_t1_adult_a1_00": [
+   354,
+   0,
+   106,
+   109,
+   -53,
+   -109
+  ],
+  "en_boss_boar_t1_adult_a1_01": [
+   122,
+   0,
+   105,
+   117,
+   -52,
+   -117
+  ],
+  "en_boss_boar_t1_adult_a1_02": [
+   228,
+   0,
+   125,
+   116,
+   -61,
+   -137
+  ],
+  "en_boss_boar_t1_adult_a1_03": [
+   0,
+   0,
+   121,
+   123,
+   -59,
+   -129
+  ],
+  "en_boss_boar_t1_adult_a1_04": [
+   1085,
+   0,
+   110,
+   107,
+   -53,
+   -107
+  ],
+  "en_boss_boar_t1_adult_a1_05": [
+   1843,
+   0,
+   111,
+   106,
+   -57,
+   -106
+  ],
+  "en_boss_boar_t1_adult_down_00": [
+   1196,
+   0,
+   105,
+   107,
+   -51,
+   -107
+  ],
+  "en_boss_boar_t1_adult_down_01": [
+   0,
+   124,
+   110,
+   106,
+   -54,
+   -106
+  ],
+  "en_boss_boar_t1_adult_down_02": [
+   217,
+   124,
+   111,
+   102,
+   -52,
+   -103
+  ],
+  "en_boss_boar_t1_adult_down_03": [
+   329,
+   124,
+   118,
+   90,
+   -54,
+   -91
+  ],
+  "en_boss_boar_t1_adult_down_04": [
+   448,
+   124,
+   121,
+   83,
+   -52,
+   -83
+  ],
+  "en_boss_boar_t1_adult_down_05": [
+   570,
+   124,
+   127,
+   82,
+   -56,
+   -82
+  ],
+  "en_boss_boar_t1_adult_el_00": [
+   1302,
+   0,
+   111,
+   107,
+   -53,
+   -108
+  ],
+  "en_boss_boar_t1_adult_el_01": [
+   1414,
+   0,
+   105,
+   107,
+   -53,
+   -108
+  ],
+  "en_boss_boar_t1_adult_el_02": [
+   111,
+   124,
+   105,
+   106,
+   -52,
+   -108
+  ],
+  "en_boss_boar_t1_adult_el_03": [
+   659,
+   0,
+   103,
+   108,
+   -50,
+   -108
+  ],
+  "en_boss_boar_t1_adult_el_04": [
+   763,
+   0,
+   104,
+   108,
+   -52,
+   -108
+  ],
+  "en_boss_boar_t1_adult_el_05": [
+   868,
+   0,
+   114,
+   108,
+   -55,
+   -108
+  ],
+  "en_boss_boar_t1_adult_el_06": [
+   1520,
+   0,
+   109,
+   107,
+   -57,
+   -107
+  ],
+  "en_boss_boar_t1_adult_el_07": [
+   1630,
+   0,
+   108,
+   107,
+   -56,
+   -107
+  ],
+  "en_boss_boar_t1_adult_idle_00": [
+   983,
+   0,
+   101,
+   108,
+   -49,
+   -108
+  ],
+  "en_boss_boar_t1_adult_idle_01": [
+   461,
+   0,
+   99,
+   109,
+   -47,
+   -109
+  ],
+  "en_boss_boar_t1_adult_idle_02": [
+   561,
+   0,
+   97,
+   109,
+   -45,
+   -109
+  ],
+  "en_boss_boar_t1_adult_idle_03": [
+   1739,
+   0,
+   103,
+   107,
+   -51,
+   -107
+  ]
+ },
+ "frames": [
+  "en_boss_boar_t1_adult_a1_00",
+  "en_boss_boar_t1_adult_a1_01",
+  "en_boss_boar_t1_adult_a1_02",
+  "en_boss_boar_t1_adult_a1_03",
+  "en_boss_boar_t1_adult_a1_04",
+  "en_boss_boar_t1_adult_a1_05",
+  "en_boss_boar_t1_adult_down_00",
+  "en_boss_boar_t1_adult_down_01",
+  "en_boss_boar_t1_adult_down_02",
+  "en_boss_boar_t1_adult_down_03",
+  "en_boss_boar_t1_adult_down_04",
+  "en_boss_boar_t1_adult_down_05",
+  "en_boss_boar_t1_adult_el_00",
+  "en_boss_boar_t1_adult_el_01",
+  "en_boss_boar_t1_adult_el_02",
+  "en_boss_boar_t1_adult_el_03",
+  "en_boss_boar_t1_adult_el_04",
+  "en_boss_boar_t1_adult_el_05",
+  "en_boss_boar_t1_adult_el_06",
+  "en_boss_boar_t1_adult_el_07",
+  "en_boss_boar_t1_adult_idle_00",
+  "en_boss_boar_t1_adult_idle_01",
+  "en_boss_boar_t1_adult_idle_02",
+  "en_boss_boar_t1_adult_idle_03"
+ ],
+ "standing": [
+  "en_boss_boar_t1_adult_idle_00",
+  "en_boss_boar_t1_adult_idle_01",
+  "en_boss_boar_t1_adult_idle_02",
+  "en_boss_boar_t1_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 28,
+   "attack": {
+    "frames": [
+     "en_boss_boar_t1_adult_a1_00",
+     "en_boss_boar_t1_adult_a1_01",
+     "en_boss_boar_t1_adult_a1_02",
+     "en_boss_boar_t1_adult_a1_03",
+     "en_boss_boar_t1_adult_a1_04",
+     "en_boss_boar_t1_adult_a1_05"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_boar_t1_adult_down_00",
+     "en_boss_boar_t1_adult_down_01",
+     "en_boss_boar_t1_adult_down_02",
+     "en_boss_boar_t1_adult_down_03",
+     "en_boss_boar_t1_adult_down_04",
+     "en_boss_boar_t1_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_boar_t1_adult_el_00",
+     "en_boss_boar_t1_adult_el_01",
+     "en_boss_boar_t1_adult_el_02",
+     "en_boss_boar_t1_adult_el_03",
+     "en_boss_boar_t1_adult_el_04",
+     "en_boss_boar_t1_adult_el_05",
+     "en_boss_boar_t1_adult_el_06",
+     "en_boss_boar_t1_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.311,
+      "cast"
+     ],
+     [
+      0.321,
+      "hit"
+     ]
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_boar_t1_adult_idle_00",
+     "en_boss_boar_t1_adult_idle_01",
+     "en_boss_boar_t1_adult_idle_02",
+     "en_boss_boar_t1_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_boss_boar_t1_adult_idle_00",
+     "en_boss_boar_t1_adult_idle_01",
+     "en_boss_boar_t1_adult_idle_02",
+     "en_boss_boar_t1_adult_idle_03"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.12,
+     0.12
+    ],
+    "loop": true
+   },
+   "hit": {
+    "frames": [
+     "en_boss_boar_t1_adult_idle_00"
+    ],
+    "durs": [
+     0.22
+    ]
+   },
+   "fall": {
+    "frames": [
+     "en_boss_boar_t1_adult_down_00",
+     "en_boss_boar_t1_adult_down_01",
+     "en_boss_boar_t1_adult_down_02",
+     "en_boss_boar_t1_adult_down_03",
+     "en_boss_boar_t1_adult_down_04",
+     "en_boss_boar_t1_adult_down_05",
+     "en_boss_boar_t1_adult_down_04",
+     "en_boss_boar_t1_adult_down_03",
+     "en_boss_boar_t1_adult_down_02",
+     "en_boss_boar_t1_adult_down_01",
+     "en_boss_boar_t1_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

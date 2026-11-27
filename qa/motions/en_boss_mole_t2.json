@@ -1,0 +1,38 @@
+{
+ "species": "en_boss_mole_t2",
+ "motions": {
+  "adult_a1": {
+   "n": 6,
+   "max|h%|": 0.9,
+   "foot±": 0
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 41.1,
+   "foot±": 5
+  },
+  "adult_el": {
+   "n": 4,
+   "max|h%|": 3.7,
+   "foot±": 3
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 0.9,
+   "foot±": 0
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   196
+  ],
+  "box": [
+   134,
+   113
+  ],
+  "frames": 20,
+  "colors": 16,
+  "px": 401408
+ }
+}

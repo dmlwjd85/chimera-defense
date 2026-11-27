@@ -1,0 +1,38 @@
+{
+ "species": "en_boss_lava_t1",
+ "motions": {
+  "adult_a1": {
+   "n": 6,
+   "max|h%|": 5.1,
+   "foot±": 1
+  },
+  "adult_down": {
+   "n": 3,
+   "max|h%|": 35.7,
+   "foot±": 2
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 11.2,
+   "foot±": 2
+  },
+  "adult_idle": {
+   "n": 1,
+   "max|h%|": 0.0,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   109
+  ],
+  "box": [
+   139,
+   111
+  ],
+  "frames": 18,
+  "colors": 16,
+  "px": 223232
+ }
+}

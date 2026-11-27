@@ -1,0 +1,53 @@
+{
+ "species": "ch_bear_bighorn",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 45.6,
+   "foot±": 3
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 8.9,
+   "foot±": 2
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 40.5,
+   "foot±": 3
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 43.0,
+   "foot±": 2
+  },
+  "adult_hit": {
+   "n": 2,
+   "max|h%|": 7.6,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.3,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 3.8,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   195
+  ],
+  "box": [
+   100,
+   118
+  ],
+  "frames": 44,
+  "colors": 16,
+  "px": 399360
+ }
+}

@@ -1,0 +1,393 @@
+{
+ "note": "en_boss_bone_t1 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_bone_t1",
+ "sheet": "dot-m-en_boss_bone_t1",
+ "file": "assets/dotm/en_boss_bone_t1.png",
+ "frameW": 142,
+ "frameH": 152,
+ "foot": 150,
+ "cols": 1,
+ "anchorX": 73,
+ "palette": [
+  "#17060a",
+  "#23263c",
+  "#291a1f",
+  "#343447",
+  "#3d4867",
+  "#4d5c7e",
+  "#5e3030",
+  "#697796",
+  "#755353",
+  "#7d91b1",
+  "#99766f",
+  "#9db2d0",
+  "#9e3133",
+  "#b7a694",
+  "#dccaba",
+  "#e36c6b"
+ ],
+ "rects": {
+  "en_boss_bone_t1_adult_a1_00": [
+   1257,
+   0,
+   111,
+   94,
+   -59,
+   -94
+  ],
+  "en_boss_bone_t1_adult_a1_01": [
+   229,
+   152,
+   89,
+   90,
+   -66,
+   -90
+  ],
+  "en_boss_bone_t1_adult_a1_02": [
+   128,
+   152,
+   100,
+   91,
+   -69,
+   -91
+  ],
+  "en_boss_bone_t1_adult_a1_03": [
+   1369,
+   0,
+   99,
+   94,
+   -68,
+   -94
+  ],
+  "en_boss_bone_t1_adult_a1_04": [
+   891,
+   0,
+   120,
+   96,
+   -59,
+   -96
+  ],
+  "en_boss_bone_t1_adult_down_00": [
+   1582,
+   0,
+   117,
+   93,
+   -61,
+   -93
+  ],
+  "en_boss_bone_t1_adult_down_01": [
+   1811,
+   0,
+   116,
+   92,
+   -63,
+   -92
+  ],
+  "en_boss_bone_t1_adult_down_02": [
+   1469,
+   0,
+   112,
+   94,
+   -63,
+   -94
+  ],
+  "en_boss_bone_t1_adult_down_03": [
+   1700,
+   0,
+   110,
+   93,
+   -63,
+   -93
+  ],
+  "en_boss_bone_t1_adult_down_04": [
+   459,
+   152,
+   117,
+   64,
+   -53,
+   -64
+  ],
+  "en_boss_bone_t1_adult_el_00": [
+   544,
+   0,
+   114,
+   98,
+   -60,
+   -98
+  ],
+  "en_boss_bone_t1_adult_el_01": [
+   212,
+   0,
+   100,
+   146,
+   -61,
+   -146
+  ],
+  "en_boss_bone_t1_adult_el_02": [
+   0,
+   0,
+   102,
+   151,
+   -67,
+   -151
+  ],
+  "en_boss_bone_t1_adult_el_03": [
+   103,
+   0,
+   108,
+   148,
+   -72,
+   -148
+  ],
+  "en_boss_bone_t1_adult_el_04": [
+   313,
+   0,
+   114,
+   143,
+   -73,
+   -143
+  ],
+  "en_boss_bone_t1_adult_el_05": [
+   319,
+   152,
+   139,
+   89,
+   -70,
+   -89
+  ],
+  "en_boss_bone_t1_adult_el_06": [
+   0,
+   152,
+   127,
+   92,
+   -67,
+   -92
+  ],
+  "en_boss_bone_t1_adult_el_07": [
+   1127,
+   0,
+   129,
+   95,
+   -60,
+   -95
+  ],
+  "en_boss_bone_t1_adult_idle_00": [
+   659,
+   0,
+   114,
+   98,
+   -57,
+   -98
+  ],
+  "en_boss_bone_t1_adult_idle_01": [
+   428,
+   0,
+   115,
+   100,
+   -58,
+   -100
+  ],
+  "en_boss_bone_t1_adult_idle_02": [
+   774,
+   0,
+   116,
+   98,
+   -59,
+   -98
+  ],
+  "en_boss_bone_t1_adult_idle_03": [
+   1012,
+   0,
+   114,
+   96,
+   -57,
+   -96
+  ]
+ },
+ "frames": [
+  "en_boss_bone_t1_adult_a1_00",
+  "en_boss_bone_t1_adult_a1_01",
+  "en_boss_bone_t1_adult_a1_02",
+  "en_boss_bone_t1_adult_a1_03",
+  "en_boss_bone_t1_adult_a1_04",
+  "en_boss_bone_t1_adult_down_00",
+  "en_boss_bone_t1_adult_down_01",
+  "en_boss_bone_t1_adult_down_02",
+  "en_boss_bone_t1_adult_down_03",
+  "en_boss_bone_t1_adult_down_04",
+  "en_boss_bone_t1_adult_el_00",
+  "en_boss_bone_t1_adult_el_01",
+  "en_boss_bone_t1_adult_el_02",
+  "en_boss_bone_t1_adult_el_03",
+  "en_boss_bone_t1_adult_el_04",
+  "en_boss_bone_t1_adult_el_05",
+  "en_boss_bone_t1_adult_el_06",
+  "en_boss_bone_t1_adult_el_07",
+  "en_boss_bone_t1_adult_idle_00",
+  "en_boss_bone_t1_adult_idle_01",
+  "en_boss_bone_t1_adult_idle_02",
+  "en_boss_bone_t1_adult_idle_03"
+ ],
+ "standing": [
+  "en_boss_bone_t1_adult_idle_00",
+  "en_boss_bone_t1_adult_idle_01",
+  "en_boss_bone_t1_adult_idle_02",
+  "en_boss_bone_t1_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 51,
+   "attack": {
+    "frames": [
+     "en_boss_bone_t1_adult_a1_00",
+     "en_boss_bone_t1_adult_a1_01",
+     "en_boss_bone_t1_adult_a1_02",
+     "en_boss_bone_t1_adult_a1_03",
+     "en_boss_bone_t1_adult_a1_04"
+    ],
+    "durs": [
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.114,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_bone_t1_adult_down_00",
+     "en_boss_bone_t1_adult_down_01",
+     "en_boss_bone_t1_adult_down_02",
+     "en_boss_bone_t1_adult_down_03",
+     "en_boss_bone_t1_adult_down_04"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_bone_t1_adult_el_00",
+     "en_boss_bone_t1_adult_el_01",
+     "en_boss_bone_t1_adult_el_02",
+     "en_boss_bone_t1_adult_el_03",
+     "en_boss_bone_t1_adult_el_04",
+     "en_boss_bone_t1_adult_el_05",
+     "en_boss_bone_t1_adult_el_06",
+     "en_boss_bone_t1_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 5,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.374,
+      "cast"
+     ],
+     [
+      0.384,
+      "hit"
+     ]
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_bone_t1_adult_idle_00",
+     "en_boss_bone_t1_adult_idle_01",
+     "en_boss_bone_t1_adult_idle_02",
+     "en_boss_bone_t1_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_boss_bone_t1_adult_idle_00",
+     "en_boss_bone_t1_adult_idle_01",
+     "en_boss_bone_t1_adult_idle_02",
+     "en_boss_bone_t1_adult_idle_03"
+    ],
+    "durs": [
+     0.12,
+     0.12,
+     0.12,
+     0.12
+    ],
+    "loop": true
+   },
+   "hit": {
+    "frames": [
+     "en_boss_bone_t1_adult_idle_00"
+    ],
+    "durs": [
+     0.22
+    ]
+   },
+   "fall": {
+    "frames": [
+     "en_boss_bone_t1_adult_down_00",
+     "en_boss_bone_t1_adult_down_01",
+     "en_boss_bone_t1_adult_down_02",
+     "en_boss_bone_t1_adult_down_03",
+     "en_boss_bone_t1_adult_down_04",
+     "en_boss_bone_t1_adult_down_03",
+     "en_boss_bone_t1_adult_down_02",
+     "en_boss_bone_t1_adult_down_01",
+     "en_boss_bone_t1_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

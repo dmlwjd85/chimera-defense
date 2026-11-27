@@ -834,6 +834,38 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "rooster_myth_down_00",
+     "rooster_myth_down_01",
+     "rooster_myth_down_02",
+     "rooster_myth_down_03",
+     "rooster_myth_down_04",
+     "rooster_myth_down_05",
+     "rooster_myth_down_06",
+     "rooster_myth_down_05",
+     "rooster_myth_down_04",
+     "rooster_myth_down_03",
+     "rooster_myth_down_02",
+     "rooster_myth_down_01",
+     "rooster_myth_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   }
  },

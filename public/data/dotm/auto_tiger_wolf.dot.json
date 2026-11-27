@@ -1,0 +1,668 @@
+{
+ "note": "ch_tiger_wolf 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_tiger_wolf",
+ "sheet": "dot-m-auto_tiger_wolf",
+ "file": "assets/dotm/auto_tiger_wolf.png",
+ "frameW": 116,
+ "frameH": 115,
+ "foot": 112,
+ "cols": 1,
+ "anchorX": 59,
+ "palette": [
+  "#291a1f",
+  "#3f272c",
+  "#51454c",
+  "#615b66",
+  "#6a636e",
+  "#796e76",
+  "#807b83",
+  "#8e838b",
+  "#959699",
+  "#9c9ea2",
+  "#9d939a",
+  "#b6b3b5",
+  "#b97732",
+  "#c2c1c1",
+  "#cbcbca",
+  "#f4d356"
+ ],
+ "rects": {
+  "ch_tiger_wolf_adult_a1_00": [
+   626,
+   114,
+   103,
+   80,
+   -52,
+   -80
+  ],
+  "ch_tiger_wolf_adult_a1_01": [
+   1176,
+   0,
+   105,
+   82,
+   -54,
+   -82
+  ],
+  "ch_tiger_wolf_adult_a1_02": [
+   643,
+   0,
+   104,
+   85,
+   -55,
+   -85
+  ],
+  "ch_tiger_wolf_adult_a1_03": [
+   429,
+   0,
+   104,
+   88,
+   -56,
+   -88
+  ],
+  "ch_tiger_wolf_adult_a1_04": [
+   534,
+   0,
+   108,
+   88,
+   -59,
+   -88
+  ],
+  "ch_tiger_wolf_adult_a1_05": [
+   748,
+   0,
+   108,
+   85,
+   -58,
+   -85
+  ],
+  "ch_tiger_wolf_adult_a1_06": [
+   1282,
+   0,
+   107,
+   82,
+   -56,
+   -82
+  ],
+  "ch_tiger_wolf_adult_a1_07": [
+   730,
+   114,
+   103,
+   80,
+   -52,
+   -80
+  ],
+  "ch_tiger_wolf_adult_a2_00": [
+   1257,
+   114,
+   105,
+   79,
+   -53,
+   -79
+  ],
+  "ch_tiger_wolf_adult_a2_01": [
+   1685,
+   114,
+   108,
+   78,
+   -55,
+   -78
+  ],
+  "ch_tiger_wolf_adult_a2_02": [
+   1794,
+   114,
+   110,
+   78,
+   -58,
+   -86
+  ],
+  "ch_tiger_wolf_adult_a2_03": [
+   834,
+   114,
+   108,
+   80,
+   -56,
+   -98
+  ],
+  "ch_tiger_wolf_adult_a2_04": [
+   107,
+   196,
+   107,
+   76,
+   -55,
+   -86
+  ],
+  "ch_tiger_wolf_adult_a2_05": [
+   1363,
+   114,
+   109,
+   79,
+   -57,
+   -79
+  ],
+  "ch_tiger_wolf_adult_a2_06": [
+   1473,
+   114,
+   107,
+   79,
+   -55,
+   -79
+  ],
+  "ch_tiger_wolf_adult_a2_07": [
+   1913,
+   0,
+   106,
+   81,
+   -55,
+   -81
+  ],
+  "ch_tiger_wolf_adult_down_00": [
+   943,
+   114,
+   105,
+   80,
+   -53,
+   -80
+  ],
+  "ch_tiger_wolf_adult_down_01": [
+   1905,
+   114,
+   106,
+   78,
+   -53,
+   -78
+  ],
+  "ch_tiger_wolf_adult_down_02": [
+   215,
+   196,
+   109,
+   74,
+   -55,
+   -74
+  ],
+  "ch_tiger_wolf_adult_down_03": [
+   540,
+   196,
+   110,
+   62,
+   -55,
+   -62
+  ],
+  "ch_tiger_wolf_adult_down_04": [
+   651,
+   196,
+   114,
+   54,
+   -58,
+   -54
+  ],
+  "ch_tiger_wolf_adult_down_05": [
+   766,
+   196,
+   114,
+   51,
+   -57,
+   -50
+  ],
+  "ch_tiger_wolf_adult_el_00": [
+   0,
+   114,
+   104,
+   81,
+   -53,
+   -81
+  ],
+  "ch_tiger_wolf_adult_el_01": [
+   857,
+   0,
+   104,
+   85,
+   -55,
+   -85
+  ],
+  "ch_tiger_wolf_adult_el_02": [
+   109,
+   0,
+   104,
+   99,
+   -57,
+   -99
+  ],
+  "ch_tiger_wolf_adult_el_03": [
+   0,
+   0,
+   108,
+   113,
+   -57,
+   -113
+  ],
+  "ch_tiger_wolf_adult_el_04": [
+   214,
+   0,
+   106,
+   97,
+   -59,
+   -97
+  ],
+  "ch_tiger_wolf_adult_el_05": [
+   321,
+   0,
+   107,
+   92,
+   -59,
+   -92
+  ],
+  "ch_tiger_wolf_adult_el_06": [
+   962,
+   0,
+   108,
+   83,
+   -58,
+   -83
+  ],
+  "ch_tiger_wolf_adult_el_07": [
+   1390,
+   0,
+   102,
+   82,
+   -51,
+   -82
+  ],
+  "ch_tiger_wolf_adult_hit_00": [
+   0,
+   196,
+   106,
+   78,
+   -53,
+   -78
+  ],
+  "ch_tiger_wolf_adult_hit_01": [
+   325,
+   196,
+   107,
+   73,
+   -55,
+   -76
+  ],
+  "ch_tiger_wolf_adult_hit_02": [
+   433,
+   196,
+   106,
+   73,
+   -55,
+   -81
+  ],
+  "ch_tiger_wolf_adult_hit_03": [
+   1493,
+   0,
+   103,
+   82,
+   -52,
+   -81
+  ],
+  "ch_tiger_wolf_adult_idle_00": [
+   1049,
+   114,
+   104,
+   80,
+   -52,
+   -80
+  ],
+  "ch_tiger_wolf_adult_idle_01": [
+   1581,
+   114,
+   103,
+   79,
+   -52,
+   -79
+  ],
+  "ch_tiger_wolf_adult_idle_02": [
+   1154,
+   114,
+   102,
+   80,
+   -51,
+   -80
+  ],
+  "ch_tiger_wolf_adult_idle_03": [
+   105,
+   114,
+   102,
+   81,
+   -51,
+   -81
+  ],
+  "ch_tiger_wolf_adult_walk_00": [
+   208,
+   114,
+   103,
+   81,
+   -52,
+   -82
+  ],
+  "ch_tiger_wolf_adult_walk_01": [
+   1597,
+   0,
+   105,
+   82,
+   -53,
+   -84
+  ],
+  "ch_tiger_wolf_adult_walk_02": [
+   312,
+   114,
+   105,
+   81,
+   -53,
+   -83
+  ],
+  "ch_tiger_wolf_adult_walk_03": [
+   418,
+   114,
+   104,
+   81,
+   -52,
+   -81
+  ],
+  "ch_tiger_wolf_adult_walk_04": [
+   1703,
+   0,
+   105,
+   82,
+   -54,
+   -82
+  ],
+  "ch_tiger_wolf_adult_walk_05": [
+   1071,
+   0,
+   104,
+   83,
+   -53,
+   -83
+  ],
+  "ch_tiger_wolf_adult_walk_06": [
+   1809,
+   0,
+   103,
+   82,
+   -52,
+   -82
+  ],
+  "ch_tiger_wolf_adult_walk_07": [
+   523,
+   114,
+   102,
+   81,
+   -51,
+   -81
+  ]
+ },
+ "frames": [
+  "ch_tiger_wolf_adult_a1_00",
+  "ch_tiger_wolf_adult_a1_01",
+  "ch_tiger_wolf_adult_a1_02",
+  "ch_tiger_wolf_adult_a1_03",
+  "ch_tiger_wolf_adult_a1_04",
+  "ch_tiger_wolf_adult_a1_05",
+  "ch_tiger_wolf_adult_a1_06",
+  "ch_tiger_wolf_adult_a1_07",
+  "ch_tiger_wolf_adult_a2_00",
+  "ch_tiger_wolf_adult_a2_01",
+  "ch_tiger_wolf_adult_a2_02",
+  "ch_tiger_wolf_adult_a2_03",
+  "ch_tiger_wolf_adult_a2_04",
+  "ch_tiger_wolf_adult_a2_05",
+  "ch_tiger_wolf_adult_a2_06",
+  "ch_tiger_wolf_adult_a2_07",
+  "ch_tiger_wolf_adult_down_00",
+  "ch_tiger_wolf_adult_down_01",
+  "ch_tiger_wolf_adult_down_02",
+  "ch_tiger_wolf_adult_down_03",
+  "ch_tiger_wolf_adult_down_04",
+  "ch_tiger_wolf_adult_down_05",
+  "ch_tiger_wolf_adult_el_00",
+  "ch_tiger_wolf_adult_el_01",
+  "ch_tiger_wolf_adult_el_02",
+  "ch_tiger_wolf_adult_el_03",
+  "ch_tiger_wolf_adult_el_04",
+  "ch_tiger_wolf_adult_el_05",
+  "ch_tiger_wolf_adult_el_06",
+  "ch_tiger_wolf_adult_el_07",
+  "ch_tiger_wolf_adult_hit_00",
+  "ch_tiger_wolf_adult_hit_01",
+  "ch_tiger_wolf_adult_hit_02",
+  "ch_tiger_wolf_adult_hit_03",
+  "ch_tiger_wolf_adult_idle_00",
+  "ch_tiger_wolf_adult_idle_01",
+  "ch_tiger_wolf_adult_idle_02",
+  "ch_tiger_wolf_adult_idle_03",
+  "ch_tiger_wolf_adult_walk_00",
+  "ch_tiger_wolf_adult_walk_01",
+  "ch_tiger_wolf_adult_walk_02",
+  "ch_tiger_wolf_adult_walk_03",
+  "ch_tiger_wolf_adult_walk_04",
+  "ch_tiger_wolf_adult_walk_05",
+  "ch_tiger_wolf_adult_walk_06",
+  "ch_tiger_wolf_adult_walk_07"
+ ],
+ "standing": [
+  "ch_tiger_wolf_adult_idle_00",
+  "ch_tiger_wolf_adult_idle_01",
+  "ch_tiger_wolf_adult_idle_02",
+  "ch_tiger_wolf_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 32,
+   "attack": {
+    "frames": [
+     "ch_tiger_wolf_adult_a1_00",
+     "ch_tiger_wolf_adult_a1_01",
+     "ch_tiger_wolf_adult_a1_02",
+     "ch_tiger_wolf_adult_a1_03",
+     "ch_tiger_wolf_adult_a1_04",
+     "ch_tiger_wolf_adult_a1_05",
+     "ch_tiger_wolf_adult_a1_06",
+     "ch_tiger_wolf_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_tiger_wolf_adult_a2_00",
+     "ch_tiger_wolf_adult_a2_01",
+     "ch_tiger_wolf_adult_a2_02",
+     "ch_tiger_wolf_adult_a2_03",
+     "ch_tiger_wolf_adult_a2_04",
+     "ch_tiger_wolf_adult_a2_05",
+     "ch_tiger_wolf_adult_a2_06",
+     "ch_tiger_wolf_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_tiger_wolf_adult_down_00",
+     "ch_tiger_wolf_adult_down_01",
+     "ch_tiger_wolf_adult_down_02",
+     "ch_tiger_wolf_adult_down_03",
+     "ch_tiger_wolf_adult_down_04",
+     "ch_tiger_wolf_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_tiger_wolf_adult_el_00",
+     "ch_tiger_wolf_adult_el_01",
+     "ch_tiger_wolf_adult_el_02",
+     "ch_tiger_wolf_adult_el_03",
+     "ch_tiger_wolf_adult_el_04",
+     "ch_tiger_wolf_adult_el_05",
+     "ch_tiger_wolf_adult_el_06",
+     "ch_tiger_wolf_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_tiger_wolf_adult_hit_00",
+     "ch_tiger_wolf_adult_hit_01",
+     "ch_tiger_wolf_adult_hit_02",
+     "ch_tiger_wolf_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_tiger_wolf_adult_idle_00",
+     "ch_tiger_wolf_adult_idle_01",
+     "ch_tiger_wolf_adult_idle_02",
+     "ch_tiger_wolf_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_tiger_wolf_adult_walk_00",
+     "ch_tiger_wolf_adult_walk_01",
+     "ch_tiger_wolf_adult_walk_02",
+     "ch_tiger_wolf_adult_walk_03",
+     "ch_tiger_wolf_adult_walk_04",
+     "ch_tiger_wolf_adult_walk_05",
+     "ch_tiger_wolf_adult_walk_06",
+     "ch_tiger_wolf_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_tiger_wolf_adult_down_00",
+     "ch_tiger_wolf_adult_down_01",
+     "ch_tiger_wolf_adult_down_02",
+     "ch_tiger_wolf_adult_down_03",
+     "ch_tiger_wolf_adult_down_04",
+     "ch_tiger_wolf_adult_down_05",
+     "ch_tiger_wolf_adult_down_04",
+     "ch_tiger_wolf_adult_down_03",
+     "ch_tiger_wolf_adult_down_02",
+     "ch_tiger_wolf_adult_down_01",
+     "ch_tiger_wolf_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "tiger_wolf"
+}

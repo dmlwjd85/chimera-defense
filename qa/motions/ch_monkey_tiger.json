@@ -1,0 +1,53 @@
+{
+ "species": "ch_monkey_tiger",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 5.1,
+   "foot±": 1
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 3.8,
+   "foot±": 16
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 35.9,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 23.1,
+   "foot±": 15
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 7.7,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.6,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 3.8,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   250
+  ],
+  "box": [
+   111,
+   113
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 512000
+ }
+}

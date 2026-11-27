@@ -17,7 +17,7 @@ import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
 import { soundOf, ELEM_SOUND } from './onomato.js';
 import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
-import { button, panel, style, unitToken, silhouette, hex, COLORS, chip, showTip, hideTip } from './ui.js';
+import { button, panel, style, unitToken, silhouette, hex, COLORS, chip, showTip, hideTip, relicIcon } from './ui.js';
 
 import { PATH_Y, X0, TILE, PATH_H, BENCH_Y, BENCH_X0, BENCH_GAP, SLOT, tileToX, xToTile, benchSlotX, benchSlotPos, LANE_Y, LANE_SCALE, laneAt, DOCK_Y, SIDE_L, SIDE_R, SIDE_TOP } from './layout.js';
 import { drawSidebars, Roster, Altar } from './sidebars.js';
@@ -51,7 +51,7 @@ export default class BattleScene extends Phaser.Scene {
       const data = buildData(this.registry.get('raw'));
       const pool = window.__forcePool ?? battleOptions(this.registry.get('save'), data, d?.stageId ?? 'forest-1').pool ?? [];
       queueMotionSheets(this, pool);
-      queueMotionSheets(this, poolExtraIds(pool));   // 돌연변이 슬라임 + 덱 종끼리의 자동 키메라(PixelLab 동작)
+      queueMotionSheets(this, poolExtraIds(pool, data.recipes?.filter((r) => !r.auto)));   // 돌연변이 슬라임 + 덱 종끼리의 자동 키메라(PixelLab 동작)
       // 그 판에 나올 적의 동작 시트(PixelLab)도 같이: 맞붙어 치고받는 공격·움찔·쓰러짐
       queueMotionSheets(this, stageEnemyIds(data.stageById[d?.stageId ?? 'forest-1'], data));
     } catch (e) { console.warn('motion sheets', e); }
@@ -426,7 +426,7 @@ export default class BattleScene extends Phaser.Scene {
         g.lineStyle(2, col, 0.9).strokeCircle(x + W / 2, y + 78, 50);
       };
       draw(false);
-      const icon = this.add.text(x + W / 2, y + 78, r.icon, style(48)).setOrigin(0.5).setDepth(4002);
+      const icon = relicIcon(this, r, x + W / 2, y + 78, 72).setDepth(4002);
       const nm = this.add.text(x + W / 2, y + 150, r.name, style(20, '#ffffff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(4002);
       const rr = this.add.text(x + W / 2, y + 176, RARITY_NAME[r.rarity], style(13, '#' + col.toString(16).padStart(6, '0'))).setOrigin(0.5).setDepth(4002);
       const tl = this.data2.tales?.relics?.[r.id] ?? '';

@@ -6,10 +6,20 @@
    "max|h%|": 7.1,
    "foot±": 0
   },
+  "adult_block": {
+   "n": 6,
+   "max|h%|": 7.1,
+   "foot±": 0
+  },
   "adult_down": {
    "n": 8,
    "max|h%|": 45.2,
    "foot±": 1
+  },
+  "adult_grab": {
+   "n": 8,
+   "max|h%|": 6.0,
+   "foot±": 16
   },
   "adult_hit": {
    "n": 4,
@@ -21,6 +31,11 @@
    "max|h%|": 17.9,
    "foot±": 2
   },
+  "adult_sweep": {
+   "n": 8,
+   "max|h%|": 8.3,
+   "foot±": 1
+  },
   "adult_walk": {
    "n": 8,
    "max|h%|": 6.0,
@@ -30,14 +45,14 @@
  "main": {
   "sheet": [
    2048,
-   178
+   232
   ],
   "box": [
    96,
    102
   ],
-  "frames": 32,
+  "frames": 54,
   "colors": 16,
-  "px": 364544
+  "px": 475136
  }
 }

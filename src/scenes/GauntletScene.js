@@ -680,8 +680,9 @@ export default class GauntletScene extends Phaser.Scene {
         // 피해는 규칙에서 먼저 깎이고 주먹은 조금 뒤에 닿음 → 맞는 동작은 닿을 때(hitReact). 공격 아닌 피해(지형·독·옆구리)는 0.26초 뒤 대신 움찔
         if (u.hp < v.lastHp - 0.5 && !u.down) v.pendHit ??= this.time.now;
         if (v.pendHit != null && this.time.now - v.pendHit > 260) { if ((v.hitAt ?? -999) < v.pendHit) this.hitReact(v); v.pendHit = null; }
-        if (s.phase !== 'fight' || v.dash || v.walking) v.turned = false;
-        r.setFacing(v.dashBack !== !!v.turned ? -1 : 1);
+        // 방향(2026-11-27 "공격하고 돌아와도 왼쪽을 보고 있는 오류", "적을 향해 방향 빨리 정하기"): 붙잡아 둔 방향 없이 매 프레임 정함
+        //  돌아가는 중 = 가는 쪽 · 그 밖 = 맞붙은 적 → 방금 친 적 → 가장 가까운 적 쪽(24px 안쪽이면 그대로)
+        r.setFacing(this.faceOfUnit(v, u));
         if (u.stunLeft > 0 && !v.dive && r.flashLeft > 0) r.flashLeft = Math.max(0, r.flashLeft - dt);   // 기절로 멈춰 있어도 흰 번쩍은 끝나게
         v.rig.view.update(u.stunLeft > 0 && !v.dive ? 0 : dt);
       }
@@ -1142,6 +1143,21 @@ export default class GauntletScene extends Phaser.Scene {
     this.fx.shout(x, y, text, color, opts);
   }
 
+  /** 아군이 볼 방향(1 오른쪽 · -1 왼쪽) */
+  faceOfUnit(v, u) {
+    const s = this.state;
+    if (s.phase !== 'fight' || u.down) return 1;
+    if (v.dashBack) return (v.baseX ?? v.c.x) < v.c.x - 6 ? -1 : 1;
+    const c = clashOfU(s, u.uid);
+    let fv = c ? this.eViews.get(c.eid) : null;
+    if (!fv && v.foe != null && this.time.now - (v.foeAt ?? 0) < 2500 && s.enemies.some((e) => e.eid === v.foe && e.hp > 0)) fv = this.eViews.get(v.foe);
+    if (!fv) { let best = 1e9; for (const e of s.enemies) { if (e.hp <= 0) continue; const ev = this.eViews.get(e.eid); if (!ev) continue; const d = Math.abs(ev.c.x - v.c.x) + Math.abs(ev.c.y - v.c.y) * 0.5; if (d < best) { best = d; fv = ev; } } }
+    if (!fv) return 1;
+    const dx = fv.c.x - v.c.x;
+    v.face = dx < -24 ? -1 : dx > 24 ? 1 : (v.face ?? 1);
+    return v.face;
+  }
+
   /** 맞으면 피격 동작(2026-11-27 "공격 받으면 피격 모션 추가"): 기술·막기·쓰러짐 중이거나 공격을 막 휘두르는 중(앞 55%)이면 번쩍임만 */
   hitReact(v, heavy = false) {
     const r = v?.rig?.inst; if (!r || v.dive) return;
@@ -1308,12 +1324,16 @@ export default class GauntletScene extends Phaser.Scene {
     const tv = ev.eid != null ? this.eViews.get(ev.eid) : null;
     const targets = (ev.hits ?? []).map((h) => this.eViews.get(h.eid)).filter(Boolean);
     // 등 뒤(왼쪽)의 적을 칠 때는 돌아서서 침(2026-11-27 "브루저 고립되면 우리 캐릭터도 왼쪽 보고 공격"). 그림은 좌우 뒤집기만(다시 그리지 않음)
-    if (tv && !v.dive) v.turned = tv.c.x < v.c.x - 24;
+    if (tv) { v.foe = ev.eid; v.foeAt = this.time.now; }
     if (v.rig && v.dive) this.time.delayedCall(Math.round((v.dive.segs[0]?.d ?? 0.4) * 1000), () => { if (ev.move === 'skill') v.rig?.inst.play(v.rig.inst.anims.skill ? 'skill' : 'attack'); else if (v.rig) playAttack(v.rig.inst, ev.move); });
     else if (v.rig) { if (ev.move === 'skill') v.rig.inst.play(v.rig.inst.anims.skill ? 'skill' : 'attack'); else playAttack(v.rig.inst, ev.move); }
     const big = ev.big;
     const color = ev.move === 'ult' ? 0xffd84d : ev.el ? (this.D.config.elements.defs[ev.el] ? 0x8fd3ff : 0xffe066) : 0xffe066;
-    if (ev.move === 'ult' && targets.length && this.robotCut(u, ev, targets)) { /* 3단 컷이 대신함 */ } else if (ev.move === 'ult' && targets.length) this.closeUp([v], targets.slice(0, 3), ev.name ?? '기술', ev.move === 'ult' ? 0xffd84d : ev.move === 'skill' ? 0x9cff6b : 0x8fd3ff, ev.move === 'ult');
+    // 필살기(2026-11-27 "보는 맛이 있게 적당히, 여러 가지 자주"): 큰 컷은 8초에 한 번, 그 사이엔 가벼운 연출(이름 외침 + 금빛 고리 + 짧은 번쩍)
+    const lightUlt = ev.move === 'ult' && this.time.now - (this.lastUltCut ?? -99999) < 8000;
+    if (ev.move === 'ult' && !lightUlt) this.lastUltCut = this.time.now;
+    if (lightUlt) { this.say(v.c.x, v.c.y - 140, `✨ ${ev.name ?? '필살기'}!`, 0xffd84d, { size: 21, hold: 750, force: true }); this.fx.ring(v.c.x, v.c.y + 24, 0xffd84d, 1.5, 520); this.fx.burst?.('star', v.c.x, v.c.y - 50, 8, 0xffe066); this.cameras.main.flash(90, 255, 230, 140); }
+    else if (ev.move === 'ult' && targets.length && this.robotCut(u, ev, targets)) { /* 3단 컷이 대신함 */ } else if (ev.move === 'ult' && targets.length) this.closeUp([v], targets.slice(0, 3), ev.name ?? '기술', ev.move === 'ult' ? 0xffd84d : ev.move === 'skill' ? 0x9cff6b : 0x8fd3ff, ev.move === 'ult');
     // 한 수 한 수가 보이게: 강타·기술·속성 공격은 늘 이름표(2026-11-27 느린 템포)
     else if (ev.move === 'a2') this.say(v.c.x, v.c.y - 112, `💥 강타!${ev.name ? ' ' + ev.name : ''}`, 0xffb27a, { size: 18, hold: 520 });
     else if (ev.move === 'skill' || ev.move === 'el') this.say(v.c.x, v.c.y - 112, `✨ ${ev.name ?? '기술'}`, 0x9fd8ff, { size: 18, hold: 560 });

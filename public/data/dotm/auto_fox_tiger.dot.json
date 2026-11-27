@@ -1,0 +1,629 @@
+{
+ "note": "ch_fox_tiger 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_fox_tiger",
+ "sheet": "dot-m-auto_fox_tiger",
+ "file": "assets/dotm/auto_fox_tiger.png",
+ "frameW": 115,
+ "frameH": 115,
+ "foot": 113,
+ "cols": 1,
+ "anchorX": 58,
+ "palette": [
+  "#260406",
+  "#291a1f",
+  "#602a28",
+  "#642011",
+  "#893c2d",
+  "#9b3f1e",
+  "#ad7c66",
+  "#b15336",
+  "#c5512b",
+  "#cd987b",
+  "#d2a790",
+  "#e17f50",
+  "#ea7734",
+  "#f6d4b0",
+  "#f8762a",
+  "#fbe1c0"
+ ],
+ "rects": {
+  "ch_fox_tiger_adult_a1_00": [
+   1281,
+   112,
+   106,
+   81,
+   -51,
+   -82
+  ],
+  "ch_fox_tiger_adult_a1_01": [
+   1261,
+   0,
+   102,
+   85,
+   -48,
+   -88
+  ],
+  "ch_fox_tiger_adult_a1_02": [
+   627,
+   0,
+   105,
+   89,
+   -49,
+   -92
+  ],
+  "ch_fox_tiger_adult_a1_03": [
+   414,
+   0,
+   106,
+   91,
+   -52,
+   -94
+  ],
+  "ch_fox_tiger_adult_a1_04": [
+   733,
+   0,
+   109,
+   89,
+   -52,
+   -92
+  ],
+  "ch_fox_tiger_adult_a1_05": [
+   1364,
+   0,
+   103,
+   85,
+   -50,
+   -88
+  ],
+  "ch_fox_tiger_adult_a1_06": [
+   1887,
+   0,
+   101,
+   83,
+   -47,
+   -86
+  ],
+  "ch_fox_tiger_adult_a1_07": [
+   214,
+   112,
+   111,
+   82,
+   -57,
+   -82
+  ],
+  "ch_fox_tiger_adult_a2_00": [
+   326,
+   112,
+   105,
+   82,
+   -49,
+   -82
+  ],
+  "ch_fox_tiger_adult_a2_01": [
+   843,
+   0,
+   98,
+   88,
+   -44,
+   -88
+  ],
+  "ch_fox_tiger_adult_a2_02": [
+   1468,
+   0,
+   107,
+   84,
+   -52,
+   -84
+  ],
+  "ch_fox_tiger_adult_a2_03": [
+   0,
+   196,
+   110,
+   78,
+   -54,
+   -78
+  ],
+  "ch_fox_tiger_adult_a2_04": [
+   225,
+   196,
+   112,
+   76,
+   -56,
+   -76
+  ],
+  "ch_fox_tiger_adult_a2_05": [
+   1710,
+   112,
+   111,
+   79,
+   -56,
+   -80
+  ],
+  "ch_fox_tiger_adult_a2_06": [
+   111,
+   196,
+   113,
+   78,
+   -58,
+   -80
+  ],
+  "ch_fox_tiger_adult_a2_07": [
+   1822,
+   112,
+   110,
+   79,
+   -56,
+   -81
+  ],
+  "ch_fox_tiger_adult_down_00": [
+   1601,
+   112,
+   108,
+   80,
+   -52,
+   -80
+  ],
+  "ch_fox_tiger_adult_down_01": [
+   1388,
+   112,
+   103,
+   81,
+   -47,
+   -81
+  ],
+  "ch_fox_tiger_adult_down_02": [
+   338,
+   196,
+   103,
+   72,
+   -47,
+   -72
+  ],
+  "ch_fox_tiger_adult_down_03": [
+   442,
+   196,
+   105,
+   59,
+   -49,
+   -59
+  ],
+  "ch_fox_tiger_adult_down_04": [
+   548,
+   196,
+   111,
+   45,
+   -55,
+   -45
+  ],
+  "ch_fox_tiger_adult_down_05": [
+   660,
+   196,
+   113,
+   44,
+   -57,
+   -44
+  ],
+  "ch_fox_tiger_adult_el_00": [
+   1933,
+   112,
+   109,
+   79,
+   -54,
+   -79
+  ],
+  "ch_fox_tiger_adult_el_01": [
+   1155,
+   0,
+   105,
+   87,
+   -53,
+   -89
+  ],
+  "ch_fox_tiger_adult_el_02": [
+   310,
+   0,
+   103,
+   95,
+   -53,
+   -98
+  ],
+  "ch_fox_tiger_adult_el_03": [
+   0,
+   0,
+   105,
+   111,
+   -55,
+   -114
+  ],
+  "ch_fox_tiger_adult_el_04": [
+   106,
+   0,
+   105,
+   108,
+   -52,
+   -111
+  ],
+  "ch_fox_tiger_adult_el_05": [
+   212,
+   0,
+   97,
+   97,
+   -47,
+   -100
+  ],
+  "ch_fox_tiger_adult_el_06": [
+   942,
+   0,
+   99,
+   88,
+   -47,
+   -89
+  ],
+  "ch_fox_tiger_adult_el_07": [
+   1576,
+   0,
+   106,
+   84,
+   -52,
+   -84
+  ],
+  "ch_fox_tiger_adult_hit_00": [
+   1042,
+   0,
+   112,
+   88,
+   -56,
+   -95
+  ],
+  "ch_fox_tiger_adult_hit_01": [
+   521,
+   0,
+   105,
+   91,
+   -49,
+   -95
+  ],
+  "ch_fox_tiger_adult_hit_02": [
+   1683,
+   0,
+   102,
+   84,
+   -48,
+   -84
+  ],
+  "ch_fox_tiger_adult_idle_00": [
+   432,
+   112,
+   107,
+   82,
+   -53,
+   -82
+  ],
+  "ch_fox_tiger_adult_idle_01": [
+   540,
+   112,
+   106,
+   82,
+   -52,
+   -82
+  ],
+  "ch_fox_tiger_adult_idle_02": [
+   647,
+   112,
+   107,
+   82,
+   -53,
+   -82
+  ],
+  "ch_fox_tiger_adult_idle_03": [
+   755,
+   112,
+   108,
+   82,
+   -54,
+   -82
+  ],
+  "ch_fox_tiger_adult_walk_00": [
+   0,
+   112,
+   107,
+   83,
+   -53,
+   -83
+  ],
+  "ch_fox_tiger_adult_walk_01": [
+   108,
+   112,
+   105,
+   83,
+   -51,
+   -83
+  ],
+  "ch_fox_tiger_adult_walk_02": [
+   1786,
+   0,
+   100,
+   84,
+   -46,
+   -85
+  ],
+  "ch_fox_tiger_adult_walk_03": [
+   864,
+   112,
+   99,
+   82,
+   -45,
+   -83
+  ],
+  "ch_fox_tiger_adult_walk_04": [
+   964,
+   112,
+   100,
+   82,
+   -46,
+   -84
+  ],
+  "ch_fox_tiger_adult_walk_05": [
+   1065,
+   112,
+   106,
+   82,
+   -52,
+   -84
+  ],
+  "ch_fox_tiger_adult_walk_06": [
+   1492,
+   112,
+   108,
+   81,
+   -54,
+   -83
+  ],
+  "ch_fox_tiger_adult_walk_07": [
+   1172,
+   112,
+   108,
+   82,
+   -54,
+   -82
+  ]
+ },
+ "frames": [
+  "ch_fox_tiger_adult_a1_00",
+  "ch_fox_tiger_adult_a1_01",
+  "ch_fox_tiger_adult_a1_02",
+  "ch_fox_tiger_adult_a1_03",
+  "ch_fox_tiger_adult_a1_04",
+  "ch_fox_tiger_adult_a1_05",
+  "ch_fox_tiger_adult_a1_06",
+  "ch_fox_tiger_adult_a1_07",
+  "ch_fox_tiger_adult_a2_00",
+  "ch_fox_tiger_adult_a2_01",
+  "ch_fox_tiger_adult_a2_02",
+  "ch_fox_tiger_adult_a2_03",
+  "ch_fox_tiger_adult_a2_04",
+  "ch_fox_tiger_adult_a2_05",
+  "ch_fox_tiger_adult_a2_06",
+  "ch_fox_tiger_adult_a2_07",
+  "ch_fox_tiger_adult_down_00",
+  "ch_fox_tiger_adult_down_01",
+  "ch_fox_tiger_adult_down_02",
+  "ch_fox_tiger_adult_down_03",
+  "ch_fox_tiger_adult_down_04",
+  "ch_fox_tiger_adult_down_05",
+  "ch_fox_tiger_adult_el_00",
+  "ch_fox_tiger_adult_el_01",
+  "ch_fox_tiger_adult_el_02",
+  "ch_fox_tiger_adult_el_03",
+  "ch_fox_tiger_adult_el_04",
+  "ch_fox_tiger_adult_el_05",
+  "ch_fox_tiger_adult_el_06",
+  "ch_fox_tiger_adult_el_07",
+  "ch_fox_tiger_adult_hit_00",
+  "ch_fox_tiger_adult_hit_01",
+  "ch_fox_tiger_adult_hit_02",
+  "ch_fox_tiger_adult_idle_00",
+  "ch_fox_tiger_adult_idle_01",
+  "ch_fox_tiger_adult_idle_02",
+  "ch_fox_tiger_adult_idle_03",
+  "ch_fox_tiger_adult_walk_00",
+  "ch_fox_tiger_adult_walk_01",
+  "ch_fox_tiger_adult_walk_02",
+  "ch_fox_tiger_adult_walk_03",
+  "ch_fox_tiger_adult_walk_04",
+  "ch_fox_tiger_adult_walk_05",
+  "ch_fox_tiger_adult_walk_06",
+  "ch_fox_tiger_adult_walk_07"
+ ],
+ "standing": [
+  "ch_fox_tiger_adult_idle_00",
+  "ch_fox_tiger_adult_idle_01",
+  "ch_fox_tiger_adult_idle_02",
+  "ch_fox_tiger_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 32,
+   "attack": {
+    "frames": [
+     "ch_fox_tiger_adult_a1_00",
+     "ch_fox_tiger_adult_a1_01",
+     "ch_fox_tiger_adult_a1_02",
+     "ch_fox_tiger_adult_a1_03",
+     "ch_fox_tiger_adult_a1_04",
+     "ch_fox_tiger_adult_a1_05",
+     "ch_fox_tiger_adult_a1_06",
+     "ch_fox_tiger_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_fox_tiger_adult_a2_00",
+     "ch_fox_tiger_adult_a2_01",
+     "ch_fox_tiger_adult_a2_02",
+     "ch_fox_tiger_adult_a2_03",
+     "ch_fox_tiger_adult_a2_04",
+     "ch_fox_tiger_adult_a2_05",
+     "ch_fox_tiger_adult_a2_06",
+     "ch_fox_tiger_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_fox_tiger_adult_down_00",
+     "ch_fox_tiger_adult_down_01",
+     "ch_fox_tiger_adult_down_02",
+     "ch_fox_tiger_adult_down_03",
+     "ch_fox_tiger_adult_down_04",
+     "ch_fox_tiger_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_fox_tiger_adult_el_00",
+     "ch_fox_tiger_adult_el_01",
+     "ch_fox_tiger_adult_el_02",
+     "ch_fox_tiger_adult_el_03",
+     "ch_fox_tiger_adult_el_04",
+     "ch_fox_tiger_adult_el_05",
+     "ch_fox_tiger_adult_el_06",
+     "ch_fox_tiger_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_fox_tiger_adult_hit_00",
+     "ch_fox_tiger_adult_hit_01",
+     "ch_fox_tiger_adult_hit_02"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_fox_tiger_adult_idle_00",
+     "ch_fox_tiger_adult_idle_01",
+     "ch_fox_tiger_adult_idle_02",
+     "ch_fox_tiger_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_fox_tiger_adult_walk_00",
+     "ch_fox_tiger_adult_walk_01",
+     "ch_fox_tiger_adult_walk_02",
+     "ch_fox_tiger_adult_walk_03",
+     "ch_fox_tiger_adult_walk_04",
+     "ch_fox_tiger_adult_walk_05",
+     "ch_fox_tiger_adult_walk_06",
+     "ch_fox_tiger_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "fox_tiger"
+}

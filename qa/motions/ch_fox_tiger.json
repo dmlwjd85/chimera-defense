@@ -1,0 +1,53 @@
+{
+ "species": "ch_fox_tiger",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 11.0,
+   "foot±": 3
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 7.3,
+   "foot±": 2
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 46.3,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 35.4,
+   "foot±": 3
+  },
+  "adult_hit": {
+   "n": 3,
+   "max|h%|": 11.0,
+   "foot±": 7
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 0.0,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.4,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   274
+  ],
+  "box": [
+   115,
+   115
+  ],
+  "frames": 45,
+  "colors": 16,
+  "px": 561152
+ }
+}

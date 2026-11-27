@@ -1,0 +1,53 @@
+{
+ "species": "ch_bighorn_bison",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 5.1,
+   "foot±": 9
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 22.8,
+   "foot±": 14
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 31.6,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 20.3,
+   "foot±": 5
+  },
+  "adult_hit": {
+   "n": 1,
+   "max|h%|": 8.9,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.3,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.5,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   249
+  ],
+  "box": [
+   113,
+   110
+  ],
+  "frames": 43,
+  "colors": 16,
+  "px": 509952
+ }
+}

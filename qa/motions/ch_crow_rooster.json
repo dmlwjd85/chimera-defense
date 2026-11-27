@@ -1,0 +1,53 @@
+{
+ "species": "ch_crow_rooster",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 9.4,
+   "foot±": 12
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 12.5,
+   "foot±": 17
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 20.8,
+   "foot±": 2
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 15.6,
+   "foot±": 9
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 20.8,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 20.8,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 19.8,
+   "foot±": 0
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   316
+  ],
+  "box": [
+   117,
+   120
+  ],
+  "frames": 48,
+  "colors": 16,
+  "px": 647168
+ }
+}

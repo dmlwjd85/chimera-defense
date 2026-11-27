@@ -1,7 +1,7 @@
 // Shared drawing helpers for all scenes (placeholder art: shapes and text, swappable for images later).
 import Phaser from 'phaser';
 import { FONT } from '../text.js';
-import { dotDataFor } from './rigs.js';
+import { slimeDot, dotDataFor } from './rigs.js';
 import { autoTint } from '../logic/genes.js';
 
 export const COLORS = { bg: 0x141a21, panel: 0x1f2a36, line: 0x3b4b5e, accent: 0xffb35c, good: 0x58d68d, bad: 0xf0883e, flip: 0x5dade2, gold: 0xffd84d };
@@ -110,8 +110,11 @@ export function unitToken(scene, unit, data) {
   const stageR = { young: 20, teen: 24, adult: 28, spirit: 30 }[unit.stage] ?? 26;
   const id = unit.kind === 'weak' ? null : unit.speciesId;
   // 도트 그림이 있으면 초상화도 그 단계 도트로(2026-11-26 PixelLab 확정본)
-  const dot = id && unit.kind === 'base' ? dotDataFor(scene, id, unit.stage) : null;
-  const dset = dot && dot.sets[dot.stages[unit.stage]?.set];
+  // 자동 키메라 정식 그림·돌연변이 슬라임(PixelLab 동작 시트가 불러와져 있을 때)도 초상화를 그 도트로
+  const dot = id && unit.kind === 'base' ? dotDataFor(scene, id, unit.stage)
+    : unit.kind === 'chimera' && unit.speciesId?.startsWith('auto_') ? dotDataFor(scene, unit.speciesId, 'adult')
+    : unit.kind === 'weak' ? slimeDot(scene, unit) : null;
+  const dset = dot && dot.sets[dot.stages[unit.kind === 'base' ? unit.stage : 'adult']?.set];
   const key = id && [`unit-${id}-${unit.stage}`, `unit-${id}`].find((k) => scene.textures.exists(k));
   if (dset) {
     if (unit.stage === 'spirit') c.add(scene.add.circle(0, 0, stageR * 1.35, COLORS.gold, 0.35).setStrokeStyle(3, COLORS.gold, 0.9));
@@ -206,6 +209,9 @@ const PIX = {
 };
 /** 도트 아이콘 이미지(meat 고기 · gem 유물 · coin 금화). size = 한 변 px */
 export function pixIcon(scene, name, x, y, size) {
+  // PixelLab 아이콘(assets/ui/icon-<이름>.png, 2026-11-27)이 있으면 그걸로, 없으면 아래 16칸 코드 도트
+  const art = 'icon-' + name;
+  if (scene.textures.exists(art)) { scene.textures.get(art).setFilter(Phaser.Textures.FilterMode.NEAREST); return scene.add.image(x, y, art).setDisplaySize(size, size); }
   const def = PIX[name], key = 'pix-' + name;
   if (!def) return null;
   if (!scene.textures.exists(key)) {

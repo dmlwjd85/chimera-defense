@@ -79,7 +79,21 @@ const ART_SPIRITS = new Set([]); // 리코스 그림 한 장으로 움직일 신
 
 /** Rig instance + view for a unit, inside `parent` container; null when there is no rig (weak chimera). */
 export function unitRig(scene, unit, parent, scale = 0.17) {
-  if (unit.kind === 'weak') return null;
+  // 돌연변이 슬라임(PixelLab 동작, 2026-11-27): 회색 얼룩 두 곳에 두 부모 색을 입힌 시트로
+  if (unit.kind === 'weak') {
+    const sd = slimeDot(scene, unit);
+    if (!sd) return null;
+    const inst = new DotInstance(sd, { stage: 'adult', scale });
+    return { inst, view: new DotView(scene, inst, { parent, px: DOT_PX * (scale / 0.22) }), dot: true };
+  }
+  // 자동 키메라 정식 그림(PixelLab, 한 몸으로 섞인 성체)이 있으면 그걸로
+  if (unit.kind === 'chimera') {
+    const own = dotDataFor(scene, unit.speciesId, 'adult');
+    if (own) {
+      const inst = new DotInstance(own, { stage: 'adult', scale });
+      return { inst, view: new DotView(scene, inst, { parent, px: DOT_PX * (scale / 0.22) }), dot: true };
+    }
+  }
   // 자동 키메라(같은 강 짝, 전용 그림 전): 힘센 쪽 성체 도트에 다른 쪽 색을 입힘 — 이미지 작업창 주문서에 정식 그림 올림
   if (unit.kind === 'chimera' && unit.stats?.look) {
     const ld = dotDataFor(scene, unit.stats.look, 'adult');
@@ -114,6 +128,52 @@ export function unitRig(scene, unit, parent, scale = 0.17) {
   const stage = rig.stages[unit.stage] ? unit.stage : 'adult';
   const inst = new RigInstance(template, anims, rig, { stage, x: 0, y: 0, scale, seed: unit.uid });
   return { inst, view: new RigView(scene, inst, { parent }) };
+}
+
+/** 슬라임·자동 키메라 동작 시트 이름: 덱(pool)에 든 종끼리 짝이 되는 자동 키메라 + 슬라임. */
+export function poolExtraIds(pool) {
+  const ids = ['slime'], u = [...new Set(pool)].sort();
+  for (let i = 0; i < u.length; i++) for (let j = i + 1; j < u.length; j++) ids.push(`auto_${u[i]}_${u[j]}`);
+  return ids;
+}
+
+/** 슬라임 시트를 두 부모 색으로 물들인 복사본(회색 얼룩: 그림 왼쪽 반 = 첫 부모, 오른쪽 반 = 둘째 부모). 없으면 null. */
+export function slimeDot(scene, unit) {
+  const mv = scene.cache.json.get('dotM-slime');
+  if (!dotArtOn() || !mv || !scene.textures.exists(mv.sheet) || unit.parts?.length !== 2) return null;
+  const D = scene.D ?? scene.data2;
+  const cols = unit.parts.map((p) => D?.unitById?.[p]?.color ?? '#888888');
+  const key = `${mv.sheet}-${cols.join('-').replace(/#/g, '')}`;
+  if (!scene.textures.exists(key)) {
+    const src = scene.textures.get(mv.sheet).getSourceImage();
+    const cv = document.createElement('canvas'); cv.width = src.width; cv.height = src.height;
+    const g = cv.getContext('2d'); g.drawImage(src, 0, 0);
+    const img = g.getImageData(0, 0, cv.width, cv.height), px = img.data;
+    // 얼룩 색 = 팔레트에서 채도가 거의 없는 중간 밝기 회색(몸은 회녹색, 외곽선은 짙음)
+    const spot = new Map();
+    for (const h of mv.palette ?? []) {
+      const r = parseInt(h.slice(1, 3), 16), gg = parseInt(h.slice(3, 5), 16), b = parseInt(h.slice(5, 7), 16);
+      const lum = (r * 299 + gg * 587 + b * 114) / 1000;
+      if (Math.max(r, gg, b) - Math.min(r, gg, b) < 16 && lum > 95 && lum < 225) spot.set((r << 16) | (gg << 8) | b, lum / 170);
+    }
+    const rgb = cols.map((c) => [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)]);
+    for (const r of Object.values(mv.rects)) {
+      const [x0, y0, w, h, lx] = r, mid = x0 - lx;   // 기준점(몸 가운데) x
+      for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) {
+        const i = (y * cv.width + x) * 4;
+        if (!px[i + 3]) continue;
+        const k = spot.get((px[i] << 16) | (px[i + 1] << 8) | px[i + 2]);
+        if (k == null) continue;
+        const c = rgb[x < mid ? 0 : 1];
+        px[i] = Math.min(255, c[0] * k); px[i + 1] = Math.min(255, c[1] * k); px[i + 2] = Math.min(255, c[2] * k);
+      }
+    }
+    g.putImageData(img, 0, 0);
+    scene.textures.addCanvas(key, cv);
+  }
+  const d = { ...mv, sheet: key };
+  if (!d._checked && validateDot(mv).length) return null;
+  return ensureDotFrames(scene, d) ? d : null;
 }
 
 /** 적 동작 시트(PixelLab, en_<id>): 그 판에 나올 적만. 보스가 불러내는 졸병도 같이. */

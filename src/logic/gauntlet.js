@@ -68,7 +68,7 @@ export function gcfg(data) {
     },
     // 잡아채기: 후열을 노리고 들어오는 딜러를 낚아채는 동물(우리: 개구리 혀·원숭이 꼬리·개미 떼 / 적: 좀비 손·해골 손·뼈 보스)
     catchers: { frog: 'tongue', monkey: 'tail', ant: 'swarm' }, eCatchers: { zombie: 'hand', skeleton: 'bone', boss_bone: 'bone', boss_lich: 'shadow' },
-    snatchCd: 7, snatchChance: 0.75, eSnatchChance: 0.5, snatchStun: 1.2, snatchPin: 2.5, deepT: 3, deepTaken: 20, backstab: 1.3, deepFocus: 0.45, sellWeak: 25, extraCost: 15, extraUp: 1, extraMax: 2, pouchMax: 150, pouchTake: 40, potionCost: 10, potionHeal: 35, trainCost: 20, trainDmg: 10, trainMax: 3,
+    snatchCd: 7, snatchChance: 0.75, eSnatchChance: 0.5, snatchStun: 1.2, snatchPin: 2.5, deepT: 3, deepTaken: 20, backstab: 1.3, deepFocus: 0.45, sellWeak: 25, extraCost: 15, extraUp: 1, extraMax: 2, globeReroll: 8, globeRerollUp: 6, globeRerollMax: 3, pouchMax: 150, pouchTake: 40, potionCost: 10, potionHeal: 35, trainCost: 20, trainDmg: 10, trainMax: 3,
     // 붙잡기: 남는 정원이 있는 탱커는 같은 라인 딜러에게 붙어 후열 노리기를 막음. 고급 딜러(나는 동물·신화·키메라·날쌘 종 성장기 이상)는 빠져나감
     slippery: ['fox', 'monkey', 'rabbit'], eSlippery: ['ghost', 'bat', 'boss_bat'], enemyCap: { bruiser: 2, boss: 3 },
     // 역전 각성(약할수록 큼), 주인공(선택과 집중), 무쌍 견제(한 마리가 피해를 독식하면 적이 집중)
@@ -1026,7 +1026,7 @@ function pickEnemyTarget(state, e, g) {
 }
 
 function pickMoveG(state, u, target, cfg) {
-  const m = cfg.moves, have = movesOf(u, cfg);
+  const m = cfg.moves, have = movesOf(u, cfg, true);   // 연전: 산군은 장면이 전용 v6 연출로 필살기를 보여 줌
   if (!m || have.length === 1) return 'a1';
   if (have.includes('ult') && (u.ultGauge ?? 0) >= m.ult.gauge * (state.ultSlow ?? 1) && (u.ultUsed ?? 0) < (state.ultMax ?? 99)) return 'ult';
   const w = {};
@@ -1048,11 +1048,11 @@ function hurtEnemy(state, data, e, amount, src, quiet = false) {
   e.hp -= a;
   if (src) {
     for (const book of [state.dmgWave, state.dmgRun]) { const r = (book[src.uid] ??= { name: src.stats.name, speciesId: src.speciesId, soul: !!src.soul, dmg: 0 }); r.dmg += a; r.name = src.stats.name; }
-    chargeUlt(src, data.config, 'hit');
+    chargeUlt(src, data.config, 'hit', 1, true);
   }
   if (e.hp <= 0.001) {
     e.hp = 0; state.kills += 1; state.eSeats[state.eSeats.indexOf(e.eid)] = null;
-    if (src) { chargeUlt(src, data.config, 'kill'); if (src.soul) src.soulKills = (src.soulKills ?? 0) + 1; }
+    if (src) { chargeUlt(src, data.config, 'kill', 1, true); if (src.soul) src.soulKills = (src.soulKills ?? 0) + 1; }
     if (e.boss) state.bossKilled = true;
     state.events.push({ type: 'kill', eid: e.eid, boss: e.boss, by: src?.uid ?? null });
   } else if (quiet && a > 0.5 && state.rng() < 0.15) state.events.push({ type: 'dot', eid: e.eid, dmg: a });
@@ -1070,7 +1070,7 @@ function hurtUnit(state, data, u, amount, src) {
   const taken = (lu0 && styleOf(u) !== 'bruiser' && colOf(u.seat) === 0 ? lu0.exposed : 0) + (u.mods?.taken ?? 0) + buffSum(state, 'taken') + (state.collapse?.u ? gcfg(data).collapseTaken : 0) + (state.isolated?.u && styleOf(u) === 'bruiser' ? gcfg(data).isolateTaken : 0) + (state.focus === u.uid ? gcfg(data).focusTaken : 0) + (u.suppressed ? gcfg(data).supTaken : 0) + ((u.deepT ?? 0) > state.time ? gcfg(data).deepTaken : 0) + (u.stance === 'tank' ? (nativeStance(u) === 'tank' ? -35 : -25) : 0);
   const a = Math.max(1, amount * Math.max(0.2, 1 + taken / 100) * ((u.shieldT ?? 0) > state.time ? 0.6 : 1));
   u.hp -= a;
-  chargeUlt(u, data.config, 'hurt', (a / u.maxHp) * 100);
+  chargeUlt(u, data.config, 'hurt', (a / u.maxHp) * 100, true);
   if (u.hp <= 0 && !state.phoenixUsed && state.dataRef && eco(state, state.dataRef, 'phoenix')) { state.phoenixUsed = true; u.hp = u.maxHp * 0.3; state.events.push({ type: 'phoenix', uid: u.uid }); say(state, `${u.stats.name} 불사조 깃털로 일어남!`); return a; }
   if (u.hp <= 0) { u.hp = 0; u.down = true; state.downs += 1; state.events.push({ type: 'down', uid: u.uid }); say(state, `${u.stats.name} 쓰러짐`); }
   return a;
@@ -1492,6 +1492,37 @@ function endEncounter(state, data, win) {
 }
 
 /** Three rewards to pick one from: new animal from the deck, food (grow one), relic. */
+/** 지구본 후보 3마리(같은 종 쏠림 방지). avoid = 되도록 빼고 뽑을 종(다시 돌리기 때 지금 후보) */
+function pickGlobe(state, data, avoid = []) {
+  let pool = state.pool.filter((id) => data.unitById[id]);
+  if (pool.filter((id) => !avoid.includes(id)).length >= 3) pool = pool.filter((id) => !avoid.includes(id));
+  const counts = {};
+  for (const u of [...state.field, ...state.bench]) if (u?.kind === 'base') counts[u.speciesId] = (counts[u.speciesId] ?? 0) + 1;
+  const left = pool.map((id) => [id, 1 / (1 + 0.6 * (counts[id] ?? 0))]);
+  const picks = [];
+  while (picks.length < 3 && left.length) {
+    let t = state.rng() * left.reduce((a, [, v]) => a + v, 0);
+    let i = left.findIndex(([, v]) => (t -= v) < 0); if (i < 0) i = 0;
+    picks.push(left.splice(i, 1)[0][0]);
+  }
+  return picks.map((id) => ({ speciesId: id, traits: rollTraits(id, data, state.rng) }));
+}
+
+/** 지구본 다시 돌리기 값(2026-11-27 "지구본 다시 돌리기 추가금 더 내고"): 처음 globeReroll, 돌릴 때마다 +globeRerollUp */
+export const globeRerollCost = (state, data) => { const g = gcfg(data); return g.globeReroll + g.globeRerollUp * (state.offer?.rerolls ?? 0); };
+export function rerollGlobe(state, data) {
+  const o = state.offer, g = gcfg(data);
+  if (state.phase !== 'regroup' || !o?.globe) return fail('noOffer');
+  if (o.taken || o.dropped === 'globe') return fail('taken');
+  if ((o.rerolls ?? 0) >= g.globeRerollMax) return fail('max');
+  const cost = globeRerollCost(state, data);
+  if (state.gold < cost) return fail('gold');
+  state.gold -= cost; o.rerolls = (o.rerolls ?? 0) + 1;
+  o.globe = pickGlobe(state, data, o.globe.map((c) => c.speciesId));
+  state.events.push({ type: 'globeReroll', cost });
+  return { ok: true, cost };
+}
+
 export function rollRewards(state, data) {
   const pool = state.pool.filter((id) => data.unitById[id]);
   const counts = {};

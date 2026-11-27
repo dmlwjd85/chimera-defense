@@ -69,7 +69,7 @@ export function gcfg(data) {
     },
     // 잡아채기: 후열을 노리고 들어오는 딜러를 낚아채는 동물(우리: 개구리 혀·원숭이 꼬리·개미 떼 / 적: 좀비 손·해골 손·뼈 보스)
     catchers: { frog: 'tongue', monkey: 'tail', ant: 'swarm' }, eCatchers: { zombie: 'hand', skeleton: 'bone', boss_bone: 'bone', boss_lich: 'shadow' },
-    snatchCd: 7, snatchChance: 0.75, eSnatchChance: 0.5, snatchStun: 1.2, snatchPin: 2.5, deepT: 3, deepTaken: 20, backstab: 1.3, deepFocus: 0.45, sellWeak: 25, extraCost: 15, extraUp: 1, extraMax: 2, globeReroll: 8, globeRerollUp: 6, globeRerollMax: 3, pouchMax: 150, pouchTake: 40, potionCost: 10, potionHeal: 35, trainCost: 20, trainDmg: 10, trainMax: 3,
+    snatchCd: 7, snatchChance: 0.75, eSnatchChance: 0.5, snatchStun: 1.2, snatchPin: 2.5, deepT: 3, deepTaken: 20, backstab: 1.3, deepFocus: 0.45, sellWeak: 25, extraCost: 15, extraUp: 1, extraMax: 2, globeReroll: 8, globeRerollUp: 6, globeRerollMax: 3, reviveSkill: { hp: 35, delay: 1.2, perEnc: 1, shield: 2 }, cleanseCd: 6, pouchMax: 150, pouchTake: 40, potionCost: 10, potionHeal: 35, trainCost: 20, trainDmg: 10, trainMax: 3,
     // 붙잡기: 남는 정원이 있는 탱커는 같은 라인 딜러에게 붙어 후열 노리기를 막음. 고급 딜러(나는 동물·신화·키메라·날쌘 종 성장기 이상)는 빠져나감
     slippery: ['fox', 'monkey', 'rabbit'], eSlippery: ['ghost', 'bat', 'boss_bat'], enemyCap: { bruiser: 2, boss: 3 },
     // 역전 각성(약할수록 큼), 주인공(선택과 집중), 무쌍 견제(한 마리가 피해를 독식하면 적이 집중)
@@ -262,8 +262,11 @@ function setHp(state, x, hp, kind, by, cause) {
   return d;
 }
 const healTo = (state, x, amt, by, cause, kind = 'heal') => setHp(state, x, Math.min(x.maxHp, x.hp + amt), kind, by, cause);
+/** 도움 효과(aid 사건)로 그려지는 회복: 장부에 적되 aid 표시(화면 숫자는 #97 도움 효과가 띄움). 반환 = 찬 체력(반올림, 이전 healU와 같음) */
+const healA = (state, x, amt, by, cause) => { const d = healTo(state, x, amt, by, cause); if (d > 1e-9) state.hpLog[state.hpLog.length - 1].aid = true; return Math.round(d); };
 /** 버프·디버프를 걸었다는 기록(체력 변화 없음) */
-function noteStatus(state, kind, by, to, icon, cause, dur = 0) { const t = to.filter(Boolean).map(refOf).filter(Boolean); if (t.length) hpNote(state, { kind, d: 0, by: refOf(by), to: t, icon, cause, dur }); }
+// aid = true: 차분한 전투(#97)의 도움 효과(aid 사건 → 빛 구슬·+숫자)가 이미 그리는 줄 → 화면 장부(clarity)는 숫자·빛줄기를 겹쳐 그리지 않음
+function noteStatus(state, kind, by, to, icon, cause, dur = 0, aidFx = false) { const t = to.filter(Boolean).map(refOf).filter(Boolean); if (t.length) hpNote(state, { kind, d: 0, by: refOf(by), to: t, icon, cause, dur, ...(aidFx ? { aid: true } : {}) }); }
 /** 한 동작(공격·기술·힘싸움 결판 등)에 번호를 붙여, 그 사이 생긴 이벤트·장부 줄을 묶음 → 화면이 맞는 순간에 함께 보여 줌 */
 function inSeq(state, fn) {
   const n0 = state.events.length, prev = state.curSeq;
@@ -430,7 +433,7 @@ export function startEncounter(state, data) {
   for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; u.stance = canStance(u) ? u.prefStance ?? nativeStance(u) : null; u.stanceT = 0.3 + state.rng() * 0.6; }
   state.encTime = 0; state.actGap = 0; state.phase = 'fight'; state.allyBuffs = []; state.clashes = []; state.clBook = {};
   state.collapse = { u: false, e: false }; state.isolated = { u: false, e: false }; state.diveAt = { u: -99, e: -99 }; state.taps = 0; state.awoke = false; state.awoke2 = false; state.focus = null; state.tempo = g.tempo ?? 1; state.ultSlow = g.ultSlow ?? 1; state.ultMax = g.ultMax ?? 99; state.snareT = 0; state.cheers = 0; state.phoenixUsed = false; state.dataRef = data; legendCheck(state, data); state.cheerAt = -9; state.encStat = { ...(state.dstat ?? {}) };
-  for (const u of state.field) { u.ultUsed = 0; u.ultRevive = 0; u.awake = null; u.advance = false; u.suppressed = false; u.pinnedBy = null; u.slipNote = false; u.clutchOn = false; u.wobbly = false; }
+  for (const u of state.field) { u.ultUsed = 0; u.ultRevive = 0; u.reviveUsed = 0; u.cleanseAt = -99; u.awake = null; u.advance = false; u.suppressed = false; u.pinnedBy = null; u.slipNote = false; u.clutchOn = false; u.wobbly = false; }
   // 역전: 투지(지는 쪽이 세짐) · 역전 찬스(한 번) · 동물마다 역전 특성
   // 진형 상성(가위바위보): 🛡철벽 > 🎯돌격 > 🏹진지 > 🛡철벽. 유리한 쪽 피해 +adv%
   { const fc = g.formation; if (fc) { const fu = formOf(state.field.filter((u) => !u.resting).map((u) => styleOf(u))), fe = formOf(state.enemies.map((e) => e.style)); const adv = fc.beats[fu] === fe ? 1 : fc.beats[fe] === fu ? -1 : 0; state.form = { u: fu, e: fe, adv }; state.events.push({ type: 'formation', u: fu, e: fe, adv }); } }
@@ -618,6 +621,7 @@ function sub(state, data, d, g) {
     state.events.push({ type: 'collapse', side: 'e' }); say(state, '적 진형 붕괴!');
   }
   inSeq(state, () => comebackTick(state, data, g));
+  inSeq(state, () => reviveTick(state, data, g));
   inSeq(state, () => hazardTick(state, data, g, d));
   if (state.bossWarn && state.time >= state.bossWarn.at) inSeq(state, () => bossSlam(state, data, g));
   // 역전 각성: 동료가 절반 넘게 쓰러지고 체력이 낮은 동물 하나가 깨어남(교전마다 한 번). 약할수록(어린·약체) 크게
@@ -834,28 +838,28 @@ function teamUlt(state, data, u, t, g) {
   const id = u.kind === 'chimera' ? (u.parts ?? [])[((u.ultUsed ?? 1) - 1) % Math.max(1, (u.parts ?? []).length)] : u.speciesId;
   const U = ULTS[id] ?? { name: '필살 일격', desc: '큰 피해' };
   const es = state.enemies.filter(aliveE), us = fighters(state);
-  const buff = (stat, percent, left) => { state.allyBuffs.push({ stat, percent, left }); noteStatus(state, 'buff', u, us, stat === 'taken' ? 'shield' : stat === 'dmg' ? 'atk' : 'haste', U.name, left); };
+  const buff = (stat, percent, left) => { state.allyBuffs.push({ stat, percent, left }); noteStatus(state, 'buff', u, us, stat === 'taken' ? 'shield' : stat === 'dmg' ? 'atk' : 'haste', U.name, left, true); };
   // 위력 낮춤(2026-11-27 "위력을 낮춰서 여러가지 기술 자주 보게"): 수치·시간 × P(ultPow), 대신 게이지 빠르고 교전마다 여러 번
   const P = g.ultPow ?? 1, T = (x) => x * P, Pc = (x) => Math.round(x * P);
   switch (id) {
-    case 'bear': buff('taken', -Pc(30), T(5)); state.focus = u.uid; state.focusUntil = state.time + T(3); break;
+    case 'bear': buff('taken', -Pc(30), T(5)); aid(state, 'buff', u, us, { stat: 'taken', dur: T(5) }); state.focus = u.uid; state.focusUntil = state.time + T(3); break;
     case 'bison': for (const c of state.clashes ?? []) c.push = Math.min(0.95, c.push + T(0.6)); for (const e of es.filter((x) => isFront(x.seat) && !x.boss)) e.stunLeft = Math.max(e.stunLeft ?? 0, T(1)); break;
-    case 'dog': { const w = lowest(us); if (w) { healTo(state, w, w.maxHp * T(0.4), u, U.name); w.shieldT = state.time + T(3); w.shieldBy = refOf(u); noteStatus(state, 'buff', u, [w], 'shield', U.name, T(3)); } break; }
+    case 'dog': { const w = lowest(us); if (w) { aid(state, 'heal', u, w, { amt: healA(state, w, w.maxHp * T(0.4), u, U.name) }); w.shieldT = state.time + T(3); w.shieldBy = refOf(u); noteStatus(state, 'buff', u, [w], 'shield', U.name, T(3), true); aid(state, 'shield', u, w, { dur: T(3) }); } break; }
     case 'ant': for (const e of es) { e.slowPct = Pc(40); e.slowLeft = T(4); if (e.style === 'skirm' && !e.boss) { e.pinnedBy = u.uid; e.pinUntil = state.time + T(4); e.diveMark = null; } } break;
-    case 'frog': for (const x of us) { healTo(state, x, x.maxHp * T(0.2), u, U.name); x.stunLeft = 0; x.suppressed = false; } break;
-    case 'tiger': for (const e of es) e.gauge = Math.max(0, (e.gauge ?? 0) - T(1)); buff('dmg', Pc(20), T(5)); break;
+    case 'frog': { const sick = us.filter((x) => (x.stunLeft ?? 0) > 0 || x.suppressed); const amts = us.map((x) => healA(state, x, x.maxHp * T(0.2), u, U.name)); for (const x of us) { x.stunLeft = 0; x.suppressed = false; } aid(state, 'heal', u, us, { amts }); aid(state, 'cleanse', u, sick, { what: ['stun'] }); break; }
+    case 'tiger': for (const e of es) e.gauge = Math.max(0, (e.gauge ?? 0) - T(1)); buff('dmg', Pc(20), T(5)); aid(state, 'buff', u, us, { stat: 'dmg', dur: T(5) }); break;
     case 'fox': for (const e of [...es].sort(() => state.rng() - 0.5).slice(0, 3)) if (!e.boss) e.stunLeft = Math.max(e.stunLeft ?? 0, T(2)); break;
-    case 'rabbit': for (const x of us) x.gauge = Math.min(1, (x.gauge ?? 0) + T(0.5)); buff('taken', -Pc(15), T(4)); break;
-    case 'rooster': { const d = state.field.find((x) => x.down && !x.resting); if (d && (u.ultRevive ?? 0) < 1) { u.ultRevive = (u.ultRevive ?? 0) + 1; d.down = false; setHp(state, d, d.maxHp * T(0.4), 'revive', u, U.name); state.events.push({ type: 'revive', uid: d.uid }); } for (const x of us) healTo(state, x, x.maxHp * T(0.15), u, U.name); break; }
+    case 'rabbit': for (const x of us) x.gauge = Math.min(1, (x.gauge ?? 0) + T(0.5)); buff('taken', -Pc(15), T(4)); aid(state, 'haste', u, us); aid(state, 'buff', u, us, { stat: 'taken', dur: T(4) }); break;
+    case 'rooster': { const d = state.field.find((x) => x.down && !x.resting); if (d && (u.ultRevive ?? 0) < 1) { u.ultRevive = (u.ultRevive ?? 0) + 1; d.down = false; setHp(state, d, d.maxHp * T(0.4), 'revive', u, U.name); state.events.push({ type: 'revive', uid: d.uid }); } aid(state, 'heal', u, us, { amts: us.map((x) => healA(state, x, x.maxHp * T(0.15), u, U.name)) }); break; }
     case 'crow': for (const e of es.filter((x) => x.style === 'ranged' || x.style === 'support')) e.curseLeft = T(6); break;
     case 'wolf': { const back = es.filter((x) => x.style === 'ranged' || x.style === 'support'); for (const x of us.filter((y) => styleOf(y) === 'skirm')) { const v = lowest(back.length ? back : es); if (v) { x.pinnedBy = null; x.deepT = state.time + T(2); x.deepEid = v.eid; x.gauge = Math.min(1, (x.gauge ?? 0) + T(1)); } } break; }
     case 'eagle': for (const e of es.filter((x) => x.style === 'ranged' || x.style === 'support')) { if (!e.boss) e.stunLeft = Math.max(e.stunLeft ?? 0, T(3)); e.shieldLeft = 0; } break;
-    case 'bighorn': for (const x of us.filter(isBack)) x.shieldT = state.time + T(4); for (const e of es.filter((x) => x.advance)) { e.advance = false; e.stunLeft = Math.max(e.stunLeft ?? 0, T(1.5)); } break;
-    case 'grasshopper': state.mana = Math.min(data.config.spells?.max ?? 100, (state.mana ?? 0) + Pc(30)); state.cheers = Math.max(-3, (state.cheers ?? 0) - 2); break;
+    case 'bighorn': for (const x of us.filter(isBack)) x.shieldT = state.time + T(4); aid(state, 'shield', u, us.filter(isBack), { dur: T(4) }); for (const e of es.filter((x) => x.advance)) { e.advance = false; e.stunLeft = Math.max(e.stunLeft ?? 0, T(1.5)); } break;
+    case 'grasshopper': aid(state, 'mana', u, [], { amt: Pc(30) }); state.mana = Math.min(data.config.spells?.max ?? 100, (state.mana ?? 0) + Pc(30)); state.cheers = Math.max(-3, (state.cheers ?? 0) - 2); break;
     case 'monkey': state.snareT = Math.max(state.snareT ?? 0, state.time + T(6)); state.gold += 3; break;
     default: break;
   }
-  { const k = ULT_FX[id]; if (k) noteStatus(state, k, u, k === 'debuff' ? state.enemies.filter(aliveE) : fighters(state), ULT_ICON[id] ?? (k === 'debuff' ? 'curse' : 'atk'), U.name, 3); }
+  { const k = ULT_FX[id]; if (k) noteStatus(state, k, u, k === 'debuff' ? state.enemies.filter(aliveE) : fighters(state), ULT_ICON[id] ?? (k === 'debuff' ? 'curse' : 'atk'), U.name, 3, id === 'bighorn' || id === 'grasshopper'); }
   say(state, `${u.stats.name} · ${U.name}!`);
   void t; void g;
   return { kind: id, name: U.name, desc: U.desc };
@@ -1011,6 +1015,23 @@ function frontTargets(list) {
   const f = list.filter((x) => x && isFront(x.seat) && (x.hp > 0) && !x.down && !x.resting);
   return f.length ? f : list.filter((x) => x && x.hp > 0 && !x.down && !x.resting);
 }
+/** 도움 사건(2026-11-28 "서포트 스킬이 어떤 영향을 주는지 체감되게"): kind = heal · buff(stat) · shield · cleanse · haste · mana. 장면이 누가 누구에게 무엇을 줬는지 그림 */
+const aid = (state, kind, from, to, x = {}) => { const ids = (Array.isArray(to) ? to : [to]).filter(Boolean).map((u) => u.uid); if (ids.length || kind === 'mana') state.events.push({ type: 'aid', kind, from: from?.uid ?? null, to: ids, ...x }); };
+/** 부활(2026-11-28 "부활 스킬도 서포터 신화나 키메라에는"): 타고난 응원 역할의 신화급·키메라는 교전마다 perEnc번, 쓰러진 친구를 일으킴(체력 hp%, 잠깐 보호막) */
+export const canReviveSkill = (u) => !!u && canStance(u) && baseStyle(u) === 'support';
+function reviveTick(state, data, g) {
+  const R = g.reviveSkill; if (!R) return;
+  const d = unitsIn(state).find((x) => x && x.down && !x.resting && state.time - (x.downAt ?? -99) >= R.delay);
+  if (!d) return;
+  const by = fighters(state).find((u) => canReviveSkill(u) && (u.reviveUsed ?? 0) < R.perEnc && !(u.stunLeft > 0));
+  if (!by) return;
+  by.reviveUsed = (by.reviveUsed ?? 0) + 1; by.gauge = 0;
+  d.down = false; if (setHp(state, d, d.maxHp * R.hp / 100, 'revive', by, 'reviveSkill') > 1e-9) state.hpLog[state.hpLog.length - 1].aid = true;   // 부활 숫자는 #97 부활 효과가 띄움 d.gauge = 0; d.stunLeft = 0; d.pinnedBy = null; d.suppressed = false; d.shieldT = state.time + R.shield;
+  dstat(state, 'revive');
+  state.events.push({ type: 'reviveSkill', uid: by.uid, to: d.uid, hp: Math.round(d.hp) });
+  say(state, `${by.stats.name} · 부활! ${d.stats.name} 일어남`);
+  void data;
+}
 const lowest = (list) => list.reduce((a, b) => (b.hp / b.maxHp < a.hp / a.maxHp ? b : a), list[0]);
 
 function pickUnitTarget(state, u) {
@@ -1141,7 +1162,7 @@ function hurtUnit(state, data, u, amount, src, info = null) {
   u.hp -= a;
   chargeUlt(u, data.config, 'hurt', (a / u.maxHp) * 100, true);
   if (u.hp <= 0 && !state.phoenixUsed && state.dataRef && eco(state, state.dataRef, 'phoenix')) { state.phoenixUsed = true; u.hp = 0; setHp(state, u, u.maxHp * 0.3, 'revive', u, 'phoenix'); state.events.push({ type: 'phoenix', uid: u.uid }); say(state, `${u.stats.name} 불사조 깃털로 일어남!`); return a; }
-  if (u.hp <= 0) { u.hp = 0; u.down = true; state.downs += 1; state.events.push({ type: 'down', uid: u.uid }); say(state, `${u.stats.name} 쓰러짐`); }
+  if (u.hp <= 0) { u.hp = 0; u.down = true; u.downAt = state.time; state.downs += 1; state.events.push({ type: 'down', uid: u.uid }); say(state, `${u.stats.name} 쓰러짐`); }
   return a;
 }
 
@@ -1190,7 +1211,7 @@ function unitAct(state, data, u, g) {
     else for (let i = 0; i < (a2.hits ?? 1); i++) hits.push([t, base * a2.mult]);
     if (a2.stun) t.stunLeft = Math.max(t.stunLeft ?? 0, a2.stun);
     if (a2.push) t.gauge = Math.max(0, t.gauge - a2.push);
-    if (a2.healAlly) { const al = lowest(fighters(state)); healTo(state, al, al.maxHp * a2.healAlly / 100, u, a2.name); state.events.push({ type: 'heal', uid: al.uid }); }
+    if (a2.healAlly) { const al = lowest(fighters(state)); aid(state, 'heal', u, al, { amt: healA(state, al, al.maxHp * a2.healAlly / 100, u, a2.name) }); }
   } else if (move === 'el') {
     el = u.stats.element; const def = cfg.elements.defs[el] ?? {}; name = `${def.icon ?? ''} ${def.name ?? ''} 공격`.trim(); big = true;
     u.elCd = cfg.moves.rules.el.cooldown;
@@ -1272,7 +1293,7 @@ function unitAct(state, data, u, g) {
     // 응원 '뒤': 노려지는(돌파 예고된) 후열 → 없으면 가장 약한 후열에 보호막(2초, 받는 피해 −40%)
     const marked = state.enemies.filter((e) => e.diveMark?.uid).map((e) => findU(state, e.diveMark.uid)).filter(aliveU);
     const to = marked[0] ?? lowest(fighters(state).filter(isBack).length ? fighters(state).filter(isBack) : fighters(state));
-    if (to) { to.shieldT = state.time + 2; to.shieldBy = refOf(u); noteStatus(state, 'buff', u, [to], 'shield', 'cheerShield', 2); cheer = to.uid; state.events.push({ type: 'cheer', uid: u.uid, to: to.uid, shield: true }); }
+    if (to) { to.shieldT = state.time + 2; to.shieldBy = refOf(u); noteStatus(state, 'buff', u, [to], 'shield', 'cheerShield', 2, true); cheer = to.uid; state.events.push({ type: 'cheer', uid: u.uid, to: to.uid, shield: true }); aid(state, 'shield', u, to, { dur: 2 }); }
   } else if (st === 'support') {
     const c = [...(state.clashes ?? [])].sort((a, b) => a.push - b.push)[0];
     const to = c ? findU(state, c.uid) : lowest(fighters(state));
@@ -1281,10 +1302,16 @@ function unitAct(state, data, u, g) {
       // 응원은 여럿이 겹치면 덜 듦(1/√응원 수): 응원만 잔뜩은 약함
       const nSup = fighters(state).filter((x) => styleOf(x) === 'support').length;
       const hb = (u.kind === 'base' && u.build ? BUILDS[u.build]?.heal ?? 1 : 1) * (tuneOf(u, g)?.heal ?? 1) / Math.sqrt(Math.max(1, nSup));
-      healTo(state, to, to.maxHp * g.cheerHeal * sk * hb / 100, u, 'cheer');
+      const amt = healA(state, to, to.maxHp * g.cheerHeal * sk * hb / 100, u, 'cheer');
       if (c) c.push = Math.min(0.95, c.push + g.cheerPush * sk * (tuneOf(u, g)?.push ?? 1) / Math.sqrt(Math.max(1, nSup)));
       cheer = to.uid;
-      state.events.push({ type: 'cheer', uid: u.uid, to: to.uid });
+      state.events.push({ type: 'cheer', uid: u.uid, to: to.uid, heal: amt, push: !!c });
+    }
+    // 정신 차려!(이상 해제): 기절한 친구 하나를 깨움(응원 동물마다 cleanseCd초에 한 번)
+    if (state.time - (u.cleanseAt ?? -99) >= (g.cleanseCd ?? 6)) {
+      // 기절만 풂(낚아채여 함께 걸린 붙잡힘도). 탱커에게 붙잡힌 것(자리 싸움)은 규칙이 매번 다시 정하므로 건드리지 않음
+      const sick = fighters(state).find((x) => x !== u && (x.stunLeft ?? 0) > 0.3);
+      if (sick) { const snatched = (sick.pinUntil ?? 0) > state.time; sick.stunLeft = 0; if (snatched) { sick.pinnedBy = null; sick.pinUntil = 0; } u.cleanseAt = state.time; dstat(state, 'cleanse'); aid(state, 'cleanse', u, sick, { what: snatched ? ['stun', 'pin'] : ['stun'] }); }
     }
   }
   state.events.push({ type: 'act', side: 'u', uid: u.uid, eid: t.eid, move, name, big, el, melee, style: st, cheer, hits: dealt, back });

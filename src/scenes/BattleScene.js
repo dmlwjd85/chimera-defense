@@ -12,7 +12,7 @@ import { makeEnemy } from '../logic/waves.js';
 import { dotOn, dotify } from './dotfx.js';
 import { crumb, debugOn } from './debug.js';
 import { DOT_PX } from '../rig/dotData.js';
-import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, poolExtraIds, enemyFace } from './rigs.js';
+import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, poolExtraIds, enemyFace, enemyFaceRig } from './rigs.js';
 import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
 import { soundOf, ELEM_SOUND } from './onomato.js';
@@ -1301,7 +1301,7 @@ export default class BattleScene extends Phaser.Scene {
         else if (!(m === 'attack' && !r.finished) && !(m === 'hit' && !r.finished)) { if (still && m !== 'idle') r.play('idle', { loop: true }); else if (!still && m !== 'move') r.play('move', { loop: true }); }
         if (hp < v.lastHp - 0.01) { if (!v.rig.dot || this.time.now - (v.flashAt ?? -9999) > 240) { r.hitFlash(v.rig.dot ? 0.06 : 0.14); v.flashAt = this.time.now; } if (!(m === 'attack' && !r.finished)) r.play('hit'); }
         v.lastHp = hp;
-        r.setFacing(v.rig.dot ? enemyFace(v.rig.faceId ?? e.id, e.confuseLeft > 0) : e.confuseLeft > 0 ? 1 : -1);   // 도트 적은 그림 방향표대로(모두 왼쪽)
+        r.setFacing(enemyFaceRig(v.rig, v.rig.faceId ?? e.skin ?? e.id, e.confuseLeft > 0));   // 도트 적은 그림 방향표대로(모두 왼쪽)
         v.rig.view.update(e.stunLeft > 0 || e.holdLeft > 0 ? 0 : this.frameDt);
         v.holder.setDepth(50 + y + 0.5);
       } else { v.body.setPosition(xk, y); if (hp < v.lastHp - 0.01) { v.body.setFillStyle?.(0xffffff); this.time.delayedCall(70, () => v.body.active && v.body.setFillStyle?.(hex(this.data2.enemyById[e.id].color))); } v.lastHp = hp; }

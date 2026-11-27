@@ -73,11 +73,20 @@ export class CombatClarity {
   viewOf(side, id) { return side === 'u' ? this.sc.uViews.get(id) : side === 'e' ? this.sc.eViews.get(id) : null; }
   posOf(key) { const v = this.viewOf(key[0], +key.slice(1)); if (v?.c?.scene) { const p = [v.c.x, v.c.y]; this.lastPos.set(key, p); return p; } return this.lastPos.get(key) ?? null; }
   show(r, opts) {
+    // 도움 효과(#97 차분한 전투의 aid 사건: 빛 구슬·+숫자·그림 글자)가 이미 그리는 회복·버프·보호막·부활은 겹쳐 그리지 않음(바는 그대로 따라감)
+    if (r.aid) return;
     if (STATUS_KINDS.has(r.kind)) { this.link(r); return; }
     const key = r.side + r.id;
     const n = Math.round(Math.abs(r.d)), nb = Math.round(r.blocked ?? 0);
     if (r.kind === 'scale') return;   // 최대 체력이 바뀐 비율 조정: 바 비율은 그대로라 숫자 없음
     if (r.d < 0) {
+      // 차분한 전투(#97 gauntlet.calm): 피해 숫자는 체력 dmgPct 이상·약점·큰 기술·치명·쓰러뜨림만. 작은 것은 체력바 잔상으로만
+      const C = this.sc.calm?.();
+      if (C && !(r.big || r.crit || r.kill || r.eff === 'strong' || r.eff === 'prey' || (opts?.plan && r.big))) {
+        const x = r.side === 'u' ? this.sc.state?.field?.find((y) => y?.uid === r.id) : this.sc.state?.enemies?.find((y) => y.eid === r.id);
+        const lim = (x?.maxHp ?? 0) * (C.dmgPct ?? 0.08);
+        if (-r.d < lim) { if (nb >= lim && nb >= 1) this.text(key, this.T('clarity.blocked', { n: nb }), this.C('blocked', '#8fd3ff'), this.N('blocked', 14), false, 26); return; }
+      }
       if (r.kind === 'dot') return this.mergeAdd(key + ':dot:' + r.cause, key, -r.d, this.C(r.cause === 'burn' ? 'dotBurn' : 'dotPoison', '#b07cff'), this.N('small', 15), this.N('dotMs', 700), (v) => String(Math.round(v)));
       const big = !!(r.big || r.crit || r.kill);
       if (n >= 1) {
@@ -121,6 +130,8 @@ export class CombatClarity {
   /** 숫자 하나: 같은 대상 위에 잇달아 뜨면 위로 쌓고 좌우로 살짝 흩음(겹치지 않게). 동시에 max개 넘으면 가장 오래된 것부터 지움 */
   text(key, txt, color, size, big = false, dx = 0) {
     const p = this.posOf(key); if (!p) return;
+    // 차분한 전투(#97)의 글자 예산을 함께 씀: 큰 숫자는 늘, 보통 숫자는 자리 있을 때만
+    if (this.sc.textGate && !this.sc.textGate(big ? 2 : 1, this.N('hold', 380) + this.N('fade', 380))) return;
     const now = this.sc.time.now, st = (this.stack.get(key) ?? []).filter((t) => now - t < this.N('stackMs', 520));
     const k = st.length; st.push(now); this.stack.set(key, st);
     const x = p[0] + dx + (k % 2 ? 1 : -1) * Math.min(3, k) * 9, y = p[1] - 96 - k * this.N('stackPx', 19);

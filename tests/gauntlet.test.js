@@ -177,14 +177,18 @@ test('수싸움: 1스테이지는 앞라인만, 2스테이지 수업(벽→사�
   const s1 = autoRun(createGauntlet(D, 'forest-1', 11, {}), D);
   assert.ok(!s1.dstat?.uMark && !s1.dstat?.eMark, '1스테이지엔 돌파 예고 없음');
   // 2스테이지: 3번째 교전에서 '벽' 안내, 5번째에서 '돌파 당함' 안내
-  const st = createGauntlet(D, 'forest-2', 6, {});
+  // 시드에 따라 2교전 안에 지면 수업까지 못 감 → 몇 판 돌려서 '벽' 수업이 나오는지 봄
   const seen = new Set();
+  for (const seed of [1, 3, 4, 6, 7, 9]) {
+  if (seen.has('wall')) break;
+  const st = createGauntlet(D, 'forest-2', seed, {});
   for (let guard = 0; guard < 400 && st.phase !== 'ended'; guard++) {
     while (st.phase === 'fight') { tickGauntlet(st, D, 0.5); for (const ev of st.events) if (ev.type === 'lesson') { seen.add(ev.kind); setPlan(st, D, ev.kind === 'wall' ? 'hunt' : 'guard'); } st.events.length = 0; }
     if (st.phase !== 'regroup') break;
     if (st.offer && !st.offer.taken) takeReward(st, D, 'food', st.field[0].uid);
     botRegroup(st, D);
     nextEncounter(st, D);
+  }
   }
   assert.ok(seen.has('wall'), '벽 수업');
   // 작전 고르기: 딜러 돕기 → 사냥 → 요격, 브루저 버티기 ↔ 지키기
@@ -367,4 +371,39 @@ test('역전(투지·역전 찬스·역전 특성) · 부상(치료비 또는 �
     assert.ok(G.healUnits(t, D).ok); assert.equal(t.gold, 100 - c - hc);
     assert.ok(t.field.filter((u) => !u.resting).every((u) => u.hp === u.maxHp), '다친 동물(부상 제외) 체력 가득');
   }
+});
+
+test('진형 상성·지형 영향·보스 필살 예고·스테이지 전리품 유물', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  const { rollOffer } = await import('../src/logic/relics.js');
+  assert.equal(G.formOf(['bruiser', 'bruiser', 'bruiser', 'skirm']), 'wall');
+  assert.equal(G.formOf(['skirm', 'skirm', 'skirm', 'bruiser']), 'rush');
+  assert.equal(G.formOf(['ranged', 'support', 'ranged', 'bruiser']), 'camp');
+  assert.equal(G.formOf(['bruiser', 'skirm', 'ranged']), 'mix');
+  // 지형: 7스테이지 불똥(불 속성은 끄떡없음)
+  const s = createGauntlet(D, 'stage-7', 4, {});
+  assert.equal(G.stageTier(s), 3);
+  const kinds = new Set();
+  for (let i = 0; i < 600 && s.phase === 'fight'; i++) { tickGauntlet(s, D, 0.05); for (const ev of s.events) kinds.add(ev.type); s.events.length = 0; }
+  assert.ok(kinds.has('hazard'), '불똥');
+  assert.ok(kinds.has('formation'), '진형 알림');
+  // 보스 필살: 예고 → 그 라인을 누르면 막기 → 피해
+  const b = createGauntlet(D, 'stage-7', 5, {});
+  b.enc = b.plan.length - 1; G.startEncounter(b, D);
+  let warn = null, slam = null;
+  for (let i = 0; i < 2000 && !slam && b.phase === 'fight'; i++) {
+    tickGauntlet(b, D, 0.05);
+    for (const ev of b.events) { if (ev.type === 'bossWarn') { warn = ev; const u = G.fighters(b).find((x) => G.laneOf(x.seat) === ev.lane); if (u) assert.ok(G.tapShield(b, u.uid).ok, '예고된 라인은 눌러서 막기'); } if (ev.type === 'bossSlam') slam = ev; }
+    b.events.length = 0;
+  }
+  assert.ok(warn && slam && slam.lane === warn.lane, '예고한 라인을 침');
+  assert.ok(slam.hits.some((h) => h.shield), '막은 동물은 덜 다침');
+  // 전리품 유물: 쇠사슬(6스테이지 집)은 다른 스테이지에서 안 나옴, 한 번 얻으면 어디서나
+  const r1 = createGauntlet(D, 'stage-4', 1, {}); r1.gauntletRelicBan = G.gcfg(D).relicBan ?? [];
+  for (let i = 0; i < 30; i++) assert.ok(!rollOffer(r1, D).includes('iron_chain'));
+  const r2 = createGauntlet(D, 'stage-4', 1, { foundRelics: ['iron_chain'] }); r2.gauntletRelicBan = G.gcfg(D).relicBan ?? [];
+  let seen = false; for (let i = 0; i < 60 && !seen; i++) seen = rollOffer(r2, D).includes('iron_chain');
+  assert.ok(seen, '찾은 유물은 어디서나');
+  const r3 = createGauntlet(D, 'stage-12', 1, {}); r3.gauntletRelicBan = G.gcfg(D).relicBan ?? [];
+  for (let i = 0; i < 30; i++) assert.ok(!rollOffer(r3, D).includes('phoenix_plume'), '불사조 깃털은 하드 전용');
 });

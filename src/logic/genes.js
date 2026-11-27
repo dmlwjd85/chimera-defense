@@ -101,6 +101,7 @@ export function chanceWith(a, b, data, ctx = {}, extra = { mult: 1, add: 0 }) {
   if (cross && ctx.relicCross) { c += ctx.relicCross; bonus.push('📓'); }
   if (ctx.myth) { c += m.myth ?? 0; bonus.push('🌟'); }
   if (ctx.moon) { c += m.moon ?? 0; bonus.push('🌕'); }
+  if (ctx.geneAll) { c += ctx.geneAll; bonus.push('🧬'); }
   const fails = ctx.pity?.[key] ?? 0, sure = !!m.pity && fails >= m.pity;
   return { chance: sure ? 100 : Math.max(0, Math.min(100, Math.round(c))), base, cross, key, fails, pity: m.pity ?? 0, sure, bonus };
 }
@@ -110,7 +111,7 @@ export function geneCtx(state, data) {
   return {
     potion: (state.genePotion ?? 0) > 0, relicCross: eco(state, data, 'crossGene') ?? 0,
     myth: (state.field ?? []).some((u) => u && u.kind === 'base' && u.stage === 'spirit' && !u.down && !u.resting),
-    moon: !!state.moonNow, pity: state.genePity ?? {}, seenBonds: state.seenBonds ?? null,
+    moon: !!state.moonNow, pity: state.genePity ?? {}, seenBonds: state.seenBonds ?? null, geneAll: eco(state, data, 'geneAll') ?? 0,
   };
 }
 

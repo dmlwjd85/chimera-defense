@@ -123,7 +123,8 @@ export default class StageSelectScene extends Phaser.Scene {
     }
     const st = c.st, open = stageUnlocked(save, data, st.id), rec = save.stages[st.id], boss = data.enemyById[st.boss];
     const kinds = [...new Set(st.waves.flatMap((w) => Object.keys(w.mix)))].filter((id) => data.enemyById[id]?.resist || data.enemyById[id]?.revive).map((id) => data.enemyById[id].name);
-    add(this.add.text(x, y + 84, `땅: ${st.zones.map((z) => ZONE_NAME[z]).join(' → ')}    적 체력 ×${st.mult}${kinds.length ? `    조심: ${kinds.join('·')}` : ''}`, style(13, '#aabbcc')));
+    const hz = cfg.gauntlet?.hazards?.[st.id];
+    add(this.add.text(x, y + 84, `땅: ${st.zones.map((z) => ZONE_NAME[z]).join(' → ')}    적 체력 ×${st.mult}${kinds.length ? `    조심: ${kinds.join('·')}` : ''}${hz ? `    지형: ${hz.icon} ${hz.name}` : ''}`, style(13, '#aabbcc')));
     const gaps = save.soulPet ? soulGaps(data, save.soulPet, st).map((g) => g.text) : [];
     add(this.add.text(x, y + 104, `보스 ${boss?.name ?? '-'} — ${BOSS_ROLE[st.boss] ?? ''}${gaps.length ? `     👑 ${data.unitById[save.soulPet].name}: ${gaps.slice(0, 2).join(' · ')}` : ''}`, style(13, '#f0883e')));
     const carry = save.carry?.[st.id];
@@ -131,6 +132,12 @@ export default class StageSelectScene extends Phaser.Scene {
     add(this.add.text(mid, y + 4, `${stars(starsOf(rec))}`, style(26, '#ffd84d', { stroke: '#000', strokeThickness: 4 })));
     add(this.add.text(mid, y + 42, rec?.cleared ? `클리어 ✔${rec.bestTime ? `  최고 ${mmss(rec.bestTime)}` : ''}` : rec ? `최고 웨이브 ${rec.bestWave}` : '처음', style(14, rec?.cleared ? '#58d68d' : '#cccccc')));
     add(this.add.text(mid, y + 64, `★ 클리어  ★ 생명 ${cfg.stars?.life ?? 60}% 이상  ★ 쓰러진 아군 ${cfg.gauntlet?.lowStars ?? 3} 이하${rec?.hard ? '  👑 하드' : ''}`, style(13, '#aabbcc')));
+    // 재도전 동기: 이 스테이지 전리품 유물(여기서만 나옴, 한 번 얻으면 어디서나) · 하드·신계 전용
+    { const gc = cfg.gauntlet ?? {}, found = save.codex.relics ?? [];
+      const home = Object.entries(gc.relicHome ?? {}).filter(([, sid]) => sid === st.id).map(([id]) => id);
+      const hard = home.filter((id) => (gc.relicHard ?? []).includes(id));
+      const line = [...home.map((id) => `${found.includes(id) ? data.relicById[id]?.icon ?? '✨' : '❔'}${(gc.relicHard ?? []).includes(id) ? '(하드)' : ''}`)];
+      if (home.length) add(this.add.text(mid, y + 86, `🎁 이 스테이지 유물 ${home.filter((id) => found.includes(id)).length}/${home.length}  ${line.join(' ')}${hard.length ? '' : ''}`, style(13, '#ffd84d'))); }
     const sp = (cfg.spells?.list ?? []).find((s) => s.stage === st.id);
     if (sp) add(this.add.text(mid, y + 106, rec?.cleared ? `🔮 배운 마법: ${sp.icon} ${sp.name}` : `🔮 깨면 배우는 마법: ${sp.icon} ${sp.name}`, style(13, '#d7bde2')));
     if (false && i > 0 && open) add(this.add.text(mid, y + 86, carry ? `데려갈 동물: ${carry.white ? '흰 ' : ''}${carry.stage === 'teen' ? '성장기' : '어린'} ${data.unitById[carry.speciesId].name}` : `데려갈 동물 없음 → 시작 골드 +${cfg.carry.fallbackGold}`, style(13, carry ? '#9cff6b' : '#aaaaaa')));

@@ -96,6 +96,7 @@ export function battleOptions(save, data, stageId = null) {
     pouch: save.pouch ?? 0,
     prep: save.prep ?? null,
     genePity: { ...(save.genePity ?? {}) },
+    foundRelics: [...(save.codex.relics ?? [])],
   };
 }
 
@@ -247,7 +248,8 @@ export function settleRun(save, state, data) {
   addUniq(save.codex.enemies, [...(state.seenEnemies ?? [])]);
   addUniq((save.codex.spirits ??= []), state.finds.spirits ?? []);
   addUniq((save.codex.flips ??= []), state.finds.flips ?? []);
-  addUniq((save.codex.miracles ??= []), state.finds.miracles ?? []);   // 기적의 키메라(강이 다른 짝)
+  addUniq((save.codex.miracles ??= []), state.finds.miracles ?? []);
+  addUniq((save.codex.relics ??= []), state.relics ?? []);   // 한 번 얻은 유물은 어느 스테이지에서나 나옴   // 기적의 키메라(강이 다른 짝)
   if (state.genePity) save.genePity = { ...state.genePity };   // 같은 짝 실패 눈금은 판을 넘어 이어짐   // 각성·신화급으로 뒤집힌 약점(도감 특성 탭)
   const ach = [];
   const give = (id) => { if (!save.achievements.includes(id)) { save.achievements.push(id); ach.push(id); } };
@@ -385,7 +387,8 @@ const SHOP_PRICE = { common: 35, rare: 55, epic: 80 };
 /** 상점 진열: 연전 유물 2 · 먹이 꾸러미 · 불사조 깃털(공짜 부활) · 훈련(덱 동물 레벨 +1). 같은 진열은 새로 고칠 때까지 유지 */
 export function shopOffers(save, data, rng = Math.random) {
   if (save.shop?.items?.length) return save.shop;
-  const pool = data.relicCfg.relics.filter((r) => r.gauntlet && !(save.prep?.relics ?? []).includes(r.id));
+  const gc = data.config.gauntlet ?? {}, found = save.codex.relics ?? [];
+  const pool = data.relicCfg.relics.filter((r) => r.gauntlet && !(save.prep?.relics ?? []).includes(r.id) && (found.includes(r.id) || (!gc.relicHome?.[r.id] && !(gc.relicHard ?? []).includes(r.id) && !(gc.relicTier ?? []).includes(r.id))));
   const relics = [];
   while (relics.length < 2 && pool.length) relics.push(pool.splice(Math.floor(rng() * pool.length), 1)[0]);
   const deck = (save.deck ?? []).filter((id) => data.unitById[id]);

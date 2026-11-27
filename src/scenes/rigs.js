@@ -4,7 +4,7 @@ import { RigView } from '../rig/RigView.js';
 import { DotInstance } from '../rig/DotInstance.js';
 import { DotView, ensureDotFrames } from '../rig/DotView.js';
 import { DOT_PX, validateDot } from '../rig/dotData.js';
-import { enemyFace } from '../logic/enemyFace.js';   // re-export만으로는 이 파일 안에서 쓸 수 없음(2026-11-27, main 합친 뒤 교전 시작 오류)
+import { enemyFace, enemyFaceRig } from '../logic/enemyFace.js';   // re-export만으로는 이 파일 안에서 쓸 수 없음(2026-11-27, main 합친 뒤 교전 시작 오류)
 
 /** Queue every rig JSON in Boot's preload. */
 export function preloadRigs(scene) {
@@ -194,7 +194,7 @@ export function stageEnemyIds(stage, data) {
 }
 
 /** 적 방향 표(왼쪽을 보는 원화는 뒤집지 않음). 내용은 src/logic/enemyFace.js */
-export { ENEMY_FACES_LEFT, PORTRAIT_FACES_RIGHT, enemyPortraitFlip, enemyFace, enemyFaceOld } from '../logic/enemyFace.js';
+export { ENEMY_FACES_LEFT, PORTRAIT_FACES_RIGHT, enemyPortraitFlip, enemyFace, enemyFaceOld, enemyFaceRig } from '../logic/enemyFace.js';
 
 /** 적 도트(동작 시트가 불러와져 있을 때만). 오른쪽을 보는 그림 → 왼쪽(동물 쪽)을 보게 뒤집음. */
 function enemyDot(scene, enemy, parent, scale) {
@@ -254,6 +254,6 @@ export function enemyRig(scene, enemy, parent, px, dotScale = 0.22) {
   const rig = { species: enemy.id, template: 'sprite', textures: { body: key }, artScale: 256 / (scene.textures.get(key).getSourceImage().width || 256), flipArt: true,
     stages: { adult: { scale: 1, speed: enemy.boss ? 0.8 : 1 + (enemy.speed - 1) * 0.4 } } };
   const inst = new RigInstance(template, anims, rig, { stage: 'adult', x: 0, y: 0, scale: px / 256, seed: enemy.eid, motion: 'move' });
-  inst.setFacing(-1);
-  return { inst, view: new RigView(scene, inst, { parent }) };
+  inst.setFacing(enemyFaceRig({ dot: false }, enemy.skin ?? enemy.id));   // 시트 없이 한 장 그림: 방향 뜻이 반대(enemyFaceRig 설명 참고)
+  return { inst, view: new RigView(scene, inst, { parent }), dot: false };
 }

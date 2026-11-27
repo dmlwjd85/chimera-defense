@@ -1,0 +1,607 @@
+{
+ "note": "ch_bighorn_bison 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_bighorn_bison",
+ "sheet": "dot-m-auto_bighorn_bison",
+ "file": "assets/dotm/auto_bighorn_bison.png",
+ "frameW": 113,
+ "frameH": 110,
+ "foot": 107,
+ "cols": 1,
+ "anchorX": 57,
+ "palette": [
+  "#0c0203",
+  "#1f0708",
+  "#291a1f",
+  "#442e2d",
+  "#57261e",
+  "#693123",
+  "#6a4c46",
+  "#7e3c24",
+  "#8a3d23",
+  "#8d6551",
+  "#a6552f",
+  "#a68067",
+  "#c19a7b",
+  "#cdab87",
+  "#e5caa4",
+  "#fbf4ee"
+ ],
+ "rects": {
+  "ch_bighorn_bison_adult_a1_00": [
+   825,
+   98,
+   101,
+   77,
+   -48,
+   -77
+  ],
+  "ch_bighorn_bison_adult_a1_01": [
+   927,
+   98,
+   99,
+   77,
+   -48,
+   -77
+  ],
+  "ch_bighorn_bison_adult_a1_02": [
+   1860,
+   0,
+   96,
+   78,
+   -47,
+   -78
+  ],
+  "ch_bighorn_bison_adult_a1_03": [
+   921,
+   0,
+   96,
+   80,
+   -48,
+   -81
+  ],
+  "ch_bighorn_bison_adult_a1_04": [
+   0,
+   98,
+   98,
+   78,
+   -47,
+   -83
+  ],
+  "ch_bighorn_bison_adult_a1_05": [
+   1670,
+   98,
+   106,
+   75,
+   -54,
+   -84
+  ],
+  "ch_bighorn_bison_adult_a1_06": [
+   1027,
+   98,
+   110,
+   77,
+   -57,
+   -81
+  ],
+  "ch_bighorn_bison_adult_a1_07": [
+   1018,
+   0,
+   109,
+   80,
+   -56,
+   -80
+  ],
+  "ch_bighorn_bison_adult_a2_00": [
+   1138,
+   98,
+   107,
+   77,
+   -53,
+   -77
+  ],
+  "ch_bighorn_bison_adult_a2_01": [
+   0,
+   177,
+   104,
+   72,
+   -51,
+   -74
+  ],
+  "ch_bighorn_bison_adult_a2_02": [
+   99,
+   98,
+   100,
+   78,
+   -48,
+   -85
+  ],
+  "ch_bighorn_bison_adult_a2_03": [
+   206,
+   0,
+   94,
+   94,
+   -48,
+   -108
+  ],
+  "ch_bighorn_bison_adult_a2_04": [
+   402,
+   0,
+   101,
+   92,
+   -54,
+   -106
+  ],
+  "ch_bighorn_bison_adult_a2_05": [
+   0,
+   0,
+   103,
+   97,
+   -53,
+   -99
+  ],
+  "ch_bighorn_bison_adult_a2_06": [
+   610,
+   0,
+   104,
+   86,
+   -51,
+   -88
+  ],
+  "ch_bighorn_bison_adult_a2_07": [
+   1560,
+   98,
+   109,
+   76,
+   -55,
+   -76
+  ],
+  "ch_bighorn_bison_adult_down_00": [
+   1246,
+   98,
+   107,
+   77,
+   -54,
+   -77
+  ],
+  "ch_bighorn_bison_adult_down_01": [
+   1876,
+   98,
+   110,
+   74,
+   -56,
+   -74
+  ],
+  "ch_bighorn_bison_adult_down_02": [
+   105,
+   177,
+   110,
+   70,
+   -54,
+   -71
+  ],
+  "ch_bighorn_bison_adult_down_03": [
+   216,
+   177,
+   105,
+   62,
+   -52,
+   -63
+  ],
+  "ch_bighorn_bison_adult_down_04": [
+   322,
+   177,
+   105,
+   56,
+   -51,
+   -56
+  ],
+  "ch_bighorn_bison_adult_down_05": [
+   428,
+   177,
+   106,
+   54,
+   -51,
+   -54
+  ],
+  "ch_bighorn_bison_adult_el_00": [
+   1777,
+   98,
+   98,
+   75,
+   -46,
+   -75
+  ],
+  "ch_bighorn_bison_adult_el_01": [
+   1128,
+   0,
+   97,
+   79,
+   -47,
+   -80
+  ],
+  "ch_bighorn_bison_adult_el_02": [
+   819,
+   0,
+   101,
+   85,
+   -52,
+   -90
+  ],
+  "ch_bighorn_bison_adult_el_03": [
+   104,
+   0,
+   101,
+   95,
+   -55,
+   -100
+  ],
+  "ch_bighorn_bison_adult_el_04": [
+   301,
+   0,
+   100,
+   93,
+   -54,
+   -98
+  ],
+  "ch_bighorn_bison_adult_el_05": [
+   504,
+   0,
+   105,
+   88,
+   -57,
+   -93
+  ],
+  "ch_bighorn_bison_adult_el_06": [
+   1226,
+   0,
+   108,
+   79,
+   -56,
+   -81
+  ],
+  "ch_bighorn_bison_adult_el_07": [
+   1354,
+   98,
+   105,
+   77,
+   -53,
+   -77
+  ],
+  "ch_bighorn_bison_adult_hit_00": [
+   715,
+   0,
+   103,
+   86,
+   -52,
+   -86
+  ],
+  "ch_bighorn_bison_adult_idle_00": [
+   200,
+   98,
+   105,
+   78,
+   -53,
+   -78
+  ],
+  "ch_bighorn_bison_adult_idle_01": [
+   306,
+   98,
+   105,
+   78,
+   -53,
+   -78
+  ],
+  "ch_bighorn_bison_adult_idle_02": [
+   412,
+   98,
+   103,
+   78,
+   -51,
+   -78
+  ],
+  "ch_bighorn_bison_adult_idle_03": [
+   1335,
+   0,
+   104,
+   79,
+   -52,
+   -79
+  ],
+  "ch_bighorn_bison_adult_walk_00": [
+   516,
+   98,
+   101,
+   78,
+   -49,
+   -78
+  ],
+  "ch_bighorn_bison_adult_walk_01": [
+   1460,
+   98,
+   99,
+   77,
+   -47,
+   -77
+  ],
+  "ch_bighorn_bison_adult_walk_02": [
+   618,
+   98,
+   100,
+   78,
+   -48,
+   -78
+  ],
+  "ch_bighorn_bison_adult_walk_03": [
+   1440,
+   0,
+   102,
+   79,
+   -50,
+   -79
+  ],
+  "ch_bighorn_bison_adult_walk_04": [
+   1543,
+   0,
+   104,
+   79,
+   -52,
+   -80
+  ],
+  "ch_bighorn_bison_adult_walk_05": [
+   719,
+   98,
+   105,
+   78,
+   -53,
+   -79
+  ],
+  "ch_bighorn_bison_adult_walk_06": [
+   1648,
+   0,
+   106,
+   79,
+   -54,
+   -78
+  ],
+  "ch_bighorn_bison_adult_walk_07": [
+   1755,
+   0,
+   104,
+   79,
+   -52,
+   -79
+  ]
+ },
+ "frames": [
+  "ch_bighorn_bison_adult_a1_00",
+  "ch_bighorn_bison_adult_a1_01",
+  "ch_bighorn_bison_adult_a1_02",
+  "ch_bighorn_bison_adult_a1_03",
+  "ch_bighorn_bison_adult_a1_04",
+  "ch_bighorn_bison_adult_a1_05",
+  "ch_bighorn_bison_adult_a1_06",
+  "ch_bighorn_bison_adult_a1_07",
+  "ch_bighorn_bison_adult_a2_00",
+  "ch_bighorn_bison_adult_a2_01",
+  "ch_bighorn_bison_adult_a2_02",
+  "ch_bighorn_bison_adult_a2_03",
+  "ch_bighorn_bison_adult_a2_04",
+  "ch_bighorn_bison_adult_a2_05",
+  "ch_bighorn_bison_adult_a2_06",
+  "ch_bighorn_bison_adult_a2_07",
+  "ch_bighorn_bison_adult_down_00",
+  "ch_bighorn_bison_adult_down_01",
+  "ch_bighorn_bison_adult_down_02",
+  "ch_bighorn_bison_adult_down_03",
+  "ch_bighorn_bison_adult_down_04",
+  "ch_bighorn_bison_adult_down_05",
+  "ch_bighorn_bison_adult_el_00",
+  "ch_bighorn_bison_adult_el_01",
+  "ch_bighorn_bison_adult_el_02",
+  "ch_bighorn_bison_adult_el_03",
+  "ch_bighorn_bison_adult_el_04",
+  "ch_bighorn_bison_adult_el_05",
+  "ch_bighorn_bison_adult_el_06",
+  "ch_bighorn_bison_adult_el_07",
+  "ch_bighorn_bison_adult_hit_00",
+  "ch_bighorn_bison_adult_idle_00",
+  "ch_bighorn_bison_adult_idle_01",
+  "ch_bighorn_bison_adult_idle_02",
+  "ch_bighorn_bison_adult_idle_03",
+  "ch_bighorn_bison_adult_walk_00",
+  "ch_bighorn_bison_adult_walk_01",
+  "ch_bighorn_bison_adult_walk_02",
+  "ch_bighorn_bison_adult_walk_03",
+  "ch_bighorn_bison_adult_walk_04",
+  "ch_bighorn_bison_adult_walk_05",
+  "ch_bighorn_bison_adult_walk_06",
+  "ch_bighorn_bison_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bighorn_bison_adult_idle_00",
+  "ch_bighorn_bison_adult_idle_01",
+  "ch_bighorn_bison_adult_idle_02",
+  "ch_bighorn_bison_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 29,
+   "attack": {
+    "frames": [
+     "ch_bighorn_bison_adult_a1_00",
+     "ch_bighorn_bison_adult_a1_01",
+     "ch_bighorn_bison_adult_a1_02",
+     "ch_bighorn_bison_adult_a1_03",
+     "ch_bighorn_bison_adult_a1_04",
+     "ch_bighorn_bison_adult_a1_05",
+     "ch_bighorn_bison_adult_a1_06",
+     "ch_bighorn_bison_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bighorn_bison_adult_a2_00",
+     "ch_bighorn_bison_adult_a2_01",
+     "ch_bighorn_bison_adult_a2_02",
+     "ch_bighorn_bison_adult_a2_03",
+     "ch_bighorn_bison_adult_a2_04",
+     "ch_bighorn_bison_adult_a2_05",
+     "ch_bighorn_bison_adult_a2_06",
+     "ch_bighorn_bison_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bighorn_bison_adult_down_00",
+     "ch_bighorn_bison_adult_down_01",
+     "ch_bighorn_bison_adult_down_02",
+     "ch_bighorn_bison_adult_down_03",
+     "ch_bighorn_bison_adult_down_04",
+     "ch_bighorn_bison_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_bighorn_bison_adult_el_00",
+     "ch_bighorn_bison_adult_el_01",
+     "ch_bighorn_bison_adult_el_02",
+     "ch_bighorn_bison_adult_el_03",
+     "ch_bighorn_bison_adult_el_04",
+     "ch_bighorn_bison_adult_el_05",
+     "ch_bighorn_bison_adult_el_06",
+     "ch_bighorn_bison_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bighorn_bison_adult_hit_00"
+    ],
+    "durs": [
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bighorn_bison_adult_idle_00",
+     "ch_bighorn_bison_adult_idle_01",
+     "ch_bighorn_bison_adult_idle_02",
+     "ch_bighorn_bison_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bighorn_bison_adult_walk_00",
+     "ch_bighorn_bison_adult_walk_01",
+     "ch_bighorn_bison_adult_walk_02",
+     "ch_bighorn_bison_adult_walk_03",
+     "ch_bighorn_bison_adult_walk_04",
+     "ch_bighorn_bison_adult_walk_05",
+     "ch_bighorn_bison_adult_walk_06",
+     "ch_bighorn_bison_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bighorn_bison"
+}

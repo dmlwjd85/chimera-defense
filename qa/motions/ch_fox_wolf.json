@@ -1,0 +1,53 @@
+{
+ "species": "ch_fox_wolf",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 9.6,
+   "foot±": 25
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 7.2,
+   "foot±": 18
+  },
+  "adult_down": {
+   "n": 8,
+   "max|h%|": 26.5,
+   "foot±": 2
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 3.6,
+   "foot±": 13
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 41.0,
+   "foot±": 3
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.4,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 3.6,
+   "foot±": 3
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   281
+  ],
+  "box": [
+   121,
+   120
+  ],
+  "frames": 48,
+  "colors": 16,
+  "px": 575488
+ }
+}

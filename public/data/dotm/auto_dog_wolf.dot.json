@@ -1,0 +1,662 @@
+{
+ "note": "ch_dog_wolf 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_dog_wolf",
+ "sheet": "dot-m-auto_dog_wolf",
+ "file": "assets/dotm/auto_dog_wolf.png",
+ "frameW": 118,
+ "frameH": 92,
+ "foot": 90,
+ "cols": 1,
+ "anchorX": 60,
+ "palette": [
+  "#291a1f",
+  "#3b0e0d",
+  "#463232",
+  "#5a4b46",
+  "#625550",
+  "#786664",
+  "#92827a",
+  "#932f2e",
+  "#9d9288",
+  "#a99d92",
+  "#b3a293",
+  "#c7b8ae",
+  "#c9564d",
+  "#e37f72",
+  "#e5d8c3",
+  "#f0e3d3"
+ ],
+ "rects": {
+  "ch_dog_wolf_adult_a1_00": [
+   1278,
+   92,
+   97,
+   74,
+   -49,
+   -74
+  ],
+  "ch_dog_wolf_adult_a1_01": [
+   1376,
+   92,
+   99,
+   74,
+   -51,
+   -74
+  ],
+  "ch_dog_wolf_adult_a1_02": [
+   767,
+   92,
+   107,
+   76,
+   -57,
+   -86
+  ],
+  "ch_dog_wolf_adult_a1_03": [
+   205,
+   171,
+   109,
+   58,
+   -54,
+   -80
+  ],
+  "ch_dog_wolf_adult_a1_04": [
+   1881,
+   92,
+   105,
+   67,
+   -54,
+   -72
+  ],
+  "ch_dog_wolf_adult_a1_05": [
+   1572,
+   92,
+   108,
+   73,
+   -58,
+   -73
+  ],
+  "ch_dog_wolf_adult_a1_06": [
+   875,
+   92,
+   103,
+   76,
+   -55,
+   -76
+  ],
+  "ch_dog_wolf_adult_a1_07": [
+   1281,
+   0,
+   92,
+   79,
+   -45,
+   -79
+  ],
+  "ch_dog_wolf_adult_a2_00": [
+   376,
+   92,
+   94,
+   77,
+   -47,
+   -77
+  ],
+  "ch_dog_wolf_adult_a2_01": [
+   1476,
+   92,
+   95,
+   74,
+   -48,
+   -74
+  ],
+  "ch_dog_wolf_adult_a2_02": [
+   101,
+   0,
+   98,
+   88,
+   -54,
+   -88
+  ],
+  "ch_dog_wolf_adult_a2_03": [
+   0,
+   0,
+   100,
+   91,
+   -57,
+   -91
+  ],
+  "ch_dog_wolf_adult_a2_04": [
+   490,
+   0,
+   105,
+   84,
+   -60,
+   -84
+  ],
+  "ch_dog_wolf_adult_a2_05": [
+   471,
+   92,
+   105,
+   77,
+   -58,
+   -77
+  ],
+  "ch_dog_wolf_adult_a2_06": [
+   979,
+   92,
+   100,
+   76,
+   -53,
+   -76
+  ],
+  "ch_dog_wolf_adult_a2_07": [
+   1659,
+   0,
+   96,
+   78,
+   -49,
+   -78
+  ],
+  "ch_dog_wolf_adult_down_00": [
+   1756,
+   0,
+   94,
+   78,
+   -47,
+   -78
+  ],
+  "ch_dog_wolf_adult_down_01": [
+   1080,
+   92,
+   99,
+   75,
+   -51,
+   -75
+  ],
+  "ch_dog_wolf_adult_down_02": [
+   1681,
+   92,
+   101,
+   70,
+   -51,
+   -70
+  ],
+  "ch_dog_wolf_adult_down_03": [
+   315,
+   171,
+   103,
+   58,
+   -52,
+   -58
+  ],
+  "ch_dog_wolf_adult_down_04": [
+   105,
+   171,
+   99,
+   61,
+   -47,
+   -61
+  ],
+  "ch_dog_wolf_adult_down_05": [
+   419,
+   171,
+   108,
+   48,
+   -50,
+   -48
+  ],
+  "ch_dog_wolf_adult_down_06": [
+   528,
+   171,
+   111,
+   43,
+   -53,
+   -43
+  ],
+  "ch_dog_wolf_adult_down_07": [
+   640,
+   171,
+   112,
+   41,
+   -55,
+   -41
+  ],
+  "ch_dog_wolf_adult_el_00": [
+   894,
+   0,
+   99,
+   82,
+   -50,
+   -82
+  ],
+  "ch_dog_wolf_adult_el_01": [
+   596,
+   0,
+   97,
+   84,
+   -49,
+   -84
+  ],
+  "ch_dog_wolf_adult_el_02": [
+   296,
+   0,
+   95,
+   86,
+   -50,
+   -86
+  ],
+  "ch_dog_wolf_adult_el_03": [
+   200,
+   0,
+   95,
+   88,
+   -50,
+   -88
+  ],
+  "ch_dog_wolf_adult_el_04": [
+   392,
+   0,
+   97,
+   86,
+   -51,
+   -86
+  ],
+  "ch_dog_wolf_adult_el_05": [
+   694,
+   0,
+   100,
+   84,
+   -53,
+   -84
+  ],
+  "ch_dog_wolf_adult_el_06": [
+   795,
+   0,
+   98,
+   83,
+   -49,
+   -83
+  ],
+  "ch_dog_wolf_adult_el_07": [
+   1851,
+   0,
+   98,
+   78,
+   -51,
+   -78
+  ],
+  "ch_dog_wolf_adult_hit_00": [
+   1783,
+   92,
+   97,
+   69,
+   -49,
+   -74
+  ],
+  "ch_dog_wolf_adult_hit_01": [
+   0,
+   171,
+   104,
+   63,
+   -56,
+   -72
+  ],
+  "ch_dog_wolf_adult_hit_02": [
+   1180,
+   92,
+   97,
+   75,
+   -49,
+   -75
+  ],
+  "ch_dog_wolf_adult_hit_03": [
+   1950,
+   0,
+   93,
+   78,
+   -46,
+   -78
+  ],
+  "ch_dog_wolf_adult_idle_00": [
+   577,
+   92,
+   94,
+   77,
+   -47,
+   -77
+  ],
+  "ch_dog_wolf_adult_idle_01": [
+   672,
+   92,
+   94,
+   77,
+   -47,
+   -77
+  ],
+  "ch_dog_wolf_adult_idle_02": [
+   0,
+   92,
+   93,
+   78,
+   -46,
+   -78
+  ],
+  "ch_dog_wolf_adult_idle_03": [
+   94,
+   92,
+   93,
+   78,
+   -46,
+   -78
+  ],
+  "ch_dog_wolf_adult_walk_00": [
+   1374,
+   0,
+   93,
+   79,
+   -46,
+   -79
+  ],
+  "ch_dog_wolf_adult_walk_01": [
+   994,
+   0,
+   94,
+   80,
+   -47,
+   -80
+  ],
+  "ch_dog_wolf_adult_walk_02": [
+   1089,
+   0,
+   95,
+   80,
+   -48,
+   -80
+  ],
+  "ch_dog_wolf_adult_walk_03": [
+   1185,
+   0,
+   95,
+   80,
+   -48,
+   -80
+  ],
+  "ch_dog_wolf_adult_walk_04": [
+   1468,
+   0,
+   95,
+   79,
+   -47,
+   -79
+  ],
+  "ch_dog_wolf_adult_walk_05": [
+   1564,
+   0,
+   94,
+   79,
+   -46,
+   -79
+  ],
+  "ch_dog_wolf_adult_walk_06": [
+   188,
+   92,
+   93,
+   78,
+   -46,
+   -78
+  ],
+  "ch_dog_wolf_adult_walk_07": [
+   282,
+   92,
+   93,
+   78,
+   -46,
+   -78
+  ]
+ },
+ "frames": [
+  "ch_dog_wolf_adult_a1_00",
+  "ch_dog_wolf_adult_a1_01",
+  "ch_dog_wolf_adult_a1_02",
+  "ch_dog_wolf_adult_a1_03",
+  "ch_dog_wolf_adult_a1_04",
+  "ch_dog_wolf_adult_a1_05",
+  "ch_dog_wolf_adult_a1_06",
+  "ch_dog_wolf_adult_a1_07",
+  "ch_dog_wolf_adult_a2_00",
+  "ch_dog_wolf_adult_a2_01",
+  "ch_dog_wolf_adult_a2_02",
+  "ch_dog_wolf_adult_a2_03",
+  "ch_dog_wolf_adult_a2_04",
+  "ch_dog_wolf_adult_a2_05",
+  "ch_dog_wolf_adult_a2_06",
+  "ch_dog_wolf_adult_a2_07",
+  "ch_dog_wolf_adult_down_00",
+  "ch_dog_wolf_adult_down_01",
+  "ch_dog_wolf_adult_down_02",
+  "ch_dog_wolf_adult_down_03",
+  "ch_dog_wolf_adult_down_04",
+  "ch_dog_wolf_adult_down_05",
+  "ch_dog_wolf_adult_down_06",
+  "ch_dog_wolf_adult_down_07",
+  "ch_dog_wolf_adult_el_00",
+  "ch_dog_wolf_adult_el_01",
+  "ch_dog_wolf_adult_el_02",
+  "ch_dog_wolf_adult_el_03",
+  "ch_dog_wolf_adult_el_04",
+  "ch_dog_wolf_adult_el_05",
+  "ch_dog_wolf_adult_el_06",
+  "ch_dog_wolf_adult_el_07",
+  "ch_dog_wolf_adult_hit_00",
+  "ch_dog_wolf_adult_hit_01",
+  "ch_dog_wolf_adult_hit_02",
+  "ch_dog_wolf_adult_hit_03",
+  "ch_dog_wolf_adult_idle_00",
+  "ch_dog_wolf_adult_idle_01",
+  "ch_dog_wolf_adult_idle_02",
+  "ch_dog_wolf_adult_idle_03",
+  "ch_dog_wolf_adult_walk_00",
+  "ch_dog_wolf_adult_walk_01",
+  "ch_dog_wolf_adult_walk_02",
+  "ch_dog_wolf_adult_walk_03",
+  "ch_dog_wolf_adult_walk_04",
+  "ch_dog_wolf_adult_walk_05",
+  "ch_dog_wolf_adult_walk_06",
+  "ch_dog_wolf_adult_walk_07"
+ ],
+ "standing": [
+  "ch_dog_wolf_adult_idle_00",
+  "ch_dog_wolf_adult_idle_01",
+  "ch_dog_wolf_adult_idle_02",
+  "ch_dog_wolf_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 13,
+   "attack": {
+    "frames": [
+     "ch_dog_wolf_adult_a1_00",
+     "ch_dog_wolf_adult_a1_01",
+     "ch_dog_wolf_adult_a1_02",
+     "ch_dog_wolf_adult_a1_03",
+     "ch_dog_wolf_adult_a1_04",
+     "ch_dog_wolf_adult_a1_05",
+     "ch_dog_wolf_adult_a1_06",
+     "ch_dog_wolf_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_dog_wolf_adult_a2_00",
+     "ch_dog_wolf_adult_a2_01",
+     "ch_dog_wolf_adult_a2_02",
+     "ch_dog_wolf_adult_a2_03",
+     "ch_dog_wolf_adult_a2_04",
+     "ch_dog_wolf_adult_a2_05",
+     "ch_dog_wolf_adult_a2_06",
+     "ch_dog_wolf_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_dog_wolf_adult_down_00",
+     "ch_dog_wolf_adult_down_01",
+     "ch_dog_wolf_adult_down_02",
+     "ch_dog_wolf_adult_down_03",
+     "ch_dog_wolf_adult_down_04",
+     "ch_dog_wolf_adult_down_05",
+     "ch_dog_wolf_adult_down_06",
+     "ch_dog_wolf_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_dog_wolf_adult_el_00",
+     "ch_dog_wolf_adult_el_01",
+     "ch_dog_wolf_adult_el_02",
+     "ch_dog_wolf_adult_el_03",
+     "ch_dog_wolf_adult_el_04",
+     "ch_dog_wolf_adult_el_05",
+     "ch_dog_wolf_adult_el_06",
+     "ch_dog_wolf_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_dog_wolf_adult_hit_00",
+     "ch_dog_wolf_adult_hit_01",
+     "ch_dog_wolf_adult_hit_02",
+     "ch_dog_wolf_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_dog_wolf_adult_idle_00",
+     "ch_dog_wolf_adult_idle_01",
+     "ch_dog_wolf_adult_idle_02",
+     "ch_dog_wolf_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_dog_wolf_adult_walk_00",
+     "ch_dog_wolf_adult_walk_01",
+     "ch_dog_wolf_adult_walk_02",
+     "ch_dog_wolf_adult_walk_03",
+     "ch_dog_wolf_adult_walk_04",
+     "ch_dog_wolf_adult_walk_05",
+     "ch_dog_wolf_adult_walk_06",
+     "ch_dog_wolf_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "dog_wolf"
+}

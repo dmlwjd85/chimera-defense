@@ -1,0 +1,53 @@
+{
+ "species": "ch_ant_grasshopper",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 12.5,
+   "foot±": 1
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 40.0,
+   "foot±": 1
+  },
+  "adult_down": {
+   "n": 5,
+   "max|h%|": 37.5,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 37.5,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 10.0,
+   "foot±": 1
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 7.5,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 5.0,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   275
+  ],
+  "box": [
+   109,
+   114
+  ],
+  "frames": 45,
+  "colors": 16,
+  "px": 563200
+ }
+}

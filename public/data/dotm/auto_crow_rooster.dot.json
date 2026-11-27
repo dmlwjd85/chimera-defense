@@ -1,0 +1,662 @@
+{
+ "note": "ch_crow_rooster 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_crow_rooster",
+ "sheet": "dot-m-auto_crow_rooster",
+ "file": "assets/dotm/auto_crow_rooster.png",
+ "frameW": 117,
+ "frameH": 120,
+ "foot": 116,
+ "cols": 1,
+ "anchorX": 60,
+ "palette": [
+  "#070205",
+  "#0d0a14",
+  "#1d0405",
+  "#242a39",
+  "#291a1f",
+  "#313947",
+  "#3c4552",
+  "#4b0a09",
+  "#5a5d64",
+  "#681f21",
+  "#8d252c",
+  "#98999c",
+  "#a54f4d",
+  "#a82424",
+  "#d34433",
+  "#fcfdfd"
+ ],
+ "rects": {
+  "ch_crow_rooster_adult_a1_00": [
+   297,
+   220,
+   102,
+   93,
+   -49,
+   -93
+  ],
+  "ch_crow_rooster_adult_a1_01": [
+   1207,
+   117,
+   99,
+   98,
+   -50,
+   -98
+  ],
+  "ch_crow_rooster_adult_a1_02": [
+   1307,
+   117,
+   100,
+   98,
+   -54,
+   -109
+  ],
+  "ch_crow_rooster_adult_a1_03": [
+   1923,
+   0,
+   100,
+   102,
+   -55,
+   -114
+  ],
+  "ch_crow_rooster_adult_a1_04": [
+   1626,
+   0,
+   101,
+   104,
+   -56,
+   -111
+  ],
+  "ch_crow_rooster_adult_a1_05": [
+   1320,
+   0,
+   100,
+   105,
+   -56,
+   -105
+  ],
+  "ch_crow_rooster_adult_a1_06": [
+   699,
+   117,
+   102,
+   100,
+   -56,
+   -100
+  ],
+  "ch_crow_rooster_adult_a1_07": [
+   1108,
+   117,
+   98,
+   99,
+   -51,
+   -99
+  ],
+  "ch_crow_rooster_adult_a2_00": [
+   0,
+   117,
+   98,
+   102,
+   -50,
+   -102
+  ],
+  "ch_crow_rooster_adult_a2_01": [
+   797,
+   0,
+   101,
+   108,
+   -51,
+   -109
+  ],
+  "ch_crow_rooster_adult_a2_02": [
+   99,
+   117,
+   100,
+   102,
+   -51,
+   -115
+  ],
+  "ch_crow_rooster_adult_a2_03": [
+   1408,
+   117,
+   101,
+   98,
+   -51,
+   -115
+  ],
+  "ch_crow_rooster_adult_a2_04": [
+   403,
+   117,
+   102,
+   101,
+   -53,
+   -111
+  ],
+  "ch_crow_rooster_adult_a2_05": [
+   1108,
+   0,
+   106,
+   106,
+   -54,
+   -106
+  ],
+  "ch_crow_rooster_adult_a2_06": [
+   200,
+   117,
+   100,
+   102,
+   -53,
+   -102
+  ],
+  "ch_crow_rooster_adult_a2_07": [
+   802,
+   117,
+   102,
+   100,
+   -53,
+   -99
+  ],
+  "ch_crow_rooster_adult_down_00": [
+   1510,
+   117,
+   96,
+   98,
+   -50,
+   -98
+  ],
+  "ch_crow_rooster_adult_down_01": [
+   506,
+   117,
+   94,
+   101,
+   -50,
+   -101
+  ],
+  "ch_crow_rooster_adult_down_02": [
+   1607,
+   117,
+   95,
+   98,
+   -50,
+   -99
+  ],
+  "ch_crow_rooster_adult_down_03": [
+   1905,
+   117,
+   95,
+   96,
+   -49,
+   -96
+  ],
+  "ch_crow_rooster_adult_down_04": [
+   400,
+   220,
+   101,
+   81,
+   -50,
+   -81
+  ],
+  "ch_crow_rooster_adult_down_05": [
+   502,
+   220,
+   113,
+   79,
+   -60,
+   -79
+  ],
+  "ch_crow_rooster_adult_down_06": [
+   616,
+   220,
+   117,
+   79,
+   -60,
+   -78
+  ],
+  "ch_crow_rooster_adult_down_07": [
+   734,
+   220,
+   116,
+   76,
+   -59,
+   -74
+  ],
+  "ch_crow_rooster_adult_el_00": [
+   194,
+   220,
+   102,
+   94,
+   -50,
+   -93
+  ],
+  "ch_crow_rooster_adult_el_01": [
+   301,
+   117,
+   101,
+   102,
+   -53,
+   -100
+  ],
+  "ch_crow_rooster_adult_el_02": [
+   1421,
+   0,
+   105,
+   105,
+   -54,
+   -110
+  ],
+  "ch_crow_rooster_adult_el_03": [
+   899,
+   0,
+   111,
+   108,
+   -56,
+   -117
+  ],
+  "ch_crow_rooster_adult_el_04": [
+   488,
+   0,
+   111,
+   111,
+   -55,
+   -115
+  ],
+  "ch_crow_rooster_adult_el_05": [
+   1215,
+   0,
+   104,
+   106,
+   -52,
+   -106
+  ],
+  "ch_crow_rooster_adult_el_06": [
+   905,
+   117,
+   106,
+   100,
+   -56,
+   -100
+  ],
+  "ch_crow_rooster_adult_el_07": [
+   1703,
+   117,
+   104,
+   98,
+   -53,
+   -96
+  ],
+  "ch_crow_rooster_adult_hit_00": [
+   601,
+   117,
+   97,
+   101,
+   -49,
+   -101
+  ],
+  "ch_crow_rooster_adult_hit_01": [
+   699,
+   0,
+   97,
+   109,
+   -51,
+   -109
+  ],
+  "ch_crow_rooster_adult_hit_02": [
+   0,
+   0,
+   97,
+   116,
+   -52,
+   -116
+  ],
+  "ch_crow_rooster_adult_hit_03": [
+   292,
+   0,
+   98,
+   113,
+   -51,
+   -113
+  ],
+  "ch_crow_rooster_adult_idle_00": [
+   1825,
+   0,
+   97,
+   103,
+   -49,
+   -103
+  ],
+  "ch_crow_rooster_adult_idle_01": [
+   98,
+   0,
+   96,
+   116,
+   -50,
+   -116
+  ],
+  "ch_crow_rooster_adult_idle_02": [
+   1011,
+   0,
+   96,
+   107,
+   -48,
+   -107
+  ],
+  "ch_crow_rooster_adult_idle_03": [
+   0,
+   220,
+   96,
+   96,
+   -48,
+   -96
+  ],
+  "ch_crow_rooster_adult_walk_00": [
+   1808,
+   117,
+   96,
+   98,
+   -48,
+   -98
+  ],
+  "ch_crow_rooster_adult_walk_01": [
+   1012,
+   117,
+   95,
+   100,
+   -48,
+   -100
+  ],
+  "ch_crow_rooster_adult_walk_02": [
+   1728,
+   0,
+   96,
+   104,
+   -50,
+   -104
+  ],
+  "ch_crow_rooster_adult_walk_03": [
+   391,
+   0,
+   96,
+   112,
+   -52,
+   -112
+  ],
+  "ch_crow_rooster_adult_walk_04": [
+   195,
+   0,
+   96,
+   115,
+   -52,
+   -115
+  ],
+  "ch_crow_rooster_adult_walk_05": [
+   600,
+   0,
+   98,
+   111,
+   -52,
+   -111
+  ],
+  "ch_crow_rooster_adult_walk_06": [
+   1527,
+   0,
+   98,
+   105,
+   -50,
+   -105
+  ],
+  "ch_crow_rooster_adult_walk_07": [
+   97,
+   220,
+   96,
+   96,
+   -48,
+   -96
+  ]
+ },
+ "frames": [
+  "ch_crow_rooster_adult_a1_00",
+  "ch_crow_rooster_adult_a1_01",
+  "ch_crow_rooster_adult_a1_02",
+  "ch_crow_rooster_adult_a1_03",
+  "ch_crow_rooster_adult_a1_04",
+  "ch_crow_rooster_adult_a1_05",
+  "ch_crow_rooster_adult_a1_06",
+  "ch_crow_rooster_adult_a1_07",
+  "ch_crow_rooster_adult_a2_00",
+  "ch_crow_rooster_adult_a2_01",
+  "ch_crow_rooster_adult_a2_02",
+  "ch_crow_rooster_adult_a2_03",
+  "ch_crow_rooster_adult_a2_04",
+  "ch_crow_rooster_adult_a2_05",
+  "ch_crow_rooster_adult_a2_06",
+  "ch_crow_rooster_adult_a2_07",
+  "ch_crow_rooster_adult_down_00",
+  "ch_crow_rooster_adult_down_01",
+  "ch_crow_rooster_adult_down_02",
+  "ch_crow_rooster_adult_down_03",
+  "ch_crow_rooster_adult_down_04",
+  "ch_crow_rooster_adult_down_05",
+  "ch_crow_rooster_adult_down_06",
+  "ch_crow_rooster_adult_down_07",
+  "ch_crow_rooster_adult_el_00",
+  "ch_crow_rooster_adult_el_01",
+  "ch_crow_rooster_adult_el_02",
+  "ch_crow_rooster_adult_el_03",
+  "ch_crow_rooster_adult_el_04",
+  "ch_crow_rooster_adult_el_05",
+  "ch_crow_rooster_adult_el_06",
+  "ch_crow_rooster_adult_el_07",
+  "ch_crow_rooster_adult_hit_00",
+  "ch_crow_rooster_adult_hit_01",
+  "ch_crow_rooster_adult_hit_02",
+  "ch_crow_rooster_adult_hit_03",
+  "ch_crow_rooster_adult_idle_00",
+  "ch_crow_rooster_adult_idle_01",
+  "ch_crow_rooster_adult_idle_02",
+  "ch_crow_rooster_adult_idle_03",
+  "ch_crow_rooster_adult_walk_00",
+  "ch_crow_rooster_adult_walk_01",
+  "ch_crow_rooster_adult_walk_02",
+  "ch_crow_rooster_adult_walk_03",
+  "ch_crow_rooster_adult_walk_04",
+  "ch_crow_rooster_adult_walk_05",
+  "ch_crow_rooster_adult_walk_06",
+  "ch_crow_rooster_adult_walk_07"
+ ],
+ "standing": [
+  "ch_crow_rooster_adult_idle_00",
+  "ch_crow_rooster_adult_idle_01",
+  "ch_crow_rooster_adult_idle_02",
+  "ch_crow_rooster_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 1,
+   "attack": {
+    "frames": [
+     "ch_crow_rooster_adult_a1_00",
+     "ch_crow_rooster_adult_a1_01",
+     "ch_crow_rooster_adult_a1_02",
+     "ch_crow_rooster_adult_a1_03",
+     "ch_crow_rooster_adult_a1_04",
+     "ch_crow_rooster_adult_a1_05",
+     "ch_crow_rooster_adult_a1_06",
+     "ch_crow_rooster_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_crow_rooster_adult_a2_00",
+     "ch_crow_rooster_adult_a2_01",
+     "ch_crow_rooster_adult_a2_02",
+     "ch_crow_rooster_adult_a2_03",
+     "ch_crow_rooster_adult_a2_04",
+     "ch_crow_rooster_adult_a2_05",
+     "ch_crow_rooster_adult_a2_06",
+     "ch_crow_rooster_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_crow_rooster_adult_down_00",
+     "ch_crow_rooster_adult_down_01",
+     "ch_crow_rooster_adult_down_02",
+     "ch_crow_rooster_adult_down_03",
+     "ch_crow_rooster_adult_down_04",
+     "ch_crow_rooster_adult_down_05",
+     "ch_crow_rooster_adult_down_06",
+     "ch_crow_rooster_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_crow_rooster_adult_el_00",
+     "ch_crow_rooster_adult_el_01",
+     "ch_crow_rooster_adult_el_02",
+     "ch_crow_rooster_adult_el_03",
+     "ch_crow_rooster_adult_el_04",
+     "ch_crow_rooster_adult_el_05",
+     "ch_crow_rooster_adult_el_06",
+     "ch_crow_rooster_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.311,
+      "cast"
+     ],
+     [
+      0.321,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_crow_rooster_adult_hit_00",
+     "ch_crow_rooster_adult_hit_01",
+     "ch_crow_rooster_adult_hit_02",
+     "ch_crow_rooster_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_crow_rooster_adult_idle_00",
+     "ch_crow_rooster_adult_idle_01",
+     "ch_crow_rooster_adult_idle_02",
+     "ch_crow_rooster_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_crow_rooster_adult_walk_00",
+     "ch_crow_rooster_adult_walk_01",
+     "ch_crow_rooster_adult_walk_02",
+     "ch_crow_rooster_adult_walk_03",
+     "ch_crow_rooster_adult_walk_04",
+     "ch_crow_rooster_adult_walk_05",
+     "ch_crow_rooster_adult_walk_06",
+     "ch_crow_rooster_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "crow_rooster"
+}

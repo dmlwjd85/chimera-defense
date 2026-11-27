@@ -816,6 +816,9 @@
   "fx-proj-rooster": "assets/fx/proj/rooster.png",
   "fx-proj-grasshopper": "assets/fx/proj/grasshopper.png",
   "fx-proj-frog": "assets/fx/proj/frog.png",
-  "fx-proj-monkey": "assets/fx/proj/monkey.png"
+  "fx-proj-monkey": "assets/fx/proj/monkey.png",
+  "icon-meat": "assets/ui/icon-meat.png",
+  "icon-gem": "assets/ui/icon-gem.png",
+  "icon-coin": "assets/ui/icon-coin.png"
  }
 }

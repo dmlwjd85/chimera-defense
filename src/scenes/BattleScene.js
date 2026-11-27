@@ -12,7 +12,7 @@ import { makeEnemy } from '../logic/waves.js';
 import { dotOn, dotify } from './dotfx.js';
 import { crumb, debugOn } from './debug.js';
 import { DOT_PX } from '../rig/dotData.js';
-import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds } from './rigs.js';
+import { unitRig, enemyRig, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, poolExtraIds } from './rigs.js';
 import { FX, ambient, weather, STRIKE } from './fx.js';
 import { Globe, HAB_SPOT } from './globe.js';
 import { soundOf, ELEM_SOUND } from './onomato.js';
@@ -51,6 +51,7 @@ export default class BattleScene extends Phaser.Scene {
       const data = buildData(this.registry.get('raw'));
       const pool = window.__forcePool ?? battleOptions(this.registry.get('save'), data, d?.stageId ?? 'forest-1').pool ?? [];
       queueMotionSheets(this, pool);
+      queueMotionSheets(this, poolExtraIds(pool));   // 돌연변이 슬라임 + 덱 종끼리의 자동 키메라(PixelLab 동작)
       // 그 판에 나올 적의 동작 시트(PixelLab)도 같이: 맞붙어 치고받는 공격·움찔·쓰러짐
       queueMotionSheets(this, stageEnemyIds(data.stageById[d?.stageId ?? 'forest-1'], data));
     } catch (e) { console.warn('motion sheets', e); }

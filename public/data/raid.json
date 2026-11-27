@@ -491,8 +491,15 @@
      }
     }
    },
-   "hpMult": 0.2,
-   "atkMult": 0.6
+   "hpMult": 0.16,
+   "atkMult": 0.6,
+   "weakX": 2,
+   "resist": [
+    "fire",
+    "earth"
+   ],
+   "resistX": 0.8,
+   "hardHp": 1.8
   },
   "boss_lich": {
    "element": "moon",

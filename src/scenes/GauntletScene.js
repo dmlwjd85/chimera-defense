@@ -5,7 +5,7 @@
 import Phaser from 'phaser';
 import { buildData } from '../logic/data.js';
 import { battleOptions, settleRun, writeSave, carryCandidates, setCarry, takeOutForRun } from '../logic/meta.js';
-import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, mergeOddsG, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost, recommendReward, buyPotion, trainUnit, trainCost, tuneOf, laneOf } from '../logic/gauntlet.js';
+import { createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, mergeOddsG, useRally, treatCost, healCost, healUnits, clutchOf, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost, recommendReward, buyPotion, trainUnit, trainCost, tuneOf, laneOf } from '../logic/gauntlet.js';
 import { spellDef, spellCost } from '../logic/spells.js';
 import { duelData, myDuelDeck, DUEL } from '../logic/duel.js';
 import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, enemyFace } from './rigs.js';
@@ -23,7 +23,7 @@ const STANCE_NAME = { tank: '🛡 탱', deal: '⚔ 딜', support: '✚ 서폿' }
 const STANCE_COL = { tank: 0xffd84d, deal: 0xff6b5a, support: 0x7ddc6f };
 const STYLE_ICON = { bruiser: '🛡', skirm: '⚔', ranged: '🏹', support: '✚' };
 const ROLE = { bruiser: '🛡 막기', dealer: '⚔ 딜러', technician: '🎯 기술', buffer: '🎺 응원', weak: '약체' };
-const MERGE_NAME = { evolve: '진화', spirit: '신화급!', chimera: '키메라!', weak: '🧬 슬라임…', swap: '자리 바꾸기' };
+const MERGE_NAME = { evolve: '진화', spirit: '신화급!', chimera: '키메라!', weak: '🧬 슬라임…', reslime: '🫠 다시 합성', swap: '자리 바꾸기' };
 // 자리: 0~2 앞줄, 3~5 뒷줄. 세 줄 깊이(위·가운데·아래)를 살짝 엇갈려 세움
 // 3×3 자리(seat = 열×3 + 라인): 1열 브루저 · 2열 딜러 · 3열 응원. 정비 때 칸, 교전 때는 라인별로 가운데에 모여 붙음
 const LANE_Y = [245, 370, 495], LANE_S = [0.94, 1, 1.06];
@@ -271,8 +271,20 @@ export default class GauntletScene extends Phaser.Scene {
     g.fillStyle(0xffd84d, 1).fillRoundedRect(x0, y - 6, w * this.flowK, 12, 6);
     g.fillStyle(0x9b6cf0, 1).fillRoundedRect(x0 + w * this.flowK, y - 6, w * (1 - this.flowK), 12, 6);
     g.fillStyle(0xffffff, 1).fillRect(x0 + w / 2 - 1, y - 9, 2, 18);
-    this.flowL.setText(`🐾 우리 ${Math.round((us / uMax) * 100)}%`);
-    this.flowR.setText(`${Math.round((es / eMax) * 100)}% 적 👿`);
+    this.flowL.setText(`${s.grit?.u ? `🔥+${s.grit.u}% ` : ''}🐾 우리 ${Math.round((us / uMax) * 100)}%`);
+    this.flowR.setText(`${Math.round((es / eMax) * 100)}% 적 👿${s.grit?.e ? ` 🔥+${s.grit.e}%` : ''}`);
+  }
+
+  /** 역전 찬스: 크게 밀릴 때 한 번, 화면 가운데 큰 버튼(누르면 역전의 함성) */
+  showRally() {
+    this.rallyUi?.forEach((o) => o.destroy());
+    const ring = this.add.circle(640, 520, 74, 0xffd84d, 0.25).setStrokeStyle(5, 0xffd84d, 1).setDepth(1900);
+    const b = button(this, 640, 520, 260, 70, '⚡ 역전의 함성!', () => { const r = useRally(this.state, this.D); if (r.ok) { this.paused = Math.max(this.paused ?? 0, 0.1); try { navigator.vibrate?.(60); } catch { /* 없음 */ } } }, { depth: 1901, size: 26, fill: 0x8a3a14, stroke: 0xffd84d });
+    const hint = this.add.text(640, 474, '지금 누르면 모두 회복 + 적이 멈칫 + 잠깐 더 세짐', style(14, '#ffe6b0', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(1901);
+    this.tweens.add({ targets: ring, scale: { from: 0.8, to: 1.6 }, alpha: { from: 0.8, to: 0 }, duration: 700, repeat: -1 });
+    this.tweens.add({ targets: b, scale: { from: 1, to: 1.08 }, yoyo: true, repeat: -1, duration: 320 });
+    this.rallyUi = [ring, b, hint];
+    this.ticker('⚡ 역전 찬스! 버튼을 눌러요', '#ffd84d'); sfx('hold');
   }
 
   /** 결정적 장면 자막: 한 번에 하나, 1.1초씩(밀리면 최근 2개만) */
@@ -346,7 +358,16 @@ export default class GauntletScene extends Phaser.Scene {
     const gBar = this.add.rectangle(-33, 55, 66, 4, 0x8fd3ff).setOrigin(0, 0.5);
     const name = this.add.text(0, 67, `${u.legend ? '⭐' : ''}${STYLE_ICON[styleOf(u)] ?? ''}${this.D.config.elements.defs[u.stats.element]?.icon ?? ''} ${u.stats.name}`, style(12, '#ffffff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5);
     const tag = this.add.text(0, top - 24, '', style(12, '#ffd84d', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5, 1);
-    c.add([shadow, aura, ring, tok, barBg, bar, gBg, gBar, name, tag, crown, pref, tac, stat].filter(Boolean));
+    // 기적의 키메라: 발밑 무지개 고리(빙글빙글)
+    let rainbow = null;
+    if (u.stats?.cross) {
+      rainbow = this.add.graphics();
+      const cols = [0xff5a5a, 0xffa94d, 0xffe066, 0x7ddc6f, 0x5ab0ff, 0xb48cff];
+      cols.forEach((col, i) => { rainbow.lineStyle(4, col, 0.9); rainbow.beginPath(); rainbow.arc(0, 0, 46, (i / 6) * Math.PI * 2, ((i + 1) / 6) * Math.PI * 2); rainbow.strokePath(); });
+      rainbow.setPosition(0, 34).setScale(1, 0.3);
+      this.tweens.add({ targets: rainbow, alpha: { from: 1, to: 0.45 }, yoyo: true, duration: 700, repeat: -1 });
+    }
+    c.add([shadow, rainbow, aura, ring, tok, barBg, bar, gBg, gBar, name, tag, crown, pref, tac, stat].filter(Boolean));
     c.setSize(90, 110).setInteractive({ draggable: true, useHandCursor: true });
     c.on('drag', (p, x, y) => { if (this.state.phase !== 'regroup') return; c.x = x; c.y = y; c.setDepth(2500); v.dragging = true; this.showDropHint(v, x, y); });
     c.on('dragend', () => { if (!v.dragging) return; v.dragging = false; this.dropUnit(v); });
@@ -529,7 +550,7 @@ export default class GauntletScene extends Phaser.Scene {
       v.bar.setScale(Math.max(0, u.hp / u.maxHp), 1).setFillStyle(u.hp / u.maxHp < 0.3 ? 0xff6b5a : u.hp / u.maxHp < 0.6 ? 0xe6c14a : 0x7ddc6f);
       v.gBar.setScale(Math.min(1, u.gauge ?? 0), 1).setVisible(s.phase === 'fight');
       const melee = u.stats.range <= 1;
-      v.tag.setText(u.resting ? '쉼' : (u.deepT ?? 0) > s.time && s.phase === 'fight' ? '⚠깊숙이' : u.suppressed && s.phase === 'fight' ? '⛓제압' : u.pinnedBy != null && s.phase === 'fight' ? '✋붙잡힘' : u.awake && s.phase === 'fight' ? '🔥각성' : s.star === u.uid ? '⭐주인공' : s.focus === u.uid && s.phase === 'fight' ? '🎯' : '');
+      v.tag.setText(u.resting ? `🤕부상${u.injured ? ' ' + u.injured : ''}` : u.wobbly && s.phase === 'fight' ? '🫠흐물' : (u.deepT ?? 0) > s.time && s.phase === 'fight' ? '⚠깊숙이' : u.suppressed && s.phase === 'fight' ? '⛓제압' : u.pinnedBy != null && s.phase === 'fight' ? '✋붙잡힘' : u.awake && s.phase === 'fight' ? '🔥각성' : s.star === u.uid ? '⭐주인공' : s.focus === u.uid && s.phase === 'fight' ? '🎯' : '');
       { const want = s.phase === 'regroup' ? (() => { const p = statLine(u, this.D); return `❤${Math.round(u.hp)}\n⚔${p.atk}${u.trained ? `\n🔨${u.trained}` : ''}`; })() : ''; if (v.stat.text !== want) v.stat.setText(want); }
       { const tc = (s.tLevel ?? 2) > 0 ? tacticOf(u, gcfg(this.D)) : null; const ic = tc && !['hold', 'help', 'front'].includes(tc) ? TACTIC_LABEL[tc].split(' ')[0] : ''; if (v.tac.text !== ic) v.tac.setText(ic); }
       v.c.setAlpha(u.down ? 0.35 : u.resting ? 0.5 : 1);
@@ -708,6 +729,21 @@ export default class GauntletScene extends Phaser.Scene {
       case 'phoenix': { const v = this.uViews.get(ev.uid); if (v) { this.fx.respawn(v.c.x, v.c.y); this.say(v.c.x, v.c.y - 120, '🔥 불사조!', 0xffb27a, { size: 20, force: true }); } this.ticker('🔥 불사조 깃털로 다시 일어남!', '#ffb27a'); break; }
       case 'ultFx': { this.lastUlt = ev; this.ticker(`✨ ${ev.name} — ${ev.desc}`, '#ffd84d'); break; }
       case 'potion': { for (const v of this.uViews.values()) this.fx.heal(v.c.x, v.c.y); break; }
+      case 'grit': { this.ticker(ev.side === 'u' ? '🔥 우리 편 투지! 밀릴수록 세져요' : '🔥 적도 이를 악물었다!', ev.side === 'u' ? '#ffb27a' : '#c4a6ff'); break; }
+      case 'clutch': { const v = this.uViews.get(ev.uid); if (v) { this.say(v.c.x, v.c.y - 140, `🔥 ${ev.name}!`, 0xff9f43, { size: 19, force: true, hold: 900 }); this.fx.ring(v.c.x, v.c.y + 20, 0xff9f43, 1.1, 360); if (ev.heal) for (const a of this.uViews.values()) this.fx.heal(a.c.x, a.c.y); } this.ticker(`🔥 ${ev.name} — ${ev.desc}`, '#ffb27a'); break; }
+      case 'rallyReady': this.showRally(); break;
+      case 'rallyGone': this.rallyUi?.forEach((o) => o.destroy()); this.rallyUi = null; break;
+      case 'rally': {
+        this.rallyUi?.forEach((o) => o.destroy()); this.rallyUi = null;
+        this.cameras.main.flash(220, 255, 230, 120); this.cameras.main.shake(260, 0.012);
+        for (const v of this.uViews.values()) { this.fx.heal(v.c.x, v.c.y); this.fx.ring(v.c.x, v.c.y + 20, 0xffd84d, 1.4, 420); }
+        this.fx.cutIn('⚡ 역전의 함성!', 0xffd84d, '지금부터 뒤집는다!'); sfx('spirit'); this.slow = 0.5;
+        break;
+      }
+      case 'wobble': { const v = this.uViews.get(ev.uid); if (v) { this.say(v.c.x, v.c.y - 130, '🫠 흐물흐물… (불안정)', 0x9cff6b, { size: 17, force: true, hold: 900 }); } break; }
+      case 'injured': break;
+      case 'reinforce': { this.ticker('👿 적 증원! 문에서 하나 더 나옴', '#c4a6ff'); const v = this.eViews.get(ev.eid); if (v) this.fx.ring(v.c.x, v.c.y + 20, 0x9b6cf0, 1.4, 420); this.cameras.main.shake(160, 0.006); sfx('hold'); break; }
+      case 'eRally': { this.ticker('👿 적 대장의 함성! 적이 다시 일어섬', '#c4a6ff'); for (const v of this.eViews.values()) { this.fx.ring(v.c.x, v.c.y + 20, 0x9b6cf0, 1.2, 380); } this.cameras.main.flash(160, 120, 60, 200); sfx('hold'); break; }
       case 'trained': { const v = this.uViews.get(ev.uid); if (v) { this.fx.ring(v.c.x, v.c.y + 20, 0xffd84d, 1, 320); this.floatAt(v.c.x, v.c.y - 120, `🔨 단련 ${ev.n}`, '#ffd84d', 18); } sfx('evolve'); break; }
       case 'tapCheer': { const v = this.uViews.get(ev.uid); if (v) { this.floatAt(v.c.x + 40, v.c.y - 150, ['영차!', '힘내!', '밀어!'][ev.left % 3], '#ffd84d', 20); this.fx.ring(v.c.x + 40, v.c.y - 20, 0xffd84d, 1, 280); } sfx('click'); try { navigator.vibrate?.(12); } catch { /* 없음 */ } break; }
       case 'tapShield': { const a = this.uViews.get(ev.uid); if (a) { this.flashShield(a.c.x, a.c.y - 20, 0x8fd3ff, 1200); this.floatAt(a.c.x, a.c.y - 110, '🧿 막아!', '#8fd3ff', 18); } sfx('shield'); try { navigator.vibrate?.(15); } catch { /* 없음 */ } break; }
@@ -1227,9 +1263,15 @@ export default class GauntletScene extends Phaser.Scene {
         f.forEach((x, i) => this.addUi(this.add.text(684 + (i % 2) * 280, 380 + Math.floor(i / 2) * 26, `${x.good ? '✔' : '✘'} ${x.text}`, style(14, x.good ? '#9cff6b' : '#ff9f9f', { wordWrap: { width: 270 } })).setDepth(2001))); } }
     // 금화 쓰기: 회복 물약 · 단련(동물을 눌러서)
     if (!s.prelude) {
-      const pc = gcfg(D).potionCost, used = s.potionAt === s.enc;
-      const pb = this.addUi(button(this, 770, 452, 170, 34, used ? '🧪 물약 ✔' : `🧪 물약 💰${pc}`, () => { const r = buyPotion(s, D); if (!r.ok) { this.toast(r.reason === 'gold' ? '금화가 모자람' : '이번 정비엔 이미 씀'); return; } sfx('heal'); this.goldText?.setText(`💰 ${s.gold}`); this.toast(`🧪 모두 체력 +${gcfg(D).potionHeal}%`, '#9cff6b'); this.showRegroup(); }, { depth: 2002, size: 14, fill: 0x1d4a3a, stroke: 0x9cff6b, tip: '출전 동물 모두 체력 회복(정비마다 한 번)' }));
+      // 치료(2026-11-27): 이긴 뒤 저절로는 조금만 차고, 나머지는 금화로. 다친 만큼 값
+      const pc = healCost(s, D, s.field), used = pc <= 0;
+      const pb = this.addUi(button(this, 770, 452, 170, 34, used ? '🩹 다 나음' : `🩹 모두 치료 💰${pc}`, () => { const r = healUnits(s, D); if (!r.ok) { this.toast(r.reason === 'gold' ? '금화가 모자람' : '다친 동물이 없음'); return; } sfx('heal'); this.goldText?.setText(`💰 ${s.gold}`); this.toast(`🩹 ${r.n}마리 체력 가득 (💰${r.cost})`, '#9cff6b'); this.showRegroup(); }, { depth: 2002, size: 14, fill: 0x1d4a3a, stroke: 0x9cff6b, tip: '싸우고 나면 체력이 조금만 차요. 금화로 출전 동물 모두 가득 채움(다친 만큼 값)' }));
       pb.setEnabled(!used && s.gold >= pc);
+      // 부상·보름달 안내
+      const hurt = s.field.filter((u) => u.resting);
+      if (hurt.length) this.addUi(this.add.text(684, 476, `🤕 부상 ${hurt.map((u) => `${u.stats.name} ${u.injured ?? 1}교전`).join(', ')} — 눌러서 치료하거나 후보와 바꿔요`, style(13, '#ffb27a', { wordWrap: { width: 540 } })).setDepth(2001));
+      if (s.moonNow) this.addUi(this.add.text(1236, 184, '🌕 보름달 — 이번 정비 합성 +10%', style(14, '#fff6a0', { backgroundColor: '#1d2440', padding: { x: 8, y: 3 } })).setOrigin(1, 0).setDepth(2003));
+      if ((s.genePotion ?? 0) > 0) this.addUi(this.add.text(1236, 158, '🧪 유전자 물약 — 다음 합성 +20%', style(13, '#9fd8ff')).setOrigin(1, 0).setDepth(2003));
       this.addUi(this.add.text(870, 444, '🔨 단련: 동물을 눌러 피해 +10%', style(13, '#d8d2c2')).setDepth(2001));
     }
     this.guideRegroup();
@@ -1366,7 +1408,8 @@ export default class GauntletScene extends Phaser.Scene {
     this.menuObjs?.forEach((o) => o.destroy());
     const s = this.state, x = Math.max(90, Math.min(560, v.c.x)), items = [];
     let y = v.c.y - 120;
-    if (u.resting || u.down) items.push([`💰${reviveCost(s, this.D)} 부활`, () => { const r = reviveUnit(s, this.D, u.uid); if (!r.ok) this.toast(r.reason === 'gold' ? '금화 부족' : '못 함'); }]);
+    if (u.resting || u.down) items.push([`🩹 치료 💰${s.feathers > 0 ? 0 : treatCost(s, this.D, u)}${u.injured ? ` (부상 ${u.injured})` : ''}`, () => { const r = reviveUnit(s, this.D, u.uid); if (!r.ok) this.toast(r.reason === 'gold' ? '금화 부족 — 후보와 바꿔도 돼요' : '못 함'); else { this.toast(`🩹 ${u.stats.name} 다 나음!`, '#9cff6b'); sfx('heal'); } }]);
+    else if (u.hp < u.maxHp && s.phase === 'regroup' && !s.prelude) items.push([`🩹 체력 💰${healCost(s, this.D, [u])}`, () => { const r = healUnits(s, this.D, u.uid); this.toast(r.ok ? `🩹 ${u.stats.name} 체력 가득` : r.reason === 'gold' ? '금화가 모자람' : '못 함', r.ok ? '#9cff6b' : '#ffffff'); if (r.ok) sfx('heal'); }]);
     if (canStance(u)) items.push([`${STANCE_NAME[u.prefStance] ?? '자동'} 태세`, () => cyclePrefStance(s, u.uid)]);
     if (this.save?.advanced && buildSet(u)) { const B = u.build ? BUILDS[u.build] : null; items.push([`🔧 ${B ? `${B.icon} ${B.name}` : '추천'}`, () => { const r = cycleBuild(s, this.D, u.uid); if (r.ok) { const nb = r.build ? BUILDS[r.build] : null; this.toast(nb ? `${u.stats.name} ${nb.icon} ${nb.name} — ${nb.tip}` : `${u.stats.name} 추천 역할`, '#c4a6ff'); if (this.save) { this.save.builds ??= {}; if (r.build) this.save.builds[u.speciesId] = r.build; else delete this.save.builds[u.speciesId]; } } }]); }
     if (s.field.includes(u)) items.push([`🔨 단련 💰${trainCost(s, this.D, u)}`, () => { const r = trainUnit(s, this.D, u.uid); this.toast(r.ok ? `🔨 ${u.stats.name} 피해 +${gcfg(this.D).trainDmg}% (${r.n}번째)` : r.reason === 'gold' ? '금화가 모자람' : '더는 단련 못 함(3번까지)', r.ok ? '#ffd84d' : '#ffffff'); }]);
@@ -1427,8 +1470,10 @@ export default class GauntletScene extends Phaser.Scene {
     const o = to && from ? mergeOddsG(this.state, this.D, from, to) : null, k = o?.kind;
     this.hintT?.destroy();
     // 염색체 합성: 키메라는 성공 확률, 강이 다르면 '안 섞임'을 미리 보여 줌
-    const label = k === 'chimera' ? `🧬 키메라 도전! 성공 ${o.chance}%` : k === 'weak' ? (o.cross ? '🧬 강이 달라 안 섞여요 → 슬라임' : MERGE_NAME.weak) : MERGE_NAME[k];
-    const col = k === 'weak' ? '#aaaaaa' : k === 'chimera' ? (o.chance >= 70 ? '#9cff6b' : o.chance >= 45 ? '#ffd84d' : '#ff9f6b') : '#ffd84d';
+    // 같은 강 = 🧬 염색체 확률, 다른 강 = 🌈 기적 확률. 도움 아이콘(🧪📓🌟🌕)과 실패 눈금(n/5, 다 차면 확정)
+    const extra = o && (k === 'chimera' || k === 'reslime') ? `${o.bonus?.length ? ' ' + o.bonus.join('') : ''}${o.sure ? '\n✨ 실패 눈금 가득 — 이번엔 확정!' : o.fails ? `\n실패 눈금 ${o.fails}/${o.pity}` : ''}` : '';
+    const label = k === 'chimera' ? (o.cross ? `🌈 강이 달라요… 기적 ${o.chance}%` : `🧬 키메라 도전! 성공 ${o.chance}%`) + extra : k === 'reslime' ? `🫠 슬라임 다시 합성! ${o.chance}%` + extra : k === 'weak' ? MERGE_NAME.weak : MERGE_NAME[k];
+    const col = k === 'weak' ? '#aaaaaa' : k === 'chimera' || k === 'reslime' ? (o.sure ? '#ffd84d' : o.cross && k === 'chimera' ? '#e8a0ff' : o.chance >= 70 ? '#9cff6b' : o.chance >= 45 ? '#ffd84d' : '#ff9f6b') : '#ffd84d';
     if (k && k !== 'swap') this.hintT = this.add.text(x, y - 110, label, style(18, col, { stroke: '#000', strokeThickness: 4, align: 'center' })).setOrigin(0.5).setDepth(2600);
   }
 
@@ -1442,11 +1487,12 @@ export default class GauntletScene extends Phaser.Scene {
     const at = to.where === 'seat' ? seatXY('u', to.index) : BENCH(to.index);
     if (r.kind === 'evolve') { this.fx.evolve(at.x, at.y, false); sfx('evolve'); this.tutAt('evolve'); }
     else if (r.kind === 'spirit') { this.fx.evolve(at.x, at.y, true); this.birthCut(r.unit, 0xffd84d, '신화급이 깨어남'); sfx('spirit'); }
-    else if (r.kind === 'chimera') { this.fx.chimera(at.x, at.y); this.birthCut(r.unit, 0xc77dff, '새 이야기가 태어남'); sfx('chimera'); }
+    else if (r.kind === 'chimera' && r.miracle) { this.fx.chimera(at.x, at.y); this.cameras.main.flash(300, 255, 200, 255); this.birthCut(r.unit, 0xff7ad9, `🌈 있을 수 없는 일이 일어났다! (${r.chance}%)`); sfx('spirit'); }
+    else if (r.kind === 'chimera') { this.fx.chimera(at.x, at.y); this.birthCut(r.unit, 0xc77dff, r.retry ? '슬라임이 다시 태어났다!' : r.sure ? '실패를 딛고 마침내!' : '새 이야기가 태어남'); sfx('chimera'); }
     else if (r.kind === 'weak') {
       this.fx.weak(at.x, at.y); sfx('weak');
-      const [pa, pb] = (r.unit.parts ?? []).map((p) => this.D.unitById[p]?.name ?? p);
-      this.toast(r.geneFail ? `🧬 염색체가 안 맞음! (성공 ${r.chance}%) → ${r.unit.stats.name}` : `🧬 ${pa}와 ${pb}는 강이 달라요 → ${r.unit.stats.name}`, '#c9f27a');
+      const pity = gcfg(this.D) && this.D.config.genes?.miracle?.pity;
+      this.toast(r.king ? `👑 슬라임끼리 뭉쳐 ${r.unit.stats.name}! (조금 더 단단함)` : `🫠 실패 (성공 ${r.chance}%) → ${r.unit.stats.name}${pity ? `  · 실패 눈금 ${Math.min(r.fails, pity)}/${pity}` : ''}`, '#c9f27a');
     }
   }
 

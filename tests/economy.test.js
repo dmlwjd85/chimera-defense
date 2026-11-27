@@ -32,9 +32,12 @@ assert.ok(Array.isArray(gameData.recipes));
 // 염색체 합성: 같은 강 이야기 조합 5 + 자동 35, 강이 다른 옛 조합 2개(치즈 도둑·황소개구리)는 막힘
 assert.strictEqual(gameData.recipes.filter((r) => !r.auto).length, 5);
 assert.strictEqual(gameData.recipes.filter((r) => r.auto).length, 35);
-assert.strictEqual(gameData.oldRecipes.length, 2);
-assert.ok(Object.keys(gameData.recipeById).length === 42);
-assert.strictEqual(gameData.recipeByPair['crow+fox'], undefined);
+// 강이 다른 짝 = 기적의 키메라 65(이야기 8 = 옛 2 + 전설 6)
+assert.strictEqual(gameData.crossRecipes.length, 65);
+assert.strictEqual(gameData.crossRecipes.filter((r) => r.legend).length, 8);
+assert.ok(Object.keys(gameData.recipeById).length === 105);
+assert.strictEqual(gameData.recipeByPair['crow+fox'].id, 'cheese_thief');
+assert.strictEqual(gameData.recipeByPair['bison+eagle'].name, '그리핀');
 assert.strictEqual(gameData.recipeByPair['bighorn+rabbit'].id, 'jackalope');
 assert.strictEqual(gameData.recipeByPair['ant+grasshopper'].name, '개짱이');
 

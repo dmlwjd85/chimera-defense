@@ -3,7 +3,7 @@ import { button, title, style, panel, unitToken, speciesImage } from './ui.js';
 import { ULTS, tuneOf, gcfg } from '../logic/gauntlet.js';
 import { buildData, pairKey } from '../logic/data.js';
 import { levelInfo, favorState, buyFavor, writeSave } from '../logic/meta.js';
-import { classOf, chromoOf, className, geneChance } from '../logic/genes.js';
+import { classOf, chromoOf, className, geneChance, miracleChance } from '../logic/genes.js';
 
 const TABS = [['units', '동물'], ['traits', '강점·약점'], ['spirits', '신화급'], ['chimeras', '키메라'], ['flops', '슬라임'], ['bonds', '인연'], ['enemies', '적']];
 const CONT = { eurasia: '유라시아', america: '아메리카', africa: '아프리카' };
@@ -185,25 +185,28 @@ export default class CodexScene extends Phaser.Scene {
     // 염색체 합성 안내 줄: 같은 강끼리만, 염색체 수가 비슷할수록 잘 붙음
     const cls = [...new Set(D.units.map((u) => classOf(u.id, D)).filter(Boolean))];
     this.add.text(60, 140, `🧬 같은 강끼리만 섞여요 · 염색체 수가 비슷할수록 성공!  ${cls.map((c) => { const [n, ic] = className(c, D); return `${ic}${n} ${D.units.filter((u) => classOf(u.id, D) === c).length}`; }).join('  ')}`, style(14, '#c9f27a'));
-    const list = [...D.recipes.filter((r) => !r.auto), ...D.recipes.filter((r) => r.auto), ...(D.oldRecipes ?? [])];
+    // 🌈 기적의 키메라(강이 다른 짝): 이야기 조합 8종은 늘 보이고, 자동 이종은 찾은 것만
+    const miracles = (D.crossRecipes ?? []).filter((r) => r.legend || S.codex.recipes.includes(r.id));
+    const list = [...D.recipes.filter((r) => !r.auto), ...miracles, ...D.recipes.filter((r) => r.auto)];
     list.forEach((r, i) => {
-      const c = this.cell(i, 3, 385, 120), known = S.codex.recipes.includes(r.id), old = !!(D.oldRecipes ?? []).includes(r);
+      const c = this.cell(i, 3, 385, 120), known = S.codex.recipes.includes(r.id), old = false, cross = !!r.cross;
       c.y += 26;
       const hint = S.hints[r.id] ?? [];
       const g = this.add.graphics();
-      g.fillStyle(old ? 0x141414 : r.auto ? 0x161a2a : 0x22163a, 0.6).fillRoundedRect(c.x, c.y, c.w, c.h, 10);
+      g.fillStyle(cross ? 0x2a1630 : r.auto ? 0x161a2a : 0x22163a, 0.6).fillRoundedRect(c.x, c.y, c.w, c.h, 10);
+      if (cross) { [0xff5a5a, 0xffa94d, 0xffe066, 0x7ddc6f, 0x5ab0ff, 0xb48cff].forEach((col, k) => g.fillStyle(col, 0.9).fillRect(c.x + 8 + k * 12, c.y + c.h - 6, 12, 3)); }
       const tok = unitToken(this, { kind: 'chimera', speciesId: r.id, stage: 'adult', parts: r.parts, stats: {} }, D);
       tok.setPosition(c.x + 40, c.y + 50).setAlpha(known ? 1 : 0.5);
       if (!known) tok.list.forEach((o) => o.setTint?.(0x000000));
       const parts = r.parts.map((p) => (known || hint.includes(p) ? D.unitById[p].name : `?(${CONT[D.unitById[p].continent]})`)).join(' + ');
       const [cn, ci] = className(classOf(r.parts[0], D), D);
       this.add.text(c.x + 85, c.y + 8, known ? r.name : '???', style(18, old ? '#777777' : known ? '#d7bde2' : '#888888'));
-      this.add.text(c.x + c.w - 8, c.y + 10, old ? '🚫 강이 달라요' : `${ci}${cn} · 🧬${geneChance(r.parts[0], r.parts[1], D)}%`, style(12, old ? '#ff8a80' : '#c9f27a')).setOrigin(1, 0);
+      this.add.text(c.x + c.w - 8, c.y + 10, cross ? `🌈 기적 ${miracleChance(r.parts[0], r.parts[1], D, S.codex.bonds)}%` : `${ci}${cn} · 🧬${geneChance(r.parts[0], r.parts[1], D)}%`, style(12, cross ? '#e8a0ff' : '#c9f27a')).setOrigin(1, 0);
       this.add.text(c.x + 85, c.y + 34, parts, style(13, '#aabbcc'));
-      this.add.text(c.x + 85, c.y + 56, old ? '옛 이야기 속 조합. 염색체가 안 맞아 이제는 슬라임이 돼요.' : known ? r.desc : `출처: ${r.source}`, style(11, '#dddddd', { wordWrap: { width: 290 } }));
+      this.add.text(c.x + 85, c.y + 56, cross && !known ? `강이 달라 거의 안 되지만… 이야기의 힘이 있어요. 출처: ${r.source}` : known ? r.desc : `출처: ${r.source}`, style(11, '#dddddd', { wordWrap: { width: 290 } }));
       if (known && r.codex) this.add.text(c.x + 85, c.y + 94, `"${r.codex}"`, style(11, '#c0c0c0', { wordWrap: { width: 290 } }));
     });
-    this.add.text(720, 684, `키메라 ${S.codex.recipes.filter((id) => D.recipes.some((r) => r.id === id)).length}/${D.recipes.length} · 힌트 조각 ${S.hintShards}/${D.config.hintShardsPerReveal} — 슬라임을 만들 때마다 1개`, style(14, '#ffd84d')).setOrigin(0.5).setDepth(3500);
+    this.add.text(720, 684, `키메라 ${S.codex.recipes.filter((id) => D.recipes.some((r) => r.id === id)).length}/${D.recipes.length} · 🌈 기적 ${(D.crossRecipes ?? []).filter((r) => S.codex.recipes.includes(r.id)).length} · 힌트 조각 ${S.hintShards}/${D.config.hintShardsPerReveal} — 슬라임을 만들 때마다 1개`, style(14, '#ffd84d')).setOrigin(0.5).setDepth(3500);
   }
 
   /** 강점·약점: 종마다 타고나는 강점 3 · 약점 3. 약점이 각성(신화급·역전 각성)으로 뒤집히면 무엇이 되는지는 한 번 본 뒤에만 보임. */
@@ -211,7 +214,7 @@ export default class CodexScene extends Phaser.Scene {
     const D = this.data2, S = this.save, seenF = new Set(S.codex.flips ?? []);
     let found = 0, total = 0;
     D.units.forEach((u, i) => {
-      const c = this.cell(i, 2, 585, 196), seen = S.codex.units.includes(u.id), tr = D.traits[u.id];
+      const c = this.cell(i, 2, 585, 214), seen = S.codex.units.includes(u.id), tr = D.traits[u.id];
       const g = this.add.graphics();
       g.fillStyle(0x10161e, 0.7).fillRoundedRect(c.x, c.y, c.w, c.h, 12).lineStyle(2, 0x3b4b5e, 0.8).strokeRoundedRect(c.x, c.y, c.w, c.h, 12);
       const tok = unitToken(this, { kind: 'base', speciesId: u.id, stage: 'adult', stats: { color: u.color } }, D);
@@ -227,6 +230,8 @@ export default class CodexScene extends Phaser.Scene {
       const line = (t, col, size = 12) => { const o = this.add.text(c.x + 100, y, t, style(size, col, { wordWrap: { width: 470 } })); y += o.height + 3; };
       if (!seen) { line('아직 만난 적 없는 동물. 덱에 넣고 데려가 봐요.', '#7f8c99', 13); return; }
       if (tn) line(`👍 ${tn.pro}   👎 ${tn.con}`, '#d4b06a');
+      const cl = gcfg(D).comeback?.clutch?.[u.id];
+      if (cl) line(`🔥 역전: ${cl.name} — ${cl.desc}`, '#ff9f43');
       for (const d of tr.str) line(`💪 ${d.name} — ${d.desc}`, '#7CFC9A');
       for (const d of tr.weak) {
         total += 1;

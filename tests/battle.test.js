@@ -45,10 +45,18 @@ test('merges update bench and discoveries', () => {
   s.bench[2] = add(s, 'rabbit', 'adult'); s.bench[3] = add(s, 'bighorn', 'adult');
   B.merge(s, D, { where: 'bench', index: 2 }, { where: 'bench', index: 3 });
   assert.ok(s.known.recipes.has('jackalope'));
+  s.rng = () => 0.5;   // 여우+까마귀(강이 다름): 기적 15%(치즈 도둑 이야기) → 실패
   s.bench[2] = add(s, 'fox', 'adult'); s.bench[4] = add(s, 'crow', 'adult');
   const cross = B.merge(s, D, { where: 'bench', index: 2 }, { where: 'bench', index: 4 });
-  assert.deepEqual([cross.kind, cross.geneFail], ['weak', false], '강이 다르면 굴림 없이 슬라임');
+  assert.deepEqual([cross.kind, cross.geneFail, cross.chance], ['weak', true, 15]);
   assert.ok(s.known.failed.has('crow+fox'));
+  assert.equal(s.genePity['crow+fox'], 1, '실패 눈금');
+  // 슬라임 + 부모 성체(여우) → 재도전, 굴림 0이면 기적 성공
+  s.rng = () => 0;
+  s.bench[2] = add(s, 'fox', 'adult');
+  const re = B.merge(s, D, { where: 'bench', index: 2 }, { where: 'bench', index: 4 });
+  assert.deepEqual([re.kind, re.unit.speciesId, re.miracle, re.retry], ['chimera', 'cheese_thief', true, true]);
+  assert.equal(s.genePity['crow+fox'], undefined, '성공하면 눈금 사라짐');
   s.rng = () => 0.99;   // 곰(74)+호랑이(38): 46% → 실패
   s.bench[2] = add(s, 'bear', 'adult'); s.bench[5] = add(s, 'tiger', 'adult');
   const flop = B.merge(s, D, { where: 'bench', index: 2 }, { where: 'bench', index: 5 });

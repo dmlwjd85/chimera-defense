@@ -95,6 +95,7 @@ export function battleOptions(save, data, stageId = null) {
     builds: save.advanced ? { ...(save.builds ?? {}) } : {},
     pouch: save.pouch ?? 0,
     prep: save.prep ?? null,
+    genePity: { ...(save.genePity ?? {}) },
   };
 }
 
@@ -245,7 +246,9 @@ export function settleRun(save, state, data) {
   addUniq(save.codex.bonds, state.finds.bonds);
   addUniq(save.codex.enemies, [...(state.seenEnemies ?? [])]);
   addUniq((save.codex.spirits ??= []), state.finds.spirits ?? []);
-  addUniq((save.codex.flips ??= []), state.finds.flips ?? []);   // 각성·신화급으로 뒤집힌 약점(도감 특성 탭)
+  addUniq((save.codex.flips ??= []), state.finds.flips ?? []);
+  addUniq((save.codex.miracles ??= []), state.finds.miracles ?? []);   // 기적의 키메라(강이 다른 짝)
+  if (state.genePity) save.genePity = { ...state.genePity };   // 같은 짝 실패 눈금은 판을 넘어 이어짐   // 각성·신화급으로 뒤집힌 약점(도감 특성 탭)
   const ach = [];
   const give = (id) => { if (!save.achievements.includes(id)) { save.achievements.push(id); ach.push(id); } };
   if (state.summonCount > 0) give('firstSummon');
@@ -391,6 +394,7 @@ export function shopOffers(save, data, rng = Math.random) {
     ...relics.map((r) => ({ kind: 'relic', id: r.id, icon: r.icon, name: r.name, desc: r.desc, price: SHOP_PRICE[r.rarity] ?? 30 })),
     { kind: 'food', icon: '🍖', name: '먹이 꾸러미', desc: '다음 스테이지 시작 때 가장 어린 동물이 한 단계 자람', price: 30 },
     { kind: 'feather', icon: '🪶', name: '부활 깃털', desc: '다음 스테이지에서 부활 한 번 공짜', price: 25 },
+    { kind: 'gene', icon: '🧪', name: '유전자 물약', desc: '다음 스테이지의 첫 합성 한 번 성공 +20%', price: 40 },
     { kind: 'train', id: trainee, icon: '🏋', name: `${data.unitById[trainee]?.name ?? ''} 훈련`, desc: '이 동물 레벨 +1(출전 단계가 빨리 자람)', price: 40 },
   ];
   save.shop = { items: items.map((x) => ({ ...x, sold: false })) };
@@ -407,10 +411,11 @@ export function buyShop(save, data, index) {
   const it = save.shop?.items?.[index];
   if (!it || it.sold) return { ok: false, reason: 'notFound' };
   if ((save.pouch ?? 0) < it.price) return { ok: false, reason: 'gold' };
-  const prep = (save.prep ??= { relics: [], food: 0, feathers: 0 });
+  const prep = (save.prep ??= { relics: [], food: 0, feathers: 0, gene: 0 });
   if (it.kind === 'relic') { if (prep.relics.length >= 2) return { ok: false, reason: 'full' }; prep.relics.push(it.id); }
   else if (it.kind === 'food') { if (prep.food >= 2) return { ok: false, reason: 'full' }; prep.food += 1; }
   else if (it.kind === 'feather') { if (prep.feathers >= 2) return { ok: false, reason: 'full' }; prep.feathers += 1; }
+  else if (it.kind === 'gene') { if ((prep.gene ?? 0) >= 1) return { ok: false, reason: 'full' }; prep.gene = 1; }
   else if (it.kind === 'train') { const cur = levelInfo(save.speciesXp[it.id] ?? 0, data.config); if (cur.need <= 0) return { ok: false, reason: 'full' }; save.speciesXp[it.id] = (save.speciesXp[it.id] ?? 0) + (cur.need - cur.xp); }
   save.pouch -= it.price; it.sold = true;
   return { ok: true, item: it };

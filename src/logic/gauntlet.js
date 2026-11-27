@@ -814,6 +814,13 @@ function teamUlt(state, data, u, t, g) {
 }
 
 /** 추천 보상(안내용): { kind, why } */
+/** 진화까지 남은 먹이(2026-11-27 "진화하는데 필요한 고기양을 알 수 있게"): 어린→성장기 1그릇, 성장기→성체 adultMeals그릇. 다 자랐으면 null */
+export function mealInfo(u, data) {
+  if (!u || u.kind !== 'base' || !NEXT[u.stage]) return null;
+  const need = u.stage === 'teen' ? (gcfg(data).adultMeals ?? 1) : 1, meals = Math.min(need, u.meals ?? 0);
+  return { meals, need, left: need - meals, next: NEXT[u.stage] };
+}
+
 export function recommendReward(state, data) {
   const o = state.offer;
   if (!o || o.taken) return null;
@@ -826,6 +833,8 @@ export function recommendReward(state, data) {
     const idx = (o.globe ?? []).findIndex((c) => baseStyle({ kind: 'base', speciesId: c.speciesId, stats: data.unitById[c.speciesId] }) === 'bruiser');
     if (idx >= 0) return { kind: 'globe', index: idx, why: '브루저가 모자라요 — 막는 동물을 데려와요' };
   }
+  // 유물을 하나도 안 가졌거나 교전 3번마다 하나보다 적으면 유물 먼저(2026-11-27 "유물 선택률이 낮아")
+  if (ok('relic') && state.enc >= 1 && (state.relics ?? []).length < Math.ceil((state.enc + 1) / 3)) return { kind: 'relic', why: '💎 유물은 이번 판 끝까지 팀 전체가 세져요' };
   const top = Object.entries(state.dmgLast ?? {}).sort((a, b) => b[1].dmg - a[1].dmg).map(([uid]) => state.field.find((u) => u.uid === +uid)).find((u) => u && u.kind === 'base' && NEXT[u.stage]);
   if (top && ok('food')) return { kind: 'food', uid: top.uid, why: `가장 잘 싸운 ${top.stats.name}을(를) 키워요` };
   if (ok('relic') && (state.relics ?? []).length < Math.ceil((state.enc + 1) / 3)) return { kind: 'relic', why: '유물은 이번 판 내내 효과가 있어요' };

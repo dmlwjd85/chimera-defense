@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { ENEMY_ART_DIR, PORTRAIT_ART_DIR, enemyFace, enemyPortraitFlip } from '../src/logic/enemyFace.js';
+import { ENEMY_ART_DIR, PORTRAIT_ART_DIR, enemyFace, enemyFaceRig, enemyPortraitFlip } from '../src/logic/enemyFace.js';
 import { decodePng } from '../tools/dotpng.mjs';
 
 test('원화 방향 표: 시트 48장·적 이름·초상화가 빠짐없이 들어 있다 (기억으로 정하지 않기)', () => {
@@ -96,4 +96,14 @@ test('복면 여우 자객: 큰 꼬리가 왼쪽에 있는 원화라 오른쪽�
   // 단검(밝은 회색 칼날)은 오른쪽 절반에 있다
   const blade = crop.pixels.filter((p) => p.r > 170 && p.g > 170 && p.b > 170 && Math.abs(p.r - p.b) < 30).map((p) => p.x);
   assert.ok(blade.length > 4 && blade.reduce((a, b) => a + b, 0) / blade.length / crop.w > 0.6, '단검이 오른쪽');
+});
+
+test('시트 대신 한 장 그림(예비)으로 그릴 때는 방향 뜻이 반대라 +1이어야 왼쪽을 본다 (도둑여우·파란 나비)', () => {
+  for (const id of Object.keys(PORTRAIT_ART_DIR)) {
+    assert.equal(enemyFaceRig({ dot: true }, id), enemyFace(id), id);
+    assert.equal(enemyFaceRig({ dot: false }, id), -enemyFace(id), id);   // 한 장 그림은 flipArt로 이미 한 번 뒤집혀 있음
+  }
+  assert.equal(enemyFaceRig({ dot: false }, 'flying'), 1);
+  assert.equal(enemyFaceRig({ dot: false }, 'fast'), 1);
+  assert.equal(enemyFaceRig({ dot: false }, 'fast', true), -1);
 });

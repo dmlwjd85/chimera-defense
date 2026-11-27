@@ -8,7 +8,7 @@ import { battleOptions, settleRun, writeSave, carryCandidates, setCarry, takeOut
 import { roleOfEnemy as roleOfEnemyS, formOfIds, formOfField, stageTier, createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, mergeOddsG, useRally, treatCost, healCost, healUnits, clutchOf, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost, rerollGlobe, globeRerollCost, recommendReward, buyPotion, trainUnit, trainCost, tuneOf, laneOf, mealInfo } from '../logic/gauntlet.js';
 import { spellDef, spellCost } from '../logic/spells.js';
 import { duelData, myDuelDeck, DUEL } from '../logic/duel.js';
-import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, poolExtraIds, enemyFace, enemyPortraitFlip } from './rigs.js';
+import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, poolExtraIds, enemyFace, enemyFaceRig, enemyPortraitFlip } from './rigs.js';
 import { FX, ambient, weather } from './fx.js';
 import { sfx, unlockAudio, isMuted, setMuted } from './sfx.js';
 import { button, style, unitToken, hex, COLORS, speciesImage, pixIcon, relicIcon, hideTip } from './ui.js';
@@ -914,7 +914,7 @@ export default class GauntletScene extends Phaser.Scene {
         if (v.pendHit != null && this.time.now - v.pendHit > 260) { if ((v.hitAt ?? -999) < v.pendHit && e.hp > 0) this.hitReact(v); v.pendHit = null; }
         // 적은 늘 왼쪽(동물 쪽)을 봄 — 출발·걷기·치고 빠지며 돌아갈 때도. 오른쪽을 보는 건 등 뒤(오른쪽)를 칠 때 그 순간(0.7초)만
         if (this.state.phase !== 'fight' || v.walking || this.time.now > (v.turnedUntil ?? 0)) v.turned = false;
-        r.setFacing(enemyFace(v.rig.faceId ?? e.id, !!v.turned));
+        r.setFacing(enemyFaceRig(v.rig, v.rig.faceId ?? e.id, !!v.turned));
         if (e.stunLeft > 0 && !v.dive && r.flashLeft > 0) r.flashLeft = Math.max(0, r.flashLeft - dt);   // 기절로 멈춰 있어도 흰 번쩍은 끝나게
         v.rig.view.update(e.stunLeft > 0 && !v.dive ? 0 : dt);
       }
@@ -1581,7 +1581,7 @@ export default class GauntletScene extends Phaser.Scene {
     else atkC.add(this.add.text(0, 0, STYLE_ICON[styleOf(u)] ?? '⭐', style(160)).setOrigin(0.5));
     const tgtC = this.add.container(420, 240).setAlpha(0); stageC.add(tgtC);
     const tr = e ? enemyRig(this, e, tgtC, 220, 0.7) : null;
-    if (tr) { tr.inst.setFacing?.(enemyFace(tr.faceId ?? e.id)); tr.view.update(0); }
+    if (tr) { tr.inst.setFacing?.(enemyFaceRig(tr, tr.faceId ?? e.id)); tr.view.update(0); }
     const nameT = this.add.text(640, 110, ev.name ?? '필살기', style(64, '#ffffff', { stroke: '#b8860b', strokeThickness: 12 })).setOrigin(0.5).setAngle(-6).setScale(2.4).setAlpha(0);
     const udesc = ev.desc ?? (this.lastUlt?.uid === u.uid ? this.lastUlt.desc : null);
     const who = this.add.text(640, 176, udesc ? `${u.stats.name} · ${udesc}` : u.stats.name, style(22, '#ffe9a8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5).setAlpha(0);

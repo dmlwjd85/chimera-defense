@@ -99,3 +99,7 @@ export const enemyPortraitFlip = (id) => PORTRAIT_FACES_RIGHT.has(id);
 export const enemyFace = (id, back = false) => (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1);
 
 export const enemyFaceOld = enemyFace;
+
+/** 움직이는 시트(dot)가 없어서 한 장 그림(enemy-<이름>.png, flipArt)으로 대신 그릴 때는 방향 뜻이 반대다.
+ *  한 장 그림은 flipArt로 이미 한 번 뒤집혀 있어서 setFacing(-1)이면 다시 오른쪽이 된다. (2026-11-28 도둑여우·파란 나비가 시트 로딩 전 오른쪽을 보던 원인) */
+export const enemyFaceRig = (rig, id, back = false) => (rig?.dot ? enemyFace(id, back) : -enemyFace(id, back));

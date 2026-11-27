@@ -7,7 +7,7 @@ export function defaultSave() {
   return {
     version: 1, essence: 0,
     unlocks: { startGold: 0, bench: 0 },
-    codex: { units: [], recipes: [], failedPairs: [], enemies: [], bonds: [], spirits: [] },
+    codex: { units: [], recipes: [], failedPairs: [], enemies: [], bonds: [], spirits: [], legends: [] },
     hintShards: 0, hints: {},
     speciesXp: {},
     stages: {},
@@ -109,7 +109,7 @@ export function starGoals(state, data) {
   const sc = data.config.stars ?? { life: 60, par: 420 };
   const clear = state.result === 'clear';
   // 연전: ★ 클리어 / ★ 생명 지킴(하드는 자동) / ★ 쓰러진 아군 적게
-  if (state.mode === 'gauntlet') { const need = data.config.gauntlet?.lowStars ?? 3; return { clear, life: clear && (state.hard || state.life >= state.maxLife * sc.life / 100), time: clear && state.downs <= need, lifeNeed: sc.life, downs: state.downs, downNeed: need, gauntlet: true, hard: !!state.hard }; }
+  if (state.mode === 'gauntlet') { const need = data.config.gauntlet?.lowStars ?? 5; return { clear, life: clear && (state.hard || state.life >= state.maxLife * sc.life / 100), time: clear && state.downs <= need, lifeNeed: sc.life, downs: state.downs, downNeed: need, gauntlet: true, hard: !!state.hard }; }
   const par = state.stage.par ?? sc.par;
   return { clear, life: clear && state.life >= (state.maxLife ?? data.config.life) * sc.life / 100, time: clear && state.time <= par, par, lifeNeed: sc.life };
 }
@@ -250,6 +250,17 @@ export function settleRun(save, state, data) {
   addUniq((save.codex.flips ??= []), state.finds.flips ?? []);
   addUniq((save.codex.miracles ??= []), state.finds.miracles ?? []);
   addUniq((save.codex.relics ??= []), state.relics ?? []);   // 한 번 얻은 유물은 어느 스테이지에서나 나옴   // 기적의 키메라(강이 다른 짝)
+  // 전설 조각: 판마다 짝마다 한 조각, legendPieces개 모이면 레시피 공개(도감 '전설' 탭)
+  const legendShards = [];
+  { const need = data.config.genes?.legendPieces ?? 6;
+    for (const key of state.finds?.legendShards ?? []) {
+      save.legendShards ??= {};
+      const n = Math.min(need, (save.legendShards[key] ?? 0) + 1);
+      save.legendShards[key] = n;
+      const done = n >= need && !(save.codex.legends ??= []).includes(key);
+      if (done) save.codex.legends.push(key);
+      legendShards.push({ key, n, need, done });
+    } }
   if (state.genePity) save.genePity = { ...state.genePity };   // 같은 짝 실패 눈금은 판을 넘어 이어짐   // 각성·신화급으로 뒤집힌 약점(도감 특성 탭)
   const ach = [];
   const give = (id) => { if (!save.achievements.includes(id)) { save.achievements.push(id); ach.push(id); } };
@@ -302,7 +313,7 @@ export function settleRun(save, state, data) {
     }
   }
   save.shards = (save.shards ?? 0) + shards;
-  return { pouchIn, pouch: save.pouch ?? 0, clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
+  return { legendShards, pouchIn, pouch: save.pouch ?? 0, clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
     mvp: Object.values(state.dmgRun ?? {}).sort((a, b) => b.dmg - a.dmg).slice(0, 3).map((r) => ({ ...r, dmg: Math.round(r.dmg) })),
     stars, goals, totalStars: starsAfter, joined, gauge, legends: clear && state.mode === 'gauntlet' ? legendCandidates(state) : [], newSpells: spellsUnlocked(save, data).filter((id) => !spellsBefore.includes(id)), time: Math.round(state.time) };
 }

@@ -1,0 +1,683 @@
+{
+ "note": "ch_bison_eagle 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_bison_eagle",
+ "sheet": "dot-m-auto_bison_eagle",
+ "file": "assets/dotm/auto_bison_eagle.png",
+ "frameW": 121,
+ "frameH": 120,
+ "foot": 117,
+ "cols": 1,
+ "anchorX": 62,
+ "palette": [
+  "#0b0308",
+  "#1a0607",
+  "#291a1f",
+  "#50413c",
+  "#53261c",
+  "#5c301f",
+  "#6e361e",
+  "#7e3b20",
+  "#8d4d1f",
+  "#a3621a",
+  "#b67833",
+  "#c68421",
+  "#dd9f25",
+  "#efa815",
+  "#f5c657",
+  "#fefaf4"
+ ],
+ "rects": {
+  "ch_bison_eagle_adult_a1_00": [
+   221,
+   218,
+   111,
+   95,
+   -56,
+   -95
+  ],
+  "ch_bison_eagle_adult_a1_01": [
+   1799,
+   0,
+   110,
+   100,
+   -55,
+   -100
+  ],
+  "ch_bison_eagle_adult_a1_02": [
+   1910,
+   0,
+   110,
+   99,
+   -57,
+   -106
+  ],
+  "ch_bison_eagle_adult_a1_03": [
+   1350,
+   0,
+   109,
+   107,
+   -58,
+   -118
+  ],
+  "ch_bison_eagle_adult_a1_04": [
+   1007,
+   0,
+   116,
+   109,
+   -61,
+   -116
+  ],
+  "ch_bison_eagle_adult_a1_05": [
+   901,
+   118,
+   117,
+   96,
+   -62,
+   -96
+  ],
+  "ch_bison_eagle_adult_a1_06": [
+   1019,
+   118,
+   113,
+   96,
+   -58,
+   -96
+  ],
+  "ch_bison_eagle_adult_a1_07": [
+   228,
+   118,
+   110,
+   97,
+   -55,
+   -97
+  ],
+  "ch_bison_eagle_adult_a2_00": [
+   339,
+   118,
+   111,
+   97,
+   -56,
+   -97
+  ],
+  "ch_bison_eagle_adult_a2_01": [
+   0,
+   118,
+   114,
+   99,
+   -61,
+   -99
+  ],
+  "ch_bison_eagle_adult_a2_02": [
+   1572,
+   0,
+   112,
+   106,
+   -60,
+   -107
+  ],
+  "ch_bison_eagle_adult_a2_03": [
+   109,
+   0,
+   112,
+   116,
+   -60,
+   -117
+  ],
+  "ch_bison_eagle_adult_a2_04": [
+   559,
+   0,
+   111,
+   115,
+   -58,
+   -116
+  ],
+  "ch_bison_eagle_adult_a2_05": [
+   1460,
+   0,
+   111,
+   107,
+   -56,
+   -107
+  ],
+  "ch_bison_eagle_adult_a2_06": [
+   779,
+   218,
+   113,
+   93,
+   -57,
+   -93
+  ],
+  "ch_bison_eagle_adult_a2_07": [
+   893,
+   218,
+   110,
+   93,
+   -55,
+   -93
+  ],
+  "ch_bison_eagle_adult_down_00": [
+   451,
+   118,
+   111,
+   97,
+   -56,
+   -97
+  ],
+  "ch_bison_eagle_adult_down_01": [
+   563,
+   118,
+   113,
+   97,
+   -60,
+   -98
+  ],
+  "ch_bison_eagle_adult_down_02": [
+   1685,
+   0,
+   113,
+   104,
+   -60,
+   -105
+  ],
+  "ch_bison_eagle_adult_down_03": [
+   787,
+   0,
+   109,
+   113,
+   -56,
+   -114
+  ],
+  "ch_bison_eagle_adult_down_04": [
+   671,
+   0,
+   115,
+   115,
+   -57,
+   -114
+  ],
+  "ch_bison_eagle_adult_down_05": [
+   1004,
+   218,
+   117,
+   77,
+   -58,
+   -76
+  ],
+  "ch_bison_eagle_adult_down_06": [
+   1122,
+   218,
+   117,
+   52,
+   -58,
+   -51
+  ],
+  "ch_bison_eagle_adult_el_00": [
+   677,
+   118,
+   111,
+   97,
+   -56,
+   -97
+  ],
+  "ch_bison_eagle_adult_el_01": [
+   115,
+   118,
+   112,
+   99,
+   -58,
+   -99
+  ],
+  "ch_bison_eagle_adult_el_02": [
+   897,
+   0,
+   109,
+   112,
+   -56,
+   -113
+  ],
+  "ch_bison_eagle_adult_el_03": [
+   222,
+   0,
+   112,
+   116,
+   -59,
+   -117
+  ],
+  "ch_bison_eagle_adult_el_04": [
+   335,
+   0,
+   112,
+   116,
+   -59,
+   -117
+  ],
+  "ch_bison_eagle_adult_el_05": [
+   1124,
+   0,
+   112,
+   109,
+   -58,
+   -110
+  ],
+  "ch_bison_eagle_adult_el_06": [
+   1133,
+   118,
+   114,
+   96,
+   -59,
+   -97
+  ],
+  "ch_bison_eagle_adult_el_07": [
+   333,
+   218,
+   110,
+   95,
+   -55,
+   -95
+  ],
+  "ch_bison_eagle_adult_hit_00": [
+   789,
+   118,
+   111,
+   97,
+   -57,
+   -97
+  ],
+  "ch_bison_eagle_adult_hit_01": [
+   1237,
+   0,
+   112,
+   108,
+   -60,
+   -109
+  ],
+  "ch_bison_eagle_adult_hit_02": [
+   0,
+   0,
+   108,
+   117,
+   -55,
+   -118
+  ],
+  "ch_bison_eagle_adult_hit_03": [
+   448,
+   0,
+   110,
+   116,
+   -56,
+   -116
+  ],
+  "ch_bison_eagle_adult_idle_00": [
+   1248,
+   118,
+   112,
+   96,
+   -56,
+   -96
+  ],
+  "ch_bison_eagle_adult_idle_01": [
+   1361,
+   118,
+   112,
+   96,
+   -56,
+   -96
+  ],
+  "ch_bison_eagle_adult_idle_02": [
+   1474,
+   118,
+   111,
+   96,
+   -55,
+   -96
+  ],
+  "ch_bison_eagle_adult_idle_03": [
+   1586,
+   118,
+   110,
+   96,
+   -55,
+   -96
+  ],
+  "ch_bison_eagle_adult_walk_00": [
+   1697,
+   118,
+   110,
+   96,
+   -55,
+   -95
+  ],
+  "ch_bison_eagle_adult_walk_01": [
+   1808,
+   118,
+   109,
+   96,
+   -54,
+   -96
+  ],
+  "ch_bison_eagle_adult_walk_02": [
+   1918,
+   118,
+   110,
+   96,
+   -55,
+   -97
+  ],
+  "ch_bison_eagle_adult_walk_03": [
+   444,
+   218,
+   111,
+   95,
+   -56,
+   -96
+  ],
+  "ch_bison_eagle_adult_walk_04": [
+   556,
+   218,
+   111,
+   94,
+   -56,
+   -94
+  ],
+  "ch_bison_eagle_adult_walk_05": [
+   668,
+   218,
+   110,
+   94,
+   -55,
+   -94
+  ],
+  "ch_bison_eagle_adult_walk_06": [
+   0,
+   218,
+   109,
+   96,
+   -54,
+   -96
+  ],
+  "ch_bison_eagle_adult_walk_07": [
+   110,
+   218,
+   110,
+   96,
+   -55,
+   -96
+  ]
+ },
+ "frames": [
+  "ch_bison_eagle_adult_a1_00",
+  "ch_bison_eagle_adult_a1_01",
+  "ch_bison_eagle_adult_a1_02",
+  "ch_bison_eagle_adult_a1_03",
+  "ch_bison_eagle_adult_a1_04",
+  "ch_bison_eagle_adult_a1_05",
+  "ch_bison_eagle_adult_a1_06",
+  "ch_bison_eagle_adult_a1_07",
+  "ch_bison_eagle_adult_a2_00",
+  "ch_bison_eagle_adult_a2_01",
+  "ch_bison_eagle_adult_a2_02",
+  "ch_bison_eagle_adult_a2_03",
+  "ch_bison_eagle_adult_a2_04",
+  "ch_bison_eagle_adult_a2_05",
+  "ch_bison_eagle_adult_a2_06",
+  "ch_bison_eagle_adult_a2_07",
+  "ch_bison_eagle_adult_down_00",
+  "ch_bison_eagle_adult_down_01",
+  "ch_bison_eagle_adult_down_02",
+  "ch_bison_eagle_adult_down_03",
+  "ch_bison_eagle_adult_down_04",
+  "ch_bison_eagle_adult_down_05",
+  "ch_bison_eagle_adult_down_06",
+  "ch_bison_eagle_adult_el_00",
+  "ch_bison_eagle_adult_el_01",
+  "ch_bison_eagle_adult_el_02",
+  "ch_bison_eagle_adult_el_03",
+  "ch_bison_eagle_adult_el_04",
+  "ch_bison_eagle_adult_el_05",
+  "ch_bison_eagle_adult_el_06",
+  "ch_bison_eagle_adult_el_07",
+  "ch_bison_eagle_adult_hit_00",
+  "ch_bison_eagle_adult_hit_01",
+  "ch_bison_eagle_adult_hit_02",
+  "ch_bison_eagle_adult_hit_03",
+  "ch_bison_eagle_adult_idle_00",
+  "ch_bison_eagle_adult_idle_01",
+  "ch_bison_eagle_adult_idle_02",
+  "ch_bison_eagle_adult_idle_03",
+  "ch_bison_eagle_adult_walk_00",
+  "ch_bison_eagle_adult_walk_01",
+  "ch_bison_eagle_adult_walk_02",
+  "ch_bison_eagle_adult_walk_03",
+  "ch_bison_eagle_adult_walk_04",
+  "ch_bison_eagle_adult_walk_05",
+  "ch_bison_eagle_adult_walk_06",
+  "ch_bison_eagle_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bison_eagle_adult_idle_00",
+  "ch_bison_eagle_adult_idle_01",
+  "ch_bison_eagle_adult_idle_02",
+  "ch_bison_eagle_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 22,
+   "attack": {
+    "frames": [
+     "ch_bison_eagle_adult_a1_00",
+     "ch_bison_eagle_adult_a1_01",
+     "ch_bison_eagle_adult_a1_02",
+     "ch_bison_eagle_adult_a1_03",
+     "ch_bison_eagle_adult_a1_04",
+     "ch_bison_eagle_adult_a1_05",
+     "ch_bison_eagle_adult_a1_06",
+     "ch_bison_eagle_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bison_eagle_adult_a2_00",
+     "ch_bison_eagle_adult_a2_01",
+     "ch_bison_eagle_adult_a2_02",
+     "ch_bison_eagle_adult_a2_03",
+     "ch_bison_eagle_adult_a2_04",
+     "ch_bison_eagle_adult_a2_05",
+     "ch_bison_eagle_adult_a2_06",
+     "ch_bison_eagle_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bison_eagle_adult_down_00",
+     "ch_bison_eagle_adult_down_01",
+     "ch_bison_eagle_adult_down_02",
+     "ch_bison_eagle_adult_down_03",
+     "ch_bison_eagle_adult_down_04",
+     "ch_bison_eagle_adult_down_05",
+     "ch_bison_eagle_adult_down_06"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_bison_eagle_adult_el_00",
+     "ch_bison_eagle_adult_el_01",
+     "ch_bison_eagle_adult_el_02",
+     "ch_bison_eagle_adult_el_03",
+     "ch_bison_eagle_adult_el_04",
+     "ch_bison_eagle_adult_el_05",
+     "ch_bison_eagle_adult_el_06",
+     "ch_bison_eagle_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bison_eagle_adult_hit_00",
+     "ch_bison_eagle_adult_hit_01",
+     "ch_bison_eagle_adult_hit_02",
+     "ch_bison_eagle_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bison_eagle_adult_idle_00",
+     "ch_bison_eagle_adult_idle_01",
+     "ch_bison_eagle_adult_idle_02",
+     "ch_bison_eagle_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bison_eagle_adult_walk_00",
+     "ch_bison_eagle_adult_walk_01",
+     "ch_bison_eagle_adult_walk_02",
+     "ch_bison_eagle_adult_walk_03",
+     "ch_bison_eagle_adult_walk_04",
+     "ch_bison_eagle_adult_walk_05",
+     "ch_bison_eagle_adult_walk_06",
+     "ch_bison_eagle_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bison_eagle_adult_down_00",
+     "ch_bison_eagle_adult_down_01",
+     "ch_bison_eagle_adult_down_02",
+     "ch_bison_eagle_adult_down_03",
+     "ch_bison_eagle_adult_down_04",
+     "ch_bison_eagle_adult_down_05",
+     "ch_bison_eagle_adult_down_06",
+     "ch_bison_eagle_adult_down_05",
+     "ch_bison_eagle_adult_down_04",
+     "ch_bison_eagle_adult_down_03",
+     "ch_bison_eagle_adult_down_02",
+     "ch_bison_eagle_adult_down_01",
+     "ch_bison_eagle_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bison_eagle"
+}

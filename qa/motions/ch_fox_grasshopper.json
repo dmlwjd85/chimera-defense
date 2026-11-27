@@ -1,0 +1,53 @@
+{
+ "species": "ch_fox_grasshopper",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 7.2,
+   "foot±": 1
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 28.9,
+   "foot±": 8
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 32.5,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 14.5,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 2.4,
+   "foot±": 1
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 0.0,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.4,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   277
+  ],
+  "box": [
+   115,
+   115
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 567296
+ }
+}

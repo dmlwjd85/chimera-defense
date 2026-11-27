@@ -8,22 +8,36 @@ import { makeRng } from '../src/logic/rng.js';
 const D = loadData();
 const fightOut = (st) => { let n = 0; while (st.phase === 'fight' && n++ < 2000) { tickGauntlet(st, D, 0.1); st.events.length = 0; } };
 
-test('연전: 교전 8번, 마지막은 보스, 무리 크기는 3에서 6으로', () => {
-  const plan = planEncounters(D.stageById['forest-1'], D, makeRng(3));
-  assert.equal(plan.length, 8);
-  assert.equal(plan.at(-1).boss, true);
-  assert.equal(plan.at(-1).ids[0], 'boss_boar');
-  assert.equal(plan[0].ids.length, 3);
-  assert.ok(plan[6].ids.length >= 5);
+test('연전: 모든 스테이지 교전 12번(데이터 한 곳), 마지막은 보스, 적 무리는 2마리에서 6마리로 천천히', () => {
+  const g = D.config.gauntlet;
+  assert.equal(g.encounters, 12);
+  assert.equal(D.stages.length, 12);
+  for (const stage of D.stages) {
+    const plan = planEncounters(stage, D, makeRng(3));
+    assert.equal(plan.length, g.encounters, `${stage.id} 교전 수`);
+    assert.equal(plan.filter((p) => p.boss).length, 1, `${stage.id} 보스는 하나`);
+    assert.equal(plan.at(-1).boss, true, `${stage.id} 마지막이 보스`);
+    assert.equal(plan.at(-1).ids[0], stage.boss);
+    assert.equal(plan[0].ids.length, g.squadMin, `${stage.id} 첫 교전 적 수`);
+    assert.ok(plan[0].ids.length <= 3, '처음엔 적게');
+    const sizes = plan.slice(0, -1).map((p) => p.ids.length);
+    for (let i = 1; i < sizes.length; i++) assert.ok(sizes[i] >= sizes[i - 1], `${stage.id} 적 수는 줄지 않고 늘어남 ${sizes}`);
+    assert.equal(sizes.at(-1), g.squadMax);
+    assert.ok(new Set(sizes).size >= 4, '숫자가 단계적으로 늘어남');
+  }
 });
 
-test('처음엔 덱 6마리가 역할대로 앞줄·뒷줄에 섬(근접 앞, 원거리 뒤)', () => {
+test('처음엔 우리편 3마리로 시작(덱 앞에서부터), 역할대로 앞줄·뒷줄에 섬', () => {
   const st = createGauntlet(D, 'forest-1', 5, {});
   const us = unitsIn(st);
-  assert.equal(us.filter(Boolean).length, 6);
-  for (const u of us) if (u && u.stats.range > 1) assert.ok(u.seat >= 3, `${u.speciesId} 2·3열(원거리 딜러는 2열 먼저)`);
+  assert.equal(D.config.gauntlet.startUnits, 3);
+  assert.equal(us.filter(Boolean).length, 3);
+  assert.deepEqual(st.field.map((u) => u.speciesId), st.pool.slice(0, 3));
+  const full = createGauntlet(D, 'forest-1', 5, { startUnits: 6 });
+  assert.equal(unitsIn(full).filter(Boolean).length, 6);
+  for (const u of unitsIn(full)) if (u && u.stats.range > 1) assert.ok(u.seat >= 3, `${u.speciesId} 2·3열(원거리 딜러는 2열 먼저)`);
   assert.equal(st.phase, 'fight');
-  assert.ok(st.enemies.length >= 3);
+  assert.ok(st.enemies.length >= 2 && st.enemies.length <= 3, '첫 교전 적은 적게');
 });
 
 test('교전이 실시간으로 끝나고 정비로 넘어감: 보상 3갈래, 체력 일부만 회복', () => {
@@ -403,7 +417,7 @@ test('진형 상성·지형 영향·보스 필살 예고·스테이지 전리품
   assert.ok(kinds.has('hazard'), '불똥');
   assert.ok(kinds.has('formation'), '진형 알림');
   // 보스 필살: 예고 → 그 라인을 누르면 막기 → 피해
-  const b = createGauntlet(D, 'stage-7', 5, {});
+  const b = createGauntlet(D, 'stage-7', 5, { startUnits: 6 });
   b.enc = b.plan.length - 1; G.startEncounter(b, D);
   let warn = null, slam = null;
   for (let i = 0; i < 2000 && !slam && b.phase === 'fight'; i++) {
@@ -461,4 +475,13 @@ test('산군: 연전에서는 필살기를 씀(장면이 전용 v6 연출), 예�
   const u = { kind: 'base', speciesId: 'tiger', stage: 'spirit', stats: { element: 'metal' } };
   assert.ok(!movesOf(u, D.config).includes('ult'));
   assert.ok(movesOf(u, D.config, true).includes('ult'));
+});
+
+test('먹이: 진화까지 남은 그릇(어린 1, 성장기 adultMeals), 다 자라면 없음', async () => {
+  const G = await import('../src/logic/gauntlet.js');
+  const need = D.config.gauntlet?.adultMeals ?? 2;
+  assert.deepEqual(G.mealInfo({ kind: 'base', stage: 'young', meals: 0 }, D), { meals: 0, need: 1, left: 1, next: 'teen' });
+  assert.equal(G.mealInfo({ kind: 'base', stage: 'teen', meals: 1 }, D).left, need - 1);
+  assert.equal(G.mealInfo({ kind: 'base', stage: 'adult' }, D), null);
+  assert.equal(G.mealInfo({ kind: 'chimera', stage: 'adult' }, D), null);
 });

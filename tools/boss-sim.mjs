@@ -3,7 +3,8 @@
 //  덱: raid.json 보스의 good(맞춘 덱)·bad(안 맞춘 덱). 앞 교전은 자동 봇이 보통 난이도로 지지 않고(생명 99) 치르며 자람
 //  → 보스 교전만 그 난이도로(하드면 하드 강화, 생명 1) 첫 도전. 결과 = 보스 첫 도전 승률
 //  --off  : raid.json을 비운 채(예전 규칙)  --wave12 : #91(12교전) 설정을 덮어씀
-import { loadData } from './sim.mjs';
+import { loadData, loadRaw } from './sim.mjs';
+import { buildData } from '../src/logic/data.js';
 import { createGauntlet, tickGauntlet, tapShield, fighters, laneOf, botPick, botRegroup, nextEncounter, useRally, castG } from '../src/logic/gauntlet.js';
 import { raidTap } from '../src/logic/raid.js';
 
@@ -50,9 +51,8 @@ if (isMain) {
   const only = args.find((a) => a.startsWith('--stage='))?.slice(8);
   const tierArg = args.find((a) => a.startsWith('--tier='))?.slice(7) ?? null;
   const deckArg = args.find((a) => a.startsWith('--deck='))?.slice(7) ?? null;
-  const D = loadData();
-  const raid = D.raid;
-  if (args.includes('--off')) D.raid = null;
+  const raid = loadData().raid;
+  const D = args.includes('--off') ? buildData({ ...loadRaw(), raid: {} }) : loadData();
   D.config.gauntlet = { ...(D.config.gauntlet ?? {}) };
   if (args.includes('--wave12')) Object.assign(D.config.gauntlet, { encounters: 12, startUnits: 3, squadMin: 2, growth: 0.05, atkGrowth: 0.04 });
   for (const a of args) { const m = a.match(/^--(\w+)=([\d.]+)$/); if (m) D.config.gauntlet[m[1]] = +m[2]; }

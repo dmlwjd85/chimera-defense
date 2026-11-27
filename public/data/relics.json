@@ -12,6 +12,12 @@
   "epic": 10
  },
  "relics": [
+    {"id": "raid_bell", "icon": "🔔", "name": "끊기 방울", "rarity": "rare", "gauntlet": true, "raid": true, "desc": "보스의 보라 시전 막대를 끊는 데 필요한 점수 -1", "eco": {"raidInterrupt": 1}},
+    {"id": "raid_feather", "icon": "🪶", "name": "깃털 부적", "rarity": "common", "gauntlet": true, "raid": true, "desc": "보스 표식·시전 예고가 더 길게 보임", "eco": {"raidWarn": 1}},
+    {"id": "raid_salt", "icon": "🧂", "name": "소금 주머니", "rarity": "common", "gauntlet": true, "raid": true, "desc": "보스 보호막을 깨는 데 필요한 동물 수 -1", "eco": {"raidShieldNeed": 1}},
+    {"id": "raid_mugwort", "icon": "🌿", "name": "해독 쑥", "rarity": "common", "gauntlet": true, "raid": true, "desc": "보스 독이 반 겹씩 덜 쌓임 · 낙석·지형 피해 절반", "eco": {"raidCleanse": true, "hazardHalf": true}},
+    {"id": "raid_lantern", "icon": "🏮", "name": "길잡이 등불", "rarity": "common", "gauntlet": true, "raid": true, "desc": "보스 장판 피해 절반", "eco": {"raidZoneHalf": true}},
+    {"id": "raid_wedge", "icon": "🪨", "name": "쐐기돌", "rarity": "rare", "gauntlet": true, "raid": true, "desc": "응원 톡 +2(보라 막대 끊기에도 씀)", "eco": {"cheerTaps": 2}},
   {
    "id": "pack_howl",
    "icon": "🐺",

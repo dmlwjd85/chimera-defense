@@ -2072,7 +2072,7 @@ export default class GauntletScene extends Phaser.Scene {
       z.on('pointerdown', () => { if (on && !o.taken) onClick(); });
     };
     const rec = this.guideOn() ? recommendReward(s, D) : null;
-    if (rec) { const i = ['globe', 'food', 'relic'].indexOf(rec.kind); const x = 684 + i * 192; add(this.add.text(x + 172, y + 6, '👍 추천', style(13, '#0d1222', { backgroundColor: '#9cff6b', padding: { x: 5, y: 2 } })).setOrigin(1, 0).setDepth(2004)); this.recText = add(this.add.text(684, y + 124, `💡 ${rec.why}`, style(13, '#9cff6b')).setDepth(2002)); }
+    if (rec) { const i = ['globe', 'food', 'relic'].indexOf(rec.kind); const x = 684 + i * 192; add(this.add.text(x + 172, y + 6, '👍 추천', style(13, '#0d1222', { backgroundColor: '#9cff6b', padding: { x: 5, y: 2 } })).setOrigin(1, 0).setDepth(2004)); this.recText = add(this.add.text(684, y + 124, `💡 ${rec.whyKey ? this.registry.get('T')?.(rec.whyKey, rec.whyVars) ?? rec.whyKey : rec.why}`, style(13, '#9cff6b')).setDepth(2002)); }
     const pick = (kind, go) => () => { const again = this.rewardActive === kind; this.dropMeat(); this.rewardActive = again && kind === 'food' ? null : kind; this.drawRewards(); if (this.rewardActive) go(); };
     card(0, '동물', '새 친구 뽑기', 0xf2b544, pick('globe', () => this.spinGlobe()), s.bench.includes(null) || s.seats.includes(null));
     card(1, '먹이', '어린 1번\n성장기 2번\n→ 진화', 0x7ddc6f, pick('food', () => this.holdMeat()));

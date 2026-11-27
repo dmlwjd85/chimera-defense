@@ -14,7 +14,7 @@ import { spellDef, spellCost } from './spells.js';
 import { mergeKind, mergeOdds } from './merge.js';
 import { geneCtx } from './genes.js';
 import { mcfg, elemMult, enemyElement, foodChain } from './matchup.js';
-import { setRaidApi, raidEncStart, raidTick, raidBusy, raidHitMult, raidTakenMult, raidUlt, raidMarkOf, raidTapMax, raidHoldTime, moveMiniboss, raidSlamFx, raidTap } from './raid.js';
+import { setRaidApi, raidEncStart, raidTick, raidBusy, raidHitMult, raidTakenMult, raidUlt, raidMarkOf, raidTapMax, raidHoldTime, moveMiniboss, raidSlamFx, raidTap, bossFit } from './raid.js';
 
 // 3×3 자리: seat = 열×3 + 라인. 열 0 = 1열(브루저), 1 = 2열(딜러), 2 = 3열(응원·원거리). 라인 0 위 · 1 가운데 · 2 아래
 export const SEATS = 9;
@@ -840,6 +840,11 @@ export function recommendReward(state, data) {
   }
   // 유물을 하나도 안 가졌거나 교전 3번마다 하나보다 적으면 유물 먼저(2026-11-27 "유물 선택률이 낮아")
   if (ok('relic') && state.enc >= 1 && (state.relics ?? []).length < Math.ceil((state.enc + 1) / 3)) return { kind: 'relic', why: '💎 유물은 이번 판 끝까지 팀 전체가 세져요' };
+  // 🎯 보스 대비(보스 레이드): 보스가 가까우면 보스 카드 추천 동물을 데려오라고 권함(raid.json이 비면 bossFit = 0이라 그대로)
+  if (ok('globe') && state.enc >= state.plan.length - 4 && (state.bench.includes(null) || state.seats.includes(null))) {
+    const idx = (o.globe ?? []).findIndex((c) => bossFit(data, state.stage, c.speciesId) > 0 && !state.field.some((u) => u.speciesId === c.speciesId));
+    if (idx >= 0) return { kind: 'globe', index: idx, tag: 'bossFit', why: '', whyKey: 'raid.reward.bossFitWhy', whyVars: { name: data.unitById[o.globe[idx].speciesId]?.name ?? '', boss: data.enemyById[state.stage.boss]?.name ?? '' } };
+  }
   const top = Object.entries(state.dmgLast ?? {}).sort((a, b) => b[1].dmg - a[1].dmg).map(([uid]) => state.field.find((u) => u.uid === +uid)).find((u) => u && u.kind === 'base' && NEXT[u.stage]);
   if (top && ok('food')) return { kind: 'food', uid: top.uid, why: `가장 잘 싸운 ${top.stats.name}을(를) 키워요` };
   if (ok('relic') && (state.relics ?? []).length < Math.ceil((state.enc + 1) / 3)) return { kind: 'relic', why: '유물은 이번 판 내내 효과가 있어요' };

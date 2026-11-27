@@ -14,11 +14,12 @@ const PRIORITY = ['chimera', 'evolve', 'spirit'];
 const DT = 0.05, TURN = 0.5, MAX_TIME = 3600;
 
 /** Load the five data JSON files into lookup data. */
-export function loadData() {
+export function loadRaw() {
   const raw = {};
   for (const n of NAMES) raw[n] = JSON.parse(readFileSync(new URL(`../public/data/${n}.json`, import.meta.url), 'utf8'));
-  return buildData(raw);
+  return raw;
 }
+export function loadData() { return buildData(loadRaw()); }
 
 /** Every live unit with its ref, field units first. */
 function unitRefs(state) {

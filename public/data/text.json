@@ -232,5 +232,6 @@
   "raid.card.close": "닫기",
   "raid.lanes": " 라인",
   "raid.noCheers": "응원 톡을 다 썼어요",
-  "raid.boss": "보스"
+  "raid.boss": "보스",
+  "raid.reward.bossFitWhy": "🎯 보스 대비 — {name}은(는) {boss}에게 강해요"
 }

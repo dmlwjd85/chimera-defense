@@ -96,5 +96,15 @@
     "push": "↩"
   },
   "iconEvery": 0.2,
-  "bubbleGap": 900
+  "bubbleGap": 900,
+  "finale": {
+    "note": "마지막 적 슬로우모션(2026-11-28 선생님 \"마지막 적은 슬로우모션으로 쓰러지게 해주고 그동안 세리머니\"). 화면 연출만, 규칙·보상은 그대로. speed = 화면 느림 배율, sec·bossSec = 길이(초), zoom = 카메라 당김, pull = 마지막 적 쪽으로 옮기는 비율",
+    "on": true,
+    "speed": 0.3,
+    "sec": 1.2,
+    "bossSec": 1.9,
+    "zoom": 1.07,
+    "bossZoom": 1.1,
+    "pull": 0.3
+  }
 }

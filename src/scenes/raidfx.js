@@ -172,6 +172,7 @@ export class RaidFx {
       case 'raidRocks': sc.ticker(T('raid.rocks', { name }), '#d9c49a'); sc.cameras.main.shake(160, 0.008); return true;
       case 'raidSummon': { const p = at('e', ev.eid); if (p) sc.say(p[0], p[1] - 110, T('raid.summon', { name }), 0xc4a6ff); sfx('bossSummon'); return true; }
       case 'raidCharge': { const p = at('e', ev.eid); if (p) sc.say(p[0], p[1] - 110, T('raid.charge', { name }), 0xff6b5a, { force: true }); if (ev.held) sc.ticker(T('raid.chargeHeld'), '#ffe066'); sfx('stampede'); return true; }
+      case 'raidMinionFlee': (sc.fleeIds ??= new Set()).add(ev.eid); return true;   // 보스가 쓰러져 졸개가 흩어짐 → 화면에서 달아나는 연출(GauntletScene.enemyFlee)
       case 'raidDuelHit': { const p = at('u', ev.uid); if (p) sc.floatAt(p[0], p[1] - 100, ev.guard ? T('raid.guard') : T('raid.duelHit'), '#ffe066', 13); return true; }
       default: return ev.type?.startsWith?.('raid') ?? false;
     }

@@ -462,3 +462,25 @@ test('산군: 연전에서는 필살기를 씀(장면이 전용 v6 연출), 예�
   assert.ok(!movesOf(u, D.config).includes('ult'));
   assert.ok(movesOf(u, D.config, true).includes('ult'));
 });
+
+test('성체 합성을 취소하면 두 동물이 그대로 남고, 확인하면 합쳐짐', async () => {
+  const { needsMergeConfirm } = await import('../src/logic/merge.js');
+  const { makeUnit } = await import('../src/logic/battle.js');
+  const s = createGauntlet(D, 'forest-1', 3, { prelude: true });
+  const mk = (sp) => makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'adult', parts: null, traits: [] });
+  s.bench[0] = mk('fox'); s.bench[1] = mk('fox');
+  const a = s.bench[0], b = s.bench[1];
+  assert.equal(needsMergeConfirm(a, b, D), true);
+  const snap = JSON.stringify({ b0: s.bench[0].uid, b1: s.bench[1].uid, field: s.field.map((u) => u.uid), seats: [...s.seats] });
+  // 취소: moveAnimal을 부르지 않음 → 상태 그대로
+  assert.equal(JSON.stringify({ b0: s.bench[0].uid, b1: s.bench[1].uid, field: s.field.map((u) => u.uid), seats: [...s.seats] }), snap);
+  assert.equal(s.bench[0].stage, 'adult');
+  assert.equal(s.bench[1].stage, 'adult');
+  // 확인: 그때서야 합성
+  const r = moveAnimal(s, D, { where: 'bench', index: 0 }, { where: 'bench', index: 1 });
+  assert.equal(r.ok, true);
+  assert.equal(r.kind, 'spirit');
+  assert.equal(s.bench[0], null);
+  assert.equal(s.bench[1].stage, 'spirit');
+  assert.equal(s.bench[1].speciesId, 'fox');
+});

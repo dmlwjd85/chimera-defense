@@ -1,4 +1,5 @@
 import { FONT } from '../text.js';
+import { button, style, unitToken, panel } from './ui.js';
 
 /**
  * Confirmation dialog box with yes/no buttons.
@@ -229,5 +230,75 @@ export function choiceBox(scene, titleText, lines, options) {
     objs.push(bg, ic, lb, sb, z);
   });
   scene.input.keyboard?.once('keydown-ESC', () => { if (objs[0].active) close(); });
+  return true;
+}
+
+/**
+ * 성체 합성 확인 창: 두 재료의 그림·이름과 결과(알면 이름·그림, 모르면 ???), 합성/취소.
+ * Enter = 합성, Esc = 취소. 정비 화면에서만 합성하므로 전투를 멈출 일은 거의 없지만,
+ * 같은 양식의 다른 창처럼 열려 있는 동안 scene.paused 를 걸어 둔다.
+ * opts: { from, to, result, title, warn, yesLabel, noLabel, onYes, onNo, swapLabel, onSwap, data }
+ */
+export function mergeConfirmBox(scene, opts) {
+  if (scene.modalOpen) return false;
+  scene.modalOpen = true;
+  const savedPaused = scene.paused;
+  scene.paused = true;
+  const D = 3000;
+  const W = 720, H = opts.swapLabel ? 420 : 390;
+  const x0 = 640 - W / 2, y0 = Math.max(40, 360 - H / 2);
+  const objs = [];
+  const btns = [];
+  objs.push(scene.add.rectangle(640, 360, 1280, 720, 0x05080c, 0.62).setInteractive().setDepth(D));
+  objs.push(panel(scene, x0, y0, W, H, { depth: D + 1, alpha: 0.97 }));
+  objs.push(scene.add.text(640, y0 + 28, opts.title, style(22, '#ffe6b0', { fontStyle: 'bold', stroke: '#2a1a08', strokeThickness: 4 })).setOrigin(0.5).setDepth(D + 2));
+
+  const putToken = (unit, x, y, label) => {
+    if (unit) {
+      const tok = unitToken(scene, unit, opts.data);
+      tok.setPosition(x, y - 8).setScale(1.15).setDepth(D + 2);
+      objs.push(tok);
+    } else {
+      const q = scene.add.circle(x, y - 8, 36, 0x1a1426, 0.95).setStrokeStyle(2, 0xd4b06a, 0.8).setDepth(D + 2);
+      const t = scene.add.text(x, y - 8, opts.unknownLabel ?? '???', style(20, '#ffe6b0', { fontStyle: 'bold' })).setOrigin(0.5).setDepth(D + 3);
+      objs.push(q, t);
+    }
+    objs.push(scene.add.text(x, y + 48, label ?? '', style(15, '#f6ead2', { align: 'center', wordWrap: { width: 180 }, stroke: '#000', strokeThickness: 3 })).setOrigin(0.5, 0).setDepth(D + 2));
+  };
+  const cy = y0 + 150;
+  putToken(opts.from, 640 - 220, cy, opts.fromName);
+  objs.push(scene.add.text(640 - 110, cy - 8, '＋', style(28, '#d4b06a')).setOrigin(0.5).setDepth(D + 2));
+  putToken(opts.to, 640, cy, opts.toName);
+  objs.push(scene.add.text(640 + 110, cy - 8, '→', style(28, '#d4b06a')).setOrigin(0.5).setDepth(D + 2));
+  putToken(opts.result?.unknown ? null : opts.result?.unit, 640 + 220, cy, opts.resultName);
+
+  if (opts.warn) {
+    objs.push(scene.add.text(640, y0 + H - 118, opts.warn, style(14, '#ffcf8a', { align: 'center', wordWrap: { width: W - 80 } })).setOrigin(0.5).setDepth(D + 2));
+  }
+
+  let closed = false;
+  const close = () => {
+    if (closed) return;
+    closed = true;
+    scene.input.keyboard?.off('keydown-ENTER', onEnter);
+    scene.input.keyboard?.off('keydown-ESC', onEsc);
+    btns.forEach((b) => b.destroy());
+    objs.forEach((o) => o.destroy());
+    scene.modalOpen = false;
+    scene.paused = savedPaused;
+  };
+  const accept = () => { close(); opts.onYes?.(); };
+  const cancel = () => { close(); opts.onNo?.(); };
+  const onEnter = (ev) => { ev?.stopPropagation?.(); if (!closed) accept(); };
+  const onEsc = (ev) => { ev?.stopPropagation?.(); if (!closed) cancel(); };
+
+  const by = y0 + H - 48;
+  btns.push(button(scene, opts.swapLabel ? 470 : 540, by, 160, 50, opts.yesLabel, accept, { depth: D + 4, size: 20, fill: 0x3a6b3a, stroke: 0x9cff6b }));
+  btns.push(button(scene, opts.swapLabel ? 650 : 740, by, 160, 50, opts.noLabel, cancel, { depth: D + 4, size: 20, fill: 0x3a3f48, stroke: 0xa8b0b8 }));
+  if (opts.swapLabel && opts.onSwap) {
+    btns.push(button(scene, 830, by, 160, 50, opts.swapLabel, () => { close(); opts.onSwap(); }, { depth: D + 4, size: 16, fill: 0x1f3a52, stroke: 0x7fd1ff }));
+  }
+  scene.input.keyboard?.on('keydown-ENTER', onEnter);
+  scene.input.keyboard?.on('keydown-ESC', onEsc);
   return true;
 }

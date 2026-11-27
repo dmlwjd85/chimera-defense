@@ -32,10 +32,10 @@ const fail = (reason) => ({ ok: false, reason });
 /** Settings with defaults (config.gauntlet). */
 export function gcfg(data) {
   return {
-    encounters: 8, squadMin: 3, squadMax: 6, timeLimit: 60, healPct: 30, restBackPct: 50, life: 5,
-    stagger: 0.15, enemyHp: 20, enemyAtk: 1.5, bossHp: 4, bossAtk: 1, growth: 0.15, atkGrowth: 0.12, squash: 0.55, summonCap: 2, bossBase: 6000, bossTune: { boss_bone: { hp: 0.45, atk: 0.55 } }, minionHp: 0.5, summonerHp: 0.7, bossSquad: 3, healMult: 0.3, hardHp: 1, lossRevive: 80, mvpGrow: true, stageHpPow: 0.5, stageAtkPow: 0.4, zeroAttack: 4, zeroInterval: 1.3,
+    encounters: 12, startUnits: 3, squadMin: 2, squadMax: 6, timeLimit: 60, healPct: 30, restBackPct: 50, life: 5,
+    stagger: 0.15, enemyHp: 20, enemyAtk: 1.5, bossHp: 4, bossAtk: 1, growth: 0.05, atkGrowth: 0.04, squash: 0.55, summonCap: 2, bossBase: 6000, bossTune: { boss_bone: { hp: 0.45, atk: 0.55 } }, minionHp: 0.5, summonerHp: 0.7, bossSquad: 3, healMult: 0.3, hardHp: 1, lossRevive: 80, mvpGrow: true, stageHpPow: 0.5, stageAtkPow: 0.4, zeroAttack: 4, zeroInterval: 1.3,
     backMelee: 0.5, frontRanged: 0.75, taunt: 2, startStage: 'young', manaRegen: 0.6,
-    hardEssence: 1.5, hardShards: 2, lowStars: 3,
+    hardEssence: 1.5, hardShards: 2, lowStars: 5,
     clashRate: 0.5, clashNoise: 1, clashLean: 0.6, clashBoss: 0.6, gangMax: 2, gangPower: 0.5, charge: 1.1, protectCd: 3,
     // 적 역할(우리와 같은 문법): bruiser 힘겨루기 / skirm 뒷줄 노리고 치고 빠지기 / ranged 뒤에서 쏨 / support 자기 편 거들기
     enemyRole: { normal: 'bruiser', tough: 'bruiser', zombie: 'bruiser', swarm: 'bruiser', skeleton: 'bruiser', miniboss: 'bruiser',
@@ -347,7 +347,10 @@ export function createGauntlet(data, stageId, seed = 1, opts = {}) {
   // 출전 단계: 종 레벨이 오르면 성장기(Lv3)·성체(Lv6)로 시작. 신화급은 혼자 못 됨(합성만)
   const lvStage = (id) => { const lv = state.levels[id] ?? 1; return lv >= g.growLv.adult ? 'adult' : lv >= g.growLv.teen ? 'teen' : g.startStage; };
   const legend = opts.legend ?? null;
-  const deckIds = state.pool.filter((id) => data.unitById[id]).slice(0, legend ? 5 : 6);
+  // 2026-11-27 사용자 "초반엔 3마리로 시작": 덱 앞에서부터 startUnits마리만 먼저 출전, 나머지는 보상(지구본)으로 합류
+  // (덱 대결은 상대와 같은 조건이라 덱 6마리 그대로, 시험용으로 opts.startUnits로 바꿀 수 있음)
+  const startN = Math.max(1, Math.min(6, opts.startUnits ?? (opts.duel ? 6 : g.startUnits ?? 6)));
+  const deckIds = state.pool.filter((id) => data.unitById[id]).slice(0, legend ? startN - 1 : startN);
   const units = deckIds.map((id) => newAnimal(state, data, id, lvStage(id)));
   // 전설 카드: 덱 한 칸을 차지하고 성체로 출전(같은 종 성체와 합치면 다시 신화급). 키메라는 키메라 그대로
   if (legend) {
@@ -389,7 +392,7 @@ export function startEncounter(state, data) {
   if (fighters(state).length < 2) for (const u of unitsIn(state)) if (u?.resting) { u.resting = false; u.hp = Math.max(u.hp, u.maxHp * 0.3); }
   for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; u.stance = canStance(u) ? u.prefStance ?? nativeStance(u) : null; u.stanceT = 0.3 + state.rng() * 0.6; }
   state.encTime = 0; state.actGap = 0; state.phase = 'fight'; state.allyBuffs = []; state.clashes = [];
-  state.collapse = { u: false, e: false }; state.isolated = { u: false, e: false }; state.diveAt = { u: -99, e: -99 }; state.taps = 0; state.awoke = false; state.awoke2 = false; state.focus = null; state.tempo = g.tempo ?? 1; state.ultSlow = g.ultSlow ?? 1; state.ultMax = g.ultMax ?? 99; state.snareT = 0; state.cheers = 0; state.phoenixUsed = false; state.dataRef = data; state.cheerAt = -9; state.encStat = { ...(state.dstat ?? {}) };
+  state.collapse = { u: false, e: false }; state.isolated = { u: false, e: false }; state.diveAt = { u: -99, e: -99 }; state.taps = 0; state.awoke = false; state.awoke2 = false; state.focus = null; state.tempo = g.tempo ?? 1; state.ultSlow = g.ultSlow ?? 1; state.ultMax = g.ultMax ?? 99; state.snareT = 0; state.cheers = 0; state.phoenixUsed = false; state.dataRef = data; legendCheck(state, data); state.cheerAt = -9; state.encStat = { ...(state.dstat ?? {}) };
   for (const u of state.field) { u.ultUsed = 0; u.ultRevive = 0; u.awake = null; u.advance = false; u.suppressed = false; u.pinnedBy = null; u.slipNote = false; u.clutchOn = false; u.wobbly = false; }
   // 역전: 투지(지는 쪽이 세짐) · 역전 찬스(한 번) · 동물마다 역전 특성
   // 진형 상성(가위바위보): 🛡철벽 > 🎯돌격 > 🏹진지 > 🛡철벽. 유리한 쪽 피해 +adv%
@@ -814,6 +817,13 @@ function teamUlt(state, data, u, t, g) {
 }
 
 /** 추천 보상(안내용): { kind, why } */
+/** 진화까지 남은 먹이(2026-11-27 "진화하는데 필요한 고기양을 알 수 있게"): 어린→성장기 1그릇, 성장기→성체 adultMeals그릇. 다 자랐으면 null */
+export function mealInfo(u, data) {
+  if (!u || u.kind !== 'base' || !NEXT[u.stage]) return null;
+  const need = u.stage === 'teen' ? (gcfg(data).adultMeals ?? 1) : 1, meals = Math.min(need, u.meals ?? 0);
+  return { meals, need, left: need - meals, next: NEXT[u.stage] };
+}
+
 export function recommendReward(state, data) {
   const o = state.offer;
   if (!o || o.taken) return null;
@@ -826,6 +836,8 @@ export function recommendReward(state, data) {
     const idx = (o.globe ?? []).findIndex((c) => baseStyle({ kind: 'base', speciesId: c.speciesId, stats: data.unitById[c.speciesId] }) === 'bruiser');
     if (idx >= 0) return { kind: 'globe', index: idx, why: '브루저가 모자라요 — 막는 동물을 데려와요' };
   }
+  // 유물을 하나도 안 가졌거나 교전 3번마다 하나보다 적으면 유물 먼저(2026-11-27 "유물 선택률이 낮아")
+  if (ok('relic') && state.enc >= 1 && (state.relics ?? []).length < Math.ceil((state.enc + 1) / 3)) return { kind: 'relic', why: '💎 유물은 이번 판 끝까지 팀 전체가 세져요' };
   const top = Object.entries(state.dmgLast ?? {}).sort((a, b) => b[1].dmg - a[1].dmg).map(([uid]) => state.field.find((u) => u.uid === +uid)).find((u) => u && u.kind === 'base' && NEXT[u.stage]);
   if (top && ok('food')) return { kind: 'food', uid: top.uid, why: `가장 잘 싸운 ${top.stats.name}을(를) 키워요` };
   if (ok('relic') && (state.relics ?? []).length < Math.ceil((state.enc + 1) / 3)) return { kind: 'relic', why: '유물은 이번 판 내내 효과가 있어요' };
@@ -1647,6 +1659,19 @@ function grow(state, data, u) {
   return n;
 }
 
+/** 전설 조각(2026-11-28 사용자 "전설키메라 가능한 성체가 한 전투 안에서 탄생하면 전설조각이 그림자 퍼즐로 모이고, 다 모이면 레시피 공개"):
+ *  한 판 안에 전설 짝 두 종의 성체가 함께 있으면 그 전설의 조각 하나(판마다 짝마다 한 번). 판이 끝나면 저장(meta.settleRun) */
+export function legendCheck(state, data) {
+  const L = data.config?.genes?.legends;
+  if (!L || !state.finds) return;
+  const adults = new Set([...state.field, ...state.bench].filter((u) => u && u.kind === 'base' && u.stage === 'adult').map((u) => u.speciesId));
+  const got = (state.finds.legendShards ??= []);
+  for (const key of Object.keys(L)) {
+    const [a, b] = key.split('+');
+    if (adults.has(a) && adults.has(b) && !got.includes(key)) { got.push(key); state.events.push({ type: 'legendShard', key }); }
+  }
+}
+
 function replace(state, old, n) {
   if (n.tactic == null && old.tactic != null) n.tactic = old.tactic;
   if (old.trained) n.trained = old.trained;
@@ -1655,6 +1680,7 @@ function replace(state, old, n) {
   if (fi >= 0) { state.field[fi] = n; const s = state.seats.indexOf(old.uid); if (s >= 0) { state.seats[s] = n.uid; n.seat = s; } }
   const bi = state.bench.indexOf(old);
   if (bi >= 0) state.bench[bi] = n;
+  if (n.kind === 'base' && n.stage === 'adult' && state.dataRef) legendCheck(state, state.dataRef);
 }
 
 /**

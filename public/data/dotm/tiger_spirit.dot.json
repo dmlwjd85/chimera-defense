@@ -12,16 +12,16 @@
   "#190632",
   "#291a1f",
   "#445c8b",
-  "#4c0d1e",
   "#5b8dc1",
   "#77bdf4",
   "#89152f",
   "#954923",
   "#b56339",
   "#b60828",
-  "#bfbdd2",
   "#c5e7fc",
+  "#ccc7de",
   "#df8935",
+  "#f4f1fa",
   "#f80307",
   "#fcaf38",
   "#fcd765"
@@ -479,19 +479,13 @@
     "frames": [
      "tiger_myth_a1_00",
      "tiger_myth_a1_01",
-     "tiger_myth_a1_02",
      "tiger_myth_a1_03",
-     "tiger_myth_a1_04",
-     "tiger_myth_a1_05",
      "tiger_myth_a1_06",
      "tiger_myth_a1_07"
     ],
     "durs": [
      0.059,
      0.104,
-     0.065,
-     0.049,
-     0.049,
      0.049,
      0.049,
      0.049
@@ -512,8 +506,6 @@
      "tiger_myth_a2_00",
      "tiger_myth_a2_01",
      "tiger_myth_a2_02",
-     "tiger_myth_a2_03",
-     "tiger_myth_a2_04",
      "tiger_myth_a2_05",
      "tiger_myth_a2_06",
      "tiger_myth_a2_07"
@@ -521,8 +513,6 @@
     "durs": [
      0.104,
      0.065,
-     0.049,
-     0.049,
      0.049,
      0.049,
      0.049,
@@ -600,14 +590,10 @@
    },
    "hit": {
     "frames": [
-     "tiger_myth_hit_00",
-     "tiger_myth_hit_01",
      "tiger_myth_hit_02",
      "tiger_myth_hit_03"
     ],
     "durs": [
-     0.06,
-     0.06,
      0.06,
      0.06
     ]

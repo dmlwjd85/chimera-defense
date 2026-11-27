@@ -15,7 +15,7 @@ export default class ResultScene extends Phaser.Scene {
   constructor() { super('Result'); }
 
   create(d) {
-    d = d?.report ? d : { report: { clear: false, essence: 0, lines: [], xp: [], newRecipes: [], newSpecies: [], newFlops: [], achievements: [], hintsMade: [] }, wave: 0, total: 8, life: 0, stageId: 'forest-1' };
+    d = d?.report ? d : { report: { clear: false, essence: 0, lines: [], xp: [], newRecipes: [], newSpecies: [], newFlops: [], achievements: [], hintsMade: [] }, wave: 0, total: 12, life: 0, stageId: 'forest-1' };
     const D = this.D = buildData(this.registry.get('raw'));
     const r = d.report, save = this.registry.get('save'), storage = this.registry.get('storage');
     this.cameras.main.setBackgroundColor('#141a21');
@@ -82,6 +82,7 @@ export default class ResultScene extends Phaser.Scene {
     let y = 146 + (r.lines?.length ?? 0) * 26;
     if (r.gauge) { add(this.add.text(85, y, `🎁 해금 게이지 +${r.gauge.gain}`, style(18, '#9cff6b'))); y += 28; r.gauge.parts.forEach(([t, v]) => { add(this.add.text(95, y, `${t} +${v}`, style(14, '#cfe8ff'))); y += 22; }); }
     const finds = [...(r.newRecipes ?? []).map((id) => `새 키메라: ${D.recipeById[id].name}`), ...(r.achievements ?? []).map((a) => `업적: ${ACH[a]}`)];
+    for (const l of r.legendShards ?? []) finds.unshift(l.done ? `✨ 전설 레시피 공개! ${D.recipeByPair?.[l.key]?.name ?? ''} = ${l.key.split('+').map((p) => D.unitById[p]?.name ?? p).join(' + ')}` : `🧩 전설 그림자 조각 +1 (${l.n}/${l.need}) — 누구의 그림자일까?`);
     finds.slice(0, 5).forEach((t, i) => add(this.add.text(95, y + 10 + i * 22, t, style(14, '#d7bde2'))));
     add(panel(this, 660, 80, 560, 520)).setDepth?.(4001);
     add(this.add.text(685, 96, '종 경험치', style(22, '#ffe2b8')));

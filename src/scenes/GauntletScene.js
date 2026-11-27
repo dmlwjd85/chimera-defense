@@ -15,7 +15,7 @@ import { button, style, unitToken, hex, COLORS, speciesImage, pixIcon, relicIcon
 import { Globe, HAB_SPOT } from './globe.js';
 import { dotOn, dotify } from './dotfx.js';
 import { stageProfile } from '../logic/matchup.js';
-import { bfOf, fightLaneY, laneSpread, laneBounds } from '../logic/battlefield.js';
+import { bfOf, fightLaneY, laneSpread, laneBounds, labelFull, labelBar, LABEL_HOLD } from '../logic/battlefield.js';
 import { MidStage } from './midstage.js';
 
 // 작전 한 줄 설명(7살도 알게)
@@ -475,14 +475,16 @@ export default class GauntletScene extends Phaser.Scene {
     c.setSize(90, 110).setInteractive({ draggable: true, useHandCursor: true });
     c.on('drag', (p, x, y) => { if (this.state.phase !== 'regroup') return; c.x = x; c.y = y; c.setDepth(2500); v.dragging = true; this.showDropHint(v, x, y); });
     c.on('dragend', () => { if (!v.dragging) return; v.dragging = false; this.dropUnit(v); });
+    c.on('pointerover', () => this.hoverLabel('u' + u.uid, true));
+    c.on('pointerout', () => this.hoverLabel('u' + u.uid, false));
     c.on('pointerup', (p) => {
       if (v.dragging) return;
       if (this.pickFood) { this.feed(u.uid); return; }
-      if (this.state?.phase === 'fight') { const r = tapShield(this.state, u.uid); if (!r.ok && r.reason === 'noTaps') this.toast('보호막은 교전마다 3번'); return; }
+      if (this.state?.phase === 'fight') { this.peekLabel('u' + u.uid); const r = tapShield(this.state, u.uid); if (!r.ok && r.reason === 'noTaps') this.toast('보호막은 교전마다 3번'); return; }
       // 정비 때 신화급·키메라를 누르면 선호 태세가 바뀜(자동 → 탱 → 딜 → 서폿)
       if (this.state?.phase === 'regroup' && Math.hypot(p.upX - p.downX, p.upY - p.downY) < 8) this.unitMenu(u, v);
     });
-    const v = { c, rig, tok, bar, gBar, name, tag, ring, top, aura, pref, tac, stat, key: `${u.uid}:${u.kind}:${u.speciesId}:${u.stage}`, ox: 0, oy: 0, z: 1, lastHp: u.hp, uid: u.uid, lunge: null, cu: null };
+    const v = { c, rig, tok, bar, barBg, gBar, gBg, name, tag, ring, top, aura, pref, tac, stat, key: `${u.uid}:${u.kind}:${u.speciesId}:${u.stage}`, ox: 0, oy: 0, z: 1, lastHp: u.hp, uid: u.uid, lunge: null, cu: null };
     rig?.inst.play('idle', { loop: true });
     return v;
   }
@@ -529,8 +531,27 @@ export default class GauntletScene extends Phaser.Scene {
     rig?.inst.play('idle', { loop: true });
     const at = seatXY('e', e.seat);
     c.setPosition(at.x + 160, at.y).setAlpha(0);
+    c.setSize(Math.max(90, size * 2.6), 110).setInteractive({ useHandCursor: true });
+    c.on('pointerover', () => this.hoverLabel('e' + e.eid, true));
+    c.on('pointerout', () => this.hoverLabel('e' + e.eid, false));
+    c.on('pointerup', () => { if (this.state?.phase === 'fight') this.peekLabel('e' + e.eid); });
     this.tweens.add({ targets: c, x: at.x, alpha: 1, duration: 420, ease: 'Cubic.out' });
     return { c, rig, holder, body, bar, barBg, gBg, gBar, ring, name, tag, ox: 0, oy: 0, z: 1, lastHp: e.hp, eid: e.eid, px, size, entering: true, lunge: null, cu: null };
+  }
+
+  /** 교전 중 이름표(2026-11-27 선생님 "교전 중엔 이름표 줄이거나 누를 때만 보이게"): 평소엔 이름 글자를 숨기고 체력바만 얇게. 올리거나 누르면 잠깐 전부. 정비는 지금처럼 전부. */
+  hoverLabel(id, on) { if (on) this.inspectHover = id; else if (this.inspectHover === id) this.inspectHover = null; }
+  peekLabel(id) { this.inspectId = id; this.inspectUntil = this.time.now + LABEL_HOLD; }
+  labelOpen(id) { return labelFull(this.state?.phase, { hover: this.inspectHover === id, until: this.inspectId === id ? this.inspectUntil : 0, now: this.time.now }); }
+  applyLabel(v, full) {
+    if (v.dying) return;
+    v.name?.setVisible(full);
+    if (v.pref) v.pref.setAlpha(full ? 1 : 0);
+    const b = labelBar(full), w = v.bar?.width || 66;
+    if (v.barBg) { v.barBg.setSize(w, b.h); v.barBg.y = b.y; }
+    if (v.bar) { v.bar.setSize(w, b.h); v.bar.y = b.y; }
+    if (v.gBg) v.gBg.y = b.gy;
+    if (v.gBar) v.gBar.y = b.gy;
   }
 
   startFightView() {
@@ -540,6 +561,7 @@ export default class GauntletScene extends Phaser.Scene {
     if (spec.boss) { this.fx.banner(`보스 · ${this.D.enemyById[spec.ids[0]].name}`, '#ff8a7a', '마계연합 우두머리가 나타남'); sfx('boss'); this.tutAt('boss'); }
     else { this.fx.banner(`교전 ${s.enc + 1}`, '#ffffff', spec.ids.length >= 5 ? '큰 무리' : ''); sfx('wave'); }
     this.mid?.clear();
+    this.inspectHover = null; this.inspectId = null; this.inspectUntil = 0;
     this.midOpening(!!spec.boss);
     this.paused = 0.35;   // 배너 뜨고 바로 돌격
   }
@@ -732,7 +754,9 @@ export default class GauntletScene extends Phaser.Scene {
         v.c.x += (tx - v.c.x) * f;
         v.c.y += (ty - v.c.y) * f;
         v.walking = !(v.lunge || v.kick || v.cu || v.dash) && Math.abs(v.c.x - px) > 0.9;
-        v.c.setScale((fight ? home.s : at.s) * v.z).setDepth(v.z > 1.01 ? 960 : 100 + v.c.y + (v.dash ? 40 : 0));
+        const peek = this.labelOpen('u' + u.uid);
+        v.c.setScale((fight ? home.s : at.s) * v.z).setDepth(v.z > 1.01 ? 960 : peek && fight ? 1700 : 100 + v.c.y + (v.dash ? 40 : 0));
+        this.applyLabel(v, peek);
       }
       if (v.lean && !(s.phase === 'fight' && clashOfU(s, u.uid))) { v.lean = 0; if (!this.tweens.isTweening(v.c)) v.c.setAngle(0); }
       v.bar.setScale(Math.max(0, u.hp / u.maxHp), 1).setFillStyle(u.hp / u.maxHp < 0.3 ? 0xff6b5a : u.hp / u.maxHp < 0.6 ? 0xe6c14a : 0x7ddc6f);
@@ -791,7 +815,9 @@ export default class GauntletScene extends Phaser.Scene {
         v.c.y += (at.y + v.oy + (e.flying ? -this.BF.flyLift + Math.sin(this.time.now / 300 + e.eid) * 5 : 0) - v.c.y) * (v.dash ? 1 : Math.min(1, (this.realDt || 0.016) * 8));
         v.walking = !(v.lunge || v.kick || v.cu) && Math.abs(v.c.x - px) > 0.9;
       }
-      v.c.setScale(at.s * v.z).setDepth(v.z > 1.01 ? 960 : 100 + v.c.y);
+      const peekE = this.labelOpen('e' + e.eid);
+      v.c.setScale(at.s * v.z).setDepth(v.z > 1.01 ? 960 : peekE && s.phase === 'fight' ? 1700 : 100 + v.c.y);
+      if (!v.dying && e.hp > 0) this.applyLabel(v, peekE);
       if (v.lean && !v.dying && !(s.phase === 'fight' && cl)) { v.lean = 0; v.c.setAngle(0); }
       v.bar.setScale(Math.max(0, e.hp / e.maxHp), 1);
       v.gBar.setScale(Math.min(1, e.gauge ?? 0), 1).setVisible(e.hp > 0);

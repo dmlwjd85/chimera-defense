@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { laneFeet, fightLaneY, groundOf, laneSpread, laneBounds, midRows, midPlace, bfOf } from '../src/logic/battlefield.js';
+import { laneFeet, fightLaneY, groundOf, laneSpread, laneBounds, midRows, midPlace, bfOf, labelFull, labelBar, LABEL_HOLD } from '../src/logic/battlefield.js';
 import { loadData } from './helpers.js';
 
 const D = loadData();
@@ -89,4 +89,21 @@ test('새 문구는 text.json 한 곳에 모여 있음(다국어용)', () => {
   const t = JSON.parse(readFileSync(new URL('../public/data/text.json', import.meta.url), 'utf8'));
   for (const k of ['mid.ult.title', 'mid.ult.who', 'mid.start.1', 'mid.boss.1', 'mid.bossTaunt.1', 'mid.down.1', 'mid.win.1', 'mid.nextBoss']) assert.ok(typeof t[k] === 'string' && t[k].length > 0, k);
   for (const [k, v] of Object.entries(t)) if (k.startsWith('mid.')) assert.ok(v.length <= 24, `짧게: ${k}`);
+});
+
+test('교전 중 이름표는 평소에 숨기고, 올리거나 누른 뒤에만 전부 보임', () => {
+  assert.equal(labelFull('regroup'), true);
+  assert.equal(labelFull('ended'), true);
+  assert.equal(labelFull(undefined), true);
+  assert.equal(labelFull('fight'), false);
+  assert.equal(labelFull('fight', { hover: true }), true);
+  assert.equal(labelFull('fight', { until: 3000, now: 1000 }), true);
+  assert.equal(labelFull('fight', { until: 3000, now: 3000 }), false);
+  assert.equal(labelFull('fight', { hover: false, until: 0, now: 10 }), false);
+  // 다른 대상을 눌렀을 때(until이 그 대상 것이 아니면 호출부가 until=0을 넘김)는 숨김
+  assert.equal(labelFull('fight', { hover: false, until: 0, now: 1 }), false);
+  assert.ok(LABEL_HOLD >= 1500 && LABEL_HOLD <= 4000);
+  assert.deepEqual(labelBar(true), { h: 8, y: 48, gy: 55 });
+  assert.deepEqual(labelBar(false), { h: 5, y: 46, gy: 52 });
+  assert.ok(labelBar(false).h < labelBar(true).h);
 });

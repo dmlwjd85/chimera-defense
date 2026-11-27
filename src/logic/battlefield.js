@@ -60,3 +60,26 @@ export function midPlace({ rows, w, h, want, busy = [], minX = 12, maxX = 1268, 
   }
   return null;
 }
+
+/** 교전 중 이름표를 누르거나 마우스를 올린 뒤 전체 이름이 머무는 시간(ms) */
+export const LABEL_HOLD = 2200;
+
+/** 체력바 두께: 정비·자세히 보기 = 8, 교전 평소(이름 숨김) = 5 */
+export const LABEL_BAR = { full: 8, compact: 5, fullY: 48, compactY: 46, gaugeFullY: 55, gaugeCompactY: 52 };
+
+/**
+ * 교전 중 이름 글자를 전부 보여줄지.
+ * 정비 등 교전 밖은 늘 전부. 교전은 마우스를 올렸거나, 누른 뒤 LABEL_HOLD 동안만.
+ */
+export function labelFull(phase, { hover = false, until = 0, now = 0 } = {}) {
+  if (phase !== 'fight') return true;
+  if (hover) return true;
+  return now < (until ?? 0);
+}
+
+/** 지금 보여주는 체력바 두께·세로 자리 */
+export function labelBar(full) {
+  return full
+    ? { h: LABEL_BAR.full, y: LABEL_BAR.fullY, gy: LABEL_BAR.gaugeFullY }
+    : { h: LABEL_BAR.compact, y: LABEL_BAR.compactY, gy: LABEL_BAR.gaugeCompactY };
+}

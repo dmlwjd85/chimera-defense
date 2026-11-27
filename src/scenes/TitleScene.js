@@ -44,6 +44,9 @@ export default class TitleScene extends Phaser.Scene {
     this.game.events.on('installable', onAble); this.game.events.on('installed', onDone);
     this.events.once('shutdown', () => { this.game.events.off('installable', onAble); this.game.events.off('installed', onDone); });
     this.add.text(1042, 636, `에센스 ${save.essence}   업적 ${save.achievements.length}/5`, style(18, '#ffd84d', { stroke: '#1a0b06', strokeThickness: 4 })).setOrigin(0.5);
+    // 🔄 업데이트(설치한 앱용): 새 버전이 올라왔는지 보고, 누르면 저장해 둔 옛 파일을 지우고 새로 받아 다시 켬. 진행 기록은 그대로
+    const up = button(this, 1030, 26, 150, 32, '🔄 업데이트', () => hardUpdate(up), { size: 13, fill: 0x1d4a6a, stroke: 0x8fd3ff, tip: '최신 게임으로 바꿔요(진행 기록은 그대로)' });
+    checkNewVersion().then((r) => { if (!r?.newer || !up.scene) return; up.set('🆕 새 버전!'); this.tweens.add({ targets: up, scale: { from: 1, to: 1.08 }, yoyo: true, repeat: -1, duration: 420 }); }).catch(() => {});
     const reset = button(this, 1190, 26, 150, 32, '진행 초기화', () => {
       if (this.confirmReset) { this.registry.set('save', defaultSave()); writeSave(this.registry.get('storage'), this.registry.get('save')); this.scene.restart(); }
       else { this.confirmReset = true; reset.set('한 번 더 누르면 초기화'); }
@@ -66,4 +69,25 @@ export default class TitleScene extends Phaser.Scene {
     g.fillStyle(0x2c3b2e, 1).fillRect(0, 610, 1280, 110);
     for (let i = 0; i < 14; i++) { const x = 40 + i * 95; g.fillStyle(0x0f1a12, 1).fillTriangle(x, 470, x + 45, 330 + (i % 3) * 30, x + 90, 470); }
   }
+}
+
+/** 지금 쓰는 저장본(서비스 워커 캐시 이름 chimera-<ver>)과 서버의 version.json을 비교 */
+async function checkNewVersion() {
+  if (!('caches' in window)) return null;
+  const mine = (await caches.keys()).find((k) => k.startsWith('chimera-'))?.slice(8) ?? null;
+  const res = await fetch('./version.json?t=' + Date.now(), { cache: 'no-store' });
+  if (!res.ok) return null;
+  const { ver } = await res.json();
+  return { mine, ver, newer: !!(mine && ver && mine !== ver) };
+}
+
+/** 새로 받기: 서비스 워커 갱신 → 저장해 둔 파일 지우기 → 다시 켜기(저장 기록은 localStorage라 안 지워짐) */
+async function hardUpdate(btn) {
+  try { btn.set('🔄 받는 중…'); } catch { /* */ }
+  try {
+    const reg = await navigator.serviceWorker?.getRegistration?.();
+    if (reg) { await reg.update().catch(() => {}); reg.waiting?.postMessage?.('skip'); }
+    if ('caches' in window) { const keys = await caches.keys(); await Promise.all(keys.map((k) => caches.delete(k))); }
+  } catch { /* 그래도 다시 켬 */ }
+  location.reload();
 }

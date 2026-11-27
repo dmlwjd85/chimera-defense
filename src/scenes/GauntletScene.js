@@ -720,8 +720,9 @@ export default class GauntletScene extends Phaser.Scene {
         if (!eb && e.hp > 0) { const want = v.walking && r.anims.move ? 'move' : 'idle'; if (m !== want) r.play(want, { loop: true }); }
         if (e.hp < v.lastHp - 0.5 && e.hp > 0) v.pendHit ??= this.time.now;
         if (v.pendHit != null && this.time.now - v.pendHit > 260) { if ((v.hitAt ?? -999) < v.pendHit && e.hp > 0) this.hitReact(v); v.pendHit = null; }
-        if (this.state.phase !== 'fight' || v.walking) v.turned = false;
-        r.setFacing(enemyFace(v.rig.faceId ?? e.id, v.dashBack !== !!v.turned));   // 적은 모두 왼쪽(동물 쪽)을 봄
+        // 적은 늘 왼쪽(동물 쪽)을 봄 — 출발·걷기·치고 빠지며 돌아갈 때도. 오른쪽을 보는 건 등 뒤(오른쪽)를 칠 때 그 순간(0.7초)만
+        if (this.state.phase !== 'fight' || v.walking || this.time.now > (v.turnedUntil ?? 0)) v.turned = false;
+        r.setFacing(enemyFace(v.rig.faceId ?? e.id, !!v.turned));
         if (e.stunLeft > 0 && !v.dive && r.flashLeft > 0) r.flashLeft = Math.max(0, r.flashLeft - dt);   // 기절로 멈춰 있어도 흰 번쩍은 끝나게
         v.rig.view.update(e.stunLeft > 0 && !v.dive ? 0 : dt);
       }
@@ -1374,7 +1375,7 @@ export default class GauntletScene extends Phaser.Scene {
     const diving = !!v.dive, arrive = diving ? Math.round((v.dive.segs[0]?.d ?? 0.4) * 1000) : 0;
     if (diving) this.time.delayedCall(arrive, () => v.rig?.inst.play('attack')); else v.rig?.inst.play('attack');
     const tx = t ? t.c.x : v.c.x - 200;
-    if (t && !diving) v.turned = t.c.x > v.c.x + 24;   // 적도 등 뒤(오른쪽)를 칠 때는 돌아섬
+    if (t && !diving) { v.turned = t.c.x > v.c.x + 24; v.turnedUntil = this.time.now + 700; }   // 적도 등 뒤(오른쪽)를 칠 때만 잠깐 돌아섬
     if (diving) { /* 뛰어드는 중 */ }
     else if (ev.style === 'skirm' && !ev.clash && t) {
       // 적 돌격대: 우리 뒷줄까지 달려와 치고 빠짐

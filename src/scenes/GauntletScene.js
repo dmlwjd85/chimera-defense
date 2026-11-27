@@ -23,7 +23,7 @@ import { SkillFX } from './skillfx.js';
 import { RaidFx, showBossCard } from './raidfx.js';   // 보스 레이드 예고(시전 막대·표식·장판)
 import { CombatClarity, summaryRows } from './clarity.js';
 import { newMeter, meterPull, meterEvent, meterMerge, meterLeaders, meterLink } from '../logic/meter.js';
-import { MeterHud, showMeterCard } from './meterUi.js';   // 딜 미터기(2026-11-28)
+import { MeterHud, LiveMeter, showMeterCard } from './meterUi.js';   // 딜 미터기(2026-11-28)
 
 // 작전 한 줄 설명(7살도 알게)
 const TACTIC_TIP = { hold: '앞에서 힘싸움', guard: '뒤 친구를 막아 줌', help: '앞 싸움을 도움', hunt: '적 뒷줄을 노림', intercept: '달려드는 적을 막음', front: '앞 친구를 응원', back: '뒤 친구에게 보호막' };
@@ -340,7 +340,10 @@ export default class GauntletScene extends Phaser.Scene {
     this.bottom = this.add.graphics().setDepth(1800);
     this.bottom.fillStyle(0x0d1222, 0.9).fillRect(0, 604, 1280, 116);
     this.logText = this.add.text(24, 616, '', style(15, '#cfd6e6', { lineSpacing: 6 })).setDepth(1801);
-    this.meterHud?.destroy(); this.meterHud = new MeterHud(this, 1803);   // 딜 미터기: 아래 띠 왼쪽, 접힘이 기본(전장을 안 가림)
+    // 딜 미터기: 왼쪽 위 실시간 판(초상화·이름·넣은 피해, 기본 보이기) + 아래 띠 왼쪽 '📊 딜 미터' 단추(판 숨기기/보이기, 저장)
+    const livePref = { get: () => this.save?.meterLive !== false, set: (v) => { if (!this.save) return; this.save.meterLive = !!v; writeSave(this.registry.get('storage'), this.save); } };
+    this.meterHud?.destroy(); this.meterHud = new MeterHud(this, 1803, livePref);
+    this.liveMeter?.destroy(); this.liveMeter = new LiveMeter(this, 1795);
     this.muteBtn = button(this, 770, 662, 52, 48, isMuted() ? '🔇' : '🔊', () => { setMuted(!isMuted()); unlockAudio(); this.muteBtn.set(isMuted() ? '🔇' : '🔊'); sfx('click'); }, { depth: 1802, size: 18, tip: '소리 켜기/끄기' });
     this.speedBtn = button(this, 860, 662, 90, 48, '×1', () => { this.speed = this.speed === 1 ? 1.5 : this.speed === 1.5 ? 2 : 1; this.speedBtn.set('×' + this.speed); }, { depth: 1802, size: 18 });
     this.spellBtns = (s.spells ?? []).slice(-3).map((id, i) => {
@@ -383,6 +386,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.timeText.setVisible(fight).setText(`0:${String(Math.ceil(left)).padStart(2, '0')}`);
     this.logText.setVisible(fight && !this.calm() && !this.meterHud?.open).setText(s.log.slice(-3).join('\n'));   // 차분한 전투: 아래 전투 기록 줄은 숨김 · 딜 미터를 펼치면 그 자리
     this.meterHud?.setVisible(fight);
+    this.liveMeter?.setVisible(fight && this.save?.meterLive !== false);
     const max = this.D.config.spells?.max ?? 100;
     this.manaText.setText(`마력 ${Math.floor(s.mana)} / ${max}`);
     for (const b of this.spellBtns) {
@@ -810,7 +814,16 @@ export default class GauntletScene extends Phaser.Scene {
     if (dt > 0) this.silly(dt);
     if (dt > 0) { this.guideT = (this.guideT ?? 0) - dt; if (this.guideT <= 0) { this.guideT = 0.6; this.guideFight(); } }
     this.updateHud();
-    if (this.meterHud) { const op = this.meterHud.open; this.meterHud.update(real, this.meterEnc, this.meterName, this.calm() || op ? 612 : 692); }
+    if (this.meterHud) this.meterHud.update(real, this.meterEnc, this.meterName, this.calm() ? 612 : 692);
+    if (this.liveMeter?.shown && this.state.phase === 'fight') {
+      this.liveAvT = (this.liveAvT ?? 0) - real;
+      if (this.liveAvT <= 0) {   // 아군·적 몸 사각형(판에 들어오면 판을 더 투명하게) — 0.1초마다
+        this.liveAvT = 0.1; this.liveAvoid = [];
+        for (const v of [...this.uViews.values(), ...this.eViews.values()]) if (v.c?.visible && v.c.scene) { const b = v.c.getBounds(); this.liveAvoid.push({ x: b.x, y: b.y, w: b.width, h: b.height }); }
+        for (const c of this.clashBars ?? []) this.liveAvoid.push({ x: c.x - 80, y: c.y - 34, w: 160, h: 48 });   // 힘싸움 막대가 그 자리에 뜨면 판을 비켜 보이게(투명)
+      }
+      this.liveMeter.update(real, this.meterEnc, this.state.field, this.uViews, this.liveAvoid ?? []);
+    }
     if (this.state.phase === 'ended' && !this.leaving) this.finish();
   }
 

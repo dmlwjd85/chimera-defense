@@ -34,6 +34,8 @@ export class MidStage {
     for (const b of this.sc.clashBars ?? []) out.push({ x0: b.x - 80, x1: b.x + 80, y0: b.y - 34, y1: b.y + 14 });
     // 보스 시전 막대 판도 피해서(2026-11-28 "안가리게")
     for (const r of this.sc.raidFx?.castRects ?? []) out.push({ x0: r.x - 6, x1: r.x + r.w + 6, y0: r.y - 6, y1: r.y + r.h + 6 });
+    // 왼쪽 위 실시간 딜 미터 판도 피해서
+    { const r = this.sc.liveMeter?.shown ? this.sc.liveMeter.rect : null; if (r) out.push({ x0: r.x - 6, x1: r.x + r.w + 6, y0: r.y - 6, y1: r.y + r.h + 6 }); }
     return out;
   }
 

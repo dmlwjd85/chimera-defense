@@ -101,6 +101,8 @@
   "finale.boss.2": "다 같이 만세!",
   "finale.boss.3": "우리 팀 최고!",
   "meter.title": "딜 미터",
+  "meter.hide": "▾ 숨기기",
+  "meter.show": "▸ 보이기",
   "meter.cardTitle": "전투 기록",
   "meter.dmg": "넣은 피해",
   "meter.block": "막은 피해",

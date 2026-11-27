@@ -73,6 +73,9 @@ function attach(state, data, e, def, minion = false) {
   if (def.element !== undefined && !minion) e.element = def.element;
   if (Array.isArray(def.phaseElements) && !minion) e.element = def.phaseElements[0];
   if (def.weak && !minion) e.weak = def.weak;
+  // 균형 손잡이(tools/boss-sim.mjs로 맞춘 값): 보스 체력·공격 배수
+  if (!minion && def.hpMult) { e.maxHp = Math.max(1, Math.round(e.maxHp * def.hpMult)); e.hp = e.maxHp; }
+  if (!minion && def.atkMult) e.attack = Math.round(e.attack * def.atkMult);
   if (def.dropHeal && !minion) e.heal = null;
   if (!minion && def.dropPattern) e.pattern = null;
 }

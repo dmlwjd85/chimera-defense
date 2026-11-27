@@ -956,16 +956,15 @@
      }
     }
    },
-   "hpMult": 0.3,
+   "hpMult": 0.14,
    "weak": [
     "earth"
    ],
-   "atkMult": 0.6,
-   "weakX": 1.5,
-   "resist": [
-    "water",
-    "wind"
-   ]
+   "atkMult": 0.4,
+   "weakX": 2.2,
+   "resist": "water",
+   "resistX": 0.8,
+   "hardHp": 1.5
   },
   "boss_mole": {
    "element": "grass",

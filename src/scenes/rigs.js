@@ -4,6 +4,7 @@ import { RigView } from '../rig/RigView.js';
 import { DotInstance } from '../rig/DotInstance.js';
 import { DotView, ensureDotFrames } from '../rig/DotView.js';
 import { DOT_PX, validateDot } from '../rig/dotData.js';
+import { enemyFace } from '../logic/enemyFace.js';   // re-export만으로는 이 파일 안에서 쓸 수 없음(2026-11-27, main 합친 뒤 교전 시작 오류)
 
 /** Queue every rig JSON in Boot's preload. */
 export function preloadRigs(scene) {

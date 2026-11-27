@@ -1,0 +1,28 @@
+{
+ "note": "교전 화면 땅·성·차원문(2026-11-27 선생님 \"맵은 아래가 땅인데 전투는 공중에서 하는 어색한 상황\"). 좌표는 화면(1280×720) 기준. ground = 배경마다 뒷줄(위 라인) 발이 설 땅 높이(눈으로 잰 값), feetBottom = 앞줄(아래 라인) 발 높이(아래 기록판 위 604px에 이름표가 닿지 않게). landmarks = tools/gen_landmarks.py가 만든 성·차원문 덧그림 자리",
+ "foot": 34,
+ "feetBottom": 558,
+ "groundMin": 400,
+ "groundMax": 460,
+ "minGap": 48,
+ "hudTop": 604,
+ "nameBelowFoot": 41,
+ "flyLift": 40,
+ "floorMarks": false,
+ "unitShadows": false,
+ "ground": {"forest-1": 420, "forest-2": 440, "forest-3": 440, "stage-4": 420, "stage-5": 420, "stage-6": 430, "stage-7": 440, "stage-8": 440, "stage-9": 450, "stage-10": 430, "stage-11": 450, "stage-12": 450},
+ "landmarks": {
+  "forest-1": {"castle": {"x": 0, "y": 238, "w": 223, "h": 286, "base": 517}, "portal": {"x": 958, "y": 280, "w": 271, "h": 285, "base": 558}},
+  "forest-2": {"castle": {"x": 0, "y": 256, "w": 196, "h": 256, "base": 505}, "portal": {"x": 1135, "y": 300, "w": 99, "h": 207, "base": 500}},
+  "forest-3": {"castle": {"x": 0, "y": 223, "w": 208, "h": 306, "base": 522}, "portal": {"x": 1084, "y": 222, "w": 177, "h": 268, "base": 482}},
+  "stage-4": {"castle": {"x": 0, "y": 235, "w": 293, "h": 265, "base": 493}, "portal": {"x": 1080, "y": 200, "w": 145, "h": 248, "base": 441}},
+  "stage-5": {"castle": {"x": 0, "y": 268, "w": 214, "h": 286, "base": 546}, "portal": {"x": 971, "y": 253, "w": 309, "h": 343, "base": 589}},
+  "stage-6": {"castle": {"x": 0, "y": 165, "w": 176, "h": 348, "base": 506}, "portal": {"x": 1104, "y": 153, "w": 176, "h": 331, "base": 476}},
+  "stage-7": {"castle": {"x": 0, "y": 139, "w": 262, "h": 385, "base": 516}, "portal": {"x": 1076, "y": 262, "w": 144, "h": 202, "base": 456}},
+  "stage-8": {"castle": {"x": 0, "y": 282, "w": 190, "h": 256, "base": 531}, "portal": {"x": 1041, "y": 270, "w": 221, "h": 310, "base": 572}},
+  "stage-9": {"castle": {"x": 0, "y": 162, "w": 223, "h": 324, "base": 479}, "portal": {"x": 1092, "y": 214, "w": 178, "h": 294, "base": 501}},
+  "stage-10": {"castle": {"x": 0, "y": 162, "w": 251, "h": 382, "base": 537}, "portal": {"x": 1095, "y": 238, "w": 136, "h": 248, "base": 479}},
+  "stage-11": {"castle": {"x": 0, "y": 190, "w": 216, "h": 346, "base": 529}, "portal": {"x": 1092, "y": 282, "w": 120, "h": 214, "base": 489}},
+  "stage-12": {"castle": {"x": 0, "y": 274, "w": 196, "h": 288, "base": 554}, "portal": {"x": 1101, "y": 316, "w": 127, "h": 194, "base": 502}}
+ }
+}

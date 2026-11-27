@@ -658,7 +658,7 @@ export function weather(scene, c) {
 }
 
 /** Ambient life for a stage: drifting clouds, falling leaves/petals, fireflies, portal motes, water glints. */
-export function ambient(scene, stage) {
+export function ambient(scene, stage, portal = null) {
   if (!scene.textures.exists('fx-puff')) return;
   const night = !!stage.night || stage.id === 'forest-3';
   for (let i = 0; i < 4; i++) {
@@ -680,5 +680,7 @@ export function ambient(scene, stage) {
       emitCallback: (p) => { p.alpha = 0.9; },
     }).setDepth(6);
   }
-  scene.add.particles(1232, 320, 'fx-flare', { speed: { min: 10, max: 40 }, lifespan: 1400, frequency: 120, scale: { start: 0.25, end: 0 }, tint: 0xb388ff, blendMode: 'ADD', emitZone: { type: 'random', source: new Phaser.Geom.Ellipse(0, 0, 70, 130) } }).setDepth(7);
+  // 차원문 알갱이: 교전 화면은 그 배경의 차원문 자리(portal)에서, 없으면 예전 자리
+  const P = portal ?? { x: 1232, y: 320, w: 70, h: 130 };
+  scene.add.particles(P.x, P.y, 'fx-flare', { speed: { min: 10, max: 40 }, lifespan: 1400, frequency: 120, scale: { start: 0.25, end: 0 }, tint: 0xb388ff, blendMode: 'ADD', emitZone: { type: 'random', source: new Phaser.Geom.Ellipse(0, 0, Math.min(P.w, 120), Math.min(P.h, 180)) } }).setDepth(7);
 }

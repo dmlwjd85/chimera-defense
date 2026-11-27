@@ -5,7 +5,7 @@ import { preloadRigs } from './rigs.js';
 import { rotateCrumbs } from './debug.js';
 import { PFX } from './fx.js';
 
-const DATA_KEYS = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'globe', 'talents', 'story'];
+const DATA_KEYS = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'globe', 'talents', 'story', 'battlefield'];
 
 export default class BootScene extends Phaser.Scene {
   constructor() { super('Boot'); }

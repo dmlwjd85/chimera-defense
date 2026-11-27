@@ -31,3 +31,10 @@
 - boss_lich: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
 - boss_mole: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
 - boss_shadow: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+
+### 묶음 3: boss_witch boss_witch_t1 boss_witch_t2 ghost healer
+- boss_witch: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- boss_witch_t1: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- boss_witch_t2: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- ghost: 동작 6칸 모두 뒤집기=예(왼쪽) ✔
+- healer: 동작 6칸 모두 뒤집기=예(왼쪽) ✔

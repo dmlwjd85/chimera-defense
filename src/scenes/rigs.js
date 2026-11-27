@@ -192,7 +192,8 @@ export function stageEnemyIds(stage, data) {
 }
 
 /** 원래 그림이 이미 왼쪽(또는 정면에서 왼쪽)을 보는 적 — 뒤집으면 오른쪽을 보게 되므로 뒤집지 않음(2026-11-26 전장 나란히 확인) */
-export const ENEMY_FACES_LEFT = new Set(['boss_frost', 'boss_bat', 'bat', 'wisp', 'skeleton', 'boss_lich', 'overlord', 'swarm']);
+// 2026-11-27 사용자 "적들은 전부 왼쪽을 보고 있어야 해" → 시트별로 다시 봄: 왼쪽을 보는 원화는 얼음 망령·박쥐·도깨비불뿐
+export const ENEMY_FACES_LEFT = new Set(['boss_frost', 'bat', 'wisp']);
 /** 적이 동물 쪽(왼쪽)을 볼 때 setFacing 값 */
 export const enemyFace = (id0, back = false) => { const id = SKIN_OF[id0] ?? id0; return (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1); };
 const SKIN_OF = {};   // 새 보스 5종도 전용 그림(2026-11-27)이 생겨서 빌려 쓰는 그림 없음
@@ -210,10 +211,11 @@ function enemyDot(scene, enemy, parent, scale) {
   // 적 등급(푸른·붉은·검은): 몸 색은 그대로 두고 외곽선만 등급 색으로 바꾼 시트를 씀(몸 전체 물들이기 대신)
   const rk = enemy.rankTint ? rankDot(scene, mv, enemy.rankTint) : null;
   const inst = new DotInstance(rk ?? mv, { stage: 'adult', scale, motion: 'move' });
-  inst.setFacing(enemyFace(enemy.skin ?? enemy.id));
+  const faceId = tierMv && mv === tierMv ? mv.species.slice(3) : enemy.skin ?? enemy.id;   // 단계 그림은 새로 그린 것(오른쪽을 봄) → 뒤집어 왼쪽으로
+  inst.setFacing(enemyFace(faceId));
   const view = new DotView(scene, inst, { parent, px: DOT_PX * (scale / 0.22) });
   if (enemy.tint && !rk) view.tint = enemy.tint;
-  return { inst, view, dot: true, ranked: !!rk };
+  return { inst, view, dot: true, ranked: !!rk, faceId };
 }
 
 /** 등급 색 시트: 외곽선(#291a1f)만 등급 색 테두리로 바꿈. 팔레트 한 색만 바꾸므로 그림·몸 색은 그대로. */

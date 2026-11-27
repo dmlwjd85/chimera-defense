@@ -1,0 +1,605 @@
+{
+ "note": "ch_fox_rabbit 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_fox_rabbit",
+ "sheet": "dot-m-auto_fox_rabbit",
+ "file": "assets/dotm/auto_fox_rabbit.png",
+ "frameW": 102,
+ "frameH": 117,
+ "foot": 114,
+ "cols": 1,
+ "anchorX": 48,
+ "palette": [
+  "#291a1f",
+  "#42110b",
+  "#4e322b",
+  "#905f60",
+  "#a44a21",
+  "#bb4a0b",
+  "#c16d73",
+  "#c1a9a6",
+  "#c56833",
+  "#d8b7aa",
+  "#dfcbc1",
+  "#ef670d",
+  "#f0ab65",
+  "#f7f5f2",
+  "#f88f2d",
+  "#fc9696"
+ ],
+ "rects": {
+  "ch_fox_rabbit_adult_a1_00": [
+   1199,
+   115,
+   89,
+   77,
+   -42,
+   -77
+  ],
+  "ch_fox_rabbit_adult_a1_01": [
+   1124,
+   0,
+   95,
+   83,
+   -47,
+   -84
+  ],
+  "ch_fox_rabbit_adult_a1_02": [
+   683,
+   0,
+   93,
+   90,
+   -47,
+   -91
+  ],
+  "ch_fox_rabbit_adult_a1_03": [
+   604,
+   0,
+   78,
+   93,
+   -35,
+   -94
+  ],
+  "ch_fox_rabbit_adult_a1_04": [
+   777,
+   0,
+   78,
+   88,
+   -36,
+   -89
+  ],
+  "ch_fox_rabbit_adult_a1_05": [
+   1220,
+   0,
+   87,
+   83,
+   -43,
+   -84
+  ],
+  "ch_fox_rabbit_adult_a1_06": [
+   1763,
+   0,
+   92,
+   81,
+   -46,
+   -81
+  ],
+  "ch_fox_rabbit_adult_a1_07": [
+   1856,
+   0,
+   94,
+   81,
+   -47,
+   -81
+  ],
+  "ch_fox_rabbit_adult_a2_00": [
+   1040,
+   0,
+   83,
+   85,
+   -40,
+   -86
+  ],
+  "ch_fox_rabbit_adult_a2_01": [
+   357,
+   0,
+   81,
+   101,
+   -44,
+   -102
+  ],
+  "ch_fox_rabbit_adult_a2_02": [
+   439,
+   0,
+   79,
+   100,
+   -42,
+   -109
+  ],
+  "ch_fox_rabbit_adult_a2_03": [
+   519,
+   0,
+   84,
+   94,
+   -45,
+   -109
+  ],
+  "ch_fox_rabbit_adult_a2_04": [
+   856,
+   0,
+   90,
+   87,
+   -48,
+   -95
+  ],
+  "ch_fox_rabbit_adult_a2_05": [
+   1493,
+   0,
+   83,
+   82,
+   -40,
+   -83
+  ],
+  "ch_fox_rabbit_adult_a2_06": [
+   1308,
+   0,
+   90,
+   83,
+   -46,
+   -83
+  ],
+  "ch_fox_rabbit_adult_a2_07": [
+   460,
+   115,
+   92,
+   80,
+   -46,
+   -80
+  ],
+  "ch_fox_rabbit_adult_down_00": [
+   1951,
+   0,
+   88,
+   81,
+   -42,
+   -81
+  ],
+  "ch_fox_rabbit_adult_down_01": [
+   1109,
+   115,
+   89,
+   78,
+   -43,
+   -78
+  ],
+  "ch_fox_rabbit_adult_down_02": [
+   1477,
+   115,
+   96,
+   69,
+   -47,
+   -70
+  ],
+  "ch_fox_rabbit_adult_down_03": [
+   1574,
+   115,
+   91,
+   56,
+   -37,
+   -55
+  ],
+  "ch_fox_rabbit_adult_el_00": [
+   1383,
+   115,
+   93,
+   76,
+   -46,
+   -77
+  ],
+  "ch_fox_rabbit_adult_el_01": [
+   947,
+   0,
+   92,
+   86,
+   -48,
+   -87
+  ],
+  "ch_fox_rabbit_adult_el_02": [
+   175,
+   0,
+   89,
+   107,
+   -48,
+   -108
+  ],
+  "ch_fox_rabbit_adult_el_03": [
+   87,
+   0,
+   87,
+   113,
+   -47,
+   -114
+  ],
+  "ch_fox_rabbit_adult_el_04": [
+   0,
+   0,
+   86,
+   114,
+   -46,
+   -115
+  ],
+  "ch_fox_rabbit_adult_el_05": [
+   265,
+   0,
+   91,
+   106,
+   -48,
+   -107
+  ],
+  "ch_fox_rabbit_adult_el_06": [
+   1289,
+   115,
+   93,
+   77,
+   -46,
+   -77
+  ],
+  "ch_fox_rabbit_adult_el_07": [
+   0,
+   115,
+   91,
+   81,
+   -45,
+   -81
+  ],
+  "ch_fox_rabbit_adult_hit_00": [
+   92,
+   115,
+   91,
+   81,
+   -45,
+   -81
+  ],
+  "ch_fox_rabbit_adult_idle_00": [
+   553,
+   115,
+   91,
+   80,
+   -45,
+   -80
+  ],
+  "ch_fox_rabbit_adult_idle_01": [
+   1016,
+   115,
+   92,
+   79,
+   -45,
+   -79
+  ],
+  "ch_fox_rabbit_adult_idle_02": [
+   645,
+   115,
+   92,
+   80,
+   -45,
+   -80
+  ],
+  "ch_fox_rabbit_adult_idle_03": [
+   184,
+   115,
+   91,
+   81,
+   -45,
+   -81
+  ],
+  "ch_fox_rabbit_adult_walk_00": [
+   738,
+   115,
+   92,
+   80,
+   -45,
+   -80
+  ],
+  "ch_fox_rabbit_adult_walk_01": [
+   831,
+   115,
+   91,
+   80,
+   -44,
+   -80
+  ],
+  "ch_fox_rabbit_adult_walk_02": [
+   923,
+   115,
+   92,
+   80,
+   -45,
+   -81
+  ],
+  "ch_fox_rabbit_adult_walk_03": [
+   1577,
+   0,
+   93,
+   82,
+   -46,
+   -82
+  ],
+  "ch_fox_rabbit_adult_walk_04": [
+   1399,
+   0,
+   93,
+   83,
+   -47,
+   -83
+  ],
+  "ch_fox_rabbit_adult_walk_05": [
+   1671,
+   0,
+   91,
+   82,
+   -46,
+   -82
+  ],
+  "ch_fox_rabbit_adult_walk_06": [
+   276,
+   115,
+   91,
+   81,
+   -46,
+   -81
+  ],
+  "ch_fox_rabbit_adult_walk_07": [
+   368,
+   115,
+   91,
+   81,
+   -45,
+   -81
+  ]
+ },
+ "frames": [
+  "ch_fox_rabbit_adult_a1_00",
+  "ch_fox_rabbit_adult_a1_01",
+  "ch_fox_rabbit_adult_a1_02",
+  "ch_fox_rabbit_adult_a1_03",
+  "ch_fox_rabbit_adult_a1_04",
+  "ch_fox_rabbit_adult_a1_05",
+  "ch_fox_rabbit_adult_a1_06",
+  "ch_fox_rabbit_adult_a1_07",
+  "ch_fox_rabbit_adult_a2_00",
+  "ch_fox_rabbit_adult_a2_01",
+  "ch_fox_rabbit_adult_a2_02",
+  "ch_fox_rabbit_adult_a2_03",
+  "ch_fox_rabbit_adult_a2_04",
+  "ch_fox_rabbit_adult_a2_05",
+  "ch_fox_rabbit_adult_a2_06",
+  "ch_fox_rabbit_adult_a2_07",
+  "ch_fox_rabbit_adult_down_00",
+  "ch_fox_rabbit_adult_down_01",
+  "ch_fox_rabbit_adult_down_02",
+  "ch_fox_rabbit_adult_down_03",
+  "ch_fox_rabbit_adult_el_00",
+  "ch_fox_rabbit_adult_el_01",
+  "ch_fox_rabbit_adult_el_02",
+  "ch_fox_rabbit_adult_el_03",
+  "ch_fox_rabbit_adult_el_04",
+  "ch_fox_rabbit_adult_el_05",
+  "ch_fox_rabbit_adult_el_06",
+  "ch_fox_rabbit_adult_el_07",
+  "ch_fox_rabbit_adult_hit_00",
+  "ch_fox_rabbit_adult_idle_00",
+  "ch_fox_rabbit_adult_idle_01",
+  "ch_fox_rabbit_adult_idle_02",
+  "ch_fox_rabbit_adult_idle_03",
+  "ch_fox_rabbit_adult_walk_00",
+  "ch_fox_rabbit_adult_walk_01",
+  "ch_fox_rabbit_adult_walk_02",
+  "ch_fox_rabbit_adult_walk_03",
+  "ch_fox_rabbit_adult_walk_04",
+  "ch_fox_rabbit_adult_walk_05",
+  "ch_fox_rabbit_adult_walk_06",
+  "ch_fox_rabbit_adult_walk_07"
+ ],
+ "standing": [
+  "ch_fox_rabbit_adult_idle_00",
+  "ch_fox_rabbit_adult_idle_01",
+  "ch_fox_rabbit_adult_idle_02",
+  "ch_fox_rabbit_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 34,
+   "attack": {
+    "frames": [
+     "ch_fox_rabbit_adult_a1_00",
+     "ch_fox_rabbit_adult_a1_01",
+     "ch_fox_rabbit_adult_a1_02",
+     "ch_fox_rabbit_adult_a1_03",
+     "ch_fox_rabbit_adult_a1_04",
+     "ch_fox_rabbit_adult_a1_05",
+     "ch_fox_rabbit_adult_a1_06",
+     "ch_fox_rabbit_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_fox_rabbit_adult_a2_00",
+     "ch_fox_rabbit_adult_a2_01",
+     "ch_fox_rabbit_adult_a2_02",
+     "ch_fox_rabbit_adult_a2_03",
+     "ch_fox_rabbit_adult_a2_04",
+     "ch_fox_rabbit_adult_a2_05",
+     "ch_fox_rabbit_adult_a2_06",
+     "ch_fox_rabbit_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_fox_rabbit_adult_down_00",
+     "ch_fox_rabbit_adult_down_01",
+     "ch_fox_rabbit_adult_down_02",
+     "ch_fox_rabbit_adult_down_03"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_fox_rabbit_adult_el_00",
+     "ch_fox_rabbit_adult_el_01",
+     "ch_fox_rabbit_adult_el_02",
+     "ch_fox_rabbit_adult_el_03",
+     "ch_fox_rabbit_adult_el_04",
+     "ch_fox_rabbit_adult_el_05",
+     "ch_fox_rabbit_adult_el_06",
+     "ch_fox_rabbit_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.311,
+      "cast"
+     ],
+     [
+      0.321,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_fox_rabbit_adult_hit_00"
+    ],
+    "durs": [
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_fox_rabbit_adult_idle_00",
+     "ch_fox_rabbit_adult_idle_01",
+     "ch_fox_rabbit_adult_idle_02",
+     "ch_fox_rabbit_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_fox_rabbit_adult_walk_00",
+     "ch_fox_rabbit_adult_walk_01",
+     "ch_fox_rabbit_adult_walk_02",
+     "ch_fox_rabbit_adult_walk_03",
+     "ch_fox_rabbit_adult_walk_04",
+     "ch_fox_rabbit_adult_walk_05",
+     "ch_fox_rabbit_adult_walk_06",
+     "ch_fox_rabbit_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_fox_rabbit_adult_down_00",
+     "ch_fox_rabbit_adult_down_01",
+     "ch_fox_rabbit_adult_down_02",
+     "ch_fox_rabbit_adult_down_03",
+     "ch_fox_rabbit_adult_down_02",
+     "ch_fox_rabbit_adult_down_01",
+     "ch_fox_rabbit_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "fox_rabbit"
+}

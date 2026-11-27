@@ -609,7 +609,7 @@ export default class GauntletScene extends Phaser.Scene {
         const eb = (['attack', 'hit', 'skill', 'block', 'sweep', 'grab', 'fall', 'leap', 'down'].includes(m) && !r.finished) || !!v.dive;
         if (!eb && e.hp > 0) { const want = v.walking && r.anims.move ? 'move' : 'idle'; if (m !== want) r.play(want, { loop: true }); }
         if (e.hp < v.lastHp - 0.5 && e.hp > 0) { r.hitFlash(0.12); if (m !== 'attack') r.play('hit'); }
-        r.setFacing(enemyFace(e.id, v.dashBack));
+        r.setFacing(enemyFace(v.rig.faceId ?? e.id, v.dashBack));   // 적은 모두 왼쪽(동물 쪽)을 봄
         v.rig.view.update(e.stunLeft > 0 && !v.dive ? 0 : dt);
       }
       v.lastHp = e.hp;

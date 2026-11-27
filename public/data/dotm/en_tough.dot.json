@@ -28,7 +28,7 @@
  ],
  "rects": {
   "en_tough_adult_a1_00": [
-   826,
+   1818,
    0,
    83,
    84,
@@ -36,71 +36,119 @@
    -84
   ],
   "en_tough_adult_a1_01": [
-   1072,
-   0,
+   162,
+   100,
    84,
    83,
    -43,
    -83
   ],
   "en_tough_adult_a1_02": [
-   1305,
-   0,
+   706,
+   100,
    86,
    81,
    -45,
    -81
   ],
   "en_tough_adult_a1_03": [
-   1829,
-   0,
+   1393,
+   100,
    87,
    79,
    -46,
    -79
   ],
   "en_tough_adult_a1_04": [
-   1917,
-   0,
+   1568,
+   100,
    81,
    78,
    -41,
    -78
   ],
   "en_tough_adult_a1_05": [
-   1459,
-   0,
+   1023,
+   100,
    69,
    80,
    -19,
    -80
   ],
   "en_tough_adult_a1_06": [
-   1392,
-   0,
+   793,
+   100,
    66,
    81,
    -20,
    -81
   ],
   "en_tough_adult_a1_07": [
-   1157,
-   0,
+   403,
+   100,
    69,
    82,
    -29,
    -82
   ],
-  "en_tough_adult_down_00": [
-   1529,
+  "en_tough_adult_block_00": [
+   247,
+   100,
+   83,
+   83,
+   -42,
+   -83
+  ],
+  "en_tough_adult_block_01": [
+   860,
+   100,
+   85,
+   81,
+   -43,
+   -81
+  ],
+  "en_tough_adult_block_02": [
+   1481,
+   100,
+   86,
+   79,
+   -44,
+   -79
+  ],
+  "en_tough_adult_block_03": [
+   1650,
+   100,
+   87,
+   78,
+   -45,
+   -78
+  ],
+  "en_tough_adult_block_04": [
+   473,
+   100,
+   84,
+   82,
+   -42,
+   -82
+  ],
+  "en_tough_adult_block_05": [
+   1515,
    0,
+   76,
+   85,
+   -38,
+   -85
+  ],
+  "en_tough_adult_down_00": [
+   1093,
+   100,
    71,
    80,
    -33,
    -80
   ],
   "en_tough_adult_down_01": [
-   0,
+   1738,
    100,
    66,
    78,
@@ -108,23 +156,23 @@
    -78
   ],
   "en_tough_adult_down_02": [
-   1601,
-   0,
+   1165,
+   100,
    67,
    80,
    -32,
    -80
   ],
   "en_tough_adult_down_03": [
-   1669,
-   0,
+   1233,
+   100,
    74,
    80,
    -36,
    -80
   ],
   "en_tough_adult_down_04": [
-   67,
+   1805,
    100,
    70,
    67,
@@ -132,7 +180,7 @@
    -68
   ],
   "en_tough_adult_down_05": [
-   138,
+   1876,
    100,
    87,
    50,
@@ -140,39 +188,103 @@
    -50
   ],
   "en_tough_adult_down_06": [
-   226,
-   100,
+   0,
+   185,
    91,
    47,
    -44,
    -47
   ],
   "en_tough_adult_down_07": [
-   318,
-   100,
+   92,
+   185,
    91,
    46,
    -44,
    -46
   ],
-  "en_tough_adult_hit_00": [
-   1744,
+  "en_tough_adult_grab_00": [
+   558,
+   100,
+   69,
+   82,
+   -33,
+   -82
+  ],
+  "en_tough_adult_grab_01": [
+   713,
    0,
+   79,
+   88,
+   -40,
+   -92
+  ],
+  "en_tough_adult_grab_02": [
+   1356,
+   0,
+   82,
+   86,
+   -42,
+   -99
+  ],
+  "en_tough_adult_grab_03": [
+   1902,
+   0,
+   78,
+   84,
+   -40,
+   -100
+  ],
+  "en_tough_adult_grab_04": [
+   1129,
+   0,
+   85,
+   87,
+   -43,
+   -95
+  ],
+  "en_tough_adult_grab_05": [
+   499,
+   0,
+   82,
+   89,
+   -42,
+   -89
+  ],
+  "en_tough_adult_grab_06": [
+   1215,
+   0,
+   70,
+   87,
+   -34,
+   -87
+  ],
+  "en_tough_adult_grab_07": [
+   331,
+   100,
+   71,
+   83,
+   -33,
+   -83
+  ],
+  "en_tough_adult_hit_00": [
+   1308,
+   100,
    84,
    80,
    -43,
    -80
   ],
   "en_tough_adult_hit_01": [
-   1227,
-   0,
+   628,
+   100,
    77,
    82,
    -39,
    -82
   ],
   "en_tough_adult_hit_02": [
-   210,
+   284,
    0,
    69,
    90,
@@ -204,7 +316,7 @@
    -100
   ],
   "en_tough_adult_idle_02": [
-   280,
+   354,
    0,
    77,
    90,
@@ -212,15 +324,79 @@
    -90
   ],
   "en_tough_adult_idle_03": [
-   910,
    0,
+   100,
    80,
    84,
    -40,
    -84
   ],
+  "en_tough_adult_sweep_00": [
+   946,
+   100,
+   76,
+   81,
+   -35,
+   -81
+  ],
+  "en_tough_adult_sweep_01": [
+   1592,
+   0,
+   70,
+   85,
+   -33,
+   -85
+  ],
+  "en_tough_adult_sweep_02": [
+   582,
+   0,
+   69,
+   89,
+   -35,
+   -89
+  ],
+  "en_tough_adult_sweep_03": [
+   210,
+   0,
+   73,
+   91,
+   -40,
+   -91
+  ],
+  "en_tough_adult_sweep_04": [
+   793,
+   0,
+   78,
+   88,
+   -41,
+   -89
+  ],
+  "en_tough_adult_sweep_05": [
+   1663,
+   0,
+   77,
+   85,
+   -37,
+   -85
+  ],
+  "en_tough_adult_sweep_06": [
+   872,
+   0,
+   72,
+   88,
+   -35,
+   -88
+  ],
+  "en_tough_adult_sweep_07": [
+   432,
+   0,
+   66,
+   90,
+   -33,
+   -90
+  ],
   "en_tough_adult_walk_00": [
-   749,
+   1741,
    0,
    76,
    85,
@@ -228,7 +404,7 @@
    -86
   ],
   "en_tough_adult_walk_01": [
-   603,
+   1286,
    0,
    69,
    87,
@@ -236,7 +412,7 @@
    -88
   ],
   "en_tough_adult_walk_02": [
-   419,
+   945,
    0,
    58,
    88,
@@ -244,7 +420,7 @@
    -89
   ],
   "en_tough_adult_walk_03": [
-   478,
+   1004,
    0,
    55,
    88,
@@ -252,7 +428,7 @@
    -87
   ],
   "en_tough_adult_walk_04": [
-   358,
+   652,
    0,
    60,
    89,
@@ -260,7 +436,7 @@
    -88
   ],
   "en_tough_adult_walk_05": [
-   534,
+   1060,
    0,
    68,
    88,
@@ -268,7 +444,7 @@
    -88
   ],
   "en_tough_adult_walk_06": [
-   673,
+   1439,
    0,
    75,
    86,
@@ -276,8 +452,8 @@
    -86
   ],
   "en_tough_adult_walk_07": [
-   991,
-   0,
+   81,
+   100,
    80,
    84,
    -40,
@@ -293,6 +469,12 @@
   "en_tough_adult_a1_05",
   "en_tough_adult_a1_06",
   "en_tough_adult_a1_07",
+  "en_tough_adult_block_00",
+  "en_tough_adult_block_01",
+  "en_tough_adult_block_02",
+  "en_tough_adult_block_03",
+  "en_tough_adult_block_04",
+  "en_tough_adult_block_05",
   "en_tough_adult_down_00",
   "en_tough_adult_down_01",
   "en_tough_adult_down_02",
@@ -301,6 +483,14 @@
   "en_tough_adult_down_05",
   "en_tough_adult_down_06",
   "en_tough_adult_down_07",
+  "en_tough_adult_grab_00",
+  "en_tough_adult_grab_01",
+  "en_tough_adult_grab_02",
+  "en_tough_adult_grab_03",
+  "en_tough_adult_grab_04",
+  "en_tough_adult_grab_05",
+  "en_tough_adult_grab_06",
+  "en_tough_adult_grab_07",
   "en_tough_adult_hit_00",
   "en_tough_adult_hit_01",
   "en_tough_adult_hit_02",
@@ -309,6 +499,14 @@
   "en_tough_adult_idle_01",
   "en_tough_adult_idle_02",
   "en_tough_adult_idle_03",
+  "en_tough_adult_sweep_00",
+  "en_tough_adult_sweep_01",
+  "en_tough_adult_sweep_02",
+  "en_tough_adult_sweep_03",
+  "en_tough_adult_sweep_04",
+  "en_tough_adult_sweep_05",
+  "en_tough_adult_sweep_06",
+  "en_tough_adult_sweep_07",
   "en_tough_adult_walk_00",
   "en_tough_adult_walk_01",
   "en_tough_adult_walk_02",
@@ -363,6 +561,24 @@
      ]
     ]
    },
+   "block": {
+    "frames": [
+     "en_tough_adult_block_00",
+     "en_tough_adult_block_01",
+     "en_tough_adult_block_02",
+     "en_tough_adult_block_03",
+     "en_tough_adult_block_04",
+     "en_tough_adult_block_05"
+    ],
+    "durs": [
+     0.075,
+     0.075,
+     0.075,
+     0.075,
+     0.075,
+     0.075
+    ]
+   },
    "down": {
     "frames": [
      "en_tough_adult_down_00",
@@ -385,6 +601,28 @@
      0.08
     ],
     "stay": true
+   },
+   "grab": {
+    "frames": [
+     "en_tough_adult_grab_00",
+     "en_tough_adult_grab_01",
+     "en_tough_adult_grab_02",
+     "en_tough_adult_grab_03",
+     "en_tough_adult_grab_04",
+     "en_tough_adult_grab_05",
+     "en_tough_adult_grab_06",
+     "en_tough_adult_grab_07"
+    ],
+    "durs": [
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07,
+     0.07
+    ]
    },
    "hit": {
     "frames": [
@@ -415,6 +653,28 @@
     ],
     "loop": true
    },
+   "sweep": {
+    "frames": [
+     "en_tough_adult_sweep_00",
+     "en_tough_adult_sweep_01",
+     "en_tough_adult_sweep_02",
+     "en_tough_adult_sweep_03",
+     "en_tough_adult_sweep_04",
+     "en_tough_adult_sweep_05",
+     "en_tough_adult_sweep_06",
+     "en_tough_adult_sweep_07"
+    ],
+    "durs": [
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065,
+     0.065
+    ]
+   },
    "move": {
     "frames": [
      "en_tough_adult_walk_00",
@@ -437,6 +697,42 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_tough_adult_down_00",
+     "en_tough_adult_down_01",
+     "en_tough_adult_down_02",
+     "en_tough_adult_down_03",
+     "en_tough_adult_down_04",
+     "en_tough_adult_down_05",
+     "en_tough_adult_down_06",
+     "en_tough_adult_down_07",
+     "en_tough_adult_down_06",
+     "en_tough_adult_down_05",
+     "en_tough_adult_down_04",
+     "en_tough_adult_down_03",
+     "en_tough_adult_down_02",
+     "en_tough_adult_down_01",
+     "en_tough_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   }
  },

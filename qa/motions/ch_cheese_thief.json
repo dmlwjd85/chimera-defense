@@ -1,0 +1,48 @@
+{
+ "species": "ch_cheese_thief",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 6.4,
+   "foot±": 12
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 21.8,
+   "foot±": 11
+  },
+  "adult_down": {
+   "n": 5,
+   "max|h%|": 20.5,
+   "foot±": 7
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 6.4,
+   "foot±": 7
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 2.6,
+   "foot±": 9
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 12.8,
+   "foot±": 6
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   173
+  ],
+  "box": [
+   106,
+   106
+  ],
+  "frames": 41,
+  "colors": 16,
+  "px": 354304
+ }
+}

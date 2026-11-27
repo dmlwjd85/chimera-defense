@@ -84,5 +84,6 @@ DROP = {
     # 2순위 27종(2026-11-27 검수): 덧그린 표식·흰 자국이 있는 장
     ('bear_bighorn', 'hit'): [2, 3], ('bear_bison', 'hit'): [0, 1], ('bear_rabbit', 'a1'): [3], ('bear_wolf', 'a1'): [1, 2, 3],
     ('bighorn_dog', 'el'): [3, 4, 5], ('bighorn_dog', 'down'): [0, 1], ('bighorn_monkey', 'a1'): [3, 4], ('bighorn_monkey', 'hit'): [0, 1],
-    ('bison_fox', 'hit'): [0], ('bison_rabbit', 'down'): [1, 2], ('bison_tiger', 'hit'): [0, 1], ('bison_wolf', 'el'): [2, 3, 4], ('bison_wolf', 'hit'): [0, 1], ('fox_tiger', 'hit'): [1], ('bear_monkey', 'a1'): [3, 4], ('bighorn_bison', 'hit'): [0, 2, 3],
+    ('bison_fox', 'hit'): [0], ('bison_rabbit', 'down'): [1, 2], ('bison_tiger', 'hit'): [0, 1], ('bison_wolf', 'el'): [2, 3, 4], ('bison_wolf', 'hit'): [0, 1],
+    ('fox_rabbit', 'hit'): [0, 1, 2], ('rabbit_wolf', 'down'): [0, 1, 2], ('bear_tiger', 'hit'): [0, 1, 2], ('bullfrog', 'hit'): [0, 1, 2], ('fox_tiger', 'hit'): [1], ('bear_monkey', 'a1'): [3, 4], ('bighorn_bison', 'hit'): [0, 2, 3],
 }

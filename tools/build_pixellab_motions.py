@@ -190,7 +190,7 @@ def build(sp):
                     durs = [0.06] * (len(dfr) - 1) + [0.5] + [0.05] * (len(dfr) - 1)
                     sset['fall'] = {'frames': seq, 'durs': durs}
             # 나는 새(아기·성장기·성체)는 하늘에 떠 있는 동안 늘 날갯짓: 대기 = 날기 장을 조금 느리게
-            if (sp in FLYERS and st != 'myth' or enemy and ENEMY[sp[3:]][2]) and 'move' in sset and 'idle' not in sset:
+            if (sp in FLYERS and st != 'myth' or enemy and ENEMY[sp[3:]][2] or chim) and 'move' in sset and 'idle' not in sset:   # 키메라: 대기 장이 검수에서 빠진 나는 키메라(치즈 도둑)도
                 sset['idle'] = {**sset['move'], 'durs': [0.1] * len(sset['move']['frames']), 'loop': True}
             sets[st] = sset
         # 장마다 그림만 잘라(빈 곳 버림) 촘촘히 묶음: 폰 메모리. rects[이름] = [x, y, w, h, 왼쪽, 위] (왼쪽·위 = 기준점(가운데·발밑) 대비 칸 위치)

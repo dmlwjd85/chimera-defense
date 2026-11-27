@@ -1204,6 +1204,30 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "wolf_baby_down_00",
+     "wolf_baby_down_01",
+     "wolf_baby_down_02",
+     "wolf_baby_down_03",
+     "wolf_baby_down_04",
+     "wolf_baby_down_03",
+     "wolf_baby_down_02",
+     "wolf_baby_down_01",
+     "wolf_baby_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   },
   "teen": {
@@ -1346,6 +1370,42 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "wolf_teen_down_00",
+     "wolf_teen_down_01",
+     "wolf_teen_down_02",
+     "wolf_teen_down_03",
+     "wolf_teen_down_04",
+     "wolf_teen_down_05",
+     "wolf_teen_down_06",
+     "wolf_teen_down_07",
+     "wolf_teen_down_06",
+     "wolf_teen_down_05",
+     "wolf_teen_down_04",
+     "wolf_teen_down_03",
+     "wolf_teen_down_02",
+     "wolf_teen_down_01",
+     "wolf_teen_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   },
   "adult": {
@@ -1524,6 +1584,42 @@
      0.085
     ],
     "loop": true
+   },
+   "fall": {
+    "frames": [
+     "wolf_adult_down_00",
+     "wolf_adult_down_01",
+     "wolf_adult_down_02",
+     "wolf_adult_down_03",
+     "wolf_adult_down_04",
+     "wolf_adult_down_05",
+     "wolf_adult_down_06",
+     "wolf_adult_down_07",
+     "wolf_adult_down_06",
+     "wolf_adult_down_05",
+     "wolf_adult_down_04",
+     "wolf_adult_down_03",
+     "wolf_adult_down_02",
+     "wolf_adult_down_01",
+     "wolf_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
    }
   }
  },

@@ -1,0 +1,668 @@
+{
+ "note": "ch_wolf_in_sheep 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "wolf_in_sheep",
+ "sheet": "dot-m-wolf_in_sheep",
+ "file": "assets/dotm/wolf_in_sheep.png",
+ "frameW": 117,
+ "frameH": 119,
+ "foot": 116,
+ "cols": 1,
+ "anchorX": 59,
+ "palette": [
+  "#291a1f",
+  "#432620",
+  "#50474c",
+  "#635a5d",
+  "#693f2f",
+  "#817d7f",
+  "#966e55",
+  "#9a9998",
+  "#b0b5b5",
+  "#b18975",
+  "#d3b3a4",
+  "#dbb478",
+  "#dfc8ba",
+  "#e9dacd",
+  "#f6e1a5",
+  "#fbf6eb"
+ ],
+ "rects": {
+  "ch_wolf_in_sheep_adult_a1_00": [
+   1177,
+   117,
+   105,
+   74,
+   -52,
+   -74
+  ],
+  "ch_wolf_in_sheep_adult_a1_01": [
+   1714,
+   117,
+   104,
+   72,
+   -52,
+   -73
+  ],
+  "ch_wolf_in_sheep_adult_a1_02": [
+   329,
+   195,
+   106,
+   68,
+   -53,
+   -80
+  ],
+  "ch_wolf_in_sheep_adult_a1_03": [
+   221,
+   195,
+   107,
+   70,
+   -54,
+   -76
+  ],
+  "ch_wolf_in_sheep_adult_a1_04": [
+   0,
+   195,
+   112,
+   71,
+   -59,
+   -71
+  ],
+  "ch_wolf_in_sheep_adult_a1_05": [
+   1819,
+   117,
+   108,
+   72,
+   -56,
+   -72
+  ],
+  "ch_wolf_in_sheep_adult_a1_06": [
+   1283,
+   117,
+   106,
+   74,
+   -54,
+   -74
+  ],
+  "ch_wolf_in_sheep_adult_a1_07": [
+   108,
+   117,
+   108,
+   76,
+   -55,
+   -76
+  ],
+  "ch_wolf_in_sheep_adult_a2_00": [
+   1390,
+   117,
+   107,
+   74,
+   -54,
+   -74
+  ],
+  "ch_wolf_in_sheep_adult_a2_01": [
+   300,
+   0,
+   96,
+   85,
+   -48,
+   -86
+  ],
+  "ch_wolf_in_sheep_adult_a2_02": [
+   98,
+   0,
+   97,
+   102,
+   -53,
+   -103
+  ],
+  "ch_wolf_in_sheep_adult_a2_03": [
+   0,
+   0,
+   97,
+   116,
+   -54,
+   -117
+  ],
+  "ch_wolf_in_sheep_adult_a2_04": [
+   196,
+   0,
+   103,
+   98,
+   -56,
+   -99
+  ],
+  "ch_wolf_in_sheep_adult_a2_05": [
+   796,
+   0,
+   110,
+   80,
+   -59,
+   -81
+  ],
+  "ch_wolf_in_sheep_adult_a2_06": [
+   1319,
+   0,
+   105,
+   77,
+   -53,
+   -78
+  ],
+  "ch_wolf_in_sheep_adult_a2_07": [
+   1607,
+   117,
+   106,
+   73,
+   -54,
+   -73
+  ],
+  "ch_wolf_in_sheep_adult_down_00": [
+   1498,
+   117,
+   108,
+   74,
+   -54,
+   -74
+  ],
+  "ch_wolf_in_sheep_adult_down_01": [
+   113,
+   195,
+   107,
+   71,
+   -53,
+   -71
+  ],
+  "ch_wolf_in_sheep_adult_down_02": [
+   436,
+   195,
+   109,
+   61,
+   -54,
+   -61
+  ],
+  "ch_wolf_in_sheep_adult_down_03": [
+   653,
+   195,
+   107,
+   52,
+   -52,
+   -51
+  ],
+  "ch_wolf_in_sheep_adult_down_04": [
+   546,
+   195,
+   106,
+   54,
+   -49,
+   -53
+  ],
+  "ch_wolf_in_sheep_adult_down_05": [
+   761,
+   195,
+   108,
+   51,
+   -50,
+   -50
+  ],
+  "ch_wolf_in_sheep_adult_el_00": [
+   217,
+   117,
+   106,
+   76,
+   -54,
+   -76
+  ],
+  "ch_wolf_in_sheep_adult_el_01": [
+   907,
+   0,
+   104,
+   79,
+   -55,
+   -80
+  ],
+  "ch_wolf_in_sheep_adult_el_02": [
+   495,
+   0,
+   98,
+   84,
+   -54,
+   -85
+  ],
+  "ch_wolf_in_sheep_adult_el_03": [
+   397,
+   0,
+   97,
+   85,
+   -54,
+   -86
+  ],
+  "ch_wolf_in_sheep_adult_el_04": [
+   594,
+   0,
+   98,
+   84,
+   -54,
+   -85
+  ],
+  "ch_wolf_in_sheep_adult_el_05": [
+   693,
+   0,
+   102,
+   82,
+   -55,
+   -83
+  ],
+  "ch_wolf_in_sheep_adult_el_06": [
+   1012,
+   0,
+   105,
+   78,
+   -54,
+   -79
+  ],
+  "ch_wolf_in_sheep_adult_el_07": [
+   324,
+   117,
+   106,
+   76,
+   -53,
+   -76
+  ],
+  "ch_wolf_in_sheep_adult_hit_00": [
+   1076,
+   117,
+   100,
+   75,
+   -47,
+   -75
+  ],
+  "ch_wolf_in_sheep_adult_hit_01": [
+   1928,
+   117,
+   102,
+   72,
+   -51,
+   -79
+  ],
+  "ch_wolf_in_sheep_adult_hit_02": [
+   1425,
+   0,
+   104,
+   77,
+   -55,
+   -82
+  ],
+  "ch_wolf_in_sheep_adult_hit_03": [
+   1118,
+   0,
+   93,
+   78,
+   -46,
+   -79
+  ],
+  "ch_wolf_in_sheep_adult_idle_00": [
+   1530,
+   0,
+   106,
+   77,
+   -53,
+   -77
+  ],
+  "ch_wolf_in_sheep_adult_idle_01": [
+   1637,
+   0,
+   106,
+   77,
+   -53,
+   -77
+  ],
+  "ch_wolf_in_sheep_adult_idle_02": [
+   1744,
+   0,
+   106,
+   77,
+   -53,
+   -77
+  ],
+  "ch_wolf_in_sheep_adult_idle_03": [
+   431,
+   117,
+   106,
+   76,
+   -53,
+   -76
+  ],
+  "ch_wolf_in_sheep_adult_walk_00": [
+   1851,
+   0,
+   105,
+   77,
+   -52,
+   -77
+  ],
+  "ch_wolf_in_sheep_adult_walk_01": [
+   1212,
+   0,
+   106,
+   78,
+   -53,
+   -78
+  ],
+  "ch_wolf_in_sheep_adult_walk_02": [
+   538,
+   117,
+   107,
+   76,
+   -54,
+   -78
+  ],
+  "ch_wolf_in_sheep_adult_walk_03": [
+   646,
+   117,
+   107,
+   76,
+   -54,
+   -77
+  ],
+  "ch_wolf_in_sheep_adult_walk_04": [
+   0,
+   117,
+   107,
+   77,
+   -54,
+   -78
+  ],
+  "ch_wolf_in_sheep_adult_walk_05": [
+   754,
+   117,
+   107,
+   76,
+   -54,
+   -77
+  ],
+  "ch_wolf_in_sheep_adult_walk_06": [
+   862,
+   117,
+   106,
+   76,
+   -53,
+   -76
+  ],
+  "ch_wolf_in_sheep_adult_walk_07": [
+   969,
+   117,
+   106,
+   76,
+   -53,
+   -76
+  ]
+ },
+ "frames": [
+  "ch_wolf_in_sheep_adult_a1_00",
+  "ch_wolf_in_sheep_adult_a1_01",
+  "ch_wolf_in_sheep_adult_a1_02",
+  "ch_wolf_in_sheep_adult_a1_03",
+  "ch_wolf_in_sheep_adult_a1_04",
+  "ch_wolf_in_sheep_adult_a1_05",
+  "ch_wolf_in_sheep_adult_a1_06",
+  "ch_wolf_in_sheep_adult_a1_07",
+  "ch_wolf_in_sheep_adult_a2_00",
+  "ch_wolf_in_sheep_adult_a2_01",
+  "ch_wolf_in_sheep_adult_a2_02",
+  "ch_wolf_in_sheep_adult_a2_03",
+  "ch_wolf_in_sheep_adult_a2_04",
+  "ch_wolf_in_sheep_adult_a2_05",
+  "ch_wolf_in_sheep_adult_a2_06",
+  "ch_wolf_in_sheep_adult_a2_07",
+  "ch_wolf_in_sheep_adult_down_00",
+  "ch_wolf_in_sheep_adult_down_01",
+  "ch_wolf_in_sheep_adult_down_02",
+  "ch_wolf_in_sheep_adult_down_03",
+  "ch_wolf_in_sheep_adult_down_04",
+  "ch_wolf_in_sheep_adult_down_05",
+  "ch_wolf_in_sheep_adult_el_00",
+  "ch_wolf_in_sheep_adult_el_01",
+  "ch_wolf_in_sheep_adult_el_02",
+  "ch_wolf_in_sheep_adult_el_03",
+  "ch_wolf_in_sheep_adult_el_04",
+  "ch_wolf_in_sheep_adult_el_05",
+  "ch_wolf_in_sheep_adult_el_06",
+  "ch_wolf_in_sheep_adult_el_07",
+  "ch_wolf_in_sheep_adult_hit_00",
+  "ch_wolf_in_sheep_adult_hit_01",
+  "ch_wolf_in_sheep_adult_hit_02",
+  "ch_wolf_in_sheep_adult_hit_03",
+  "ch_wolf_in_sheep_adult_idle_00",
+  "ch_wolf_in_sheep_adult_idle_01",
+  "ch_wolf_in_sheep_adult_idle_02",
+  "ch_wolf_in_sheep_adult_idle_03",
+  "ch_wolf_in_sheep_adult_walk_00",
+  "ch_wolf_in_sheep_adult_walk_01",
+  "ch_wolf_in_sheep_adult_walk_02",
+  "ch_wolf_in_sheep_adult_walk_03",
+  "ch_wolf_in_sheep_adult_walk_04",
+  "ch_wolf_in_sheep_adult_walk_05",
+  "ch_wolf_in_sheep_adult_walk_06",
+  "ch_wolf_in_sheep_adult_walk_07"
+ ],
+ "standing": [
+  "ch_wolf_in_sheep_adult_idle_00",
+  "ch_wolf_in_sheep_adult_idle_01",
+  "ch_wolf_in_sheep_adult_idle_02",
+  "ch_wolf_in_sheep_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 40,
+   "attack": {
+    "frames": [
+     "ch_wolf_in_sheep_adult_a1_00",
+     "ch_wolf_in_sheep_adult_a1_01",
+     "ch_wolf_in_sheep_adult_a1_02",
+     "ch_wolf_in_sheep_adult_a1_03",
+     "ch_wolf_in_sheep_adult_a1_04",
+     "ch_wolf_in_sheep_adult_a1_05",
+     "ch_wolf_in_sheep_adult_a1_06",
+     "ch_wolf_in_sheep_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.173,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_wolf_in_sheep_adult_a2_00",
+     "ch_wolf_in_sheep_adult_a2_01",
+     "ch_wolf_in_sheep_adult_a2_02",
+     "ch_wolf_in_sheep_adult_a2_03",
+     "ch_wolf_in_sheep_adult_a2_04",
+     "ch_wolf_in_sheep_adult_a2_05",
+     "ch_wolf_in_sheep_adult_a2_06",
+     "ch_wolf_in_sheep_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_wolf_in_sheep_adult_down_00",
+     "ch_wolf_in_sheep_adult_down_01",
+     "ch_wolf_in_sheep_adult_down_02",
+     "ch_wolf_in_sheep_adult_down_03",
+     "ch_wolf_in_sheep_adult_down_04",
+     "ch_wolf_in_sheep_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_wolf_in_sheep_adult_el_00",
+     "ch_wolf_in_sheep_adult_el_01",
+     "ch_wolf_in_sheep_adult_el_02",
+     "ch_wolf_in_sheep_adult_el_03",
+     "ch_wolf_in_sheep_adult_el_04",
+     "ch_wolf_in_sheep_adult_el_05",
+     "ch_wolf_in_sheep_adult_el_06",
+     "ch_wolf_in_sheep_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_wolf_in_sheep_adult_hit_00",
+     "ch_wolf_in_sheep_adult_hit_01",
+     "ch_wolf_in_sheep_adult_hit_02",
+     "ch_wolf_in_sheep_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_wolf_in_sheep_adult_idle_00",
+     "ch_wolf_in_sheep_adult_idle_01",
+     "ch_wolf_in_sheep_adult_idle_02",
+     "ch_wolf_in_sheep_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_wolf_in_sheep_adult_walk_00",
+     "ch_wolf_in_sheep_adult_walk_01",
+     "ch_wolf_in_sheep_adult_walk_02",
+     "ch_wolf_in_sheep_adult_walk_03",
+     "ch_wolf_in_sheep_adult_walk_04",
+     "ch_wolf_in_sheep_adult_walk_05",
+     "ch_wolf_in_sheep_adult_walk_06",
+     "ch_wolf_in_sheep_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_wolf_in_sheep_adult_down_00",
+     "ch_wolf_in_sheep_adult_down_01",
+     "ch_wolf_in_sheep_adult_down_02",
+     "ch_wolf_in_sheep_adult_down_03",
+     "ch_wolf_in_sheep_adult_down_04",
+     "ch_wolf_in_sheep_adult_down_05",
+     "ch_wolf_in_sheep_adult_down_04",
+     "ch_wolf_in_sheep_adult_down_03",
+     "ch_wolf_in_sheep_adult_down_02",
+     "ch_wolf_in_sheep_adult_down_01",
+     "ch_wolf_in_sheep_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "wolf_in_sheep"
+}

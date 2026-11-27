@@ -1,0 +1,53 @@
+{
+ "species": "ch_fox_rabbit",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 14.8,
+   "foot±": 1
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 24.7,
+   "foot±": 15
+  },
+  "adult_down": {
+   "n": 4,
+   "max|h%|": 30.9,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 40.7,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 1,
+   "max|h%|": 0.0,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.5,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.5,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   196
+  ],
+  "box": [
+   102,
+   117
+  ],
+  "frames": 41,
+  "colors": 16,
+  "px": 401408
+ }
+}

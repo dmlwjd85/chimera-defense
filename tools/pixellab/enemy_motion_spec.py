@@ -110,6 +110,10 @@ DROP = {
     # 새 보스 5종(2026-11-27): 맞기 덧그림 장
     ('boss_mole', 'hit'): [0, 1], ('boss_gate', 'hit'): [2, 3], ('boss_mole', 'down'): [0, 1, 2], ('boss_lava', 'hit'): [0, 1, 2], ('boss_lava', 'el'): [4], ('boss_lava', 'down'): [0, 1, 2],
     ('boss_witch', 'hit'): [0], ('boss_knight', 'hit'): [0, 1],
+    # 하드 단계 보스(2026-11-27 검수): 덧그린 휘두름 자국·빛 장
+    ('boss_boar_t1', 'a1'): [2, 3], ('boss_bat_t1', 'down'): [0, 1, 2, 3], ('boss_shadow_t1', 'idle'): [1, 2], ('boss_shadow_t1', 'a1'): [3, 4, 5, 6],
+    ('boss_bone_t1', 'a1'): [1, 2, 3], ('boss_frost_t1', 'idle'): [0, 1], ('boss_frost_t1', 'a1'): [1, 2, 3], ('boss_frost_t1', 'down'): [0, 1, 2],
+    ('boss_knight_t1', 'idle'): [0, 1], ('boss_gate_t1', 'a1'): [3, 4, 5], ('boss_mole_t1', 'a1'): [2, 3, 4], ('overlord_t1', 'idle'): [0, 1, 2],
     # 공격: 여러 번 뽑아 가장 나은 판(meta.json에 실제 쓴 문장)을 쓰고 자국 있는 장만 뺌
     ('fast', 'a1'): [2, 3, 4], ('miniboss', 'a1'): [2], ('boss_boar', 'a1'): [1, 2, 3], ('boss_shadow', 'a1'): [1, 2, 3], ('boss_frost', 'a1'): [1, 2],
 }

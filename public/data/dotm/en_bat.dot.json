@@ -235,6 +235,30 @@
     ],
     "loop": true
    },
+   "fall": {
+    "frames": [
+     "en_bat_adult_down_00",
+     "en_bat_adult_down_01",
+     "en_bat_adult_down_02",
+     "en_bat_adult_down_03",
+     "en_bat_adult_down_04",
+     "en_bat_adult_down_03",
+     "en_bat_adult_down_02",
+     "en_bat_adult_down_01",
+     "en_bat_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   },
    "idle": {
     "frames": [
      "en_bat_adult_walk_00",

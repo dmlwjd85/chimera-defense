@@ -6,6 +6,7 @@ import { deckOf, soulGaps, soulSig } from '../logic/soul.js';
 import { speciesFit, stageProfile } from '../logic/matchup.js';
 import { previewStats, BUILDS, BUILD_SETS, tuneOf, gcfg } from '../logic/gauntlet.js';
 import { levelsOf } from '../logic/meta.js';
+import { showBossCard } from './raidfx.js';   // 보스 레이드 카드12
 
 const ROLE = { bruiser: '🛡 막기', dealer: '⚔ 딜러', technician: '🎯 기술', buffer: '🎺 응원' };
 
@@ -109,6 +110,7 @@ export default class DeckScene extends Phaser.Scene {
     if (stage) {
       const c = cfg.climates[stage.climate];
       add(this.add.text(496, 590, `${stage.name} · ${c.icon} ${c.name} · ${stageProfile(stage, D).tags.join('  ')}`, style(13, '#cfe8ff')));
+      if (D.raid?.bosses?.[stage.boss]) this.btns.push(button(this, 1190, 556, 160, 32, this.registry.get('T')?.('raid.card.button') ?? 'raid.card.button', () => showBossCard(this, D, stage, 3100), { size: 13, fill: 0x3a2a6a, stroke: 0x9b6cf0 }));
       const f = speciesFit(u.id, stage, D);
       add(this.add.text(496, 612, `${u.name}: ${f.label === 'good' ? '▲ 이 판에 좋음' : f.label === 'bad' ? '▼ 이 판엔 별로' : '보통'}${f.why.length ? '  · ' + f.why.slice(0, 3).join('  · ') : ''}`, style(12, f.label === 'good' ? '#7CFC9A' : f.label === 'bad' ? '#ff8a80' : '#aabbcc', { wordWrap: { width: 520 } })));
     }

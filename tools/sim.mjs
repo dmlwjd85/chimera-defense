@@ -8,17 +8,18 @@ import { summonCost } from '../src/logic/economy.js';
 import { newRollCtx, rollSummon, advanceRollCtx } from '../src/logic/roulette.js';
 import { makeRng } from '../src/logic/rng.js';
 
-const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'talents', 'story'];
+const NAMES = ['config', 'units', 'recipes', 'enemies', 'stages', 'traits', 'lore', 'relics', 'tales', 'talents', 'story', 'raid'];
 const SPOTS = [3, 4.5, 6, 7.5, 2, 9];
 const PRIORITY = ['chimera', 'evolve', 'spirit'];
 const DT = 0.05, TURN = 0.5, MAX_TIME = 3600;
 
 /** Load the five data JSON files into lookup data. */
-export function loadData() {
+export function loadRaw() {
   const raw = {};
   for (const n of NAMES) raw[n] = JSON.parse(readFileSync(new URL(`../public/data/${n}.json`, import.meta.url), 'utf8'));
-  return buildData(raw);
+  return raw;
 }
+export function loadData() { return buildData(loadRaw()); }
 
 /** Every live unit with its ref, field units first. */
 function unitRefs(state) {

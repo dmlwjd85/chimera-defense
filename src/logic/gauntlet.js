@@ -14,6 +14,7 @@ import { spellDef, spellCost } from './spells.js';
 import { mergeKind, mergeOdds } from './merge.js';
 import { geneCtx } from './genes.js';
 import { mcfg, elemMult, enemyElement, foodChain } from './matchup.js';
+import { setRaidApi, raidEncStart, raidTick, raidBusy, raidHitMult, raidTakenMult, raidUlt, raidMarkOf, raidTapMax, raidHoldTime, raidBossDown, moveMiniboss, raidSlamFx, raidTap, bossFit } from './raid.js';
 
 // 3×3 자리: seat = 열×3 + 라인. 열 0 = 1열(브루저), 1 = 2열(딜러), 2 = 3열(응원·원거리). 라인 0 위 · 1 가운데 · 2 아래
 export const SEATS = 9;
@@ -212,11 +213,12 @@ export function tapShield(state, uid) {
   const u = findU(state, uid);
   if (!u || !aliveU(u)) return fail('notFound');
   const warned = state.bossWarn && laneOf(u.seat) === state.bossWarn.lane;
-  if (!warned && !state.enemies.some((e) => aliveE(e) && e.diveMark?.uid === uid)) return fail('notMarked');
-  if ((state.taps ?? 0) >= 3) return fail('noTaps');
+  const rmark = raidMarkOf(state, uid);   // 레이드 표식(🎯)도 눌러서 막음
+  if (!warned && !rmark && !state.enemies.some((e) => aliveE(e) && e.diveMark?.uid === uid)) return fail('notMarked');
+  if ((state.taps ?? 0) >= raidTapMax(state, state.dataRef, 3)) return fail('noTaps');
   if ((u.shieldT ?? 0) > state.time) return fail('already');
   state.taps = (state.taps ?? 0) + 1;
-  u.shieldT = Math.max(state.time + 1.2, warned ? state.bossWarn.at + 0.3 : 0); u.shieldBy = null;
+  u.shieldT = Math.max(state.time + 1.2, warned ? state.bossWarn.at + 0.3 : 0, rmark ? rmark.at + 0.3 : 0); u.shieldBy = null;
   noteStatus(state, 'buff', null, [u], 'shield', 'tapShield', u.shieldT - state.time);
   state.events.push({ type: 'tapShield', uid });
   return { ok: true };
@@ -330,7 +332,7 @@ export function planEncounters(stage, data, rng) {
     const moon = !boss && N >= 4 && i === 1 + ((sn * 2) % Math.max(1, N - 2));
     out.push({ wave: wi + 1, ids, boss: !!boss, moon });
   }
-  return out;
+  return moveMiniboss(out, data);   // 미니보스 자리: raid.json common.minibossAt(없으면 그대로)
 }
 
 function balanceRoles(ids, stage, data, rng, g) {
@@ -428,6 +430,7 @@ export function startEncounter(state, data) {
   const g = gcfg(data), spec = state.plan[state.enc];
   state.enemies = []; state.eSeats = Array(SEATS).fill(null);
   for (const id of spec.ids) addEnemy(state, data, id, spec.wave, spec.seats?.[id] ?? null);
+  raidEncStart(state, data);   // 보스 레이드 패턴(raid.json, 비면 아무것도 안 함)
   // 쉬던 동물: 혼자 남지 않게, 싸울 동물이 둘보다 적으면 쉬던 동물도 나옴
   if (fighters(state).length < 2) for (const u of unitsIn(state)) if (u?.resting) { u.resting = false; u.hp = Math.max(u.hp, u.maxHp * 0.3); }
   for (const u of state.field) { u.gauge = state.rng() * 0.35; u.skillT = {}; u.temp = []; u.stance = canStance(u) ? u.prefStance ?? nativeStance(u) : null; u.stanceT = 0.3 + state.rng() * 0.6; }
@@ -597,10 +600,11 @@ function sub(state, data, d, g) {
     if (e.elite === 'regen') setHp(state, e, Math.min(e.maxHp, e.hp + e.maxHp * 0.015 * d), 'regen', e, 'regen');
     // 하드 보스 2단계: 체력 절반 아래에서 더 세지고 기술이 잦아짐
     // 보스 단계(2026-11-27): 2단계 보스부터 노멀도 체력 절반에서 2단계, 3단계 보스부터 25%에서 광폭화
-    if (!state.hard && e.boss && g.bossSkill && stageTier(state) >= 2 && !e.phase2 && e.hp < e.maxHp / 2) { e.phase2 = true; e.attack = Math.round(e.attack * g.bossSkill.phase2Atk); if (e.pattern) e.pattern = { ...e.pattern, every: e.pattern.every * 0.75 }; state.events.push({ type: 'phase2', eid: e.eid }); say(state, `${e.name} 2단계!`); }
-    if (e.boss && g.bossSkill && stageTier(state) + (state.hard ? 1 : 0) >= 3 && !e.phase3 && e.hp < e.maxHp * g.bossSkill.phase3At) { e.phase3 = true; e.attack = Math.round(e.attack * g.bossSkill.phase3Atk); e.interval *= g.bossSkill.phase3Speed; if (e.slamT > 2) e.slamT = 2; state.events.push({ type: 'phase3', eid: e.eid }); say(state, `${e.name} 광폭화!`); }
-    if (state.hard && g.bossPhase2 && e.boss && !e.phase2 && e.hp < e.maxHp / 2) { e.phase2 = true; e.attack = Math.round(e.attack * 1.4); if (e.pattern) e.pattern = { ...e.pattern, every: e.pattern.every * 0.6, count: (e.pattern.count ?? 1) + 1 }; state.events.push({ type: 'phase2', eid: e.eid }); say(state, `${e.name}: 2단계!`); }
+    if (!e.raid && !state.hard && e.boss && g.bossSkill && stageTier(state) >= 2 && !e.phase2 && e.hp < e.maxHp / 2) { e.phase2 = true; e.attack = Math.round(e.attack * g.bossSkill.phase2Atk); if (e.pattern) e.pattern = { ...e.pattern, every: e.pattern.every * 0.75 }; state.events.push({ type: 'phase2', eid: e.eid }); say(state, `${e.name} 2단계!`); }
+    if (!e.raid && e.boss && g.bossSkill && stageTier(state) + (state.hard ? 1 : 0) >= 3 && !e.phase3 && e.hp < e.maxHp * g.bossSkill.phase3At) { e.phase3 = true; e.attack = Math.round(e.attack * g.bossSkill.phase3Atk); e.interval *= g.bossSkill.phase3Speed; if (e.slamT > 2) e.slamT = 2; state.events.push({ type: 'phase3', eid: e.eid }); say(state, `${e.name} 광폭화!`); }
+    if (!e.raid && state.hard && g.bossPhase2 && e.boss && !e.phase2 && e.hp < e.maxHp / 2) { e.phase2 = true; e.attack = Math.round(e.attack * 1.4); if (e.pattern) e.pattern = { ...e.pattern, every: e.pattern.every * 0.6, count: (e.pattern.count ?? 1) + 1 }; state.events.push({ type: 'phase2', eid: e.eid }); say(state, `${e.name}: 2단계!`); }
     if (e.shieldLeft > 0) e.shieldLeft -= d;
+    if (e.raid) raidTick(state, data, e, d);
     if (e.stunLeft > 0) { e.stunLeft -= d; continue; }
     e.gauge = Math.min(1, e.gauge + d / eInterval(e));
     inSeq(state, () => bossTimers(state, data, e, d));
@@ -859,6 +863,7 @@ function teamUlt(state, data, u, t, g) {
     case 'monkey': state.snareT = Math.max(state.snareT ?? 0, state.time + T(6)); state.gold += 3; break;
     default: break;
   }
+  raidUlt(state, data, id);   // 필살기가 끊기·보호막·독과 맞물림
   { const k = ULT_FX[id]; if (k) noteStatus(state, k, u, k === 'debuff' ? state.enemies.filter(aliveE) : fighters(state), ULT_ICON[id] ?? (k === 'debuff' ? 'curse' : 'atk'), U.name, 3, id === 'bighorn' || id === 'grasshopper'); }
   say(state, `${u.stats.name} · ${U.name}!`);
   void t; void g;
@@ -887,6 +892,11 @@ export function recommendReward(state, data) {
   }
   // 유물을 하나도 안 가졌거나 교전 3번마다 하나보다 적으면 유물 먼저(2026-11-27 "유물 선택률이 낮아")
   if (ok('relic') && state.enc >= 1 && (state.relics ?? []).length < Math.ceil((state.enc + 1) / 3)) return { kind: 'relic', why: '💎 유물은 이번 판 끝까지 팀 전체가 세져요' };
+  // 🎯 보스 대비(보스 레이드): 보스가 가까우면 보스 카드 추천 동물을 데려오라고 권함(raid.json이 비면 bossFit = 0이라 그대로)
+  if (ok('globe') && state.enc >= state.plan.length - 4 && (state.bench.includes(null) || state.seats.includes(null))) {
+    const idx = (o.globe ?? []).findIndex((c) => bossFit(data, state.stage, c.speciesId) > 0 && !state.field.some((u) => u.speciesId === c.speciesId));
+    if (idx >= 0) return { kind: 'globe', index: idx, tag: 'bossFit', why: '', whyKey: 'raid.reward.bossFitWhy', whyVars: { name: data.unitById[o.globe[idx].speciesId]?.name ?? '', boss: data.enemyById[state.stage.boss]?.name ?? '' } };
+  }
   const top = Object.entries(state.dmgLast ?? {}).sort((a, b) => b[1].dmg - a[1].dmg).map(([uid]) => state.field.find((u) => u.uid === +uid)).find((u) => u && u.kind === 'base' && NEXT[u.stage]);
   if (top && ok('food')) return { kind: 'food', uid: top.uid, why: `가장 잘 싸운 ${top.stats.name}을(를) 키워요` };
   if (ok('relic') && (state.relics ?? []).length < Math.ceil((state.enc + 1) / 3)) return { kind: 'relic', why: '유물은 이번 판 내내 효과가 있어요' };
@@ -1123,6 +1133,7 @@ function hurtEnemy(state, data, e, amount, src, quiet = false, info = null) {
   if (!aliveE(e)) return 0;
   if (src && src.uid != null) amount *= upMult(state, src);
   let a = amount * (e.shieldLeft > 0 ? 0.3 : 1) * (e.elite === 'shield' ? 0.65 : 1) * (state.collapse?.e ? 1 + gcfg(data).collapseTaken / 100 : 1) * (e.suppressed ? 1 + (gcfg(data).supTaken + (eco(state, data, 'supPlus') ?? 0)) / 100 : 1) * ((e.deepT ?? 0) > state.time ? 1 + gcfg(data).deepTaken / 100 : 1);
+  if (e.raid) a *= raidHitMult(state, e, src);   // 보호막·껍질·숨기(raid.js)
   // 보호막(보스 보호막 ×0.3, 방패 정예 ×0.65)이 막은 양: 장부에 따로(화면 파란 '막음')
   const shK = (e.shieldLeft > 0 ? 0.3 : 1) * (e.elite === 'shield' ? 0.65 : 1);
   const hp0 = e.hp, blocked = shK < 1 ? Math.max(0, Math.min(a / shK, hp0) - Math.min(a, hp0)) : 0;
@@ -1149,6 +1160,7 @@ function hurtUnit(state, data, u, amount, src, info = null) {
   if (src && src.eid != null) amount *= (state.form?.adv < 0 ? 1 + (cbForm(state)?.adv ?? 0) / 100 : 1) * (state.routed?.e ? 1 - (state.dataRef?.config?.gauntlet?.rout?.teamDmg ?? 0) / 100 : 1) * (1 + (state.grit?.e ?? 0) / 100) * ((state.eRallyBuff ?? 0) > state.time ? 1 + (cb?.rally?.eDmg ?? 0) / 100 : 1);
   amount *= 1 - ((state.grit?.u ?? 0) > 0 ? (cb?.grit?.taken ?? 0) * (state.grit.u / (cb?.grit?.uMax || 1)) : 0) / 100;
   { const c = clutchOf(state, u); if (c?.taken) amount *= 1 + c.taken / 100; }
+  amount *= raidTakenMult(state, u);   // 레이드 저주
   const lu0 = state.dataRef?.config?.gauntlet?.lineup;
   const taken = (lu0 && styleOf(u) !== 'bruiser' && colOf(u.seat) === 0 ? lu0.exposed : 0) + (u.mods?.taken ?? 0) + buffSum(state, 'taken') + (state.collapse?.u ? gcfg(data).collapseTaken : 0) + (state.isolated?.u && styleOf(u) === 'bruiser' ? gcfg(data).isolateTaken : 0) + (state.focus === u.uid ? gcfg(data).focusTaken : 0) + (u.suppressed ? gcfg(data).supTaken : 0) + ((u.deepT ?? 0) > state.time ? gcfg(data).deepTaken : 0) + (u.stance === 'tank' ? (nativeStance(u) === 'tank' ? -35 : -25) : 0);
   const a = Math.max(1, amount * Math.max(0.2, 1 + taken / 100) * ((u.shieldT ?? 0) > state.time ? 0.6 : 1));
@@ -1415,10 +1427,10 @@ function bossTimers(state, data, e, d) {
   const g = gcfg(data);
   // 보스 필살 패턴: 한 라인을 예고(warn초) → 그 라인 동물 모두 큰 피해. 예고된 라인의 동물은 눌러서 🧿 막기
   const bs = g.bossSkill;
-  if (e.boss && bs && !state.bossWarn && (bs.every[stageTier(state)] ?? 0) > 0) {
+  if (e.boss && bs && !state.bossWarn && !raidBusy(state) && (bs.every[stageTier(state)] ?? 0) > 0) {
     e.slamT = (e.slamT ?? bs.every[stageTier(state)]) - d;
     if (e.slamT <= 0) {
-      e.slamT = bs.every[stageTier(state)] * (e.phase3 ? 0.6 : e.phase2 ? 0.8 : 1);
+      e.slamT = bs.every[stageTier(state)] * (e.raid ? [1, 0.85, 0.7][e.raid.phase] ?? 0.7 : e.phase3 ? 0.6 : e.phase2 ? 0.8 : 1);
       const live = fighters(state);
       if (live.length) {
         const byLane = [0, 1, 2].map((l) => live.filter((u) => laneOf(u.seat) === l).length);
@@ -1436,7 +1448,8 @@ function bossTimers(state, data, e, d) {
       state.events.push({ type: 'eheal', eid: e.eid });
     }
   }
-  const p = e.pattern;
+  const p = e.raid?.def?.patterns ? null : e.pattern;   // 레이드 보스는 raid.js가 기술을 맡음
+  if (e.chargeLeft > 0 && e.raid) e.chargeLeft -= d;
   if (!p) return;
   if (e.chargeLeft > 0) e.chargeLeft -= d;
   e.patternT -= d;
@@ -1486,10 +1499,11 @@ function timerSkills(state, data, u, d) {
 }
 
 function checkEnd(state, data, g) {
+  raidBossDown(state);
   const eAlive = state.enemies.some(aliveE), uAlive = fighters(state).length > 0;
   if (!eAlive) return endEncounter(state, data, true);
   if (!uAlive) return endEncounter(state, data, false);
-  if (state.encTime >= g.timeLimit) {
+  if (state.encTime >= g.timeLimit && !raidHoldTime(state, data)) {   // 보스 교전은 시간 판정 대신 광포화(raid.json)
     const frac = (list, hp, max) => { const m = list.reduce((s, x) => s + max(x), 0); return m ? list.reduce((s, x) => s + hp(x), 0) / m : 0; };
     const us = unitsIn(state).filter((u) => u && !u.resting), es = state.enemies;
     const a = frac(us, (u) => (u.down ? 0 : u.hp), (u) => u.maxHp), b = frac(es, (e) => e.hp, (e) => e.maxHp);
@@ -1861,6 +1875,7 @@ function bossSlam(state, data, g) {
     if (aliveU(u)) u.stunLeft = Math.max(u.stunLeft ?? 0, bs.stun);
     hits.push({ uid: u.uid, dmg: Math.round(a), shield: (u.shieldT ?? 0) > state.time });
   }
+  raidSlamFx(state, data, e, hits);
   state.events.push({ type: 'bossSlam', eid: e.eid, lane: w.lane, name: w.name, hits }); say(state, `💥 ${w.name}!`); dstat(state, 'bossSlam');
 }
 /** 지형 영향: every초마다 양쪽 아무나 count마리. 같은 속성은 안 다침, 보스는 절반, 두더지 등불이면 절반 */
@@ -2152,6 +2167,8 @@ export function autoRun(state, data, pick = null) {
       state.events.length = 0;
       if (state.rally) useRally(state, data);   // 사람은 버튼을 누름
       if (state.bossWarn) for (const u of fighters(state).filter((x) => laneOf(x.seat) === state.bossWarn.lane)) tapShield(state, u.uid);   // 예고된 라인은 눌러서 막음
+      for (const m of state.raidMarks ?? []) tapShield(state, m.uid);   // 레이드 표식도 누름
+      { const c = state.enemies.find((e) => aliveE(e) && e.raid?.cast?.need != null); if (c && c.raid.cast.botTap == null) { c.raid.cast.botTap = 1; raidTap(state, data); } }   // 보라 막대는 한 번만 톡
       if (state.mana >= 40 && state.spells.length) castG(state, data, state.spells[0]);
     }
     if (state.phase !== 'regroup') break;
@@ -2194,3 +2211,6 @@ export function botPick(state, data, prefer) {
     }
   }
 }
+
+// 보스 레이드(raid.js)가 쓰는 안쪽 함수들
+setRaidApi({ fighters, hurtUnit, hurtEnemy, addEnemy, gcfg, isBack, lowest, laneOf, colOf, styleOf, uInterval, tacticOf });

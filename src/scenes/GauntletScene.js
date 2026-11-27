@@ -20,6 +20,7 @@ import { stageProfile } from '../logic/matchup.js';
 import { bfOf, fightLaneY, laneSpread, laneBounds, labelFull, labelBar, LABEL_HOLD } from '../logic/battlefield.js';
 import { MidStage } from './midstage.js';
 import { SkillFX } from './skillfx.js';
+import { RaidFx, showBossCard } from './raidfx.js';   // 보스 레이드 예고(시전 막대·표식·장판)
 import { CombatClarity, summaryRows } from './clarity.js';
 
 // 작전 한 줄 설명(7살도 알게)
@@ -221,6 +222,7 @@ export default class GauntletScene extends Phaser.Scene {
       b.setEnabled(r.open); btns.push(b);
       add(this.add.text(600, y, r.desc, style(14, r.open ? '#f0e6d0' : '#777777', { wordWrap: { width: 350 } })).setOrigin(0, 0.5).setDepth(3001));
     });
+    if (this.D.raid?.bosses?.[this.stage.boss]) btns.push(button(this, 850, 640, 170, 40, this.registry.get('T')?.('raid.card.button') ?? 'raid.card.button', () => showBossCard(this, this.D, this.stage, 3100), { depth: 3002, size: 15, fill: 0x3a2a6a, stroke: 0x9b6cf0, tip: this.registry.get('T')?.('raid.card.tip') }));   // 보스 레이드 카드12
     btns.push(button(this, 640, 640, 180, 40, '← 돌아가기', () => this.scene.start('StageSelect'), { depth: 3002, size: 15 }));
   }
 
@@ -790,6 +792,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.drawFlow();
     this.drawPortalSwirl();
     this.mid?.update();
+    if (this.state.raidMarks) { if (!this.raidFx?.g?.scene) this.raidFx = new RaidFx(this); this.raidFx.update(); }
     if (dt > 0) this.silly(dt);
     if (dt > 0) { this.guideT = (this.guideT ?? 0) - dt; if (this.guideT <= 0) { this.guideT = 0.6; this.guideFight(); } }
     this.updateHud();
@@ -1067,6 +1070,7 @@ export default class GauntletScene extends Phaser.Scene {
   }
 
   onEvent(ev) {
+    if (ev.type?.startsWith('raid') && this.raidFx) return this.raidFx.onEvent(ev);
     const s = this.state;
     switch (ev.type) {
       case 'act': return ev.side === 'u' ? this.unitAct(ev) : this.enemyAct(ev);
@@ -2303,7 +2307,7 @@ export default class GauntletScene extends Phaser.Scene {
       z.on('pointerdown', () => { if (on && !o.taken) onClick(); });
     };
     const rec = this.guideOn() ? recommendReward(s, D) : null;
-    if (rec) { const i = ['globe', 'food', 'relic'].indexOf(rec.kind); const x = 684 + i * 192; add(this.add.text(x + 172, y + 6, '👍 추천', style(13, '#0d1222', { backgroundColor: '#9cff6b', padding: { x: 5, y: 2 } })).setOrigin(1, 0).setDepth(2004)); this.recText = add(this.add.text(684, y + 124, `💡 ${rec.why}`, style(13, '#9cff6b')).setDepth(2002)); }
+    if (rec) { const i = ['globe', 'food', 'relic'].indexOf(rec.kind); const x = 684 + i * 192; add(this.add.text(x + 172, y + 6, '👍 추천', style(13, '#0d1222', { backgroundColor: '#9cff6b', padding: { x: 5, y: 2 } })).setOrigin(1, 0).setDepth(2004)); this.recText = add(this.add.text(684, y + 124, `💡 ${rec.whyKey ? this.registry.get('T')?.(rec.whyKey, rec.whyVars) ?? rec.whyKey : rec.why}`, style(13, '#9cff6b')).setDepth(2002)); }
     const pick = (kind, go) => () => { const again = this.rewardActive === kind; this.dropMeat(); this.rewardActive = again && kind === 'food' ? null : kind; this.drawRewards(); if (this.rewardActive) go(); };
     card(0, '동물', '새 친구 뽑기', 0xf2b544, pick('globe', () => this.spinGlobe()), s.bench.includes(null) || s.seats.includes(null));
     card(1, '먹이', '어린 1번\n성장기 2번\n→ 진화', 0x7ddc6f, pick('food', () => this.holdMeat()));

@@ -2,6 +2,8 @@
 //  ① 속성: 물→불·땅, 불→풀·바람·달, 풀→물·땅, 땅→번개·불, 번개→물·바람, 바람→풀·땅, 빛↔달 — 강하면 ×1.5, 약하면 ×0.6 (적이 칠 때도 ×1.3 / ×0.8)
 //  ② 먹이사슬: 사냥꾼 → 먹잇감 ×1.3, 천적 앞에서는 ×0.8 + 벌벌 떪
 //  ③ 스테이지 성격: 그 판에 많이 나오는 적·속성·저항을 덱 화면에 미리 보여 주고, 동물마다 효과 좋음/별로
+import { raidElement } from './raid.js';
+
 const DEF = {
   strong: 1.6, weak: 0.5, eStrong: 1.45, eWeak: 0.7, prey: 1.35, fear: 0.75, stageShare: 0.7,
   beats: { water: ['fire', 'earth'], fire: ['grass', 'wind', 'moon'], grass: ['water', 'earth'], earth: ['thunder', 'fire'], thunder: ['water', 'wind'], wind: ['grass', 'earth'], light: ['moon'], moon: ['light'] },
@@ -33,6 +35,9 @@ export function enemyElement(data, stage, id, rngVal = 0) {
   const m = mcfg(data), def = data.enemyById[id];
   const st = m.stageElem[stage?.id];
   if (st && !def?.boss && rngVal < m.stageShare) return st;
+  // 보스 레이드(raid.json)에 속성이 있으면 그 값(늦은 보스 6마리 속성은 여기서 생김. 파일이 비면 예전 그대로)
+  const re = def?.boss ? raidElement(data, id) : undefined;
+  if (re !== undefined) return re;
   return m.enemyElem[id] ?? null;
 }
 
@@ -60,7 +65,8 @@ export function stageProfile(stage, data) {
   const total = Object.values(w).reduce((s, v) => s + v, 0) || 1;
   const el = {};
   for (const [id, v] of Object.entries(w)) {
-    const base = m.enemyElem[id];
+    const re = data.enemyById[id]?.boss ? raidElement(data, id) : undefined;
+    const base = re !== undefined ? re : m.enemyElem[id];
     const st = m.stageElem[stage.id];
     if (st && !data.enemyById[id].boss) { el[st] = (el[st] ?? 0) + v * m.stageShare; if (base) el[base] = (el[base] ?? 0) + v * (1 - m.stageShare); }
     else if (base) el[base] = (el[base] ?? 0) + v;

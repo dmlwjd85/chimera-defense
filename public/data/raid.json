@@ -400,7 +400,7 @@
      }
     }
    },
-   "hpMult": 0.3,
+   "hpMult": 0.35,
    "atkMult": 0.6,
    "resist": [
     "fire",
@@ -408,8 +408,9 @@
     "moon",
     "light"
    ],
-   "weakX": 1.6,
-   "resistX": 0.4
+   "weakX": 1.8,
+   "resistX": 0.3,
+   "hardHp": 1.6
   },
   "boss_frost": {
    "element": "water",

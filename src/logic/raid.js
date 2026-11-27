@@ -78,6 +78,8 @@ function attach(state, data, e, def, minion = false) {
   // 균형 손잡이(tools/boss-sim.mjs로 맞춘 값): 보스 체력·공격 배수
   if (!minion && def.hpMult) { e.maxHp = Math.max(1, Math.round(e.maxHp * def.hpMult)); e.hp = e.maxHp; }
   if (!minion && def.atkMult) e.attack = Math.round(e.attack * def.atkMult);
+  // 하드 이상에서 보스만 더 단단·세게(보스별 hardHp/hardAtk, 없으면 common 값)
+  if (!minion && state.hard) { const hh = def.hardHp ?? C(data).hardHp ?? 1, ha = def.hardAtk ?? C(data).hardAtk ?? 1; if (hh !== 1) { e.maxHp = Math.max(1, Math.round(e.maxHp * hh)); e.hp = e.maxHp; } if (ha !== 1) e.attack = Math.round(e.attack * ha); }
   if (def.dropHeal && !minion) e.heal = null;
   if (!minion && def.dropPattern) e.pattern = null;
 }

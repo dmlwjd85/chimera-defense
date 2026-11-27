@@ -132,6 +132,12 @@
     "water",
     "grass",
     "wind"
+   ],
+   "hpMult": 2,
+   "atkMult": 1.4,
+   "resist": [
+    "fire",
+    "thunder"
    ]
   },
   "boss_bat": {
@@ -141,11 +147,11 @@
    ],
    "good": [
     "dog",
+    "bighorn",
     "fox",
     "rooster",
     "crow",
-    "eagle",
-    "bighorn"
+    "eagle"
    ],
    "bad": [
     "bear",
@@ -202,11 +208,19 @@
      }
     }
    },
-   "hpMult": 0.75,
+   "hpMult": 0.4,
    "weak": [
     "fire",
     "light"
-   ]
+   ],
+   "atkMult": 0.8,
+   "resist": [
+    "earth",
+    "moon",
+    "water"
+   ],
+   "weakX": 1.6,
+   "resistX": 0.4
   },
   "boss_shadow": {
    "element": "moon",
@@ -283,11 +297,20 @@
      }
     }
    },
-   "hpMult": 0.9,
+   "hpMult": 0.35,
    "weak": [
     "fire",
     "light"
-   ]
+   ],
+   "atkMult": 0.7,
+   "resist": [
+    "earth",
+    "moon",
+    "thunder",
+    "water"
+   ],
+   "weakX": 1.5,
+   "resistX": 0.4
   },
   "boss_bone": {
    "element": "earth",
@@ -374,7 +397,16 @@
      }
     }
    },
-   "hpMult": 0.85
+   "hpMult": 0.3,
+   "atkMult": 0.6,
+   "resist": [
+    "fire",
+    "thunder",
+    "moon",
+    "light"
+   ],
+   "weakX": 1.6,
+   "resistX": 0.4
   },
   "boss_frost": {
    "element": "water",
@@ -454,7 +486,8 @@
      }
     }
    },
-   "hpMult": 0.75
+   "hpMult": 0.2,
+   "atkMult": 0.6
   },
   "boss_lich": {
    "element": "moon",
@@ -467,10 +500,10 @@
     "backline"
    ],
    "good": [
-    "rooster",
-    "fox",
     "dog",
+    "rooster",
     "tiger",
+    "fox",
     "bighorn",
     "ant"
    ],
@@ -541,7 +574,15 @@
      }
     }
    },
-   "hpMult": 0.95
+   "hpMult": 0.3,
+   "atkMult": 0.7,
+   "resist": [
+    "moon",
+    "water",
+    "grass"
+   ],
+   "weakX": 1.6,
+   "resistX": 0.4
   },
   "boss_lava": {
    "element": "fire",
@@ -643,7 +684,9 @@
       }
      }
     }
-   }
+   },
+   "hpMult": 0.25,
+   "atkMult": 0.7
   },
   "boss_witch": {
    "element": "water",
@@ -727,7 +770,9 @@
       }
      }
     }
-   }
+   },
+   "hpMult": 0.3,
+   "atkMult": 0.75
   },
   "boss_knight": {
    "element": "moon",
@@ -802,7 +847,14 @@
      }
     }
    },
-   "hpMult": 0.65
+   "hpMult": 0.35,
+   "atkMult": 0.8,
+   "resist": [
+    "moon",
+    "wind",
+    "water"
+   ],
+   "weakX": 1.5
   },
   "boss_gate": {
    "element": "thunder",
@@ -881,9 +933,15 @@
      }
     }
    },
-   "hpMult": 0.7,
+   "hpMult": 0.3,
    "weak": [
     "earth"
+   ],
+   "atkMult": 0.6,
+   "weakX": 1.5,
+   "resist": [
+    "water",
+    "wind"
    ]
   },
   "boss_mole": {
@@ -962,11 +1020,19 @@
      }
     }
    },
-   "hpMult": 1.25,
+   "hpMult": 1,
    "weak": [
     "fire",
     "wind"
-   ]
+   ],
+   "resist": [
+    "earth",
+    "water",
+    "grass",
+    "moon"
+   ],
+   "weakX": 1.6,
+   "resistX": 0.4
   },
   "overlord": {
    "phaseElements": [
@@ -1051,12 +1117,14 @@
      }
     }
    },
-   "hpMult": 0.6,
+   "hpMult": 0.3,
    "weak": [
     "water",
     "earth",
     "light"
-   ]
+   ],
+   "atkMult": 0.6,
+   "weakX": 1.3
   },
   "miniboss": {
    "taste": true

@@ -22,7 +22,7 @@ test('bench and field limits', () => {
   assert.equal(B.summon(s, D).reason, 'benchFull');
   // no camp cells: a cage animal goes into the gate and takes its spot from its role
   const mk = (sp) => B.makeUnit(s, D, { kind: 'base', speciesId: sp, stage: 'young', parts: null });
-  s.bench = [mk('bear'), mk('fox'), mk('wolf'), mk('bison'), mk('crow'), mk('tiger'), mk('dog')];
+  s.bench = [mk('bear'), mk('fox'), mk('grasshopper'), mk('bison'), mk('crow'), mk('tiger'), mk('dog')];
   for (let i = 0; i < 6; i++) assert.ok(B.deploy(s, D, i).ok);
   assert.equal(B.deploy(s, D, 6).reason, 'fieldFull');
   assert.ok(s.field.every((u) => u.inGate && u.pos === D.config.muster.gate), 'everyone waits inside the gate during prep');
@@ -31,7 +31,7 @@ test('bench and field limits', () => {
   assert.equal(by('bear').slot, f, 'bruisers hold the front line');
   assert.equal(by('bison').slot, f);
   assert.notEqual(by('bear').rowY, by('bison').rowY, 'two bruisers split the depth');
-  assert.ok(by('tiger').slot < f && by('fox').slot < by('tiger').slot && by('wolf').slot < by('fox').slot, 'dealer, then ranged, then support further back');
+  assert.ok(by('tiger').slot < f && by('fox').slot < by('tiger').slot && by('grasshopper').slot < by('fox').slot, 'dealer, then ranged, then support further back');
   assert.ok([0.18, 0.82].includes(by('tiger').rowY), 'a melee dealer starts on a flank');
   assert.equal(by('crow').skyY, D.config.muster.sky[0], 'flyers hover');
 });

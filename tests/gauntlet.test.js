@@ -21,7 +21,7 @@ test('처음엔 덱 6마리가 역할대로 앞줄·뒷줄에 섬(근접 앞, �
   const st = createGauntlet(D, 'forest-1', 5, {});
   const us = unitsIn(st);
   assert.equal(us.filter(Boolean).length, 6);
-  for (const u of us) if (u && u.stats.range > 1) assert.ok(u.seat >= 6, `${u.speciesId} 3열`);
+  for (const u of us) if (u && u.stats.range > 1) assert.ok(u.seat >= 3, `${u.speciesId} 2·3열(원거리 딜러는 2열 먼저)`);
   assert.equal(st.phase, 'fight');
   assert.ok(st.enemies.length >= 3);
 });
@@ -73,7 +73,7 @@ test('3×3 자리: 브루저 1열·딜러 2열·응원 3열, 라인 맞붙음, �
   const G = await import('../src/logic/gauntlet.js');
   const st = createGauntlet(D, 'forest-3', 13, { pool: ['bear', 'dog', 'tiger', 'wolf', 'eagle', 'rooster'] });
   assert.equal(st.seats.length, 9);
-  for (const u of st.field) { const c = G.colOf(u.seat), sty = G.baseStyle(u); if (sty === 'bruiser') assert.equal(c, 0); if (sty === 'ranged' || sty === 'support') assert.equal(c, 2); }
+  for (const u of st.field) { const c = G.colOf(u.seat), sty = G.baseStyle(u); if (sty === 'bruiser') assert.equal(c, 0); if (sty === 'support') assert.equal(c, 2); if (sty === 'ranged') assert.ok(c >= 1); }
   const bear = st.field.find((u) => u.speciesId === 'bear');
   assert.ok(G.clashCap(bear) >= 3, '곰은 여럿을 붙잡음');
   // 우리 브루저를 모두 눕히면 적 브루저가 전진 → 후열 제압

@@ -20,7 +20,8 @@ export const SEATS = 9;
 const FRONT = [0, 1, 2], MID = [3, 4, 5], BACK = [6, 7, 8];
 export const colOf = (seat) => Math.floor((seat ?? 1) / 3);
 export const laneOf = (seat) => (seat ?? 1) % 3;
-const COL_ORDER = { bruiser: [0, 1, 2], skirm: [1, 0, 2], ranged: [2, 1, 0], support: [2, 1, 0] };
+// 원거리도 '딜러'라 2열 먼저(2026-11-27: 어린 여우가 응원 칸에 서던 문제)
+const COL_ORDER = { bruiser: [0, 1, 2], skirm: [1, 0, 2], ranged: [1, 2, 0], support: [2, 1, 0] };
 const LANE_ORDER = [1, 0, 2];
 /** 역할에 맞는 추천 자리 순서(열 우선, 라인은 가운데 → 위 → 아래) */
 export const seatOrder = (style) => (COL_ORDER[style] ?? COL_ORDER.skirm).flatMap((c) => LANE_ORDER.map((l) => c * 3 + l));
@@ -157,7 +158,9 @@ export function cycleBuild(state, data, uid) {
   applyBuild(u); refreshMods(state, data);
   return { ok: true, build: u.build };
 }
-export const baseStyle = (u) => (u.kind === 'base' && u.build && BUILDS[u.build] ? BUILDS[u.build].style : u.stats.range > 1 ? 'ranged' : u.stats.role === 'bruiser' ? 'bruiser' : u.stats.role === 'buffer' ? 'support' : u.stats.role === 'weak' ? 'support' : 'skirm');
+// 종마다 어울리는 싸움 모양(사거리보다 먼저): 개구리는 긴 혀를 가진 브루저
+const SPECIES_STYLE = { frog: 'bruiser' };
+export const baseStyle = (u) => (u.kind === 'base' && u.build && BUILDS[u.build] ? BUILDS[u.build].style : SPECIES_STYLE[u.kind === 'chimera' ? null : u.speciesId] ?? (u.stats.range > 1 ? 'ranged' : u.stats.role === 'bruiser' ? 'bruiser' : u.stats.role === 'buffer' ? 'support' : u.stats.role === 'weak' ? 'support' : 'skirm'));
 /** 작전(정비 때 고름): 브루저 버티기/지키기, 딜러 사냥/요격, 응원 앞/뒤. 없는 역할은 null */
 export const TACTICS = { bruiser: ['hold', 'guard'], skirm: ['help', 'hunt', 'intercept'], support: ['front', 'back'], ranged: ['hold', 'hunt'] };
 /** 작전 이름(한 단어)·아이콘: 화면과 안내에 씀 */
@@ -303,7 +306,7 @@ export function prefersFront(u) {
 export function autoSeat(state, units) {
   const seats = Array(SEATS).fill(null);
   const put = (u, order) => { const i = order.find((k) => seats[k] == null); if (i == null) return false; seats[i] = u.uid; u.seat = i; return true; };
-  for (const st of ['bruiser', 'support', 'ranged', 'skirm']) for (const u of units.filter((x) => baseStyle(x) === st)) put(u, seatOrder(st));
+  for (const st of ['bruiser', 'support', 'skirm', 'ranged']) for (const u of units.filter((x) => baseStyle(x) === st)) put(u, seatOrder(st));
   for (const u of units) if (!seats.includes(u.uid)) put(u, seatOrder('skirm'));
   return seats;
 }
@@ -899,8 +902,10 @@ function updateClashes(state, data, d, g) {
     // 힘 = √(초당 피해 × 최대 체력) × 남은 체력 — 아군은 세게 치고 약하고 적은 질기고 약하게 쳐서, 둘을 섞어야 맞먹음
     // 자리(체스처럼): 1열이 아닌 브루저는 늦게 합류해 힘이 약함(열마다 −lineup.backPush), 다른 라인 적을 막으면 −lineup.stretch
     const lu = g.lineup ?? {}, seatK = 1 - (lu.backPush ?? 0) * colOf(u.seat) - (lu.stretch ?? 0) * laneDist(u.seat, e.seat);
-    const su = Math.max(0.4, seatK) * (u.stunLeft > 0 ? 0.6 : 1) * (tuneOf(u, g)?.push ?? 1) * (1 + (eco(state, data, 'clashPow') ?? 0) / 100) * (state.isolated?.u ? g.isolatePush : 1) * Math.sqrt((effDamage(u) / uInterval(state, u)) * u.maxHp) * (0.4 + 0.6 * u.hp / u.maxHp);
-    const se = (e.stunLeft > 0 ? 0.6 : 1) * (state.isolated?.e ? g.isolatePush : 1) * Math.sqrt((e.attack / eInterval(e)) * e.maxHp) * g.clashEnemy * (e.boss ? g.clashBoss : 1) * (0.4 + 0.6 * e.hp / e.maxHp);
+    // 한 라인을 비우면 나머지 라인에 힘이 모임(lineup.focus) — 대신 그 라인이 뚫린 길이 됨
+    const focusU = emptyLanes(state, 'u').size ? 1 + (lu.focus ?? 0) : 1, focusE = emptyLanes(state, 'e').size ? 1 + (lu.focus ?? 0) : 1;
+    const su = focusU * Math.max(0.4, seatK) * (u.stunLeft > 0 ? 0.6 : 1) * (tuneOf(u, g)?.push ?? 1) * (1 + (eco(state, data, 'clashPow') ?? 0) / 100) * (state.isolated?.u ? g.isolatePush : 1) * Math.sqrt((effDamage(u) / uInterval(state, u)) * u.maxHp) * (0.4 + 0.6 * u.hp / u.maxHp);
+    const se = focusE * (e.stunLeft > 0 ? 0.6 : 1) * (state.isolated?.e ? g.isolatePush : 1) * Math.sqrt((e.attack / eInterval(e)) * e.maxHp) * g.clashEnemy * (e.boss ? g.clashBoss : 1) * (0.4 + 0.6 * e.hp / e.maxHp);
     let sh = 0;
     for (const id of c.helpers) { const h = findE(state, id); if (h) sh += (h.stunLeft > 0 ? 0.6 : 1) * Math.sqrt((h.attack / eInterval(h)) * h.maxHp) * g.clashEnemy * g.gangPower * (0.4 + 0.6 * h.hp / h.maxHp); }
     const lean = su + se + sh > 0 ? (su - se - sh) / (su + se + sh) : 0;
@@ -1130,6 +1135,11 @@ function unitAct(state, data, u, g) {
   // 우리 돌파: 적 후열을 노렸을 때 적 브루저가 막을 수 있음(무리 성향에 따라, 넋 없음). 막으면 그 브루저가 맞고 힘싸움을 우리가 밀어붙임
   const dived = u.diveMark?.eid === t.eid; u.diveMark = null;
   if (dived && (t.style === 'ranged' || t.style === 'support')) {
+    // 빈 라인(2026-11-27): 적이 비워 둔 라인으로 파고들면 막기·낚아채기를 반쯤 피하지만, 옆 라인 적에게 옆구리를 맞음(매복)
+    const lg = gcfg(data).lineup ?? {}, openE = emptyLanes(state, 'e').has(laneOf(u.seat));
+    if (openE) { flankHit(state, data, 'e', u, laneOf(u.seat)); if (!aliveU(u)) return; }
+    if (openE && state.rng() < (lg.openRun ?? 0)) { state.events.push({ type: 'openRun', side: 'u', uid: u.uid }); }
+    else {
     // 위험 부담 ①: 적 잡아채는 녀석(좀비·해골 손)이 있으면 낚아채여 기절 + 붙잡힘
     const ec = state.enemies.find((x) => aliveE(x) && g.eCatchers[x.id] && !(x.stunLeft > 0) && state.time - (x.snatchAt ?? -99) >= g.snatchCd && x !== t);
     if (ec && state.rng() < g.eSnatchChance) { snatchE(state, data, ec, u, g.eCatchers[ec.id]); return; }
@@ -1146,12 +1156,13 @@ function unitAct(state, data, u, g) {
       state.events.push({ type: 'act', side: 'u', uid: u.uid, eid: eg.eid, move, name, big, el, melee, style: st, hits: [{ eid: eg.eid, dmg: Math.round(a) }] });
       return;
     }
+    }
     // 뚫었다: 급소 공격(피해 ↑) + 잠깐 기절(응원·사격이 멈춤)
     for (const h of hits) if (h[0] === t) h[1] *= g.diveBonus * (1 + (eco(state, data, 'diveBonus') ?? 0) / 100);
     t.stunLeft = Math.max(t.stunLeft ?? 0, g.diveStun); t.gauge = 0;
     // 위험 부담 ②: 뚫고 들어간 딜러는 잠깐 적진 깊숙이(집중 공격, 받는 피해 +)
     u.deepT = state.time + g.deepT; u.deepEid = t.eid;
-    dstat(state, 'uBreach'); state.events.push({ type: 'breach', side: 'u', uid: u.uid, eid: t.eid, deep: true, mv });
+    dstat(state, 'uBreach'); state.events.push({ type: 'breach', side: 'u', uid: u.uid, eid: t.eid, deep: true, mv: diveMove(u, g) });
   }
   // 적 돌격대도 요리조리: 맞붙지 않았으면 평타를 가끔 피함
   if ((move === 'a1' || move === 'a2') && t.style === 'skirm' && !clashOfE(state, t.eid) && state.rng() < g.dodge) {
@@ -1218,7 +1229,12 @@ function enemyAct(state, data, e, g) {
   const marked = !!(e.diveMark && !e.diveMark.skip);
   const dove = marked || (!e.ranged && !clash);
   e.diveMark = null;
-  if (dove && isBack(t)) {
+  // 빈 라인: 우리가 비워 둔 라인으로 적이 파고들면 옆 라인 동물이 옆구리를 침(매복), 대신 막기·낚아채기는 반쯤 못 함
+  const openU = dove && isBack(t) && emptyLanes(state, 'u').has(laneOf(e.seat));
+  if (openU) { flankHit(state, data, 'u', e, laneOf(e.seat)); if (!aliveE(e)) return; }
+  const freeRun = openU && state.rng() < (g.lineup?.openRun ?? 0);
+  if (freeRun) state.events.push({ type: 'openRun', side: 'e', eid: e.eid });
+  if (dove && isBack(t) && !freeRun) {
     const ready = (x) => aliveU(x) && !(x.stunLeft > 0) && (x.protectAt ?? -99) + g.protectCd <= state.time && x !== t;
     // 잡아채기(먼저): 덫 마법이 깔려 있거나, 개구리 혀·원숭이 꼬리·개미 떼가 준비돼 있으면
     if (marked && (state.snareT ?? 0) > state.time) { const c0 = fighters(state).find((x) => x !== t) ?? t; snatchU(state, data, c0, e, 'snare'); return; }
@@ -1624,6 +1640,25 @@ export function moveAnimal(state, data, from, to) {
   r.unit.hp = r.unit.maxHp;
   refreshMods(state, data);
   return { ok: true, kind: r.kind, unit: r.unit };
+}
+
+// ---------- 빈 라인: 뚫린 길과 매복 (2026-11-27) ----------
+/** 그 편에서 아무도 없는(살아 있는 동물이 없는) 라인들 — 교전 시작 자리 기준 */
+export function emptyLanes(state, side) {
+  const list = side === 'u' ? state.field.filter((u) => u && !u.down && !u.resting && u.seat != null) : state.enemies.filter((e) => e.hp > 0 && e.seat != null);
+  const have = new Set(list.map((x) => laneOf(x.seat)));
+  return new Set([0, 1, 2].filter((l) => !have.has(l)));
+}
+/** 매복: 빈 라인을 지나는 상대를 옆 라인(1·2열) 동물들이 한 대씩 침 */
+function flankHit(state, data, side, x, lane) {
+  const lg = gcfg(data).lineup ?? {};
+  if (!lg.flank) return;
+  const near = side === 'u' ? fighters(state).filter((u) => laneDist(u.seat, lane) === 1 && colOf(u.seat) <= 1) : state.enemies.filter((e) => aliveE(e) && laneDist(e.seat, lane) === 1 && colOf(e.seat) <= 1);
+  if (!near.length) return;
+  let tot = 0;
+  for (let i = 0; i < near.length && i < 2; i++) tot += side === 'u' ? hurtEnemy(state, data, x, x.maxHp * lg.flank / 100, near[i], true) : hurtUnit(state, data, x, x.maxHp * lg.flank / 100, near[i]);
+  state.events.push({ type: 'flank', side, by: near.slice(0, 2).map((n) => (side === 'u' ? n.uid : n.eid)), target: side === 'u' ? x.eid : x.uid, dmg: Math.round(tot) });
+  dstat(state, side === 'u' ? 'flankU' : 'flankE');
 }
 
 // ---------- 진형 · 보스 필살 · 지형 (2026-11-27 기획창) ----------

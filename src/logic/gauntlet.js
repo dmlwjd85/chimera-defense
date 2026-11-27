@@ -74,6 +74,10 @@ export function gcfg(data) {
     // 수싸움 배우기: 스테이지별 단계 0 = 앞라인 힘싸움만(돌파 없음), 1 = 수업(교전 번호별 'wall' 앞이 안 뚫림 → 후열 노리기 / 'dive' 우리가 당함 → 지키기), 2 = 자유
     tacticLevel: { 'forest-1': 0, 'forest-2': 1 }, lessons: { 'forest-2': { 2: 'wall', 4: 'dive' } }, lessonWallHp: 1.5, globeTeenAt: 5, adultMeals: 2, diveMarkAt: 0.55, diveGap: 5, interceptChance: 0.6, diveBonus: 1.6, diveStun: 0.8, holdGuardPush: 0.3, holdGuardChance: 0.5, interceptStun: 0.7, guardFreePush: 0.5, isolateTaken: 20, isolatePush: 0.7,
     // 수싸움: 우리 쪽 돌파꾼(사냥)·요격꾼 기본값, 적 돌파꾼, 도발(지키면서 힘싸움을 안 놓침), 벽 통과(지키기 무시)
+    // 돌파 몸놀림(2026-11-27): 순간이동 대신 달려들기(dash)·점프(jump)·날아들기(fly). 막는 쪽은 막아서기(block)·다리걸기(trip)·발목잡기(grab)
+    //  달려들기 → 막아서기 또는 다리걸기(넘어짐) · 점프 → 발목잡기(끌려 떨어짐) · 날아들기 → 발목잡기만(반은 빠져나감)
+    diveJump: ['fox', 'rabbit', 'monkey', 'frog', 'grasshopper'], diveFly: ['crow', 'eagle', 'bat', 'boss_bat', 'flying', 'ghost', 'wisp'],
+    tripChance: 0.5, flyEscape: 0.5, tripStun: 1.1, tripHurt: 0.06,
     hunters: ['tiger', 'wolf', 'monkey', 'eagle', 'fox'], interceptors: ['rabbit', 'bighorn', 'ant'], taunters: ['bear', 'bison'],
     enemyDivers: ['fast', 'ghost', 'bat', 'boss_bat'], phasers: ['ghost'], enemyGuards: ['skeleton', 'tough'],
     temper: { dive: { diveChance: 0.9, guard: 0.15 }, wall: { diveChance: 0.4, guard: 0.5 }, mixed: { diveChance: 0.65, guard: 0.3 }, lessonWall: { diveChance: 0, guard: 0.15 }, lessonDive: { diveChance: 1, guard: 0.3 } }, hardHeal: 15, eliteChance: 0.35, eliteHp: 1.3, bossPhase2: true, stanceEvery: 2.5, stancePref: 0.45, stanceNative: 0.15, cheerHeal: 3, dodge: 0.25, ...(data.config.gauntlet ?? {}),
@@ -216,6 +220,18 @@ export function setPlan(state, data, plan) {
 }
 const dstat = (state, k) => { state.dstat ??= {}; state.dstat[k] = (state.dstat[k] ?? 0) + 1; };
 const isBack = (u) => ['ranged', 'support'].includes(styleOf(u));
+/** 돌파 몸놀림: 'dash' 달려들기 · 'jump' 점프 · 'fly' 날아들기 (키메라는 재료 중 하나라도 해당하면) */
+export function diveMove(x, g) {
+  const ids = x.eid != null ? [x.id] : x.kind === 'chimera' || x.kind === 'weak' ? x.parts ?? [] : [x.speciesId];
+  if (x.eid != null ? x.flying || g.diveFly.includes(x.id) : x.stats?.flyer || ids.every((id) => g.diveFly.includes(id))) return 'fly';
+  return ids.some((id) => g.diveJump.includes(id)) ? 'jump' : 'dash';
+}
+/** 막는 기술: 달려들기 → 막아서기/다리걸기, 점프·날기 → 발목잡기. 날아들기는 반은 빠져나감(null) */
+function stopKind(state, mv, g) {
+  if (mv === 'dash') return state.rng() < g.tripChance ? 'trip' : 'block';
+  if (mv === 'fly' && state.rng() < g.flyEscape) return null;
+  return 'grab';
+}
 /** 돌파꾼인가(후열을 노림) */
 function divesU(u, g) { return (styleOf(u) === 'skirm' || styleOf(u) === 'ranged') && tacticOf(u, g) === 'hunt'; }
 const isDiverE = (e, g) => g.enemyDivers.includes(e.id) || e.style === 'skirm';
@@ -1076,11 +1092,15 @@ function unitAct(state, data, u, g) {
     const ec = state.enemies.find((x) => aliveE(x) && g.eCatchers[x.id] && !(x.stunLeft > 0) && state.time - (x.snatchAt ?? -99) >= g.snatchCd && x !== t);
     if (ec && state.rng() < g.eSnatchChance) { snatchE(state, data, ec, u, g.eCatchers[ec.id]); return; }
     const eg = state.enemies.find((x) => aliveE(x) && x.style === 'bruiser' && !(x.stunLeft > 0) && (x.protectAt ?? -99) + g.protectCd <= state.time && (g.enemyGuards.includes(x.id) ? state.rng() < 0.7 : state.rng() < (state.temper?.guard ?? 0.3)));
-    if (eg) {
+    const mv = diveMove(u, g), sk = eg ? stopKind(state, mv, g) : null;
+    if (eg && sk) {
       eg.protectAt = state.time;
-      const a = hurtEnemy(state, data, eg, hits[0][1] * g.guardTaken, u);
+      const a = hurtEnemy(state, data, eg, hits[0][1] * g.guardTaken * (sk === 'block' ? 1 : 0.5), u);
       const c = clashOfE(state, eg.eid); if (c) c.push = Math.min(0.95, c.push + g.guardFreePush);
-      dstat(state, 'eGuard'); state.events.push({ type: 'eguard', eid: eg.eid, for: t.eid, uid: u.uid, dmg: Math.round(a) });
+      // 다리걸기·발목잡기: 뛰어든 딜러가 넘어지거나 끌려 떨어짐(잠깐 기절 + 조금 다침)
+      let fallDmg = 0;
+      if (sk !== 'block') { u.stunLeft = Math.max(u.stunLeft ?? 0, g.tripStun); u.gauge = 0; fallDmg = Math.round(hurtUnit(state, data, u, u.maxHp * g.tripHurt, eg)); }
+      dstat(state, 'eGuard'); state.events.push({ type: 'eguard', eid: eg.eid, for: t.eid, uid: u.uid, dmg: Math.round(a), kind: sk, mv, fallDmg });
       state.events.push({ type: 'act', side: 'u', uid: u.uid, eid: eg.eid, move, name, big, el, melee, style: st, hits: [{ eid: eg.eid, dmg: Math.round(a) }] });
       return;
     }
@@ -1089,7 +1109,7 @@ function unitAct(state, data, u, g) {
     t.stunLeft = Math.max(t.stunLeft ?? 0, g.diveStun); t.gauge = 0;
     // 위험 부담 ②: 뚫고 들어간 딜러는 잠깐 적진 깊숙이(집중 공격, 받는 피해 +)
     u.deepT = state.time + g.deepT; u.deepEid = t.eid;
-    dstat(state, 'uBreach'); state.events.push({ type: 'breach', side: 'u', uid: u.uid, eid: t.eid, deep: true });
+    dstat(state, 'uBreach'); state.events.push({ type: 'breach', side: 'u', uid: u.uid, eid: t.eid, deep: true, mv });
   }
   // 적 돌격대도 요리조리: 맞붙지 않았으면 평타를 가끔 피함
   if ((move === 'a1' || move === 'a2') && t.style === 'skirm' && !clashOfE(state, t.eid) && state.rng() < g.dodge) {
@@ -1174,15 +1194,18 @@ function enemyAct(state, data, e, g) {
     const guards = fighters(state).filter((x) => styleOf(x) === 'bruiser' && ready(x) && (tacticOf(x, g) === 'guard' || ((clashOfU(state, x.uid)?.push ?? 0) > g.holdGuardPush && state.rng() < g.holdGuardChance)));
     const taunt = !phase && !e.boss && !rule(state, 'noTaunt') && guards.find((x) => (x.kind === 'chimera' ? x.parts ?? [] : [x.speciesId]).some((id) => g.taunters.includes(id)));
     const guard = !phase && (taunt || guards[0]);
-    if (guard) {
+    const emv = diveMove(e, g), esk = guard ? (taunt ? 'block' : stopKind(state, emv, g)) : null;
+    if (guard && esk) {
       guard.protectAt = state.time;
-      const a = hurtUnit(state, data, guard, dmg * g.guardTaken, e);
+      const a = hurtUnit(state, data, guard, dmg * g.guardTaken * (esk === 'block' ? 1 : 0.5), e);
       if (!taunt) { const c = clashOfU(state, guard.uid); if (c) c.push = Math.max(-0.95, c.push - g.guardFreePush); }
-      state.events.push({ type: 'guard', uid: guard.uid, for: t.uid, eid: e.eid, dmg: Math.round(a), taunt: !!taunt });
+      let fallDmg = 0;
+      if (esk !== 'block' && aliveE(e)) { e.stunLeft = Math.max(e.stunLeft ?? 0, e.boss ? 0.4 : g.tripStun); e.gauge = 0; fallDmg = Math.round(hurtEnemy(state, data, e, e.maxHp * g.tripHurt, guard)); }
+      state.events.push({ type: 'guard', uid: guard.uid, for: t.uid, eid: e.eid, dmg: Math.round(a), taunt: !!taunt, kind: esk, mv: emv, fallDmg });
       dstat(state, taunt ? 'taunt' : 'guard'); say(state, `${guard.stats.name} ${taunt ? '도발' : '막았다'}!`);
       return;
     }
-    if (marked) { e.deepT = state.time + g.deepT; e.deepUid = t.uid; dstat(state, 'eBreach'); state.events.push({ type: 'breach', side: 'e', eid: e.eid, uid: t.uid, deep: true }); }
+    if (marked) { e.deepT = state.time + g.deepT; e.deepUid = t.uid; dstat(state, 'eBreach'); state.events.push({ type: 'breach', side: 'e', eid: e.eid, uid: t.uid, deep: true, mv: diveMove(e, g) }); }
     if (marked && state.lesson === 'dive' && !state.lessonShown) { state.lessonShown = true; state.events.push({ type: 'lesson', kind: 'dive' }); }
   }
   const a = hurtUnit(state, data, t, dmg * (e.style === 'support' ? 0.6 : 1), e);

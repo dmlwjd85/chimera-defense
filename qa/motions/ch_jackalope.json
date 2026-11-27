@@ -1,0 +1,53 @@
+{
+ "species": "ch_jackalope",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 17.4,
+   "foot±": 15
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 23.3,
+   "foot±": 22
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 36.0,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 31.4,
+   "foot±": 0
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 9.3,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 2.3,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 3.5,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   199
+  ],
+  "box": [
+   98,
+   114
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 407552
+ }
+}

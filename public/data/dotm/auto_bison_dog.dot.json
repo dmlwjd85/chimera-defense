@@ -1,0 +1,668 @@
+{
+ "note": "ch_bison_dog 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_bison_dog",
+ "sheet": "dot-m-auto_bison_dog",
+ "file": "assets/dotm/auto_bison_dog.png",
+ "frameW": 106,
+ "frameH": 86,
+ "foot": 83,
+ "cols": 1,
+ "anchorX": 54,
+ "palette": [
+  "#291a1f",
+  "#300604",
+  "#40373b",
+  "#4c1105",
+  "#552720",
+  "#5a4d49",
+  "#713a2a",
+  "#81472f",
+  "#964d30",
+  "#a46c54",
+  "#c26135",
+  "#c38a6d",
+  "#d8a382",
+  "#ef924e",
+  "#f7d7ad",
+  "#fe9240"
+ ],
+ "rects": {
+  "ch_bison_dog_adult_a1_00": [
+   1807,
+   0,
+   94,
+   77,
+   -47,
+   -77
+  ],
+  "ch_bison_dog_adult_a1_01": [
+   474,
+   83,
+   94,
+   76,
+   -47,
+   -76
+  ],
+  "ch_bison_dog_adult_a1_02": [
+   569,
+   83,
+   95,
+   76,
+   -49,
+   -76
+  ],
+  "ch_bison_dog_adult_a1_03": [
+   665,
+   83,
+   98,
+   76,
+   -52,
+   -76
+  ],
+  "ch_bison_dog_adult_a1_04": [
+   764,
+   83,
+   94,
+   76,
+   -48,
+   -76
+  ],
+  "ch_bison_dog_adult_a1_05": [
+   1528,
+   83,
+   91,
+   74,
+   -44,
+   -74
+  ],
+  "ch_bison_dog_adult_a1_06": [
+   859,
+   83,
+   93,
+   76,
+   -46,
+   -76
+  ],
+  "ch_bison_dog_adult_a1_07": [
+   1051,
+   0,
+   94,
+   78,
+   -47,
+   -78
+  ],
+  "ch_bison_dog_adult_a2_00": [
+   953,
+   83,
+   95,
+   76,
+   -47,
+   -76
+  ],
+  "ch_bison_dog_adult_a2_01": [
+   1143,
+   83,
+   95,
+   75,
+   -47,
+   -75
+  ],
+  "ch_bison_dog_adult_a2_02": [
+   1620,
+   83,
+   98,
+   74,
+   -49,
+   -74
+  ],
+  "ch_bison_dog_adult_a2_03": [
+   1917,
+   83,
+   98,
+   72,
+   -49,
+   -73
+  ],
+  "ch_bison_dog_adult_a2_04": [
+   1719,
+   83,
+   99,
+   73,
+   -50,
+   -74
+  ],
+  "ch_bison_dog_adult_a2_05": [
+   1819,
+   83,
+   97,
+   73,
+   -50,
+   -76
+  ],
+  "ch_bison_dog_adult_a2_06": [
+   1049,
+   83,
+   93,
+   76,
+   -48,
+   -78
+  ],
+  "ch_bison_dog_adult_a2_07": [
+   576,
+   0,
+   91,
+   79,
+   -47,
+   -81
+  ],
+  "ch_bison_dog_adult_down_00": [
+   1902,
+   0,
+   95,
+   77,
+   -47,
+   -77
+  ],
+  "ch_bison_dog_adult_down_01": [
+   1239,
+   83,
+   96,
+   75,
+   -47,
+   -75
+  ],
+  "ch_bison_dog_adult_down_02": [
+   0,
+   161,
+   97,
+   72,
+   -47,
+   -74
+  ],
+  "ch_bison_dog_adult_down_03": [
+   98,
+   161,
+   95,
+   69,
+   -45,
+   -71
+  ],
+  "ch_bison_dog_adult_down_04": [
+   194,
+   161,
+   93,
+   64,
+   -43,
+   -64
+  ],
+  "ch_bison_dog_adult_down_05": [
+   288,
+   161,
+   106,
+   58,
+   -54,
+   -57
+  ],
+  "ch_bison_dog_adult_el_00": [
+   0,
+   83,
+   93,
+   77,
+   -45,
+   -77
+  ],
+  "ch_bison_dog_adult_el_01": [
+   1146,
+   0,
+   93,
+   78,
+   -46,
+   -78
+  ],
+  "ch_bison_dog_adult_el_02": [
+   193,
+   0,
+   94,
+   80,
+   -49,
+   -81
+  ],
+  "ch_bison_dog_adult_el_03": [
+   97,
+   0,
+   95,
+   81,
+   -51,
+   -83
+  ],
+  "ch_bison_dog_adult_el_04": [
+   0,
+   0,
+   96,
+   82,
+   -52,
+   -84
+  ],
+  "ch_bison_dog_adult_el_05": [
+   288,
+   0,
+   96,
+   80,
+   -51,
+   -82
+  ],
+  "ch_bison_dog_adult_el_06": [
+   1240,
+   0,
+   94,
+   78,
+   -48,
+   -80
+  ],
+  "ch_bison_dog_adult_el_07": [
+   1335,
+   0,
+   93,
+   78,
+   -46,
+   -78
+  ],
+  "ch_bison_dog_adult_hit_00": [
+   1336,
+   83,
+   94,
+   75,
+   -46,
+   -76
+  ],
+  "ch_bison_dog_adult_hit_01": [
+   1431,
+   83,
+   96,
+   75,
+   -49,
+   -81
+  ],
+  "ch_bison_dog_adult_hit_02": [
+   94,
+   83,
+   95,
+   77,
+   -49,
+   -84
+  ],
+  "ch_bison_dog_adult_hit_03": [
+   385,
+   0,
+   94,
+   80,
+   -48,
+   -80
+  ],
+  "ch_bison_dog_adult_idle_00": [
+   190,
+   83,
+   93,
+   77,
+   -45,
+   -77
+  ],
+  "ch_bison_dog_adult_idle_01": [
+   284,
+   83,
+   92,
+   77,
+   -44,
+   -77
+  ],
+  "ch_bison_dog_adult_idle_02": [
+   1429,
+   0,
+   92,
+   78,
+   -45,
+   -78
+  ],
+  "ch_bison_dog_adult_idle_03": [
+   1522,
+   0,
+   93,
+   78,
+   -46,
+   -78
+  ],
+  "ch_bison_dog_adult_walk_00": [
+   668,
+   0,
+   94,
+   79,
+   -47,
+   -79
+  ],
+  "ch_bison_dog_adult_walk_01": [
+   763,
+   0,
+   95,
+   79,
+   -48,
+   -80
+  ],
+  "ch_bison_dog_adult_walk_02": [
+   1616,
+   0,
+   96,
+   78,
+   -49,
+   -79
+  ],
+  "ch_bison_dog_adult_walk_03": [
+   377,
+   83,
+   96,
+   77,
+   -49,
+   -78
+  ],
+  "ch_bison_dog_adult_walk_04": [
+   859,
+   0,
+   96,
+   79,
+   -49,
+   -79
+  ],
+  "ch_bison_dog_adult_walk_05": [
+   480,
+   0,
+   95,
+   80,
+   -48,
+   -80
+  ],
+  "ch_bison_dog_adult_walk_06": [
+   956,
+   0,
+   94,
+   79,
+   -47,
+   -79
+  ],
+  "ch_bison_dog_adult_walk_07": [
+   1713,
+   0,
+   93,
+   78,
+   -46,
+   -78
+  ]
+ },
+ "frames": [
+  "ch_bison_dog_adult_a1_00",
+  "ch_bison_dog_adult_a1_01",
+  "ch_bison_dog_adult_a1_02",
+  "ch_bison_dog_adult_a1_03",
+  "ch_bison_dog_adult_a1_04",
+  "ch_bison_dog_adult_a1_05",
+  "ch_bison_dog_adult_a1_06",
+  "ch_bison_dog_adult_a1_07",
+  "ch_bison_dog_adult_a2_00",
+  "ch_bison_dog_adult_a2_01",
+  "ch_bison_dog_adult_a2_02",
+  "ch_bison_dog_adult_a2_03",
+  "ch_bison_dog_adult_a2_04",
+  "ch_bison_dog_adult_a2_05",
+  "ch_bison_dog_adult_a2_06",
+  "ch_bison_dog_adult_a2_07",
+  "ch_bison_dog_adult_down_00",
+  "ch_bison_dog_adult_down_01",
+  "ch_bison_dog_adult_down_02",
+  "ch_bison_dog_adult_down_03",
+  "ch_bison_dog_adult_down_04",
+  "ch_bison_dog_adult_down_05",
+  "ch_bison_dog_adult_el_00",
+  "ch_bison_dog_adult_el_01",
+  "ch_bison_dog_adult_el_02",
+  "ch_bison_dog_adult_el_03",
+  "ch_bison_dog_adult_el_04",
+  "ch_bison_dog_adult_el_05",
+  "ch_bison_dog_adult_el_06",
+  "ch_bison_dog_adult_el_07",
+  "ch_bison_dog_adult_hit_00",
+  "ch_bison_dog_adult_hit_01",
+  "ch_bison_dog_adult_hit_02",
+  "ch_bison_dog_adult_hit_03",
+  "ch_bison_dog_adult_idle_00",
+  "ch_bison_dog_adult_idle_01",
+  "ch_bison_dog_adult_idle_02",
+  "ch_bison_dog_adult_idle_03",
+  "ch_bison_dog_adult_walk_00",
+  "ch_bison_dog_adult_walk_01",
+  "ch_bison_dog_adult_walk_02",
+  "ch_bison_dog_adult_walk_03",
+  "ch_bison_dog_adult_walk_04",
+  "ch_bison_dog_adult_walk_05",
+  "ch_bison_dog_adult_walk_06",
+  "ch_bison_dog_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bison_dog_adult_idle_00",
+  "ch_bison_dog_adult_idle_01",
+  "ch_bison_dog_adult_idle_02",
+  "ch_bison_dog_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 6,
+   "attack": {
+    "frames": [
+     "ch_bison_dog_adult_a1_00",
+     "ch_bison_dog_adult_a1_01",
+     "ch_bison_dog_adult_a1_02",
+     "ch_bison_dog_adult_a1_03",
+     "ch_bison_dog_adult_a1_04",
+     "ch_bison_dog_adult_a1_05",
+     "ch_bison_dog_adult_a1_06",
+     "ch_bison_dog_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bison_dog_adult_a2_00",
+     "ch_bison_dog_adult_a2_01",
+     "ch_bison_dog_adult_a2_02",
+     "ch_bison_dog_adult_a2_03",
+     "ch_bison_dog_adult_a2_04",
+     "ch_bison_dog_adult_a2_05",
+     "ch_bison_dog_adult_a2_06",
+     "ch_bison_dog_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bison_dog_adult_down_00",
+     "ch_bison_dog_adult_down_01",
+     "ch_bison_dog_adult_down_02",
+     "ch_bison_dog_adult_down_03",
+     "ch_bison_dog_adult_down_04",
+     "ch_bison_dog_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_bison_dog_adult_el_00",
+     "ch_bison_dog_adult_el_01",
+     "ch_bison_dog_adult_el_02",
+     "ch_bison_dog_adult_el_03",
+     "ch_bison_dog_adult_el_04",
+     "ch_bison_dog_adult_el_05",
+     "ch_bison_dog_adult_el_06",
+     "ch_bison_dog_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.311,
+      "cast"
+     ],
+     [
+      0.321,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bison_dog_adult_hit_00",
+     "ch_bison_dog_adult_hit_01",
+     "ch_bison_dog_adult_hit_02",
+     "ch_bison_dog_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bison_dog_adult_idle_00",
+     "ch_bison_dog_adult_idle_01",
+     "ch_bison_dog_adult_idle_02",
+     "ch_bison_dog_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bison_dog_adult_walk_00",
+     "ch_bison_dog_adult_walk_01",
+     "ch_bison_dog_adult_walk_02",
+     "ch_bison_dog_adult_walk_03",
+     "ch_bison_dog_adult_walk_04",
+     "ch_bison_dog_adult_walk_05",
+     "ch_bison_dog_adult_walk_06",
+     "ch_bison_dog_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bison_dog_adult_down_00",
+     "ch_bison_dog_adult_down_01",
+     "ch_bison_dog_adult_down_02",
+     "ch_bison_dog_adult_down_03",
+     "ch_bison_dog_adult_down_04",
+     "ch_bison_dog_adult_down_05",
+     "ch_bison_dog_adult_down_04",
+     "ch_bison_dog_adult_down_03",
+     "ch_bison_dog_adult_down_02",
+     "ch_bison_dog_adult_down_01",
+     "ch_bison_dog_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bison_dog"
+}

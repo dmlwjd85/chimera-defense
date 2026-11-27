@@ -1,0 +1,474 @@
+{
+ "note": "en_boss_lava 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_lava",
+ "sheet": "dot-m-en_boss_lava",
+ "file": "assets/dotm/en_boss_lava.png",
+ "frameW": 142,
+ "frameH": 163,
+ "foot": 160,
+ "cols": 1,
+ "anchorX": 71,
+ "palette": [
+  "#291a1f",
+  "#42343b",
+  "#4c1a0b",
+  "#514349",
+  "#522c29",
+  "#6d5d5f",
+  "#6f4b44",
+  "#743e2d",
+  "#753098",
+  "#7e6f71",
+  "#9d5c41",
+  "#cc6035",
+  "#cc8051",
+  "#f08c39",
+  "#f0b9f9",
+  "#f2b361"
+ ],
+ "rects": {
+  "en_boss_lava_adult_a1_00": [
+   864,
+   162,
+   119,
+   81,
+   -62,
+   -83
+  ],
+  "en_boss_lava_adult_a1_01": [
+   984,
+   162,
+   121,
+   81,
+   -66,
+   -81
+  ],
+  "en_boss_lava_adult_a1_02": [
+   645,
+   162,
+   115,
+   82,
+   -66,
+   -82
+  ],
+  "en_boss_lava_adult_a1_03": [
+   230,
+   162,
+   95,
+   83,
+   -68,
+   -83
+  ],
+  "en_boss_lava_adult_a1_04": [
+   326,
+   162,
+   100,
+   83,
+   -71,
+   -83
+  ],
+  "en_boss_lava_adult_a1_05": [
+   761,
+   162,
+   102,
+   82,
+   -71,
+   -82
+  ],
+  "en_boss_lava_adult_a1_06": [
+   1279,
+   0,
+   118,
+   84,
+   -47,
+   -83
+  ],
+  "en_boss_lava_adult_a1_07": [
+   427,
+   162,
+   103,
+   83,
+   -52,
+   -82
+  ],
+  "en_boss_lava_adult_down_00": [
+   332,
+   0,
+   102,
+   93,
+   -50,
+   -93
+  ],
+  "en_boss_lava_adult_down_01": [
+   1215,
+   162,
+   102,
+   70,
+   -43,
+   -71
+  ],
+  "en_boss_lava_adult_down_02": [
+   1318,
+   162,
+   113,
+   40,
+   -46,
+   -40
+  ],
+  "en_boss_lava_adult_el_00": [
+   862,
+   0,
+   116,
+   87,
+   -56,
+   -87
+  ],
+  "en_boss_lava_adult_el_01": [
+   221,
+   0,
+   110,
+   98,
+   -55,
+   -98
+  ],
+  "en_boss_lava_adult_el_02": [
+   110,
+   0,
+   110,
+   146,
+   -55,
+   -146
+  ],
+  "en_boss_lava_adult_el_03": [
+   0,
+   0,
+   109,
+   161,
+   -55,
+   -161
+  ],
+  "en_boss_lava_adult_el_04": [
+   1398,
+   0,
+   73,
+   84,
+   -32,
+   -85
+  ],
+  "en_boss_lava_adult_el_05": [
+   1205,
+   0,
+   73,
+   85,
+   -32,
+   -86
+  ],
+  "en_boss_lava_adult_el_06": [
+   546,
+   0,
+   93,
+   89,
+   -44,
+   -89
+  ],
+  "en_boss_lava_adult_hit_00": [
+   1106,
+   162,
+   108,
+   74,
+   -54,
+   -74
+  ],
+  "en_boss_lava_adult_idle_00": [
+   1472,
+   0,
+   116,
+   84,
+   -58,
+   -84
+  ],
+  "en_boss_lava_adult_idle_01": [
+   1589,
+   0,
+   118,
+   84,
+   -59,
+   -84
+  ],
+  "en_boss_lava_adult_idle_02": [
+   1708,
+   0,
+   116,
+   84,
+   -58,
+   -84
+  ],
+  "en_boss_lava_adult_idle_03": [
+   1825,
+   0,
+   114,
+   84,
+   -57,
+   -84
+  ],
+  "en_boss_lava_adult_walk_00": [
+   531,
+   162,
+   113,
+   83,
+   -56,
+   -85
+  ],
+  "en_boss_lava_adult_walk_01": [
+   1094,
+   0,
+   110,
+   86,
+   -55,
+   -88
+  ],
+  "en_boss_lava_adult_walk_02": [
+   754,
+   0,
+   107,
+   88,
+   -54,
+   -90
+  ],
+  "en_boss_lava_adult_walk_03": [
+   435,
+   0,
+   110,
+   90,
+   -56,
+   -90
+  ],
+  "en_boss_lava_adult_walk_04": [
+   640,
+   0,
+   113,
+   89,
+   -58,
+   -89
+  ],
+  "en_boss_lava_adult_walk_05": [
+   979,
+   0,
+   114,
+   87,
+   -58,
+   -87
+  ],
+  "en_boss_lava_adult_walk_06": [
+   0,
+   162,
+   114,
+   84,
+   -57,
+   -84
+  ],
+  "en_boss_lava_adult_walk_07": [
+   115,
+   162,
+   114,
+   84,
+   -57,
+   -84
+  ]
+ },
+ "frames": [
+  "en_boss_lava_adult_a1_00",
+  "en_boss_lava_adult_a1_01",
+  "en_boss_lava_adult_a1_02",
+  "en_boss_lava_adult_a1_03",
+  "en_boss_lava_adult_a1_04",
+  "en_boss_lava_adult_a1_05",
+  "en_boss_lava_adult_a1_06",
+  "en_boss_lava_adult_a1_07",
+  "en_boss_lava_adult_down_00",
+  "en_boss_lava_adult_down_01",
+  "en_boss_lava_adult_down_02",
+  "en_boss_lava_adult_el_00",
+  "en_boss_lava_adult_el_01",
+  "en_boss_lava_adult_el_02",
+  "en_boss_lava_adult_el_03",
+  "en_boss_lava_adult_el_04",
+  "en_boss_lava_adult_el_05",
+  "en_boss_lava_adult_el_06",
+  "en_boss_lava_adult_hit_00",
+  "en_boss_lava_adult_idle_00",
+  "en_boss_lava_adult_idle_01",
+  "en_boss_lava_adult_idle_02",
+  "en_boss_lava_adult_idle_03",
+  "en_boss_lava_adult_walk_00",
+  "en_boss_lava_adult_walk_01",
+  "en_boss_lava_adult_walk_02",
+  "en_boss_lava_adult_walk_03",
+  "en_boss_lava_adult_walk_04",
+  "en_boss_lava_adult_walk_05",
+  "en_boss_lava_adult_walk_06",
+  "en_boss_lava_adult_walk_07"
+ ],
+ "standing": [
+  "en_boss_lava_adult_idle_00",
+  "en_boss_lava_adult_idle_01",
+  "en_boss_lava_adult_idle_02",
+  "en_boss_lava_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 77,
+   "attack": {
+    "frames": [
+     "en_boss_lava_adult_a1_00",
+     "en_boss_lava_adult_a1_01",
+     "en_boss_lava_adult_a1_02",
+     "en_boss_lava_adult_a1_03",
+     "en_boss_lava_adult_a1_04",
+     "en_boss_lava_adult_a1_05",
+     "en_boss_lava_adult_a1_06",
+     "en_boss_lava_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_lava_adult_down_00",
+     "en_boss_lava_adult_down_01",
+     "en_boss_lava_adult_down_02"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_lava_adult_el_00",
+     "en_boss_lava_adult_el_01",
+     "en_boss_lava_adult_el_02",
+     "en_boss_lava_adult_el_03",
+     "en_boss_lava_adult_el_04",
+     "en_boss_lava_adult_el_05",
+     "en_boss_lava_adult_el_06"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "en_boss_lava_adult_hit_00"
+    ],
+    "durs": [
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_lava_adult_idle_00",
+     "en_boss_lava_adult_idle_01",
+     "en_boss_lava_adult_idle_02",
+     "en_boss_lava_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_boss_lava_adult_walk_00",
+     "en_boss_lava_adult_walk_01",
+     "en_boss_lava_adult_walk_02",
+     "en_boss_lava_adult_walk_03",
+     "en_boss_lava_adult_walk_04",
+     "en_boss_lava_adult_walk_05",
+     "en_boss_lava_adult_walk_06",
+     "en_boss_lava_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_boss_lava_adult_down_00",
+     "en_boss_lava_adult_down_01",
+     "en_boss_lava_adult_down_02",
+     "en_boss_lava_adult_down_01",
+     "en_boss_lava_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

@@ -1,0 +1,53 @@
+{
+ "species": "ch_monkey_wolf",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 10.0,
+   "foot±": 1
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 11.2,
+   "foot±": 12
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 40.0,
+   "foot±": 1
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 16.2,
+   "foot±": 0
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 12.5,
+   "foot±": 2
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.2,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 1.2,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   249
+  ],
+  "box": [
+   112,
+   95
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 509952
+ }
+}

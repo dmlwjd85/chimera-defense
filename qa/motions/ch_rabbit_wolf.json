@@ -1,0 +1,53 @@
+{
+ "species": "ch_rabbit_wolf",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 10.2,
+   "foot±": 0
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 21.6,
+   "foot±": 21
+  },
+  "adult_down": {
+   "n": 4,
+   "max|h%|": 36.4,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 25.0,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 11.4,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.1,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 2.3,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   198
+  ],
+  "box": [
+   99,
+   112
+  ],
+  "frames": 44,
+  "colors": 16,
+  "px": 405504
+ }
+}

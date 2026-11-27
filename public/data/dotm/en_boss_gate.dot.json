@@ -1,0 +1,541 @@
+{
+ "note": "en_boss_gate 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_gate",
+ "sheet": "dot-m-en_boss_gate",
+ "file": "assets/dotm/en_boss_gate.png",
+ "frameW": 145,
+ "frameH": 85,
+ "foot": 80,
+ "cols": 1,
+ "anchorX": 66,
+ "palette": [
+  "#291a1f",
+  "#400d15",
+  "#432d33",
+  "#4b3c47",
+  "#594f58",
+  "#5f1b2d",
+  "#675d68",
+  "#6e3441",
+  "#827b83",
+  "#854592",
+  "#854b56",
+  "#a29ba3",
+  "#ad526c",
+  "#c16076",
+  "#da7686",
+  "#e495f3"
+ ],
+ "rects": {
+  "en_boss_gate_adult_a1_00": [
+   1554,
+   0,
+   77,
+   77,
+   -37,
+   -76
+  ],
+  "en_boss_gate_adult_a1_01": [
+   1632,
+   0,
+   77,
+   77,
+   -35,
+   -76
+  ],
+  "en_boss_gate_adult_a1_02": [
+   417,
+   80,
+   101,
+   75,
+   -35,
+   -74
+  ],
+  "en_boss_gate_adult_a1_03": [
+   0,
+   80,
+   114,
+   76,
+   -35,
+   -75
+  ],
+  "en_boss_gate_adult_a1_04": [
+   705,
+   0,
+   111,
+   78,
+   -34,
+   -77
+  ],
+  "en_boss_gate_adult_a1_05": [
+   817,
+   0,
+   107,
+   78,
+   -33,
+   -77
+  ],
+  "en_boss_gate_adult_a1_06": [
+   925,
+   0,
+   78,
+   78,
+   -32,
+   -77
+  ],
+  "en_boss_gate_adult_a1_07": [
+   1004,
+   0,
+   78,
+   78,
+   -38,
+   -77
+  ],
+  "en_boss_gate_adult_down_00": [
+   1710,
+   0,
+   78,
+   77,
+   -39,
+   -75
+  ],
+  "en_boss_gate_adult_down_01": [
+   1083,
+   0,
+   84,
+   78,
+   -42,
+   -76
+  ],
+  "en_boss_gate_adult_down_02": [
+   1789,
+   0,
+   109,
+   77,
+   -55,
+   -75
+  ],
+  "en_boss_gate_adult_down_03": [
+   519,
+   80,
+   124,
+   74,
+   -63,
+   -72
+  ],
+  "en_boss_gate_adult_down_04": [
+   869,
+   80,
+   130,
+   60,
+   -65,
+   -59
+  ],
+  "en_boss_gate_adult_down_05": [
+   1000,
+   80,
+   131,
+   33,
+   -66,
+   -30
+  ],
+  "en_boss_gate_adult_el_00": [
+   1899,
+   0,
+   75,
+   77,
+   -37,
+   -76
+  ],
+  "en_boss_gate_adult_el_01": [
+   115,
+   80,
+   74,
+   76,
+   -37,
+   -75
+  ],
+  "en_boss_gate_adult_el_02": [
+   644,
+   80,
+   74,
+   74,
+   -37,
+   -73
+  ],
+  "en_boss_gate_adult_el_03": [
+   794,
+   80,
+   74,
+   73,
+   -37,
+   -72
+  ],
+  "en_boss_gate_adult_el_04": [
+   719,
+   80,
+   74,
+   74,
+   -37,
+   -73
+  ],
+  "en_boss_gate_adult_el_05": [
+   190,
+   80,
+   74,
+   76,
+   -37,
+   -75
+  ],
+  "en_boss_gate_adult_el_06": [
+   1168,
+   0,
+   75,
+   78,
+   -37,
+   -77
+  ],
+  "en_boss_gate_adult_el_07": [
+   0,
+   0,
+   75,
+   79,
+   -37,
+   -78
+  ],
+  "en_boss_gate_adult_hit_00": [
+   265,
+   80,
+   75,
+   76,
+   -38,
+   -75
+  ],
+  "en_boss_gate_adult_hit_01": [
+   341,
+   80,
+   75,
+   76,
+   -38,
+   -75
+  ],
+  "en_boss_gate_adult_idle_00": [
+   76,
+   0,
+   78,
+   79,
+   -39,
+   -79
+  ],
+  "en_boss_gate_adult_idle_01": [
+   155,
+   0,
+   81,
+   79,
+   -40,
+   -81
+  ],
+  "en_boss_gate_adult_idle_02": [
+   237,
+   0,
+   80,
+   79,
+   -40,
+   -79
+  ],
+  "en_boss_gate_adult_idle_03": [
+   1244,
+   0,
+   78,
+   78,
+   -39,
+   -77
+  ],
+  "en_boss_gate_adult_walk_00": [
+   318,
+   0,
+   77,
+   79,
+   -38,
+   -78
+  ],
+  "en_boss_gate_adult_walk_01": [
+   396,
+   0,
+   77,
+   79,
+   -38,
+   -79
+  ],
+  "en_boss_gate_adult_walk_02": [
+   474,
+   0,
+   76,
+   79,
+   -37,
+   -78
+  ],
+  "en_boss_gate_adult_walk_03": [
+   1323,
+   0,
+   75,
+   78,
+   -37,
+   -77
+  ],
+  "en_boss_gate_adult_walk_04": [
+   1399,
+   0,
+   75,
+   78,
+   -38,
+   -77
+  ],
+  "en_boss_gate_adult_walk_05": [
+   551,
+   0,
+   75,
+   79,
+   -38,
+   -78
+  ],
+  "en_boss_gate_adult_walk_06": [
+   627,
+   0,
+   77,
+   79,
+   -39,
+   -78
+  ],
+  "en_boss_gate_adult_walk_07": [
+   1475,
+   0,
+   78,
+   78,
+   -39,
+   -77
+  ]
+ },
+ "frames": [
+  "en_boss_gate_adult_a1_00",
+  "en_boss_gate_adult_a1_01",
+  "en_boss_gate_adult_a1_02",
+  "en_boss_gate_adult_a1_03",
+  "en_boss_gate_adult_a1_04",
+  "en_boss_gate_adult_a1_05",
+  "en_boss_gate_adult_a1_06",
+  "en_boss_gate_adult_a1_07",
+  "en_boss_gate_adult_down_00",
+  "en_boss_gate_adult_down_01",
+  "en_boss_gate_adult_down_02",
+  "en_boss_gate_adult_down_03",
+  "en_boss_gate_adult_down_04",
+  "en_boss_gate_adult_down_05",
+  "en_boss_gate_adult_el_00",
+  "en_boss_gate_adult_el_01",
+  "en_boss_gate_adult_el_02",
+  "en_boss_gate_adult_el_03",
+  "en_boss_gate_adult_el_04",
+  "en_boss_gate_adult_el_05",
+  "en_boss_gate_adult_el_06",
+  "en_boss_gate_adult_el_07",
+  "en_boss_gate_adult_hit_00",
+  "en_boss_gate_adult_hit_01",
+  "en_boss_gate_adult_idle_00",
+  "en_boss_gate_adult_idle_01",
+  "en_boss_gate_adult_idle_02",
+  "en_boss_gate_adult_idle_03",
+  "en_boss_gate_adult_walk_00",
+  "en_boss_gate_adult_walk_01",
+  "en_boss_gate_adult_walk_02",
+  "en_boss_gate_adult_walk_03",
+  "en_boss_gate_adult_walk_04",
+  "en_boss_gate_adult_walk_05",
+  "en_boss_gate_adult_walk_06",
+  "en_boss_gate_adult_walk_07"
+ ],
+ "standing": [
+  "en_boss_gate_adult_idle_00",
+  "en_boss_gate_adult_idle_01",
+  "en_boss_gate_adult_idle_02",
+  "en_boss_gate_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 0,
+   "attack": {
+    "frames": [
+     "en_boss_gate_adult_a1_00",
+     "en_boss_gate_adult_a1_01",
+     "en_boss_gate_adult_a1_02",
+     "en_boss_gate_adult_a1_03",
+     "en_boss_gate_adult_a1_04",
+     "en_boss_gate_adult_a1_05",
+     "en_boss_gate_adult_a1_06",
+     "en_boss_gate_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_gate_adult_down_00",
+     "en_boss_gate_adult_down_01",
+     "en_boss_gate_adult_down_02",
+     "en_boss_gate_adult_down_03",
+     "en_boss_gate_adult_down_04",
+     "en_boss_gate_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_gate_adult_el_00",
+     "en_boss_gate_adult_el_01",
+     "en_boss_gate_adult_el_02",
+     "en_boss_gate_adult_el_03",
+     "en_boss_gate_adult_el_04",
+     "en_boss_gate_adult_el_05",
+     "en_boss_gate_adult_el_06",
+     "en_boss_gate_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "en_boss_gate_adult_hit_00",
+     "en_boss_gate_adult_hit_01"
+    ],
+    "durs": [
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_gate_adult_idle_00",
+     "en_boss_gate_adult_idle_01",
+     "en_boss_gate_adult_idle_02",
+     "en_boss_gate_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_boss_gate_adult_walk_00",
+     "en_boss_gate_adult_walk_01",
+     "en_boss_gate_adult_walk_02",
+     "en_boss_gate_adult_walk_03",
+     "en_boss_gate_adult_walk_04",
+     "en_boss_gate_adult_walk_05",
+     "en_boss_gate_adult_walk_06",
+     "en_boss_gate_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_boss_gate_adult_down_00",
+     "en_boss_gate_adult_down_01",
+     "en_boss_gate_adult_down_02",
+     "en_boss_gate_adult_down_03",
+     "en_boss_gate_adult_down_04",
+     "en_boss_gate_adult_down_05",
+     "en_boss_gate_adult_down_04",
+     "en_boss_gate_adult_down_03",
+     "en_boss_gate_adult_down_02",
+     "en_boss_gate_adult_down_01",
+     "en_boss_gate_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

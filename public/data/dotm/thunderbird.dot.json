@@ -1,0 +1,668 @@
+{
+ "note": "ch_thunderbird 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "thunderbird",
+ "sheet": "dot-m-thunderbird",
+ "file": "assets/dotm/thunderbird.png",
+ "frameW": 109,
+ "frameH": 118,
+ "foot": 114,
+ "cols": 1,
+ "anchorX": 53,
+ "palette": [
+  "#27294b",
+  "#291a1f",
+  "#2e355c",
+  "#382420",
+  "#384067",
+  "#404d78",
+  "#45414a",
+  "#546388",
+  "#664321",
+  "#80663e",
+  "#b48c47",
+  "#c8b17f",
+  "#cea44c",
+  "#e2b657",
+  "#f3d15a",
+  "#f6e388"
+ ],
+ "rects": {
+  "ch_thunderbird_adult_a1_00": [
+   482,
+   0,
+   93,
+   76,
+   -43,
+   -75
+  ],
+  "ch_thunderbird_adult_a1_01": [
+   648,
+   115,
+   106,
+   55,
+   -50,
+   -63
+  ],
+  "ch_thunderbird_adult_a1_02": [
+   755,
+   115,
+   83,
+   55,
+   -36,
+   -70
+  ],
+  "ch_thunderbird_adult_a1_03": [
+   1648,
+   0,
+   66,
+   60,
+   -27,
+   -74
+  ],
+  "ch_thunderbird_adult_a1_04": [
+   293,
+   115,
+   69,
+   57,
+   -29,
+   -74
+  ],
+  "ch_thunderbird_adult_a1_05": [
+   945,
+   115,
+   77,
+   53,
+   -34,
+   -71
+  ],
+  "ch_thunderbird_adult_a1_06": [
+   363,
+   115,
+   104,
+   57,
+   -50,
+   -64
+  ],
+  "ch_thunderbird_adult_a1_07": [
+   659,
+   0,
+   89,
+   75,
+   -43,
+   -73
+  ],
+  "ch_thunderbird_adult_a2_00": [
+   1007,
+   0,
+   95,
+   70,
+   -46,
+   -71
+  ],
+  "ch_thunderbird_adult_a2_01": [
+   839,
+   115,
+   105,
+   54,
+   -51,
+   -59
+  ],
+  "ch_thunderbird_adult_a2_02": [
+   1763,
+   115,
+   93,
+   49,
+   -41,
+   -62
+  ],
+  "ch_thunderbird_adult_a2_03": [
+   1023,
+   115,
+   71,
+   52,
+   -28,
+   -66
+  ],
+  "ch_thunderbird_adult_a2_04": [
+   1295,
+   115,
+   80,
+   51,
+   -32,
+   -68
+  ],
+  "ch_thunderbird_adult_a2_05": [
+   1095,
+   115,
+   100,
+   52,
+   -48,
+   -64
+  ],
+  "ch_thunderbird_adult_a2_06": [
+   468,
+   115,
+   104,
+   56,
+   -53,
+   -61
+  ],
+  "ch_thunderbird_adult_a2_07": [
+   1289,
+   0,
+   86,
+   69,
+   -44,
+   -69
+  ],
+  "ch_thunderbird_adult_down_00": [
+   1103,
+   0,
+   90,
+   70,
+   -45,
+   -71
+  ],
+  "ch_thunderbird_adult_down_01": [
+   1196,
+   115,
+   98,
+   52,
+   -50,
+   -60
+  ],
+  "ch_thunderbird_adult_down_02": [
+   1376,
+   115,
+   89,
+   51,
+   -45,
+   -61
+  ],
+  "ch_thunderbird_adult_down_03": [
+   1857,
+   115,
+   80,
+   49,
+   -40,
+   -55
+  ],
+  "ch_thunderbird_adult_down_04": [
+   1938,
+   115,
+   81,
+   35,
+   -35,
+   -42
+  ],
+  "ch_thunderbird_adult_down_05": [
+   0,
+   174,
+   84,
+   29,
+   -39,
+   -29
+  ],
+  "ch_thunderbird_adult_el_00": [
+   1471,
+   0,
+   90,
+   66,
+   -47,
+   -65
+  ],
+  "ch_thunderbird_adult_el_01": [
+   155,
+   0,
+   83,
+   81,
+   -43,
+   -85
+  ],
+  "ch_thunderbird_adult_el_02": [
+   1715,
+   0,
+   84,
+   59,
+   -45,
+   -68
+  ],
+  "ch_thunderbird_adult_el_03": [
+   0,
+   115,
+   85,
+   58,
+   -46,
+   -66
+  ],
+  "ch_thunderbird_adult_el_04": [
+   1800,
+   0,
+   83,
+   59,
+   -43,
+   -67
+  ],
+  "ch_thunderbird_adult_el_05": [
+   1562,
+   0,
+   85,
+   62,
+   -45,
+   -64
+  ],
+  "ch_thunderbird_adult_el_06": [
+   832,
+   0,
+   82,
+   73,
+   -42,
+   -72
+  ],
+  "ch_thunderbird_adult_el_07": [
+   576,
+   0,
+   82,
+   76,
+   -41,
+   -74
+  ],
+  "ch_thunderbird_adult_hit_00": [
+   399,
+   0,
+   82,
+   79,
+   -40,
+   -77
+  ],
+  "ch_thunderbird_adult_hit_01": [
+   1194,
+   0,
+   94,
+   70,
+   -47,
+   -72
+  ],
+  "ch_thunderbird_adult_hit_02": [
+   1884,
+   0,
+   101,
+   59,
+   -51,
+   -65
+  ],
+  "ch_thunderbird_adult_hit_03": [
+   86,
+   115,
+   102,
+   58,
+   -50,
+   -58
+  ],
+  "ch_thunderbird_adult_idle_00": [
+   749,
+   0,
+   82,
+   75,
+   -41,
+   -75
+  ],
+  "ch_thunderbird_adult_idle_01": [
+   0,
+   0,
+   77,
+   114,
+   -38,
+   -115
+  ],
+  "ch_thunderbird_adult_idle_02": [
+   78,
+   0,
+   76,
+   111,
+   -37,
+   -111
+  ],
+  "ch_thunderbird_adult_idle_03": [
+   239,
+   0,
+   79,
+   80,
+   -39,
+   -78
+  ],
+  "ch_thunderbird_adult_walk_00": [
+   915,
+   0,
+   91,
+   72,
+   -45,
+   -72
+  ],
+  "ch_thunderbird_adult_walk_01": [
+   1466,
+   115,
+   99,
+   51,
+   -48,
+   -56
+  ],
+  "ch_thunderbird_adult_walk_02": [
+   1566,
+   115,
+   96,
+   51,
+   -46,
+   -60
+  ],
+  "ch_thunderbird_adult_walk_03": [
+   573,
+   115,
+   74,
+   56,
+   -35,
+   -61
+  ],
+  "ch_thunderbird_adult_walk_04": [
+   1663,
+   115,
+   99,
+   50,
+   -48,
+   -59
+  ],
+  "ch_thunderbird_adult_walk_05": [
+   189,
+   115,
+   103,
+   58,
+   -51,
+   -61
+  ],
+  "ch_thunderbird_adult_walk_06": [
+   1376,
+   0,
+   94,
+   67,
+   -48,
+   -66
+  ],
+  "ch_thunderbird_adult_walk_07": [
+   319,
+   0,
+   79,
+   80,
+   -39,
+   -78
+  ]
+ },
+ "frames": [
+  "ch_thunderbird_adult_a1_00",
+  "ch_thunderbird_adult_a1_01",
+  "ch_thunderbird_adult_a1_02",
+  "ch_thunderbird_adult_a1_03",
+  "ch_thunderbird_adult_a1_04",
+  "ch_thunderbird_adult_a1_05",
+  "ch_thunderbird_adult_a1_06",
+  "ch_thunderbird_adult_a1_07",
+  "ch_thunderbird_adult_a2_00",
+  "ch_thunderbird_adult_a2_01",
+  "ch_thunderbird_adult_a2_02",
+  "ch_thunderbird_adult_a2_03",
+  "ch_thunderbird_adult_a2_04",
+  "ch_thunderbird_adult_a2_05",
+  "ch_thunderbird_adult_a2_06",
+  "ch_thunderbird_adult_a2_07",
+  "ch_thunderbird_adult_down_00",
+  "ch_thunderbird_adult_down_01",
+  "ch_thunderbird_adult_down_02",
+  "ch_thunderbird_adult_down_03",
+  "ch_thunderbird_adult_down_04",
+  "ch_thunderbird_adult_down_05",
+  "ch_thunderbird_adult_el_00",
+  "ch_thunderbird_adult_el_01",
+  "ch_thunderbird_adult_el_02",
+  "ch_thunderbird_adult_el_03",
+  "ch_thunderbird_adult_el_04",
+  "ch_thunderbird_adult_el_05",
+  "ch_thunderbird_adult_el_06",
+  "ch_thunderbird_adult_el_07",
+  "ch_thunderbird_adult_hit_00",
+  "ch_thunderbird_adult_hit_01",
+  "ch_thunderbird_adult_hit_02",
+  "ch_thunderbird_adult_hit_03",
+  "ch_thunderbird_adult_idle_00",
+  "ch_thunderbird_adult_idle_01",
+  "ch_thunderbird_adult_idle_02",
+  "ch_thunderbird_adult_idle_03",
+  "ch_thunderbird_adult_walk_00",
+  "ch_thunderbird_adult_walk_01",
+  "ch_thunderbird_adult_walk_02",
+  "ch_thunderbird_adult_walk_03",
+  "ch_thunderbird_adult_walk_04",
+  "ch_thunderbird_adult_walk_05",
+  "ch_thunderbird_adult_walk_06",
+  "ch_thunderbird_adult_walk_07"
+ ],
+ "standing": [
+  "ch_thunderbird_adult_idle_00",
+  "ch_thunderbird_adult_idle_01",
+  "ch_thunderbird_adult_idle_02",
+  "ch_thunderbird_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 0,
+   "attack": {
+    "frames": [
+     "ch_thunderbird_adult_a1_00",
+     "ch_thunderbird_adult_a1_01",
+     "ch_thunderbird_adult_a1_02",
+     "ch_thunderbird_adult_a1_03",
+     "ch_thunderbird_adult_a1_04",
+     "ch_thunderbird_adult_a1_05",
+     "ch_thunderbird_adult_a1_06",
+     "ch_thunderbird_adult_a1_07"
+    ],
+    "durs": [
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.114,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_thunderbird_adult_a2_00",
+     "ch_thunderbird_adult_a2_01",
+     "ch_thunderbird_adult_a2_02",
+     "ch_thunderbird_adult_a2_03",
+     "ch_thunderbird_adult_a2_04",
+     "ch_thunderbird_adult_a2_05",
+     "ch_thunderbird_adult_a2_06",
+     "ch_thunderbird_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_thunderbird_adult_down_00",
+     "ch_thunderbird_adult_down_01",
+     "ch_thunderbird_adult_down_02",
+     "ch_thunderbird_adult_down_03",
+     "ch_thunderbird_adult_down_04",
+     "ch_thunderbird_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_thunderbird_adult_el_00",
+     "ch_thunderbird_adult_el_01",
+     "ch_thunderbird_adult_el_02",
+     "ch_thunderbird_adult_el_03",
+     "ch_thunderbird_adult_el_04",
+     "ch_thunderbird_adult_el_05",
+     "ch_thunderbird_adult_el_06",
+     "ch_thunderbird_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 2,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.185,
+      "cast"
+     ],
+     [
+      0.195,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_thunderbird_adult_hit_00",
+     "ch_thunderbird_adult_hit_01",
+     "ch_thunderbird_adult_hit_02",
+     "ch_thunderbird_adult_hit_03"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_thunderbird_adult_idle_00",
+     "ch_thunderbird_adult_idle_01",
+     "ch_thunderbird_adult_idle_02",
+     "ch_thunderbird_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_thunderbird_adult_walk_00",
+     "ch_thunderbird_adult_walk_01",
+     "ch_thunderbird_adult_walk_02",
+     "ch_thunderbird_adult_walk_03",
+     "ch_thunderbird_adult_walk_04",
+     "ch_thunderbird_adult_walk_05",
+     "ch_thunderbird_adult_walk_06",
+     "ch_thunderbird_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_thunderbird_adult_down_00",
+     "ch_thunderbird_adult_down_01",
+     "ch_thunderbird_adult_down_02",
+     "ch_thunderbird_adult_down_03",
+     "ch_thunderbird_adult_down_04",
+     "ch_thunderbird_adult_down_05",
+     "ch_thunderbird_adult_down_04",
+     "ch_thunderbird_adult_down_03",
+     "ch_thunderbird_adult_down_02",
+     "ch_thunderbird_adult_down_01",
+     "ch_thunderbird_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "thunderbird"
+}

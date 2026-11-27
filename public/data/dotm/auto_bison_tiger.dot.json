@@ -1,0 +1,676 @@
+{
+ "note": "ch_bison_tiger 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "auto_bison_tiger",
+ "sheet": "dot-m-auto_bison_tiger",
+ "file": "assets/dotm/auto_bison_tiger.png",
+ "frameW": 117,
+ "frameH": 92,
+ "foot": 89,
+ "cols": 1,
+ "anchorX": 59,
+ "palette": [
+  "#291a1f",
+  "#2f0506",
+  "#3a3439",
+  "#4d1209",
+  "#4d2317",
+  "#545057",
+  "#76767e",
+  "#7e372a",
+  "#b04b2e",
+  "#c1643c",
+  "#c74b2a",
+  "#cf8a6f",
+  "#da5c28",
+  "#e78442",
+  "#f37930",
+  "#fa8b34"
+ ],
+ "rects": {
+  "ch_bison_tiger_adult_a1_00": [
+   1880,
+   89,
+   100,
+   80,
+   -48,
+   -82
+  ],
+  "ch_bison_tiger_adult_a1_01": [
+   622,
+   0,
+   100,
+   84,
+   -48,
+   -86
+  ],
+  "ch_bison_tiger_adult_a1_02": [
+   0,
+   0,
+   101,
+   88,
+   -50,
+   -90
+  ],
+  "ch_bison_tiger_adult_a1_03": [
+   102,
+   0,
+   104,
+   88,
+   -54,
+   -90
+  ],
+  "ch_bison_tiger_adult_a1_04": [
+   207,
+   0,
+   106,
+   88,
+   -56,
+   -90
+  ],
+  "ch_bison_tiger_adult_a1_05": [
+   314,
+   0,
+   108,
+   85,
+   -57,
+   -87
+  ],
+  "ch_bison_tiger_adult_a1_06": [
+   1653,
+   0,
+   105,
+   82,
+   -53,
+   -84
+  ],
+  "ch_bison_tiger_adult_a1_07": [
+   1358,
+   89,
+   106,
+   81,
+   -54,
+   -81
+  ],
+  "ch_bison_tiger_adult_a2_00": [
+   1759,
+   0,
+   100,
+   82,
+   -48,
+   -82
+  ],
+  "ch_bison_tiger_adult_a2_01": [
+   1465,
+   89,
+   98,
+   81,
+   -45,
+   -81
+  ],
+  "ch_bison_tiger_adult_a2_02": [
+   938,
+   0,
+   96,
+   83,
+   -46,
+   -85
+  ],
+  "ch_bison_tiger_adult_a2_03": [
+   423,
+   0,
+   97,
+   85,
+   -49,
+   -87
+  ],
+  "ch_bison_tiger_adult_a2_04": [
+   521,
+   0,
+   100,
+   85,
+   -51,
+   -87
+  ],
+  "ch_bison_tiger_adult_a2_05": [
+   1035,
+   0,
+   102,
+   83,
+   -52,
+   -85
+  ],
+  "ch_bison_tiger_adult_a2_06": [
+   1564,
+   89,
+   109,
+   81,
+   -57,
+   -81
+  ],
+  "ch_bison_tiger_adult_a2_07": [
+   1860,
+   0,
+   107,
+   82,
+   -55,
+   -82
+  ],
+  "ch_bison_tiger_adult_down_00": [
+   1674,
+   89,
+   102,
+   81,
+   -48,
+   -81
+  ],
+  "ch_bison_tiger_adult_down_01": [
+   0,
+   172,
+   101,
+   79,
+   -46,
+   -79
+  ],
+  "ch_bison_tiger_adult_down_02": [
+   209,
+   172,
+   103,
+   77,
+   -49,
+   -77
+  ],
+  "ch_bison_tiger_adult_down_03": [
+   313,
+   172,
+   114,
+   72,
+   -56,
+   -72
+  ],
+  "ch_bison_tiger_adult_down_04": [
+   428,
+   172,
+   112,
+   67,
+   -54,
+   -67
+  ],
+  "ch_bison_tiger_adult_down_05": [
+   541,
+   172,
+   111,
+   65,
+   -54,
+   -64
+  ],
+  "ch_bison_tiger_adult_down_06": [
+   653,
+   172,
+   114,
+   65,
+   -57,
+   -64
+  ],
+  "ch_bison_tiger_adult_down_07": [
+   768,
+   172,
+   115,
+   64,
+   -58,
+   -63
+  ],
+  "ch_bison_tiger_adult_el_00": [
+   0,
+   89,
+   103,
+   82,
+   -51,
+   -82
+  ],
+  "ch_bison_tiger_adult_el_01": [
+   1777,
+   89,
+   102,
+   81,
+   -50,
+   -83
+  ],
+  "ch_bison_tiger_adult_el_02": [
+   1138,
+   0,
+   103,
+   83,
+   -52,
+   -85
+  ],
+  "ch_bison_tiger_adult_el_03": [
+   723,
+   0,
+   105,
+   84,
+   -55,
+   -86
+  ],
+  "ch_bison_tiger_adult_el_04": [
+   829,
+   0,
+   108,
+   84,
+   -58,
+   -86
+  ],
+  "ch_bison_tiger_adult_el_05": [
+   1242,
+   0,
+   110,
+   83,
+   -59,
+   -85
+  ],
+  "ch_bison_tiger_adult_el_06": [
+   104,
+   89,
+   107,
+   82,
+   -55,
+   -84
+  ],
+  "ch_bison_tiger_adult_el_07": [
+   212,
+   89,
+   106,
+   82,
+   -54,
+   -82
+  ],
+  "ch_bison_tiger_adult_hit_00": [
+   102,
+   172,
+   106,
+   79,
+   -55,
+   -83
+  ],
+  "ch_bison_tiger_adult_hit_01": [
+   319,
+   89,
+   106,
+   82,
+   -54,
+   -82
+  ],
+  "ch_bison_tiger_adult_idle_00": [
+   426,
+   89,
+   105,
+   82,
+   -53,
+   -82
+  ],
+  "ch_bison_tiger_adult_idle_01": [
+   532,
+   89,
+   105,
+   82,
+   -53,
+   -82
+  ],
+  "ch_bison_tiger_adult_idle_02": [
+   638,
+   89,
+   105,
+   82,
+   -53,
+   -82
+  ],
+  "ch_bison_tiger_adult_idle_03": [
+   744,
+   89,
+   104,
+   82,
+   -52,
+   -82
+  ],
+  "ch_bison_tiger_adult_walk_00": [
+   849,
+   89,
+   103,
+   82,
+   -51,
+   -82
+  ],
+  "ch_bison_tiger_adult_walk_01": [
+   1353,
+   0,
+   101,
+   83,
+   -49,
+   -83
+  ],
+  "ch_bison_tiger_adult_walk_02": [
+   1455,
+   0,
+   99,
+   83,
+   -47,
+   -84
+  ],
+  "ch_bison_tiger_adult_walk_03": [
+   953,
+   89,
+   97,
+   82,
+   -45,
+   -83
+  ],
+  "ch_bison_tiger_adult_walk_04": [
+   1555,
+   0,
+   97,
+   83,
+   -45,
+   -84
+  ],
+  "ch_bison_tiger_adult_walk_05": [
+   1051,
+   89,
+   99,
+   82,
+   -47,
+   -83
+  ],
+  "ch_bison_tiger_adult_walk_06": [
+   1151,
+   89,
+   101,
+   82,
+   -49,
+   -82
+  ],
+  "ch_bison_tiger_adult_walk_07": [
+   1253,
+   89,
+   104,
+   82,
+   -52,
+   -82
+  ]
+ },
+ "frames": [
+  "ch_bison_tiger_adult_a1_00",
+  "ch_bison_tiger_adult_a1_01",
+  "ch_bison_tiger_adult_a1_02",
+  "ch_bison_tiger_adult_a1_03",
+  "ch_bison_tiger_adult_a1_04",
+  "ch_bison_tiger_adult_a1_05",
+  "ch_bison_tiger_adult_a1_06",
+  "ch_bison_tiger_adult_a1_07",
+  "ch_bison_tiger_adult_a2_00",
+  "ch_bison_tiger_adult_a2_01",
+  "ch_bison_tiger_adult_a2_02",
+  "ch_bison_tiger_adult_a2_03",
+  "ch_bison_tiger_adult_a2_04",
+  "ch_bison_tiger_adult_a2_05",
+  "ch_bison_tiger_adult_a2_06",
+  "ch_bison_tiger_adult_a2_07",
+  "ch_bison_tiger_adult_down_00",
+  "ch_bison_tiger_adult_down_01",
+  "ch_bison_tiger_adult_down_02",
+  "ch_bison_tiger_adult_down_03",
+  "ch_bison_tiger_adult_down_04",
+  "ch_bison_tiger_adult_down_05",
+  "ch_bison_tiger_adult_down_06",
+  "ch_bison_tiger_adult_down_07",
+  "ch_bison_tiger_adult_el_00",
+  "ch_bison_tiger_adult_el_01",
+  "ch_bison_tiger_adult_el_02",
+  "ch_bison_tiger_adult_el_03",
+  "ch_bison_tiger_adult_el_04",
+  "ch_bison_tiger_adult_el_05",
+  "ch_bison_tiger_adult_el_06",
+  "ch_bison_tiger_adult_el_07",
+  "ch_bison_tiger_adult_hit_00",
+  "ch_bison_tiger_adult_hit_01",
+  "ch_bison_tiger_adult_idle_00",
+  "ch_bison_tiger_adult_idle_01",
+  "ch_bison_tiger_adult_idle_02",
+  "ch_bison_tiger_adult_idle_03",
+  "ch_bison_tiger_adult_walk_00",
+  "ch_bison_tiger_adult_walk_01",
+  "ch_bison_tiger_adult_walk_02",
+  "ch_bison_tiger_adult_walk_03",
+  "ch_bison_tiger_adult_walk_04",
+  "ch_bison_tiger_adult_walk_05",
+  "ch_bison_tiger_adult_walk_06",
+  "ch_bison_tiger_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bison_tiger_adult_idle_00",
+  "ch_bison_tiger_adult_idle_01",
+  "ch_bison_tiger_adult_idle_02",
+  "ch_bison_tiger_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 8,
+   "attack": {
+    "frames": [
+     "ch_bison_tiger_adult_a1_00",
+     "ch_bison_tiger_adult_a1_01",
+     "ch_bison_tiger_adult_a1_02",
+     "ch_bison_tiger_adult_a1_03",
+     "ch_bison_tiger_adult_a1_04",
+     "ch_bison_tiger_adult_a1_05",
+     "ch_bison_tiger_adult_a1_06",
+     "ch_bison_tiger_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bison_tiger_adult_a2_00",
+     "ch_bison_tiger_adult_a2_01",
+     "ch_bison_tiger_adult_a2_02",
+     "ch_bison_tiger_adult_a2_03",
+     "ch_bison_tiger_adult_a2_04",
+     "ch_bison_tiger_adult_a2_05",
+     "ch_bison_tiger_adult_a2_06",
+     "ch_bison_tiger_adult_a2_07"
+    ],
+    "durs": [
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.114,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bison_tiger_adult_down_00",
+     "ch_bison_tiger_adult_down_01",
+     "ch_bison_tiger_adult_down_02",
+     "ch_bison_tiger_adult_down_03",
+     "ch_bison_tiger_adult_down_04",
+     "ch_bison_tiger_adult_down_05",
+     "ch_bison_tiger_adult_down_06",
+     "ch_bison_tiger_adult_down_07"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_bison_tiger_adult_el_00",
+     "ch_bison_tiger_adult_el_01",
+     "ch_bison_tiger_adult_el_02",
+     "ch_bison_tiger_adult_el_03",
+     "ch_bison_tiger_adult_el_04",
+     "ch_bison_tiger_adult_el_05",
+     "ch_bison_tiger_adult_el_06",
+     "ch_bison_tiger_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.248,
+      "cast"
+     ],
+     [
+      0.258,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bison_tiger_adult_hit_00",
+     "ch_bison_tiger_adult_hit_01"
+    ],
+    "durs": [
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bison_tiger_adult_idle_00",
+     "ch_bison_tiger_adult_idle_01",
+     "ch_bison_tiger_adult_idle_02",
+     "ch_bison_tiger_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bison_tiger_adult_walk_00",
+     "ch_bison_tiger_adult_walk_01",
+     "ch_bison_tiger_adult_walk_02",
+     "ch_bison_tiger_adult_walk_03",
+     "ch_bison_tiger_adult_walk_04",
+     "ch_bison_tiger_adult_walk_05",
+     "ch_bison_tiger_adult_walk_06",
+     "ch_bison_tiger_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bison_tiger_adult_down_00",
+     "ch_bison_tiger_adult_down_01",
+     "ch_bison_tiger_adult_down_02",
+     "ch_bison_tiger_adult_down_03",
+     "ch_bison_tiger_adult_down_04",
+     "ch_bison_tiger_adult_down_05",
+     "ch_bison_tiger_adult_down_06",
+     "ch_bison_tiger_adult_down_07",
+     "ch_bison_tiger_adult_down_06",
+     "ch_bison_tiger_adult_down_05",
+     "ch_bison_tiger_adult_down_04",
+     "ch_bison_tiger_adult_down_03",
+     "ch_bison_tiger_adult_down_02",
+     "ch_bison_tiger_adult_down_01",
+     "ch_bison_tiger_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bison_tiger"
+}

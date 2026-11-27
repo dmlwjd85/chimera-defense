@@ -1,0 +1,638 @@
+{
+ "note": "ch_bullfrog 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "bullfrog",
+ "sheet": "dot-m-bullfrog",
+ "file": "assets/dotm/bullfrog.png",
+ "frameW": 113,
+ "frameH": 119,
+ "foot": 115,
+ "cols": 1,
+ "anchorX": 57,
+ "palette": [
+  "#1a1706",
+  "#291a1f",
+  "#374b2a",
+  "#426538",
+  "#518041",
+  "#5a291f",
+  "#6eaa40",
+  "#719955",
+  "#795342",
+  "#834628",
+  "#88bd5d",
+  "#976948",
+  "#9baf70",
+  "#b79877",
+  "#c9e092",
+  "#f8f6e7"
+ ],
+ "rects": {
+  "ch_bullfrog_adult_a1_00": [
+   1906,
+   115,
+   99,
+   88,
+   -49,
+   -88
+  ],
+  "ch_bullfrog_adult_a1_01": [
+   1121,
+   0,
+   101,
+   101,
+   -51,
+   -100
+  ],
+  "ch_bullfrog_adult_a1_02": [
+   510,
+   0,
+   105,
+   108,
+   -52,
+   -107
+  ],
+  "ch_bullfrog_adult_a1_03": [
+   296,
+   0,
+   106,
+   110,
+   -53,
+   -109
+  ],
+  "ch_bullfrog_adult_a1_04": [
+   403,
+   0,
+   106,
+   110,
+   -53,
+   -109
+  ],
+  "ch_bullfrog_adult_a1_05": [
+   814,
+   0,
+   100,
+   105,
+   -51,
+   -104
+  ],
+  "ch_bullfrog_adult_a1_06": [
+   1643,
+   0,
+   100,
+   98,
+   -50,
+   -98
+  ],
+  "ch_bullfrog_adult_a1_07": [
+   807,
+   115,
+   99,
+   92,
+   -49,
+   -92
+  ],
+  "ch_bullfrog_adult_a2_00": [
+   1843,
+   0,
+   97,
+   95,
+   -47,
+   -94
+  ],
+  "ch_bullfrog_adult_a2_01": [
+   716,
+   0,
+   97,
+   106,
+   -47,
+   -108
+  ],
+  "ch_bullfrog_adult_a2_02": [
+   1015,
+   0,
+   105,
+   103,
+   -52,
+   -113
+  ],
+  "ch_bullfrog_adult_a2_03": [
+   1223,
+   0,
+   111,
+   100,
+   -57,
+   -116
+  ],
+  "ch_bullfrog_adult_a2_04": [
+   1437,
+   0,
+   108,
+   99,
+   -54,
+   -113
+  ],
+  "ch_bullfrog_adult_a2_05": [
+   1335,
+   0,
+   101,
+   100,
+   -50,
+   -104
+  ],
+  "ch_bullfrog_adult_a2_06": [
+   1546,
+   0,
+   96,
+   99,
+   -46,
+   -98
+  ],
+  "ch_bullfrog_adult_a2_07": [
+   907,
+   115,
+   99,
+   92,
+   -49,
+   -91
+  ],
+  "ch_bullfrog_adult_down_00": [
+   202,
+   115,
+   99,
+   94,
+   -51,
+   -92
+  ],
+  "ch_bullfrog_adult_down_01": [
+   302,
+   115,
+   100,
+   94,
+   -51,
+   -94
+  ],
+  "ch_bullfrog_adult_down_02": [
+   503,
+   115,
+   104,
+   93,
+   -48,
+   -93
+  ],
+  "ch_bullfrog_adult_down_03": [
+   0,
+   211,
+   100,
+   88,
+   -48,
+   -88
+  ],
+  "ch_bullfrog_adult_down_04": [
+   101,
+   211,
+   103,
+   84,
+   -49,
+   -83
+  ],
+  "ch_bullfrog_adult_down_05": [
+   205,
+   211,
+   103,
+   80,
+   -49,
+   -79
+  ],
+  "ch_bullfrog_adult_el_00": [
+   1307,
+   115,
+   98,
+   91,
+   -49,
+   -91
+  ],
+  "ch_bullfrog_adult_el_01": [
+   915,
+   0,
+   99,
+   104,
+   -47,
+   -104
+  ],
+  "ch_bullfrog_adult_el_02": [
+   98,
+   0,
+   98,
+   113,
+   -45,
+   -113
+  ],
+  "ch_bullfrog_adult_el_03": [
+   0,
+   0,
+   97,
+   114,
+   -45,
+   -114
+  ],
+  "ch_bullfrog_adult_el_04": [
+   197,
+   0,
+   98,
+   112,
+   -45,
+   -112
+  ],
+  "ch_bullfrog_adult_el_05": [
+   616,
+   0,
+   99,
+   107,
+   -47,
+   -107
+  ],
+  "ch_bullfrog_adult_el_06": [
+   1744,
+   0,
+   98,
+   98,
+   -49,
+   -98
+  ],
+  "ch_bullfrog_adult_el_07": [
+   1007,
+   115,
+   99,
+   92,
+   -49,
+   -92
+  ],
+  "ch_bullfrog_adult_hit_00": [
+   608,
+   115,
+   98,
+   93,
+   -48,
+   -92
+  ],
+  "ch_bullfrog_adult_idle_00": [
+   1606,
+   115,
+   99,
+   90,
+   -49,
+   -90
+  ],
+  "ch_bullfrog_adult_idle_01": [
+   1706,
+   115,
+   99,
+   90,
+   -49,
+   -90
+  ],
+  "ch_bullfrog_adult_idle_02": [
+   1806,
+   115,
+   99,
+   90,
+   -49,
+   -90
+  ],
+  "ch_bullfrog_adult_idle_03": [
+   1406,
+   115,
+   99,
+   91,
+   -49,
+   -91
+  ],
+  "ch_bullfrog_adult_walk_00": [
+   1107,
+   115,
+   99,
+   92,
+   -49,
+   -92
+  ],
+  "ch_bullfrog_adult_walk_01": [
+   403,
+   115,
+   99,
+   94,
+   -49,
+   -94
+  ],
+  "ch_bullfrog_adult_walk_02": [
+   1941,
+   0,
+   99,
+   95,
+   -49,
+   -95
+  ],
+  "ch_bullfrog_adult_walk_03": [
+   0,
+   115,
+   100,
+   95,
+   -49,
+   -95
+  ],
+  "ch_bullfrog_adult_walk_04": [
+   101,
+   115,
+   100,
+   95,
+   -49,
+   -95
+  ],
+  "ch_bullfrog_adult_walk_05": [
+   707,
+   115,
+   99,
+   93,
+   -49,
+   -93
+  ],
+  "ch_bullfrog_adult_walk_06": [
+   1207,
+   115,
+   99,
+   92,
+   -49,
+   -92
+  ],
+  "ch_bullfrog_adult_walk_07": [
+   1506,
+   115,
+   99,
+   91,
+   -49,
+   -91
+  ]
+ },
+ "frames": [
+  "ch_bullfrog_adult_a1_00",
+  "ch_bullfrog_adult_a1_01",
+  "ch_bullfrog_adult_a1_02",
+  "ch_bullfrog_adult_a1_03",
+  "ch_bullfrog_adult_a1_04",
+  "ch_bullfrog_adult_a1_05",
+  "ch_bullfrog_adult_a1_06",
+  "ch_bullfrog_adult_a1_07",
+  "ch_bullfrog_adult_a2_00",
+  "ch_bullfrog_adult_a2_01",
+  "ch_bullfrog_adult_a2_02",
+  "ch_bullfrog_adult_a2_03",
+  "ch_bullfrog_adult_a2_04",
+  "ch_bullfrog_adult_a2_05",
+  "ch_bullfrog_adult_a2_06",
+  "ch_bullfrog_adult_a2_07",
+  "ch_bullfrog_adult_down_00",
+  "ch_bullfrog_adult_down_01",
+  "ch_bullfrog_adult_down_02",
+  "ch_bullfrog_adult_down_03",
+  "ch_bullfrog_adult_down_04",
+  "ch_bullfrog_adult_down_05",
+  "ch_bullfrog_adult_el_00",
+  "ch_bullfrog_adult_el_01",
+  "ch_bullfrog_adult_el_02",
+  "ch_bullfrog_adult_el_03",
+  "ch_bullfrog_adult_el_04",
+  "ch_bullfrog_adult_el_05",
+  "ch_bullfrog_adult_el_06",
+  "ch_bullfrog_adult_el_07",
+  "ch_bullfrog_adult_hit_00",
+  "ch_bullfrog_adult_idle_00",
+  "ch_bullfrog_adult_idle_01",
+  "ch_bullfrog_adult_idle_02",
+  "ch_bullfrog_adult_idle_03",
+  "ch_bullfrog_adult_walk_00",
+  "ch_bullfrog_adult_walk_01",
+  "ch_bullfrog_adult_walk_02",
+  "ch_bullfrog_adult_walk_03",
+  "ch_bullfrog_adult_walk_04",
+  "ch_bullfrog_adult_walk_05",
+  "ch_bullfrog_adult_walk_06",
+  "ch_bullfrog_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bullfrog_adult_idle_00",
+  "ch_bullfrog_adult_idle_01",
+  "ch_bullfrog_adult_idle_02",
+  "ch_bullfrog_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 25,
+   "attack": {
+    "frames": [
+     "ch_bullfrog_adult_a1_00",
+     "ch_bullfrog_adult_a1_01",
+     "ch_bullfrog_adult_a1_02",
+     "ch_bullfrog_adult_a1_03",
+     "ch_bullfrog_adult_a1_04",
+     "ch_bullfrog_adult_a1_05",
+     "ch_bullfrog_adult_a1_06",
+     "ch_bullfrog_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bullfrog_adult_a2_00",
+     "ch_bullfrog_adult_a2_01",
+     "ch_bullfrog_adult_a2_02",
+     "ch_bullfrog_adult_a2_03",
+     "ch_bullfrog_adult_a2_04",
+     "ch_bullfrog_adult_a2_05",
+     "ch_bullfrog_adult_a2_06",
+     "ch_bullfrog_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bullfrog_adult_down_00",
+     "ch_bullfrog_adult_down_01",
+     "ch_bullfrog_adult_down_02",
+     "ch_bullfrog_adult_down_03",
+     "ch_bullfrog_adult_down_04",
+     "ch_bullfrog_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true,
+    "fx": {
+     "sink": 3
+    }
+   },
+   "skill": {
+    "frames": [
+     "ch_bullfrog_adult_el_00",
+     "ch_bullfrog_adult_el_01",
+     "ch_bullfrog_adult_el_02",
+     "ch_bullfrog_adult_el_03",
+     "ch_bullfrog_adult_el_04",
+     "ch_bullfrog_adult_el_05",
+     "ch_bullfrog_adult_el_06",
+     "ch_bullfrog_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.311,
+      "cast"
+     ],
+     [
+      0.321,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bullfrog_adult_hit_00"
+    ],
+    "durs": [
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bullfrog_adult_idle_00",
+     "ch_bullfrog_adult_idle_01",
+     "ch_bullfrog_adult_idle_02",
+     "ch_bullfrog_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bullfrog_adult_walk_00",
+     "ch_bullfrog_adult_walk_01",
+     "ch_bullfrog_adult_walk_02",
+     "ch_bullfrog_adult_walk_03",
+     "ch_bullfrog_adult_walk_04",
+     "ch_bullfrog_adult_walk_05",
+     "ch_bullfrog_adult_walk_06",
+     "ch_bullfrog_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bullfrog_adult_down_00",
+     "ch_bullfrog_adult_down_01",
+     "ch_bullfrog_adult_down_02",
+     "ch_bullfrog_adult_down_03",
+     "ch_bullfrog_adult_down_04",
+     "ch_bullfrog_adult_down_05",
+     "ch_bullfrog_adult_down_04",
+     "ch_bullfrog_adult_down_03",
+     "ch_bullfrog_adult_down_02",
+     "ch_bullfrog_adult_down_01",
+     "ch_bullfrog_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bullfrog"
+}

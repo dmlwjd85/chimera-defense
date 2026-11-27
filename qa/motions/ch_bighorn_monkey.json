@@ -1,0 +1,53 @@
+{
+ "species": "ch_bighorn_monkey",
+ "motions": {
+  "adult_a1": {
+   "n": 6,
+   "max|h%|": 3.7,
+   "foot±": 3
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 11.1,
+   "foot±": 22
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 42.0,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 39.5,
+   "foot±": 2
+  },
+  "adult_hit": {
+   "n": 2,
+   "max|h%|": 2.5,
+   "foot±": 2
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.2,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 3.7,
+   "foot±": 3
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   248
+  ],
+  "box": [
+   118,
+   117
+  ],
+  "frames": 42,
+  "colors": 16,
+  "px": 507904
+ }
+}

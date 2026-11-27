@@ -45,6 +45,15 @@ C = {
            'leaps forward and slashes with both front claws, then lands back in the start pose',
            'sweeps its fluffy tail around itself and grins slyly, then returns to the start pose'),
 }
+# 2순위 27종: 몸·공격·기술 문장은 chimera2_spec.py 한 곳에서 관리
+from chimera2_spec import C2
+C.update({k: ('a chibi ' + v[2].split(' ', 1)[1], 128, v[3], v[4], v[5]) for k, v in C2.items()})
+# 이야기 키메라 7종(recipes.json id 그대로): story_spec.py 한 곳에서 관리. 나는 셋은 걷기 대신 날갯짓
+from story_spec import S
+C.update({k: ('a chibi ' + v[2].split(' ', 1)[1], 128, v[3], v[4], v[5]) for k, v in S.items()})
+STORY = set(S)
+FLY = {k for k, v in S.items() if v[6]}
+
 FRAMES = {'idle': 4, 'walk': 8, 'a1': 8, 'a2': 8, 'el': 8, 'hit': 4, 'down': 8}
 LAST = {'idle', 'walk'}
 MOTIONS = ['idle', 'walk', 'a1', 'a2', 'el', 'hit', 'down']
@@ -52,12 +61,14 @@ MOTIONS = ['idle', 'walk', 'a1', 'a2', 'el', 'hit', 'down']
 
 def action(cid, m):
     who, can, a1, a2, el = C[cid]
-    if m == 'idle': t = f'{who} standing still, eyes blink once'
-    elif m == 'walk': t = (f'{who} hopping forward, the jelly body squishes and stretches' if cid == 'slime' else f'{who} walking forward with a steady gait')
+    if m == 'idle': t = (f'{who} hovering in the air, wings flapping slowly, eyes blink once' if cid in FLY else f'{who} standing still, eyes blink once')
+    elif m == 'walk': t = (f'{who} hopping forward, the jelly body squishes and stretches' if cid == 'slime' else
+                           f'{who} flapping its wings and flying forward, bobbing up and down' if cid in FLY else f'{who} walking forward with a steady gait')
     elif m == 'a1': t = f'{who} {a1}'
     elif m == 'a2': t = f'{who} {a2}'
     elif m == 'el': t = f'{who} {el}'
     elif m == 'hit': t = f'{who} gets hit: the whole body flinches backward with a pained squint, then recovers to the start pose'
+    elif cid in FLY: t = f'{who} gets knocked out of the air, tumbles and falls flat on the ground, eyes shut, lies still'
     else: t = (f'{who} melts and flattens into a jelly puddle with its eyes still on top, lies still' if cid == 'slime' else
                f'{who} gets knocked out: legs give way, ends lying flat on its side, eyes shut, completely still')
     return t + '. ' + COMMON
@@ -69,5 +80,10 @@ def jobs(ids):
 
 # 장 빼기(검수 2026-11-27): (id, 동작): [f01부터 0인 번호] — 덧그린 흰 별·자국·먼지가 있는 장만 뺌
 DROP = {
-    ('slime', 'a2'): [4, 5, 6], ('fox_tiger', 'hit'): [1], ('bear_monkey', 'a1'): [3, 4], ('bighorn_bison', 'hit'): [0, 2, 3],
+    ('slime', 'a2'): [4, 5, 6],
+    # 2순위 27종(2026-11-27 검수): 덧그린 표식·흰 자국이 있는 장
+    ('bear_bighorn', 'hit'): [2, 3], ('bear_bison', 'hit'): [0, 1], ('bear_rabbit', 'a1'): [3], ('bear_wolf', 'a1'): [1, 2, 3],
+    ('bighorn_dog', 'el'): [3, 4, 5], ('bighorn_dog', 'down'): [0, 1], ('bighorn_monkey', 'a1'): [3, 4], ('bighorn_monkey', 'hit'): [0, 1],
+    ('bison_fox', 'hit'): [0], ('bison_rabbit', 'down'): [1, 2], ('bison_tiger', 'hit'): [0, 1], ('bison_wolf', 'el'): [2, 3, 4], ('bison_wolf', 'hit'): [0, 1],
+    ('fox_rabbit', 'hit'): [0, 1, 2], ('rabbit_wolf', 'down'): [0, 1, 2], ('bear_tiger', 'hit'): [0, 1, 2], ('bullfrog', 'hit'): [0, 1, 2], ('fox_tiger', 'hit'): [1], ('bear_monkey', 'a1'): [3, 4], ('bighorn_bison', 'hit'): [0, 2, 3],
 }

@@ -10,7 +10,7 @@ import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__
 from myth_recolor import recolor   # 신화급 털색 다듬기(tools/pixellab/myth_recolor.json)
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pixellab'))
 from enemy_motion_spec import E as ENEMY, DROP as ENEMY_DROP   # 적(en_<id>): 단계 하나(adult), 칸 크기는 적마다
-from chimera_motion_spec import C as CHIM, DROP as CHIM_DROP     # 자동 키메라·슬라임(ch_<id>): 단계 하나(adult) → 시트 이름 auto_<짝> / slime
+from chimera_motion_spec import C as CHIM, DROP as CHIM_DROP, STORY as CHIM_STORY     # 자동 키메라·슬라임(ch_<id>): 단계 하나(adult) → 시트 이름 auto_<짝> / slime
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SRC = os.path.join(ROOT, 'art-src', 'pixellab')
@@ -22,7 +22,9 @@ FOOT_PAD = 6                                                   # 원화 발밑 =
 STAGE_OF = {'baby': 'young', 'teen': 'teen', 'adult': 'adult', 'myth': 'spirit'}
 # 동작 이름(게임) ← 주문 이름. 장 시간(초)
 CLIP = {'idle': ('idle', 0.16), 'walk': ('move', 0.085), 'a1': ('attack', 0.065), 'a2': ('attack2', 0.065),
-        'el': ('skill', 0.07), 'ult': ('ult', 0.07), 'hit': ('hit', 0.06), 'down': ('down', 0.08)}
+        'el': ('skill', 0.07), 'ult': ('ult', 0.07), 'hit': ('hit', 0.06), 'down': ('down', 0.08),
+        # 돌파·막기(2026-11-27, tools/pixellab/intercept_spec.py): 점프 · 막아서기 · 다리걸기 · 발목잡기
+        'leap': ('leap', 0.07), 'block': ('block', 0.075), 'sweep': ('sweep', 0.065), 'grab': ('grab', 0.07)}
 ATTACKS = {'a1', 'a2', 'el', 'ult'}
 FLYERS = {'eagle', 'crow'}
 MIN_BLOB = 14   # 이보다 작은 떨어진 덩어리는 지움(외딴 점·찌꺼기)
@@ -180,8 +182,20 @@ def build(sp):
                     if m in ('el', 'ult'): clip['events'].append([round(t_hit + 0.01, 3), 'hit'])
                 sset[name] = clip
                 report['motions'][f'{st}_{m}'] = {'n': len(ims), 'max|h%|': max(abs(r['h%']) for r in q), 'foot±': max(abs(r['foot']) for r in q)}
+            # 보스 단계 그림(en_<id>_t1/_t2)은 대기·공격·기술·쓰러짐만 주문함 → 걷기·맞기는 자기 대기 장을 그대로 씀(새 장 없음, 맞기는 번쩍임을 코드로)
+            if enemy and sp[-3:] in ('_t1', '_t2') and ('idle' in sset or 'move' in sset):
+                idf = (sset.get('idle') or sset['move'])['frames']
+                if 'move' not in sset: fr = (idf * 4)[:max(4, len(idf))]; sset['move'] = {'frames': fr, 'durs': [0.12] * len(fr), 'loop': True}
+                if 'hit' not in sset: sset['hit'] = {'frames': idf[:1], 'durs': [0.22]}
+            # 넘어짐(다리걸기·발목잡기 당함): 자기 쓰러짐 장을 앞으로 → 가장 낮은 장에서 멈춤 → 거꾸로(일어남). 새 장을 만들지 않고 순서만 씀
+            if 'down' in sset and 'fall' not in sset:
+                dfr = sset['down']['frames']
+                if len(dfr) >= 3:
+                    seq = dfr + dfr[-2::-1]
+                    durs = [0.06] * (len(dfr) - 1) + [0.5] + [0.05] * (len(dfr) - 1)
+                    sset['fall'] = {'frames': seq, 'durs': durs}
             # 나는 새(아기·성장기·성체)는 하늘에 떠 있는 동안 늘 날갯짓: 대기 = 날기 장을 조금 느리게
-            if (sp in FLYERS and st != 'myth' or enemy and ENEMY[sp[3:]][2]) and 'move' in sset and 'idle' not in sset:
+            if (sp in FLYERS and st != 'myth' or enemy and ENEMY[sp[3:]][2] or chim) and 'move' in sset and 'idle' not in sset:   # 키메라: 대기 장이 검수에서 빠진 나는 키메라(치즈 도둑)도
                 sset['idle'] = {**sset['move'], 'durs': [0.1] * len(sset['move']['frames']), 'loop': True}
             sets[st] = sset
         # 장마다 그림만 잘라(빈 곳 버림) 촘촘히 묶음: 폰 메모리. rects[이름] = [x, y, w, h, 왼쪽, 위] (왼쪽·위 = 기준점(가운데·발밑) 대비 칸 위치)
@@ -205,7 +219,7 @@ def build(sp):
         for n, im, st, lx, ty in cut:
             if '_idle_' in n: tops[st] = min(tops.get(st, 99999), foot + 1 + ty)   # 머리 높이(체력바 자리)는 대기 장으로
         key = sp if gname == 'main' else f'{sp}_spirit'
-        if chim: key = 'slime' if sp == 'ch_slime' else 'auto_' + sp[3:]   # 게임 쪽 이름(자동 키메라 레시피 id = auto_<짝>)
+        if chim: key = 'slime' if sp == 'ch_slime' else sp[3:] if sp[3:] in CHIM_STORY else 'auto_' + sp[3:]   # 게임 쪽 이름(자동 키메라 = auto_<짝>, 이야기 키메라 = recipes.json id)
         os.makedirs(os.path.join(PUB, 'assets', 'dotm'), exist_ok=True)
         S.save(os.path.join(PUB, 'assets', 'dotm', f'{key}.png'), optimize=True)
         used = sorted({'#%02x%02x%02x' % p[:3] for p in S.get_flattened_data() if p[3]})

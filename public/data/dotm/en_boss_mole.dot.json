@@ -1,0 +1,511 @@
+{
+ "note": "en_boss_mole 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_mole",
+ "sheet": "dot-m-en_boss_mole",
+ "file": "assets/dotm/en_boss_mole.png",
+ "frameW": 128,
+ "frameH": 93,
+ "foot": 89,
+ "cols": 1,
+ "anchorX": 62,
+ "palette": [
+  "#283051",
+  "#291a1f",
+  "#3d71b2",
+  "#5f3c35",
+  "#64545e",
+  "#6caec8",
+  "#7b3986",
+  "#7d797e",
+  "#7f5a4a",
+  "#926752",
+  "#a0deef",
+  "#b27b6a",
+  "#b5a8a8",
+  "#bb8972",
+  "#d4c4cc",
+  "#edc56f"
+ ],
+ "rects": {
+  "en_boss_mole_adult_a1_00": [
+   1244,
+   0,
+   108,
+   84,
+   -52,
+   -84
+  ],
+  "en_boss_mole_adult_a1_01": [
+   103,
+   92,
+   118,
+   81,
+   -56,
+   -81
+  ],
+  "en_boss_mole_adult_a1_02": [
+   222,
+   92,
+   116,
+   81,
+   -56,
+   -81
+  ],
+  "en_boss_mole_adult_a1_03": [
+   629,
+   92,
+   93,
+   78,
+   -55,
+   -78
+  ],
+  "en_boss_mole_adult_a1_04": [
+   1853,
+   0,
+   122,
+   82,
+   -56,
+   -81
+  ],
+  "en_boss_mole_adult_a1_05": [
+   339,
+   92,
+   118,
+   81,
+   -56,
+   -81
+  ],
+  "en_boss_mole_adult_a1_06": [
+   1548,
+   0,
+   115,
+   83,
+   -54,
+   -83
+  ],
+  "en_boss_mole_adult_a1_07": [
+   651,
+   0,
+   94,
+   86,
+   -46,
+   -86
+  ],
+  "en_boss_mole_adult_down_00": [
+   746,
+   0,
+   114,
+   86,
+   -57,
+   -86
+  ],
+  "en_boss_mole_adult_down_01": [
+   723,
+   92,
+   123,
+   76,
+   -57,
+   -76
+  ],
+  "en_boss_mole_adult_down_02": [
+   1137,
+   92,
+   125,
+   49,
+   -60,
+   -49
+  ],
+  "en_boss_mole_adult_down_03": [
+   1263,
+   92,
+   128,
+   46,
+   -62,
+   -44
+  ],
+  "en_boss_mole_adult_el_00": [
+   1664,
+   0,
+   98,
+   83,
+   -46,
+   -83
+  ],
+  "en_boss_mole_adult_el_01": [
+   458,
+   92,
+   90,
+   81,
+   -41,
+   -81
+  ],
+  "en_boss_mole_adult_el_02": [
+   847,
+   92,
+   80,
+   75,
+   -38,
+   -76
+  ],
+  "en_boss_mole_adult_el_03": [
+   1000,
+   92,
+   67,
+   72,
+   -30,
+   -72
+  ],
+  "en_boss_mole_adult_el_04": [
+   1068,
+   92,
+   68,
+   72,
+   -30,
+   -72
+  ],
+  "en_boss_mole_adult_el_05": [
+   928,
+   92,
+   71,
+   74,
+   -32,
+   -74
+  ],
+  "en_boss_mole_adult_el_06": [
+   549,
+   92,
+   79,
+   79,
+   -36,
+   -79
+  ],
+  "en_boss_mole_adult_el_07": [
+   1763,
+   0,
+   89,
+   83,
+   -41,
+   -83
+  ],
+  "en_boss_mole_adult_hit_00": [
+   861,
+   0,
+   104,
+   86,
+   -53,
+   -85
+  ],
+  "en_boss_mole_adult_hit_01": [
+   93,
+   0,
+   99,
+   89,
+   -50,
+   -88
+  ],
+  "en_boss_mole_adult_idle_00": [
+   1353,
+   0,
+   97,
+   84,
+   -48,
+   -84
+  ],
+  "en_boss_mole_adult_idle_01": [
+   0,
+   92,
+   102,
+   82,
+   -51,
+   -82
+  ],
+  "en_boss_mole_adult_idle_02": [
+   1451,
+   0,
+   96,
+   84,
+   -48,
+   -84
+  ],
+  "en_boss_mole_adult_idle_03": [
+   966,
+   0,
+   92,
+   86,
+   -46,
+   -86
+  ],
+  "en_boss_mole_adult_walk_00": [
+   193,
+   0,
+   91,
+   88,
+   -45,
+   -88
+  ],
+  "en_boss_mole_adult_walk_01": [
+   285,
+   0,
+   89,
+   88,
+   -45,
+   -89
+  ],
+  "en_boss_mole_adult_walk_02": [
+   561,
+   0,
+   89,
+   87,
+   -49,
+   -89
+  ],
+  "en_boss_mole_adult_walk_03": [
+   1152,
+   0,
+   91,
+   85,
+   -51,
+   -86
+  ],
+  "en_boss_mole_adult_walk_04": [
+   375,
+   0,
+   92,
+   88,
+   -52,
+   -88
+  ],
+  "en_boss_mole_adult_walk_05": [
+   0,
+   0,
+   92,
+   91,
+   -50,
+   -90
+  ],
+  "en_boss_mole_adult_walk_06": [
+   468,
+   0,
+   92,
+   88,
+   -48,
+   -88
+  ],
+  "en_boss_mole_adult_walk_07": [
+   1059,
+   0,
+   92,
+   86,
+   -46,
+   -86
+  ]
+ },
+ "frames": [
+  "en_boss_mole_adult_a1_00",
+  "en_boss_mole_adult_a1_01",
+  "en_boss_mole_adult_a1_02",
+  "en_boss_mole_adult_a1_03",
+  "en_boss_mole_adult_a1_04",
+  "en_boss_mole_adult_a1_05",
+  "en_boss_mole_adult_a1_06",
+  "en_boss_mole_adult_a1_07",
+  "en_boss_mole_adult_down_00",
+  "en_boss_mole_adult_down_01",
+  "en_boss_mole_adult_down_02",
+  "en_boss_mole_adult_down_03",
+  "en_boss_mole_adult_el_00",
+  "en_boss_mole_adult_el_01",
+  "en_boss_mole_adult_el_02",
+  "en_boss_mole_adult_el_03",
+  "en_boss_mole_adult_el_04",
+  "en_boss_mole_adult_el_05",
+  "en_boss_mole_adult_el_06",
+  "en_boss_mole_adult_el_07",
+  "en_boss_mole_adult_hit_00",
+  "en_boss_mole_adult_hit_01",
+  "en_boss_mole_adult_idle_00",
+  "en_boss_mole_adult_idle_01",
+  "en_boss_mole_adult_idle_02",
+  "en_boss_mole_adult_idle_03",
+  "en_boss_mole_adult_walk_00",
+  "en_boss_mole_adult_walk_01",
+  "en_boss_mole_adult_walk_02",
+  "en_boss_mole_adult_walk_03",
+  "en_boss_mole_adult_walk_04",
+  "en_boss_mole_adult_walk_05",
+  "en_boss_mole_adult_walk_06",
+  "en_boss_mole_adult_walk_07"
+ ],
+ "standing": [
+  "en_boss_mole_adult_idle_00",
+  "en_boss_mole_adult_idle_01",
+  "en_boss_mole_adult_idle_02",
+  "en_boss_mole_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 4,
+   "attack": {
+    "frames": [
+     "en_boss_mole_adult_a1_00",
+     "en_boss_mole_adult_a1_01",
+     "en_boss_mole_adult_a1_02",
+     "en_boss_mole_adult_a1_03",
+     "en_boss_mole_adult_a1_04",
+     "en_boss_mole_adult_a1_05",
+     "en_boss_mole_adult_a1_06",
+     "en_boss_mole_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "en_boss_mole_adult_down_00",
+     "en_boss_mole_adult_down_01",
+     "en_boss_mole_adult_down_02",
+     "en_boss_mole_adult_down_03"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_mole_adult_el_00",
+     "en_boss_mole_adult_el_01",
+     "en_boss_mole_adult_el_02",
+     "en_boss_mole_adult_el_03",
+     "en_boss_mole_adult_el_04",
+     "en_boss_mole_adult_el_05",
+     "en_boss_mole_adult_el_06",
+     "en_boss_mole_adult_el_07"
+    ],
+    "durs": [
+     0.063,
+     0.063,
+     0.063,
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.311,
+      "cast"
+     ],
+     [
+      0.321,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "en_boss_mole_adult_hit_00",
+     "en_boss_mole_adult_hit_01"
+    ],
+    "durs": [
+     0.06,
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_mole_adult_idle_00",
+     "en_boss_mole_adult_idle_01",
+     "en_boss_mole_adult_idle_02",
+     "en_boss_mole_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "en_boss_mole_adult_walk_00",
+     "en_boss_mole_adult_walk_01",
+     "en_boss_mole_adult_walk_02",
+     "en_boss_mole_adult_walk_03",
+     "en_boss_mole_adult_walk_04",
+     "en_boss_mole_adult_walk_05",
+     "en_boss_mole_adult_walk_06",
+     "en_boss_mole_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "en_boss_mole_adult_down_00",
+     "en_boss_mole_adult_down_01",
+     "en_boss_mole_adult_down_02",
+     "en_boss_mole_adult_down_03",
+     "en_boss_mole_adult_down_02",
+     "en_boss_mole_adult_down_01",
+     "en_boss_mole_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

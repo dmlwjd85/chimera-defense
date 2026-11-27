@@ -1,0 +1,53 @@
+{
+ "species": "ch_bighorn_tiger",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 19.8,
+   "foot±": 1
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 2.5,
+   "foot±": 1
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 40.7,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 9.9,
+   "foot±": 1
+  },
+  "adult_hit": {
+   "n": 4,
+   "max|h%|": 25.9,
+   "foot±": 16
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.2,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 1.2,
+   "foot±": 1
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   258
+  ],
+  "box": [
+   114,
+   99
+  ],
+  "frames": 46,
+  "colors": 16,
+  "px": 528384
+ }
+}

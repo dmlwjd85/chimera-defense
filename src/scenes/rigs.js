@@ -131,9 +131,11 @@ export function unitRig(scene, unit, parent, scale = 0.17) {
 }
 
 /** 슬라임·자동 키메라 동작 시트 이름: 덱(pool)에 든 종끼리 짝이 되는 자동 키메라 + 슬라임. */
-export function poolExtraIds(pool) {
-  const ids = ['slime'], u = [...new Set(pool)].sort();
+export function poolExtraIds(pool, recipes = []) {
+  const ids = ['slime'], u = [...new Set(pool)].sort(), has = new Set(u);
   for (let i = 0; i < u.length; i++) for (let j = i + 1; j < u.length; j++) ids.push(`auto_${u[i]}_${u[j]}`);
+  // 이야기 키메라(recipes.json): 두 재료가 다 덱에 있으면 그 시트도
+  for (const r of recipes ?? []) if (r.parts?.every((p) => has.has(p))) ids.push(r.id);
   return ids;
 }
 
@@ -184,28 +186,64 @@ export function stageEnemyIds(stage, data) {
   for (const id of [...ids]) { const p = data?.enemyById?.[id]?.pattern; if (p?.enemy) ids.add(p.enemy); }
   // 새 보스는 아직 전용 그림이 없어 기존 그림(skin)에 색만 입힘 → 그 그림 시트도 불러옴
   for (const id of [...ids]) { const sk = data?.enemyById?.[id]?.skin; if (sk) ids.add(sk); }
+  // 보스 단계 그림(하드·하드코어)도 같이(시트 둘뿐)
+  if (stage?.boss) { ids.add(stage.boss + '_t1'); ids.add(stage.boss + '_t2'); }
   return [...ids].map((id) => 'en_' + id);
 }
 
 /** 원래 그림이 이미 왼쪽(또는 정면에서 왼쪽)을 보는 적 — 뒤집으면 오른쪽을 보게 되므로 뒤집지 않음(2026-11-26 전장 나란히 확인) */
-export const ENEMY_FACES_LEFT = new Set(['boss_frost', 'boss_bat', 'bat', 'wisp', 'skeleton', 'boss_lich', 'overlord', 'swarm']);
+// 2026-11-27 사용자 "적들은 전부 왼쪽을 보고 있어야 해" → 시트별로 다시 봄: 왼쪽을 보는 원화는 얼음 망령·박쥐·도깨비불뿐
+export const ENEMY_FACES_LEFT = new Set(['boss_frost', 'bat', 'wisp']);
 /** 적이 동물 쪽(왼쪽)을 볼 때 setFacing 값 */
 export const enemyFace = (id0, back = false) => { const id = SKIN_OF[id0] ?? id0; return (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1); };
-const SKIN_OF = { boss_lava: 'tough', boss_witch: 'boss_lich', boss_knight: 'boss_bone', boss_gate: 'boss_shadow', boss_mole: 'miniboss' };
+const SKIN_OF = {};   // 새 보스 5종도 전용 그림(2026-11-27)이 생겨서 빌려 쓰는 그림 없음
 export const enemyFaceOld = (id, back = false) => (ENEMY_FACES_LEFT.has(id) ? 1 : -1) * (back ? -1 : 1);
 
 /** 적 도트(동작 시트가 불러와져 있을 때만). 오른쪽을 보는 그림 → 왼쪽(동물 쪽)을 보게 뒤집음. */
 function enemyDot(scene, enemy, parent, scale) {
   if (!dotArtOn()) return null;
-  const mv = scene.cache.json.get('dotM-en_' + (enemy.skin ?? enemy.id));
+  // 어려운 난이도 보스: 단계 그림(en_<id>_t1 하드 · _t2 하드코어·신계)이 있으면 그걸로
+  const tierMv = enemy.lookTier ? scene.cache.json.get(`dotM-en_${enemy.id}_t${enemy.lookTier}`) ?? (enemy.lookTier === 2 ? scene.cache.json.get(`dotM-en_${enemy.id}_t1`) : null) : null;
+  const mv = tierMv && scene.textures.exists(tierMv.sheet) ? tierMv : scene.cache.json.get('dotM-en_' + (enemy.skin ?? enemy.id));
   if (!mv || dotBad.has(mv.species + 'm') || !scene.textures.exists(mv.sheet)) return null;
   if (!mv._checked) { const errs = validateDot(mv); if (errs.length) { console.warn(`dotm ${mv.species}:`, errs); dotBad.add(mv.species + 'm'); return null; } mv._checked = true; }
   if (!ensureDotFrames(scene, mv)) return null;
-  const inst = new DotInstance(mv, { stage: 'adult', scale, motion: 'move' });
-  inst.setFacing(enemyFace(enemy.skin ?? enemy.id));
+  // 적 등급(푸른·붉은·검은): 몸 색은 그대로 두고 외곽선만 등급 색으로 바꾼 시트를 씀(몸 전체 물들이기 대신)
+  const rk = enemy.rankTint ? rankDot(scene, mv, enemy.rankTint) : null;
+  const inst = new DotInstance(rk ?? mv, { stage: 'adult', scale, motion: 'move' });
+  const faceId = tierMv && mv === tierMv ? mv.species.slice(3) : enemy.skin ?? enemy.id;   // 단계 그림은 새로 그린 것(오른쪽을 봄) → 뒤집어 왼쪽으로
+  inst.setFacing(enemyFace(faceId));
   const view = new DotView(scene, inst, { parent, px: DOT_PX * (scale / 0.22) });
-  if (enemy.tint) view.tint = enemy.tint;
-  return { inst, view, dot: true };
+  if (enemy.tint && !rk) view.tint = enemy.tint;
+  return { inst, view, dot: true, ranked: !!rk, faceId };
+}
+
+/** 등급 색 시트: 외곽선(#291a1f)만 등급 색 테두리로 바꿈. 팔레트 한 색만 바꾸므로 그림·몸 색은 그대로. */
+export function rankDot(scene, mv, tint) {
+  const key = `${mv.sheet}-r${tint.toString(16)}`;
+  if (!scene.textures.exists(key)) {
+    const src = scene.textures.get(mv.sheet).getSourceImage();
+    if (!src?.width) return null;
+    const cv = document.createElement('canvas'); cv.width = src.width; cv.height = src.height;
+    const g = cv.getContext('2d'); g.drawImage(src, 0, 0);
+    const img = g.getImageData(0, 0, cv.width, cv.height), px = img.data;
+    const tr = (tint >> 16) & 255, tg = (tint >> 8) & 255, tb = tint & 255;
+    const map = new Map();
+    for (const h of mv.palette ?? []) {
+      const r = parseInt(h.slice(1, 3), 16), gg = parseInt(h.slice(3, 5), 16), b = parseInt(h.slice(5, 7), 16);
+      const k = (r << 16) | (gg << 8) | b;
+      if (Math.abs(r - 0x29) + Math.abs(gg - 0x1a) + Math.abs(b - 0x1f) < 24) map.set(k, [tr * 0.62, tg * 0.62, tb * 0.62]);   // 외곽선(#291a1f) → 등급 색 테두리(몸 색·눈은 그대로)
+    }
+    for (let i = 0; i < px.length; i += 4) {
+      if (!px[i + 3]) continue;
+      const c = map.get((px[i] << 16) | (px[i + 1] << 8) | px[i + 2]);
+      if (c) { px[i] = c[0]; px[i + 1] = c[1]; px[i + 2] = c[2]; }
+    }
+    g.putImageData(img, 0, 0);
+    scene.textures.addCanvas(key, cv);
+  }
+  const d = { ...mv, sheet: key };
+  return ensureDotFrames(scene, d) ? d : null;
 }
 
 /** One-image enemy animated with the sprite template. */

@@ -1,0 +1,53 @@
+{
+ "species": "ch_bear_tiger",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 46.2,
+   "foot±": 2
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 44.9,
+   "foot±": 2
+  },
+  "adult_down": {
+   "n": 5,
+   "max|h%|": 43.6,
+   "foot±": 0
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 42.3,
+   "foot±": 4
+  },
+  "adult_hit": {
+   "n": 1,
+   "max|h%|": 1.3,
+   "foot±": 0
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.3,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 1.3,
+   "foot±": 2
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   193
+  ],
+  "box": [
+   111,
+   117
+  ],
+  "frames": 42,
+  "colors": 16,
+  "px": 395264
+ }
+}

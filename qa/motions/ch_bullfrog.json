@@ -1,0 +1,53 @@
+{
+ "species": "ch_bullfrog",
+ "motions": {
+  "adult_a1": {
+   "n": 8,
+   "max|h%|": 20.9,
+   "foot±": 1
+  },
+  "adult_a2": {
+   "n": 8,
+   "max|h%|": 16.5,
+   "foot±": 16
+  },
+  "adult_down": {
+   "n": 6,
+   "max|h%|": 12.1,
+   "foot±": 2
+  },
+  "adult_el": {
+   "n": 8,
+   "max|h%|": 25.3,
+   "foot±": 0
+  },
+  "adult_hit": {
+   "n": 1,
+   "max|h%|": 2.2,
+   "foot±": 1
+  },
+  "adult_idle": {
+   "n": 4,
+   "max|h%|": 1.1,
+   "foot±": 0
+  },
+  "adult_walk": {
+   "n": 8,
+   "max|h%|": 4.4,
+   "foot±": 0
+  }
+ },
+ "main": {
+  "sheet": [
+   2048,
+   299
+  ],
+  "box": [
+   113,
+   119
+  ],
+  "frames": 43,
+  "colors": 16,
+  "px": 612352
+ }
+}

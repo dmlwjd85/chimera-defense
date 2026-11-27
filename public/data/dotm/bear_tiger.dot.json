@@ -1,0 +1,620 @@
+{
+ "note": "ch_bear_tiger 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "bear_tiger",
+ "sheet": "dot-m-bear_tiger",
+ "file": "assets/dotm/bear_tiger.png",
+ "frameW": 111,
+ "frameH": 117,
+ "foot": 115,
+ "cols": 1,
+ "anchorX": 54,
+ "palette": [
+  "#291a1f",
+  "#42130a",
+  "#4e6735",
+  "#502a20",
+  "#6d3729",
+  "#7fa257",
+  "#85402b",
+  "#935236",
+  "#9d5e42",
+  "#a44926",
+  "#c28d6d",
+  "#d0612a",
+  "#e07c3d",
+  "#e2a776",
+  "#ed792f",
+  "#fef1ea"
+ ],
+ "rects": {
+  "ch_bear_tiger_adult_a1_00": [
+   919,
+   115,
+   91,
+   75,
+   -44,
+   -75
+  ],
+  "ch_bear_tiger_adult_a1_01": [
+   1667,
+   0,
+   91,
+   78,
+   -46,
+   -79
+  ],
+  "ch_bear_tiger_adult_a1_02": [
+   1021,
+   0,
+   91,
+   85,
+   -48,
+   -87
+  ],
+  "ch_bear_tiger_adult_a1_03": [
+   336,
+   0,
+   91,
+   108,
+   -49,
+   -110
+  ],
+  "ch_bear_tiger_adult_a1_04": [
+   0,
+   0,
+   88,
+   114,
+   -49,
+   -116
+  ],
+  "ch_bear_tiger_adult_a1_05": [
+   929,
+   0,
+   91,
+   89,
+   -48,
+   -91
+  ],
+  "ch_bear_tiger_adult_a1_06": [
+   1386,
+   0,
+   92,
+   80,
+   -47,
+   -82
+  ],
+  "ch_bear_tiger_adult_a1_07": [
+   827,
+   115,
+   91,
+   76,
+   -45,
+   -76
+  ],
+  "ch_bear_tiger_adult_a2_00": [
+   1203,
+   0,
+   91,
+   82,
+   -47,
+   -84
+  ],
+  "ch_bear_tiger_adult_a2_01": [
+   670,
+   0,
+   85,
+   101,
+   -46,
+   -103
+  ],
+  "ch_bear_tiger_adult_a2_02": [
+   428,
+   0,
+   83,
+   108,
+   -45,
+   -110
+  ],
+  "ch_bear_tiger_adult_a2_03": [
+   89,
+   0,
+   88,
+   113,
+   -45,
+   -115
+  ],
+  "ch_bear_tiger_adult_a2_04": [
+   249,
+   0,
+   86,
+   110,
+   -45,
+   -112
+  ],
+  "ch_bear_tiger_adult_a2_05": [
+   756,
+   0,
+   86,
+   101,
+   -45,
+   -103
+  ],
+  "ch_bear_tiger_adult_a2_06": [
+   1295,
+   0,
+   90,
+   81,
+   -45,
+   -83
+  ],
+  "ch_bear_tiger_adult_a2_07": [
+   1011,
+   115,
+   92,
+   75,
+   -45,
+   -75
+  ],
+  "ch_bear_tiger_adult_down_00": [
+   1104,
+   115,
+   90,
+   75,
+   -43,
+   -75
+  ],
+  "ch_bear_tiger_adult_down_01": [
+   1287,
+   115,
+   91,
+   72,
+   -42,
+   -72
+  ],
+  "ch_bear_tiger_adult_down_02": [
+   1482,
+   115,
+   98,
+   62,
+   -47,
+   -62
+  ],
+  "ch_bear_tiger_adult_down_03": [
+   1581,
+   115,
+   109,
+   47,
+   -53,
+   -47
+  ],
+  "ch_bear_tiger_adult_down_04": [
+   1691,
+   115,
+   111,
+   44,
+   -54,
+   -44
+  ],
+  "ch_bear_tiger_adult_el_00": [
+   1195,
+   115,
+   91,
+   74,
+   -42,
+   -74
+  ],
+  "ch_bear_tiger_adult_el_01": [
+   1379,
+   115,
+   102,
+   72,
+   -45,
+   -72
+  ],
+  "ch_bear_tiger_adult_el_02": [
+   1479,
+   0,
+   95,
+   80,
+   -49,
+   -84
+  ],
+  "ch_bear_tiger_adult_el_03": [
+   843,
+   0,
+   85,
+   101,
+   -49,
+   -102
+  ],
+  "ch_bear_tiger_adult_el_04": [
+   512,
+   0,
+   77,
+   105,
+   -47,
+   -106
+  ],
+  "ch_bear_tiger_adult_el_05": [
+   178,
+   0,
+   70,
+   111,
+   -46,
+   -112
+  ],
+  "ch_bear_tiger_adult_el_06": [
+   590,
+   0,
+   79,
+   103,
+   -48,
+   -104
+  ],
+  "ch_bear_tiger_adult_el_07": [
+   1113,
+   0,
+   89,
+   83,
+   -46,
+   -83
+  ],
+  "ch_bear_tiger_adult_hit_00": [
+   275,
+   115,
+   91,
+   77,
+   -45,
+   -77
+  ],
+  "ch_bear_tiger_adult_idle_00": [
+   367,
+   115,
+   91,
+   77,
+   -45,
+   -77
+  ],
+  "ch_bear_tiger_adult_idle_01": [
+   459,
+   115,
+   91,
+   77,
+   -45,
+   -77
+  ],
+  "ch_bear_tiger_adult_idle_02": [
+   551,
+   115,
+   91,
+   77,
+   -45,
+   -77
+  ],
+  "ch_bear_tiger_adult_idle_03": [
+   1759,
+   0,
+   91,
+   78,
+   -45,
+   -78
+  ],
+  "ch_bear_tiger_adult_walk_00": [
+   1851,
+   0,
+   91,
+   78,
+   -45,
+   -78
+  ],
+  "ch_bear_tiger_adult_walk_01": [
+   1943,
+   0,
+   91,
+   78,
+   -45,
+   -78
+  ],
+  "ch_bear_tiger_adult_walk_02": [
+   643,
+   115,
+   91,
+   77,
+   -44,
+   -79
+  ],
+  "ch_bear_tiger_adult_walk_03": [
+   1575,
+   0,
+   91,
+   79,
+   -44,
+   -80
+  ],
+  "ch_bear_tiger_adult_walk_04": [
+   0,
+   115,
+   90,
+   78,
+   -44,
+   -79
+  ],
+  "ch_bear_tiger_adult_walk_05": [
+   91,
+   115,
+   91,
+   78,
+   -45,
+   -78
+  ],
+  "ch_bear_tiger_adult_walk_06": [
+   735,
+   115,
+   91,
+   77,
+   -45,
+   -77
+  ],
+  "ch_bear_tiger_adult_walk_07": [
+   183,
+   115,
+   91,
+   78,
+   -45,
+   -78
+  ]
+ },
+ "frames": [
+  "ch_bear_tiger_adult_a1_00",
+  "ch_bear_tiger_adult_a1_01",
+  "ch_bear_tiger_adult_a1_02",
+  "ch_bear_tiger_adult_a1_03",
+  "ch_bear_tiger_adult_a1_04",
+  "ch_bear_tiger_adult_a1_05",
+  "ch_bear_tiger_adult_a1_06",
+  "ch_bear_tiger_adult_a1_07",
+  "ch_bear_tiger_adult_a2_00",
+  "ch_bear_tiger_adult_a2_01",
+  "ch_bear_tiger_adult_a2_02",
+  "ch_bear_tiger_adult_a2_03",
+  "ch_bear_tiger_adult_a2_04",
+  "ch_bear_tiger_adult_a2_05",
+  "ch_bear_tiger_adult_a2_06",
+  "ch_bear_tiger_adult_a2_07",
+  "ch_bear_tiger_adult_down_00",
+  "ch_bear_tiger_adult_down_01",
+  "ch_bear_tiger_adult_down_02",
+  "ch_bear_tiger_adult_down_03",
+  "ch_bear_tiger_adult_down_04",
+  "ch_bear_tiger_adult_el_00",
+  "ch_bear_tiger_adult_el_01",
+  "ch_bear_tiger_adult_el_02",
+  "ch_bear_tiger_adult_el_03",
+  "ch_bear_tiger_adult_el_04",
+  "ch_bear_tiger_adult_el_05",
+  "ch_bear_tiger_adult_el_06",
+  "ch_bear_tiger_adult_el_07",
+  "ch_bear_tiger_adult_hit_00",
+  "ch_bear_tiger_adult_idle_00",
+  "ch_bear_tiger_adult_idle_01",
+  "ch_bear_tiger_adult_idle_02",
+  "ch_bear_tiger_adult_idle_03",
+  "ch_bear_tiger_adult_walk_00",
+  "ch_bear_tiger_adult_walk_01",
+  "ch_bear_tiger_adult_walk_02",
+  "ch_bear_tiger_adult_walk_03",
+  "ch_bear_tiger_adult_walk_04",
+  "ch_bear_tiger_adult_walk_05",
+  "ch_bear_tiger_adult_walk_06",
+  "ch_bear_tiger_adult_walk_07"
+ ],
+ "standing": [
+  "ch_bear_tiger_adult_idle_00",
+  "ch_bear_tiger_adult_idle_01",
+  "ch_bear_tiger_adult_idle_02",
+  "ch_bear_tiger_adult_idle_03"
+ ],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "sets": {
+  "adult": {
+   "top": 38,
+   "attack": {
+    "frames": [
+     "ch_bear_tiger_adult_a1_00",
+     "ch_bear_tiger_adult_a1_01",
+     "ch_bear_tiger_adult_a1_02",
+     "ch_bear_tiger_adult_a1_03",
+     "ch_bear_tiger_adult_a1_04",
+     "ch_bear_tiger_adult_a1_05",
+     "ch_bear_tiger_adult_a1_06",
+     "ch_bear_tiger_adult_a1_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 4,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.291,
+      "hit"
+     ]
+    ]
+   },
+   "attack2": {
+    "frames": [
+     "ch_bear_tiger_adult_a2_00",
+     "ch_bear_tiger_adult_a2_01",
+     "ch_bear_tiger_adult_a2_02",
+     "ch_bear_tiger_adult_a2_03",
+     "ch_bear_tiger_adult_a2_04",
+     "ch_bear_tiger_adult_a2_05",
+     "ch_bear_tiger_adult_a2_06",
+     "ch_bear_tiger_adult_a2_07"
+    ],
+    "durs": [
+     0.059,
+     0.059,
+     0.104,
+     0.065,
+     0.049,
+     0.049,
+     0.049,
+     0.049
+    ],
+    "hold": {
+     "frame": 3,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.232,
+      "hit"
+     ]
+    ]
+   },
+   "down": {
+    "frames": [
+     "ch_bear_tiger_adult_down_00",
+     "ch_bear_tiger_adult_down_01",
+     "ch_bear_tiger_adult_down_02",
+     "ch_bear_tiger_adult_down_03",
+     "ch_bear_tiger_adult_down_04"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "ch_bear_tiger_adult_el_00",
+     "ch_bear_tiger_adult_el_01",
+     "ch_bear_tiger_adult_el_02",
+     "ch_bear_tiger_adult_el_03",
+     "ch_bear_tiger_adult_el_04",
+     "ch_bear_tiger_adult_el_05",
+     "ch_bear_tiger_adult_el_06",
+     "ch_bear_tiger_adult_el_07"
+    ],
+    "durs": [
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.122,
+      "cast"
+     ],
+     [
+      0.132,
+      "hit"
+     ]
+    ]
+   },
+   "hit": {
+    "frames": [
+     "ch_bear_tiger_adult_hit_00"
+    ],
+    "durs": [
+     0.06
+    ]
+   },
+   "idle": {
+    "frames": [
+     "ch_bear_tiger_adult_idle_00",
+     "ch_bear_tiger_adult_idle_01",
+     "ch_bear_tiger_adult_idle_02",
+     "ch_bear_tiger_adult_idle_03"
+    ],
+    "durs": [
+     0.16,
+     0.16,
+     0.16,
+     0.16
+    ],
+    "loop": true
+   },
+   "move": {
+    "frames": [
+     "ch_bear_tiger_adult_walk_00",
+     "ch_bear_tiger_adult_walk_01",
+     "ch_bear_tiger_adult_walk_02",
+     "ch_bear_tiger_adult_walk_03",
+     "ch_bear_tiger_adult_walk_04",
+     "ch_bear_tiger_adult_walk_05",
+     "ch_bear_tiger_adult_walk_06",
+     "ch_bear_tiger_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "fall": {
+    "frames": [
+     "ch_bear_tiger_adult_down_00",
+     "ch_bear_tiger_adult_down_01",
+     "ch_bear_tiger_adult_down_02",
+     "ch_bear_tiger_adult_down_03",
+     "ch_bear_tiger_adult_down_04",
+     "ch_bear_tiger_adult_down_03",
+     "ch_bear_tiger_adult_down_02",
+     "ch_bear_tiger_adult_down_01",
+     "ch_bear_tiger_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.5
+  }
+ },
+ "chimera": "bear_tiger"
+}

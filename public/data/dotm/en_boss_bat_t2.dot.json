@@ -1,0 +1,385 @@
+{
+ "note": "en_boss_bat_t2 동작 도트(PixelLab animate-with-text-v3, 원화를 첫 장으로 몸 전체를 다시 그림). 그림 1칸 = 화면 1px. 원본 art-src/pixellab/anim, 만든 도구 tools/build_pixellab_motions.py",
+ "species": "en_boss_bat_t2",
+ "sheet": "dot-m-en_boss_bat_t2",
+ "file": "assets/dotm/en_boss_bat_t2.png",
+ "frameW": 146,
+ "frameH": 164,
+ "foot": 162,
+ "cols": 1,
+ "anchorX": 71,
+ "palette": [
+  "#170216",
+  "#291a1f",
+  "#3e1e37",
+  "#4b2e43",
+  "#642337",
+  "#674356",
+  "#792c40",
+  "#8b374e",
+  "#9c4c92",
+  "#9e7e77",
+  "#a94554",
+  "#b72f38",
+  "#e38df3",
+  "#eb4648",
+  "#f2d795",
+  "#f5e7f1"
+ ],
+ "rects": {
+  "en_boss_bat_t2_adult_down_00": [
+   1464,
+   0,
+   134,
+   91,
+   -66,
+   -91
+  ],
+  "en_boss_bat_t2_adult_down_01": [
+   125,
+   156,
+   121,
+   90,
+   -60,
+   -93
+  ],
+  "en_boss_bat_t2_adult_down_02": [
+   247,
+   156,
+   118,
+   90,
+   -58,
+   -93
+  ],
+  "en_boss_bat_t2_adult_down_03": [
+   366,
+   156,
+   98,
+   89,
+   -47,
+   -96
+  ],
+  "en_boss_bat_t2_adult_down_04": [
+   465,
+   156,
+   110,
+   59,
+   -51,
+   -59
+  ],
+  "en_boss_bat_t2_adult_down_05": [
+   576,
+   156,
+   135,
+   53,
+   -60,
+   -53
+  ],
+  "en_boss_bat_t2_adult_el_00": [
+   1599,
+   0,
+   131,
+   91,
+   -64,
+   -92
+  ],
+  "en_boss_bat_t2_adult_el_01": [
+   458,
+   0,
+   144,
+   132,
+   -71,
+   -135
+  ],
+  "en_boss_bat_t2_adult_el_02": [
+   0,
+   0,
+   115,
+   155,
+   -57,
+   -161
+  ],
+  "en_boss_bat_t2_adult_el_03": [
+   116,
+   0,
+   113,
+   154,
+   -57,
+   -162
+  ],
+  "en_boss_bat_t2_adult_el_04": [
+   230,
+   0,
+   113,
+   154,
+   -57,
+   -163
+  ],
+  "en_boss_bat_t2_adult_el_05": [
+   344,
+   0,
+   113,
+   153,
+   -57,
+   -160
+  ],
+  "en_boss_bat_t2_adult_el_06": [
+   603,
+   0,
+   126,
+   106,
+   -62,
+   -109
+  ],
+  "en_boss_bat_t2_adult_el_07": [
+   730,
+   0,
+   120,
+   97,
+   -59,
+   -97
+  ],
+  "en_boss_bat_t2_adult_walk_00": [
+   971,
+   0,
+   121,
+   93,
+   -60,
+   -95
+  ],
+  "en_boss_bat_t2_adult_walk_01": [
+   1215,
+   0,
+   123,
+   92,
+   -61,
+   -95
+  ],
+  "en_boss_bat_t2_adult_walk_02": [
+   1731,
+   0,
+   125,
+   91,
+   -62,
+   -95
+  ],
+  "en_boss_bat_t2_adult_walk_03": [
+   1857,
+   0,
+   124,
+   91,
+   -61,
+   -95
+  ],
+  "en_boss_bat_t2_adult_walk_04": [
+   0,
+   156,
+   124,
+   91,
+   -61,
+   -95
+  ],
+  "en_boss_bat_t2_adult_walk_05": [
+   1339,
+   0,
+   124,
+   92,
+   -61,
+   -95
+  ],
+  "en_boss_bat_t2_adult_walk_06": [
+   1093,
+   0,
+   121,
+   93,
+   -60,
+   -95
+  ],
+  "en_boss_bat_t2_adult_walk_07": [
+   851,
+   0,
+   119,
+   94,
+   -59,
+   -94
+  ]
+ },
+ "frames": [
+  "en_boss_bat_t2_adult_down_00",
+  "en_boss_bat_t2_adult_down_01",
+  "en_boss_bat_t2_adult_down_02",
+  "en_boss_bat_t2_adult_down_03",
+  "en_boss_bat_t2_adult_down_04",
+  "en_boss_bat_t2_adult_down_05",
+  "en_boss_bat_t2_adult_el_00",
+  "en_boss_bat_t2_adult_el_01",
+  "en_boss_bat_t2_adult_el_02",
+  "en_boss_bat_t2_adult_el_03",
+  "en_boss_bat_t2_adult_el_04",
+  "en_boss_bat_t2_adult_el_05",
+  "en_boss_bat_t2_adult_el_06",
+  "en_boss_bat_t2_adult_el_07",
+  "en_boss_bat_t2_adult_walk_00",
+  "en_boss_bat_t2_adult_walk_01",
+  "en_boss_bat_t2_adult_walk_02",
+  "en_boss_bat_t2_adult_walk_03",
+  "en_boss_bat_t2_adult_walk_04",
+  "en_boss_bat_t2_adult_walk_05",
+  "en_boss_bat_t2_adult_walk_06",
+  "en_boss_bat_t2_adult_walk_07"
+ ],
+ "standing": [],
+ "attacks": [
+  "attack",
+  "attack2"
+ ],
+ "noAttack": true,
+ "sets": {
+  "adult": {
+   "top": 0,
+   "down": {
+    "frames": [
+     "en_boss_bat_t2_adult_down_00",
+     "en_boss_bat_t2_adult_down_01",
+     "en_boss_bat_t2_adult_down_02",
+     "en_boss_bat_t2_adult_down_03",
+     "en_boss_bat_t2_adult_down_04",
+     "en_boss_bat_t2_adult_down_05"
+    ],
+    "durs": [
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08,
+     0.08
+    ],
+    "stay": true
+   },
+   "skill": {
+    "frames": [
+     "en_boss_bat_t2_adult_el_00",
+     "en_boss_bat_t2_adult_el_01",
+     "en_boss_bat_t2_adult_el_02",
+     "en_boss_bat_t2_adult_el_03",
+     "en_boss_bat_t2_adult_el_04",
+     "en_boss_bat_t2_adult_el_05",
+     "en_boss_bat_t2_adult_el_06",
+     "en_boss_bat_t2_adult_el_07"
+    ],
+    "durs": [
+     0.112,
+     0.07,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053,
+     0.053
+    ],
+    "hold": {
+     "frame": 1,
+     "sec": 0.09
+    },
+    "events": [
+     [
+      0.122,
+      "cast"
+     ],
+     [
+      0.132,
+      "hit"
+     ]
+    ]
+   },
+   "move": {
+    "frames": [
+     "en_boss_bat_t2_adult_walk_00",
+     "en_boss_bat_t2_adult_walk_01",
+     "en_boss_bat_t2_adult_walk_02",
+     "en_boss_bat_t2_adult_walk_03",
+     "en_boss_bat_t2_adult_walk_04",
+     "en_boss_bat_t2_adult_walk_05",
+     "en_boss_bat_t2_adult_walk_06",
+     "en_boss_bat_t2_adult_walk_07"
+    ],
+    "durs": [
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085,
+     0.085
+    ],
+    "loop": true
+   },
+   "hit": {
+    "frames": [
+     "en_boss_bat_t2_adult_walk_00"
+    ],
+    "durs": [
+     0.22
+    ]
+   },
+   "fall": {
+    "frames": [
+     "en_boss_bat_t2_adult_down_00",
+     "en_boss_bat_t2_adult_down_01",
+     "en_boss_bat_t2_adult_down_02",
+     "en_boss_bat_t2_adult_down_03",
+     "en_boss_bat_t2_adult_down_04",
+     "en_boss_bat_t2_adult_down_05",
+     "en_boss_bat_t2_adult_down_04",
+     "en_boss_bat_t2_adult_down_03",
+     "en_boss_bat_t2_adult_down_02",
+     "en_boss_bat_t2_adult_down_01",
+     "en_boss_bat_t2_adult_down_00"
+    ],
+    "durs": [
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.06,
+     0.5,
+     0.05,
+     0.05,
+     0.05,
+     0.05,
+     0.05
+    ]
+   },
+   "idle": {
+    "frames": [
+     "en_boss_bat_t2_adult_walk_00",
+     "en_boss_bat_t2_adult_walk_01",
+     "en_boss_bat_t2_adult_walk_02",
+     "en_boss_bat_t2_adult_walk_03",
+     "en_boss_bat_t2_adult_walk_04",
+     "en_boss_bat_t2_adult_walk_05",
+     "en_boss_bat_t2_adult_walk_06",
+     "en_boss_bat_t2_adult_walk_07"
+    ],
+    "durs": [
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1,
+     0.1
+    ],
+    "loop": true
+   }
+  }
+ },
+ "stages": {
+  "adult": {
+   "set": "adult",
+   "scale": 0.55
+  }
+ }
+}

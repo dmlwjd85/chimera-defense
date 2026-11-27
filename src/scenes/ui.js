@@ -112,7 +112,7 @@ export function unitToken(scene, unit, data) {
   // 도트 그림이 있으면 초상화도 그 단계 도트로(2026-11-26 PixelLab 확정본)
   // 자동 키메라 정식 그림·돌연변이 슬라임(PixelLab 동작 시트가 불러와져 있을 때)도 초상화를 그 도트로
   const dot = id && unit.kind === 'base' ? dotDataFor(scene, id, unit.stage)
-    : unit.kind === 'chimera' && unit.speciesId?.startsWith('auto_') ? dotDataFor(scene, unit.speciesId, 'adult')
+    : unit.kind === 'chimera' ? dotDataFor(scene, unit.speciesId, 'adult')   // 자동·이야기 키메라 정식 그림(없으면 null → 예전 그림)
     : unit.kind === 'weak' ? slimeDot(scene, unit) : null;
   const dset = dot && dot.sets[dot.stages[unit.kind === 'base' ? unit.stage : 'adult']?.set];
   const key = id && [`unit-${id}-${unit.stage}`, `unit-${id}`].find((k) => scene.textures.exists(k));
@@ -208,6 +208,13 @@ const PIX = {
     '.oyyyyyddyyyydo.', '.oyyyyyyyyyyydo.', '..oyyyyyyyyydo..', '..odyyyyyyyddo..', '...oodddddddoo..', '.....oooooo.....', '................', '................'] },
 };
 /** 도트 아이콘 이미지(meat 고기 · gem 유물 · coin 금화). size = 한 변 px */
+/** 유물 아이콘(PixelLab, assets/ui/relic-<id>.png, 2026-11-27). 없으면 이모지 글자 */
+export function relicIcon(scene, r, x, y, size) {
+  const key = 'relic-' + r.id;
+  if (scene.textures.exists(key)) { scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST); return scene.add.image(x, y, key).setDisplaySize(size, size); }
+  return scene.add.text(x, y, r.icon, { fontSize: Math.round(size * 0.8) + 'px' }).setOrigin(0.5);
+}
+
 export function pixIcon(scene, name, x, y, size) {
   // PixelLab 아이콘(assets/ui/icon-<이름>.png, 2026-11-27)이 있으면 그걸로, 없으면 아래 16칸 코드 도트
   const art = 'icon-' + name;

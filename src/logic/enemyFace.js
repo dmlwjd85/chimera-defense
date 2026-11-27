@@ -4,16 +4,20 @@
 /** 원래 그림이 이미 왼쪽을 보는 적 — 뒤집지 않음. 시트 걷기(move) 첫 장으로 2026-11-27에 48종을 다시 확인. */
 export const ENEMY_FACES_LEFT = new Set([
   'bat', 'wisp', 'boss_frost',
-  // 아래는 원화부터 왼쪽을 보는데 뒤집혀 스폰 때 오른쪽을 보고 있었음
-  'fast', 'flying', 'swarm',
+  // 원화부터 왼쪽을 보는데 뒤집으면 오른쪽으로 나옴
+  'fast',
   'boss_bat', 'boss_bat_t1', 'boss_bat_t2',
 ]);
+// 홀림 나비(flying)·독무당벌레 떼(swarm)는 여기 넣지 않음.
+// 원화는 머리·더듬이가 오른쪽(오른쪽을 봄). 뒤집어야 왼쪽(동물 쪽)을 본다.
+// 2026-11-27 #82에서 잘못 넣었다가, 배포 뒤 선생님이 오른쪽을 본다고 하셔서 교전 화면으로 바로잡았다.
 
 /** 한 장 초상화(도감·다음 적)가 오른쪽을 봐서, 뒤집어 왼쪽으로 보이게 할 것 */
 // 떠도는 넋(ghost)은 여기 둔다(뒤집음). 원화는 등불이 오른쪽이라, ENEMY_FACES_LEFT에 넣으면 오히려 오른쪽을 본다. 2026-11-27 시트 전 동작·도감으로 재확인.
 export const PORTRAIT_FACES_RIGHT = new Set([
   'normal', 'healer', 'miniboss', 'ghost', 'zombie', 'boss_bone',
   'boss_boar', 'boss_lich', 'skeleton',
+  'flying', 'swarm',
 ]);
 
 export const enemyPortraitFlip = (id) => PORTRAIT_FACES_RIGHT.has(id);

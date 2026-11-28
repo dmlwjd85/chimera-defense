@@ -37,12 +37,13 @@ test('무릉도원: 쓰다듬기는 그 종 경험 +1, 하루 10번까지', () =
   assert.equal(s.speciesXp.dog, 11);
 });
 
-test('무릉도원: 소품 놓기·옮기기·치우기, 12개까지', () => {
+test('무릉도원: 소품 놓기·옮기기·치우기, 정해진 수까지', () => {
   const s = withStars(0);
-  for (let i = 0; i < 12; i++) assert.ok(G.addProp(s, D, 'peach', 100 + i, 500).ok);
+  const MAX = G.gcfgGarden(D).maxProps;
+  for (let i = 0; i < MAX; i++) assert.ok(G.addProp(s, D, 'peach', 100 + i, 500).ok);
   assert.equal(G.addProp(s, D, 'pond', 1, 1).reason, 'full');
   assert.ok(G.moveProp(s, 0, 300, 520)); assert.equal(s.garden.props[0].x, 300);
-  assert.ok(G.removeProp(s, 0)); assert.equal(s.garden.props.length, 11);
+  assert.ok(G.removeProp(s, 0)); assert.equal(s.garden.props.length, MAX - 1);
   assert.equal(G.meetKind({ id: 'wolf' }, { id: 'rabbit' }, D), 'chase');
   assert.equal(G.meetKind({ id: 'rabbit' }, { id: 'wolf' }, D), 'flee');
   assert.equal(G.meetKind({ id: 'dog' }, { id: 'dog' }, D), 'same');
@@ -61,4 +62,49 @@ test('전설 조각: 한 판에 전설 짝 두 종 성체가 함께 있으면 �
   for (let i = 0; i < 6; i++) { const r = settleRun(s, st, D); if (i < 5) assert.equal(r.legendShards[0].done, false); else assert.equal(r.legendShards[0].done, true); }
   assert.equal(s.legendShards['bison+eagle'], 6);
   assert.ok(s.codex.legends.includes('bison+eagle'));
+});
+
+test('무릉도원 소품과 어울리기: 새·원숭이는 나무에 앉고, 물 좋아하는 동물은 연못에 들어가고, 소품마다 누구나 할 일이 있음', () => {
+  const acts = (id, prop, kind = 'base', parts = null) => G.propActsFor({ id, kind, parts }, prop).map((a) => a.act);
+  assert.ok(acts('crow', 'peach').includes('perch'));
+  assert.ok(acts('eagle', 'peach').includes('perch'));
+  assert.ok(acts('monkey', 'peach').includes('perch'));
+  assert.ok(!acts('bear', 'peach').includes('perch'));
+  assert.ok(acts('bear', 'peach').includes('shake'));
+  assert.ok(acts('frog', 'pond').includes('swim'));
+  assert.ok(!acts('crow', 'pond').includes('swim'));
+  assert.ok(acts('crow', 'pond').includes('drink'));
+  assert.ok(acts('rabbit', 'flowers').includes('graze'));
+  assert.ok(acts('rooster', 'nest').includes('brood'));
+  // 키메라는 첫 부위 종을 따름
+  assert.ok(acts('x', 'pond', 'chimera', ['frog', 'bear']).includes('swim'));
+  // 모든 소품: 그림 열쇠·이름이 있고, 어떤 동물이든 할 일이 하나는 있음
+  for (const prop of G.GARDEN_PROPS) {
+    assert.ok(G.PROP_ART[prop] && G.PROP_NAME[prop], prop);
+    for (const u of D.units) assert.ok(G.propActsFor({ id: u.id, kind: 'base' }, prop).length >= 1, `${prop} ${u.id}`);
+  }
+  // 고르기: 무게대로, 자리가 없으면 다른 행동, 다 없으면 null
+  assert.equal(G.pickPropAct({ id: 'crow' }, 'peach', () => 0).act, 'perch');
+  assert.equal(G.pickPropAct({ id: 'crow' }, 'peach', () => 0, (a) => a.act !== 'perch').act, 'nap');
+  assert.equal(G.pickPropAct({ id: 'crow' }, 'peach', () => 0.5, () => false), null);
+  assert.equal(G.pickPropAct({ id: 'crow' }, 'nope'), null);
+  // 새 소품도 놓을 수 있음
+  const s = withStars(0);
+  for (const id of ['drum', 'bell', 'fountain', 'nest', 'feed']) assert.ok(G.addProp(s, D, id, 400, 500).ok, id);
+});
+
+test('종 모이기 자리: 마릿수만큼, 풀밭 안, 종을 가리지 않고, 서로 겹치지 않음', async () => {
+  const { gatherSlots } = await import('../src/logic/garden.js');
+  const ground = { x0: 80, x1: 1200, y0: 450, y1: 650 };
+  for (const [bx, by] of [[640, 560], [100, 455], [1190, 645], [640, 450], [300, 650]]) {
+    for (const n of [1, 4, 10]) {
+      const s = gatherSlots(n, bx, by, ground);
+      assert.equal(s.length, n);
+      for (const [x, y] of s) {
+        assert.ok(x >= ground.x0 && x <= ground.x1 && y >= ground.y0 && y <= ground.y1, `풀밭 밖 ${x},${y}`);
+        assert.ok(Math.hypot(x - bx, y - by) > 40, `종 위에 섬 ${x},${y}`);
+      }
+      for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) assert.ok(Math.hypot(s[i][0] - s[j][0], s[i][1] - s[j][1]) > 24, `겹침 ${s[i]} ${s[j]} (종 ${bx},${by}, ${n}마리)`);
+    }
+  }
 });

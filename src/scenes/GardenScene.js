@@ -90,10 +90,10 @@ export default class GardenScene extends Phaser.Scene {
   setState(p, st, t, extra = {}) {
     Object.assign(p, { state: st, t }, extra);
     const r = p.rig.inst;
-    if (st === 'walk' || st === 'goto' || st === 'chase' || st === 'flee') r.play(r.anims.move ? 'move' : 'idle', { loop: true });
+    if (st === 'walk' || st === 'goto' || st === 'chase' || st === 'flee' || st === 'rally') r.play(r.anims.move ? 'move' : 'idle', { loop: true });
     else if (st === 'nap') r.play(r.anims.down ? 'down' : 'idle');
     else r.play('idle', { loop: true });
-    if (r.timeScale != null) r.timeScale = st === 'chase' || st === 'flee' ? 1.5 : 1;
+    if (r.timeScale != null) r.timeScale = st === 'chase' || st === 'flee' || st === 'rally' ? 1.5 : 1;
   }
 
   bubble(p, text, color = '#ffffff', size = 20) {
@@ -105,15 +105,16 @@ export default class GardenScene extends Phaser.Scene {
     p.t -= dt; p.meetCd -= dt;
     const c = p.c, sp = 46 * (p.unit.stage === 'young' ? 0.8 : 1);
     if (p.state === 'act') this.updateAct(p, dt);
-    else if (p.state === 'walk' || p.state === 'goto' || p.state === 'chase' || p.state === 'flee') {
+    else if (p.state === 'walk' || p.state === 'goto' || p.state === 'chase' || p.state === 'flee' || p.state === 'rally') {
       let tx = p.tx, ty = p.ty;
       if (p.state === 'chase' && p.other) { tx = p.other.c.x; ty = p.other.c.y; }
       if (p.state === 'flee' && p.other) { tx = c.x + (c.x - p.other.c.x); ty = c.y + (c.y - p.other.c.y) * 0.5; }
       tx = Phaser.Math.Clamp(tx, GROUND.x0, GROUND.x1); ty = Phaser.Math.Clamp(ty, GROUND.y0, GROUND.y1);
-      const dx = tx - c.x, dy = ty - c.y, d = Math.hypot(dx, dy), v = sp * (p.state === 'walk' ? 1 : p.state === 'goto' ? 1.5 : 2.4) * dt;
+      const dx = tx - c.x, dy = ty - c.y, d = Math.hypot(dx, dy), v = (p.state === 'rally' ? p.rsp : sp * (p.state === 'walk' ? 1 : p.state === 'goto' ? 1.5 : 2.4)) * dt;
       if (Math.abs(dx) > 4) p.face = dx < 0 ? -1 : 1;
       if (p.state === 'goto' && d <= v) { c.setPosition(tx, ty); this.beginAct(p); }
       else if (p.state === 'goto' && p.t <= 0) this.dropPlan(p);
+      else if (p.state === 'rally' && (d <= v || p.t <= 0)) { if (d <= v) c.setPosition(tx, ty); this.rallied(p); }
       else if (d <= v || p.t <= 0) { if (p.state === 'walk' && d <= v) c.setPosition(tx, ty); this.setState(p, 'idle', rnd(1.5, 4)); }
       else c.setPosition(c.x + (dx / d) * v, c.y + (dy / d) * v);
     } else if (p.state === 'nap') {
@@ -255,7 +256,9 @@ export default class GardenScene extends Phaser.Scene {
     if (A.kind === 'warm' && A.o?.active && ![...A.o.users].some((q) => q.act?.kind === 'warm')) this.lamp(A.o, false);
     if (A.air || A.kind === 'cross') p.c.setPosition(A.kind === 'cross' && A.done ? A.spot.at[0] : A.from[0], A.kind === 'cross' && A.done ? A.spot.at[1] : A.from[1]);
     p.act = null; p.rig.inst.timeScale = 1;
-    if (!quiet) { this.setState(p, 'idle', rnd(1, 3)); p.meetCd = rnd(3, 6); }
+    if (quiet) return;
+    if (p.rallyTo) this.startRally(p);   // 종소리에 내려온 참이면 곧장 모이러 감
+    else { this.setState(p, 'idle', rnd(1, 3)); p.meetCd = rnd(3, 6); }
   }
 
   /** 그 소품을 쓰던 동물을 모두 내려보냄(소품을 옮기거나 치울 때) */
@@ -264,7 +267,7 @@ export default class GardenScene extends Phaser.Scene {
   updateAct(p, dt) {
     const A = p.act, o = A.o, c = p.c;
     if (!o.active) return this.endAct(p);
-    A.t += dt;
+    A.t += dt * (A.fast ?? 1);
     const arc = (k, h) => Math.sin(Math.min(1, k) * Math.PI) * h, ease = (k) => (k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
     const fly = (from, to, k, h) => { const e = ease(Math.min(1, k)); c.setPosition(from[0] + (to[0] - from[0]) * e, from[1] + (to[1] - from[1]) * e - arc(k, h)); };
     const beat = (every, fn) => { A.beat -= dt; if (A.beat <= 0) { A.beat = every; A.n++; fn(A.n); } };
@@ -276,7 +279,7 @@ export default class GardenScene extends Phaser.Scene {
         else if (A.ph === 1) {
           c.setPosition(A.to[0], A.to[1]);
           beat(rnd(1.8, 3), () => this.bubble(p, A.kind === 'brood' ? '♥' : A.nap ? 'z' : ['♪', '🎵', '♬'][Math.floor(Math.random() * 3)], A.kind === 'brood' ? '#ff8fb0' : A.nap ? '#cfe6ff' : '#ffe066', A.nap ? 16 : 20));
-          if (A.t >= A.dur) { A.ph = 2; A.t = 0; this.play(p, ['leap', 'move'], { loop: true, ts: 1.5 }); }
+          if (A.t >= A.dur || A.leave) { A.ph = 2; A.t = 0; this.play(p, ['leap', 'move'], { loop: true, ts: 1.5 }); }
         } else { fly(A.to, A.from, A.t / 0.6, 26); if (A.t >= 0.6) this.endAct(p); }
         break;
       }
@@ -296,7 +299,7 @@ export default class GardenScene extends Phaser.Scene {
           if (Math.abs(x - c.x) > 0.05) p.face = x < c.x ? -1 : 1;
           c.setPosition(x, A.to[1] + Math.sin(A.t * 3.2) * 3 * A.s);
           beat(0.9, (n) => { this.ripple(c.x, A.wl + 2, o); if (n % 4 === 0) this.bubble(p, ['♪', '😊', '💦'][Math.floor(Math.random() * 3)], '#cfefff', 18); });
-          if (A.t >= A.dur) { A.ph = 2; A.t = 0; A.out = [c.x, c.y]; c.clearMask(); p.maskG?.destroy(); p.mask = p.maskG = null; this.splash(c.x, A.wl, o); this.play(p, ['leap', 'move'], { loop: true, ts: 1.5 }); p.face = A.from[0] < c.x ? -1 : 1; }
+          if (A.t >= A.dur || A.leave) { A.ph = 2; A.t = 0; A.out = [c.x, c.y]; c.clearMask(); p.maskG?.destroy(); p.mask = p.maskG = null; this.splash(c.x, A.wl, o); this.play(p, ['leap', 'move'], { loop: true, ts: 1.5 }); p.face = A.from[0] < c.x ? -1 : 1; }
         } else { fly(A.out, A.from, A.t / 0.45, 40); if (A.t >= 0.45) { this.endAct(p); this.hop(p, 2); this.bubble(p, '💦', '#8fd3ff', 20); } }
         break;
       }
@@ -365,9 +368,9 @@ export default class GardenScene extends Phaser.Scene {
   }
 
   // ----- 소품 효과(그림은 그대로, 움직임·빛·글자만) -----
-  pop(x, y, text, size = 16, color = '#ffffff') {
+  pop(x, y, text, size = 16, color = '#ffffff', hold = 250) {
     const o = this.add.text(x, y, text, style(size, color, { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5).setDepth(1500);
-    this.tweens.add({ targets: o, y: y - 26, alpha: 0, delay: 250, duration: 500, onComplete: () => o.destroy() });
+    this.tweens.add({ targets: o, y: y - 26, alpha: 0, delay: hold, duration: 500, onComplete: () => o.destroy() });
   }
   /** 작은 알갱이(꽃잎·풀잎)가 흩날림 */
   puff(x, y, n, colors, spread = 40) {
@@ -416,6 +419,53 @@ export default class GardenScene extends Phaser.Scene {
       else if (q.state === 'idle') q.face = o.x < q.c.x ? -1 : 1;
     }
   }
+  /** 종을 톡 치면: 모두 하던 일을 멈추고 종 둘레로 달려와 모임 → 다 모이면 함께 폴짝 → 잠깐 머물다 흩어짐 */
+  gather(o) {
+    if (!this.pets.length || this.time.now < (o.gatherCd ?? 0)) return;
+    const GO = 2.4, STAY = 4, now = this.time.now;   // 달려오는 시간(초) · 모여서 머무는 시간(초)
+    o.gatherCd = now + 1500;
+    const slots = G.gatherSlots(this.pets.length, o.x, o.y, GROUND);
+    const order = [...this.pets].sort((a, b) => Math.hypot(a.c.x - o.x, a.c.y - o.y) - Math.hypot(b.c.x - o.x, b.c.y - o.y));
+    for (const q of order) {
+      // 높은 데·물속·다리 위에 있으면 서둘러 내려온 다음 달려옴(순간 이동 없이)
+      const A = q.state === 'act' ? q.act : null, high = !!A && (A.air || A.kind === 'cross');
+      const from = high ? (A.kind === 'cross' ? [q.c.x, A.from[1]] : A.from) : [q.c.x, q.c.y];
+      let bi = 0, bd = Infinity;
+      slots.forEach((s, i) => { const d = Math.hypot(s[0] - from[0], s[1] - from[1]); if (d < bd) { bd = d; bi = i; } });
+      const [tx, ty] = slots.splice(bi, 1)[0];
+      q.rallyTo = { tx, ty, o, by: now + GO * 1000, end: now + (GO + STAY) * 1000 };
+      q.other = null; q.meetCd = GO + STAY + 2;
+      if (high) { A.fast = 3; A.leave = true; if (A.kind === 'cross') { A.pause = false; A.hold = 0; this.play(q, ['move'], { loop: true, ts: 1.5 }); } }
+      else {
+        if (A) this.endAct(q, true); else if (q.plan) { q.plan.o?.users?.delete(q); q.plan = null; }
+        this.startRally(q);
+      }
+      this.time.delayedCall(rnd(0, 260), () => { if (q.rallyTo?.o === o) this.bubble(q, '!', '#ffd84d', 22); });
+    }
+    this.pop(o.x, o.y - o.displayHeight - 34, '모여라~', 26, '#fff3c4', 1100);
+    this.time.delayedCall(GO * 1000 + 350, () => {
+      if (!o.active) return;
+      const here = this.pets.filter((q) => q.rallied === o && q.state === 'idle');
+      if (here.length < 2) return;
+      here.forEach((q, i) => { this.hop(q, 2); if (i % 2 === 0) this.bubble(q, ['♪', '♥', '🎵'][i % 3], '#ffe066'); });
+      this.pop(o.x, o.y - o.displayHeight - 34, '다 모였다!', 28, '#ffe066', 1200);
+      this.puff(o.x, o.y - o.displayHeight * 0.6, 8, [0xffe9a0, 0xffffff, 0xffc6dc], 110);
+    });
+  }
+  /** 모일 자리로 출발: 제때 닿도록 먼 동물일수록 빨리 달림 */
+  startRally(p) {
+    const R = p.rallyTo, left = Math.max(0.7, (R.by - this.time.now) / 1000), d = Math.hypot(R.tx - p.c.x, R.ty - p.c.y);
+    this.setState(p, 'rally', left + 1.5, { tx: R.tx, ty: R.ty, rsp: Math.max(110, d / left) });
+  }
+  /** 모이는 자리에 닿음: 종 쪽을 보고 기다림 */
+  rallied(p) {
+    const R = p.rallyTo; p.rallyTo = null;
+    if (!R) return this.setState(p, 'idle', rnd(1, 2));
+    if (R.o?.active) p.face = R.o.x < p.c.x ? -1 : 1;
+    p.rallied = R.o;
+    this.setState(p, 'idle', Math.max(1.2, (R.end - this.time.now) / 1000) + rnd(0, 1.6));
+    this.hop(p, 1);
+  }
   /** 복숭아가 톡 떨어짐 */
   peach(o, p = null) {
     const x = o.x + rnd(-o.displayWidth * 0.25, o.displayWidth * 0.25), y0 = o.y - o.displayHeight * 0.6, y1 = Math.min(GROUND.y1, o.y + rnd(4, 16));
@@ -434,7 +484,7 @@ export default class GardenScene extends Phaser.Scene {
       case 'lantern': this.lamp(o, !o.glow); break;
       case 'flowers': this.puff(o.x, o.y - H * 0.5, 6, [0xff9ec4, 0xffe066, 0xffffff]); this.butterfly(o.x, o.y - H * 0.7); break;
       case 'drum': this.drum(o); break;
-      case 'bell': this.bell(o); break;
+      case 'bell': this.bell(o); try { sfx('click'); } catch { /* */ } this.gather(o); return;   // 종은 모두 불러 모음
       case 'nest': this.pop(o.x, o.y - H - 4, '♥', 18, '#ff8fb0'); break;
       case 'feed': this.puff(o.x, o.y - H * 0.8, 5, [0xf2d16b, 0xe6b84a]); break;
       default: break;
@@ -484,7 +534,7 @@ export default class GardenScene extends Phaser.Scene {
     if (inG) {
       G.removeGardenAnimal(this.save, inG.key);
       const i = this.pets.findIndex((p) => p.a.key === inG.key);
-      if (i >= 0) { const p = this.pets[i]; this.endAct(p, true); this.tweens.add({ targets: p.c, alpha: 0, duration: 300, onComplete: () => p.c.destroy() }); this.pets.splice(i, 1); }
+      if (i >= 0) { const p = this.pets[i]; p.rallyTo = null; this.endAct(p, true); this.tweens.add({ targets: p.c, alpha: 0, duration: 300, onComplete: () => p.c.destroy() }); this.pets.splice(i, 1); }
       this.persist(); this.drawUi(); this.openPicker(page); return;
     }
     const r = G.addGardenAnimal(this.save, this.D, ch);

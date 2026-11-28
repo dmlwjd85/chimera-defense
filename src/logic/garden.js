@@ -135,3 +135,32 @@ export function meetKind(a, b, data) {
   if (eats(sb, sa)) return 'flee';
   return 'greet';
 }
+
+/**
+ * 종을 치면 모일 자리(2026-11-28): 종을 가운데 두고 양옆·뒤·앞에 둘러섬.
+ * 종 바로 앞뒤(종을 가리는 곳)와 풀밭 밖은 비움. 가까운 자리부터 좌우 짝으로 채움.
+ * 좌표는 동물 몸 가운데(발은 그보다 30쯤 아래) 기준.
+ */
+const GATHER_AT = [[140, -5], [70, -100], [105, 80], [205, 38], [192, -112], [262, -28], [300, 72], [140, -185], [330, -120], [384, -10], [262, -190]];
+export function gatherSlots(n, bx, by, ground) {
+  const out = [];
+  for (const [dx, dy] of GATHER_AT) for (const sx of [-1, 1]) {
+    if (out.length >= n) break;
+    const x = bx + sx * dx, y = by + dy;
+    if (x < ground.x0 + 20 || x > ground.x1 - 20 || y < ground.y0 || y > ground.y1) continue;
+    out.push([x, y]);
+  }
+  // 구석이라 자리가 모자라면: 풀밭 격자에서 종에 가까운 빈자리부터 채움
+  if (out.length < n) {
+    const grid = [];
+    for (let x = ground.x0 + 20; x <= ground.x1 - 20; x += 56) for (let y = ground.y0; y <= ground.y1; y += 40) grid.push([x, y]);
+    grid.sort((p, q) => Math.hypot(p[0] - bx, p[1] - by) - Math.hypot(q[0] - bx, q[1] - by));
+    for (const g of grid) {
+      if (out.length >= n) break;
+      if (Math.hypot(g[0] - bx, g[1] - by) < 90 || (Math.abs(g[0] - bx) < 70 && g[1] > by - 20)) continue;
+      if (out.some((o) => Math.hypot(o[0] - g[0], o[1] - g[1]) < 60)) continue;
+      out.push(g);
+    }
+  }
+  return out;
+}

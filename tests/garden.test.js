@@ -92,3 +92,19 @@ test('무릉도원 소품과 어울리기: 새·원숭이는 나무에 앉고, �
   const s = withStars(0);
   for (const id of ['drum', 'bell', 'fountain', 'nest', 'feed']) assert.ok(G.addProp(s, D, id, 400, 500).ok, id);
 });
+
+test('종 모이기 자리: 마릿수만큼, 풀밭 안, 종을 가리지 않고, 서로 겹치지 않음', async () => {
+  const { gatherSlots } = await import('../src/logic/garden.js');
+  const ground = { x0: 80, x1: 1200, y0: 450, y1: 650 };
+  for (const [bx, by] of [[640, 560], [100, 455], [1190, 645], [640, 450], [300, 650]]) {
+    for (const n of [1, 4, 10]) {
+      const s = gatherSlots(n, bx, by, ground);
+      assert.equal(s.length, n);
+      for (const [x, y] of s) {
+        assert.ok(x >= ground.x0 && x <= ground.x1 && y >= ground.y0 && y <= ground.y1, `풀밭 밖 ${x},${y}`);
+        assert.ok(Math.hypot(x - bx, y - by) > 40, `종 위에 섬 ${x},${y}`);
+      }
+      for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) assert.ok(Math.hypot(s[i][0] - s[j][0], s[i][1] - s[j][1]) > 24, `겹침 ${s[i]} ${s[j]} (종 ${bx},${by}, ${n}마리)`);
+    }
+  }
+});

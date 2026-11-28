@@ -14,6 +14,8 @@ const persp = (y) => 0.9 + 0.14 * Math.max(0, Math.min(1, (y - GROUND.y0) / (GRO
 const BASE = 0.34;                                        // 연전과 같은 동물 배율
 const PROP_SCALE = { pavilion: 2, peach: 2, pond: 2, lantern: 1.5, flowers: 1.5, bridge: 2 };
 const rnd = (a, b) => a + Math.random() * (b - a);
+// 깊이(2026-11-28 사용자 "소품들이 캐릭터 앞으로 나와 있는데 캐릭터가 앞에 있게"): 소품은 늘 동물 뒤(0~), 동물은 그 위(PET_Z~)에서 발 높이 순
+const PROP_Z = (y) => y * 0.1, PET_Z = 200;
 const STAGE_NAME = { young: '어린', teen: '성장기', adult: '성체', spirit: '신화급' };
 
 export default class GardenScene extends Phaser.Scene {
@@ -39,7 +41,7 @@ export default class GardenScene extends Phaser.Scene {
     this.g.props.forEach((p, i) => this.makeProp(p, i));
     this.g.animals.forEach((a) => this.spawn(a));
     this.drawUi();
-    this.input.on('drag', (pointer, obj, x, y) => { if (!this.decor || obj.propIndex == null) return; const px = Phaser.Math.Clamp(x, GROUND.x0, GROUND.x1), py = Phaser.Math.Clamp(y, GROUND.y0 - 40, GROUND.y1 + 40); obj.setPosition(px, py).setDepth(py); });
+    this.input.on('drag', (pointer, obj, x, y) => { if (!this.decor || obj.propIndex == null) return; const px = Phaser.Math.Clamp(x, GROUND.x0, GROUND.x1), py = Phaser.Math.Clamp(y, GROUND.y0 - 40, GROUND.y1 + 40); obj.setPosition(px, py).setDepth(PROP_Z(py)); });
     this.input.on('dragend', (pointer, obj) => { if (obj.propIndex == null) return; G.moveProp(this.save, obj.propIndex, obj.x, obj.y); this.persist(); });
     if (!this.g.animals.length) this.time.delayedCall(500, () => this.openPicker());
   }
@@ -126,7 +128,7 @@ export default class GardenScene extends Phaser.Scene {
     const hy = p.hop > 0 ? -Math.abs(Math.sin(p.hop * Math.PI * 3)) * 14 : 0;
     p.sub.y = 30 + hy;
     p.rig.inst.setFacing(p.face);
-    c.setScale(persp(c.y)).setDepth(c.y);
+    c.setScale(persp(c.y)).setDepth(PET_Z + c.y);
     p.rig.view.update(dt);
   }
 
@@ -224,7 +226,7 @@ export default class GardenScene extends Phaser.Scene {
   makeProp(p, i) {
     const key = 'garden-' + p.id;
     if (!this.textures.exists(key)) return null;
-    const o = this.add.image(p.x, p.y, key).setOrigin(0.5, 1).setScale(PROP_SCALE[p.id] ?? 2).setDepth(p.y);
+    const o = this.add.image(p.x, p.y, key).setOrigin(0.5, 1).setScale(PROP_SCALE[p.id] ?? 2).setDepth(PROP_Z(p.y));
     o.propIndex = i; o.setInteractive({ draggable: true, useHandCursor: true });
     this.input.setDraggable(o, this.decor);
     o.on('pointerdown', () => { if (this.decor) this.selectProp(o); });

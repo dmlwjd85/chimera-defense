@@ -2,10 +2,53 @@
 // 칸 해금 = 별점 합계(사용자 선택). 쓰다듬기 = 하트 + 그 종 경험 조금(하루 한도). 소품 = 끌어 놓기.
 import { totalStars } from './meta.js';
 
-export const GARDEN_PROPS = ['pavilion', 'peach', 'pond', 'lantern', 'flowers', 'bridge'];
-export const PROP_NAME = { pavilion: '정자', peach: '복숭아나무', pond: '연못', lantern: '석등', flowers: '꽃밭', bridge: '돌다리' };
+// 소품(2026-11-28 사용자 "새는 나무 위에 앉을 수 있게 · 연못에 들어간다던가 오브젝트랑 상호작용 가능한 걸로 몇 개 더 추가하고 기존 오브젝트도 기존 그림들 활용해서"):
+// 뒤 다섯 개(북·종·샘물·둥지·먹이 자루)는 새로 그리지 않고 이미 있는 유물 그림을 그대로 씀.
+export const GARDEN_PROPS = ['pavilion', 'peach', 'pond', 'lantern', 'flowers', 'bridge', 'drum', 'bell', 'fountain', 'nest', 'feed'];
+export const PROP_NAME = { pavilion: '정자', peach: '복숭아나무', pond: '연못', lantern: '석등', flowers: '꽃밭', bridge: '돌다리', drum: '북', bell: '종', fountain: '샘물', nest: '둥지', feed: '먹이 자루' };
+/** 소품 그림 열쇠(manifest.json) */
+export const PROP_ART = { pavilion: 'garden-pavilion', peach: 'garden-peach', pond: 'garden-pond', lantern: 'garden-lantern', flowers: 'garden-flowers', bridge: 'garden-bridge',
+  drum: 'relic-war_drum', bell: 'relic-sentry_bell', fountain: 'relic-mana_spring', nest: 'relic-twin_egg', feed: 'relic-feed_bag' };
 
-export const gcfgGarden = (data) => ({ starsPerSlot: 3, maxSlots: 10, maxProps: 12, petXp: 1, petDaily: 10, ...(data?.config?.garden ?? {}) });
+// 동물 무리(키메라는 첫 부위 종): 새는 높은 데 앉고, 원숭이는 나무를 타고, 물을 좋아하는 동물은 연못에 들어가고, 풀 먹는 동물은 꽃밭을 뜯고, 덩치는 나무를 들이받음
+const GROUP = {
+  bird: ['crow', 'eagle', 'rooster'], climb: ['monkey'],
+  water: ['frog', 'dog', 'bear', 'tiger', 'bison'],
+  graze: ['rabbit', 'bighorn', 'bison', 'grasshopper', 'ant'],
+  big: ['bear', 'bison', 'bighorn', 'tiger'],
+};
+export const speciesOf = (a) => (a?.kind === 'chimera' ? a.parts?.[0] : a?.id);
+export const inGroup = (a, g) => (GROUP[g] ?? []).includes(speciesOf(a));
+
+/** 소품마다 할 수 있는 행동: act(장면이 그리는 이름) · who(이 무리만, 없으면 누구나) · w(고를 무게) · max(한꺼번에 몇 마리, 기본 2) */
+export const PROP_ACTS = {
+  peach: [{ act: 'perch', who: ['bird', 'climb'], w: 6, max: 3 }, { act: 'shake', who: ['big'], w: 3, max: 1 }, { act: 'nap', w: 2 }],
+  pond: [{ act: 'swim', who: ['water'], w: 6, max: 1 }, { act: 'drink', w: 3, max: 1 }],
+  pavilion: [{ act: 'perch', who: ['bird'], w: 3, max: 1 }, { act: 'rest', w: 4, max: 1 }],
+  lantern: [{ act: 'perch', who: ['bird'], w: 3, max: 1 }, { act: 'warm', w: 3 }],
+  flowers: [{ act: 'graze', who: ['graze'], w: 5 }, { act: 'sniff', w: 3 }],
+  bridge: [{ act: 'perch', who: ['bird'], w: 3, max: 1 }, { act: 'cross', w: 5 }],
+  drum: [{ act: 'play', w: 4, max: 1 }],
+  bell: [{ act: 'ring', w: 3, max: 1 }],
+  fountain: [{ act: 'perch', who: ['bird'], w: 3, max: 1 }, { act: 'drink', w: 4 }],
+  nest: [{ act: 'brood', who: ['bird'], w: 7, max: 1 }, { act: 'peek', w: 2 }],
+  feed: [{ act: 'eat', w: 5 }],
+};
+/** 그 동물이 그 소품에서 할 수 있는 행동 목록 */
+export function propActsFor(animal, propId) {
+  return (PROP_ACTS[propId] ?? []).filter((a) => !a.who || a.who.some((g) => inGroup(animal, g)));
+}
+/** 무게대로 하나 고름. free(행동 정보) = 자리가 남았는가(없으면 다 됨). 할 게 없으면 null */
+export function pickPropAct(animal, propId, rnd = Math.random, free = () => true) {
+  const list = propActsFor(animal, propId).filter((a) => free(a));
+  const total = list.reduce((n, a) => n + a.w, 0);
+  if (!total) return null;
+  let t = rnd() * total;
+  for (const a of list) if ((t -= a.w) < 0) return a;
+  return list[list.length - 1];
+}
+
+export const gcfgGarden = (data) => ({ starsPerSlot: 3, maxSlots: 10, maxProps: 16, petXp: 1, petDaily: 10, propChance: 0.35, ...(data?.config?.garden ?? {}) });
 
 /** 동산에 둘 수 있는 동물 수: 처음 1마리, 별 starsPerSlot개마다 +1, 최대 maxSlots */
 export function gardenSlots(save, data) {

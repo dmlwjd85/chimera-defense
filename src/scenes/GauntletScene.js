@@ -63,6 +63,8 @@ const WALK_PX = 80;
 const DASH_DUR = 0.95, DASH_ARRIVE = 270;
 /** 교전 뒤 제자리로 걸어가는 빠르기(px/초) */
 const HOME_WALK = 150;
+/** 화면 기본 확대(main.js): 큰 화면·폰은 내부 해상도를 K배로 그리고 카메라를 K배 확대함. 카메라 연출은 늘 이 값을 기준으로(2026-11-28 폰에서 이기면 화면이 작아지던 문제: 확대를 1로 되돌리고 있었음) */
+const camK = () => window.__K ?? 1;
 /** 도움 효과 색·그림 글자: 회복 초록 · 보호막 하늘 · 세짐 주황 · 단단 파랑 · 빨라짐 노랑 · 해제 흰색 */
 const AID = {
   heal: { col: 0x7dff9a, hex: '#7dff9a', icon: '✚' }, shield: { col: 0x8fd3ff, hex: '#8fd3ff', icon: '🧿 보호막' },
@@ -2231,7 +2233,7 @@ export default class GauntletScene extends Phaser.Scene {
       const next = s.plan?.[(ev.enc ?? s.enc) + 1];
       if (next?.boss && !s.tier && !ev.boss) this.time.delayedCall(450 + (fin ? fin.ms : 0), () => this.mid.notice(this.mid.T('mid.nextBoss', { name: this.D.enemyById[next.ids[0]]?.name ?? '?' })));
     }
-    if (last && !fin) { const cam = this.cameras.main; this.tweens.add({ targets: cam, zoom: 1.04, duration: 420, yoyo: true, hold: 380, ease: 'Sine.inOut' }); }
+    if (last && !fin) { const cam = this.cameras.main; this.tweens.add({ targets: cam, zoom: 1.04 * camK(), duration: 420, yoyo: true, hold: 380, ease: 'Sine.inOut', onComplete: () => this.resetCam(), onStop: () => this.resetCam() }); }
     this.time.delayedCall(fin ? fin.ms + 120 : 1150, () => {
       sfx(ev.boss ? 'clear' : 'coin');
       // 승리 포즈는 다들 제자리에 돌아온 뒤 위아래 점프(sync의 winHop)
@@ -2302,7 +2304,7 @@ export default class GauntletScene extends Phaser.Scene {
     this.finale = { t0: now, until: now + ms, ms, k, boss, zoom: (boss ? C.bossZoom : C.zoom) ?? 1.08, pull: C.pull ?? 0.3, at: lastV ? [lastV.c.x, lastV.c.y - 40] : [640, 360], done: false, back: 0 };
     this.tweens.timeScale = k;   // 쓰러짐(튕김·넘어짐)·처치 빛가루·흔들림 트윈이 느리게
     for (const v of this.eViews.values()) if (v.dying) v.finaleDeath = true;
-    cam.zoom = 1;
+    this.tweens.killTweensOf(cam); cam.zoom = camK();
     // 세리머니: 살아 있는 아군이 제자리에서 통통 점프 + 음표·반짝 + 기쁜 동작(있으면), 하나씩 조금씩 늦게
     const alive = s.field.filter((u) => !u.down && !u.resting && this.uViews.has(u.uid));
     const ups = alive.map((u) => this.uViews.get(u.uid));
@@ -2327,15 +2329,22 @@ export default class GauntletScene extends Phaser.Scene {
     if (!F.done) {
       const t = Math.min(1, (now - F.t0) / F.ms), w = Math.min(1, t / 0.25) * (t > 0.8 ? Math.max(0, (1 - t) / 0.2) : 1);   // 0.25까지 당기고 · 0.8부터 놓음
       const e = 1 - (1 - w) * (1 - w);
-      cam.setZoom(1 + (F.zoom - 1) * e);
+      cam.setZoom(camK() * (1 + (F.zoom - 1) * e));
       cam.centerOn(640 + (F.at[0] - 640) * F.pull * e, 360 + (F.at[1] - 360) * F.pull * e);
       if (now >= F.until) {
-        F.done = true; this.tweens.timeScale = 1; cam.setZoom(1); cam.centerOn(640, 360);
+        F.done = true; this.tweens.timeScale = 1; this.resetCam();
         for (const v of this.eViews.values()) if (v.rig) v.rig.inst.timeScale = 1;
         if (this.state.phase !== 'fight') for (const v of this.uViews.values()) { v.homeWalk = true; v.finY = null; }
         this.finale = null;
       }
     }
+  }
+
+  /** 카메라를 기본 자리·기본 확대로(연출이 끊겨도 화면이 작아진 채 남지 않게) */
+  resetCam() {
+    if (this.finale && !this.finale.done) return;
+    const cam = this.cameras.main;
+    cam.setZoom(camK()); cam.centerOn(640, 360);
   }
 
   onLose(ev) {
@@ -2351,6 +2360,7 @@ export default class GauntletScene extends Phaser.Scene {
 
   showRegroup() {
     if (this.leaving || this.state.phase !== 'regroup') return;
+    if (!this.finale) { this.tweens.killTweensOf(this.cameras.main); this.resetCam(); }   // 정비 화면은 늘 기본 확대
     const s = this.state, D = this.D;
     this.clearUi();
     // 딜 미터기: 교전이 끝나고 정비 화면이 처음 뜰 때 기록 카드(끄기 가능) · 다시 보는 단추

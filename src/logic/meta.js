@@ -12,7 +12,7 @@ export function defaultSave() {
     speciesXp: {},
     stages: {},
     achievements: [],
-    shards: 0, talents: [], favor: {},
+    shards: 0, talents: [], talentVer: 2, favor: {},
     tutorialDone: false,
     settings: { fastRoulette: false },
   };
@@ -24,9 +24,19 @@ export function loadSave(storage) {
     const raw = storage?.getItem(SAVE_KEY);
     if (!raw) return defaultSave();
     const s = JSON.parse(raw);
+    migrateTalents(s);
     const d = defaultSave();
     return { ...d, ...s, unlocks: { ...d.unlocks, ...s.unlocks }, codex: { ...d.codex, ...s.codex }, settings: { ...d.settings, ...s.settings } };
   } catch { return defaultSave(); }
+}
+
+/** 별자리 나무가 새로 짜임(2026-11-28): 예전 특성(값 1·2·3·4·5)은 쓴 조각을 모두 돌려주고 비움. 돌려준 수는 talentRefund에 남겨 화면이 한 번 알림 */
+export function migrateTalents(s) {
+  if ((s.talentVer ?? 1) >= 2) return 0;
+  const back = (s.talents ?? []).reduce((n, id) => n + (+String(id).slice(1) || 0), 0);
+  s.shards = (s.shards ?? 0) + back; s.talents = []; s.talentVer = 2;
+  if (back) s.talentRefund = back;
+  return back;
 }
 
 export function writeSave(storage, save) {
@@ -207,6 +217,7 @@ export function settleRun(save, state, data) {
   const stageId = state.stage.id;
   const clear = state.result === 'clear';
   const rec = (save.stages[stageId] ??= { cleared: false, bestWave: 0 });
+  const wasClear = { normal: !!rec.cleared, hard: !!rec.hard, hardcore: !!rec.hardcore, god: !!rec.god };   // 첫 클리어 조각 보너스용(아래에서 기록이 바뀌기 전)
   const waves = state.wavesCleared ?? 0;
   const lines = [];
   // 남은 금화는 주머니로(다음 스테이지에 들고 가거나 상점에서 씀). 연전만
@@ -292,12 +303,21 @@ export function settleRun(save, state, data) {
   const sc = data.talents?.shards ?? {};
   const fromRelics = (state.relics ?? []).reduce((n, id) => n + (sc[data.relicById?.[id]?.rarity] ?? 0), 0);
   let shards = fromRelics + Math.floor(waves / (sc.perWaves ?? 3));
+  // 연전(2026-11-28 "유물 모으기 난이도 적당히 어렵게"): 끝까지 들고 있던 유물(난이도 배수) + 이긴 교전 perEnc번마다 1 + 클리어 + 그 난이도 첫 클리어
+  const tk = state.tier ?? (state.hard ? 'hard' : 'normal'), gauntShards = state.mode === 'gauntlet' && !!sc.relicMult;
+  let shardLines = null;
+  if (gauntShards) {
+    const r = Math.round(fromRelics * (sc.relicMult[tk] ?? 1)), w = Math.floor((state.wins ?? 0) / (sc.perEnc ?? 3));
+    const c = clear ? sc.clear?.[tk] ?? 0 : 0, f = clear && !wasClear[tk] ? sc.first?.[tk] ?? 0 : 0;
+    shards = r + w + c + f;
+    shardLines = [['들고 있던 유물', r], ['이긴 교전', w], ['클리어', c], ['첫 클리어', f]].filter((x) => x[1] > 0);
+  }
   // 하드: 에센스·유물 조각을 더 줌, 하드로 깨면 왕관 기록
   if (state.hard) {
     const ge = data.config.gauntlet ?? {};
     const extra = Math.round(essence * ((ge.hardEssence ?? 1.5) - 1));
     if (extra > 0) { save.essence += extra; essence += extra; lines.push(['하드 보너스', extra]); }
-    shards = Math.round(shards * (ge.hardShards ?? 2));
+    if (!gauntShards) shards = Math.round(shards * (ge.hardShards ?? 2));
     if (clear) rec.hard = true;
     // 하드코어 ×2, 신계 ×2.5(에센스 덤), 신계는 이번 주 최고 기록(교전 수·시간)
     if (state.tier) {
@@ -313,7 +333,7 @@ export function settleRun(save, state, data) {
     }
   }
   save.shards = (save.shards ?? 0) + shards;
-  return { legendShards, pouchIn, pouch: save.pouch ?? 0, clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardRelics: (state.relics ?? []).length,
+  return { legendShards, pouchIn, pouch: save.pouch ?? 0, clear, essence, lines, xp, newRecipes, newSpecies, newFlops, achievements: ach, hintsMade, shards, shardLines, shardRelics: (state.relics ?? []).length,
     mvp: Object.values(state.dmgRun ?? {}).sort((a, b) => b.dmg - a.dmg).slice(0, 3).map((r) => ({ ...r, dmg: Math.round(r.dmg) })),
     stars, goals, totalStars: starsAfter, joined, gauge, legends: clear && state.mode === 'gauntlet' ? legendCandidates(state) : [], newSpells: spellsUnlocked(save, data).filter((id) => !spellsBefore.includes(id)), time: Math.round(state.time) };
 }
@@ -350,28 +370,36 @@ export function buyUnlock(save, data, key) {
 }
 
 // ---------- 스킬트리(특성): 판이 끝나면 남는 유물 조각으로 가지마다 차례로 찍는다 ----------
-/** Can this talent node be bought now? Returns { ok, reason, cost }. */
+/** 별 등급: 같은 id가 담긴 수(0 = 아직) · 올릴 수 있는 끝 등급 · 다음 등급 값 */
+export const talentRank = (save, id) => (save.talents ?? []).filter((x) => x === id).length;
+export const talentMax = (data, id) => data.talentById[id]?.max ?? data.talents.maxRank ?? 1;
+export const talentCost = (data, id, rank) => Math.round((data.talents.costs[data.talentById[id]?.index] ?? 1) * (data.talents.rankMult?.[rank] ?? rank + 1));
+/** 밝힌 별 등급을 모두 더한 수(난이도 권장치와 견줌) */
+export const talentPoints = (save) => (save.talents ?? []).length;
+export const talentPointsMax = (data) => data.talents.branches.reduce((n, b) => n + b.nodes.reduce((m, x) => m + (x.max ?? data.talents.maxRank ?? 1), 0), 0);
+/** Can this talent node be raised now? Returns { ok, reason, cost, rank, max }. cost = 다음 등급 값 */
 export function talentState(save, data, id) {
   const n = data.talentById[id];
   if (!n) return { ok: false, reason: 'unknown', cost: 0 };
-  const cost = data.talents.costs[n.index] ?? 1;
-  const owned = (save.talents ?? []).includes(id);
+  const rank = talentRank(save, id), max = talentMax(data, id);
+  const cost = talentCost(data, id, Math.min(rank, max - 1));
   const branch = data.talents.branches.find((b) => b.id === n.branch);
-  const prevOk = n.index === 0 || (save.talents ?? []).includes(branch.nodes[n.index - 1].id);
-  if (owned) return { ok: false, reason: 'owned', cost, owned };
-  if (!prevOk) return { ok: false, reason: 'locked', cost };
-  if ((save.shards ?? 0) < cost) return { ok: false, reason: 'shards', cost };
-  return { ok: true, cost };
+  const prevOk = n.index === 0 || talentRank(save, branch.nodes[n.index - 1].id) >= 1;
+  if (rank >= max) return { ok: false, reason: 'owned', cost, owned: true, rank, max };
+  if (!prevOk) return { ok: false, reason: 'locked', cost, rank, max };
+  if ((save.shards ?? 0) < cost) return { ok: false, reason: 'shards', cost, rank, max };
+  return { ok: true, cost, rank, max };
 }
 export function buyTalent(save, data, id) {
   const st = talentState(save, data, id);
   if (!st.ok) return st;
   save.shards -= st.cost; (save.talents ??= []).push(id);
-  return st;
+  return { ...st, rank: st.rank + 1 };
 }
 /** Give every spent shard back so the tree can be rebuilt. */
 export function resetTalents(save, data) {
-  const back = (save.talents ?? []).reduce((n, id) => n + (data.talents.costs[data.talentById[id]?.index] ?? 0), 0);
+  const seen = {};
+  const back = (save.talents ?? []).reduce((n, id) => { const r = seen[id] ?? 0; seen[id] = r + 1; return n + (data.talentById[id] ? talentCost(data, id, r) : 0); }, 0);
   save.shards = (save.shards ?? 0) + back; save.talents = [];
   return back;
 }

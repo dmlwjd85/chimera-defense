@@ -36,6 +36,8 @@ export default class ResultScene extends Phaser.Scene {
     const ups = (r.xp ?? []).filter((x) => x.after > x.before);
     const got = [`💠 ${r.essence}`, r.shards ? `💎 ${r.shards}` : null, ups.length ? `⬆ ${ups.map((x) => D.unitById[x.id]?.name).slice(0, 3).join('·')}` : null, r.newRecipes?.length ? `🧬 ${r.newRecipes.map((id) => D.recipeById[id]?.name).join('·')}` : null].filter(Boolean);
     this.add.text(640, 262, got.join('     '), style(22, '#ffe2b8', { stroke: '#000', strokeThickness: 4 })).setOrigin(0.5);
+    // 조각이 어디서 나왔는지 한 줄(별자리 나무에 씀)
+    if (r.shardLines?.length) this.add.text(640, 290, `💎 조각 ${r.shards} = ${r.shardLines.map((l) => `${l[0]} ${l[1]}`).join(' + ')}`, style(13, '#d9c8ff', { stroke: '#000', strokeThickness: 3 })).setOrigin(0.5);
 
     // 전설 새기기(1장): 이번 판에 만든 신화급·키메라
     let y = 318;

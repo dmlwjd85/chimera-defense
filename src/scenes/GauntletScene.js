@@ -4,8 +4,8 @@
 // 교전이 끝나면 정비: 회복, 보상 3개 중 1개, 끌어서 자리 바꾸기·합성, 다음 교전 미리 보기.
 import Phaser from 'phaser';
 import { buildData } from '../logic/data.js';
-import { battleOptions, settleRun, writeSave, carryCandidates, setCarry, takeOutForRun } from '../logic/meta.js';
-import { roleOfEnemy as roleOfEnemyS, formOfIds, formOfField, stageTier, createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, mergeOddsG, useRally, treatCost, healCost, healUnits, clutchOf, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost, rerollGlobe, globeRerollCost, recommendReward, buyPotion, trainUnit, trainCost, tuneOf, laneOf, mealInfo, canReviveSkill } from '../logic/gauntlet.js';
+import { battleOptions, settleRun, writeSave, carryCandidates, setCarry, takeOutForRun, talentPoints } from '../logic/meta.js';
+import { roleOfEnemy as roleOfEnemyS, formOfIds, formOfField, stageTier, createGauntlet, tickGauntlet, takeReward, moveAnimal, mergeHint, mergeOddsG, useRally, treatCost, healCost, healUnits, clutchOf, nextEncounter, nextPreview, castG, spellBlockG, unitsIn, gcfg, clashOfU, clashOfE, startEncounter, styleOf, canStance, cyclePrefStance, reviveUnit, releaseUnit, reviveCost, cycleTactic, tacticOf, TACTIC_LABEL, TACTICS, setPlan, statLine, cycleBuild, buildSet, BUILDS, tapShield, setStar, GOD_RULES, godRuleOf, weekKey, recommendSeats, cheerClash, encFactors, buyExtraReward, extraCost, rerollGlobe, globeRerollCost, recommendReward, buyPotion, trainUnit, trainCost, tuneOf, laneOf, mealInfo, canReviveSkill, squadSizes } from '../logic/gauntlet.js';
 import { spellDef, spellCost } from '../logic/spells.js';
 import { duelData, myDuelDeck, DUEL } from '../logic/duel.js';
 import { unitRig, enemyRig, dotDataFor, playAttack, ATTACK_MOTIONS, queueMotionSheets, dropMotionSheets, stageEnemyIds, poolExtraIds, enemyFace, enemyFaceRig, enemyPortraitFlip } from './rigs.js';
@@ -226,7 +226,10 @@ export default class GauntletScene extends Phaser.Scene {
       const y = 214 + i * 104;
       const b = button(this, 470, y, 220, 54, r.open ? r.label : `🔒 ${r.label}`, () => { if (!r.open) return; close(); this.begin(r.key !== 'normal', r.key === 'hardcore' || r.key === 'god' ? r.key : null); }, { depth: 3002, fill: r.open ? r.fill : 0x333333, stroke: r.stroke, size: 20 });
       b.setEnabled(r.open); btns.push(b);
-      add(this.add.text(600, y, r.desc, style(14, r.open ? '#f0e6d0' : '#777777', { wordWrap: { width: 350 } })).setOrigin(0, 0.5).setDepth(3001));
+      add(this.add.text(600, y - 12, r.desc, style(14, r.open ? '#f0e6d0' : '#777777', { wordWrap: { width: 350 } })).setOrigin(0, 0.5).setDepth(3001));
+      // 적 마릿수와 권장 별(특성) — 난이도가 오르면 적이 6 → 9마리, 별이 모자라면 빨갛게
+      { const sq = squadSizes(this.D, r.key), need = this.D.talents?.advice?.[r.key] ?? 0, have = talentPoints(this.save), short = need > have;
+        add(this.add.text(600, y + 20, `👿 적 최대 ${sq.max}마리 · 보스전 ${sq.boss}마리${need ? ` · ⭐ 권장 별 ${need}개(지금 ${have})` : ''}`, style(13, !r.open ? '#666666' : short ? '#ff8a7a' : '#9fe0a0')).setOrigin(0, 0.5).setDepth(3001)); }
     });
     if (this.D.raid?.bosses?.[this.stage.boss]) btns.push(button(this, 850, 640, 170, 40, this.registry.get('T')?.('raid.card.button') ?? 'raid.card.button', () => showBossCard(this, this.D, this.stage, 3100), { depth: 3002, size: 15, fill: 0x3a2a6a, stroke: 0x9b6cf0, tip: this.registry.get('T')?.('raid.card.tip') }));   // 보스 레이드 카드12
     btns.push(button(this, 640, 640, 180, 40, '← 돌아가기', () => this.scene.start('StageSelect'), { depth: 3002, size: 15 }));

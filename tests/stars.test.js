@@ -92,10 +92,11 @@ test('spells: one to start, more per cleared stage; mana gates the cast', async 
   s.spellCd = 0; assert.ok(castSpell(s, D, 'drum').ok); assert.ok(s.allyBuffs.some((b) => b.stat === 'interval'));
   s.mana = 0; s.spellCd = 0; assert.equal(castSpell(s, D, 'chain').reason, 'mana');
   step(s, D, 1); assert.ok(s.mana > 0.4 && s.mana < 1);
-  const m = createBattle(D, 'forest-1', 1, { spells: ['meteor'], talents: ['m1', 'm2', 'm3', 'm4', 'm5'] });
+  // 마법 가지를 등급 3까지(같은 별을 세 번 담음): 시작 마력 +30, 소모 -18%, 효과 +24%, 회복 +36%
+  const m = createBattle(D, 'forest-1', 1, { spells: ['meteor'], talents: ['m1', 'm2', 'm3', 'm4'].flatMap((id) => [id, id, id]) });
   assert.equal(m.mana, D.config.spells.start + 30);
   m.phase = 'wave'; m.mana = 40; m.enemies = [makeEnemy('normal', 1, m.stage, D, 1)];
-  assert.ok(castSpell(m, D, 'meteor').ok); assert.equal(m.mana, 8); // 40 - 32
-  assert.ok(m.enemies[0].hp < m.enemies[0].maxHp * 0.4); // 45% x 1.5
-  m.mana = 0; m.enemies = [makeEnemy('tough', 1, m.stage, D, 9)]; step(m, D, 1); assert.ok(Math.abs(m.mana - 0.9) < 0.05);
+  assert.ok(castSpell(m, D, 'meteor').ok); assert.equal(m.mana, 7); // 40 - 33
+  assert.ok(m.enemies[0].hp < m.enemies[0].maxHp * 0.46); // 45% x 1.24
+  m.mana = 0; m.enemies = [makeEnemy('tough', 1, m.stage, D, 9)]; step(m, D, 1); assert.ok(Math.abs(m.mana - 0.68) < 0.05);
 });

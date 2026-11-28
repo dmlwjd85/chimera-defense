@@ -70,7 +70,7 @@ export function gcfg(data) {
     },
     // 잡아채기: 후열을 노리고 들어오는 딜러를 낚아채는 동물(우리: 개구리 혀·원숭이 꼬리·개미 떼 / 적: 좀비 손·해골 손·뼈 보스)
     catchers: { frog: 'tongue', monkey: 'tail', ant: 'swarm' }, eCatchers: { zombie: 'hand', skeleton: 'bone', boss_bone: 'bone', boss_lich: 'shadow' },
-    snatchCd: 7, snatchChance: 0.75, eSnatchChance: 0.5, snatchStun: 1.2, snatchPin: 2.5, deepT: 3, deepTaken: 20, backstab: 1.3, deepFocus: 0.45, sellWeak: 25, extraCost: 15, extraUp: 1, extraMax: 2, globeReroll: 8, globeRerollUp: 6, globeRerollMax: 3, reviveSkill: { hp: 35, delay: 1.2, perEnc: 1, shield: 2 }, cleanseCd: 6, pouchMax: 150, pouchTake: 40, potionCost: 10, potionHeal: 35, trainCost: 20, trainDmg: 10, trainMax: 3,
+    snatchCd: 7, snatchChance: 0.75, eSnatchChance: 0.5, snatchStun: 1.2, snatchPin: 2.5, deepT: 3, deepTaken: 20, backstab: 1.3, deepFocus: 0.45, sellWeak: 25, extraCost: 15, extraUp: 1, extraMax: 2, globeReroll: 8, globeRerollUp: 6, globeRerollMax: 3, squadMaxTier: { normal: 6, hard: 7, hardcore: 8, god: 9 }, bossSquadTier: { normal: 3, hard: 4, hardcore: 5, god: 6 }, tierMul: { hard: { hp: 1, atk: 1 }, hardcore: { hp: 1, atk: 1 }, god: { hp: 1, atk: 1 } }, reviveSkill: { hp: 35, delay: 1.2, perEnc: 1, shield: 2 }, cleanseCd: 6, pouchMax: 150, pouchTake: 40, potionCost: 10, potionHeal: 35, trainCost: 20, trainDmg: 10, trainMax: 3,
     // 붙잡기: 남는 정원이 있는 탱커는 같은 라인 딜러에게 붙어 후열 노리기를 막음. 고급 딜러(나는 동물·신화·키메라·날쌘 종 성장기 이상)는 빠져나감
     slippery: ['fox', 'monkey', 'rabbit'], eSlippery: ['ghost', 'bat', 'boss_bat'], enemyCap: { bruiser: 2, boss: 3 },
     // 역전 각성(약할수록 큼), 주인공(선택과 집중), 무쌍 견제(한 마리가 피해를 독식하면 적이 집중)
@@ -305,14 +305,20 @@ export const clashOfE = (state, eid) => (state.clashes ?? []).find((c) => c.eid 
 const isRangedEnemy = (e) => e.flying || !!e.heal || e.id === 'wisp' || e.id === 'boss_lich' || e.id === 'skeleton';
 
 /** Which stage waves become the encounters: spread evenly, the last one is the boss wave. */
-export function planEncounters(stage, data, rng) {
-  const g = gcfg(data), W = stage.waves.length, N = Math.min(g.encounters, W);
+/** 난이도 이름: normal · hard · hardcore · god */
+export const tierKey = (x) => x?.tier ?? (x?.hard ? 'hard' : 'normal');
+/** 난이도별 적 무리 크기(2026-11-28 "난이도가 올라가면 상대방 인원은 6에서 9까지"): 마지막 일반 교전의 마릿수 · 보스 교전 마릿수 */
+export const squadSizes = (data, tier = 'normal') => { const g = gcfg(data); return { max: g.squadMaxTier?.[tier] ?? g.squadMax, boss: g.bossSquadTier?.[tier] ?? g.bossSquad }; };
+export function planEncounters(stage, data, rng, tier = 'normal') {
+  const g = gcfg(data), W = stage.waves.length, N = Math.min(g.encounters, W), SQ = squadSizes(data, tier);
   const out = [];
   for (let i = 0; i < N; i++) {
     const wi = N === 1 ? W - 1 : Math.round((i * (W - 1)) / (N - 1));
     const spec = stage.waves[wi];
     const boss = i === N - 1 ? stage.boss ?? null : null;
-    const size = boss ? g.bossSquad : Math.round(g.squadMin + ((g.squadMax - g.squadMin) * i) / Math.max(1, N - 2));
+    // 난이도로 늘어나는 마릿수는 뒤로 갈수록 붙음(제곱): 앞 교전은 노멀과 비슷하고 마지막 일반 교전에서 SQ.max에 닿음
+    const tt = i / Math.max(1, N - 2), baseMax = Math.min(SQ.max, g.squadMax);
+    const size = boss ? SQ.boss : Math.round(g.squadMin + (baseMax - g.squadMin) * tt + (SQ.max - baseMax) * tt * tt);
     const ids = [];
     if (boss) ids.push(boss);
     for (const x of spec.extra ?? []) if (x !== boss && ids.length < size) ids.push(x);
@@ -383,7 +389,8 @@ export function createGauntlet(data, stageId, seed = 1, opts = {}) {
   state.life += eco(state, data, 'life') ?? 0;
   state.maxLife = state.life;
   state.mana = Math.min(cfg.spells?.max ?? 0, state.mana + (eco(state, data, 'manaStart') ?? 0));
-  state.plan = opts.plan ?? planEncounters(stage, data, state.rng);
+  state.gold += eco(state, data, 'startGold') ?? 0;   // 특성 '씨앗 주머니'
+  state.plan = opts.plan ?? planEncounters(stage, data, state.rng, tierKey(state));
   if (opts.duel) { state.duel = { ...opts.duel }; state.life = state.maxLife = 99; }
   // 처음 출전: 덱 전부(어린 단계). 소울펫이 있으면 왕관.
   // 출전 단계: 종 레벨이 오르면 성장기(Lv3)·성체(Lv6)로 시작. 신화급은 혼자 못 됨(합성만)
@@ -488,10 +495,11 @@ function addEnemy(state, data, id, wave, seatWant = null) {
   const pack = def.spawnCount > 1 ? def.spawnCount * 0.8 : 1;
   const hp = def.boss ? 30 * Math.pow((def.miniboss || def.hp < 3000 ? def.hp : g.bossBase) / 30, g.squash) * g.bossHp * (def.pattern?.type === 'summon' ? g.summonerHp : 1) * (g.bossTune?.[id]?.hp ?? 1) : 30 * Math.pow((def.hp * pack) / 30, g.squash) * g.enemyHp;
   const tune = g.stageScale?.[state.stage.id] ?? 1;
-  e.hp = e.maxHp = Math.max(1, Math.round(hp * sm * up * tune * (state.hard ? g.hardHp : 1)));
+  const TM = g.tierMul?.[tierKey(state)] ?? null;   // 난이도 배율(특성이 받쳐 줘야 깨지게)
+  e.hp = e.maxHp = Math.max(1, Math.round(hp * sm * up * tune * (state.hard ? g.hardHp : 1) * (TM?.hp ?? 1)));
   const atk0 = def.attack || g.zeroAttack;
   const atk = 5 * Math.pow((atk0 * (def.spawnCount > 1 ? def.spawnCount * 0.5 : 1)) / 5, g.squash) * (def.boss ? g.bossAtk * (g.bossTune?.[id]?.atk ?? 1) : g.enemyAtk);
-  e.attack = Math.max(1, Math.round(atk * Math.pow(state.stage.mult ?? 1, g.stageAtkPow) * (data.config.difficulty?.enemyAttack ?? 1) * upA));
+  e.attack = Math.max(1, Math.round(atk * Math.pow(state.stage.mult ?? 1, g.stageAtkPow) * (data.config.difficulty?.enemyAttack ?? 1) * upA * (TM?.atk ?? 1)));
   // 대결: 친구 동물은 계산한 수치 그대로(스테이지 배율·성장 없음)
   if (def.raw) { e.hp = e.maxHp = def.hp; e.attack = def.attack; e.interval = def.interval; e.animal = def.animal; e.animalStage = def.stage; }
   if (e.heal) e.heal = { ...e.heal, percent: e.heal.percent * g.healMult };
@@ -1036,7 +1044,7 @@ function reviveTick(state, data, g) {
   const by = fighters(state).find((u) => canReviveSkill(u) && (u.reviveUsed ?? 0) < R.perEnc && !(u.stunLeft > 0));
   if (!by) return;
   by.reviveUsed = (by.reviveUsed ?? 0) + 1; by.gauge = 0;
-  d.down = false; if (setHp(state, d, d.maxHp * R.hp / 100, 'revive', by, 'reviveSkill') > 1e-9) state.hpLog[state.hpLog.length - 1].aid = true;   // 부활 숫자는 #97 부활 효과가 띄움 d.gauge = 0; d.stunLeft = 0; d.pinnedBy = null; d.suppressed = false; d.shieldT = state.time + R.shield;
+  d.down = false; if (setHp(state, d, d.maxHp * Math.min(90, R.hp + (eco(state, data, 'reviveHp') ?? 0)) / 100, 'revive', by, 'reviveSkill') > 1e-9) state.hpLog[state.hpLog.length - 1].aid = true;   // 부활 숫자는 #97 부활 효과가 띄움 d.gauge = 0; d.stunLeft = 0; d.pinnedBy = null; d.suppressed = false; d.shieldT = state.time + R.shield;
   dstat(state, 'revive');
   state.events.push({ type: 'reviveSkill', uid: by.uid, to: d.uid, hp: Math.round(d.hp) });
   say(state, `${by.stats.name} · 부활! ${d.stats.name} 일어남`);
@@ -1313,14 +1321,15 @@ function unitAct(state, data, u, g) {
       const sk = u.stance === 'support' ? (nativeStance(u) === 'support' ? 2.5 : 2) : 1;
       // 응원은 여럿이 겹치면 덜 듦(1/√응원 수): 응원만 잔뜩은 약함
       const nSup = fighters(state).filter((x) => styleOf(x) === 'support').length;
-      const hb = (u.kind === 'base' && u.build ? BUILDS[u.build]?.heal ?? 1 : 1) * (tuneOf(u, g)?.heal ?? 1) / Math.sqrt(Math.max(1, nSup));
+      const cp = 1 + (eco(state, data, 'cheerPlus') ?? 0) / 100;   // 특성 '큰 목청'
+      const hb = cp * (u.kind === 'base' && u.build ? BUILDS[u.build]?.heal ?? 1 : 1) * (tuneOf(u, g)?.heal ?? 1) / Math.sqrt(Math.max(1, nSup));
       const amt = healA(state, to, to.maxHp * g.cheerHeal * sk * hb / 100, u, 'cheer');
-      if (c) c.push = Math.min(0.95, c.push + g.cheerPush * sk * (tuneOf(u, g)?.push ?? 1) / Math.sqrt(Math.max(1, nSup)));
+      if (c) c.push = Math.min(0.95, c.push + g.cheerPush * cp * sk * (tuneOf(u, g)?.push ?? 1) / Math.sqrt(Math.max(1, nSup)));
       cheer = to.uid;
       state.events.push({ type: 'cheer', uid: u.uid, to: to.uid, heal: amt, push: !!c });
     }
     // 정신 차려!(이상 해제): 기절한 친구 하나를 깨움(응원 동물마다 cleanseCd초에 한 번)
-    if (state.time - (u.cleanseAt ?? -99) >= (g.cleanseCd ?? 6)) {
+    if (state.time - (u.cleanseAt ?? -99) >= Math.max(2, (g.cleanseCd ?? 6) - (eco(state, data, 'cleanseCut') ?? 0))) {
       // 기절만 풂(낚아채여 함께 걸린 붙잡힘도). 탱커에게 붙잡힌 것(자리 싸움)은 규칙이 매번 다시 정하므로 건드리지 않음
       const sick = fighters(state).find((x) => x !== u && (x.stunLeft ?? 0) > 0.3);
       if (sick) { const snatched = (sick.pinUntil ?? 0) > state.time; sick.stunLeft = 0; if (snatched) { sick.pinnedBy = null; sick.pinUntil = 0; } u.cleanseAt = state.time; dstat(state, 'cleanse'); aid(state, 'cleanse', u, sick, { what: snatched ? ['stun', 'pin'] : ['stun'] }); }
@@ -1992,13 +2001,13 @@ const STAGE_KEY = (u) => (u.kind === 'chimera' ? 'chimera' : u.kind === 'weak' ?
 export function treatCost(state, data, u) {
   const inj = gcfg(data).comeback?.injury;
   if (!inj) return reviveCost(state, data);
-  return Math.round((inj.treat[STAGE_KEY(u)] ?? 10) * (1 + inj.treatUp * state.revives) * (state.tier ? 2 : 1));
+  return Math.max(1, Math.round((inj.treat[STAGE_KEY(u)] ?? 10) * (1 + inj.treatUp * state.revives) * (state.tier ? 2 : 1) * (1 - Math.min(60, eco(state, data, 'treatCut') ?? 0) / 100)));
 }
 /** 치료(체력): 정비 때 금화로 체력을 채움. 다친 만큼 값(단계마다 가득 채우는 값 × 잃은 비율) */
 export function healCost(state, data, list) {
   const inj = gcfg(data).comeback?.injury;
   if (!inj) return 0;
-  return list.filter((u) => u && !u.resting && u.hp < u.maxHp).reduce((a, u) => a + Math.ceil((inj.heal[STAGE_KEY(u)] ?? 5) * (1 - u.hp / u.maxHp) * (state.tier ? 2 : 1)), 0);
+  return list.filter((u) => u && !u.resting && u.hp < u.maxHp).reduce((a, u) => a + Math.ceil((inj.heal[STAGE_KEY(u)] ?? 5) * (1 - u.hp / u.maxHp) * (state.tier ? 2 : 1) * (1 - Math.min(60, eco(state, data, 'treatCut') ?? 0) / 100)), 0);
 }
 export function healUnits(state, data, uid = null) {
   if (state.phase !== 'regroup') return fail('notRegroup');
